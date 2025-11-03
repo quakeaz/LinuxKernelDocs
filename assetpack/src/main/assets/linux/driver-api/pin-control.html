@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -301,7 +301,7 @@ since these are so tightly integrated with the machines they are used on.
 See <code class="docutils literal notranslate"><span class="pre">arch/arm/mach-ux500/Kconfig</span></code> for an example.</p>
 <p>Pins usually have fancier names than this. You can find these in the datasheet
 for your chip. Notice that the core pinctrl.h file provides a fancy macro
-called <code class="docutils literal notranslate"><span class="pre">PINCTRL_PIN()</span></code> to create the struct entries. As you can see the pins are
+called <code class="docutils literal notranslate"><span class="pre">PINCTRL_PIN()</span></code> to create the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">entries</span></code>. As you can see the pins are
 enumerated from 0 in the upper left corner to 63 in the lower right corner.
 This enumeration was arbitrarily chosen, in practice you need to think
 through your numbering system so that it matches the layout of registers
@@ -606,7 +606,7 @@ to the chip, and quite a few will be taken by large ports like an external
 memory interface. The remaining pins will often be subject to pin multiplexing.</p>
 <p>The example 8x8 PGA package above will have pin numbers 0 through 63 assigned
 to its physical pins. It will name the pins { A1, A2, A3 ... H6, H7, H8 } using
-pinctrl_register_pins() and a suitable data set as shown earlier.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pinctrl_register_pins()</span></code> and a suitable data set as shown earlier.</p>
 <p>In this 8x8 BGA package the pins { A8, A7, A6, A5 } can be used as an SPI port
 (these are four pins: CLK, RXD, TXD, FRM). In that case, pin B5 can be used as
 some general-purpose GPIO pin. However, in another setting, pins { A5, B5 } can
@@ -919,7 +919,7 @@ or the registers for the GPIO hardware module are likely to reside in a
 separate memory range only intended for GPIO driving, and the register
 range dealing with pin config and pin multiplexing get placed into a
 different memory range and a separate section of the data sheet.</p>
-<p>A flag “strict” in struct pinmux_ops is available to check and deny
+<p>A flag “strict” in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pinmux_ops</span></code> is available to check and deny
 simultaneous access to the same pin from GPIO and pin multiplexing
 consumers on hardware of this type. The pinctrl driver should set this flag
 accordingly.</p>
@@ -1313,10 +1313,10 @@ arrangement on your bus.</p>
 <p>The semantics of the pinctrl APIs are:</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">pinctrl_get()</span></code> is called in process context to obtain a handle to all pinctrl
-information for a given client device. It will allocate a struct from the
+information for a given client device. It will allocate a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">from</span></code> the
 kernel memory to hold the pinmux state. All mapping table parsing or similar
 slow operations take place within this API.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">devm_pinctrl_get()</span></code> is a variant of pinctrl_get() that causes <code class="docutils literal notranslate"><span class="pre">pinctrl_put()</span></code>
+<li><p><code class="docutils literal notranslate"><span class="pre">devm_pinctrl_get()</span></code> is a variant of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pinctrl_get()</span></code> that causes <code class="docutils literal notranslate"><span class="pre">pinctrl_put()</span></code>
 to be called automatically on the retrieved pointer when the associated
 device is removed. It is recommended to use this function over plain
 <code class="docutils literal notranslate"><span class="pre">pinctrl_get()</span></code>.</p></li>
@@ -1425,7 +1425,7 @@ spi0 in the example above, we expose two different groups of pins for the same
 function, but with different named in the mapping as described under
 “Advanced mapping” above. So that for an SPI device, we have two states named
 “pos-A” and “pos-B”.</p>
-<p>This snippet first initializes a state object for both groups (in foo_probe()),
+<p>This snippet first initializes a state object for both groups (in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">foo_probe()</span></code>),
 then muxes the function in the pins defined by group A, and finally muxes it in
 on the pins defined by group B:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;linux/pinctrl/consumer.h&gt;</span>

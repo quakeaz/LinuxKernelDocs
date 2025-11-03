@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -148,7 +148,7 @@
 
 <section id="fault-injection-capabilities-infrastructure">
 <h1>Fault injection capabilities infrastructure<a class="headerlink" href="#fault-injection-capabilities-infrastructure" title="Link to this heading">¶</a></h1>
-<p>See also drivers/md/md-faulty.c and “every_nth” module option for scsi_debug.</p>
+<p>See also “every_nth” module option for scsi_debug.</p>
 <section id="available-fault-injection-capabilities">
 <h2>Available fault injection capabilities<a class="headerlink" href="#available-fault-injection-capabilities" title="Link to this heading">¶</a></h2>
 <ul>
@@ -156,10 +156,10 @@
 <p>injects slab allocation failures. (<a class="reference internal" href="../core-api/mm-api.html#c.kmalloc" title="kmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmalloc()</span></code></a>, <a class="reference internal" href="../core-api/mm-api.html#c.kmem_cache_alloc" title="kmem_cache_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmem_cache_alloc()</span></code></a>, ...)</p>
 </li>
 <li><p>fail_page_alloc</p>
-<p>injects page allocation failures. (<a class="reference internal" href="../core-api/mm-api.html#c.alloc_pages" title="alloc_pages"><code class="xref c c-func docutils literal notranslate"><span class="pre">alloc_pages()</span></code></a>, get_free_pages(), ...)</p>
+<p>injects page allocation failures. (<a class="reference internal" href="../core-api/mm-api.html#c.alloc_pages" title="alloc_pages"><code class="xref c c-func docutils literal notranslate"><span class="pre">alloc_pages()</span></code></a>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_free_pages()</span></code>, ...)</p>
 </li>
 <li><p>fail_usercopy</p>
-<p>injects failures in user memory access functions. (copy_from_user(), <a class="reference internal" href="../core-api/mm-api.html#c.get_user" title="get_user"><code class="xref c c-func docutils literal notranslate"><span class="pre">get_user()</span></code></a>, ...)</p>
+<p>injects failures in user memory access functions. (<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">copy_from_user()</span></code>, <a class="reference internal" href="../core-api/mm-api.html#c.get_user" title="get_user"><code class="xref c c-func docutils literal notranslate"><span class="pre">get_user()</span></code></a>, ...)</p>
 </li>
 <li><p>fail_futex</p>
 <p>injects futex deadlock and uaddr fault errors.</p>
@@ -178,7 +178,7 @@ debugfs entries under /sys/kernel/debug/mmc0/fail_mmc_request</p>
 </li>
 <li><p>fail_function</p>
 <p>injects error return on specific functions, which are marked by
-ALLOW_ERROR_INJECTION() macro, by setting debugfs entries
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ALLOW_ERROR_INJECTION()</span></code> macro, by setting debugfs entries
 under /sys/kernel/debug/fail_function. No boot option supported.</p>
 </li>
 <li><p>fail_skb_realloc</p>
@@ -213,7 +213,7 @@ retry flag can be set via the debugfs.</p>
 /sys/kernel/config/nullb/&lt;disk&gt;/timeout_inject,
 inject requeue requests by setting config items under
 /sys/kernel/config/nullb/&lt;disk&gt;/requeue_inject, and
-inject init_hctx() errors by setting config items under
+inject <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init_hctx()</span></code> errors by setting config items under
 /sys/kernel/config/nullb/&lt;disk&gt;/init_hctx_fault_inject.</p>
 </li>
 </ul>
@@ -237,7 +237,7 @@ for some testcases.  Consider setting probability=100 and configure
 <li><p>/sys/kernel/debug/fail*/interval:</p>
 <blockquote>
 <div><p>specifies the interval between failures, for calls to
-should_fail() that pass all the other tests.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">should_fail()</span></code> that pass all the other tests.</p>
 <p>Note that if you enable this, by setting interval&gt;1, you will
 probably want to set probability=100.</p>
 </div></blockquote>
@@ -431,7 +431,7 @@ system call. See an example below.</p>
 <section id="error-injectable-functions">
 <h2>Error Injectable Functions<a class="headerlink" href="#error-injectable-functions" title="Link to this heading">¶</a></h2>
 <p>This part is for the kernel developers considering to add a function to
-ALLOW_ERROR_INJECTION() macro.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ALLOW_ERROR_INJECTION()</span></code> macro.</p>
 <section id="requirements-for-the-error-injectable-functions">
 <h3>Requirements for the Error Injectable Functions<a class="headerlink" href="#requirements-for-the-error-injectable-functions" title="Link to this heading">¶</a></h3>
 <p>Since the function-level error injection forcibly changes the code path
@@ -459,7 +459,7 @@ function, the expectation is betrayed and causes an unexpected error.</p>
 <section id="type-of-the-error-injectable-functions">
 <h3>Type of the Error Injectable Functions<a class="headerlink" href="#type-of-the-error-injectable-functions" title="Link to this heading">¶</a></h3>
 <p>Each error injectable functions will have the error type specified by the
-ALLOW_ERROR_INJECTION() macro. You have to choose it carefully if you add
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ALLOW_ERROR_INJECTION()</span></code> macro. You have to choose it carefully if you add
 a new error injectable function. If the wrong error type is chosen, the
 kernel may crash because it may not be able to handle the error.
 There are 4 types of errors defined in include/asm-generic/error-injection.h</p>
@@ -489,7 +489,7 @@ value is not an object address and the caller can not access to the address.</p>
 <li><p>#include &lt;linux/fault-inject.h&gt;</p></li>
 <li><p>define the fault attributes</p>
 <p>DECLARE_FAULT_ATTR(name);</p>
-<p>Please see the definition of struct fault_attr in fault-inject.h
+<p>Please see the definition of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fault_attr</span></code> in fault-inject.h
 for details.</p>
 </li>
 <li><p>provide a way to configure fault attributes</p></li>
@@ -513,7 +513,7 @@ single kernel module, it is better to provide module parameters to
 configure the fault attributes.</p>
 </li>
 <li><p>add a hook to insert failures</p>
-<p>Upon should_fail() returning true, client code should inject a failure:</p>
+<p>Upon <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">should_fail()</span></code> returning true, client code should inject a failure:</p>
 <blockquote>
 <div><p>should_fail(attr, size);</p>
 </div></blockquote>
@@ -686,7 +686,7 @@ allocation failure:</p>
 <section id="systematic-faults-using-fail-nth">
 <h2>Systematic faults using fail-nth<a class="headerlink" href="#systematic-faults-using-fail-nth" title="Link to this heading">¶</a></h2>
 <p>The following code systematically faults 0-th, 1-st, 2-nd and so on
-capabilities in the socketpair() system call:</p>
+capabilities in the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">socketpair()</span></code> system call:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>#include &lt;sys/types.h&gt;
 #include &lt;sys/stat.h&gt;
 #include &lt;sys/socket.h&gt;

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -257,10 +257,10 @@ read-side critical section, and is not permitted to block.</p>
 elsewhere using an _bh variant of the spinlock primitive.
 For example, if “mylock” is acquired by an RCU callback, then
 a process-context acquisition of this lock must use something
-like spin_lock_bh() to acquire the lock.  Please note that
+like <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_bh()</span></code> to acquire the lock.  Please note that
 it is also OK to use _irq variants of spinlocks, for example,
-spin_lock_irqsave().</p>
-<p>If the process-context code were to simply use spin_lock(),
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_irqsave()</span></code>.</p>
+<p>If the process-context code were to simply use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock()</span></code>,
 then, since RCU callbacks can be invoked from softirq context,
 the callback might be called from a softirq that interrupted
 the process-context critical section.  This would result in

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -417,7 +417,7 @@ data copy is done from request pages to this backend’s buffer. Finally,
 backend receives the request again with data to be written and it can
 truly handle the request.</p>
 <p><code class="docutils literal notranslate"><span class="pre">UBLK_IO_NEED_GET_DATA</span></code> adds one additional round-trip and one
-io_uring_enter() syscall. Any user thinks that it may lower performance
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">io_uring_enter()</span></code> syscall. Any user thinks that it may lower performance
 should not enable UBLK_F_NEED_GET_DATA. ublk server pre-allocates IO
 buffer for each IO by default. Any new project should try to use this
 buffer to communicate with ublk driver. However, existing project may
@@ -438,14 +438,14 @@ the server buffer (pages) read to the IO request pages.</p>
 <section id="zero-copy">
 <h3>Zero copy<a class="headerlink" href="#zero-copy" title="Link to this heading">¶</a></h3>
 <p>ublk zero copy relies on io_uring’s fixed kernel buffer, which provides
-two APIs: <cite>io_buffer_register_bvec()</cite> and <cite>io_buffer_unregister_bvec</cite>.</p>
+two APIs: <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">io_buffer_register_bvec()</span></code></cite> and <cite>io_buffer_unregister_bvec</cite>.</p>
 <p>ublk adds IO command of <cite>UBLK_IO_REGISTER_IO_BUF</cite> to call
-<cite>io_buffer_register_bvec()</cite> for ublk server to register client request
+<cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">io_buffer_register_bvec()</span></code></cite> for ublk server to register client request
 buffer into io_uring buffer table, then ublk server can submit io_uring
 IOs with the registered buffer index. IO command of <cite>UBLK_IO_UNREGISTER_IO_BUF</cite>
-calls <cite>io_buffer_unregister_bvec()</cite> to unregister the buffer, which is
-guaranteed to be live between calling <cite>io_buffer_register_bvec()</cite> and
-<cite>io_buffer_unregister_bvec()</cite>. Any io_uring operation which supports this
+calls <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">io_buffer_unregister_bvec()</span></code></cite> to unregister the buffer, which is
+guaranteed to be live between calling <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">io_buffer_register_bvec()</span></code></cite> and
+<cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">io_buffer_unregister_bvec()</span></code></cite>. Any io_uring operation which supports this
 kind of kernel buffer will grab one reference of the buffer until the
 operation is completed.</p>
 <p>ublk server implementing zero copy or user copy has to be CAP_SYS_ADMIN and
@@ -454,10 +454,10 @@ filled with data for handling read command, and ublk server has to return
 correct result to ublk driver when handling READ command, and the result
 has to match with how many bytes filled to the IO buffer. Otherwise,
 uninitialized kernel IO buffer will be exposed to client application.</p>
-<p>ublk server needs to align the parameter of <cite>struct ublk_param_dma_align</cite>
+<p>ublk server needs to align the parameter of <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ublk_param_dma_align</span></code></cite>
 with backend for zero copy to work correctly.</p>
 <p>For reaching best IO performance, ublk server should align its segment
-parameter of <cite>struct ublk_param_segment</cite> with backend for avoiding
+parameter of <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ublk_param_segment</span></code></cite> with backend for avoiding
 unnecessary IO split, which usually hurts io_uring performance.</p>
 </section>
 <section id="auto-buffer-registration">
@@ -497,7 +497,7 @@ following structure:</p>
 };
 </pre></div>
 </div>
-<p>ublk_auto_buf_reg_to_sqe_addr() is for converting the above structure into
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ublk_auto_buf_reg_to_sqe_addr()</span></code> is for converting the above structure into
 <code class="docutils literal notranslate"><span class="pre">sqe-&gt;addr</span></code>.</p>
 </li>
 <li><p>All reserved fields in <code class="docutils literal notranslate"><span class="pre">ublk_auto_buf_reg</span></code> must be zeroed.</p></li>

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -170,9 +170,9 @@ by moving pages near to the processor where the process accessing that memory
 is running.</p>
 <p>Page migration allows a process to manually relocate the node on which its
 pages are located through the MF_MOVE and MF_MOVE_ALL options while setting
-a new memory policy via mbind(). The pages of a process can also be relocated
-from another process using the sys_migrate_pages() function call. The
-migrate_pages() function call takes two sets of nodes and moves pages of a
+a new memory policy via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mbind()</span></code>. The pages of a process can also be relocated
+from another process using the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sys_migrate_pages()</span></code> function call. The
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">migrate_pages()</span></code> function call takes two sets of nodes and moves pages of a
 process that are located on the from nodes to the destination nodes.
 Page migration functions are provided by the numactl package by Andi Kleen
 (a version later than 0.9.3 is required. Get it from
@@ -206,7 +206,7 @@ particular memory allocation pattern generated even after migrating a
 process. This is necessary in order to preserve the memory latencies.
 Processes will run with similar performance after migration.</p>
 <p>Page migration occurs in several steps. First a high level
-description for those trying to use migrate_pages() from the kernel
+description for those trying to use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">migrate_pages()</span></code> from the kernel
 (for userspace usage see the Andi Kleen’s numactl package mentioned above)
 and then a low level description of how the low level details work.</p>
 <section id="in-kernel-use-of-migrate-pages">
@@ -222,16 +222,16 @@ It also prevents the swapper or other scans from encountering
 the folio.</p>
 </li>
 <li><p>We need to have a function of type new_folio_t that can be
-passed to migrate_pages(). This function should figure out
+passed to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">migrate_pages()</span></code>. This function should figure out
 how to allocate the correct new folio given the old folio.</p></li>
-<li><p>The migrate_pages() function is called which attempts
+<li><p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">migrate_pages()</span></code> function is called which attempts
 to do the migration. It will call the function to allocate
 the new folio for each folio that is considered for moving.</p></li>
 </ol>
 </section>
 <section id="how-migrate-pages-works">
 <h2>How migrate_pages() works<a class="headerlink" href="#how-migrate-pages-works" title="Link to this heading">¶</a></h2>
-<p>migrate_pages() does several passes over its list of folios. A folio is moved
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">migrate_pages()</span></code> does several passes over its list of folios. A folio is moved
 if all references to a folio are removable at the time. The folio has
 already been removed from the LRU via <a class="reference internal" href="../core-api/mm-api.html#c.folio_isolate_lru" title="folio_isolate_lru"><code class="xref c c-func docutils literal notranslate"><span class="pre">folio_isolate_lru()</span></code></a> and the refcount
 is increased so that the folio cannot be freed while folio migration occurs.</p>
@@ -276,16 +276,29 @@ and will reach the new page.</p></li>
 etc. again.</p></li>
 </ol>
 </section>
-<section id="non-lru-page-migration">
-<h2>Non-LRU page migration<a class="headerlink" href="#non-lru-page-migration" title="Link to this heading">¶</a></h2>
-<p>Although migration originally aimed for reducing the latency of memory
-accesses for NUMA, compaction also uses migration to create high-order
-pages.  For compaction purposes, it is also useful to be able to move
-non-LRU pages, such as zsmalloc and virtio-balloon pages.</p>
-<p>If a driver wants to make its pages movable, it should define a <a class="reference internal" href="#c.movable_operations" title="movable_operations"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span>
-<span class="pre">movable_operations</span></code></a>.  It then needs to call __SetPageMovable() on each
-page that it may be able to move.  This uses the <code class="docutils literal notranslate"><span class="pre">page-&gt;mapping</span></code> field,
-so this field is not available for the driver to use for other purposes.</p>
+<section id="movable-ops-page-migration">
+<h2>movable_ops page migration<a class="headerlink" href="#movable-ops-page-migration" title="Link to this heading">¶</a></h2>
+<p>Selected typed, non-folio pages (e.g., pages inflated in a memory balloon,
+zsmalloc pages) can be migrated using the movable_ops migration framework.</p>
+<p>The “<a class="reference internal" href="#c.movable_operations" title="movable_operations"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">movable_operations</span></code></a>” provide callbacks specific to a page type
+for isolating, migrating and un-isolating (putback) these pages.</p>
+<p>Once a page is indicated as having movable_ops, that condition must not
+change until the page was freed back to the buddy. This includes not
+changing/clearing the page type and not changing/clearing the
+PG_movable_ops page flag.</p>
+<p>Arbitrary drivers cannot currently make use of this framework, as it
+requires:</p>
+<ol class="loweralpha simple">
+<li><p>a page type</p></li>
+<li><p>indicating them as possibly having movable_ops in <a class="reference internal" href="../core-api/mm-api.html#c.page_has_movable_ops" title="page_has_movable_ops"><code class="xref c c-func docutils literal notranslate"><span class="pre">page_has_movable_ops()</span></code></a>
+based on the page type</p></li>
+<li><p>returning the movable_ops from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">page_movable_ops()</span></code> based on the page
+type</p></li>
+<li><p>not reusing the PG_movable_ops and PG_movable_ops_isolated page flags
+for other purposes</p></li>
+</ol>
+<p>For example, balloon drivers can make use of this framework through the
+balloon-compaction infrastructure residing in the core kernel.</p>
 </section>
 <section id="monitoring-migration">
 <h2>Monitoring Migration<a class="headerlink" href="#monitoring-migration" title="Link to this heading">¶</a></h2>
@@ -338,14 +351,14 @@ is usually stored here.</p>
 <strong>src</strong> page.  The driver should copy the contents of the
 <strong>src</strong> page to the <strong>dst</strong> page and set up the fields of <strong>dst</strong> page.
 Both pages are locked.
-If page migration is successful, the driver should call
-__ClearPageMovable(<strong>src</strong>) and return MIGRATEPAGE_SUCCESS.
+If page migration is successful, the driver should
+return MIGRATEPAGE_SUCCESS.
 If the driver cannot migrate the page at the moment, it can return
 -EAGAIN.  The VM interprets this as a temporary migration failure and
 will retry it later.  Any other error value is a permanent migration
 failure and migration will not be retried.
 The driver shouldn’t touch the <strong>src-&gt;lru</strong> field while in the
-migrate_page() function.  It may write to <strong>dst-&gt;lru</strong>.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">migrate_page()</span></code> function.  It may write to <strong>dst-&gt;lru</strong>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">putback_page</span></code></dt><dd><p>If migration fails on the isolated page, the VM informs the driver
 that the page is no longer a candidate for migration by calling

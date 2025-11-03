@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -329,13 +329,13 @@ on the same host.</p>
 <div class="kernelindent docutils container">
 <p><strong>Definition</strong>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct tipc_media {
-    int (*send_msg)(struct net *net, struct sk_buff *buf,struct tipc_bearer *b, struct tipc_media_addr *dest);
+    int (*send_msg)(struct net *net, struct sk_buff *buf, struct tipc_bearer *b, struct tipc_media_addr *dest);
     int (*enable_media)(struct net *net, struct tipc_bearer *b, struct nlattr *attr[]);
     void (*disable_media)(struct tipc_bearer *b);
-    int (*addr2str)(struct tipc_media_addr *addr,char *strbuf, int bufsz);
+    int (*addr2str)(struct tipc_media_addr *addr, char *strbuf, int bufsz);
     int (*addr2msg)(char *msg, struct tipc_media_addr *addr);
-    int (*msg2addr)(struct tipc_bearer *b,struct tipc_media_addr *addr, char *msg);
-    int (*raw2addr)(struct tipc_bearer *b,struct tipc_media_addr *addr, const char *raw);
+    int (*msg2addr)(struct tipc_bearer *b, struct tipc_media_addr *addr, char *msg);
+    int (*raw2addr)(struct tipc_bearer *b, struct tipc_media_addr *addr, const char *raw);
     u32 priority;
     u32 tolerance;
     u32 min_win;
@@ -1011,7 +1011,7 @@ rtnl_lock should be held</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">hint</span></code></dt><dd><p>a hint for user key</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">rcu</span></code></dt><dd><p>struct rcu_head</p>
+<dt><code class="docutils literal notranslate"><span class="pre">rcu</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rcu_head</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">key</span></code></dt><dd><p>the aead key</p>
 </dd>
@@ -1085,7 +1085,7 @@ rtnl_lock should be held</p>
 </div>
 <p><strong>Members</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">net</span></code></dt><dd><p>struct net</p>
+<dt><code class="docutils literal notranslate"><span class="pre">net</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">net</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">node</span></code></dt><dd><p>TIPC node (RX)</p>
 </dd>
@@ -1306,7 +1306,7 @@ crypto_ctx || iv || aead_req || sg[]</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">net</span> <span class="pre">*net</span></code></dt><dd><p>struct net</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">net</span> <span class="pre">*net</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">net</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">tipc_aead</span> <span class="pre">*aead</span></code></dt><dd><p>TIPC AEAD for the message decryption</p>
 </dd>
@@ -1346,7 +1346,7 @@ crypto_ctx || iv || aead_req || sg[]</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">net</span> <span class="pre">*net</span></code></dt><dd><p>struct net</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">net</span> <span class="pre">*net</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">net</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">tipc_aead</span> <span class="pre">*aead</span></code></dt><dd><p>TX AEAD key to be used for the message encryption</p>
 </dd>
@@ -1486,7 +1486,7 @@ distributing process.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">net</span> <span class="pre">*net</span></code></dt><dd><p>struct net</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">net</span> <span class="pre">*net</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">net</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">sk_buff</span> <span class="pre">**skb</span></code></dt><dd><p>input/output message skb pointer</p>
 </dd>
@@ -1538,7 +1538,7 @@ Otherwise, the skb is freed!</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">net</span> <span class="pre">*net</span></code></dt><dd><p>struct net</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">net</span> <span class="pre">*net</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">net</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">tipc_crypto</span> <span class="pre">*rx</span></code></dt><dd><p>RX crypto handle</p>
 </dd>
@@ -1550,7 +1550,7 @@ Otherwise, the skb is freed!</p>
 <p><strong>Description</strong></p>
 <p>If the decryption is successful, the decrypted skb is returned directly or
 as the callback, the encryption header and auth tag will be trimed out
-before forwarding to <a class="reference internal" href="#c.tipc_rcv" title="tipc_rcv"><code class="xref c c-func docutils literal notranslate"><span class="pre">tipc_rcv()</span></code></a> via the tipc_crypto_rcv_complete().
+before forwarding to <a class="reference internal" href="#c.tipc_rcv" title="tipc_rcv"><code class="xref c c-func docutils literal notranslate"><span class="pre">tipc_rcv()</span></code></a> via the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">tipc_crypto_rcv_complete()</span></code>.
 Otherwise, the skb will be freed!</p>
 <p><strong>Note</strong></p>
 <p>RX key(s) can be re-aligned, or in case of no key suitable, TX
@@ -1589,7 +1589,7 @@ cluster key(s) can be taken for decryption (- recursive).</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">net</span> <span class="pre">*net</span></code></dt><dd><p>the struct net</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">net</span> <span class="pre">*net</span></code></dt><dd><p>the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">net</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">sk_buff</span> <span class="pre">*skb</span></code></dt><dd><p>the receiving message buffer</p>
 </dd>
@@ -1623,7 +1623,7 @@ cluster key(s) can be taken for decryption (- recursive).</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">net</span> <span class="pre">*net</span></code></dt><dd><p>the struct net</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">net</span> <span class="pre">*net</span></code></dt><dd><p>the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">net</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">tipc_aead_key</span> <span class="pre">*skey</span></code></dt><dd><p>the session key to be sent</p>
 </dd>
@@ -1670,7 +1670,7 @@ schedules a RX work to attach the key to the corresponding RX crypto.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">work_struct</span> <span class="pre">*work</span></code></dt><dd><p>the struct RX work</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">work_struct</span> <span class="pre">*work</span></code></dt><dd><p>the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">RX</span></code> work</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -1703,7 +1703,7 @@ or attaching a received session key on RX crypto.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">work_struct</span> <span class="pre">*work</span></code></dt><dd><p>the struct TX work</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">work_struct</span> <span class="pre">*work</span></code></dt><dd><p>the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">TX</span></code> work</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -2287,7 +2287,7 @@ false</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This is a special version of the precursor - tipc_link_tnl_prepare(),
+<p>This is a special version of the precursor - <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">tipc_link_tnl_prepare()</span></code>,
 see the <a class="reference internal" href="#c.tipc_node_link_failover" title="tipc_node_link_failover"><code class="xref c c-func docutils literal notranslate"><span class="pre">tipc_node_link_failover()</span></code></a> for details</p>
 </div>
 <dl class="c function">
@@ -3452,7 +3452,7 @@ structure (i.e. cannot be NULL), but bearer can be inactive.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">expect_ack</span></code></dt><dd><p>whether this TIPC socket is expecting an ack</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">nodelay</span></code></dt><dd><p>setsockopt() TIPC_NODELAY setting</p>
+<dt><code class="docutils literal notranslate"><span class="pre">nodelay</span></code></dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setsockopt()</span></code> TIPC_NODELAY setting</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">group_is_open</span></code></dt><dd><p>TIPC socket group is fully open (FIXME)</p>
 </dd>

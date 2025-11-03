@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -500,7 +500,7 @@ to use.</p>
 <ul>
 <li><p>DESC_METADATA_CLIENT</p>
 <p>The metadata buffer is allocated/provided by the client driver and it is
-attached (via the dmaengine_desc_attach_metadata() helper to the descriptor.</p>
+attached (via the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dmaengine_desc_attach_metadata()</span></code> helper to the descriptor.</p>
 <p>From the DMA driver the following is expected for this mode:</p>
 <ul>
 <li><p>DMA_MEM_TO_DEV / DEV_MEM_TO_MEM</p>
@@ -519,15 +519,15 @@ buffer provided by the client.</p>
 <li><p>DESC_METADATA_ENGINE</p>
 <p>The metadata buffer is allocated/managed by the DMA driver. The client driver
 can ask for the pointer, maximum size and the currently used size of the
-metadata and can directly update or read it. dmaengine_desc_get_metadata_ptr()
-and dmaengine_desc_set_metadata_len() is provided as helper functions.</p>
+metadata and can directly update or read it. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dmaengine_desc_get_metadata_ptr()</span></code>
+and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dmaengine_desc_set_metadata_len()</span></code> is provided as helper functions.</p>
 <p>From the DMA driver the following is expected for this mode:</p>
 <ul>
-<li><p>get_metadata_ptr()</p>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_metadata_ptr()</span></code></p>
 <p>Should return a pointer for the metadata buffer, the maximum size of the
 metadata buffer and the currently used / valid (if any) bytes in the buffer.</p>
 </li>
-<li><p>set_metadata_len()</p>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_metadata_len()</span></code></p>
 <p>It is called by the clients after it have placed the metadata to the buffer
 to let the DMA driver know the number of valid bytes provided.</p>
 </li>
@@ -716,7 +716,7 @@ that abstracts it away.</p></li>
 <li><p>If clear, the descriptor cannot be reused by provider until the
 client acknowledges receipt, i.e. has a chance to establish any
 dependency chains</p></li>
-<li><p>This can be acked by invoking async_tx_ack()</p></li>
+<li><p>This can be acked by invoking <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">async_tx_ack()</span></code></p></li>
 <li><p>If set, does not mean descriptor can be reused</p></li>
 </ul>
 <p>DMA_CTRL_REUSE</p>

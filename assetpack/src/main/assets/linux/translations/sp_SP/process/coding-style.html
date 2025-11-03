@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -472,7 +472,7 @@ de la especificación al estándar de código del kernel donde sea posible.</p>
 <section id="typedefs">
 <h2>5) Typedefs<a class="headerlink" href="#typedefs" title="Link to this heading">¶</a></h2>
 <p>Por favor no use cosas como <code class="docutils literal notranslate"><span class="pre">vps_t</span></code>.
-Es un <strong>error</strong> usar typedef para estructuras y punteros. cuando ve un</p>
+Es un <strong>error</strong> usar <code class="xref c c-type broken_xref docutils literal notranslate"><span class="pre">typedef</span> <span class="pre">para</span></code> estructuras y punteros. cuando ve un</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">vps_t</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
 </pre></div>
 </div>
@@ -486,7 +486,7 @@ En cambio, si dice</p>
 útiles solamente para:</p>
 <blockquote>
 <div><ol class="loweralpha">
-<li><p>objetos totalmente opacos (donde el typedef se usa activamente para
+<li><p>objetos totalmente opacos (donde el <code class="xref c c-type broken_xref docutils literal notranslate"><span class="pre">typedef</span> <span class="pre">se</span></code> usa activamente para
 <strong>ocultar</strong> cuál es el objeto).</p>
 <p>Ejemplo: <code class="docutils literal notranslate"><span class="pre">pte_t</span></code> etc. objetos opacos a los que solo puede acceder
 usando las funciones de acceso adecuadas.</p>
@@ -948,18 +948,18 @@ inequívocos.</p>
 <p>Hay varias modelos de macros de diagnóstico de driver en &lt;linux/dev_printk.h&gt;
 que debe usar para asegurarse de que los mensajes coincidan con el
 dispositivo correcto y driver, y están etiquetados con el nivel correcto:
-dev_err(), dev_warn(), dev_info(), y así sucesivamente. Para mensajes que
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_err()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_warn()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_info()</span></code>, y así sucesivamente. Para mensajes que
 no están asociados con un dispositivo particular, &lt;linux/printk.h&gt; define
 <a class="reference internal" href="../../../core-api/printk-basics.html#c.pr_notice" title="pr_notice"><code class="xref c c-func docutils literal notranslate"><span class="pre">pr_notice()</span></code></a>, <a class="reference internal" href="../../../core-api/printk-basics.html#c.pr_info" title="pr_info"><code class="xref c c-func docutils literal notranslate"><span class="pre">pr_info()</span></code></a>, <a class="reference internal" href="../../../core-api/printk-basics.html#c.pr_warn" title="pr_warn"><code class="xref c c-func docutils literal notranslate"><span class="pre">pr_warn()</span></code></a>, <a class="reference internal" href="../../../core-api/printk-basics.html#c.pr_err" title="pr_err"><code class="xref c c-func docutils literal notranslate"><span class="pre">pr_err()</span></code></a>, etc.</p>
 <p>Crear buenos mensajes de depuración puede ser todo un desafío; y una vez
 los tiene, pueden ser de gran ayuda para la resolución remota de problemas.
 Sin embargo, la impresión de mensajes de depuración se maneja de manera
 diferente a la impresión de otros mensajes que no son de depuración.
-Mientras que las otras funciones pr_XXX() se imprimen incondicionalmente,
+Mientras que las otras funciones <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pr_XXX()</span></code> se imprimen incondicionalmente,
 <a class="reference internal" href="../../../core-api/printk-basics.html#c.pr_debug" title="pr_debug"><code class="xref c c-func docutils literal notranslate"><span class="pre">pr_debug()</span></code></a> no lo hace; se compila fuera por defecto, a menos que DEBUG sea
-definido o se establezca CONFIG_DYNAMIC_DEBUG. Eso es cierto para dev_dbg()
+definido o se establezca CONFIG_DYNAMIC_DEBUG. Eso es cierto para <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_dbg()</span></code>
 también, y una convención relacionada usa VERBOSE_DEBUG para agregar
-mensajes dev_vdbg() a los ya habilitados por DEBUG.</p>
+mensajes <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_vdbg()</span></code> a los ya habilitados por DEBUG.</p>
 <p>Muchos subsistemas tienen opciones de depuración de Kconfig para activar
 -DDEBUG en el Makefile correspondiente; en otros casos, los archivos
 usan #define DEBUG. Y cuando un mensaje de depuración debe imprimirse
@@ -969,8 +969,8 @@ relacionada con la depuración, printk(KERN_DEBUG ...) puede ser usado.</p>
 <section id="reservando-memoria">
 <h2>14) Reservando memoria<a class="headerlink" href="#reservando-memoria" title="Link to this heading">¶</a></h2>
 <p>El kernel proporciona los siguientes asignadores de memoria de propósito
-general: <a class="reference internal" href="../../../core-api/mm-api.html#c.kmalloc" title="kmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmalloc()</span></code></a>, <a class="reference internal" href="../../../core-api/mm-api.html#c.kzalloc" title="kzalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kzalloc()</span></code></a>, <a class="reference internal" href="../../../core-api/mm-api.html#c.kmalloc_array" title="kmalloc_array"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmalloc_array()</span></code></a>, <a class="reference internal" href="../../../core-api/mm-api.html#c.kcalloc" title="kcalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kcalloc()</span></code></a>, vmalloc() y
-vzalloc(). Consulte la documentación de la API para obtener más información.
+general: <a class="reference internal" href="../../../core-api/mm-api.html#c.kmalloc" title="kmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmalloc()</span></code></a>, <a class="reference internal" href="../../../core-api/mm-api.html#c.kzalloc" title="kzalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kzalloc()</span></code></a>, <a class="reference internal" href="../../../core-api/mm-api.html#c.kmalloc_array" title="kmalloc_array"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmalloc_array()</span></code></a>, <a class="reference internal" href="../../../core-api/mm-api.html#c.kcalloc" title="kcalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kcalloc()</span></code></a>, <a class="reference internal" href="../../../core-api/mm-api.html#c.vmalloc" title="vmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">vmalloc()</span></code></a> y
+<a class="reference internal" href="../../../core-api/mm-api.html#c.vzalloc" title="vzalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">vzalloc()</span></code></a>. Consulte la documentación de la API para obtener más información.
 a cerca de ellos. <a class="reference internal" href="../../../core-api/memory-allocation.html#memory-allocation"><span class="std std-ref">Documentation/core-api/memory-allocation.rst</span></a></p>
 <p>La forma preferida para pasar el tamaño de una estructura es la siguiente:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">kmalloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">p</span><span class="p">),</span><span class="w"> </span><span class="p">...);</span>
@@ -1042,7 +1042,7 @@ es un predicado, la función debe devolver un valor booleano &quot;exitoso&quot;
 </pre></div>
 </div>
 <p>Por ejemplo, <code class="docutils literal notranslate"><span class="pre">agregar</span> <span class="pre">trabajo</span></code> es un comando, y la función
-agregar_trabajo() devuelve 0 en caso de éxito o -EBUSY en caso de fracaso.
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">agregar_trabajo()</span></code> devuelve 0 en caso de éxito o -EBUSY en caso de fracaso.
 De la misma manera, <code class="docutils literal notranslate"><span class="pre">dispositivo</span> <span class="pre">PCI</span> <span class="pre">presente</span></code> es un predicado, y la
 función <a class="reference internal" href="../../../driver-api/pci/pci.html#c.pci_dev_present" title="pci_dev_present"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_dev_present()</span></code></a> devuelve 1 si tiene éxito en encontrar un
 dispositivo coincidente o 0 si no es así.</p>
@@ -1096,7 +1096,7 @@ estructura, use</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define sizeof_field(t, f) (sizeof(((t*)0)-&gt;f))</span>
 </pre></div>
 </div>
-<p>También hay macros min() y max() que realizan una verificación estricta de
+<p>También hay macros <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">min()</span></code> y <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">max()</span></code> que realizan una verificación estricta de
 tipos si lo necesita. Siéntase libre de leer detenidamente ese archivo de
 encabezado para ver qué más ya está definido y que no debe reproducir en su
 código.</p>
@@ -1204,24 +1204,24 @@ anotando la expresión condicional utilizada. Por ejemplo:</p>
 al desarrollador del kernel.</p>
 <section id="evite-el-panic">
 <h3>Evite el panic()<a class="headerlink" href="#evite-el-panic" title="Link to this heading">¶</a></h3>
-<p><a class="reference internal" href="../../../driver-api/basics.html#c.panic" title="panic"><code class="xref c c-func docutils literal notranslate"><span class="pre">panic()</span></code></a> debe usarse con cuidado y principalmente solo durante el arranque
-del sistema. <a class="reference internal" href="../../../driver-api/basics.html#c.panic" title="panic"><code class="xref c c-func docutils literal notranslate"><span class="pre">panic()</span></code></a> es, por ejemplo, aceptable cuando se queda sin memoria
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">panic()</span></code> debe usarse con cuidado y principalmente solo durante el arranque
+del sistema. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">panic()</span></code> es, por ejemplo, aceptable cuando se queda sin memoria
 durante el arranque y no puede continuar.</p>
 </section>
 <section id="use-warn-en-lugar-de-bug">
 <h3>Use WARN() en lugar de BUG()<a class="headerlink" href="#use-warn-en-lugar-de-bug" title="Link to this heading">¶</a></h3>
-<p>No agregue código nuevo que use cualquiera de las variantes BUG(), como
-BUG(), BUG_ON() o VM_BUG_ON(). En su lugar, use una variante WARN*(),
-preferiblemente WARN_ON_ONCE(), y posiblemente con código de recuperación.
+<p>No agregue código nuevo que use cualquiera de las variantes <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">BUG()</span></code>, como
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">BUG()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">BUG_ON()</span></code> o <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">VM_BUG_ON()</span></code>. En su lugar, use una variante WARN*(),
+preferiblemente <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">WARN_ON_ONCE()</span></code>, y posiblemente con código de recuperación.
 El código de recuperación no es requerido si no hay una forma razonable de
 recuperar, al menos parcialmente.</p>
 <p>“Soy demasiado perezoso para tener en cuenta los errores” no es una excusa
-para usar BUG(). Importantes corrupciones internas sin forma de continuar
-aún pueden usar BUG(), pero necesitan una buena justificación.</p>
+para usar <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">BUG()</span></code>. Importantes corrupciones internas sin forma de continuar
+aún pueden usar <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">BUG()</span></code>, pero necesitan una buena justificación.</p>
 </section>
 <section id="use-warn-on-once-en-lugar-de-warn-o-warn-on">
 <h3>Use WARN_ON_ONCE() en lugar de WARN() o WARN_ON()<a class="headerlink" href="#use-warn-on-once-en-lugar-de-warn-o-warn-on" title="Link to this heading">¶</a></h3>
-<p>Generalmente, se prefiere WARN_ON_ONCE() a WARN() o WARN_ON(), porque es
+<p>Generalmente, se prefiere <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">WARN_ON_ONCE()</span></code> a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">WARN()</span></code> o <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">WARN_ON()</span></code>, porque es
 común que una condición de advertencia dada, si ocurre, ocurra varias
 veces. Esto puede llenar el registro del kernel, e incluso puede ralentizar
 el sistema lo suficiente como para que el registro excesivo se convierta en
@@ -1234,7 +1234,7 @@ suceder. Las macros WARN*() no deben usarse para nada que se espera que
 suceda durante un funcionamiento normal. No hay “checkeos” previos o
 posteriores a la condición, por ejemplo. De nuevo: WARN*() no debe usarse
 para una condición esperada que vaya a activarse fácilmente, por ejemplo,
-mediante acciones en el espacio del usuario. pr_warn_once() es una
+mediante acciones en el espacio del usuario. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pr_warn_once()</span></code> es una
 alternativa posible, si necesita notificar al usuario de un problema.</p>
 </section>
 <section id="no-se-preocupe-sobre-panic-on-warn-de-usuarios">
@@ -1251,7 +1251,7 @@ se rompa.</p>
 </section>
 <section id="use-build-bug-on-para-aserciones-en-tiempo-de-compilacion">
 <h3>Use BUILD_BUG_ON() para aserciones en tiempo de compilación<a class="headerlink" href="#use-build-bug-on-para-aserciones-en-tiempo-de-compilacion" title="Link to this heading">¶</a></h3>
-<p>El uso de BUILD_BUG_ON() es aceptable y recomendado, porque es una aserción
+<p>El uso de <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">BUILD_BUG_ON()</span></code> es aceptable y recomendado, porque es una aserción
 en tiempo de compilación, que no tiene efecto en tiempo de ejecución.</p>
 </section>
 </section>

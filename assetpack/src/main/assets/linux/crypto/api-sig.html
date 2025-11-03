@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -173,8 +173,8 @@
 <div class="kernelindent docutils container">
 <p><strong>Definition</strong>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct sig_alg {
-    int (*sign)(struct crypto_sig *tfm,const void *src, unsigned int slen, void *dst, unsigned int dlen);
-    int (*verify)(struct crypto_sig *tfm,const void *src, unsigned int slen, const void *digest, unsigned int dlen);
+    int (*sign)(struct crypto_sig *tfm, const void *src, unsigned int slen, void *dst, unsigned int dlen);
+    int (*verify)(struct crypto_sig *tfm, const void *src, unsigned int slen, const void *digest, unsigned int dlen);
     int (*set_pub_key)(struct crypto_sig *tfm, const void *key, unsigned int keylen);
     int (*set_priv_key)(struct crypto_sig *tfm, const void *key, unsigned int keylen);
     unsigned int (*key_size)(struct crypto_sig *tfm);
@@ -249,14 +249,12 @@ signing algorithm e.g. “ecdsa”</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Allocate a handle for public key signature algorithm. The returned struct
-crypto_sig is the handle that is required for any subsequent
+<p>Allocate a handle for public key signature algorithm. The returned <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">crypto_sig</span></code> is the handle that is required for any subsequent
 API invocation for signature operations.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>allocated handle in case of success; IS_ERR() is true in case</dt><dd><p>of an error, <a class="reference internal" href="../core-api/kernel-api.html#c.PTR_ERR" title="PTR_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">PTR_ERR()</span></code></a> returns the error code.</p>
-</dd>
-</dl>
+<p>allocated handle in case of success; <a class="reference internal" href="../core-api/kernel-api.html#c.IS_ERR" title="IS_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">IS_ERR()</span></code></a> is true in case
+of an error, <a class="reference internal" href="../core-api/kernel-api.html#c.PTR_ERR" title="PTR_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">PTR_ERR()</span></code></a> returns the error code.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.crypto_free_sig">

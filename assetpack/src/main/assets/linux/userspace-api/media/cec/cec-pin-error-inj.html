@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -182,6 +182,9 @@ error injection status:</p>
 #   &lt;op&gt; rx-clear  clear all rx error injections for &lt;op&gt;
 #   &lt;op&gt; tx-clear  clear all tx error injections for &lt;op&gt;
 #
+# RX error injection settings:
+#   rx-no-low-drive                    do not generate low-drive pulses
+#
 # RX error injection:
 #   &lt;op&gt;[,&lt;mode&gt;] rx-nack              NACK the message instead of sending an ACK
 #   &lt;op&gt;[,&lt;mode&gt;] rx-low-drive &lt;bit&gt;   force a low-drive condition at this bit position
@@ -194,6 +197,10 @@ error injection status:</p>
 #   tx-custom-low-usecs &lt;usecs&gt;        define the &#39;low&#39; time for the custom pulse
 #   tx-custom-high-usecs &lt;usecs&gt;       define the &#39;high&#39; time for the custom pulse
 #   tx-custom-pulse                    transmit the custom pulse once the bus is idle
+#   tx-glitch-low-usecs &lt;usecs&gt;        define the &#39;low&#39; time for the glitch pulse
+#   tx-glitch-high-usecs &lt;usecs&gt;       define the &#39;high&#39; time for the glitch pulse
+#   tx-glitch-falling-edge             send the glitch pulse after every falling edge
+#   tx-glitch-rising-edge              send the glitch pulse after every rising edge
 #
 # TX error injection:
 #   &lt;op&gt;[,&lt;mode&gt;] tx-no-eom            don&#39;t set the EOM bit
@@ -316,6 +323,13 @@ except by using this error injection command.</p>
 <p>This does not work if the remote CEC transmitter has logical address
 0 (‘TV’) since that will always win.</p>
 </dd>
+<dt><code class="docutils literal notranslate"><span class="pre">rx-no-low-drive</span></code></dt><dd><p>The receiver will ignore situations that would normally generate a
+Low Drive pulse (3.6 ms). This is typically done if a spurious pulse is
+detected when receiving a message, and it indicates to the transmitter that
+the message has to be retransmitted since the receiver got confused.
+Disabling this is useful to test how other CEC devices handle glitches
+by ensuring we will not be the one that generates a Low Drive.</p>
+</dd>
 </dl>
 </section>
 <section id="transmit-messages">
@@ -432,6 +446,30 @@ position must be at least 18, otherwise the opcode hasn’t been received yet.</
 <dt><code class="docutils literal notranslate"><span class="pre">&lt;op&gt;[,&lt;mode&gt;]</span> <span class="pre">tx-custom-start</span></code></dt><dd><p>Send the custom bit instead of a regular start bit.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">tx-custom-pulse</span></code></dt><dd><p>Transmit a single custom pulse as soon as the CEC bus is idle.</p>
+</dd>
+</dl>
+</section>
+<section id="glitch-pulses">
+<h2><span class="section-number">3.6. </span>Glitch Pulses<a class="headerlink" href="#glitch-pulses" title="Link to this heading">¶</a></h2>
+<p>This emulates what happens if the signal on the CEC line is seeing spurious
+pulses. Typically this happens after the falling or rising edge where there
+is a short voltage fluctuation that, if the CEC hardware doesn’t do
+deglitching, can be seen as a spurious pulse and can cause a Low Drive
+condition or corrupt data.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">tx-glitch-low-usecs</span> <span class="pre">&lt;usecs&gt;</span></code></dt><dd><p>This defines the duration in microseconds that the glitch pulse pulls
+the CEC line low. The default is 1 microsecond. The range is 0-100
+microseconds. If 0, then no glitch pulse will be generated.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">tx-glitch-high-usecs</span> <span class="pre">&lt;usecs&gt;</span></code></dt><dd><p>This defines the duration in microseconds that the glitch pulse keeps the
+CEC line high (unless another CEC adapter pulls it low in that time).
+The default is 1 microseconds. The range is 0-100 microseconds. If 0, then
+no glitch pulse will be generated.The total period of the glitch pulse is
+<code class="docutils literal notranslate"><span class="pre">tx-custom-low-usecs</span> <span class="pre">+</span> <span class="pre">tx-custom-high-usecs</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">tx-glitch-falling-edge</span></code></dt><dd><p>Send the glitch pulse right after the falling edge.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">tx-glitch-rising-edge</span></code></dt><dd><p>Send the glitch pulse right after the rising edge.</p>
 </dd>
 </dl>
 </section>

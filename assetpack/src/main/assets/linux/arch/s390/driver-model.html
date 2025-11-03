@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -266,7 +266,7 @@ struct ccw_driver {
 is not available to the device driver.</p>
 <p>Each driver should declare in a MODULE_DEVICE_TABLE into which CU types/models
 and/or device types/models it is interested. This information can later be found
-in the struct ccw_device_id fields:</p>
+in the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ccw_device_id</span></code> fields:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct ccw_device_id {
       __u16   match_flags;
 
@@ -389,8 +389,8 @@ CIO_NO_PATH or CIO_OPER.</p></li>
 handler for the device. In order to accommodate drivers which use several
 distinct handlers (e.g. multi subchannel devices), this is a member of ccw_device
 instead of ccw_driver.
-The handler is registered with the common layer during set_online() processing
-before the driver is called, and is deregistered during set_offline() after the
+The handler is registered with the common layer during <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_online()</span></code> processing
+before the driver is called, and is deregistered during <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_offline()</span></code> after the
 driver has been called. Also, after registering / before deregistering, path
 grouping resp. disbanding of the path group (if applicable) are performed.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>void (*handler) (struct ccw_device *dev, unsigned long intparm, struct irb *irb);
@@ -471,28 +471,6 @@ created a machine check for.</p></li>
 <h2>3.2 cpus<a class="headerlink" href="#cpus" title="Link to this heading">¶</a></h2>
 <p>For each cpu, a directory is created under devices/system/cpu/. Each cpu has an
 attribute ‘online’ which can be 0 or 1.</p>
-</section>
-<section id="other-devices">
-<h2>4. Other devices<a class="headerlink" href="#other-devices" title="Link to this heading">¶</a></h2>
-</section>
-<section id="netiucv">
-<h2>4.1 Netiucv<a class="headerlink" href="#netiucv" title="Link to this heading">¶</a></h2>
-<p>The netiucv driver creates an attribute ‘connection’ under
-bus/iucv/drivers/netiucv. Piping to this attribute creates a new netiucv
-connection to the specified host.</p>
-<p>Netiucv connections show up under devices/iucv/ as “netiucv&lt;ifnum&gt;”. The interface
-number is assigned sequentially to the connections defined via the ‘connection’
-attribute.</p>
-<dl class="simple">
-<dt>user</dt><dd><ul class="simple">
-<li><p>shows the connection partner.</p></li>
-</ul>
-</dd>
-<dt>buffer</dt><dd><ul class="simple">
-<li><p>maximum buffer size. Pipe to it to change buffer size.</p></li>
-</ul>
-</dd>
-</dl>
 </section>
 </section>
 

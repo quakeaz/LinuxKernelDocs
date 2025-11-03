@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -199,12 +199,12 @@ declaring static structs (that typically describe a file and line number in
 some way, hence code tagging) and then finding and operating on them at runtime,
 - i.e. iterating over them to print them in debugfs/procfs.</p>
 <p>To add accounting for an allocation call, we replace it with a macro
-invocation, alloc_hooks(), that
+invocation, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">alloc_hooks()</span></code>, that
 - declares a code tag
 - stashes a pointer to it in task_struct
 - calls the real allocation function
 - and finally, restores the task_struct alloc tag pointer to its previous value.</p>
-<p>This allows for alloc_hooks() calls to be nested, with the most recent one
+<p>This allows for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">alloc_hooks()</span></code> calls to be nested, with the most recent one
 taking effect. This is important for allocations internal to the mm/ code that
 do not properly belong to the outer allocation context and should be counted
 separately: for example, slab object extension vectors, or when the slab
@@ -214,11 +214,11 @@ stack should be tagged. There are many helper functions that essentially wrap
 e.g. <a class="reference internal" href="../core-api/mm-api.html#c.kmalloc" title="kmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmalloc()</span></code></a> and do a little more work, then are called in multiple places;
 we’ll generally want the accounting to happen in the callers of these helpers,
 not in the helpers themselves.</p>
-<p>To fix up a given helper, for example foo(), do the following:
-- switch its allocation call to the _noprof() version, e.g. kmalloc_noprof()</p>
+<p>To fix up a given helper, for example <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">foo()</span></code>, do the following:
+- switch its allocation call to the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_noprof()</span></code> version, e.g. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kmalloc_noprof()</span></code></p>
 <ul>
-<li><p>rename it to foo_noprof()</p></li>
-<li><p>define a macro version of foo() like so:</p>
+<li><p>rename it to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">foo_noprof()</span></code></p></li>
+<li><p>define a macro version of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">foo()</span></code> like so:</p>
 <p>#define foo(...) alloc_hooks(foo_noprof(__VA_ARGS__))</p>
 </li>
 </ul>
@@ -230,7 +230,7 @@ break it out by rhashtable type.</p>
 <p>To do so:
 - Hook your data structure’s init function, like any other allocation function.</p>
 <ul class="simple">
-<li><p>Within your init function, use the convenience macro alloc_tag_record() to
+<li><p>Within your init function, use the convenience macro <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">alloc_tag_record()</span></code> to
 record alloc tag in your data structure.</p></li>
 <li><p>Then, use the following form for your allocations:
 alloc_hooks_tag(ht-&gt;your_saved_tag, kmalloc_noprof(...))</p></li>

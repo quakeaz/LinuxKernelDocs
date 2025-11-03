@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -175,8 +175,8 @@ spec.</p>
 <p>The sas_ha_struct describes the SAS LLDD to the SAS layer.
 Most of it is used by the SAS Layer but a few fields need to
 be initialized by the LLDDs.</p>
-<p>After initializing your hardware, from the probe() function
-you call sas_register_ha(). It will register your LLDD with
+<p>After initializing your hardware, from the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> function
+you call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sas_register_ha()</span></code>. It will register your LLDD with
 the SCSI subsystem, creating a SCSI host and it will
 register your SAS driver with the sysfs SAS tree it creates.
 It will then return.  Then you enable your phys to actually
@@ -247,7 +247,7 @@ process may later change this.</p></li>
 when you get it; you lock, copy, set frame_rcvd_size and
 unlock the lock, and then call the event.  It is a pointer
 since there’s no way to know your hw frame size _exactly_,
-so you define the actual array in your phy struct and let
+so you define the actual array in your phy <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">and</span></code> let
 this pointer point to it.  You copy the frame from your
 DMAable memory to that area holding the lock.</p></li>
 </ul>
@@ -386,7 +386,7 @@ use container_of if you embedded it as shown above.</p></li>
 </dd>
 </dl>
 <p>A sample initialization and registration function
-can look like this (called last thing from probe())
+can look like this (called last thing from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code>)
 <em>but</em> before you enable the phys to do OOB:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>static int register_sas_ha(struct my_sas_ha *my_ha)
 {
@@ -518,7 +518,7 @@ got disconnected. <a class="footnote-reference brackets" href="#id5" id="id4" ro
 <span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
 <span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id2">2</a>,<a role="doc-backlink" href="#id3">3</a>,<a role="doc-backlink" href="#id4">4</a>)</span>
 <p>should set/clear the appropriate fields in the phy,
-or alternatively call the inlined sas_phy_disconnected()
+or alternatively call the inlined <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sas_phy_disconnected()</span></code>
 which is just a helper, from their tasklet.</p>
 </aside>
 </aside>
@@ -529,7 +529,7 @@ which is just a helper, from their tasklet.</p>
 <p>Used to queue a task to the SAS LLDD.  &#64;task is the task to be executed.
 &#64;gfp_mask is the gfp_mask defining the context of the caller.</p>
 <p>This function should implement the Execute Command SCSI RPC,</p>
-<p>That is, when lldd_execute_task() is called, the command
+<p>That is, when <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lldd_execute_task()</span></code> is called, the command
 go out on the transport <em>immediately</em>.  There is <em>no</em>
 queuing of any sort and at any level in a SAS LLDD.</p>
 <p>Returns:</p>
@@ -610,7 +610,7 @@ If you receive different amount of data you expected to receive,
 then there was some kind of error.</p></li>
 </ol>
 <p>close(2)</p>
-<p>All this process is shown in detail in the function do_smp_func()
+<p>All this process is shown in detail in the function <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_smp_func()</span></code>
 and its callers, in the file “expander_conf.c”.</p>
 <p>The kernel functionality is implemented in the file
 “sas_expander.c”.</p>

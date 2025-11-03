@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -117,6 +117,7 @@
 <li class="toctree-l3"><a class="reference internal" href="elf_hwcaps.html">POWERPC ELF HWCAPs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="elfnote.html">ELF Note PowerPC Namespace</a></li>
 <li class="toctree-l3"><a class="reference internal" href="firmware-assisted-dump.html">Firmware-Assisted Dump</a></li>
+<li class="toctree-l3"><a class="reference internal" href="htm.html">HTM (Hardware Trace Macro)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="hvcs.html">HVCS IBM “Hypervisor Virtual Console Server” Installation Guide</a></li>
 <li class="toctree-l3"><a class="reference internal" href="imc.html">IMC (In-Memory Collection Counters)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="isa-versions.html">CPU to ISA Version Mapping</a></li>
@@ -204,16 +205,16 @@ revision        : 2.3 (pvr 004e 1203)
 <p>DAWR has 6 different ways of being set.
 1) ptrace
 2) h_set_mode(DAWR)
-3) h_set_dabr()
-4) kvmppc_set_one_reg()
+3) <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">h_set_dabr()</span></code>
+4) <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kvmppc_set_one_reg()</span></code>
 5) xmon</p>
 <p>For ptrace, we now advertise zero breakpoints on POWER9 via the
 PPC_PTRACE_GETHWDBGINFO call. This results in GDB falling back to
 software emulation of the watchpoint (which is slow).</p>
-<p>h_set_mode(DAWR) and h_set_dabr() will now return an error to the
+<p>h_set_mode(DAWR) and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">h_set_dabr()</span></code> will now return an error to the
 guest on a POWER9 host. Current Linux guests ignore this error, so
 they will silently not get the DAWR.</p>
-<p>kvmppc_set_one_reg() will store the value in the vcpu but won’t
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kvmppc_set_one_reg()</span></code> will store the value in the vcpu but won’t
 actually set it on POWER9 hardware. This is done so we don’t break
 migration from POWER8 to POWER9, at the cost of silently losing the
 DAWR on the migration.</p>

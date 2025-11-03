@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -318,9 +318,9 @@ we can determine the softirq raise to run latency.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">sig</span></code></dt><dd><p>signal number</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kernel_siginfo</span> <span class="pre">*info</span></code></dt><dd><p>pointer to struct siginfo</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kernel_siginfo</span> <span class="pre">*info</span></code></dt><dd><p>pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">siginfo</span></code></p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">task_struct</span> <span class="pre">*task</span></code></dt><dd><p>pointer to struct task_struct</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">task_struct</span> <span class="pre">*task</span></code></dt><dd><p>pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">task_struct</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">group</span></code></dt><dd><p>shared or private</p>
 </dd>
@@ -345,9 +345,9 @@ means that si_code is SI_KERNEL.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">sig</span></code></dt><dd><p>signal number</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kernel_siginfo</span> <span class="pre">*info</span></code></dt><dd><p>pointer to struct siginfo</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kernel_siginfo</span> <span class="pre">*info</span></code></dt><dd><p>pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">siginfo</span></code></p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">k_sigaction</span> <span class="pre">*ka</span></code></dt><dd><p>pointer to struct k_sigaction</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">k_sigaction</span> <span class="pre">*ka</span></code></dt><dd><p>pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">k_sigaction</span></code></p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -375,7 +375,7 @@ matching generated signals and delivered signals may not be correct.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Called from touch_buffer().</p>
+<p>Called from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">touch_buffer()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.trace_block_dirty_buffer">
@@ -466,7 +466,7 @@ of operation request has failed as reported by the device driver.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Called immediately before block operation request <strong>rq</strong> is inserted
-into queue <strong>q</strong>.  The fields in the operation request <strong>rq</strong> struct can
+into queue <strong>q</strong>.  The fields in the operation request <strong>rq</strong> <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">can</span></code>
 be examined to determine which device and sectors the pending
 operation would access.</p>
 </div>
@@ -608,7 +608,22 @@ block IO operation <strong>bio</strong>.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>A request struct has been allocated to handle the block IO operation <strong>bio</strong>.</p>
+<p>A request <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">has</span></code> been allocated to handle the block IO operation <strong>bio</strong>.</p>
+</div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.trace_blk_zone_append_update_request_bio">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">trace_blk_zone_append_update_request_bio</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">request</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">rq</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.trace_blk_zone_append_update_request_bio" title="Link to this definition">¶</a><br /></dt>
+<dd><p>update bio sector after zone append</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">request</span> <span class="pre">*rq</span></code></dt><dd><p>the completed request that sets the bio sector</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>Update the bio’s bi_sector after a zone append command has been completed.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.trace_block_plug">
@@ -640,7 +655,7 @@ the queue to improve throughput performance of the block device.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">depth</span></code></dt><dd><p>number of requests just added to the queue</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">explicit</span></code></dt><dd><p>whether this was an explicit unplug, or one from schedule()</p>
+<dt><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">explicit</span></code></dt><dd><p>whether this was an explicit unplug, or one from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">schedule()</span></code></p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -650,7 +665,7 @@ on elements in the request queue.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.trace_block_split">
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">trace_block_split</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.trace_block_split" title="bio"><span class="n"><span class="pre">bio</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bio</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">new_sector</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.trace_block_split" title="Link to this definition">¶</a><br /></dt>
-<dd><p>split a single bio struct into two bio structs</p>
+<dd><p>split a single bio <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">into</span></code> two bio structs</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -708,6 +723,25 @@ raw block device.</p>
 operation request <strong>rq</strong> holds the current information and <strong>from</strong> hold
 the original sector.</p>
 </div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.trace_blkdev_zone_mgmt">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">trace_blkdev_zone_mgmt</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.trace_blkdev_zone_mgmt" title="bio"><span class="n"><span class="pre">bio</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bio</span></span>, <span class="n"><span class="pre">sector_t</span></span><span class="w"> </span><span class="n"><span class="pre">nr_sectors</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.trace_blkdev_zone_mgmt" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Execute a zone management operation on a range of zones</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">bio</span> <span class="pre">*bio</span></code></dt><dd><p>The block IO operation sent down to the device</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">sector_t</span> <span class="pre">nr_sectors</span></code></dt><dd><p>The number of sectors affected by this operation</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>Execute a zone management operation on a specified range of zones. This
+range is encoded in <code class="docutils literal notranslate"><span class="pre">nr_sectors</span></code>, which has to be a multiple of the zone
+size.</p>
+</div>
 </section>
 <section id="workqueue">
 <h2>Workqueue<a class="headerlink" href="#workqueue" title="Link to this heading">¶</a></h2>
@@ -722,9 +756,9 @@ the original sector.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">req_cpu</span></code></dt><dd><p>the requested cpu</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pool_workqueue</span> <span class="pre">*pwq</span></code></dt><dd><p>pointer to struct pool_workqueue</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pool_workqueue</span> <span class="pre">*pwq</span></code></dt><dd><p>pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pool_workqueue</span></code></p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">work_struct</span> <span class="pre">*work</span></code></dt><dd><p>pointer to struct work_struct</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">work_struct</span> <span class="pre">*work</span></code></dt><dd><p>pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">work_struct</span></code></p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -741,7 +775,7 @@ has been reached).</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">work_struct</span> <span class="pre">*work</span></code></dt><dd><p>pointer to struct work_struct</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">work_struct</span> <span class="pre">*work</span></code></dt><dd><p>pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">work_struct</span></code></p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -758,7 +792,7 @@ is reached.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">work_struct</span> <span class="pre">*work</span></code></dt><dd><p>pointer to struct work_struct</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">work_struct</span> <span class="pre">*work</span></code></dt><dd><p>pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">work_struct</span></code></p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -773,7 +807,7 @@ is reached.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">work_struct</span> <span class="pre">*work</span></code></dt><dd><p>pointer to struct work_struct</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">work_struct</span> <span class="pre">*work</span></code></dt><dd><p>pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">work_struct</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">work_func_t</span> <span class="pre">function</span></code></dt><dd><p>pointer to worker function</p>
 </dd>

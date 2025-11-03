@@ -31,7 +31,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -180,19 +180,19 @@ l’uso.</p>
 </section>
 <section id="bug-e-bug-on">
 <h2>BUG() e BUG_ON()<a class="headerlink" href="#bug-e-bug-on" title="Link to this heading">¶</a></h2>
-<p>Al loro posto usate WARN() e WARN_ON() per gestire le
+<p>Al loro posto usate <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">WARN()</span></code> e <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">WARN_ON()</span></code> per gestire le
 condizioni “impossibili” e gestitele come se fosse possibile farlo.
-Nonostante le funzioni della famiglia BUG() siano state progettate
+Nonostante le funzioni della famiglia <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">BUG()</span></code> siano state progettate
 per asserire “situazioni impossibili” e interrompere in sicurezza un
 thread del kernel, queste si sono rivelate essere troppo rischiose
 (per esempio, in quale ordine rilasciare i <em>lock</em>? Ci sono stati che
-sono stati ripristinati?). Molto spesso l’uso di BUG()
+sono stati ripristinati?). Molto spesso l’uso di <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">BUG()</span></code>
 destabilizza il sistema o lo corrompe del tutto, il che rende
 impossibile un’attività di debug o anche solo leggere un rapporto
 circa l’errore.  Linus ha un’opinione molto critica al riguardo:
 <a class="reference external" href="https://lore.kernel.org/lkml/CA+55aFy6jNLsywVYdGp83AMrXBo_P-pkjkphPGrO=82SPKCpLQ&#64;mail.gmail.com/">email 1</a>,
 <a class="reference external" href="https://lore.kernel.org/lkml/CAHk-=whDHsbK3HTOpTF=ue_o04onRwTEaK_ZoJp_fjbqq4+=Jw&#64;mail.gmail.com/">email 2</a></p>
-<p>Tenete presente che la famiglia di funzioni WARN() dovrebbe essere
+<p>Tenete presente che la famiglia di funzioni <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">WARN()</span></code> dovrebbe essere
 usato solo per situazioni che si suppone siano “impossibili”.  Se
 volete avvisare gli utenti riguardo a qualcosa di possibile anche se
 indesiderato, usare le funzioni della famiglia <a class="reference internal" href="../../../core-api/printk-basics.html#c.pr_warn" title="pr_warn"><code class="xref c c-func docutils literal notranslate"><span class="pre">pr_warn()</span></code></a>.  Chi
@@ -307,12 +307,12 @@ per evitare avvisi durante la compilazione.</p>
 </section>
 <section id="strlcpy">
 <h2>strlcpy()<a class="headerlink" href="#strlcpy" title="Link to this heading">¶</a></h2>
-<p>La funzione strlcpy(), per prima cosa, legge interamente il buffer di
+<p>La funzione <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">strlcpy()</span></code>, per prima cosa, legge interamente il buffer di
 origine, magari leggendo più di quanto verrà effettivamente copiato. Questo
 è inefficiente e può portare a overflow di lettura quando la stringa non è
 terminata con NUL. La versione sicura da usare è <a class="reference internal" href="../../../core-api/kernel-api.html#c.strscpy" title="strscpy"><code class="xref c c-func docutils literal notranslate"><span class="pre">strscpy()</span></code></a>, tuttavia
 va prestata attenzione a tutti quei casi dove viene usato il valore di
-ritorno di strlcpy(), dato che <a class="reference internal" href="../../../core-api/kernel-api.html#c.strscpy" title="strscpy"><code class="xref c c-func docutils literal notranslate"><span class="pre">strscpy()</span></code></a> ritorna un valore di errno
+ritorno di <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">strlcpy()</span></code>, dato che <a class="reference internal" href="../../../core-api/kernel-api.html#c.strscpy" title="strscpy"><code class="xref c c-func docutils literal notranslate"><span class="pre">strscpy()</span></code></a> ritorna un valore di errno
 negativo quanto la stringa viene troncata.</p>
 </section>
 <section id="segnaposto-p-nella-stringa-di-formato">
@@ -509,8 +509,8 @@ instance-&gt;count = count;
 memcpy(instance-&gt;items, source, flex_array_size(instance, items, instance-&gt;count));
 </pre></div>
 </div>
-<p>Ci sono due casi speciali dove è necessario usare la macro DECLARE_FLEX_ARRAY()
-(da notare che la stessa macro è chiamata __DECLARE_FLEX_ARRAY() nei file di
+<p>Ci sono due casi speciali dove è necessario usare la macro <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">DECLARE_FLEX_ARRAY()</span></code>
+(da notare che la stessa macro è chiamata <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__DECLARE_FLEX_ARRAY()</span></code> nei file di
 intestazione UAPI). Uno è quando l’array flessibile è l’unico elemento di una
 struttura, e l’altro quando è parte di un unione. Per motivi non tecnici, entrambi
 i casi d’uso non sono permessi dalla specifica C99. Per esempio, per

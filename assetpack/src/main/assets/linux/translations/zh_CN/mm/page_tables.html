@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -256,9 +256,9 @@ Chinese (Simplified)
 <li><p><strong>pgd</strong>, <cite>pgd_t</cite>, <cite>pgdval_t</cite> = <strong>页全局目录(Page Global Directory)</strong> -
 Linux 内核用于处理内核内存的 <em>PGD</em> 主页表仍然位于 <cite>swapper_pg_dir</cite>。
 但系统中的每个用户空间进程也有自己的内存上下文，因此也有自己的 <em>pgd</em>，
-它位于 <cite>struct mm_struct</cite> 中，而 <cite>struct mm_struct</cite> 又在每个 <cite>struct task_struct</cite>
-中有引用。所以，任务（进程）存在一个形式为 <cite>struct mm_struct</cite> 的内存上下文，
-而这个结构体中有一个指向指向相应的页全局目录 <cite>struct pgt_t *pgd</cite> 指针。</p></li>
+它位于 <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">mm_struct</span></code></cite> 中，而 <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">mm_struct</span></code></cite> 又在每个 <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">task_struct</span></code></cite>
+中有引用。所以，任务（进程）存在一个形式为 <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">mm_struct</span></code></cite> 的内存上下文，
+而这个结构体中有一个指向指向相应的页全局目录 <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pgt_t</span></code> *pgd</cite> 指针。</p></li>
 </ul>
 <p>重申一下：页表层级结构中的每一层都是一个 <em>指针数组</em>，所以 <em>pgd</em> 包含 <cite>PTRS_PER_PGD</cite>
 个指向下一层的指针，<em>p4d</em> 包含 <cite>PTRS_PER_P4D</cite> 个指向 <em>pud</em> 项的指针，依此类推。
@@ -318,14 +318,14 @@ OOM)杀手，通过杀掉低优先级的进程来腾出空间，直到内存压�
 通常导致线程及其所属的进程终止。</p>
 <p>本文将简化并概述 Linux 内核如何处理这些缺页中断、创建表和表项、检查内存是否存在，
 以及当内存不存在时，如何请求从持久存储或其他设备加载数据，并更新 MMU 及其缓存。</p>
-<p>最初的步骤依赖于架构。大多是架构跳转到 <cite>do_page_fault()</cite>，而 x86 中断处理程序是由
-<cite>DEFINE_IDTENTRY_RAW_ERRORCODE()</cite> 宏定义的，该宏调用 <cite>handle_page_fault()</cite>。</p>
-<p>无论调用路径如何，所有架构最终都会调用 <cite>handle_mm_fault()</cite>，该函数通常会调用
-<cite>__handle_mm_fault()</cite> 来执行实际分配页表的任务。</p>
-<p>如果不幸无法调用 <cite>__handle_mm_fault()</cite> 则意味着虚拟地址指向了无权访问的物理
+<p>最初的步骤依赖于架构。大多是架构跳转到 <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_page_fault()</span></code></cite>，而 x86 中断处理程序是由
+<cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">DEFINE_IDTENTRY_RAW_ERRORCODE()</span></code></cite> 宏定义的，该宏调用 <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">handle_page_fault()</span></code></cite>。</p>
+<p>无论调用路径如何，所有架构最终都会调用 <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">handle_mm_fault()</span></code></cite>，该函数通常会调用
+<cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__handle_mm_fault()</span></code></cite> 来执行实际分配页表的任务。</p>
+<p>如果不幸无法调用 <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__handle_mm_fault()</span></code></cite> 则意味着虚拟地址指向了无权访问的物理
 内存区域（至少对于当前上下文如此）。这种情况会导致内核向该进程发送上述的 SIGSEGV
 信号，并引发前面提到的后果。</p>
-<p>这些用于查找偏移量的函数名称通常以 <cite>*_offset()</cite> 结尾，其中“*”可以是 pgd，p4d，
+<p>这些用于查找偏移量的函数名称通常以 <cite>*<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_offset()</span></code></cite> 结尾，其中“*”可以是 pgd，p4d，
 pud，pmd 或者 pte；而分配相应层级页表的函数名称是 <cite>*_alloc</cite>，它们按照上述命名
 约定以对应页表层级的类型命名。</p>
 <p>页表遍历可能在中间或者上层结束(PMD，PUD)。</p>
@@ -334,13 +334,13 @@ pud，pmd 或者 pte；而分配相应层级页表的函数名称是 <cite>*_all
 PMD 和 PUD 页表项映射。</p>
 <p>巨页带来许多好处，如减少 TLB 压力，减少页表开销，提高内存分配效率，以及改善
 特定工作负载的性能。然而，这些好处也伴随着权衡，如内存浪费和分配难度增加。</p>
-<p>在遍历和分配的最后，如果没有返回错误，<cite>__handle_mm_fault()</cite> 最终调用 <cite>handle_pte_fault()</cite>
-通过 <cite>do_fault()</cite> 执行 <cite>do_read_fault()</cite>、 <cite>do_cow_fault()</cite> 和 <cite>do_shared_fault()</cite>。
+<p>在遍历和分配的最后，如果没有返回错误，<cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__handle_mm_fault()</span></code></cite> 最终调用 <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">handle_pte_fault()</span></code></cite>
+通过 <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_fault()</span></code></cite> 执行 <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_read_fault()</span></code></cite>、 <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_cow_fault()</span></code></cite> 和 <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_shared_fault()</span></code></cite>。
 “read”，“cow”和“shared”分别暗示了它处理错误的类型和原因。</p>
 <p>实际的工作流程实现是非常复杂的。其设计允许 Linux 根据每种架构的特定特性处理缺页
 异常，同时仍然共享一个通用的整体结构。</p>
 <p>为了总结 Linux 如何处理缺页中断的概述，需要补充的是，缺页异常处理程序可以通过
-<cite>pagefault_disable()</cite> 和 <cite>pagefault_enable()</cite> 分别禁用和启用。</p>
+<cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pagefault_disable()</span></code></cite> 和 <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pagefault_enable()</span></code></cite> 分别禁用和启用。</p>
 <p>许多代码路径使用了这两个函数，因为它们需要禁止陷入缺页异常处理程序，主要是为了
 防止死锁。</p>
 </section>

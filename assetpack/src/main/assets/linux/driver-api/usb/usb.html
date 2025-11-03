@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -263,7 +263,7 @@ are in <code class="docutils literal notranslate"><span class="pre">drivers/usb/
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">ep_type</span></code></dt><dd><p>The endpoint type to return human-readable name for.  If it’s not
 any of the types: USB_ENDPOINT_XFER_{CONTROL, ISOC, BULK, INT},
-usually got by usb_endpoint_type(), the string ‘unknown’ will be returned.</p>
+usually got by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_endpoint_type()</span></code>, the string ‘unknown’ will be returned.</p>
 </dd>
 </dl>
 </div>
@@ -311,7 +311,7 @@ USB_SPEED_UNKNOWN will be returned.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>The function gets the maximum speed string from property “maximum-speed”,
-and returns the corresponding enum usb_device_speed.</p>
+and returns the corresponding <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">usb_device_speed</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.usb_get_maximum_ssp_rate">
@@ -328,7 +328,7 @@ and returns the corresponding enum usb_device_speed.</p>
 <p><strong>Description</strong></p>
 <p>If the string from “maximum-speed” property is super-speed-plus-genXxY where
 ‘X’ is the generation number and ‘Y’ is the number of lanes, then this
-function returns the corresponding enum usb_ssp_rate.</p>
+function returns the corresponding <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">usb_ssp_rate</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.usb_state_string">
@@ -359,7 +359,7 @@ the string UNKNOWN will be returned.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>The function gets string from property ‘role-switch-default-mode’,
-and returns the corresponding enum usb_dr_mode.</p>
+and returns the corresponding <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">usb_dr_mode</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.usb_decode_interval">
@@ -397,7 +397,7 @@ phys which do not have phy-cells</p>
 <p><strong>Description</strong></p>
 <p>In dts a usb controller associates with phy devices.  The function gets
 the string from property ‘dr_mode’ of the controller associated with the
-given phy device node, and returns the correspondig enum usb_dr_mode.</p>
+given phy device node, and returns the correspondig <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">usb_dr_mode</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.of_usb_host_tpl_support">
@@ -445,7 +445,7 @@ given phy device node, and returns the correspondig enum usb_dr_mode.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Find the companion device from platform bus.</p>
-<p>Takes a reference to the returned <a class="reference internal" href="../infrastructure.html#c.device" title="device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span></code></a> which needs to be dropped
+<p>Takes a reference to the returned <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span></code> which needs to be dropped
 after use.</p>
 <p><strong>Return</strong></p>
 <p>On success, a pointer to the companion device, <code class="docutils literal notranslate"><span class="pre">NULL</span></code> on failure.</p>
@@ -558,12 +558,12 @@ endpoint configurations.  They will be in no particular order.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">minor</span></code></dt><dd><p>the minor number assigned to this interface, if this
 interface is bound to a driver that uses the USB major number.
 If this interface does not use the USB major, this field should
-be unused.  The driver should set this value in the probe()
+be unused.  The driver should set this value in the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code>
 function of the driver, after it has been assigned a minor
 number from the USB core by calling <a class="reference internal" href="#c.usb_core.usb_register_dev" title="usb_core.usb_register_dev"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_register_dev()</span></code></a>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">condition</span></code></dt><dd><p>binding state of the interface: not bound, binding
-(in probe()), bound to a driver, or unbinding (in disconnect())</p>
+(in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code>), bound to a driver, or unbinding (in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">disconnect()</span></code>)</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">sysfs_files_created</span></code></dt><dd><p>sysfs attributes exist</p>
 </dd>
@@ -610,7 +610,7 @@ an interface’s endpoints can be defined in a usb “class” specification,
 or by a product’s vendor.  The (default) control endpoint is part of
 every interface, but is never listed among the interface’s descriptors.</p>
 <p>The driver that is bound to the interface can use standard driver model
-calls such as dev_get_drvdata() on the dev member of this structure.</p>
+calls such as <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_get_drvdata()</span></code> on the dev member of this structure.</p>
 <p>Each interface may have alternate settings.  The initial configuration
 of a device sets altsetting 0, but the device driver can change
 that setting using <a class="reference internal" href="#c.usb_core.usb_set_interface" title="usb_core.usb_set_interface"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_set_interface()</span></code></a>.  Alternate settings are often
@@ -638,7 +638,7 @@ look up an alternate setting in the altsetting array based on its number.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Drivers can use this function in their probe() callbacks to associate
+<p>Drivers can use this function in their <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> callbacks to associate
 driver-specific data with an interface.</p>
 <p>Note that there is generally no need to clear the driver-data pointer even
 if some drivers do so for historical or implementation-specific reasons.</p>
@@ -672,7 +672,7 @@ set of endpoint configurations.  They will be in no particular order.</p>
 </div>
 <p><strong>Description</strong></p>
 <p>These structures persist for the lifetime of a usb_device, unlike
-<a class="reference internal" href="#c.usb_interface" title="usb_interface"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_interface</span></code></a> (which persists only as long as its configuration
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_interface</span></code> (which persists only as long as its configuration
 is installed).  The altsetting arrays can be accessed through these
 structures at any time, permitting comparison of configurations and
 providing support for the /sys/kernel/debug/usb/devices pseudo-file.</p>
@@ -938,7 +938,7 @@ FIXME -- complete doc</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">u2_params</span></code></dt><dd><p>exit latencies for USB3 U2 LPM state, and hub-initiated timeout.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">lpm_disable_count</span></code></dt><dd><p>Ref count used by usb_disable_lpm() and usb_enable_lpm()
+<dt><code class="docutils literal notranslate"><span class="pre">lpm_disable_count</span></code></dt><dd><p>Ref count used by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_disable_lpm()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_enable_lpm()</span></code>
 to keep track of the number of functions that require USB 3.0 Link Power
 Management to be disabled for this usb_device.  This count should only
 be manipulated by those functions, with the bandwidth_mutex is held.</p>
@@ -991,7 +991,7 @@ Will be used as wValue for SetIsochDelay requests.</p>
 (zero).</p>
 <p><strong>Note</strong></p>
 <p>Callers must own the driver model’s usb bus readlock.  So driver
-probe() entries don’t need extra locking, but other call contexts
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> entries don’t need extra locking, but other call contexts
 may need to explicitly claim that lock.</p>
 </div>
 <dl class="c function">
@@ -1021,7 +1021,6 @@ controllers.  Adding and removing devices, including virtual root hubs
 in host controller driver modules, does not change these path identifiers;
 neither does rebooting or re-enumerating.  These are more useful identifiers
 than changeable (“unstable”) ones like bus numbers or device addresses.</p>
-<p><strong>Description</strong></p>
 <p>With a partial exception for devices connected to USB 2.0 root hubs, these
 identifiers are also predictable.  So long as the device tree isn’t changed,
 plugging any USB device into a given hub port always gives it the same path.
@@ -1047,7 +1046,7 @@ high speed, and a different one if they are full or low speed.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This macro is used to create a <a class="reference internal" href="../basics.html#c.usb_device_id" title="usb_device_id"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device_id</span></code></a> that matches a
+<p>This macro is used to create a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device_id</span></code> that matches a
 specific device.</p>
 </div>
 <dl class="c macro">
@@ -1072,7 +1071,7 @@ specific device.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This macro is used to create a <a class="reference internal" href="../basics.html#c.usb_device_id" title="usb_device_id"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device_id</span></code></a> that matches a
+<p>This macro is used to create a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device_id</span></code> that matches a
 specific device, with a version range.</p>
 </div>
 <dl class="c macro">
@@ -1095,7 +1094,7 @@ specific device, with a version range.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This macro is used to create a <a class="reference internal" href="../basics.html#c.usb_device_id" title="usb_device_id"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device_id</span></code></a> that matches a
+<p>This macro is used to create a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device_id</span></code> that matches a
 specific interface class of devices.</p>
 </div>
 <dl class="c macro">
@@ -1118,7 +1117,7 @@ specific interface class of devices.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This macro is used to create a <a class="reference internal" href="../basics.html#c.usb_device_id" title="usb_device_id"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device_id</span></code></a> that matches a
+<p>This macro is used to create a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device_id</span></code> that matches a
 specific interface protocol of devices.</p>
 </div>
 <dl class="c macro">
@@ -1141,7 +1140,7 @@ specific interface protocol of devices.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This macro is used to create a <a class="reference internal" href="../basics.html#c.usb_device_id" title="usb_device_id"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device_id</span></code></a> that matches a
+<p>This macro is used to create a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device_id</span></code> that matches a
 specific interface number of devices.</p>
 </div>
 <dl class="c macro">
@@ -1164,7 +1163,7 @@ specific interface number of devices.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This macro is used to create a <a class="reference internal" href="../basics.html#c.usb_device_id" title="usb_device_id"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device_id</span></code></a> that matches a
+<p>This macro is used to create a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device_id</span></code> that matches a
 specific class of devices.</p>
 </div>
 <dl class="c macro">
@@ -1187,7 +1186,7 @@ specific class of devices.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This macro is used to create a <a class="reference internal" href="../basics.html#c.usb_device_id" title="usb_device_id"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device_id</span></code></a> that matches a
+<p>This macro is used to create a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device_id</span></code> that matches a
 specific class of interfaces.</p>
 </div>
 <dl class="c macro">
@@ -1214,7 +1213,7 @@ specific class of interfaces.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This macro is used to create a <a class="reference internal" href="../basics.html#c.usb_device_id" title="usb_device_id"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device_id</span></code></a> that matches a
+<p>This macro is used to create a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device_id</span></code> that matches a
 specific device with a specific class of interfaces.</p>
 <p>This is especially useful when explicitly matching devices that have
 vendor specific bDeviceClass values, but standards-compliant interfaces.</p>
@@ -1241,7 +1240,7 @@ vendor specific bDeviceClass values, but standards-compliant interfaces.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This macro is used to create a <a class="reference internal" href="../basics.html#c.usb_device_id" title="usb_device_id"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device_id</span></code></a> that matches a
+<p>This macro is used to create a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device_id</span></code> that matches a
 specific vendor with a specific class of interfaces.</p>
 <p>This is especially useful when explicitly matching devices that have
 vendor specific bDeviceClass values, but standards-compliant interfaces.</p>
@@ -1283,7 +1282,7 @@ and should normally be the same as the module name.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">probe</span></code></dt><dd><p>Called to see if the driver is willing to manage a particular
 interface on a device.  If it is, probe returns zero and uses
-<a class="reference internal" href="#c.usb_set_intfdata" title="usb_set_intfdata"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_set_intfdata()</span></code></a> to associate driver-specific data with the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_set_intfdata()</span></code> to associate driver-specific data with the
 interface.  It may also use <a class="reference internal" href="#c.usb_core.usb_set_interface" title="usb_core.usb_set_interface"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_set_interface()</span></code></a> to specify the
 appropriate altsetting.  If unwilling to manage the interface,
 return -ENODEV, if genuine IO errors occurred, an appropriate
@@ -1348,16 +1347,16 @@ endpoints before calling the driver’s disconnect method.</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>USB interface drivers must provide a name, probe() and disconnect()
+<p>USB interface drivers must provide a name, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">disconnect()</span></code>
 methods, and an id_table.  Other driver fields are optional.</p>
 <p>The id_table is used in hotplugging.  It holds a set of descriptors,
 and specialized data may be associated with each entry.  That table
 is used by both user and kernel mode hotplugging support.</p>
-<p>The probe() and disconnect() methods are called in a context where
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">disconnect()</span></code> methods are called in a context where
 they can sleep, but they should avoid abusing the privilege.  Most
 work to connect to a device should be done when the device is opened,
 and undone at the last close.  The disconnect code needs to address
-concurrency issues with respect to open() and close() methods, as
+concurrency issues with respect to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">open()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">close()</span></code> methods, as
 well as forcing all pending I/O requests to complete (by unlinking
 them as necessary, and blocking until the unlinks complete).</p>
 <dl class="c struct">
@@ -1392,7 +1391,7 @@ and should normally be the same as the module name.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">match</span></code></dt><dd><p>If set, used for better device/driver matching.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">probe</span></code></dt><dd><p>Called to see if the driver is willing to manage a particular
-device.  If it is, probe returns zero and uses dev_set_drvdata()
+device.  If it is, probe returns zero and uses <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_set_drvdata()</span></code>
 to associate driver-specific data with the device.  If unwilling
 to manage the device, return a negative errno value.</p>
 </dd>
@@ -1405,16 +1404,16 @@ module is being unloaded.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">resume</span></code></dt><dd><p>Called when the device is being resumed by the system.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">choose_configuration</span></code></dt><dd><p>If non-NULL, called instead of the default
-usb_choose_configuration(). If this returns an error then we’ll go
-on to call the normal usb_choose_configuration().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_choose_configuration()</span></code>. If this returns an error then we’ll go
+on to call the normal <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_choose_configuration()</span></code>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">dev_groups</span></code></dt><dd><p>Attributes attached to the device that will be created once it
 is bound to the driver.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">driver</span></code></dt><dd><p>The driver-model core driver structure.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">id_table</span></code></dt><dd><p>used with <strong>match()</strong> to select better matching driver at
-probe() time.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">id_table</span></code></dt><dd><p>used with <strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">match()</span></code></strong> to select better matching driver at
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> time.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">supports_autosuspend</span></code></dt><dd><p>if set to 0, the USB core will not allow autosuspend
 for devices bound to this driver.</p>
@@ -1451,7 +1450,7 @@ match, and id_table.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">devnode</span></code></dt><dd><p>Callback to provide a naming hint for a possible
 device node to create.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">fops</span></code></dt><dd><p>pointer to the struct file_operations of this driver.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">fops</span></code></dt><dd><p>pointer to the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file_operations</span></code> of this driver.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">minor_base</span></code></dt><dd><p>the start of the minor range for this driver.</p>
 </dd>
@@ -1479,7 +1478,7 @@ parameters used for them.</p>
 <p><strong>Description</strong></p>
 <p>Helper macro for USB drivers which do not do anything special in module
 init/exit. This eliminates a lot of boilerplate. Each module may only
-use this macro once, and calling it replaces <a class="reference internal" href="../basics.html#c.module_init" title="module_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">module_init()</span></code></a> and <a class="reference internal" href="../basics.html#c.module_exit" title="module_exit"><code class="xref c c-func docutils literal notranslate"><span class="pre">module_exit()</span></code></a></p>
+use this macro once, and calling it replaces <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">module_init()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">module_exit()</span></code></p>
 </div>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.urb">
@@ -1502,6 +1501,7 @@ use this macro once, and calling it replaces <a class="reference internal" href=
     void *transfer_buffer;
     dma_addr_t transfer_dma;
     struct scatterlist *sg;
+    struct sg_table *sgt;
     int num_mapped_sgs;
     int num_sgs;
     u32 transfer_buffer_length;
@@ -1535,7 +1535,7 @@ replace <strong>pipe</strong>.</p>
 Create these values with the eight macros available;
 usb_{snd,rcv}TYPEpipe(dev,endpoint), where the TYPE is “ctrl”
 (control), “bulk”, “int” (interrupt), or “iso” (isochronous).
-For example usb_sndbulkpipe() or usb_rcvintpipe().  Endpoint
+For example <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_sndbulkpipe()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_rcvintpipe()</span></code>.  Endpoint
 numbers range from zero to fifteen.  Note that “in” endpoint two
 is a different endpoint (and pipe) from “out” endpoint two.
 The current configuration controls the existence, type, and
@@ -1556,7 +1556,7 @@ kinds of URB can use different flags.</p>
 request will be performed unless URB_NO_TRANSFER_DMA_MAP is set
 (however, do not leave garbage in transfer_buffer even then).
 This buffer must be suitable for DMA; allocate it with
-<a class="reference internal" href="../../core-api/mm-api.html#c.kmalloc" title="kmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmalloc()</span></code></a> or equivalent.  For transfers to “in” endpoints, contents
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kmalloc()</span></code> or equivalent.  For transfers to “in” endpoints, contents
 of this buffer will be modified.  This buffer is used for the data
 stage of control transfers.</p>
 </dd>
@@ -1567,7 +1567,12 @@ transfer_buffer.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">sg</span></code></dt><dd><p>scatter gather buffer list, the buffer size of each element in
 the list (except the last) must be divisible by the endpoint’s
-max packet size if no_sg_constraint isn’t set in ‘struct usb_bus’</p>
+max packet size if no_sg_constraint isn’t set in ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_bus</span></code>’</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">sgt</span></code></dt><dd><p>used to hold a scatter gather table returned by <a class="reference internal" href="#c.usb_core.usb_alloc_noncoherent" title="usb_core.usb_alloc_noncoherent"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_alloc_noncoherent()</span></code></a>,
+which describes the allocated non-coherent and possibly non-contiguous
+memory and is guaranteed to have 1 single DMA mapped segment. The
+allocated memory needs to be freed by <a class="reference internal" href="#c.usb_core.usb_free_noncoherent" title="usb_core.usb_free_noncoherent"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_free_noncoherent()</span></code></a>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">num_mapped_sgs</span></code></dt><dd><p>(internal) number of mapped sg entries</p>
 </dd>
@@ -1618,12 +1623,12 @@ collect the transfer status for each buffer.</p>
 </div>
 <p><strong>Description</strong></p>
 <p>This structure identifies USB transfer requests.  URBs must be allocated by
-calling <a class="reference internal" href="#c.usb_alloc_urb" title="usb_alloc_urb"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_alloc_urb()</span></code></a> and freed with a call to <a class="reference internal" href="#c.usb_free_urb" title="usb_free_urb"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_free_urb()</span></code></a>.
-Initialization may be done using various usb_fill_*_urb() functions.  URBs
-are submitted using <a class="reference internal" href="#c.usb_submit_urb" title="usb_submit_urb"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_submit_urb()</span></code></a>, and pending requests may be canceled
-using <a class="reference internal" href="#c.usb_unlink_urb" title="usb_unlink_urb"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_unlink_urb()</span></code></a> or <a class="reference internal" href="#c.usb_kill_urb" title="usb_kill_urb"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_kill_urb()</span></code></a>.</p>
+calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_alloc_urb()</span></code> and freed with a call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_free_urb()</span></code>.
+Initialization may be done using various usb_fill_*<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_urb()</span></code> functions.  URBs
+are submitted using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_submit_urb()</span></code>, and pending requests may be canceled
+using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_unlink_urb()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_kill_urb()</span></code>.</p>
 <p>Data Transfer Buffers:</p>
-<p>Normally drivers provide I/O buffers allocated with <a class="reference internal" href="../../core-api/mm-api.html#c.kmalloc" title="kmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmalloc()</span></code></a> or otherwise
+<p>Normally drivers provide I/O buffers allocated with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kmalloc()</span></code> or otherwise
 taken from the general page pool.  That is provided by transfer_buffer
 (control requests also use setup_packet), and host controller drivers
 perform a dma mapping (and unmapping) for each buffer transferred.  Those
@@ -1634,12 +1639,12 @@ although they’re cheap on commodity x86 and ppc hardware.</p>
 which tells the host controller driver that no such mapping is needed for
 the transfer_buffer since
 the device driver is DMA-aware.  For example, a device driver might
-allocate a DMA buffer with <a class="reference internal" href="#c.usb_core.usb_alloc_coherent" title="usb_core.usb_alloc_coherent"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_alloc_coherent()</span></code></a> or call usb_buffer_map().
+allocate a DMA buffer with <a class="reference internal" href="#c.usb_core.usb_alloc_coherent" title="usb_core.usb_alloc_coherent"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_alloc_coherent()</span></code></a> or call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_buffer_map()</span></code>.
 When this transfer flag is provided, host controller drivers will
 attempt to use the dma address found in the transfer_dma
 field rather than determining a dma address themselves.</p>
 <p>Note that transfer_buffer must still be set if the controller
-does not support DMA (as indicated by hcd_uses_dma()) and when talking
+does not support DMA (as indicated by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hcd_uses_dma()</span></code>) and when talking
 to root hub. If you have to transfer between highmem zone and the device
 on such controller, create a bounce buffer or bail out with an error.
 If transfer_buffer cannot be set (is in highmem) and the controller is DMA
@@ -1693,7 +1698,7 @@ in completion handlers, so
 that data (such as audio or video) streams at as constant a rate as the
 host controller scheduler can support.</p>
 <p>Completion Callbacks:</p>
-<p>The completion callback is made in_interrupt(), and one of the first
+<p>The completion callback is made <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">in_interrupt()</span></code>, and one of the first
 things that a completion handler should do is check the status field.
 The status field is provided for all URBs.  It is used to report
 unlinked URBs, and status for all non-ISO transfers.  It should not
@@ -1709,7 +1714,7 @@ error_count.  Completion callbacks for ISO transfers will normally
 (re)submit URBs to ensure a constant transfer rate.</p>
 <p>Note that even fields marked “public” should not be touched by the driver
 when the urb is owned by the hcd, that is, since the call to
-<a class="reference internal" href="#c.usb_submit_urb" title="usb_submit_urb"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_submit_urb()</span></code></a> till the entry into the completion routine.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_submit_urb()</span></code> till the entry into the completion routine.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.usb_fill_control_urb">
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_fill_control_urb</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.usb_fill_control_urb" title="urb"><span class="n"><span class="pre">urb</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">urb</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.usb_device" title="usb_device"><span class="n"><span class="pre">usb_device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">pipe</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">setup_packet</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">transfer_buffer</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">buffer_length</span></span>, <span class="n"><span class="pre">usb_complete_t</span></span><span class="w"> </span><span class="n"><span class="pre">complete_fn</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">context</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.usb_fill_control_urb" title="Link to this definition">¶</a><br /></dt>
@@ -1721,7 +1726,7 @@ when the urb is owned by the hcd, that is, since the call to
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">urb</span> <span class="pre">*urb</span></code></dt><dd><p>pointer to the urb to initialize.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device</span> <span class="pre">*dev</span></code></dt><dd><p>pointer to the <a class="reference internal" href="#c.usb_device" title="usb_device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device</span></code></a> for this urb.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device</span> <span class="pre">*dev</span></code></dt><dd><p>pointer to the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device</span></code> for this urb.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">pipe</span></code></dt><dd><p>the endpoint pipe</p>
 </dd>
@@ -1743,7 +1748,7 @@ suitable for DMA.</p>
 it to a device.</p>
 <p>The transfer buffer and the setup_packet buffer will most likely be filled
 or read via DMA. The simplest way to get a buffer that can be DMAed to is
-allocating it via <a class="reference internal" href="../../core-api/mm-api.html#c.kmalloc" title="kmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmalloc()</span></code></a> or equivalent, even for very small buffers.
+allocating it via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kmalloc()</span></code> or equivalent, even for very small buffers.
 If the buffers are embedded in a bigger structure, there is a risk that
 the buffer itself, the previous fields and/or the next fields are corrupted
 due to cache incoherencies; or slowed down if they are evicted from the
@@ -1760,7 +1765,7 @@ cache. For more information, check <a class="reference internal" href="#c.urb" t
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">urb</span> <span class="pre">*urb</span></code></dt><dd><p>pointer to the urb to initialize.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device</span> <span class="pre">*dev</span></code></dt><dd><p>pointer to the <a class="reference internal" href="#c.usb_device" title="usb_device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device</span></code></a> for this urb.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device</span> <span class="pre">*dev</span></code></dt><dd><p>pointer to the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device</span></code> for this urb.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">pipe</span></code></dt><dd><p>the endpoint pipe</p>
 </dd>
@@ -1777,7 +1782,7 @@ suitable for DMA.</p>
 <p><strong>Description</strong></p>
 <p>Initializes a bulk urb with the proper information needed to submit it
 to a device.</p>
-<p>Refer to <a class="reference internal" href="#c.usb_fill_control_urb" title="usb_fill_control_urb"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_fill_control_urb()</span></code></a> for a description of the requirements for
+<p>Refer to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_fill_control_urb()</span></code> for a description of the requirements for
 transfer_buffer.</p>
 </div>
 <dl class="c function">
@@ -1791,7 +1796,7 @@ transfer_buffer.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">urb</span> <span class="pre">*urb</span></code></dt><dd><p>pointer to the urb to initialize.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device</span> <span class="pre">*dev</span></code></dt><dd><p>pointer to the <a class="reference internal" href="#c.usb_device" title="usb_device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device</span></code></a> for this urb.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device</span> <span class="pre">*dev</span></code></dt><dd><p>pointer to the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device</span></code> for this urb.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">pipe</span></code></dt><dd><p>the endpoint pipe</p>
 </dd>
@@ -1811,7 +1816,7 @@ the endpoint descriptor’s bInterval value.</p>
 <p><strong>Description</strong></p>
 <p>Initializes a interrupt urb with the proper information needed to submit
 it to a device.</p>
-<p>Refer to <a class="reference internal" href="#c.usb_fill_control_urb" title="usb_fill_control_urb"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_fill_control_urb()</span></code></a> for a description of the requirements for
+<p>Refer to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_fill_control_urb()</span></code> for a description of the requirements for
 transfer_buffer.</p>
 <p>Note that High Speed and SuperSpeed(+) interrupt endpoints use a logarithmic
 encoding of the endpoint interval, and express polling intervals in
@@ -1915,9 +1920,9 @@ rely on 64bit DMA to eliminate another kind of bounce buffer.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Initializes a urb so that the USB subsystem can use it properly.</p>
-<p>If a urb is created with a call to <a class="reference internal" href="#c.usb_alloc_urb" title="usb_alloc_urb"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_alloc_urb()</span></code></a> it is not
+<p>If a urb is created with a call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_alloc_urb()</span></code> it is not
 necessary to call this function.  Only use this if you allocate the
-space for a <a class="reference internal" href="#c.urb" title="urb"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">urb</span></code></a> on your own.  If you call this function, be
+space for a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">urb</span></code> on your own.  If you call this function, be
 careful when freeing the memory for your urb that it is no longer in
 use by the USB core.</p>
 <p>Only use this function if you _really_ understand what you are doing.</p>
@@ -1933,7 +1938,7 @@ use by the USB core.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">iso_packets</span></code></dt><dd><p>number of iso packets for this urb</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">gfp_t</span> <span class="pre">mem_flags</span></code></dt><dd><p>the type of memory to allocate, see <a class="reference internal" href="../../core-api/mm-api.html#c.kmalloc" title="kmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmalloc()</span></code></a> for a list of
+<dt><code class="docutils literal notranslate"><span class="pre">gfp_t</span> <span class="pre">mem_flags</span></code></dt><dd><p>the type of memory to allocate, see <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kmalloc()</span></code> for a list of
 valid options for this.</p>
 </dd>
 </dl>
@@ -1942,7 +1947,7 @@ valid options for this.</p>
 structures, increments the usage counter, and returns a pointer to it.</p>
 <p>If the driver want to use this urb for interrupt, control, or bulk
 endpoints, pass ‘0’ as the number of iso packets.</p>
-<p>The driver must call <a class="reference internal" href="#c.usb_free_urb" title="usb_free_urb"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_free_urb()</span></code></a> when it is finished with the urb.</p>
+<p>The driver must call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_free_urb()</span></code> when it is finished with the urb.</p>
 <p><strong>Return</strong></p>
 <p>A pointer to the new urb, or <code class="docutils literal notranslate"><span class="pre">NULL</span></code> if no memory is available.</p>
 </div>
@@ -2026,7 +2031,7 @@ without bothering to track them</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device</span> <span class="pre">*dev</span></code></dt><dd><p><a class="reference internal" href="#c.usb_device" title="usb_device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device</span></code></a> to be checked</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device</span> <span class="pre">*dev</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device</span></code> to be checked</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">pipe</span></code></dt><dd><p>pipe to check</p>
 </dd>
@@ -2064,7 +2069,7 @@ a negative error code.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">urb</span> <span class="pre">*urb</span></code></dt><dd><p>pointer to the urb describing the request</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">gfp_t</span> <span class="pre">mem_flags</span></code></dt><dd><p>the type of memory to allocate, see <a class="reference internal" href="../../core-api/mm-api.html#c.kmalloc" title="kmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmalloc()</span></code></a> for a list
+<dt><code class="docutils literal notranslate"><span class="pre">gfp_t</span> <span class="pre">mem_flags</span></code></dt><dd><p>the type of memory to allocate, see <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kmalloc()</span></code> for a list
 of valid options for this.</p>
 </dd>
 </dl>
@@ -2076,18 +2081,18 @@ The three types of completion are success, error, and unlink
 (a software-induced fault, also called “request cancellation”).</p>
 <p>URBs may be submitted in interrupt context.</p>
 <p>The caller must have correctly initialized the URB before submitting
-it.  Functions such as <a class="reference internal" href="#c.usb_fill_bulk_urb" title="usb_fill_bulk_urb"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_fill_bulk_urb()</span></code></a> and <a class="reference internal" href="#c.usb_fill_control_urb" title="usb_fill_control_urb"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_fill_control_urb()</span></code></a> are
+it.  Functions such as <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_fill_bulk_urb()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_fill_control_urb()</span></code> are
 available to ensure that most fields are correctly initialized, for
 the particular kind of transfer, although they will not initialize
 any transfer flags.</p>
-<p>If the submission is successful, the complete() callback from the URB
+<p>If the submission is successful, the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">complete()</span></code> callback from the URB
 will be called exactly once, when the USB core and Host Controller Driver
 (HCD) are finished with the URB.  When the completion function is called,
 control of the URB is returned to the device driver which issued the
 request.  The completion handler may then immediately free or reuse that
 URB.</p>
 <p>With few exceptions, USB device drivers should never access URB fields
-provided by usbcore or the HCD until its complete() is called.
+provided by usbcore or the HCD until its <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">complete()</span></code> is called.
 The exceptions relate to periodic transfer scheduling.  For both
 interrupt and isochronous urbs, as part of successful URB submission
 urb-&gt;interval is modified to reflect the actual transfer period used
@@ -2175,7 +2180,7 @@ use GFP_ATOMIC (they are called with a spinlock held);</p></li>
 called with a spinlock held);</p></li>
 <li><p>If you use a kernel thread with a network driver you must use
 GFP_NOIO, unless (b) or (c) apply;</p></li>
-<li><p>after you have done a down() you can use GFP_KERNEL, unless (b) or (c)
+<li><p>after you have done a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">down()</span></code> you can use GFP_KERNEL, unless (b) or (c)
 apply or your are in a storage driver’s block io path;</p></li>
 <li><p>USB probe and disconnect can use GFP_KERNEL unless (b) or (c) apply; and</p></li>
 <li><p>changing firmware on a running storage or net device uses
@@ -2207,18 +2212,17 @@ and the completion handler will be called with a status code
 indicating that the request has been canceled (rather than any other
 code).</p>
 <p>Drivers should not call this routine or related routines, such as
-<a class="reference internal" href="#c.usb_kill_urb" title="usb_kill_urb"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_kill_urb()</span></code></a> or <a class="reference internal" href="#c.usb_unlink_anchored_urbs" title="usb_unlink_anchored_urbs"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_unlink_anchored_urbs()</span></code></a>, after their disconnect
-method has returned.  The disconnect function should synchronize with
-a driver’s I/O routines to insure that all URB-related activity has
-completed before it returns.</p>
-<p>This request is asynchronous, however the HCD might call the -&gt;complete()
-callback during unlink. Therefore when drivers call <a class="reference internal" href="#c.usb_unlink_urb" title="usb_unlink_urb"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_unlink_urb()</span></code></a>, they
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_kill_urb()</span></code>, after their disconnect method has returned. The
+disconnect function should synchronize with a driver’s I/O routines
+to insure that all URB-related activity has completed before it returns.</p>
+<p>This request is asynchronous, however the HCD might call the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">complete()</span></code>
+callback during unlink. Therefore when drivers call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_unlink_urb()</span></code>, they
 must not hold any locks that may be taken by the completion function.
 Success is indicated by returning -EINPROGRESS, at which time the URB will
 probably not yet have been given back to the device driver. When it is
 eventually called, the completion function will see <strong>urb-&gt;status</strong> ==
 -ECONNRESET.
-Failure is indicated by <a class="reference internal" href="#c.usb_unlink_urb" title="usb_unlink_urb"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_unlink_urb()</span></code></a> returning any other value.
+Failure is indicated by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_unlink_urb()</span></code> returning any other value.
 Unlinking will fail when <strong>urb</strong> is not currently “linked” (i.e., it was
 never submitted, or it was unlinked before, or the hardware is already
 finished with it), even if the completion handler has not yet run.</p>
@@ -2276,7 +2280,7 @@ may be NULL</p>
 <p>This routine cancels an in-progress request.  It is guaranteed that
 upon return all completion handlers will have finished and the URB
 will be totally idle and available for reuse.  These features make
-this an ideal way to stop I/O in a disconnect() callback or close()
+this an ideal way to stop I/O in a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">disconnect()</span></code> callback or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">close()</span></code>
 function.  If the request has not already finished or been unlinked
 the completion handler will see urb-&gt;status == -ENOENT.</p>
 <p>While the routine is running, attempts to resubmit the URB will fail
@@ -2287,7 +2291,7 @@ particular, when a driver calls this routine, it must insure that the
 completion handler cannot deallocate the URB.</p>
 <p>This routine may not be used in an interrupt context (such as a bottom
 half or a completion handler), or when holding a spinlock, or in other
-situations where the caller can’t schedule().</p>
+situations where the caller can’t <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">schedule()</span></code>.</p>
 <p>This routine should not be called by a driver after its disconnect
 method has returned.</p>
 </div>
@@ -2308,7 +2312,7 @@ may be NULL</p>
 <p>This routine cancels an in-progress request.  It is guaranteed that
 upon return all completion handlers will have finished and the URB
 will be totally idle and cannot be reused.  These features make
-this an ideal way to stop I/O in a disconnect() callback.
+this an ideal way to stop I/O in a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">disconnect()</span></code> callback.
 If the request has not already finished or been unlinked
 the completion handler will see urb-&gt;status == -ENOENT.</p>
 <p>After and while the routine runs, attempts to resubmit the URB will fail
@@ -2319,7 +2323,7 @@ particular, when a driver calls this routine, it must insure that the
 completion handler cannot deallocate the URB.</p>
 <p>This routine may not be used in an interrupt context (such as a bottom
 half or a completion handler), or when holding a spinlock, or in other
-situations where the caller can’t schedule().</p>
+situations where the caller can’t <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">schedule()</span></code>.</p>
 <p>This routine should not be called by a driver after its disconnect
 method has returned.</p>
 </div>
@@ -2396,26 +2400,6 @@ method has returned.</p>
 <p><strong>Description</strong></p>
 <p>Reverses the effect of usb_poison_anchored_urbs
 the anchor can be used normally after it returns</p>
-</div>
-<dl class="c function">
-<dt class="sig sig-object c" id="c.usb_unlink_anchored_urbs">
-<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_unlink_anchored_urbs</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">usb_anchor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">anchor</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.usb_unlink_anchored_urbs" title="Link to this definition">¶</a><br /></dt>
-<dd><p>asynchronously cancel transfer requests en masse</p>
-</dd></dl>
-
-<div class="kernelindent docutils container">
-<p><strong>Parameters</strong></p>
-<dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_anchor</span> <span class="pre">*anchor</span></code></dt><dd><p>anchor the requests are bound to</p>
-</dd>
-</dl>
-<p><strong>Description</strong></p>
-<p>this allows all outstanding URBs to be unlinked starting
-from the back of the queue. This function is asynchronous.
-The unlinking is just triggered. It may happen after this
-function has returned.</p>
-<p>This routine should not be called by a driver after its disconnect
-method has returned.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.usb_anchor_suspend_wakeups">
@@ -2553,8 +2537,8 @@ out (if 0 the wait is forever)</p>
 waits for the message to complete, or timeout.</p>
 <p>Don’t use this function from within an interrupt context. If you need
 an asynchronous message, or need to send a message from within interrupt
-context, use <a class="reference internal" href="#c.usb_submit_urb" title="usb_submit_urb"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_submit_urb()</span></code></a>. If a thread in your driver uses this call,
-make sure your disconnect() method can wait for it to complete. Since you
+context, use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_submit_urb()</span></code>. If a thread in your driver uses this call,
+make sure your <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">disconnect()</span></code> method can wait for it to complete. Since you
 don’t have a handle on the URB used, you can’t cancel the request.</p>
 <p><strong>Return</strong></p>
 <p>If successful, the number of bytes transferred. Otherwise, a negative
@@ -2599,8 +2583,8 @@ expected to fill in a response (i.e. a “send message”) and waits for the
 message to complete, or timeout.</p>
 <p>Do not use this function from within an interrupt context. If you need
 an asynchronous message, or need to send a message from within interrupt
-context, use <a class="reference internal" href="#c.usb_submit_urb" title="usb_submit_urb"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_submit_urb()</span></code></a>. If a thread in your driver uses this call,
-make sure your disconnect() method can wait for it to complete. Since you
+context, use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_submit_urb()</span></code>. If a thread in your driver uses this call,
+make sure your <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">disconnect()</span></code> method can wait for it to complete. Since you
 don’t have a handle on the URB used, you can’t cancel the request.</p>
 <p>The data pointer can be made to a reference on the stack, or anywhere else,
 as it will not be modified at all.  This does not have the restriction that
@@ -2648,8 +2632,8 @@ expected to fill in a response (i.e. a “receive message”) and waits for the
 message to complete, or timeout.</p>
 <p>Do not use this function from within an interrupt context. If you need
 an asynchronous message, or need to send a message from within interrupt
-context, use <a class="reference internal" href="#c.usb_submit_urb" title="usb_submit_urb"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_submit_urb()</span></code></a>. If a thread in your driver uses this call,
-make sure your disconnect() method can wait for it to complete. Since you
+context, use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_submit_urb()</span></code>. If a thread in your driver uses this call,
+make sure your <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">disconnect()</span></code> method can wait for it to complete. Since you
 don’t have a handle on the URB used, you can’t cancel the request.</p>
 <p>The data pointer can be made to a reference on the stack, or anywhere else
 that can be successfully written to.  This function does not have the
@@ -2694,8 +2678,8 @@ timing out (if 0 the wait is forever)</p>
 waits for the message to complete, or timeout.</p>
 <p>Don’t use this function from within an interrupt context. If you need
 an asynchronous message, or need to send a message from within interrupt
-context, use <a class="reference internal" href="#c.usb_submit_urb" title="usb_submit_urb"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_submit_urb()</span></code></a> If a thread in your driver uses this call,
-make sure your disconnect() method can wait for it to complete. Since you
+context, use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_submit_urb()</span></code> If a thread in your driver uses this call,
+make sure your <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">disconnect()</span></code> method can wait for it to complete. Since you
 don’t have a handle on the URB used, you can’t cancel the request.</p>
 <p><strong>Return</strong></p>
 <p>If successful, 0. Otherwise a negative error number. The number of actual
@@ -2732,8 +2716,8 @@ timing out (if 0 the wait is forever)</p>
 and waits for the message to complete, or timeout.</p>
 <p>Don’t use this function from within an interrupt context. If you need
 an asynchronous message, or need to send a message from within interrupt
-context, use <a class="reference internal" href="#c.usb_submit_urb" title="usb_submit_urb"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_submit_urb()</span></code></a> If a thread in your driver uses this call,
-make sure your disconnect() method can wait for it to complete. Since you
+context, use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_submit_urb()</span></code> If a thread in your driver uses this call,
+make sure your <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">disconnect()</span></code> method can wait for it to complete. Since you
 don’t have a handle on the URB used, you can’t cancel the request.</p>
 <p>Because there is no <a class="reference internal" href="#c.usb_core.usb_interrupt_msg" title="usb_core.usb_interrupt_msg"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_interrupt_msg()</span></code></a> and no USBDEVFS_INTERRUPT ioctl,
 users are forced to abuse this routine by using it to submit URBs for
@@ -2875,7 +2859,7 @@ so that call just frees resources allocated to the request.</p>
 <p><strong>Description</strong></p>
 <p>Gets a USB descriptor.  Convenience functions exist to simplify
 getting some types of descriptors.  Use
-usb_get_string() or <a class="reference internal" href="#c.usb_core.usb_string" title="usb_core.usb_string"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_string()</span></code></a> for USB_DT_STRING.
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_get_string()</span></code> or <a class="reference internal" href="#c.usb_core.usb_string" title="usb_core.usb_string"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_string()</span></code></a> for USB_DT_STRING.
 Device (USB_DT_DEVICE) and configuration descriptors (USB_DT_CONFIG)
 are part of the device structure.
 In addition to a number of USB-standard descriptors, some
@@ -2907,7 +2891,7 @@ returned by the underlying <a class="reference internal" href="#c.usb_core.usb_c
 <p>task context, might sleep.</p>
 <p><strong>Description</strong></p>
 <p>This converts the UTF-16LE encoded strings returned by devices, from
-usb_get_string_descriptor(), to null-terminated UTF-8 encoded ones
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_get_string_descriptor()</span></code>, to null-terminated UTF-8 encoded ones
 that are more usable in most kernel contexts.  Note that this function
 chooses strings in the first language supported by the device.</p>
 <p>This call is synchronous, and may not be used in an interrupt context.</p>
@@ -2994,7 +2978,7 @@ and 5.8.5 of the USB 2.0 spec.</p>
 endpoints report “protocol stall” (for unsupported requests) using the
 same status code used to report a true stall.</p>
 <p>This call is synchronous, and may not be used in an interrupt context.
-If a thread in your driver uses this call, make sure your disconnect()
+If a thread in your driver uses this call, make sure your <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">disconnect()</span></code>
 method can wait for it to complete.</p>
 <p><strong>Return</strong></p>
 <p>Zero on success, or else the status code returned by the
@@ -3054,14 +3038,14 @@ an endpoint in a given alternate setting is not reserved until an URB
 is submitted that needs that bandwidth.  Some other operating systems
 allocate bandwidth early, when a configuration is chosen.</p>
 <p>xHCI reserves bandwidth and configures the alternate setting in
-usb_hcd_alloc_bandwidth(). If it fails the original interface altsetting
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_hcd_alloc_bandwidth()</span></code>. If it fails the original interface altsetting
 may be disabled. Drivers cannot rely on any particular alternate
 setting being in effect after a failure.</p>
 <p>This call is synchronous, and may not be used in an interrupt context.
 Also, drivers must not change altsettings while urbs are scheduled for
 endpoints in that interface; all such urbs must first be completed
 (perhaps forced by unlinking). If a thread in your driver uses this call,
-make sure your disconnect() method can wait for it to complete.</p>
+make sure your <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">disconnect()</span></code> method can wait for it to complete.</p>
 <p><strong>Return</strong></p>
 <p>Zero on success, or else the status code returned by the
 underlying <a class="reference internal" href="#c.usb_core.usb_control_msg" title="usb_core.usb_control_msg"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_control_msg()</span></code></a> call.</p>
@@ -3100,7 +3084,7 @@ with endpoints disabled, and interfaces only partially enabled.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.usb_core.usb_set_wireless_status">
 <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_set_wireless_status</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.usb_interface" title="usb_interface"><span class="n"><span class="pre">usb_interface</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">iface</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="n"><span class="pre">usb_wireless_status</span></span><span class="w"> </span><span class="n"><span class="pre">status</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.usb_core.usb_set_wireless_status" title="Link to this definition">¶</a><br /></dt>
-<dd><p>sets the wireless_status struct member</p>
+<dd><p>sets the wireless_status <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">member</span></code></p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -3112,7 +3096,7 @@ with endpoints disabled, and interfaces only partially enabled.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Set the wireless_status struct member to the new value, and emit
+<p>Set the wireless_status <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">member</span></code> to the new value, and emit
 sysfs changes as necessary.</p>
 <p><strong>Return</strong></p>
 <p>0 on success, -EALREADY if already set.</p>
@@ -3244,7 +3228,7 @@ usb device’s active configuration</p>
 interface on a device when probing (audio and acm are current examples).
 No device driver should directly modify internal usb_interface or
 usb_device structure members.</p>
-<p>Callers must own the device lock, so driver probe() entries don’t need
+<p>Callers must own the device lock, so driver <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> entries don’t need
 extra locking, but other call contexts may need to explicitly claim that
 lock.</p>
 <p><strong>Return</strong></p>
@@ -3266,10 +3250,10 @@ lock.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>This can be used by drivers to release an interface without waiting
-for their disconnect() methods to be called.  In typical cases this
-also causes the driver disconnect() method to be called.</p>
+for their <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">disconnect()</span></code> methods to be called.  In typical cases this
+also causes the driver <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">disconnect()</span></code> method to be called.</p>
 <p>This call is synchronous, and may not be used in an interrupt context.
-Callers must own the device lock, so driver disconnect() entries don’t
+Callers must own the device lock, so driver <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">disconnect()</span></code> entries don’t
 need extra locking, but other call contexts may need to explicitly claim
 that lock.</p>
 </div>
@@ -3305,7 +3289,7 @@ does not match.</p>
 but you can create a wildcard “matches anything” usb_device_id
 as a driver’s “modules.usbmap” entry if you provide an id with
 only a nonzero “driver_info” field.  If you do this, the USB device
-driver’s probe() routine should use additional intelligence to
+driver’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> routine should use additional intelligence to
 decide whether to bind to the specified interface.</p>
 <p>What Makes Good usb_device_id Tables:</p>
 <p>The match algorithm is very simple, so that intelligence in
@@ -3486,7 +3470,7 @@ example would be a character-device driver when its device file is
 closed.</p>
 <p>The routine decrements <strong>intf</strong>’s usage counter.  When the counter reaches
 0, a delayed autosuspend request for <strong>intf</strong>’s device is attempted.  The
-attempt may fail (see autosuspend_check()).</p>
+attempt may fail (see <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">autosuspend_check()</span></code>).</p>
 <p>This routine can run only in process context.</p>
 </div>
 <dl class="c function">
@@ -3857,10 +3841,10 @@ failure.</p>
 <p><strong>Description</strong></p>
 <p>Each live reference to a device should be refcounted.</p>
 <p>Drivers for USB interfaces should normally record such references in
-their probe() methods, when they bind to an interface, and release
-them by calling <a class="reference internal" href="#c.usb_core.usb_put_dev" title="usb_core.usb_put_dev"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_put_dev()</span></code></a>, in their disconnect() methods.
+their <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> methods, when they bind to an interface, and release
+them by calling <a class="reference internal" href="#c.usb_core.usb_put_dev" title="usb_core.usb_put_dev"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_put_dev()</span></code></a>, in their <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">disconnect()</span></code> methods.
 However, if a driver does not access the usb_device structure after
-its disconnect() method returns then refcounting is not necessary,
+its <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">disconnect()</span></code> method returns then refcounting is not necessary,
 because the USB core guarantees that a usb_device will not be
 deallocated until after all of its interface drivers have been unbound.</p>
 <p><strong>Return</strong></p>
@@ -3897,10 +3881,10 @@ user of the device calls this function, the memory of the device is freed.</p>
 <p><strong>Description</strong></p>
 <p>Each live reference to a interface must be refcounted.</p>
 <p>Drivers for USB interfaces should normally record such references in
-their probe() methods, when they bind to an interface, and release
-them by calling <a class="reference internal" href="#c.usb_core.usb_put_intf" title="usb_core.usb_put_intf"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_put_intf()</span></code></a>, in their disconnect() methods.
+their <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> methods, when they bind to an interface, and release
+them by calling <a class="reference internal" href="#c.usb_core.usb_put_intf" title="usb_core.usb_put_intf"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_put_intf()</span></code></a>, in their <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">disconnect()</span></code> methods.
 However, if a driver does not access the usb_interface structure after
-its disconnect() method returns then refcounting is not necessary,
+its <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">disconnect()</span></code> method returns then refcounting is not necessary,
 because the USB core guarantees that a usb_interface will not be
 deallocated until after its driver has been unbound.</p>
 <p><strong>Return</strong></p>
@@ -3939,13 +3923,11 @@ is freed.</p>
 <p>While a USB device cannot perform DMA operations by itself, many USB
 controllers can. A call to <a class="reference internal" href="#c.usb_core.usb_intf_get_dma_device" title="usb_core.usb_intf_get_dma_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_intf_get_dma_device()</span></code></a> returns the DMA endpoint
 for the given USB interface, if any. The returned device structure must be
-released with <a class="reference internal" href="../infrastructure.html#c.put_device" title="put_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">put_device()</span></code></a>.</p>
-<p>See also usb_get_dma_device().</p>
+released with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">put_device()</span></code>.</p>
+<p>See also <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_get_dma_device()</span></code>.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>A reference to the usb interface’s DMA endpoint; or NULL if none</dt><dd><p>exists.</p>
-</dd>
-</dl>
+<p>A reference to the usb interface’s DMA endpoint; or NULL if none
+exists.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.usb_core.usb_lock_device_for_reset">
@@ -3966,8 +3948,8 @@ released with <a class="reference internal" href="../infrastructure.html#c.put_d
 NOTATTACHED or SUSPENDED, or if iface is specified and the interface
 is neither BINDING nor BOUND.  Rather than sleeping to wait for the
 lock, the routine polls repeatedly.  This is to prevent deadlock with
-disconnect; in some drivers (such as usb-storage) the disconnect()
-or suspend() method will block waiting for a device reset to complete.</p>
+disconnect; in some drivers (such as usb-storage) the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">disconnect()</span></code>
+or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">suspend()</span></code> method will block waiting for a device reset to complete.</p>
 <p><strong>Return</strong></p>
 <p>A negative error code for failure, otherwise 0.</p>
 </div>
@@ -4024,7 +4006,6 @@ platforms, depending on details of how DMA will work to this device.
 Using these buffers also eliminates cacheline sharing problems on
 architectures where CPU caches are not DMA-coherent.  On systems without
 bus-snooping caches, these buffers are uncached.</p>
-<p><strong>Description</strong></p>
 <p>When the buffer is no longer used, free it with <a class="reference internal" href="#c.usb_core.usb_free_coherent" title="usb_core.usb_free_coherent"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_free_coherent()</span></code></a>.</p>
 </div>
 <dl class="c function">
@@ -4048,6 +4029,64 @@ bus-snooping caches, these buffers are uncached.</p>
 <p><strong>Description</strong></p>
 <p>This reclaims an I/O buffer, letting it be reused.  The memory must have
 been allocated using <a class="reference internal" href="#c.usb_core.usb_alloc_coherent" title="usb_core.usb_alloc_coherent"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_alloc_coherent()</span></code></a>, and the parameters must match
+those provided in that allocation request.</p>
+</div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.usb_core.usb_alloc_noncoherent">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">usb_alloc_noncoherent</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.usb_device" title="usb_device"><span class="n"><span class="pre">usb_device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span>, <span class="n"><span class="pre">gfp_t</span></span><span class="w"> </span><span class="n"><span class="pre">mem_flags</span></span>, <span class="n"><span class="pre">dma_addr_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dma</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="n"><span class="pre">dma_data_direction</span></span><span class="w"> </span><span class="n"><span class="pre">dir</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sg_table</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">table</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.usb_core.usb_alloc_noncoherent" title="Link to this definition">¶</a><br /></dt>
+<dd><p>allocate dma-noncoherent buffer for URB_NO_xxx_DMA_MAP</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device</span> <span class="pre">*dev</span></code></dt><dd><p>device the buffer will be used with</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">size</span></code></dt><dd><p>requested buffer size</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">gfp_t</span> <span class="pre">mem_flags</span></code></dt><dd><p>affect whether allocation may block</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">dma_addr_t</span> <span class="pre">*dma</span></code></dt><dd><p>used to return DMA address of buffer</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">enum</span> <span class="pre">dma_data_direction</span> <span class="pre">dir</span></code></dt><dd><p>DMA transfer direction</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">sg_table</span> <span class="pre">**table</span></code></dt><dd><p>used to return sg_table of allocated memory</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>To explicit manage the memory ownership for the kernel vs the device by
+USB core, the user needs save sg_table to urb-&gt;sgt. Then USB core will
+do DMA sync for CPU and device properly.</p>
+<p>When the buffer is no longer used, free it with <a class="reference internal" href="#c.usb_core.usb_free_noncoherent" title="usb_core.usb_free_noncoherent"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_free_noncoherent()</span></code></a>.</p>
+<p><strong>Return</strong></p>
+<p>Either null (indicating no buffer could be allocated), or the
+cpu-space pointer to a buffer that may be used to perform DMA to the
+specified device.  Such cpu-space buffers are returned along with the DMA
+address (through the pointer provided).</p>
+</div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.usb_core.usb_free_noncoherent">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_free_noncoherent</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.usb_device" title="usb_device"><span class="n"><span class="pre">usb_device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="n"><span class="pre">dma_data_direction</span></span><span class="w"> </span><span class="n"><span class="pre">dir</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sg_table</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">table</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.usb_core.usb_free_noncoherent" title="Link to this definition">¶</a><br /></dt>
+<dd><p>free memory allocated with <a class="reference internal" href="#c.usb_core.usb_alloc_noncoherent" title="usb_core.usb_alloc_noncoherent"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_alloc_noncoherent()</span></code></a></p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device</span> <span class="pre">*dev</span></code></dt><dd><p>device the buffer was used with</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">size</span></code></dt><dd><p>requested buffer size</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">*addr</span></code></dt><dd><p>CPU address of buffer</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">enum</span> <span class="pre">dma_data_direction</span> <span class="pre">dir</span></code></dt><dd><p>DMA transfer direction</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">sg_table</span> <span class="pre">*table</span></code></dt><dd><p>describe the allocated and DMA mapped memory,</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>This reclaims an I/O buffer, letting it be reused.  The memory must have
+been allocated using <a class="reference internal" href="#c.usb_core.usb_alloc_noncoherent" title="usb_core.usb_alloc_noncoherent"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_alloc_noncoherent()</span></code></a>, and the parameters must match
 those provided in that allocation request.</p>
 </div>
 <dl class="c function">
@@ -4110,7 +4149,7 @@ to USB_STATE_NOTATTACHED.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device</span> <span class="pre">*rhdev</span></code></dt><dd><p><a class="reference internal" href="#c.usb_device" title="usb_device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device</span></code></a> for the root hub</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device</span> <span class="pre">*rhdev</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_device</span></code> for the root hub</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -4137,22 +4176,22 @@ the others will be disconnected.</p>
 <p>Warns all drivers bound to registered interfaces (using their pre_reset
 method), performs the port reset, and then lets the drivers know that
 the reset is over (using their post_reset method).</p>
+<p><strong>Return</strong></p>
+<p>The same as for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_reset_and_verify_device()</span></code>.
+However, if a reset is already in progress (for instance, if a
+driver doesn’t have <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pre_reset()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">post_reset()</span></code> callbacks, and while
+being unbound or re-bound during the ongoing reset its <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">disconnect()</span></code>
+or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> routine tries to perform a second, nested reset), the
+routine returns -EINPROGRESS.</p>
+<p><strong>Note</strong></p>
+<p>The caller must own the device lock.  For example, it’s safe to use
+this from a driver <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> routine after downloading new firmware.
+For calls that might not occur during <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code>, drivers should lock
+the device using <a class="reference internal" href="#c.usb_core.usb_lock_device_for_reset" title="usb_core.usb_lock_device_for_reset"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_lock_device_for_reset()</span></code></a>.</p>
 <p>If an interface is currently being probed or disconnected, we assume
 its driver knows how to handle resets.  For all other interfaces,
 if the driver doesn’t have pre_reset and post_reset methods then
 we attempt to unbind it and rebind afterward.</p>
-<p><strong>Return</strong></p>
-<p>The same as for usb_reset_and_verify_device().
-However, if a reset is already in progress (for instance, if a
-driver doesn’t have pre_reset() or post_reset() callbacks, and while
-being unbound or re-bound during the ongoing reset its disconnect()
-or probe() routine tries to perform a second, nested reset), the
-routine returns -EINPROGRESS.</p>
-<p><strong>Note</strong></p>
-<p>The caller must own the device lock.  For example, it’s safe to use
-this from a driver probe() routine after downloading new firmware.
-For calls that might not occur during probe(), drivers should lock
-the device using <a class="reference internal" href="#c.usb_core.usb_lock_device_for_reset" title="usb_core.usb_lock_device_for_reset"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_lock_device_for_reset()</span></code></a>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.usb_core.usb_queue_reset_device">
@@ -4178,13 +4217,13 @@ might be unbound, as well as users from usbfs in user space.</p>
 <li><p>Scheduling two resets at the same time from two different drivers
 attached to two different interfaces of the same device is
 possible; depending on how the driver attached to each interface
-handles -&gt;pre_reset(), the second reset might happen or not.</p></li>
+handles -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pre_reset()</span></code>, the second reset might happen or not.</p></li>
 <li><p>If the reset is delayed so long that the interface is unbound from
 its driver, the reset will be skipped.</p></li>
-<li><p>This function can be called during .probe().  It can also be called
-during .disconnect(), but doing so is pointless because the reset
+<li><p>This function can be called during .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code>.  It can also be called
+during .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">disconnect()</span></code>, but doing so is pointless because the reset
 will not occur.  If you really want to reset the device during
-.disconnect(), call <a class="reference internal" href="#c.usb_core.usb_reset_device" title="usb_core.usb_reset_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_reset_device()</span></code></a> directly -- but watch out
+.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">disconnect()</span></code>, call <a class="reference internal" href="#c.usb_core.usb_reset_device" title="usb_core.usb_reset_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_reset_device()</span></code></a> directly -- but watch out
 for nested unbinding issues!</p></li>
 </ul>
 </div>
@@ -4272,13 +4311,13 @@ scheduled in software, this function is only used for such scheduling.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Host controller drivers should call this routine in their enqueue()
+<p>Host controller drivers should call this routine in their <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">enqueue()</span></code>
 method.  The HCD’s private spinlock must be held and interrupts must
 be disabled.  The actions carried out here are required for URB
 submission, as well as for endpoint shutdown and for usb_kill_urb.</p>
 <p><strong>Return</strong></p>
 <p>0 for no error, otherwise a negative error code (in which case
-the enqueue() method must fail).  If no error occurs but enqueue() fails
+the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">enqueue()</span></code> method must fail).  If no error occurs but <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">enqueue()</span></code> fails
 anyway, it must call <a class="reference internal" href="#c.usb_core.usb_hcd_unlink_urb_from_ep" title="usb_core.usb_hcd_unlink_urb_from_ep"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_hcd_unlink_urb_from_ep()</span></code></a> before releasing
 the private spinlock and returning.</p>
 </div>
@@ -4299,13 +4338,10 @@ the private spinlock and returning.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Host controller drivers should call this routine in their dequeue()
+<p>Host controller drivers should call this routine in their <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dequeue()</span></code>
 method.  The HCD’s private spinlock must be held and interrupts must
 be disabled.  The actions carried out here are required for making
 sure than an unlink is valid.</p>
-<p><strong>Return</strong></p>
-<p>0 for no error, otherwise a negative error code (in which case
-the dequeue() method must fail).  The possible error codes are:</p>
 <blockquote>
 <div><dl class="simple">
 <dt>-EIDRM: <strong>urb</strong> was not submitted or has already completed.</dt><dd><p>The completion function may not have been called yet.</p>
@@ -4313,6 +4349,9 @@ the dequeue() method must fail).  The possible error codes are:</p>
 </dl>
 <p>-EBUSY: <strong>urb</strong> has already been unlinked.</p>
 </div></blockquote>
+<p><strong>Return</strong></p>
+<p>0 for no error, otherwise a negative error code (in which case
+the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dequeue()</span></code> method must fail).  The possible error codes are:</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.usb_core.usb_hcd_unlink_urb_from_ep">
@@ -4351,10 +4390,10 @@ for URB completion.</p>
 </dd>
 </dl>
 <p><strong>Context</strong></p>
-<p>atomic. The completion callback is invoked in caller’s context.
-For HCDs with HCD_BH flag set, the completion callback is invoked in BH
-context (except for URBs submitted to the root hub which always complete in
-caller’s context).</p>
+<p>atomic. The completion callback is invoked either in a work queue
+(BH) context or in the caller’s context, depending on whether the HCD_BH
+flag is set in the <strong>hcd</strong> structure, except that URBs submitted to the
+root hub always complete in BH context.</p>
 <p><strong>Description</strong></p>
 <p>This hands the URB from HCD to its USB device driver, using its
 completion function.  The HCD has freed all per-urb resources
@@ -4519,7 +4558,7 @@ PCI device.  Only allocate certain resources for the primary HCD</p>
 <p><strong>Context</strong></p>
 <p>task context, might sleep.</p>
 <p><strong>Description</strong></p>
-<p>Allocate a struct usb_hcd, with extra space at the end for the
+<p>Allocate a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_hcd</span></code>, with extra space at the end for the
 HC driver’s private data.  Initialize the generic members of the
 hcd structure.</p>
 <p><strong>Return</strong></p>
@@ -4545,7 +4584,7 @@ On failure (e.g. if memory is unavailable), <code class="docutils literal notran
 <p><strong>Context</strong></p>
 <p>task context, might sleep.</p>
 <p><strong>Description</strong></p>
-<p>Allocate a struct usb_hcd, with extra space at the end for the
+<p>Allocate a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_hcd</span></code>, with extra space at the end for the
 HC driver’s private data.  Initialize the generic members of the
 hcd structure.</p>
 <p><strong>Return</strong></p>
@@ -4571,7 +4610,7 @@ structure. On failure (e.g. if memory is unavailable), <code class="docutils lit
 <p><strong>Description</strong></p>
 <p>Finish the remaining parts of generic HCD initialization: allocate the
 buffers of consistent memory, register the bus, request the IRQ line,
-and call the driver’s reset() and <a class="reference internal" href="../../networking/ieee802154.html#c.start" title="start"><code class="xref c c-func docutils literal notranslate"><span class="pre">start()</span></code></a> routines.</p>
+and call the driver’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">reset()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">start()</span></code> routines.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.usb_core.usb_remove_hcd">
@@ -4589,7 +4628,7 @@ and call the driver’s reset() and <a class="reference internal" href="../../ne
 <p>task context, might sleep.</p>
 <p><strong>Description</strong></p>
 <p>Disconnects the root hub, then reverses the effects of <a class="reference internal" href="#c.usb_core.usb_add_hcd" title="usb_core.usb_add_hcd"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_add_hcd()</span></code></a>,
-invoking the HCD’s <a class="reference internal" href="../../networking/ieee802154.html#c.stop" title="stop"><code class="xref c c-func docutils literal notranslate"><span class="pre">stop()</span></code></a> method.</p>
+invoking the HCD’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">stop()</span></code> method.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.usb_core.usb_hcd_pci_probe">
@@ -4609,9 +4648,9 @@ invoking the HCD’s <a class="reference internal" href="../../networking/ieee80
 <p>task context, might sleep</p>
 <p><strong>Description</strong></p>
 <p>Allocates basic PCI resources for this USB host controller, and
-then invokes the <a class="reference internal" href="../../networking/ieee802154.html#c.start" title="start"><code class="xref c c-func docutils literal notranslate"><span class="pre">start()</span></code></a> method for the HCD associated with it
+then invokes the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">start()</span></code> method for the HCD associated with it
 through the hotplug entry’s driver_data.</p>
-<p>Store this function in the HCD’s <a class="reference internal" href="../../PCI/pci.html#c.pci_driver" title="pci_driver"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pci_driver</span></code></a> as probe().</p>
+<p>Store this function in the HCD’s <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pci_driver</span></code> as <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code>.</p>
 <p><strong>Return</strong></p>
 <p>0 if successful.</p>
 </div>
@@ -4631,9 +4670,9 @@ through the hotplug entry’s driver_data.</p>
 <p>task context, might sleep</p>
 <p><strong>Description</strong></p>
 <p>Reverses the effect of <a class="reference internal" href="#c.usb_core.usb_hcd_pci_probe" title="usb_core.usb_hcd_pci_probe"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_hcd_pci_probe()</span></code></a>, first invoking
-the HCD’s <a class="reference internal" href="../../networking/ieee802154.html#c.stop" title="stop"><code class="xref c c-func docutils literal notranslate"><span class="pre">stop()</span></code></a> method.  It is always called from a thread
+the HCD’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">stop()</span></code> method.  It is always called from a thread
 context, normally “rmmod”, “apmd”, or something similar.</p>
-<p>Store this function in the HCD’s <a class="reference internal" href="../../PCI/pci.html#c.pci_driver" title="pci_driver"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pci_driver</span></code></a> as remove().</p>
+<p>Store this function in the HCD’s <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pci_driver</span></code> as <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.usb_core.usb_hcd_pci_shutdown">
@@ -4750,7 +4789,7 @@ the BCD-encoded fields, and the vendor and product IDs) will be
 byteswapped for you. Note that configuration descriptors include
 descriptors for interfaces, altsettings, endpoints, and maybe additional
 class descriptors.</p></li>
-<li><p><em>Perform USB operations</em> using <em>ioctl()</em> requests to make endpoint I/O
+<li><p><em>Perform USB operations</em> using <em><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ioctl()</span></code></em> requests to make endpoint I/O
 requests (synchronously or asynchronously) or manage the device. These
 requests need the <code class="docutils literal notranslate"><span class="pre">CAP_SYS_RAWIO</span></code> capability, as well as filesystem
 access permissions. Only one ioctl request can be made on one of these
@@ -4881,7 +4920,7 @@ know the devnum value already, it’s the DDD value of the device file
 name.</p>
 </dd>
 <dt>USBDEVFS_GET_SPEED</dt><dd><p>Returns the speed of the device. The speed is returned as a
-numerical value in accordance with enum usb_device_speed</p>
+numerical value in accordance with <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">usb_device_speed</span></code></p>
 <p>File modification time is not updated by this request.</p>
 </dd>
 <dt>USBDEVFS_GETDRIVER</dt><dd><p>Returns the name of the kernel driver bound to a given interface (a
@@ -4896,7 +4935,7 @@ modified:</p>
 <p>File modification time is not updated by this request.</p>
 </dd>
 <dt>USBDEVFS_IOCTL</dt><dd><p>Passes a request from userspace through to a kernel driver that has
-an ioctl entry in the <em><a class="reference internal" href="#c.usb_driver" title="usb_driver"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_driver</span></code></a></em> it registered:</p>
+an ioctl entry in the <em><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_driver</span></code></em> it registered:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct usbdevfs_ioctl {
         int     ifno;
         int     ioctl_code;
@@ -5046,7 +5085,7 @@ a pointer to a structure like this:</p>
 </pre></div>
 </div>
 <p>File modification time is not updated by this request.</p>
-<p>Those struct members are from some interface descriptor applying to
+<p>Those <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">members</span></code> are from some interface descriptor applying to
 the current configuration. The interface number is the
 bInterfaceNumber value, and the altsetting number is the
 bAlternateSetting value. (This resets each endpoint in the
@@ -5136,7 +5175,7 @@ synchronous requests, where it reflects when requests complete.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">/sys/kernel/debug/usb/devices</span></code> ... a text file showing each of the USB
 devices on known to the kernel, and their configuration descriptors.
-You can also poll() this to learn about new devices.</p></li>
+You can also <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">poll()</span></code> this to learn about new devices.</p></li>
 </ul>
 <section id="sys-kernel-debug-usb-devices">
 <h3>/sys/kernel/debug/usb/devices<a class="headerlink" href="#sys-kernel-debug-usb-devices" title="Link to this heading">¶</a></h3>
@@ -5144,7 +5183,7 @@ You can also poll() this to learn about new devices.</p></li>
 the text format and ignore most of it. More detailed device status
 (including class and vendor status) is available from device-specific
 files. For information about the current format of this file, see below.</p>
-<p>This file, in combination with the poll() system call, can also be used
+<p>This file, in combination with the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">poll()</span></code> system call, can also be used
 to detect when devices are added or removed:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int fd;
 struct pollfd pfd;

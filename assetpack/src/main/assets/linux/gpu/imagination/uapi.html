@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -154,15 +154,15 @@ addition to the standard kernel restrictions:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>All members must be type-aligned.</p></li>
-<li><p>The overall struct must be padded to 64-bit alignment.</p></li>
+<li><p>The overall <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">must</span></code> be padded to 64-bit alignment.</p></li>
 <li><p>Explicit padding is almost always required. This takes the form of
 <code class="docutils literal notranslate"><span class="pre">_padding_[x]</span></code> members of sufficient size to pad to the next power-of-two
-alignment, where [x] is the offset into the struct in hexadecimal. Arrays
+alignment, where [x] is the offset into the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">in</span></code> hexadecimal. Arrays
 are never used for alignment. Padding fields must be zeroed; this is
 always checked.</p></li>
 <li><p>Unions may only appear as the last member of a struct.</p></li>
-<li><p>Individual union members may grow in the future. The space between the
-end of a union member and the end of its containing union is considered
+<li><p>Individual <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">members</span></code> may grow in the future. The space between the
+end of a <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">member</span></code> and the end of its containing <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">is</span></code> considered
 “implicit padding” and must be zeroed. This is always checked.</p></li>
 </ul>
 </div></blockquote>
@@ -200,7 +200,7 @@ above.</p>
 <p><strong>Description</strong></p>
 <p>It is not unusual to have to extend objects to pass new parameters, and the DRM
 ioctl infrastructure is supporting that by padding ioctl arguments with zeros
-when the data passed by userspace is smaller than the struct defined in the
+when the data passed by userspace is smaller than the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">defined</span></code> in the
 drm_ioctl_desc, thus keeping things backward compatible. This type is just
 applying the same concepts to indirect objects passed through arrays referenced
 from the main ioctl arguments structure: the stride basically defines the size
@@ -247,11 +247,11 @@ have a very good reason not to.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">_mode</span></code></dt><dd><p>Must be one of <code class="docutils literal notranslate"><span class="pre">DRM_IOR</span></code>, <code class="docutils literal notranslate"><span class="pre">DRM_IOW</span></code> or <code class="docutils literal notranslate"><span class="pre">DRM_IOWR</span></code>.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">_data</span></code></dt><dd><p>The type of the args struct passed by this IOCTL.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">_data</span></code></dt><dd><p>The type of the args <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">passed</span></code> by this IOCTL.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>The struct referred to by <strong>_data</strong> must have a <code class="docutils literal notranslate"><span class="pre">drm_pvr_ioctl_</span></code> prefix and an
+<p>The <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">referred</span></code> to by <strong>_data</strong> must have a <code class="docutils literal notranslate"><span class="pre">drm_pvr_ioctl_</span></code> prefix and an
 <code class="docutils literal notranslate"><span class="pre">_args</span> <span class="pre">suffix</span></code>. They are therefore omitted from <strong>_data</strong>.</p>
 <p>This should only be used to build the constants described below; it should
 never be used to call an IOCTL directly.</p>
@@ -1543,26 +1543,26 @@ with the type of job being submitted.</p>
 of macros and helper functions exist in <code class="docutils literal notranslate"><span class="pre">pvr_device.h</span></code>.</p>
 <p>Of the current helpers, it should only be necessary to call
 <a class="reference internal" href="#c.PVR_IOCTL_UNION_PADDING_CHECK" title="PVR_IOCTL_UNION_PADDING_CHECK"><code class="xref c c-func docutils literal notranslate"><span class="pre">PVR_IOCTL_UNION_PADDING_CHECK()</span></code></a> directly. This macro should be used once in
-every code path which extracts a union member from a struct passed from
+every code path which extracts a <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">member</span></code> from a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">passed</span></code> from
 userspace.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.pvr_ioctl_union_padding_check">
 <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pvr_ioctl_union_padding_check</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">instance</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">union_offset</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">union_size</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">member_size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pvr_ioctl_union_padding_check" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Validate that the implicit padding between the end of a union member and the end of the union itself is zeroed.</p>
+<dd><p>Validate that the implicit padding between the end of a <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">member</span></code> and the end of the <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">itself</span></code> is zeroed.</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">*instance</span></code></dt><dd><p>Pointer to the instance of the struct to validate.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">*instance</span></code></dt><dd><p>Pointer to the instance of the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">to</span></code> validate.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">union_offset</span></code></dt><dd><p>Offset into the type of <strong>instance</strong> of the target union. Must
 be 64-bit aligned.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">union_size</span></code></dt><dd><p>Size of the target union in the type of <strong>instance</strong>. Must be
+<dt><code class="docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">union_size</span></code></dt><dd><p>Size of the target <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">in</span></code> the type of <strong>instance</strong>. Must be
 64-bit aligned.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">member_size</span></code></dt><dd><p>Size of the target member in the target union specified by
+<dt><code class="docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">member_size</span></code></dt><dd><p>Size of the target member in the target <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">specified</span></code> by
 <strong>union_offset</strong> and <strong>union_size</strong>. It is assumed that the offset of the target
 member is zero relative to <strong>union_offset</strong>. Must be 64-bit aligned.</p>
 </dd>
@@ -1572,13 +1572,11 @@ member is zero relative to <strong>union_offset</strong>. Must be 64-bit aligned
 this function directly, since that macro abstracts away much of the setup,
 and also provides some static validation. See its docs for details.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if every byte between the end of the used member of the union and
-the end of that union is zeroed, or</p></li>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if every byte between the end of the used member of the <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">and</span></code>
+the end of that <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">is</span></code> zeroed, or</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">false</span></code> otherwise.</p></li>
 </ul>
-</div></blockquote>
 </div>
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.PVR_STATIC_ASSERT_64BIT_ALIGNED">
@@ -1608,7 +1606,7 @@ the end of that union is zeroed, or</p></li>
 
 <p><code class="docutils literal notranslate"><span class="pre">PVR_IOCTL_UNION_PADDING_CHECK</span> <span class="pre">(struct_instance_,</span> <span class="pre">union_,</span> <span class="pre">member_)</span></code></p>
 <blockquote>
-<div><p>Validate that the implicit padding between the end of a union member and the end of the union itself is zeroed.</p>
+<div><p>Validate that the implicit padding between the end of a <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">member</span></code> and the end of the <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">itself</span></code> is zeroed.</p>
 </div></blockquote>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
@@ -1616,8 +1614,8 @@ the end of that union is zeroed, or</p></li>
 <dt><code class="docutils literal notranslate"><span class="pre">struct_instance_</span></code></dt><dd><p>An expression which evaluates to a pointer to a UAPI data
 struct.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">union_</span></code></dt><dd><p>The name of the union member of <strong>struct_instance_</strong> to check. If the
-union member is nested within the type of <strong>struct_instance_</strong>, this may
+<dt><code class="docutils literal notranslate"><span class="pre">union_</span></code></dt><dd><p>The name of the <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">member</span></code> of <strong>struct_instance_</strong> to check. If the
+<code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">member</span></code> is nested within the type of <strong>struct_instance_</strong>, this may
 contain the member access operator (“.”).</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">member_</span></code></dt><dd><p>The name of the member of <strong>union_</strong> to assess.</p>
@@ -1627,13 +1625,11 @@ contain the member access operator (“.”).</p>
 <p>This is a wrapper around <a class="reference internal" href="#c.pvr_ioctl_union_padding_check" title="pvr_ioctl_union_padding_check"><code class="xref c c-func docutils literal notranslate"><span class="pre">pvr_ioctl_union_padding_check()</span></code></a> which performs
 alignment checks and simplifies things for the caller.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if every byte in <strong>struct_instance_</strong> between the end of <strong>member_</strong> and
 the end of <strong>union_</strong> is zeroed, or</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">false</span></code> otherwise.</p></li>
 </ul>
-</div></blockquote>
 </div>
 </section>
 </section>

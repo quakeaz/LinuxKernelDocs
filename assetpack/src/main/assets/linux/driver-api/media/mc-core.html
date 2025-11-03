@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -534,8 +534,8 @@ them.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">link_notify</span></code></dt><dd><p>Link state change notification callback. This callback is
 called with the graph_mutex held.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">req_alloc</span></code></dt><dd><p>Allocate a request. Set this if you need to allocate a struct
-larger then <a class="reference internal" href="#c.media_request" title="media_request"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">media_request</span></code></a>. <strong>req_alloc</strong> and <strong>req_free</strong> must
+<dt><code class="docutils literal notranslate"><span class="pre">req_alloc</span></code></dt><dd><p>Allocate a request. Set this if you need to allocate a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">larger</span></code> then <a class="reference internal" href="#c.media_request" title="media_request"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">media_request</span></code></a>. <strong>req_alloc</strong> and <strong>req_free</strong> must
 either both be set or both be NULL.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">req_free</span></code></dt><dd><p>Free a request. Set this if <strong>req_alloc</strong> was set as well, leave
@@ -762,12 +762,12 @@ this field must be left empty.</p></li>
 <li><p><a class="reference internal" href="#c.media_device" title="media_device"><code class="xref c c-type docutils literal notranslate"><span class="pre">media_device.bus_info</span></code></a> represents the location of the device in the
 system as a NUL-terminated ASCII string. For PCI/PCIe devices
 <a class="reference internal" href="#c.media_device" title="media_device"><code class="xref c c-type docutils literal notranslate"><span class="pre">media_device.bus_info</span></code></a> must be set to “PCI:” (or “PCIe:”) followed by
-the value of pci_name(). For USB devices,the <a class="reference internal" href="../usb/usb.html#c.usb_make_path" title="usb_make_path"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_make_path()</span></code></a> function
+the value of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_name()</span></code>. For USB devices,the <a class="reference internal" href="../usb/usb.html#c.usb_make_path" title="usb_make_path"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_make_path()</span></code></a> function
 must be used. This field is used by applications to distinguish between
 otherwise identical devices that don’t provide a serial number.</p></li>
 <li><p><a class="reference internal" href="#c.media_device" title="media_device"><code class="xref c c-type docutils literal notranslate"><span class="pre">media_device.hw_revision</span></code></a> is the hardware device revision in a
 driver-specific format. When possible the revision should be formatted
-with the KERNEL_VERSION() macro.</p></li>
+with the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">KERNEL_VERSION()</span></code> macro.</p></li>
 </ul>
 </div></blockquote>
 <div class="admonition note">
@@ -929,10 +929,10 @@ media_entity_notify callbacks are invoked.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">media_device</span> <span class="pre">*mdev</span></code></dt><dd><p>pointer to struct <a class="reference internal" href="#c.media_device" title="media_device"><code class="xref c c-type docutils literal notranslate"><span class="pre">media_device</span></code></a></p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pci_dev</span> <span class="pre">*pci_dev</span></code></dt><dd><p>pointer to struct pci_dev</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pci_dev</span> <span class="pre">*pci_dev</span></code></dt><dd><p>pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pci_dev</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*name</span></code></dt><dd><p>media device name. If <code class="docutils literal notranslate"><span class="pre">NULL</span></code>, the routine will use the default
-name for the pci device, given by pci_name() macro.</p>
+name for the pci device, given by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_name()</span></code> macro.</p>
 </dd>
 </dl>
 </div>
@@ -1080,7 +1080,7 @@ by the <strong>open</strong> function.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">dev</span></code></dt><dd><p>pointer to struct <a class="reference internal" href="../infrastructure.html#c.device" title="device"><code class="xref c c-type docutils literal notranslate"><span class="pre">device</span></code></a> containing the media controller device</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">cdev</span></code></dt><dd><p>struct cdev pointer character device</p>
+<dt><code class="docutils literal notranslate"><span class="pre">cdev</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cdev</span></code> pointer character device</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">parent</span></code></dt><dd><p>parent device</p>
 </dd>
@@ -1118,7 +1118,7 @@ before registering the node.</p>
 with the kernel. An error is returned if no free minor number can be found,
 or if the registration of the device node fails.</p>
 <p>Zero is returned on success.</p>
-<p>Note that if the media_devnode_register call fails, the release() callback of
+<p>Note that if the media_devnode_register call fails, the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">release()</span></code> callback of
 the media_devnode structure is <em>not</em> called, so the caller is responsible for
 freeing any data.</p>
 </div>
@@ -1235,7 +1235,7 @@ inside a media_device, as it is composed by
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>All objects on the media graph should have this struct embedded</p>
+<p>All objects on the media graph should have this <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">embedded</span></code></p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.media_entity_enum">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">media_entity_enum</span></span></span><a class="headerlink" href="#c.media_entity_enum" title="Link to this definition">¶</a><br /></dt>
@@ -1535,7 +1535,7 @@ access this field.</p>
 <p><strong>Definition</strong>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct media_entity_operations {
     int (*get_fwnode_pad)(struct media_entity *entity, struct fwnode_endpoint *endpoint);
-    int (*link_setup)(struct media_entity *entity,const struct media_pad *local, const struct media_pad *remote, u32 flags);
+    int (*link_setup)(struct media_entity *entity, const struct media_pad *local, const struct media_pad *remote, u32 flags);
     int (*link_validate)(struct media_link *link);
     bool (*has_pad_interdep)(struct media_entity *entity, unsigned int pad0, unsigned int pad1);
 };
@@ -1561,8 +1561,8 @@ part of the same pipeline and enabling one of the pads
 means that the other pad will become “locked” and
 doesn’t allow configuration changes. pad0 and pad1 are
 guaranteed to not both be sinks or sources. Never call
-the .has_pad_interdep() operation directly, always use
-media_entity_has_pad_interdep().
+the .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">has_pad_interdep()</span></code> operation directly, always use
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">media_entity_has_pad_interdep()</span></code>.
 Optional: If the operation isn’t implemented all pads
 will be considered as interdependent.</p>
 </dd>
@@ -1600,7 +1600,7 @@ structure that implements a media entity instance.</p>
 the correct object type. For instance, a media entity structure instance
 embedded in a v4l2_subdev structure instance will have the type
 <code class="docutils literal notranslate"><span class="pre">MEDIA_ENTITY_TYPE_V4L2_SUBDEV</span></code> and can safely be cast to a <a class="reference internal" href="v4l2-subdev.html#c.v4l2_subdev" title="v4l2_subdev"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subdev</span></code></a>
-structure using the container_of() macro.</p>
+structure using the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">container_of()</span></code> macro.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.media_entity">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">media_entity</span></span></span><a class="headerlink" href="#c.media_entity" title="Link to this definition">¶</a><br /></dt>
@@ -1833,7 +1833,7 @@ reference count bugs that would make it negative.</p>
 </dl>
 <p><strong>Return</strong></p>
 <p><code class="docutils literal notranslate"><span class="pre">true</span></code> if the entity is an instance of a video_device object and can
-safely be cast to a <a class="reference internal" href="v4l2-dev.html#c.video_device" title="video_device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">video_device</span></code></a> using the container_of() macro, or
+safely be cast to a <a class="reference internal" href="v4l2-dev.html#c.video_device" title="video_device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">video_device</span></code></a> using the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">container_of()</span></code> macro, or
 <code class="docutils literal notranslate"><span class="pre">false</span></code> otherwise.</p>
 </div>
 <dl class="c function">
@@ -1850,7 +1850,7 @@ safely be cast to a <a class="reference internal" href="v4l2-dev.html#c.video_de
 </dl>
 <p><strong>Return</strong></p>
 <p><code class="docutils literal notranslate"><span class="pre">true</span></code> if the entity is an instance of a <a class="reference internal" href="v4l2-subdev.html#c.v4l2_subdev" title="v4l2_subdev"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subdev</span></code></a> object and can
-safely be cast to a struct <a class="reference internal" href="v4l2-subdev.html#c.v4l2_subdev" title="v4l2_subdev"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subdev</span></code></a> using the container_of() macro, or
+safely be cast to a struct <a class="reference internal" href="v4l2-subdev.html#c.v4l2_subdev" title="v4l2_subdev"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subdev</span></code></a> using the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">container_of()</span></code> macro, or
 <code class="docutils literal notranslate"><span class="pre">false</span></code> otherwise.</p>
 </div>
 <dl class="c function">
@@ -1963,7 +1963,7 @@ safely be cast to a struct <a class="reference internal" href="v4l2-subdev.html#
 <dl class="c function">
 <dt class="sig sig-object c" id="c.media_entity_enum_empty">
 <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">media_entity_enum_empty</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.media_entity_enum" title="media_entity_enum"><span class="n"><span class="pre">media_entity_enum</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ent_enum</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.media_entity_enum_empty" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Test whether the entire enum is empty</p>
+<dd><p>Test whether the entire <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">is</span></code> empty</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -2157,7 +2157,7 @@ pads array in a driver-specific structure, avoiding dynamic allocation.</p>
 <p>This function must be called during the cleanup phase after unregistering
 the entity (currently, it does nothing).</p>
 <p>Calling <a class="reference internal" href="#c.media_entity_cleanup" title="media_entity_cleanup"><code class="xref c c-func docutils literal notranslate"><span class="pre">media_entity_cleanup()</span></code></a> on a media_entity whose memory has been
-zeroed but that has not been initialized with media_entity_pad_init() is
+zeroed but that has not been initialized with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">media_entity_pad_init()</span></code> is
 valid and is a no-op.</p>
 </div>
 <dl class="c function">
@@ -2577,7 +2577,7 @@ not part of any pipeline.</p>
 <p>This function can be used to resolve the media pad number from
 a fwnode. This is useful for devices which use more complex
 mappings of media pads.</p>
-<p>If the entity does not implement the get_fwnode_pad() operation
+<p>If the entity does not implement the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_fwnode_pad()</span></code> operation
 then this function searches the entity for the first pad that
 matches the <strong>direction_flags</strong>.</p>
 <p><strong>Return</strong></p>
@@ -2876,10 +2876,8 @@ the pad is already part of a pipeline, or allocate a new pipeline.</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>if succeeded, returns a pointer to the newly allocated</dt><dd><p><a class="reference internal" href="#c.media_intf_devnode" title="media_intf_devnode"><code class="xref c c-type docutils literal notranslate"><span class="pre">media_intf_devnode</span></code></a> pointer.</p>
-</dd>
-</dl>
+<p>if succeeded, returns a pointer to the newly allocated
+<a class="reference internal" href="#c.media_intf_devnode" title="media_intf_devnode"><code class="xref c c-type docutils literal notranslate"><span class="pre">media_intf_devnode</span></code></a> pointer.</p>
 <p><strong>Description</strong></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -3382,8 +3380,8 @@ request.</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>An object related to the request. This struct is always embedded in
-another struct that contains the actual data for this request object.</p>
+<p>An object related to the request. This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> always embedded in
+another <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">that</span></code> contains the actual data for this request object.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.media_request_object_get">
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">media_request_object_get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.media_request_object" title="media_request_object"><span class="n"><span class="pre">media_request_object</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">obj</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.media_request_object_get" title="Link to this definition">¶</a><br /></dt>
@@ -3532,7 +3530,7 @@ be completed.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*module_name</span></code></dt><dd><p>should be filled with <code class="docutils literal notranslate"><span class="pre">KBUILD_MODNAME</span></code></p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">module</span> <span class="pre">*owner</span></code></dt><dd><p>struct module pointer <code class="docutils literal notranslate"><span class="pre">THIS_MODULE</span></code> for the driver.
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">module</span> <span class="pre">*owner</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">module</span></code> pointer <code class="docutils literal notranslate"><span class="pre">THIS_MODULE</span></code> for the driver.
 <code class="docutils literal notranslate"><span class="pre">THIS_MODULE</span></code> is null for a built-in driver.
 It is safe even when <code class="docutils literal notranslate"><span class="pre">THIS_MODULE</span></code> is null.</p>
 </dd>
@@ -3556,7 +3554,7 @@ it.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*module_name</span></code></dt><dd><p>should be filled with <code class="docutils literal notranslate"><span class="pre">KBUILD_MODNAME</span></code></p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">module</span> <span class="pre">*owner</span></code></dt><dd><p>struct module pointer <code class="docutils literal notranslate"><span class="pre">THIS_MODULE</span></code> for the driver.
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">module</span> <span class="pre">*owner</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">module</span></code> pointer <code class="docutils literal notranslate"><span class="pre">THIS_MODULE</span></code> for the driver.
 <code class="docutils literal notranslate"><span class="pre">THIS_MODULE</span></code> is null for a built-in driver.
 It is safe even when <code class="docutils literal notranslate"><span class="pre">THIS_MODULE</span></code> is null.</p>
 </dd>

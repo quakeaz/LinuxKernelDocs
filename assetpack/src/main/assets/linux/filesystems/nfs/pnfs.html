@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -155,24 +155,24 @@ can be referenced by multiple layouts. To keep all of this straight,
 we need to reference count.</p>
 <section id="struct-pnfs-layout-hdr">
 <h2>struct pnfs_layout_hdr<a class="headerlink" href="#struct-pnfs-layout-hdr" title="Link to this heading">¶</a></h2>
-<p>The on-the-wire command LAYOUTGET corresponds to struct
-pnfs_layout_segment, usually referred to by the variable name lseg.
+<p>The on-the-wire command LAYOUTGET corresponds to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">pnfs_layout_segment</span></code>, usually referred to by the variable name lseg.
 Each nfs_inode may hold a pointer to a cache of these layout
-segments in nfsi-&gt;layout, of type struct pnfs_layout_hdr.</p>
+segments in nfsi-&gt;layout, of type <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pnfs_layout_hdr</span></code>.</p>
 <p>We reference the header for the inode pointing to it, across each
 outstanding RPC call that references it (LAYOUTGET, LAYOUTRETURN,
 LAYOUTCOMMIT), and for each lseg held within.</p>
 <p>Each header is also (when non-empty) put on a list associated with
-struct nfs_client (cl_layouts).  Being put on this list does not bump
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">nfs_client</span></code> (cl_layouts).  Being put on this list does not bump
 the reference count, as the layout is kept around by the lseg that
 keeps it in the list.</p>
 </section>
 <section id="deviceid-cache">
 <h2>deviceid_cache<a class="headerlink" href="#deviceid-cache" title="Link to this heading">¶</a></h2>
 <p>lsegs reference device ids, which are resolved per nfs_client and
-layout driver type.  The device ids are held in a RCU cache (struct
-nfs4_deviceid_cache).  The cache itself is referenced across each
-mount.  The entries (struct nfs4_deviceid) themselves are held across
+layout driver type.  The device ids are held in a RCU cache (<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">nfs4_deviceid_cache</span></code>).  The cache itself is referenced across each
+mount.  The entries (<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">nfs4_deviceid</span></code>) themselves are held across
 the lifetime of each lseg referencing them.</p>
 <p>RCU is used because the deviceid is basically a write once, read many
 data structure.  The hlist size of 32 buckets needs better

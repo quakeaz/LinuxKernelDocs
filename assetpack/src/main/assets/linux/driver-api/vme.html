@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -565,12 +565,10 @@ address space and data transfer cycle.</p>
 <p><strong>Description</strong></p>
 <p>Set configuration for provided VME slave window.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Zero on success, -EINVAL if operation is not supported on this</dt><dd><p>device, if an invalid resource has been provided or invalid
+<p>Zero on success, -EINVAL if operation is not supported on this
+device, if an invalid resource has been provided or invalid
 attributes are provided. Hardware specific errors may also be
 returned.</p>
-</dd>
-</dl>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.vme_slave_get">
@@ -599,10 +597,8 @@ returned.</p>
 <p><strong>Description</strong></p>
 <p>Return configuration for provided VME slave window.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Zero on success, -EINVAL if operation is not supported on this</dt><dd><p>device or if an invalid resource has been provided.</p>
-</dd>
-</dl>
+<p>Zero on success, -EINVAL if operation is not supported on this
+device or if an invalid resource has been provided.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.vme_slave_free">
@@ -670,12 +666,10 @@ address space, data transfer cycle and width.</p>
 <p><strong>Description</strong></p>
 <p>Set configuration for provided VME master window.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Zero on success, -EINVAL if operation is not supported on this</dt><dd><p>device, if an invalid resource has been provided or invalid
+<p>Zero on success, -EINVAL if operation is not supported on this
+device, if an invalid resource has been provided or invalid
 attributes are provided. Hardware specific errors may also be
 returned.</p>
-</dd>
-</dl>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.vme_master_get">
@@ -704,10 +698,8 @@ returned.</p>
 <p><strong>Description</strong></p>
 <p>Return configuration for provided VME master window.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Zero on success, -EINVAL if operation is not supported on this</dt><dd><p>device or if an invalid resource has been provided.</p>
-</dd>
-</dl>
+<p>Zero on success, -EINVAL if operation is not supported on this
+device or if an invalid resource has been provided.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.vme_master_read">
@@ -731,12 +723,10 @@ returned.</p>
 <p>Perform read of count bytes of data from location on VME bus which maps into
 the VME master window at offset to buf.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Number of bytes read, -EINVAL if resource is not a VME master</dt><dd><p>resource or read operation is not supported. -EFAULT returned if
+<p>Number of bytes read, -EINVAL if resource is not a VME master
+resource or read operation is not supported. -EFAULT returned if
 invalid offset is provided. Hardware specific errors may also be
 returned.</p>
-</dd>
-</dl>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.vme_master_write">
@@ -760,12 +750,10 @@ returned.</p>
 <p>Perform write of count bytes of data from buf to location on VME bus which
 maps into the VME master window at offset.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Number of bytes written, -EINVAL if resource is not a VME master</dt><dd><p>resource or write operation is not supported. -EFAULT returned if
+<p>Number of bytes written, -EINVAL if resource is not a VME master
+resource or write operation is not supported. -EFAULT returned if
 invalid offset is provided. Hardware specific errors may also be
 returned.</p>
-</dd>
-</dl>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.vme_master_rmw">
@@ -795,11 +783,9 @@ returned.</p>
 the bit is swapped.
 - Result written back to location on VME bus.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Bytes written on success, -EINVAL if resource is not a VME master</dt><dd><p>resource or RMW operation is not supported. Hardware specific
+<p>Bytes written on success, -EINVAL if resource is not a VME master
+resource or RMW operation is not supported. Hardware specific
 errors may also be returned.</p>
-</dd>
-</dl>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.vme_master_mmap">
@@ -818,11 +804,9 @@ errors may also be returned.</p>
 <p><strong>Description</strong></p>
 <p>Memory map a region of the VME master window into user space.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Zero on success, -EINVAL if resource is not a VME master</dt><dd><p>resource or -EFAULT if map exceeds window size. Other generic mmap
+<p>Zero on success, -EINVAL if resource is not a VME master
+resource or -EFAULT if map exceeds window size. Other generic mmap
 errors may also be returned.</p>
-</dd>
-</dl>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.vme_master_free">
@@ -854,7 +838,7 @@ errors may also be returned.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Request a VME DMA controller with capability to perform transfers bewteen
+<p>Request a VME DMA controller with capability to perform transfers between
 requested source/destination combination.</p>
 <p><strong>Return</strong></p>
 <p>Pointer to VME DMA resource on success, NULL on failure.</p>
@@ -875,10 +859,8 @@ requested source/destination combination.</p>
 <p>Create a new VME DMA list. It is the responsibility of the user to free
 the list once it is no longer required with <a class="reference internal" href="#c.vme_dma_list_free" title="vme_dma_list_free"><code class="xref c c-func docutils literal notranslate"><span class="pre">vme_dma_list_free()</span></code></a>.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Pointer to new VME DMA list, NULL on allocation failure or invalid</dt><dd><p>VME DMA resource.</p>
-</dd>
-</dl>
+<p>Pointer to new VME DMA list, NULL on allocation failure or invalid
+VME DMA resource.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.vme_dma_pattern_attribute">
@@ -964,7 +946,7 @@ once <a class="reference internal" href="#c.vme_dma_list_add" title="vme_dma_lis
 <dl class="c function">
 <dt class="sig sig-object c" id="c.vme_dma_list_add">
 <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">vme_dma_list_add</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">vme_dma_list</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">list</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">vme_dma_attr</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">src</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">vme_dma_attr</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dest</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">count</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.vme_dma_list_add" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Add enty to a VME DMA list.</p>
+<dd><p>Add entry to a VME DMA list.</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -985,11 +967,9 @@ and destination DMA attributes and a count.</p>
 <p>Please note, the attributes supported as source and destinations for
 transfers are hardware dependent.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Zero on success, -EINVAL if operation is not supported on this</dt><dd><p>device or if the link list has already been submitted for execution.
+<p>Zero on success, -EINVAL if operation is not supported on this
+device or if the link list has already been submitted for execution.
 Hardware specific errors also possible.</p>
-</dd>
-</dl>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.vme_dma_list_exec">
@@ -1007,10 +987,8 @@ Hardware specific errors also possible.</p>
 <p>Queue the provided VME DMA list for execution. The call will return once the
 list has been executed.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Zero on success, -EINVAL if operation is not supported on this</dt><dd><p>device. Hardware specific errors also possible.</p>
-</dd>
-</dl>
+<p>Zero on success, -EINVAL if operation is not supported on this
+device. Hardware specific errors also possible.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.vme_dma_list_free">
@@ -1027,10 +1005,8 @@ list has been executed.</p>
 <p><strong>Description</strong></p>
 <p>Free the provided DMA list and all its entries.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Zero on success, -EINVAL on invalid VME resource, -EBUSY if resource</dt><dd><p>is still in use. Hardware specific errors also possible.</p>
-</dd>
-</dl>
+<p>Zero on success, -EINVAL on invalid VME resource, -EBUSY if resource
+is still in use. Hardware specific errors also possible.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.vme_dma_free">
@@ -1047,10 +1023,8 @@ list has been executed.</p>
 <p><strong>Description</strong></p>
 <p>Free the provided DMA resource so that it may be reallocated.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Zero on success, -EINVAL on invalid VME resource, -EBUSY if resource</dt><dd><p>is still active.</p>
-</dd>
-</dl>
+<p>Zero on success, -EINVAL on invalid VME resource, -EBUSY if resource
+is still active.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.vme_irq_request">
@@ -1077,11 +1051,9 @@ received.</p>
 <p>Request callback to be attached as a handler for VME interrupts with provided
 level and statid.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Zero on success, -EINVAL on invalid vme device, level or if the</dt><dd><p>function is not supported, -EBUSY if the level/statid combination is
+<p>Zero on success, -EINVAL on invalid vme device, level or if the
+function is not supported, -EBUSY if the level/statid combination is
 already in use. Hardware specific errors also possible.</p>
-</dd>
-</dl>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.vme_irq_free">
@@ -1122,10 +1094,8 @@ already in use. Hardware specific errors also possible.</p>
 <p>Generate a VME interrupt of the provided level and with the provided
 statid.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Zero on success, -EINVAL on invalid vme device, level or if the</dt><dd><p>function is not supported. Hardware specific errors also possible.</p>
-</dd>
-</dl>
+<p>Zero on success, -EINVAL on invalid vme device, level or if the
+function is not supported. Hardware specific errors also possible.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.vme_lm_request">
@@ -1163,10 +1133,8 @@ addresses on the VME bus.</p>
 Return the number of contiguous addresses monitored by the
 location monitor.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Count of addresses monitored or -EINVAL when provided with an</dt><dd><p>invalid location monitor resource.</p>
-</dd>
-</dl>
+<p>Count of addresses monitored or -EINVAL when provided with an
+invalid location monitor resource.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.vme_lm_set">
@@ -1190,11 +1158,9 @@ location monitor.</p>
 <p>Set the base address, address space and cycle type of accesses to be
 monitored by the location monitor.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Zero on success, -EINVAL when provided with an invalid location</dt><dd><p>monitor resource or function is not supported. Hardware specific
+<p>Zero on success, -EINVAL when provided with an invalid location
+monitor resource or function is not supported. Hardware specific
 errors may also be returned.</p>
-</dd>
-</dl>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.vme_lm_get">
@@ -1218,11 +1184,9 @@ errors may also be returned.</p>
 <p>Retrieve the base address, address space and cycle type of accesses to
 be monitored by the location monitor.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Zero on success, -EINVAL when provided with an invalid location</dt><dd><p>monitor resource or function is not supported. Hardware specific
+<p>Zero on success, -EINVAL when provided with an invalid location
+monitor resource or function is not supported. Hardware specific
 errors may also be returned.</p>
-</dd>
-</dl>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.vme_lm_attach">
@@ -1247,11 +1211,9 @@ errors may also be returned.</p>
 monitored addresses. A generic pointer is provided to allow data to be
 passed to the callback when called.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Zero on success, -EINVAL when provided with an invalid location</dt><dd><p>monitor resource or function is not supported. Hardware specific
+<p>Zero on success, -EINVAL when provided with an invalid location
+monitor resource or function is not supported. Hardware specific
 errors may also be returned.</p>
-</dd>
-</dl>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.vme_lm_detach">
@@ -1271,11 +1233,9 @@ errors may also be returned.</p>
 <p>Remove the callback associated with the specified offset into the
 location monitors monitored addresses.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Zero on success, -EINVAL when provided with an invalid location</dt><dd><p>monitor resource or function is not supported. Hardware specific
+<p>Zero on success, -EINVAL when provided with an invalid location
+monitor resource or function is not supported. Hardware specific
 errors may also be returned.</p>
-</dd>
-</dl>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.vme_lm_free">
@@ -1296,10 +1256,8 @@ errors may also be returned.</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Zero on success, -EINVAL when provided with an invalid location</dt><dd><p>monitor resource.</p>
-</dd>
-</dl>
+<p>Zero on success, -EINVAL when provided with an invalid location
+monitor resource.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.vme_slot_num">
@@ -1316,11 +1274,9 @@ errors may also be returned.</p>
 <p><strong>Description</strong></p>
 <p>Retrieve the slot ID associated with the provided VME device.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>The slot ID on success, -EINVAL if VME bridge cannot be determined</dt><dd><p>or the function is not supported. Hardware specific errors may also
+<p>The slot ID on success, -EINVAL if VME bridge cannot be determined
+or the function is not supported. Hardware specific errors may also
 be returned.</p>
-</dd>
-</dl>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.vme_bus_num">
@@ -1337,10 +1293,8 @@ be returned.</p>
 <p><strong>Description</strong></p>
 <p>Retrieve the bus enumeration associated with the provided VME device.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>The bus number on success, -EINVAL if VME bridge cannot be</dt><dd><p>determined.</p>
-</dd>
-</dl>
+<p>The bus number on success, -EINVAL if VME bridge cannot be
+determined.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.vme_register_driver">

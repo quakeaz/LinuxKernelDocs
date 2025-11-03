@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -167,7 +167,7 @@
 order to support the use of the RISC-V Vector Extension.</p>
 <section id="prctl-interface">
 <h2>1.  prctl() Interface<a class="headerlink" href="#prctl-interface" title="Link to this heading">¶</a></h2>
-<p>Two new prctl() calls are added to allow programs to manage the enablement
+<p>Two new <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prctl()</span></code> calls are added to allow programs to manage the enablement
 status for the use of Vector in userspace. The intended usage guideline for
 these interfaces is to give init systems a way to modify the availability of V
 for processes running under its domain. Calling these interfaces is not
@@ -206,7 +206,7 @@ bit[3:2].</p>
 <div><ul class="simple">
 <li><p><code class="xref c c-macro docutils literal notranslate"><span class="pre">PR_RISCV_V_VSTATE_CTRL_CUR_MASK</span></code>: bit[1:0]: Account for the
 Vector enablement status for the calling thread. The calling thread is
-not able to turn off Vector once it has been enabled. The prctl() call
+not able to turn off Vector once it has been enabled. The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prctl()</span></code> call
 fails with EPERM if the value in this mask is PR_RISCV_V_VSTATE_CTRL_OFF
 but the current enablement status is not off. Setting
 PR_RISCV_V_VSTATE_CTRL_DEFAULT here takes no effect but to set back

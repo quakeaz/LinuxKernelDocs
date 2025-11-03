@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -323,7 +323,7 @@ require shadow variables for only a subset of parent object instances.
 In these cases, the <a class="reference internal" href="api.html#c.klp_shadow_get_or_alloc" title="klp_shadow_get_or_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">klp_shadow_get_or_alloc()</span></code></a> call can be used to attach
 shadow variables to parents already in-flight.</p>
 <p>For <a class="reference external" href="https://git.kernel.org/torvalds/c/1d147bfa6429">commit 1d147bfa6429</a>, a good spot to allocate a shadow spinlock is
-inside ieee80211_sta_ps_deliver_wakeup():</p>
+inside <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ieee80211_sta_ps_deliver_wakeup()</span></code>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int ps_lock_shadow_ctor(void *obj, void *shadow_data, void *ctor_data)
 {
       spinlock_t *lock = shadow_data;

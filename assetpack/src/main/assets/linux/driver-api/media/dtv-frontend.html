@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -228,7 +228,7 @@ hardware. Such driver should implement <a class="reference internal" href="#c.dv
 tells what type of digital TV standards are supported, and points to a
 series of functions that allow the DVB core to command the hardware via
 the code under <code class="docutils literal notranslate"><span class="pre">include/media/dvb_frontend.c</span></code>.</p>
-<p>A typical example of such struct in a driver <code class="docutils literal notranslate"><span class="pre">foo</span></code> is:</p>
+<p>A typical example of such <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">in</span></code> a driver <code class="docutils literal notranslate"><span class="pre">foo</span></code> is:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>static struct dvb_frontend_ops foo_ops = {
         .delsys = { SYS_DVBT, SYS_DVBT2, SYS_DVBC_ANNEX_A },
         .info = {
@@ -268,7 +268,7 @@ the code under <code class="docutils literal notranslate"><span class="pre">incl
 };
 </pre></div>
 </div>
-<p>A typical example of such struct in a driver <code class="docutils literal notranslate"><span class="pre">bar</span></code> meant to be used on
+<p>A typical example of such <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">in</span></code> a driver <code class="docutils literal notranslate"><span class="pre">bar</span></code> meant to be used on
 Satellite TV reception is:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>static const struct dvb_frontend_ops bar_ops = {
         .delsys = { SYS_DVBS, SYS_DVBS2 },
@@ -727,7 +727,7 @@ monotonic stats at the right time.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">frequency</span></code></dt><dd><p>Frequency used by analog TV tuner (either in 62.5 kHz step,
 for TV, or 62.5 Hz for radio)</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">mode</span></code></dt><dd><p>Tuner mode, as defined on enum v4l2_tuner_type</p>
+<dt><code class="docutils literal notranslate"><span class="pre">mode</span></code></dt><dd><p>Tuner mode, as defined on <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">v4l2_tuner_type</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">audmode</span></code></dt><dd><p>Audio mode as defined for the rxsubchans field at videodev2.h,
 e. g. V4L2_TUNER_MODE_*</p>
@@ -738,7 +738,7 @@ e. g. V4L2_TUNER_MODE_*</p>
 </div>
 <p><strong>Description</strong></p>
 <p>Hybrid tuners should be supported by both V4L2 and DVB APIs. This
-struct contains the data that are used by the V4L2 side. To avoid
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">contains</span></code> the data that are used by the V4L2 side. To avoid
 dependencies from V4L2 headers, all enums here are declared as integers.</p>
 <dl class="c enum">
 <dt class="sig sig-object c" id="c.dvbfe_algo">
@@ -1024,7 +1024,7 @@ as specified in <a class="reference internal" href="../../userspace-api/media/dv
     int (*suspend)(struct dvb_frontend *fe);
     int (*resume)(struct dvb_frontend *fe);
     int (*write)(struct dvb_frontend* fe, const u8 buf[], int len);
-    int (*tune)(struct dvb_frontend* fe,bool re_tune,unsigned int mode_flags,unsigned int *delay, enum fe_status *status);
+    int (*tune)(struct dvb_frontend* fe, bool re_tune, unsigned int mode_flags, unsigned int *delay, enum fe_status *status);
     enum dvbfe_algo (*get_frontend_algo)(struct dvb_frontend *fe);
     int (*set_frontend)(struct dvb_frontend *fe);
     int (*get_tune_settings)(struct dvb_frontend* fe, struct dvb_frontend_tune_settings* settings);
@@ -1130,28 +1130,28 @@ implementing this callback only if DVBv3 API
 compatibility is wanted.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">diseqc_reset_overload</span></code></dt><dd><p>callback function to implement the
-FE_DISEQC_RESET_OVERLOAD() ioctl (only Satellite)</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">FE_DISEQC_RESET_OVERLOAD()</span></code> ioctl (only Satellite)</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">diseqc_send_master_cmd</span></code></dt><dd><p>callback function to implement the
-FE_DISEQC_SEND_MASTER_CMD() ioctl (only Satellite).</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">FE_DISEQC_SEND_MASTER_CMD()</span></code> ioctl (only Satellite).</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">diseqc_recv_slave_reply</span></code></dt><dd><p>callback function to implement the
-FE_DISEQC_RECV_SLAVE_REPLY() ioctl (only Satellite)</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">FE_DISEQC_RECV_SLAVE_REPLY()</span></code> ioctl (only Satellite)</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">diseqc_send_burst</span></code></dt><dd><p>callback function to implement the
-FE_DISEQC_SEND_BURST() ioctl (only Satellite).</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">FE_DISEQC_SEND_BURST()</span></code> ioctl (only Satellite).</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">set_tone</span></code></dt><dd><p>callback function to implement the
-FE_SET_TONE() ioctl (only Satellite).</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">FE_SET_TONE()</span></code> ioctl (only Satellite).</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">set_voltage</span></code></dt><dd><p>callback function to implement the
-FE_SET_VOLTAGE() ioctl (only Satellite).</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">FE_SET_VOLTAGE()</span></code> ioctl (only Satellite).</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">enable_high_lnb_voltage</span></code></dt><dd><p>callback function to implement the
-FE_ENABLE_HIGH_LNB_VOLTAGE() ioctl (only Satellite).</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">FE_ENABLE_HIGH_LNB_VOLTAGE()</span></code> ioctl (only Satellite).</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">dishnetwork_send_legacy_command</span></code></dt><dd><p>callback function to implement the
-FE_DISHNETWORK_SEND_LEGACY_CMD() ioctl (only Satellite).
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">FE_DISHNETWORK_SEND_LEGACY_CMD()</span></code> ioctl (only Satellite).
 Drivers should not use this, except when the DVB
 core emulation fails to provide proper support (e.g.
 if <strong>set_voltage</strong> takes more than 8ms to work), and
@@ -1365,7 +1365,6 @@ Block Mode (only ATSC-M/H)</p>
 <p><strong>NOTE</strong></p>
 <p>derivated statistics like Uncorrected Error blocks (UCE) are
 calculated on userspace.</p>
-<p><strong>Description</strong></p>
 <p>Only a subset of the properties are needed for a given delivery system.
 For more info, consult the media_api.html with the documentation of the
 Userspace API.</p>
@@ -1503,8 +1502,8 @@ previously used DVB frontend modules.</p>
 <p><strong>Description</strong></p>
 <p>This function prepares a Digital TV frontend to suspend.</p>
 <p>In order to prepare the tuner to suspend, if
-<a class="reference internal" href="#c.dvb_frontend_ops" title="dvb_frontend_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">dvb_frontend_ops.tuner_ops</span></code></a>.suspend() is available, it calls it. Otherwise,
-it will call <a class="reference internal" href="#c.dvb_frontend_ops" title="dvb_frontend_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">dvb_frontend_ops.tuner_ops</span></code></a>.sleep(), if available.</p>
+<a class="reference internal" href="#c.dvb_frontend_ops" title="dvb_frontend_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">dvb_frontend_ops.tuner_ops</span></code></a>.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">suspend()</span></code> is available, it calls it. Otherwise,
+it will call <a class="reference internal" href="#c.dvb_frontend_ops" title="dvb_frontend_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">dvb_frontend_ops.tuner_ops</span></code></a>.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sleep()</span></code>, if available.</p>
 <p>It will also call <a class="reference internal" href="#c.dvb_frontend_ops" title="dvb_frontend_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">dvb_frontend_ops.suspend</span></code></a>() to put the demod to suspend,
 if available. Otherwise it will call <a class="reference internal" href="#c.dvb_frontend_ops" title="dvb_frontend_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">dvb_frontend_ops.sleep</span></code></a>().</p>
 <p>The drivers should also call <a class="reference internal" href="#c.dvb_frontend_suspend" title="dvb_frontend_suspend"><code class="xref c c-func docutils literal notranslate"><span class="pre">dvb_frontend_suspend()</span></code></a> as part of their
@@ -1527,8 +1526,8 @@ handler for the <a class="reference internal" href="../infrastructure.html#c.dev
 <p>In order to resume the frontend, it calls the demod
 <a class="reference internal" href="#c.dvb_frontend_ops" title="dvb_frontend_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">dvb_frontend_ops.resume</span></code></a>() if available. Otherwise it calls demod
 <a class="reference internal" href="#c.dvb_frontend_ops" title="dvb_frontend_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">dvb_frontend_ops.init</span></code></a>().</p>
-<p>If <a class="reference internal" href="#c.dvb_frontend_ops" title="dvb_frontend_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">dvb_frontend_ops.tuner_ops</span></code></a>.resume() is available, It, it calls it.
-Otherwise,t will call <a class="reference internal" href="#c.dvb_frontend_ops" title="dvb_frontend_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">dvb_frontend_ops.tuner_ops</span></code></a>.init(), if available.</p>
+<p>If <a class="reference internal" href="#c.dvb_frontend_ops" title="dvb_frontend_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">dvb_frontend_ops.tuner_ops</span></code></a>.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">resume()</span></code> is available, It, it calls it.
+Otherwise,t will call <a class="reference internal" href="#c.dvb_frontend_ops" title="dvb_frontend_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">dvb_frontend_ops.tuner_ops</span></code></a>.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init()</span></code>, if available.</p>
 <p>Once tuner and demods are resumed, it will enforce that the SEC voltage and
 tone are restored to their previous values and wake up the frontend’s
 kthread in order to retune the frontend.</p>
@@ -1548,7 +1547,7 @@ handler for the <a class="reference internal" href="../infrastructure.html#c.dev
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Calls <a class="reference internal" href="#c.dvb_frontend_ops" title="dvb_frontend_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">dvb_frontend_ops.init</span></code></a>() and <a class="reference internal" href="#c.dvb_frontend_ops" title="dvb_frontend_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">dvb_frontend_ops.tuner_ops</span></code></a>.init(),
+<p>Calls <a class="reference internal" href="#c.dvb_frontend_ops" title="dvb_frontend_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">dvb_frontend_ops.init</span></code></a>() and <a class="reference internal" href="#c.dvb_frontend_ops" title="dvb_frontend_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">dvb_frontend_ops.tuner_ops</span></code></a>.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init()</span></code>,
 and resets SEC tone and voltage (for Satellite systems).</p>
 <p><strong>NOTE</strong></p>
 <p>Currently, this function is used only by one driver (budget-av).
@@ -1571,11 +1570,11 @@ frontend.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>This function is used to measure the time required for the
-FE_DISHNETWORK_SEND_LEGACY_CMD() ioctl to work. It needs to be as precise
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">FE_DISHNETWORK_SEND_LEGACY_CMD()</span></code> ioctl to work. It needs to be as precise
 as possible, as it affects the detection of the dish tone command at the
 satellite subsystem.</p>
 <p>Its used internally by the DVB frontend core, in order to emulate
-FE_DISHNETWORK_SEND_LEGACY_CMD() using the <a class="reference internal" href="#c.dvb_frontend_ops" title="dvb_frontend_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">dvb_frontend_ops.set_voltage</span></code></a>()
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">FE_DISHNETWORK_SEND_LEGACY_CMD()</span></code> using the <a class="reference internal" href="#c.dvb_frontend_ops" title="dvb_frontend_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">dvb_frontend_ops.set_voltage</span></code></a>()
 callback.</p>
 <p><strong>NOTE</strong></p>
 <p>it should not be used at the drivers, as the emulation for the

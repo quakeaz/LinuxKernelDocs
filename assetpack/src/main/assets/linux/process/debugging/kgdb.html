@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -570,7 +570,7 @@ list of the commands that are available.</p>
 <td><p>Shows kernel version info and memory usage</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">bt</span></code></p></td>
-<td><p>Get a backtrace of the current process using dump_stack()</p></td>
+<td><p>Get a backtrace of the current process using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dump_stack()</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dmesg</span></code></p></td>
 <td><p>View the kernel syslog buffer</p></td>
@@ -848,8 +848,8 @@ register and unregister for the trap handlers on this architecture.
 The arch-specific portion implements:</p>
 <ul class="simple">
 <li><p>contains an arch-specific trap catcher which invokes
-kgdb_handle_exception() to start kgdb about doing its work</p></li>
-<li><p>translation to and from gdb specific packet format to struct pt_regs</p></li>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kgdb_handle_exception()</span></code> to start kgdb about doing its work</p></li>
+<li><p>translation to and from gdb specific packet format to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pt_regs</span></code></p></li>
 <li><p>Registration and unregistration of architecture specific trap
 hooks</p></li>
 <li><p>Any special exception handling and cleanup</p></li>
@@ -886,7 +886,7 @@ config. Later run <code class="docutils literal notranslate"><span class="pre">m
 enter the kdb shell, you can run the <code class="docutils literal notranslate"><span class="pre">hello</span></code> command.</p></li>
 </ul>
 </li>
-<li><p>The implementation for kdb_printf() which emits messages directly
+<li><p>The implementation for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kdb_printf()</span></code> which emits messages directly
 to I/O drivers, bypassing the kernel log.</p></li>
 <li><p>SW / HW breakpoint management for the kdb shell</p></li>
 </ul>
@@ -953,15 +953,18 @@ implementation.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">exception</span></code></dt><dd><p>Exception vector number</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pt_regs</span> <span class="pre">*regs</span></code></dt><dd><p>Current <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pt_regs</span></code>.</p>
-<p>On some architectures it is required to skip a breakpoint
-exception when it occurs after a breakpoint has been removed.
-This can be implemented in the architecture specific portion of kgdb.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>On some architectures it is required to skip a breakpoint
+exception when it occurs after a breakpoint has been removed.
+This can be implemented in the architecture specific portion of kgdb.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.kgdb_breakpoint">
@@ -1026,14 +1029,17 @@ specific callbacks, for dynamic registration and unregistration.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">*gdb_regs</span></code></dt><dd><p>A pointer to hold the registers in the order GDB wants.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pt_regs</span> <span class="pre">*regs</span></code></dt><dd><p>The <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pt_regs</span></code> of the current process.</p>
-<p>Convert the pt_regs in <strong>regs</strong> into the format for registers that
-GDB expects, stored in <strong>gdb_regs</strong>.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Convert the pt_regs in <strong>regs</strong> into the format for registers that
+GDB expects, stored in <strong>gdb_regs</strong>.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.sleeping_thread_to_gdb_regs">
@@ -1043,18 +1049,21 @@ GDB expects, stored in <strong>gdb_regs</strong>.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">*gdb_regs</span></code></dt><dd><p>A pointer to hold the registers in the order GDB wants.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">task_struct</span> <span class="pre">*p</span></code></dt><dd><p>The <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">task_struct</span></code> of the desired process.</p>
-<p>Convert the register values of the sleeping process in <strong>p</strong> to
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Convert the register values of the sleeping process in <strong>p</strong> to
 the format that GDB expects.
 This function is called when kgdb does not have access to the
 <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pt_regs</span></code> and therefore it should fill the gdb registers
 <strong>gdb_regs</strong> with what has been saved in <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">thread_struct</span></code>
 thread field during switch_to.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.gdb_regs_to_pt_regs">
@@ -1064,14 +1073,17 @@ thread field during switch_to.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">*gdb_regs</span></code></dt><dd><p>A pointer to hold the registers we’ve received from GDB.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pt_regs</span> <span class="pre">*regs</span></code></dt><dd><p>A pointer to a <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pt_regs</span></code> to hold these values in.</p>
-<p>Convert the GDB regs in <strong>gdb_regs</strong> into the pt_regs, and store them
-in <strong>regs</strong>.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Convert the GDB regs in <strong>gdb_regs</strong> into the pt_regs, and store them
+in <strong>regs</strong>.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.kgdb_arch_handle_exception">
@@ -1081,7 +1093,7 @@ in <strong>regs</strong>.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">vector</span></code></dt><dd><p>The error vector of the exception that happened.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">signo</span></code></dt><dd><p>The signal number of the exception that happened.</p>
@@ -1093,14 +1105,17 @@ in <strong>regs</strong>.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">char</span> <span class="pre">*remcom_out_buffer</span></code></dt><dd><p>The buffer of <code class="docutils literal notranslate"><span class="pre">BUFMAX</span></code> bytes to write a packet into.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pt_regs</span> <span class="pre">*regs</span></code></dt><dd><p>The <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pt_regs</span></code> of the current process.</p>
-<p>This function MUST handle the ‘c’ and ‘s’ command packets,
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This function MUST handle the ‘c’ and ‘s’ command packets,
 as well packets to set / remove a hardware breakpoint, if used.
 If there are additional packets which the hardware needs to handle,
 they are handled here.  The code should return -1 if it wants to
 process more packets, and a <code class="docutils literal notranslate"><span class="pre">0</span></code> or <code class="docutils literal notranslate"><span class="pre">1</span></code> if it wants to exit from the
 kgdb callback.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.kgdb_arch_handle_qxfer_pkt">
@@ -1120,18 +1135,21 @@ kgdb callback.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.kgdb_call_nmi_hook">
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">kgdb_call_nmi_hook</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ignored</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.kgdb_call_nmi_hook" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Call kgdb_nmicallback() on the current CPU</p>
+<dd><p>Call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kgdb_nmicallback()</span></code> on the current CPU</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">*ignored</span></code></dt><dd><p>This parameter is only here to match the prototype.</p>
-<p>If you’re using the default implementation of <a class="reference internal" href="#c.kgdb_roundup_cpus" title="kgdb_roundup_cpus"><code class="xref c c-func docutils literal notranslate"><span class="pre">kgdb_roundup_cpus()</span></code></a>
-this function will be called per CPU.  If you don’t implement
-<a class="reference internal" href="#c.kgdb_call_nmi_hook" title="kgdb_call_nmi_hook"><code class="xref c c-func docutils literal notranslate"><span class="pre">kgdb_call_nmi_hook()</span></code></a> a default will be used.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>If you’re using the default implementation of <a class="reference internal" href="#c.kgdb_roundup_cpus" title="kgdb_roundup_cpus"><code class="xref c c-func docutils literal notranslate"><span class="pre">kgdb_roundup_cpus()</span></code></a>
+this function will be called per CPU.  If you don’t implement
+<a class="reference internal" href="#c.kgdb_call_nmi_hook" title="kgdb_call_nmi_hook"><code class="xref c c-func docutils literal notranslate"><span class="pre">kgdb_call_nmi_hook()</span></code></a> a default will be used.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.kgdb_roundup_cpus">
@@ -1149,7 +1167,7 @@ this function will be called per CPU.  If you don’t implement
 <blockquote>
 <div><p>On SMP systems, we need to get the attention of the other CPUs
 and get them into a known state.  This should do what is needed
-to get the other CPUs to call kgdb_wait(). Note that on some arches,
+to get the other CPUs to call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kgdb_wait()</span></code>. Note that on some arches,
 the NMI approach is not used for rounding up all the CPUs.  Normally
 those architectures can just not implement this and get the default.</p>
 <p>On non-SMP systems, this is not called.</p>
@@ -1163,14 +1181,17 @@ those architectures can just not implement this and get the default.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pt_regs</span> <span class="pre">*regs</span></code></dt><dd><p>Current <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pt_regs</span></code>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">pc</span></code></dt><dd><p>The new value for the program counter</p>
-<p>This function handles updating the program counter and requires an
-architecture specific implementation.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This function handles updating the program counter and requires an
+architecture specific implementation.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.kgdb_arch_late">
@@ -1328,7 +1349,7 @@ kernel when <code class="docutils literal notranslate"><span class="pre">CONFIG_
 <p>The core polled keyboard driver for PS/2 type keyboards is in
 <code class="docutils literal notranslate"><span class="pre">drivers/char/kdb_keyboard.c</span></code>. This driver is hooked into the debug core
 when kgdboc populates the callback in the array called
-<span class="c-expr sig sig-inline c"><span class="n">kdb_poll_funcs</span><span class="p">[</span><span class="p">]</span></span>. The kdb_get_kbd_char() is the top-level
+<span class="c-expr sig sig-inline c"><span class="n">kdb_poll_funcs</span><span class="p">[</span><span class="p">]</span></span>. The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kdb_get_kbd_char()</span></code> is the top-level
 function which polls hardware for single character input.</p>
 </section>
 <section id="kgdboc-and-kms">
@@ -1338,9 +1359,9 @@ switch to a text context when you are using <code class="docutils literal notran
 that you have a video driver which has a frame buffer console and atomic
 kernel mode setting support.</p>
 <p>Every time the kernel debugger is entered it calls
-kgdboc_pre_exp_handler() which in turn calls <a class="reference internal" href="../../driver-api/tty/console.html#c.con_debug_enter" title="con_debug_enter"><code class="xref c c-func docutils literal notranslate"><span class="pre">con_debug_enter()</span></code></a>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kgdboc_pre_exp_handler()</span></code> which in turn calls <a class="reference internal" href="../../driver-api/tty/console.html#c.con_debug_enter" title="con_debug_enter"><code class="xref c c-func docutils literal notranslate"><span class="pre">con_debug_enter()</span></code></a>
 in the virtual console layer. On resuming kernel execution, the kernel
-debugger calls kgdboc_post_exp_handler() which in turn calls
+debugger calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kgdboc_post_exp_handler()</span></code> which in turn calls
 <a class="reference internal" href="../../driver-api/tty/console.html#c.con_debug_leave" title="con_debug_leave"><code class="xref c c-func docutils literal notranslate"><span class="pre">con_debug_leave()</span></code></a>.</p>
 <p>Any video driver that wants to be compatible with the kernel debugger
 and the atomic kms callbacks must implement the <code class="docutils literal notranslate"><span class="pre">mode_set_base_atomic</span></code>,

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -180,12 +180,88 @@ effect when probing the device. Example to enable it:</p>
 </pre></div>
 </div>
 </section>
+<section id="allowed-engines">
+<h3>Allowed engines:<a class="headerlink" href="#allowed-engines" title="Link to this heading">¶</a></h3>
+<p>Allow only a set of engine(s) to be available, disabling the other engines
+even if they are available in hardware. This is applied after HW fuses are
+considered on each tile. Examples:</p>
+<p>Allow only one render and one copy engines, nothing else:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># echo &#39;rcs0,bcs0&#39; &gt; /sys/kernel/config/xe/0000:03:00.0/engines_allowed
+</pre></div>
+</div>
+<p>Allow only compute engines and first copy engine:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># echo &#39;ccs*,bcs0&#39; &gt; /sys/kernel/config/xe/0000:03:00.0/engines_allowed
+</pre></div>
+</div>
+<p>Note that the engine names are the per-GT hardware names. On multi-tile
+platforms, writing <code class="docutils literal notranslate"><span class="pre">rcs0,bcs0</span></code> to this file would allow the first render
+and copy engines on each tile.</p>
+<p>The requested configuration may not be supported by the platform and driver
+may fail to probe. For example: if at least one copy engine is expected to be
+available for migrations, but it’s disabled. This is intended for debugging
+purposes only.</p>
+</section>
 </section>
 <section id="remove-devices">
 <h2>Remove devices<a class="headerlink" href="#remove-devices" title="Link to this heading">¶</a></h2>
 <p>The created device directories can be removed using <code class="docutils literal notranslate"><span class="pre">rmdir</span></code>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>rmdir /sys/kernel/config/xe/0000:03:00.0/
 </pre></div>
+</div>
+</section>
+<section id="internal-api">
+<h2>Internal API<a class="headerlink" href="#internal-api" title="Link to this heading">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.xe_configfs_get_survivability_mode">
+<span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">xe_configfs_get_survivability_mode</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">pci_dev</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pdev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.xe_configfs_get_survivability_mode" title="Link to this definition">¶</a><br /></dt>
+<dd><p>get configfs survivability mode attribute</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pci_dev</span> <span class="pre">*pdev</span></code></dt><dd><p>pci device</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>find the configfs group that belongs to the pci device and return
+the survivability mode attribute</p>
+<p><strong>Return</strong></p>
+<p>survivability mode if config group is found, false otherwise</p>
+</div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.xe_configfs_clear_survivability_mode">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">xe_configfs_clear_survivability_mode</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">pci_dev</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pdev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.xe_configfs_clear_survivability_mode" title="Link to this definition">¶</a><br /></dt>
+<dd><p>clear configfs survivability mode attribute</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pci_dev</span> <span class="pre">*pdev</span></code></dt><dd><p>pci device</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>find the configfs group that belongs to the pci device and clear survivability
+mode attribute</p>
+</div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.xe_configfs_get_engines_allowed">
+<span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">xe_configfs_get_engines_allowed</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">pci_dev</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pdev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.xe_configfs_get_engines_allowed" title="Link to this definition">¶</a><br /></dt>
+<dd><p>get engine allowed mask from configfs</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pci_dev</span> <span class="pre">*pdev</span></code></dt><dd><p>pci device</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>Find the configfs group that belongs to the pci device and return
+the mask of engines allowed to be used.</p>
+<p><strong>Return</strong></p>
+<p>engine mask with allowed engines</p>
 </div>
 </section>
 </section>

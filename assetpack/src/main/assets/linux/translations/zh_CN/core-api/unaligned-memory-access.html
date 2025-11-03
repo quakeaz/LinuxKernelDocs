@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -324,8 +324,8 @@ field2会导致非对齐访问，这并不是不合理的。你会期望field2�
 </section>
 <section id="id7">
 <h2>避免非对齐访问<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h2>
-<p>避免非对齐访问的最简单方法是使用&lt;linux/unaligned.h&gt;头文件提供的get_unaligned()和
-put_unaligned()宏。</p>
+<p>避免非对齐访问的最简单方法是使用&lt;linux/unaligned.h&gt;头文件提供的<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_unaligned()</span></code>和
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">put_unaligned()</span></code>宏。</p>
 <p>回到前面的一个可能导致非对齐访问的代码例子:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>void myfunc(u8 *data, u32 value)
 {
@@ -345,7 +345,7 @@ put_unaligned()宏。</p>
 }
 </pre></div>
 </div>
-<p>get_unaligned()宏的工作原理与此类似。假设’data’是一个指向内存的指针，并且你希望避免
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_unaligned()</span></code>宏的工作原理与此类似。假设’data’是一个指向内存的指针，并且你希望避免
 非对齐访问，其用法如下:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>u32 value = get_unaligned((u32 *) data);
 </pre></div>

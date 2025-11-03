@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -232,10 +232,10 @@ $ echo &lt;product&gt; &gt; strings/0x409/product
 <p>Further custom string descriptors can be created as directories within the
 language’s directory, with the string text being written to the “s” attribute
 within the string’s directory:</p>
-<blockquote>
-<div><p>$ mkdir strings/0x409/xu.0
-$ echo &lt;string text&gt; &gt; strings/0x409/xu.0/s</p>
-</div></blockquote>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ mkdir strings/0x409/xu.0
+$ echo &lt;string text&gt; &gt; strings/0x409/xu.0/s
+</pre></div>
+</div>
 <p>Where function drivers support it, functions may allow symlinks to these custom
 string descriptors to associate those strings with class descriptors.</p>
 </section>
@@ -243,7 +243,9 @@ string descriptors to associate those strings with class descriptors.</p>
 <h3>2. Creating the configurations<a class="headerlink" href="#creating-the-configurations" title="Link to this heading">¶</a></h3>
 <p>Each gadget will consist of a number of configurations, their corresponding
 directories must be created:</p>
-<p>$ mkdir configs/&lt;name&gt;.&lt;number&gt;</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ mkdir configs/&lt;name&gt;.&lt;number&gt;
+</pre></div>
+</div>
 <p>where &lt;name&gt; can be any string which is legal in a filesystem and the
 &lt;number&gt; is the configuration’s number, e.g.:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ mkdir configs/c.1
@@ -377,9 +379,9 @@ a symlink to a function being removed from the configuration, e.g.:</p>
 </pre></div>
 </div>
 <p>Remove strings directories in configurations:</p>
-<blockquote>
-<div><p>$ rmdir configs/&lt;config name&gt;.&lt;number&gt;/strings/&lt;lang&gt;</p>
-</div></blockquote>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ rmdir configs/&lt;config name&gt;.&lt;number&gt;/strings/&lt;lang&gt;
+</pre></div>
+</div>
 <p>e.g.:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ rmdir configs/c.1/strings/0x409
 
@@ -401,9 +403,9 @@ a symlink to a function being removed from the configuration, e.g.:</p>
 </pre></div>
 </div>
 <p>Remove functions (function modules are not unloaded, though):</p>
-<blockquote>
-<div><p>$ rmdir functions/&lt;name&gt;.&lt;instance name&gt;</p>
-</div></blockquote>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ rmdir functions/&lt;name&gt;.&lt;instance name&gt;
+</pre></div>
+</div>
 <p>e.g.:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ rmdir functions/ncm.usb0
 
@@ -457,7 +459,7 @@ a config_item and an “sa” which contains a configfs_attribute.</p>
 </pre></div>
 </div>
 <p>Whenever a user reads/writes the “sa” file, a function is called
-which accepts a struct config_item and a struct configfs_attribute.
+which accepts a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">config_item</span></code> and a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">configfs_attribute</span></code>.
 In the said function the “cs” and “sa” are retrieved using the well
 known container_of technique and an appropriate sa’s function (show or
 store) is called and passed the “cs” and a character buffer. The “show”
@@ -489,19 +491,19 @@ a number of its default sub-groups created automatically.</p>
 <p>For more information on configfs please see
 <cite><a class="reference internal" href="../filesystems/configfs.html"><span class="doc">Configfs - Userspace-driven Kernel Object Configuration</span></a></cite>.</p>
 <p>The concepts described above translate to USB gadgets like this:</p>
-<p>1. A gadget has its config group, which has some attributes (idVendor,
+<ol class="arabic">
+<li><p>A gadget has its config group, which has some attributes (idVendor,
 idProduct etc) and default sub-groups (configs, functions, strings).
-Writing to the attributes causes the information to be stored in
-appropriate locations. In the configs, functions and strings sub-groups
-a user can create their sub-groups to represent configurations, functions,
-and groups of strings in a given language.</p>
-<p>2. The user creates configurations and functions, in the configurations
+Writing to the attributes causes the information to be stored in appropriate
+locations. In the configs, functions and strings sub-groups a user can
+create their sub-groups to represent configurations, functions, and groups
+of strings in a given language.</p></li>
+<li><p>The user creates configurations and functions, in the configurations
 creates symbolic links to functions. This information is used when the
-gadget’s UDC attribute is written to, which means binding the gadget
-to the UDC. The code in drivers/usb/gadget/configfs.c iterates over
-all configurations, and in each configuration it iterates over all
-functions and binds them. This way the whole gadget is bound.</p>
-<ol class="arabic" start="3">
+gadget’s UDC attribute is written to, which means binding the gadget to the
+UDC. The code in drivers/usb/gadget/configfs.c iterates over all
+configurations, and in each configuration it iterates over all functions and
+binds them. This way the whole gadget is bound.</p></li>
 <li><p>The file drivers/usb/gadget/configfs.c contains code for</p>
 <blockquote>
 <div><ul class="simple">
@@ -511,17 +513,15 @@ functions and binds them. This way the whole gadget is bound.</p>
 </ul>
 </div></blockquote>
 </li>
+<li><p>Each USB function naturally has its own view of what it wants configured, so
+config_groups for particular functions are defined in the functions
+implementation files drivers/usb/gadget/f_*.c.</p></li>
+<li><p>Function’s code is written in such a way that it uses
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_get_function_instance()</span></code>, which, in turn, calls request_module.  So,
+provided that modprobe works, modules for particular functions are loaded
+automatically. Please note that the converse is not true: after a gadget is
+disabled and torn down, the modules remain loaded.</p></li>
 </ol>
-<p>4. Each USB function naturally has its own view of what it wants
-configured, so config_groups for particular functions are defined
-in the functions implementation files drivers/usb/gadget/f_*.c.</p>
-<ol class="arabic simple" start="5">
-<li><p>Function’s code is written in such a way that it uses</p></li>
-</ol>
-<p>usb_get_function_instance(), which, in turn, calls request_module.
-So, provided that modprobe works, modules for particular functions
-are loaded automatically. Please note that the converse is not true:
-after a gadget is disabled and torn down, the modules remain loaded.</p>
 </section>
 </section>
 

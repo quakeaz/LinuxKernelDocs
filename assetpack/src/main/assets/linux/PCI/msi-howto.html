@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -334,7 +334,7 @@ vectors: <a class="reference internal" href="../driver-api/pci/pci.html#c.pci_ms
 should be avoided in favor of letting <a class="reference internal" href="#c.pci_alloc_irq_vectors" title="pci_alloc_irq_vectors"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_alloc_irq_vectors()</span></code></a> cap the
 number of vectors.  If you have a legitimate special use case for the count
 of vectors we might have to revisit that decision and add a
-pci_nr_irq_vectors() helper that handles MSI and MSI-X transparently.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_nr_irq_vectors()</span></code> helper that handles MSI and MSI-X transparently.</p>
 </section>
 <section id="considerations-when-using-msis">
 <h3><span class="section-number">4.4.4. </span>Considerations when using MSIs<a class="headerlink" href="#considerations-when-using-msis" title="Link to this heading">¶</a></h3>
@@ -347,7 +347,7 @@ not be re-entered).  If a device uses multiple interrupts, the driver
 must disable interrupts while the lock is held.  If the device sends
 a different interrupt, the driver will deadlock trying to recursively
 acquire the spinlock.  Such deadlocks can be avoided by using
-spin_lock_irqsave() or spin_lock_irq() which disable local interrupts
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_irqsave()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_irq()</span></code> which disable local interrupts
 and acquire the lock (see <a class="reference internal" href="../kernel-hacking/locking.html"><span class="doc">Unreliable Guide To Locking</span></a>).</p>
 </section>
 </section>
@@ -375,7 +375,7 @@ lucky, the manufacturer knows this and has indicated it in the ACPI
 FADT table.  In this case, Linux automatically disables MSIs.
 Some boards don’t include this information in the table and so we have
 to detect them ourselves.  The complete list of these is found near the
-quirk_disable_all_msi() function in drivers/pci/quirks.c.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">quirk_disable_all_msi()</span></code> function in drivers/pci/quirks.c.</p>
 <p>If you have a board which has problems with MSIs, you can pass pci=nomsi
 on the kernel command line to disable MSIs on all devices.  It would be
 in your best interests to report the problem to <a class="reference external" href="mailto:linux-pci&#37;&#52;&#48;vger&#46;kernel&#46;org">linux-pci<span>&#64;</span>vger<span>&#46;</span>kernel<span>&#46;</span>org</a>
@@ -562,7 +562,8 @@ the next free index in the MSI-X table</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<p>A struct msi_map</p>
+<p>A <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">msi_map</span></code></p>
+<p><strong>Description</strong></p>
 <blockquote>
 <div><p>On success msi_map::index contains the allocated index (&gt;= 0) and
 msi_map::virq contains the allocated Linux interrupt number (&gt; 0).</p>
@@ -581,7 +582,7 @@ is set to 0.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pci_dev</span> <span class="pre">*dev</span></code></dt><dd><p>The PCI device to operate on</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">msi_map</span> <span class="pre">map</span></code></dt><dd><p>A struct msi_map describing the interrupt to free</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">msi_map</span> <span class="pre">map</span></code></dt><dd><p>A <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">msi_map</span></code> describing the interrupt to free</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -624,7 +625,11 @@ pair should, in general, be used instead.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">max_vecs</span></code></dt><dd><p>maximum desired number of vectors</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">flags</span></code></dt><dd><p>One or more of:</p>
-<ul class="simple">
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">PCI_IRQ_MSIX</span></code>      Allow trying MSI-X vector allocations</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">PCI_IRQ_MSI</span></code>       Allow trying MSI vector allocations</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">PCI_IRQ_INTX</span></code>      Allow trying INTx interrupts, if and
@@ -632,9 +637,7 @@ only if <strong>min_vecs</strong> == 1</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">PCI_IRQ_AFFINITY</span></code>  Auto-manage IRQs affinity by spreading
 the vectors around available CPUs</p></li>
 </ul>
-</dd>
-</dl>
-<p><strong>Description</strong></p>
+</div></blockquote>
 <p>Allocate up to <strong>max_vecs</strong> interrupt vectors on device. MSI-X irq
 vector allocation has a higher precedence over plain MSI, which has a
 higher precedence over legacy INTx emulation.</p>
@@ -678,11 +681,14 @@ Check that function docs, and <a class="reference internal" href="../core-api/ge
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pci_dev</span> <span class="pre">*dev</span></code></dt><dd><p>the PCI device to operate on</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">nr</span></code></dt><dd><p>device-relative interrupt vector index (0-based); has different
 meanings, depending on interrupt mode:</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><p>MSI-X     the index in the MSI-X vector table</p></li>
@@ -690,8 +696,6 @@ meanings, depending on interrupt mode:</p>
 <li><p>INTx      must be 0</p></li>
 </ul>
 </div></blockquote>
-</dd>
-</dl>
 <p><strong>Return</strong></p>
 <p>the Linux IRQ number, or -EINVAL if <strong>nr</strong> is out of range</p>
 </div>
@@ -703,11 +707,14 @@ meanings, depending on interrupt mode:</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pci_dev</span> <span class="pre">*dev</span></code></dt><dd><p>the PCI device to operate on</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">nr</span></code></dt><dd><p>device-relative interrupt vector index (0-based); has different
 meanings, depending on interrupt mode:</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><p>MSI-X     the index in the MSI-X vector table</p></li>
@@ -715,8 +722,6 @@ meanings, depending on interrupt mode:</p>
 <li><p>INTx      must be 0</p></li>
 </ul>
 </div></blockquote>
-</dd>
-</dl>
 <p><strong>Return</strong></p>
 <p>MSI/MSI-X vector affinity, NULL if <strong>nr</strong> is out of range or if
 the MSI(-X) vector was allocated without explicit affinity

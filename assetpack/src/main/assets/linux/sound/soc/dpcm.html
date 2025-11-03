@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -227,10 +227,10 @@ PCM3 &lt;------------&gt; *           * &lt;----DAI3-----&gt; BT
 <ol class="arabic simple">
 <li><p>Machine driver receives Jack removal event.</p></li>
 <li><p>Machine driver OR audio HAL disables the Headset path.</p></li>
-<li><p>DPCM runs the PCM trigger(stop), hw_free(), shutdown() operations on DAI0
+<li><p>DPCM runs the PCM trigger(stop), <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hw_free()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shutdown()</span></code> operations on DAI0
 for headset since the path is now disabled.</p></li>
 <li><p>Machine driver or audio HAL enables the speaker path.</p></li>
-<li><p>DPCM runs the PCM ops for startup(), hw_params(), prepare() and
+<li><p>DPCM runs the PCM ops for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">startup()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hw_params()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prepare()</span></code> and
 trigger(start) for DAI1 Speakers since the path is enabled.</p></li>
 </ol>
 <p>In this example, the machine driver or userspace audio HAL can alter the routing
@@ -387,7 +387,7 @@ has to be set explicitly in the driver :-</p>
 combined with elements from a codec class driver. A DSP platform driver must
 implement :-</p>
 <ol class="arabic simple">
-<li><p>Front End PCM DAIs - i.e. struct snd_soc_dai_driver.</p></li>
+<li><p>Front End PCM DAIs - i.e. <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_soc_dai_driver</span></code>.</p></li>
 <li><p>DAPM graph showing DSP audio routing from FE DAIs to BEs.</p></li>
 <li><p>DAPM widgets from DSP graph.</p></li>
 <li><p>Mixers for gains, routing, etc.</p></li>
@@ -467,7 +467,7 @@ static struct snd_soc_dai_link dais[] = {
       &lt; ... more DAI links here ... &gt;
 </pre></div>
 </div>
-<p>These parameters are used to configure the DAI hw_params() when DAPM detects a
+<p>These parameters are used to configure the DAI <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hw_params()</span></code> when DAPM detects a
 valid path and then calls the PCM operations to start the link. DAPM will also
 call the appropriate PCM operations to disable the DAI when the path is no
 longer valid.</p>

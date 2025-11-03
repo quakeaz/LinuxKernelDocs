@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -171,7 +171,7 @@ chipset to flush pending writes to the device before any reads are posted.  A
 driver would usually use this technique immediately prior to the exit of a
 critical section of code protected by spinlocks.  This would ensure that
 subsequent writes to I/O space arrived only after all prior writes (much like a
-memory barrier op, mb(), only with respect to I/O).</p>
+memory barrier op, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mb()</span></code>, only with respect to I/O).</p>
 <p>A more concrete example from a hypothetical device driver:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>        ...
 CPU A:  spin_lock_irqsave(&amp;dev_lock, flags)

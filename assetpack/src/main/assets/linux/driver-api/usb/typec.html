@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -203,8 +203,8 @@ attribute file in that group.</p>
 <h2>Driver API<a class="headerlink" href="#driver-api" title="Link to this heading">¶</a></h2>
 <section id="registering-the-ports">
 <h3>Registering the ports<a class="headerlink" href="#registering-the-ports" title="Link to this heading">¶</a></h3>
-<p>The port drivers will describe every Type-C port they control with struct
-typec_capability data structure, and register them with the following API:</p>
+<p>The port drivers will describe every Type-C port they control with <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">typec_capability</span></code> data structure, and register them with the following API:</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.typec_register_port">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">typec_port</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">typec_register_port</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../infrastructure.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">parent</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">typec_capability</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">cap</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.typec_register_port" title="Link to this definition">¶</a><br /></dt>
@@ -238,7 +238,7 @@ typec_capability data structure, and register them with the following API:</p>
 <p><strong>Description</strong></p>
 <p>Unregister device created with <a class="reference internal" href="#c.typec_register_port" title="typec_register_port"><code class="xref c c-func docutils literal notranslate"><span class="pre">typec_register_port()</span></code></a>.</p>
 </div>
-<p>When registering the ports, the prefer_role member in struct typec_capability
+<p>When registering the ports, the prefer_role member in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">typec_capability</span></code>
 deserves special notice. If the port that is being registered does not have
 initial role preference, which means the port does not execute Try.SNK or
 Try.SRC by default, the member must have value TYPEC_NO_PREFERRED_ROLE.
@@ -248,8 +248,8 @@ TYPEC_DEVICE, and with Try.SRC the value must be TYPEC_HOST.</p>
 <section id="registering-partners">
 <h3>Registering Partners<a class="headerlink" href="#registering-partners" title="Link to this heading">¶</a></h3>
 <p>After successful connection of a partner, the port driver needs to register the
-partner with the class. Details about the partner need to be described in struct
-typec_partner_desc. The class copies the details of the partner during
+partner with the class. Details about the partner need to be described in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">typec_partner_desc</span></code>. The class copies the details of the partner during
 registration. The class offers the following API for registering/unregistering
 partners.</p>
 <dl class="c function">
@@ -285,11 +285,11 @@ partners.</p>
 <p><strong>Description</strong></p>
 <p>Unregister device created with <a class="reference internal" href="#c.typec_register_partner" title="typec_register_partner"><code class="xref c c-func docutils literal notranslate"><span class="pre">typec_register_partner()</span></code></a>.</p>
 </div>
-<p>The class will provide a handle to struct typec_partner if the registration was
+<p>The class will provide a handle to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">typec_partner</span></code> if the registration was
 successful, or NULL.</p>
 <p>If the partner is USB Power Delivery capable, and the port driver is able to
 show the result of Discover Identity command, the partner descriptor structure
-should include handle to struct usb_pd_identity instance. The class will then
+should include handle to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_pd_identity</span></code> instance. The class will then
 create a sysfs directory for the identity under the partner device. The result
 of Discover Identity command can then be reported with the following API:</p>
 <dl class="c function">
@@ -320,8 +320,8 @@ information about SOP communication, please read chapter about it from the
 latest USB Power Delivery specification.</p>
 <p>The plugs are represented as their own devices. The cable is registered first,
 followed by registration of the cable plugs. The cable will be the parent device
-for the plugs. Details about the cable need to be described in struct
-typec_cable_desc and about a plug in struct typec_plug_desc. The class copies
+for the plugs. Details about the cable need to be described in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">typec_cable_desc</span></code> and about a plug in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">typec_plug_desc</span></code>. The class copies
 the details during registration. The class offers the following API for
 registering/unregistering cables and their plugs:</p>
 <dl class="c function">
@@ -393,11 +393,11 @@ parent for the optional cable plug devises.</p>
 <p><strong>Description</strong></p>
 <p>Unregister device created with <a class="reference internal" href="#c.typec_register_cable" title="typec_register_cable"><code class="xref c c-func docutils literal notranslate"><span class="pre">typec_register_cable()</span></code></a>.</p>
 </div>
-<p>The class will provide a handle to struct typec_cable and struct typec_plug if
+<p>The class will provide a handle to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">typec_cable</span></code> and <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">typec_plug</span></code> if
 the registration is successful, or NULL if it isn’t.</p>
 <p>If the cable is USB Power Delivery capable, and the port driver is able to show
 the result of Discover Identity command, the cable descriptor structure should
-include handle to struct usb_pd_identity instance. The class will then create a
+include handle to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_pd_identity</span></code> instance. The class will then create a
 sysfs directory for the identity under the cable device. The result of Discover
 Identity command can then be reported with the following API:</p>
 <dl class="c function">
@@ -500,8 +500,8 @@ negotiated with methods defined in USB Power Delivery specification.</p>
 <p>USB Type-C ports, partners and cable plugs may support Alternate Modes. Each
 Alternate Mode will have identifier called SVID, which is either a Standard ID
 given by USB-IF or vendor ID, and each supported SVID can have 1 - 6 modes. The
-class provides struct typec_mode_desc for describing individual mode of a SVID,
-and struct typec_altmode_desc which is a container for all the supported modes.</p>
+class provides <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">typec_mode_desc</span></code> for describing individual mode of a SVID,
+and <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">typec_altmode_desc</span></code> which is a container for all the supported modes.</p>
 <p>Ports that support Alternate Modes need to register each SVID they support with
 the following API:</p>
 <dl class="c function">
@@ -571,8 +571,8 @@ array in <strong>desc</strong>.</p>
 <p>Returns handle to the alternate mode on success or ERR_PTR on failure.</p>
 </div>
 <p>So ports, partners and cable plugs will register the alternate modes with their
-own functions, but the registration will always return a handle to struct
-typec_altmode on success, or NULL. The unregistration will happen with the same
+own functions, but the registration will always return a handle to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">typec_altmode</span></code> on success, or NULL. The unregistration will happen with the same
 function:</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.typec_unregister_altmode">

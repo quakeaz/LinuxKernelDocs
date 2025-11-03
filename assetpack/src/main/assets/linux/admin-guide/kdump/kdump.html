@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -483,6 +483,25 @@ if crashkernel=Y,low is not specified.</p></li>
 </ol>
 </div></blockquote>
 </li>
+<li><p>crashkernel=size,cma</p>
+<blockquote>
+<div><p>Reserve additional crash kernel memory from CMA. This reservation is
+usable by the first system’s userspace memory and kernel movable
+allocations (memory balloon, zswap). Pages allocated from this memory
+range will not be included in the vmcore so this should not be used if
+dumping of userspace memory is intended and it has to be expected that
+some movable kernel pages may be missing from the dump.</p>
+<p>A standard crashkernel reservation, as described above, is still needed
+to hold the crash kernel and initrd.</p>
+<p>This option increases the risk of a kdump failure: DMA transfers
+configured by the first kernel may end up corrupting the second
+kernel’s memory.</p>
+<p>This reservation method is intended for systems that can’t afford to
+sacrifice enough memory for standard crashkernel reservation and where
+less reliable and possibly incomplete kdump is preferable to no kdump at
+all.</p>
+</div></blockquote>
+</li>
 </ol>
 <section id="boot-into-system-kernel">
 <h3>Boot into System Kernel<a class="headerlink" href="#boot-into-system-kernel" title="Link to this heading">¶</a></h3>
@@ -626,7 +645,7 @@ the elfcorehdr= kernel parameter, it is used by the kdump kernel as it
 is done on all other architectures. If no elfcorehdr= kernel parameter is
 specified, the s390x kdump kernel dynamically creates the header. The
 second mode has the advantage that for CPU and memory hotplug, kdump has
-not to be reloaded with kexec_load().</p></li>
+not to be reloaded with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kexec_load()</span></code>.</p></li>
 <li><p>For s390x systems with many attached devices the “cio_ignore” kernel
 parameter should be used for the kdump kernel in order to prevent allocation
 of kernel memory for devices that are not relevant for kdump. The same
@@ -639,15 +658,15 @@ setting FCP devices online.</p></li>
 <h2>Kernel Panic<a class="headerlink" href="#kernel-panic" title="Link to this heading">¶</a></h2>
 <p>After successfully loading the dump-capture kernel as previously
 described, the system will reboot into the dump-capture kernel if a
-system crash is triggered.  Trigger points are located in <a class="reference internal" href="../../driver-api/basics.html#c.panic" title="panic"><code class="xref c c-func docutils literal notranslate"><span class="pre">panic()</span></code></a>,
-die(), die_nmi() and in the sysrq handler (ALT-SysRq-c).</p>
+system crash is triggered.  Trigger points are located in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">panic()</span></code>,
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">die()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">die_nmi()</span></code> and in the sysrq handler (ALT-SysRq-c).</p>
 <p>The following conditions will execute a crash trigger point:</p>
 <p>If a hard lockup is detected and “NMI watchdog” is configured, the system
-will boot into the dump-capture kernel ( die_nmi() ).</p>
-<p>If die() is called, and it happens to be a thread with pid 0 or 1, or die()
-is called inside interrupt context or die() is called and panic_on_oops is set,
+will boot into the dump-capture kernel ( <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">die_nmi()</span></code> ).</p>
+<p>If <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">die()</span></code> is called, and it happens to be a thread with pid 0 or 1, or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">die()</span></code>
+is called inside interrupt context or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">die()</span></code> is called and panic_on_oops is set,
 the system will boot into the dump-capture kernel.</p>
-<p>On powerpc systems when a soft-reset is generated, die() is called by all cpus
+<p>On powerpc systems when a soft-reset is generated, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">die()</span></code> is called by all cpus
 and the system will boot into the dump-capture kernel.</p>
 <p>For testing purposes, you can trigger a crash by using “ALT-SysRq-c”,
 “echo c &gt; /proc/sysrq-trigger” or write a module to force the panic.</p>
@@ -696,17 +715,17 @@ format. Crash is available at the following URL:</p>
 </section>
 <section id="trigger-kdump-on-warn">
 <h2>Trigger Kdump on WARN()<a class="headerlink" href="#trigger-kdump-on-warn" title="Link to this heading">¶</a></h2>
-<p>The kernel parameter, panic_on_warn, calls <a class="reference internal" href="../../driver-api/basics.html#c.panic" title="panic"><code class="xref c c-func docutils literal notranslate"><span class="pre">panic()</span></code></a> in all WARN() paths.  This
-will cause a kdump to occur at the <a class="reference internal" href="../../driver-api/basics.html#c.panic" title="panic"><code class="xref c c-func docutils literal notranslate"><span class="pre">panic()</span></code></a> call.  In cases where a user wants
+<p>The kernel parameter, panic_on_warn, calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">panic()</span></code> in all <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">WARN()</span></code> paths.  This
+will cause a kdump to occur at the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">panic()</span></code> call.  In cases where a user wants
 to specify this during runtime, /proc/sys/kernel/panic_on_warn can be set to 1
 to achieve the same behaviour.</p>
 </section>
 <section id="trigger-kdump-on-add-taint">
 <h2>Trigger Kdump on add_taint()<a class="headerlink" href="#trigger-kdump-on-add-taint" title="Link to this heading">¶</a></h2>
-<p>The kernel parameter panic_on_taint facilitates a conditional call to <a class="reference internal" href="../../driver-api/basics.html#c.panic" title="panic"><code class="xref c c-func docutils literal notranslate"><span class="pre">panic()</span></code></a>
+<p>The kernel parameter panic_on_taint facilitates a conditional call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">panic()</span></code>
 from within <a class="reference internal" href="../../driver-api/basics.html#c.add_taint" title="add_taint"><code class="xref c c-func docutils literal notranslate"><span class="pre">add_taint()</span></code></a> whenever the value set in this bitmask matches with the
 bit flag being set by <a class="reference internal" href="../../driver-api/basics.html#c.add_taint" title="add_taint"><code class="xref c c-func docutils literal notranslate"><span class="pre">add_taint()</span></code></a>.
-This will cause a kdump to occur at the <a class="reference internal" href="../../driver-api/basics.html#c.add_taint" title="add_taint"><code class="xref c c-func docutils literal notranslate"><span class="pre">add_taint()</span></code></a>-&gt;<a class="reference internal" href="../../driver-api/basics.html#c.panic" title="panic"><code class="xref c c-func docutils literal notranslate"><span class="pre">panic()</span></code></a> call.</p>
+This will cause a kdump to occur at the <a class="reference internal" href="../../driver-api/basics.html#c.add_taint" title="add_taint"><code class="xref c c-func docutils literal notranslate"><span class="pre">add_taint()</span></code></a>-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">panic()</span></code> call.</p>
 </section>
 <section id="write-the-dump-file-to-encrypted-disk-volume">
 <h2>Write the dump file to encrypted disk volume<a class="headerlink" href="#write-the-dump-file-to-encrypted-disk-volume" title="Link to this heading">¶</a></h2>

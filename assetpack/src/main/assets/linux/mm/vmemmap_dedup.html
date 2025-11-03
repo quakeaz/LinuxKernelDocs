@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -322,7 +322,7 @@ entries that can be cached in a single TLB entry.</p>
 size of the <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code> structs is greater than <strong>1</strong> page.</p>
 <p>Notice: The head vmemmap page is not freed to the buddy allocator and all
 tail vmemmap pages are mapped to the head vmemmap page frame. So we can see
-more than one <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code> struct with <code class="docutils literal notranslate"><span class="pre">PG_head</span></code> (e.g. 8 per 2 MB HugeTLB
+more than one <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code> <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">with</span></code> <code class="docutils literal notranslate"><span class="pre">PG_head</span></code> (e.g. 8 per 2 MB HugeTLB
 page) associated with each HugeTLB page. The <code class="docutils literal notranslate"><span class="pre">compound_head()</span></code> can handle
 this correctly. There is only <strong>one</strong> head <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code>, the tail
 <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code> with <code class="docutils literal notranslate"><span class="pre">PG_head</span></code> are fake head <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code>.  We need an

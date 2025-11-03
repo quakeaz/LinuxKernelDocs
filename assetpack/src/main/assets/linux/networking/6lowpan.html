@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -148,7 +148,7 @@
 <section id="netdev-private-dataroom-for-6lowpan-interfaces">
 <h1>Netdev private dataroom for 6lowpan interfaces<a class="headerlink" href="#netdev-private-dataroom-for-6lowpan-interfaces" title="Link to this heading">¶</a></h1>
 <p>All 6lowpan able net devices, means all interfaces with ARPHRD_6LOWPAN,
-must have “struct lowpan_priv” placed at beginning of netdev_priv.</p>
+must have “<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">lowpan_priv</span></code>” placed at beginning of netdev_priv.</p>
 <p>The priv_size of each interface should be calculate by:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dev-&gt;priv_size = LOWPAN_PRIV_SIZE(LL_6LOWPAN_PRIV_DATA);
 </pre></div>
@@ -164,7 +164,7 @@ To access the LL_PRIV_6LOWPAN_DATA structure you can cast:</p>
 </pre></div>
 </div>
 <p>wheres LOWPAN_LLTYPE_FOOBAR is a define for your 6LoWPAN linklayer type of
-enum lowpan_lltypes.</p>
+<code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">lowpan_lltypes</span></code>.</p>
 <p>Example to evaluate the private usually you can do:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>static inline struct lowpan_priv_foobar *
 lowpan_foobar_priv(struct net_device *dev)

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -199,17 +199,17 @@ desanimar a otros a usarla en el futuro.</p>
 </section>
 <section id="bug-y-bug-on">
 <h2>BUG() y BUG_ON()<a class="headerlink" href="#bug-y-bug-on" title="Link to this heading">¶</a></h2>
-<p>Use WARN() y WARN_ON() en su lugar, y gestione las condiciones de error
+<p>Use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">WARN()</span></code> y <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">WARN_ON()</span></code> en su lugar, y gestione las condiciones de error
 “imposibles” tan elegantemente como se pueda. Mientras que la familia de
-funciones BUG() fueron originalmente diseñadas para actuar como una
+funciones <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">BUG()</span></code> fueron originalmente diseñadas para actuar como una
 “situación imposible”, confirmar y disponer de un hilo del kernel de forma
 “segura”, estas funciones han resultado ser demasiado arriesgadas. (e.g.
 “¿en qué orden se necesitan liberar los locks? ¿Se han restaurado sus
-estados?). La popular función BUG() desestabilizará el sistema o lo romperá
+estados?). La popular función <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">BUG()</span></code> desestabilizará el sistema o lo romperá
 totalmente, lo cual hace imposible depurarlo o incluso generar reportes de
 crash. Linus tiene una <a class="reference external" href="https://lore.kernel.org/lkml/CA+55aFy6jNLsywVYdGp83AMrXBo_P-pkjkphPGrO=82SPKCpLQ&#64;mail.gmail.com/">opinión muy fuerte</a>
 y sentimientos <a class="reference external" href="https://lore.kernel.org/lkml/CAHk-=whDHsbK3HTOpTF=ue_o04onRwTEaK_ZoJp_fjbqq4+=Jw&#64;mail.gmail.com/">sobre esto</a>.</p>
-<p>Nótese que la familia de funciones WARN() únicamente debería ser usada
+<p>Nótese que la familia de funciones <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">WARN()</span></code> únicamente debería ser usada
 en situaciones que se “esperan no sean alcanzables”. Si se quiere
 avisar sobre situaciones “alcanzables pero no deseadas”, úsese la familia
 de funciones <a class="reference internal" href="../../../core-api/printk-basics.html#c.pr_warn" title="pr_warn"><code class="xref c c-func docutils literal notranslate"><span class="pre">pr_warn()</span></code></a>. Los responsables del sistema pueden haber definido
@@ -322,13 +322,13 @@ caracter NUL, usar <a class="reference internal" href="../../../core-api/kernel-
 </section>
 <section id="strlcpy">
 <h2>strlcpy()<a class="headerlink" href="#strlcpy" title="Link to this heading">¶</a></h2>
-<p>strlcpy() primero lee por completo el buffer de origen (ya que el valor
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">strlcpy()</span></code> primero lee por completo el buffer de origen (ya que el valor
 devuelto intenta ser el mismo que el de <a class="reference internal" href="../../../core-api/kernel-api.html#c.strlen" title="strlen"><code class="xref c c-func docutils literal notranslate"><span class="pre">strlen()</span></code></a>). Esta lectura puede
 sobrepasar el límite de tamaño del destino. Esto ineficiente y puede causar
 desbordamientos de lectura si la cadena de origen no está terminada en el
 carácter NUL. El reemplazo seguro de esta función es <a class="reference internal" href="../../../core-api/kernel-api.html#c.strscpy" title="strscpy"><code class="xref c c-func docutils literal notranslate"><span class="pre">strscpy()</span></code></a>, pero se ha
 de tener cuidado que en los casos en lso que se usase el valor devuelto de
-strlcpy(), ya que <a class="reference internal" href="../../../core-api/kernel-api.html#c.strscpy" title="strscpy"><code class="xref c c-func docutils literal notranslate"><span class="pre">strscpy()</span></code></a> devolverá valores negativos de erno cuando se
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">strlcpy()</span></code>, ya que <a class="reference internal" href="../../../core-api/kernel-api.html#c.strscpy" title="strscpy"><code class="xref c c-func docutils literal notranslate"><span class="pre">strscpy()</span></code></a> devolverá valores negativos de erno cuando se
 produzcan truncados.</p>
 </section>
 <section id="especificacion-de-formato-p">

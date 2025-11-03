@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -330,7 +330,7 @@ the check for whether a given path is a mount point, where it may
 optionally be used to check a specific mount corresponding to a given
 mount point file descriptor, and when requesting the uid and gid of the
 last successful mount on a directory within the autofs file system.</p>
-<p>The union is used to communicate parameters and results of calls made
+<p>The <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">is</span></code> used to communicate parameters and results of calls made
 as described below.</p>
 <p>The path field is used to pass a path where it is needed and the size field
 is used account for the increased structure length when translating the
@@ -362,7 +362,7 @@ distribution tar available for download from kernel.org in directory
 <section id="autofs-dev-ioctl-version">
 <h3>AUTOFS_DEV_IOCTL_VERSION<a class="headerlink" href="#autofs-dev-ioctl-version" title="Link to this heading">¶</a></h3>
 <p>Get the major and minor version of the autofs device ioctl kernel module
-implementation. It requires an initialized struct autofs_dev_ioctl as an
+implementation. It requires an initialized <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">autofs_dev_ioctl</span></code> as an
 input parameter and sets the version information in the passed in structure.
 It returns 0 on success or the error -EINVAL if a version mismatch is
 detected.</p>
@@ -370,21 +370,21 @@ detected.</p>
 <section id="autofs-dev-ioctl-protover-cmd-and-autofs-dev-ioctl-protosubver-cmd">
 <h3>AUTOFS_DEV_IOCTL_PROTOVER_CMD and AUTOFS_DEV_IOCTL_PROTOSUBVER_CMD<a class="headerlink" href="#autofs-dev-ioctl-protover-cmd-and-autofs-dev-ioctl-protosubver-cmd" title="Link to this heading">¶</a></h3>
 <p>Get the major and minor version of the autofs protocol version understood
-by loaded module. This call requires an initialized struct autofs_dev_ioctl
+by loaded module. This call requires an initialized <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">autofs_dev_ioctl</span></code>
 with the ioctlfd field set to a valid autofs mount point descriptor
-and sets the requested version number in version field of struct args_protover
-or sub_version field of struct args_protosubver. These commands return
+and sets the requested version number in version field of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">args_protover</span></code>
+or sub_version field of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">args_protosubver</span></code>. These commands return
 0 on success or one of the negative error codes if validation fails.</p>
 </section>
 <section id="autofs-dev-ioctl-openmount-and-autofs-dev-ioctl-closemount">
 <h3>AUTOFS_DEV_IOCTL_OPENMOUNT and AUTOFS_DEV_IOCTL_CLOSEMOUNT<a class="headerlink" href="#autofs-dev-ioctl-openmount-and-autofs-dev-ioctl-closemount" title="Link to this heading">¶</a></h3>
 <p>Obtain and release a file descriptor for an autofs managed mount point
-path. The open call requires an initialized struct autofs_dev_ioctl with
+path. The open call requires an initialized <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">autofs_dev_ioctl</span></code> with
 the path field set and the size field adjusted appropriately as well
-as the devid field of struct args_openmount set to the device number of
+as the devid field of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">args_openmount</span></code> set to the device number of
 the autofs mount. The device number can be obtained from the mount options
-shown in /proc/mounts. The close call requires an initialized struct
-autofs_dev_ioct with the ioctlfd field set to the descriptor obtained
+shown in /proc/mounts. The close call requires an initialized <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">autofs_dev_ioct</span></code> with the ioctlfd field set to the descriptor obtained
 from the open call. The release of the file descriptor can also be done
 with close(2) so any open descriptors will also be closed at process exit.
 The close call is included in the implemented operations largely for
@@ -393,11 +393,11 @@ completeness and to provide for a consistent user space implementation.</p>
 <section id="autofs-dev-ioctl-ready-cmd-and-autofs-dev-ioctl-fail-cmd">
 <h3>AUTOFS_DEV_IOCTL_READY_CMD and AUTOFS_DEV_IOCTL_FAIL_CMD<a class="headerlink" href="#autofs-dev-ioctl-ready-cmd-and-autofs-dev-ioctl-fail-cmd" title="Link to this heading">¶</a></h3>
 <p>Return mount and expire result status from user space to the kernel.
-Both of these calls require an initialized struct autofs_dev_ioctl
+Both of these calls require an initialized <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">autofs_dev_ioctl</span></code>
 with the ioctlfd field set to the descriptor obtained from the open
-call and the token field of struct args_ready or struct args_fail set
+call and the token field of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">args_ready</span></code> or <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">args_fail</span></code> set
 to the wait queue token number, received by user space in the foregoing
-mount or expire request. The status field of struct args_fail is set to
+mount or expire request. The status field of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">args_fail</span></code> is set to
 the errno of the operation. It is set to 0 on success.</p>
 </section>
 <section id="autofs-dev-ioctl-setpipefd-cmd">
@@ -408,9 +408,9 @@ to a existing mount we need to use this to tell the autofs mount about
 the new kernel pipe descriptor. In order to protect mounts against
 incorrectly setting the pipe descriptor we also require that the autofs
 mount be catatonic (see next call).</p>
-<p>The call requires an initialized struct autofs_dev_ioctl with the
+<p>The call requires an initialized <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">autofs_dev_ioctl</span></code> with the
 ioctlfd field set to the descriptor obtained from the open call and
-the pipefd field of struct args_setpipefd set to descriptor of the pipe.
+the pipefd field of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">args_setpipefd</span></code> set to descriptor of the pipe.
 On success the call also sets the process group id used to identify the
 controlling process (eg. the owning automount(8) daemon) to the process
 group of the caller.</p>
@@ -420,22 +420,22 @@ group of the caller.</p>
 <p>Make the autofs mount point catatonic. The autofs mount will no longer
 issue mount requests, the kernel communication pipe descriptor is released
 and any remaining waits in the queue released.</p>
-<p>The call requires an initialized struct autofs_dev_ioctl with the
+<p>The call requires an initialized <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">autofs_dev_ioctl</span></code> with the
 ioctlfd field set to the descriptor obtained from the open call.</p>
 </section>
 <section id="autofs-dev-ioctl-timeout-cmd">
 <h3>AUTOFS_DEV_IOCTL_TIMEOUT_CMD<a class="headerlink" href="#autofs-dev-ioctl-timeout-cmd" title="Link to this heading">¶</a></h3>
 <p>Set the expire timeout for mounts within an autofs mount point.</p>
-<p>The call requires an initialized struct autofs_dev_ioctl with the
+<p>The call requires an initialized <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">autofs_dev_ioctl</span></code> with the
 ioctlfd field set to the descriptor obtained from the open call.</p>
 </section>
 <section id="autofs-dev-ioctl-requester-cmd">
 <h3>AUTOFS_DEV_IOCTL_REQUESTER_CMD<a class="headerlink" href="#autofs-dev-ioctl-requester-cmd" title="Link to this heading">¶</a></h3>
 <p>Return the uid and gid of the last process to successfully trigger a the
 mount on the given path dentry.</p>
-<p>The call requires an initialized struct autofs_dev_ioctl with the path
+<p>The call requires an initialized <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">autofs_dev_ioctl</span></code> with the path
 field set to the mount point in question and the size field adjusted
-appropriately. Upon return the uid field of struct args_requester contains
+appropriately. Upon return the uid field of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">args_requester</span></code> contains
 the uid and gid field the gid.</p>
 <p>When reconstructing an autofs mount tree with active mounts we need to
 re-connect to mounts that may have used the original process uid and
@@ -447,11 +447,11 @@ used by user space for the mount map lookups.</p>
 <h3>AUTOFS_DEV_IOCTL_EXPIRE_CMD<a class="headerlink" href="#autofs-dev-ioctl-expire-cmd" title="Link to this heading">¶</a></h3>
 <p>Issue an expire request to the kernel for an autofs mount. Typically
 this ioctl is called until no further expire candidates are found.</p>
-<p>The call requires an initialized struct autofs_dev_ioctl with the
+<p>The call requires an initialized <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">autofs_dev_ioctl</span></code> with the
 ioctlfd field set to the descriptor obtained from the open call. In
 addition an immediate expire that’s independent of the mount timeout,
 and a forced expire that’s independent of whether the mount is busy,
-can be requested by setting the how field of struct args_expire to
+can be requested by setting the how field of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">args_expire</span></code> to
 AUTOFS_EXP_IMMEDIATE or AUTOFS_EXP_FORCED, respectively . If no
 expire candidates can be found the ioctl returns -1 with errno set to
 EAGAIN.</p>
@@ -462,24 +462,24 @@ request back to the daemon and waits for completion.</p>
 <section id="autofs-dev-ioctl-askumount-cmd">
 <h3>AUTOFS_DEV_IOCTL_ASKUMOUNT_CMD<a class="headerlink" href="#autofs-dev-ioctl-askumount-cmd" title="Link to this heading">¶</a></h3>
 <p>Checks if an autofs mount point is in use.</p>
-<p>The call requires an initialized struct autofs_dev_ioctl with the
+<p>The call requires an initialized <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">autofs_dev_ioctl</span></code> with the
 ioctlfd field set to the descriptor obtained from the open call and
-it returns the result in the may_umount field of struct args_askumount,
+it returns the result in the may_umount field of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">args_askumount</span></code>,
 1 for busy and 0 otherwise.</p>
 </section>
 <section id="autofs-dev-ioctl-ismountpoint-cmd">
 <h3>AUTOFS_DEV_IOCTL_ISMOUNTPOINT_CMD<a class="headerlink" href="#autofs-dev-ioctl-ismountpoint-cmd" title="Link to this heading">¶</a></h3>
 <p>Check if the given path is a mountpoint.</p>
-<p>The call requires an initialized struct autofs_dev_ioctl. There are two
+<p>The call requires an initialized <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">autofs_dev_ioctl</span></code>. There are two
 possible variations. Both use the path field set to the path of the mount
 point to check and the size field adjusted appropriately. One uses the
 ioctlfd field to identify a specific mount point to check while the other
-variation uses the path and optionally in.type field of struct args_ismountpoint
+variation uses the path and optionally in.type field of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">args_ismountpoint</span></code>
 set to an autofs mount type. The call returns 1 if this is a mount point
 and sets out.devid field to the device number of the mount and out.magic
 field to the relevant super block magic number (described below) or 0 if
 it isn’t a mountpoint. In both cases the device number (as returned
-by new_encode_dev()) is returned in out.devid field.</p>
+by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">new_encode_dev()</span></code>) is returned in out.devid field.</p>
 <p>If supplied with a file descriptor we’re looking for a specific mount,
 not necessarily at the top of the mounted stack. In this case the path
 the descriptor corresponds to is considered a mountpoint if it is itself

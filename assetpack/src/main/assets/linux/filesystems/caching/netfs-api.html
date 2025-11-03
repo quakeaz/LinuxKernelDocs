@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -198,7 +198,7 @@ truncate the cookie locally.  It <em>also</em> needs to use the cookie when the
 pagecache becomes dirty and unuse it when writeback is complete.  This is
 slightly tricky, and provision is made for it.</p>
 <p>When performing a read, write or resize on a cookie, the filesystem must first
-begin an operation.  This copies the resources into a holding struct and puts
+begin an operation.  This copies the resources into a holding <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">and</span></code> puts
 extra pins into the cache to stop cache withdrawal from tearing down the
 structures being used.  The actual operation can then be issued and conflicting
 invalidations can be detected upon completion.</p>
@@ -420,7 +420,7 @@ a thread that’s exiting.</p>
 in-use is held on the cookie for this inode.  It can only be changed if the
 the inode lock is held.</p></li>
 <li><p>A flag, <code class="docutils literal notranslate"><span class="pre">unpinned_fscache_wb</span></code> is placed in the <code class="docutils literal notranslate"><span class="pre">writeback_control</span></code>
-struct that gets set if <code class="docutils literal notranslate"><span class="pre">__writeback_single_inode()</span></code> clears
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">that</span></code> gets set if <code class="docutils literal notranslate"><span class="pre">__writeback_single_inode()</span></code> clears
 <code class="docutils literal notranslate"><span class="pre">I_PINNING_FSCACHE_WB</span></code> because all the dirty pages were cleared.</p></li>
 </ul>
 </div></blockquote>
@@ -815,7 +815,7 @@ be detected by the caller.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Start a read from the cache.  <strong>cres</strong> indicates the cache object to read from
-and must be obtained by a call to fscache_begin_operation() beforehand.</p>
+and must be obtained by a call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fscache_begin_operation()</span></code> beforehand.</p>
 <p>The data is read into the iterator, <strong>iter</strong>, and that also indicates the size
 of the operation.  <strong>start_pos</strong> is the start position in the file, though if
 <strong>seek_data</strong> is set appropriately, the cache can use SEEK_DATA to find the
@@ -887,7 +887,7 @@ be detected by the caller.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Start a write to the cache.  <strong>cres</strong> indicates the cache object to write to and
-must be obtained by a call to fscache_begin_operation() beforehand.</p>
+must be obtained by a call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fscache_begin_operation()</span></code> beforehand.</p>
 <p>The data to be written is obtained from the iterator, <strong>iter</strong>, and that also
 indicates the size of the operation.  <strong>start_pos</strong> is the start position in
 the file.</p>

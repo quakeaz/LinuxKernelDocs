@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -763,7 +763,7 @@ use /proc/PID/wchan instead)</p></td>
 <td><p>address below which program data+bss is placed</p></td>
 </tr>
 <tr class="row-even"><td><p>start_brk</p></td>
-<td><p>address above which program heap can be expanded with brk()</p></td>
+<td><p>address above which program heap can be expanded with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">brk()</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>arg_start</p></td>
 <td><p>address above which program command line is placed</p></td>
@@ -852,7 +852,7 @@ been named by userspace</p></td>
 <p>Starting with 6.11 kernel, /proc/PID/maps provides an alternative
 ioctl()-based API that gives ability to flexibly and efficiently query and
 filter individual VMAs. This interface is binary and is meant for more
-efficient and easy programmatic use. <cite>struct procmap_query</cite>, defined in
+efficient and easy programmatic use. <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">procmap_query</span></code></cite>, defined in
 linux/fs.h UAPI header, serves as an input/output argument to the
 <cite>PROCMAP_QUERY</cite> ioctl() command. See comments in linus/fs.h UAPI header for
 details on query semantics, supported flags, data returned, and general API
@@ -929,7 +929,7 @@ and a page is modified, the file page is replaced by a private anonymous copy.</
 <p>“KSM” reports how many of the pages are KSM pages. Note that KSM-placed zeropages
 are not included, only actual KSM pages.</p>
 <p>“LazyFree” shows the amount of memory which is marked by madvise(MADV_FREE).
-The memory isn’t freed immediately with madvise(). It’s freed in memory
+The memory isn’t freed immediately with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">madvise()</span></code>. It’s freed in memory
 pressure if the memory is clean. Please note that the printed value might
 be lower than the real value due to optimizations used in the current
 implementation. If this is not desirable please file a bug report.</p>
@@ -1515,7 +1515,7 @@ type exist.</p>
 from libhugetlbfs <a class="reference external" href="https://github.com/libhugetlbfs/libhugetlbfs/">https://github.com/libhugetlbfs/libhugetlbfs/</a>), one can
 make an estimate of the likely number of huge pages that can be allocated
 at a given point in time. All the “Movable” blocks should be allocatable
-unless memory has been mlock()’d. Some of the Reclaimable blocks should
+unless memory has been <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock()</span></code>’d. Some of the Reclaimable blocks should
 also be allocatable although a lot of filesystem metadata may have to be
 reclaimed to achieve this.</p>
 <section id="allocinfo">
@@ -1652,7 +1652,7 @@ eligible to be reclaimed for other purposes</p>
 <dt>Unevictable</dt><dd><p>Memory allocated for userspace which cannot be reclaimed, such
 as mlocked pages, ramfs backing pages, secret memfd pages etc.</p>
 </dd>
-<dt>Mlocked</dt><dd><p>Memory locked with mlock().</p>
+<dt>Mlocked</dt><dd><p>Memory locked with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock()</span></code>.</p>
 </dd>
 <dt>HighTotal, HighFree</dt><dd><p>Highmem is all memory above ~860MB of physical memory.
 Highmem areas are for use by userspace programs, or
@@ -1707,12 +1707,14 @@ direct allocations with a shrinker.</p>
 <dt>SecPageTables</dt><dd><p>Memory consumed by secondary page tables, this currently includes
 KVM mmu and IOMMU allocations on x86 and arm64.</p>
 </dd>
-<dt>NFS_Unstable</dt><dd><p>Always zero. Previous counted pages which had been written to
+<dt>NFS_Unstable</dt><dd><p>Always zero. Previously counted pages which had been written to
 the server, but has not been committed to stable storage.</p>
 </dd>
-<dt>Bounce</dt><dd><p>Memory used for block device “bounce buffers”</p>
+<dt>Bounce</dt><dd><p>Always zero. Previously memory used for block device
+“bounce buffers”.</p>
 </dd>
-<dt>WritebackTmp</dt><dd><p>Memory used by FUSE for temporary writeback buffers</p>
+<dt>WritebackTmp</dt><dd><p>Always zero. Previously memory used by FUSE for temporary
+writeback buffers.</p>
 </dd>
 <dt>CommitLimit</dt><dd><p>Based on the overcommit ratio (‘vm.overcommit_ratio’),
 this is the total amount of  memory currently available to
@@ -1733,7 +1735,7 @@ in mm/overcommit-accounting.</p>
 <dt>Committed_AS</dt><dd><p>The amount of memory presently allocated on the system.
 The committed memory is a sum of all of the memory which
 has been allocated by processes, even if it has not been
-“used” by them as of yet. A process which malloc()’s 1G
+“used” by them as of yet. A process which <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">malloc()</span></code>’s 1G
 of memory, but only touches 300M of it will show up as
 using 1G. This 1G is memory which has been “committed” to
 by the VM and can be used at any time by the allocating
@@ -1809,7 +1811,7 @@ on the kind of area:</p>
 <td><p>I/O mapping (<a class="reference internal" href="../driver-api/device-io.html#c.ioremap" title="ioremap"><code class="xref c c-func docutils literal notranslate"><span class="pre">ioremap()</span></code></a> and friends)</p></td>
 </tr>
 <tr class="row-even"><td><p>vmalloc</p></td>
-<td><p>vmalloc() area</p></td>
+<td><p><a class="reference internal" href="../core-api/mm-api.html#c.vmalloc" title="vmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">vmalloc()</span></code></a> area</p></td>
 </tr>
 <tr class="row-odd"><td><p>vmap</p></td>
 <td><p><a class="reference internal" href="../core-api/mm-api.html#c.vmap" title="vmap"><code class="xref c c-func docutils literal notranslate"><span class="pre">vmap()</span></code></a>ed pages</p></td>
@@ -2415,7 +2417,7 @@ cancelled_write_bytes: 0
 <h5>rchar<a class="headerlink" href="#rchar" title="Link to this heading">¶</a></h5>
 <p>I/O counter: chars read
 The number of bytes which this task has caused to be read from storage. This
-is simply the sum of bytes which this process passed to read() and pread().
+is simply the sum of bytes which this process passed to read() and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pread()</span></code>.
 It includes things like tty IO and it is unaffected by whether or not actual
 physical disk IO was required (the read might have been satisfied from
 pagecache).</p>
@@ -2430,13 +2432,13 @@ to disk. Similar caveats apply here as with rchar.</p>
 <h5>syscr<a class="headerlink" href="#syscr" title="Link to this heading">¶</a></h5>
 <p>I/O counter: read syscalls
 Attempt to count the number of read I/O operations, i.e. syscalls like read()
-and pread().</p>
+and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pread()</span></code>.</p>
 </section>
 <section id="syscw">
 <h5>syscw<a class="headerlink" href="#syscw" title="Link to this heading">¶</a></h5>
 <p>I/O counter: write syscalls
 Attempt to count the number of write I/O operations, i.e. syscalls like
-write() and pwrite().</p>
+write() and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pwrite()</span></code>.</p>
 </section>
 <section id="read-bytes">
 <h5>read_bytes<a class="headerlink" href="#read-bytes" title="Link to this heading">¶</a></h5>
@@ -2836,7 +2838,7 @@ lrwx------ 1 root root 64 Sep 20 17:53 12 -&gt; &#39;socket:[12542]&#39;
 </pre></div>
 </div>
 <p>The number of open files for the process is stored in ‘size’ member
-of stat() output for /proc/&lt;pid&gt;/fd for fast access.
+of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">stat()</span></code> output for /proc/&lt;pid&gt;/fd for fast access.
 -------------------------------------------------------</p>
 </section>
 <section id="proc-pid-ksm-stat-information-about-the-process-s-ksm-status">
@@ -2886,7 +2888,7 @@ memory consumed.</p>
 </section>
 <section id="ksm-merge-any">
 <h5>ksm_merge_any<a class="headerlink" href="#ksm-merge-any" title="Link to this heading">¶</a></h5>
-<p>It specifies whether the process’s ‘mm is added by prctl() into the
+<p>It specifies whether the process’s ‘mm is added by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prctl()</span></code> into the
 candidate list of KSM or not, and if KSM scanning is fully enabled at
 process level.</p>
 </section>
@@ -2933,7 +2935,7 @@ arguments are now protected against local eavesdroppers.</p>
 fully invisible to other users.  It doesn’t mean that it hides a fact whether a
 process with a specific pid value exists (it can be learned by other means, e.g.
 by “kill -0 $PID”), but it hides process’s uid and gid, which may be learned by
-stat()’ing /proc/&lt;pid&gt;/ otherwise.  It greatly complicates an intruder’s task of
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">stat()</span></code>’ing /proc/&lt;pid&gt;/ otherwise.  It greatly complicates an intruder’s task of
 gathering information about running processes, whether some daemon runs with
 elevated privileges, whether other user runs some sensitive program, whether
 other users run any program at all, etc.</p>

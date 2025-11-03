@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -671,7 +671,7 @@ each Event defined by DWC3.</p>
 <h4>MMIO<a class="headerlink" href="#mmio" title="Link to this heading">¶</a></h4>
 <p>It is sometimes useful to look at every MMIO access when looking for
 bugs. Because of that, DWC3 offers two Trace Events (one for
-dwc3_readl() and one for dwc3_writel()). <code class="docutils literal notranslate"><span class="pre">TP_printk</span></code> follows:</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dwc3_readl()</span></code> and one for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dwc3_writel()</span></code>). <code class="docutils literal notranslate"><span class="pre">TP_printk</span></code> follows:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TP_printk(&quot;addr %p value %08x&quot;, __entry-&gt;base + __entry-&gt;offset,
               __entry-&gt;value)
 </pre></div>
@@ -1313,7 +1313,7 @@ combo_num = ‘b00</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">xhci</span></code></dt><dd><p>pointer to our xHCI child</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">xhci_resources</span></code></dt><dd><p>struct resources for our <strong>xhci</strong> child</p>
+<dt><code class="docutils literal notranslate"><span class="pre">xhci_resources</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">resources</span></code> for our <strong>xhci</strong> child</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">ev_buf</span></code></dt><dd><p><a class="reference internal" href="#c.dwc3_event_buffer" title="dwc3_event_buffer"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dwc3_event_buffer</span></code></a> pointer</p>
 </dd>
@@ -2008,7 +2008,7 @@ link TRB is always at the last TRB entry.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Must be called with controller’s lock held and interrupts disabled. This
-function will unmap <strong>req</strong> and call its -&gt;complete() callback to notify upper
+function will unmap <strong>req</strong> and call its -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">complete()</span></code> callback to notify upper
 layers that it has completed.</p>
 </div>
 <dl class="c function">
@@ -2056,14 +2056,14 @@ programming guide suggested to bring the link state back to ON/U0 by
 performing remote wakeup prior to sending the command. However, don’t
 initiate remote wakeup when the user/function does not send wakeup
 request via wakeup ops. Send the command when it’s allowed.</p>
-<p>For L2 or U3 link state, the gadget is in USB suspend. Care should be
-taken when sending Start Transfer command to ensure that it’s done after
-USB resume.</p>
 <p><strong>Notes</strong></p>
 <p>For L1 link state, issuing a command requires the clearing of
 GUSB2PHYCFG.SUSPENDUSB2, which turns on the signal required to complete
 the given command (usually within 50us). This should happen within the
 command timeout set by driver. No additional step is needed.</p>
+<p>For L2 or U3 link state, the gadget is in USB suspend. Care should be
+taken when sending Start Transfer command to ensure that it’s done after
+USB resume.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.dwc3_gadget_start_config">

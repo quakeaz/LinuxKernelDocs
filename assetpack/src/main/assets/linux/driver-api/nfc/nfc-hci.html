@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -238,9 +238,9 @@ and a translation will be forwarded to NFC Core as needed. There are hooks to
 let the HCI driver handle proprietary events or override standard behavior.
 HCI uses 2 execution contexts:</p>
 <ul class="simple">
-<li><p>one for executing commands : nfc_hci_msg_tx_work(). Only one command
+<li><p>one for executing commands : <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nfc_hci_msg_tx_work()</span></code>. Only one command
 can be executing at any given moment.</p></li>
-<li><p>one for dispatching received events and commands : nfc_hci_msg_rx_work().</p></li>
+<li><p>one for dispatching received events and commands : <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nfc_hci_msg_rx_work()</span></code>.</p></li>
 </ul>
 </section>
 <section id="hci-session-initialization">
@@ -297,38 +297,38 @@ entry points:</p>
 </div>
 <ul class="simple">
 <li><p>open() and close() shall turn the hardware on and off.</p></li>
-<li><p>hci_ready() is an optional entry point that is called right after the hci
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hci_ready()</span></code> is an optional entry point that is called right after the hci
 session has been set up. The driver can use it to do additional initialization
 that must be performed using HCI commands.</p></li>
-<li><p>xmit() shall simply write a frame to the physical link.</p></li>
-<li><p>start_poll() is an optional entrypoint that shall set the hardware in polling
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xmit()</span></code> shall simply write a frame to the physical link.</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">start_poll()</span></code> is an optional entrypoint that shall set the hardware in polling
 mode. This must be implemented only if the hardware uses proprietary gates or a
 mechanism slightly different from the HCI standard.</p></li>
-<li><p>dep_link_up() is called after a p2p target has been detected, to finish
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dep_link_up()</span></code> is called after a p2p target has been detected, to finish
 the p2p connection setup with hardware parameters that need to be passed back
 to nfc core.</p></li>
-<li><p>dep_link_down() is called to bring the p2p link down.</p></li>
-<li><p>target_from_gate() is an optional entrypoint to return the nfc protocols
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dep_link_down()</span></code> is called to bring the p2p link down.</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">target_from_gate()</span></code> is an optional entrypoint to return the nfc protocols
 corresponding to a proprietary gate.</p></li>
-<li><p>complete_target_discovered() is an optional entry point to let the driver
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">complete_target_discovered()</span></code> is an optional entry point to let the driver
 perform additional proprietary processing necessary to auto activate the
 discovered target.</p></li>
-<li><p>im_transceive() must be implemented by the driver if proprietary HCI commands
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">im_transceive()</span></code> must be implemented by the driver if proprietary HCI commands
 are required to send data to the tag. Some tag types will require custom
 commands, others can be written to using the standard HCI commands. The driver
 can check the tag type and either do proprietary processing, or return 1 to ask
 for standard processing. The data exchange command itself must be sent
 asynchronously.</p></li>
-<li><p>tm_send() is called to send data in the case of a p2p connection</p></li>
-<li><p>check_presence() is an optional entry point that will be called regularly
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">tm_send()</span></code> is called to send data in the case of a p2p connection</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">check_presence()</span></code> is an optional entry point that will be called regularly
 by the core to check that an activated tag is still in the field. If this is
 not implemented, the core will not be able to push tag_lost events to the user
 space</p></li>
-<li><p>event_received() is called to handle an event coming from the chip. Driver
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">event_received()</span></code> is called to handle an event coming from the chip. Driver
 can handle the event or return 1 to let HCI attempt standard processing.</p></li>
 </ul>
 <p>On the rx path, the driver is responsible to push incoming HCP frames to HCI
-using nfc_hci_recv_frame(). HCI will take care of re-aggregation and handling
+using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nfc_hci_recv_frame()</span></code>. HCI will take care of re-aggregation and handling
 This must be done from a context that can sleep.</p>
 </section>
 <section id="phy-management">
@@ -352,7 +352,7 @@ function must not alter the skb. It must also not return a positive
 result (return 0 for success, negative for failure).</p>
 </dd>
 </dl>
-<p>Data coming from the chip shall be sent directly to nfc_hci_recv_frame().</p>
+<p>Data coming from the chip shall be sent directly to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nfc_hci_recv_frame()</span></code>.</p>
 </section>
 <section id="llc">
 <h2>LLC<a class="headerlink" href="#llc" title="Link to this heading">¶</a></h2>
@@ -438,18 +438,18 @@ the response.</p>
 HCI command, setup a local wait queue on stack, and <a class="reference internal" href="../basics.html#c.wait_event" title="wait_event"><code class="xref c c-func docutils literal notranslate"><span class="pre">wait_event()</span></code></a> for completion.
 The wait is not interruptible because it is guaranteed that the command will
 complete after some short timeout anyway.</p>
-<p>MSGTXWQ context will then be scheduled and invoke nfc_hci_msg_tx_work().
+<p>MSGTXWQ context will then be scheduled and invoke <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nfc_hci_msg_tx_work()</span></code>.
 This function will dequeue the next pending command and send its HCP fragments
 to the lower layer which happens to be shdlc. It will then start a timer to be
 able to complete the command with a timeout error if no response arrive.</p>
-<p>SMW context gets scheduled and invokes nfc_shdlc_sm_work(). This function
+<p>SMW context gets scheduled and invokes <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nfc_shdlc_sm_work()</span></code>. This function
 handles shdlc framing in and out. It uses the driver xmit to send frames and
 receives incoming frames in an skb queue filled from the driver IRQ handler.
 SHDLC I(nformation) frames payload are HCP fragments. They are aggregated to
 form complete HCI frames, which can be a response, command, or event.</p>
 <p>HCI Responses are dispatched immediately from this context to unblock
 waiting command execution. Response processing involves invoking the completion
-callback that was provided by nfc_hci_msg_tx_work() when it sent the command.
+callback that was provided by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nfc_hci_msg_tx_work()</span></code> when it sent the command.
 The completion callback will then wake the syscall context.</p>
 <p>It is also possible to execute the command asynchronously using this API:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>static int nfc_hci_execute_cmd_async(struct nfc_hci_dev *hdev, u8 pipe, u8 cmd,
@@ -482,7 +482,7 @@ Handling of these errors is done as follows:</p>
 <ul class="simple">
 <li><p>driver (pn544) fails to deliver an incoming frame: it stores the error such
 that any subsequent call to the driver will result in this error. Then it
-calls the standard nfc_shdlc_recv_frame() with a NULL argument to report the
+calls the standard <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nfc_shdlc_recv_frame()</span></code> with a NULL argument to report the
 problem above. shdlc stores a EREMOTEIO sticky status, which will trigger
 SMW to report above in turn.</p></li>
 <li><p>SMW is basically a background thread to handle incoming and outgoing shdlc

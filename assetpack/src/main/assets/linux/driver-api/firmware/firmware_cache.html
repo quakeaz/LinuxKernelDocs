@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -243,13 +243,13 @@ if the firmware file is not found.</p></li>
 criteria the firmware cache is setup by adding a devres entry for the
 device making the firmware request.</p></li>
 <li><p>The firmware devres entry is maintained throughout the lifetime of the
-device. This means that even if you release_firmware() the firmware cache
+device. This means that even if you <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">release_firmware()</span></code> the firmware cache
 will still be used on resume from suspend.</p></li>
 <li><p>The timeout for the fallback mechanism is temporarily reduced to 10 seconds
 as the firmware cache is set up during suspend, the timeout is set back to
 the old value you had configured after the cache is set up.</p></li>
 <li><p>Upon suspend any pending non-uevent firmware requests are killed to avoid
-stalling the kernel, this is done with kill_requests_without_uevent(). Kernel
+stalling the kernel, this is done with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kill_requests_without_uevent()</span></code>. Kernel
 calls requiring the non-uevent therefore need to implement their own firmware
 cache mechanism but must not use the firmware API on suspend.</p></li>
 </ul>

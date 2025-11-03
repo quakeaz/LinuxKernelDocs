@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -230,7 +230,7 @@
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This enum is used by the asynchronous connection logic to define the
+<p>This <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">is</span></code> used by the asynchronous connection logic to define the
 algorithm that will be used to match an asynchronous device.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.v4l2_async_match_desc">
@@ -261,7 +261,7 @@ algorithm that will be used to match an asynchronous device.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">fwnode</span></code></dt><dd><p>pointer to <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fwnode_handle</span></code> to be matched.
 Used if <strong>match_type</strong> is <code class="docutils literal notranslate"><span class="pre">V4L2_ASYNC_MATCH_TYPE_FWNODE</span></code>.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">i2c</span></code></dt><dd><p>embedded struct with I2C parameters to be matched.
+<dt><code class="docutils literal notranslate"><span class="pre">i2c</span></code></dt><dd><p>embedded <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">with</span></code> I2C parameters to be matched.
 Both <strong>match.i2c.adapter_id</strong> and <strong>match.i2c.address</strong>
 should be matched.
 Used if <strong>match_type</strong> is <code class="docutils literal notranslate"><span class="pre">V4L2_ASYNC_MATCH_TYPE_I2C</span></code>.</p>
@@ -293,22 +293,22 @@ Used if <strong>match_type</strong> is <code class="docutils literal notranslate
 </div>
 <p><strong>Members</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">match</span></code></dt><dd><p>struct of match type and per-bus type matching data sets</p>
+<dt><code class="docutils literal notranslate"><span class="pre">match</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">of</span></code> match type and per-bus type matching data sets</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">notifier</span></code></dt><dd><p>the async notifier the connection is related to</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">asc_entry</span></code></dt><dd><p>used to add <a class="reference internal" href="#c.v4l2_async_connection" title="v4l2_async_connection"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_async_connection</span></code></a> objects to the
 notifier <strong>waiting_list</strong> or <strong>done_list</strong></p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">asc_subdev_entry</span></code></dt><dd><p>entry in struct v4l2_async_subdev.asc_list list</p>
+<dt><code class="docutils literal notranslate"><span class="pre">asc_subdev_entry</span></code></dt><dd><p>entry in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_async_subdev</span></code>.asc_list list</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">sd</span></code></dt><dd><p>the related sub-device</p>
 </dd>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>When this struct is used as a member in a driver specific struct, the driver
-specific struct shall contain the <a class="reference internal" href="#c.v4l2_async_connection" title="v4l2_async_connection"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_async_connection</span></code></a> as its first
+<p>When this <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> used as a member in a driver specific struct, the driver
+specific <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">shall</span></code> contain the <a class="reference internal" href="#c.v4l2_async_connection" title="v4l2_async_connection"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_async_connection</span></code></a> as its first
 member.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.v4l2_async_notifier_operations">
@@ -319,9 +319,9 @@ member.</p>
 <div class="kernelindent docutils container">
 <p><strong>Definition</strong>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct v4l2_async_notifier_operations {
-    int (*bound)(struct v4l2_async_notifier *notifier,struct v4l2_subdev *subdev, struct v4l2_async_connection *asc);
+    int (*bound)(struct v4l2_async_notifier *notifier, struct v4l2_subdev *subdev, struct v4l2_async_connection *asc);
     int (*complete)(struct v4l2_async_notifier *notifier);
-    void (*unbind)(struct v4l2_async_notifier *notifier,struct v4l2_subdev *subdev, struct v4l2_async_connection *asc);
+    void (*unbind)(struct v4l2_async_notifier *notifier, struct v4l2_subdev *subdev, struct v4l2_async_connection *asc);
     void (*destroy)(struct v4l2_async_connection *asc);
 };
 </pre></div>
@@ -654,7 +654,7 @@ allocated.</p>
 <p><strong>Description</strong></p>
 <p>This function is just like <a class="reference internal" href="#c.v4l2_async_register_subdev" title="v4l2_async_register_subdev"><code class="xref c c-func docutils literal notranslate"><span class="pre">v4l2_async_register_subdev()</span></code></a> with the exception
 that calling it will also parse firmware interfaces for remote references
-using v4l2_async_nf_parse_fwnode_sensor() and registers the
+using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">v4l2_async_nf_parse_fwnode_sensor()</span></code> and registers the
 async sub-devices. The sub-device is similarly unregistered by calling
 <a class="reference internal" href="#c.v4l2_async_unregister_subdev" title="v4l2_async_unregister_subdev"><code class="xref c c-func docutils literal notranslate"><span class="pre">v4l2_async_unregister_subdev()</span></code></a>.</p>
 <p>While registered, the subdev module is marked as in-use.</p>

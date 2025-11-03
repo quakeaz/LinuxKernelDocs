@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -239,7 +239,7 @@ initialization time, which enables lockdep to validate that the write
 side critical sections are properly serialized.</p>
 <p>This lock association is a NOOP if lockdep is disabled and has neither
 storage nor runtime overhead. If lockdep is enabled, the lock pointer is
-stored in struct seqcount and lockdep’s “lock is held” assertions are
+stored in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">seqcount</span></code> and lockdep’s “lock is held” assertions are
 injected at the beginning of the write side critical section to validate
 that it is properly protected.</p>
 <p>For lock types which do not implicitly disable preemption, preemption
@@ -546,8 +546,8 @@ means. It will save a single branching instruction.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>__read_seqcount_retry is like read_seqcount_retry, but has no smp_rmb()
-barrier. Callers should ensure that smp_rmb() or equivalent ordering is
+<p>__read_seqcount_retry is like read_seqcount_retry, but has no <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smp_rmb()</span></code>
+barrier. Callers should ensure that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smp_rmb()</span></code> or equivalent ordering is
 provided before actually loading any of the variables that are to be
 protected in this critical section.</p>
 <p>Use carefully, only in critical code, and comment how the barrier is
@@ -696,7 +696,7 @@ the seqcount write serialization lock is associated, and preemptible.</p>
 <p><strong>Description</strong></p>
 <p>This can be used to provide an ordering guarantee instead of the usual
 consistency guarantee. It is one wmb cheaper, because it can collapse
-the two back-to-back wmb()s.</p>
+the two back-to-back <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wmb()</span></code>s.</p>
 <p>Note that writes surrounding the barrier should be declared atomic (e.g.
 via WRITE_ONCE): a) to ensure the writes become visible to other threads
 atomically, avoiding compiler optimizations; b) to document which writes are
@@ -934,11 +934,6 @@ following:</p>
 <p>So during the modification, queries are first redirected to data[1]. Then we
 modify data[0]. When that is complete, we redirect queries back to data[0]
 and we can modify data[1].</p>
-<p>NOTE2:</p>
-<blockquote>
-<div><p>When data is a dynamic data structure; one should use regular RCU
-patterns to manage the lifetimes of the objects within.</p>
-</div></blockquote>
 <p><strong>NOTE</strong></p>
 <blockquote>
 <div><p>The non-requirement for atomic modifications does _NOT_ include
@@ -947,6 +942,11 @@ data structure.</p>
 <p>An iteration might start in data[0] and get suspended long enough
 to miss an entire modification sequence, once it resumes it might
 observe the new entry.</p>
+</div></blockquote>
+<p>NOTE2:</p>
+<blockquote>
+<div><p>When data is a dynamic data structure; one should use regular RCU
+patterns to manage the lifetimes of the objects within.</p>
 </div></blockquote>
 </div>
 <dl class="c function">
@@ -1205,7 +1205,7 @@ seqlock_t write section previously opened with <a class="reference internal" hre
 <p>read_seqlock_excl opens a seqlock_t locking reader critical section.  A
 locking reader exclusively locks out <em>both</em> other writers <em>and</em> other
 locking readers, but it does not update the embedded sequence number.</p>
-<p>Locking readers act like a normal spin_lock()/spin_unlock().</p>
+<p>Locking readers act like a normal <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_unlock()</span></code>.</p>
 <p>The opened read section must be closed with <a class="reference internal" href="#c.read_sequnlock_excl" title="read_sequnlock_excl"><code class="xref c c-func docutils literal notranslate"><span class="pre">read_sequnlock_excl()</span></code></a>.</p>
 <p><strong>Context</strong></p>
 <p>if the seqlock_t write section, <em>or other read sections</em>, can
@@ -1415,9 +1415,6 @@ with <a class="reference internal" href="#c.read_seqbegin_or_lock" title="read_s
 <p>This is the _irqsave variant of <a class="reference internal" href="#c.read_seqbegin_or_lock" title="read_seqbegin_or_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">read_seqbegin_or_lock()</span></code></a>. Use it only if
 the seqlock_t write section, <em>or other read sections</em>, can be invoked
 from hardirq context.</p>
-<p><strong>Note</strong></p>
-<p>Interrupts will be disabled only for “locking reader” mode.</p>
-<p><strong>Return</strong></p>
 <blockquote>
 <div><ol class="arabic simple">
 <li><p>The saved local interrupts state in case of a locking reader, to
@@ -1426,6 +1423,8 @@ be passed to <a class="reference internal" href="#c.done_seqretry_irqrestore" ti
 overloaded as a return parameter. Check <a class="reference internal" href="#c.read_seqbegin_or_lock" title="read_seqbegin_or_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">read_seqbegin_or_lock()</span></code></a>.</p></li>
 </ol>
 </div></blockquote>
+<p><strong>Note</strong></p>
+<p>Interrupts will be disabled only for “locking reader” mode.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.done_seqretry_irqrestore">

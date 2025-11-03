@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -152,7 +152,7 @@
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>DEPRECATED API:</p>
-<p>The use of ‘struct static_key’ directly, is now DEPRECATED. In addition
+<p>The use of ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">static_key</span></code>’ directly, is now DEPRECATED. In addition
 static_key_{true,false}() is also DEPRECATED. IE DO NOT use the following:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct static_key false = STATIC_KEY_INIT_FALSE;
 struct static_key true = STATIC_KEY_INIT_TRUE;
@@ -191,7 +191,7 @@ static_branch_disable(&amp;key);
 ...
 </pre></div>
 </div>
-<p>The static_branch_unlikely() branch will be generated into the code with as little
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">static_branch_unlikely()</span></code> branch will be generated into the code with as little
 impact to the likely code path as possible.</p>
 </section>
 <section id="motivation">
@@ -255,8 +255,8 @@ else
         do unlikely code
 </pre></div>
 </div>
-<p>Keys defined via DEFINE_STATIC_KEY_TRUE(), or DEFINE_STATIC_KEY_FALSE, may
-be used in either static_branch_likely() or static_branch_unlikely()
+<p>Keys defined via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">DEFINE_STATIC_KEY_TRUE()</span></code>, or DEFINE_STATIC_KEY_FALSE, may
+be used in either <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">static_branch_likely()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">static_branch_unlikely()</span></code>
 statements.</p>
 <p>Branch(es) can be set true via:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>static_branch_enable(&amp;key);
@@ -272,15 +272,15 @@ statements.</p>
 static_branch_dec(&amp;key);
 </pre></div>
 </div>
-<p>Thus, ‘static_branch_inc()’ means ‘make the branch true’, and
-‘static_branch_dec()’ means ‘make the branch false’ with appropriate
+<p>Thus, ‘<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">static_branch_inc()</span></code>’ means ‘make the branch true’, and
+‘<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">static_branch_dec()</span></code>’ means ‘make the branch false’ with appropriate
 reference counting. For example, if the key is initialized true, a
-static_branch_dec(), will switch the branch to false. And a subsequent
-static_branch_inc(), will change the branch back to true. Likewise, if the
-key is initialized false, a ‘static_branch_inc()’, will change the branch to
-true. And then a ‘static_branch_dec()’, will again make the branch false.</p>
-<p>The state and the reference count can be retrieved with ‘static_key_enabled()’
-and ‘static_key_count()’.  In general, if you use these functions, they
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">static_branch_dec()</span></code>, will switch the branch to false. And a subsequent
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">static_branch_inc()</span></code>, will change the branch back to true. Likewise, if the
+key is initialized false, a ‘<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">static_branch_inc()</span></code>’, will change the branch to
+true. And then a ‘<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">static_branch_dec()</span></code>’, will again make the branch false.</p>
+<p>The state and the reference count can be retrieved with ‘<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">static_key_enabled()</span></code>’
+and ‘<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">static_key_count()</span></code>’.  In general, if you use these functions, they
 should be protected with the same mutex used around the enable/disable
 or increment/decrement function.</p>
 <p>Note that switching branches results in some locks being taken,
@@ -290,10 +290,10 @@ patched). Calling the static key API from within a hotplug notifier is
 thus a sure deadlock recipe. In order to still allow use of the
 functionality, the following functions are provided:</p>
 <blockquote>
-<div><p>static_key_enable_cpuslocked()
-static_key_disable_cpuslocked()
-static_branch_enable_cpuslocked()
-static_branch_disable_cpuslocked()</p>
+<div><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">static_key_enable_cpuslocked()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">static_key_disable_cpuslocked()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">static_branch_enable_cpuslocked()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">static_branch_disable_cpuslocked()</span></code></p>
 </div></blockquote>
 <p>These functions are <em>not</em> general purpose, and must only be used when
 you really know that you’re in the above context, and no other.</p>
@@ -311,7 +311,7 @@ you really know that you’re in the above context, and no other.</p>
 <p>There are a few functions and macros that architectures must implement in order
 to take advantage of this optimization. If there is no architecture support, we
 simply fall back to a traditional, load, test, and jump sequence. Also, the
-struct jump_entry table must be at least 4-byte aligned because the
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">jump_entry</span></code> table must be at least 4-byte aligned because the
 static_key-&gt;entry field makes use of the two least significant bits.</p>
 <ul class="simple">
 <li><dl class="simple">
@@ -348,7 +348,7 @@ static_key-&gt;entry field makes use of the two least significant bits.</p>
 <ol class="arabic simple" start="5">
 <li><p>Static keys / jump label analysis, results (x86_64):</p></li>
 </ol>
-<p>As an example, let’s add the following branch to ‘getppid()’, such that the
+<p>As an example, let’s add the following branch to ‘<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">getppid()</span></code>’, such that the
 system call now looks like:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>SYSCALL_DEFINE0(getppid)
 {

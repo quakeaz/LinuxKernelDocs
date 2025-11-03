@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -170,13 +170,13 @@ The return value is placed in v0 (an alias of a0).</p>
 <p>Source code for this interface can be found in arch/loongarch/kvm*.</p>
 <section id="querying-for-existence">
 <h2>Querying for existence<a class="headerlink" href="#querying-for-existence" title="Link to this heading">¶</a></h2>
-<p>To determine if the host is running on KVM, we can utilize the cpucfg()
+<p>To determine if the host is running on KVM, we can utilize the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpucfg()</span></code>
 function at index CPUCFG_KVM_BASE (0x40000000).</p>
 <p>The CPUCFG_KVM_BASE range, spanning from 0x40000000 to 0x400000FF, The
 CPUCFG_KVM_BASE range between 0x40000000 - 0x400000FF is marked as reserved.
 Consequently, all current and future processors will not implement any
 feature within this range.</p>
-<p>On a KVM-virtualized Linux system, a read operation on cpucfg() at index
+<p>On a KVM-virtualized Linux system, a read operation on <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpucfg()</span></code> at index
 CPUCFG_KVM_BASE (0x40000000) returns the magic string ‘KVM0’.</p>
 <p>Once you have determined that your host is running on a paravirtualization-
 capable KVM, you may now use hypercalls as described below.</p>

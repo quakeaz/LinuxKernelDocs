@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -167,7 +167,7 @@ immediately usable.  That means the system must do many things, including:</p>
 loading a kernel module; newer drivers can use module-init-tools
 to publish their device (and class) support to user utilities.</p></li>
 <li><p>Bind a driver to that device.  Bus frameworks do that using a
-device driver’s probe() routine.</p></li>
+device driver’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> routine.</p></li>
 <li><p>Tell other subsystems to configure the new device.  Print
 queues may need to be enabled, networks brought up, disk
 partitions mounted, and so on.  In some cases these will
@@ -292,7 +292,7 @@ something like this:</p>
 </pre></div>
 </div>
 <p>When the USB subsystem knows about a driver’s device ID table, it’s used when
-choosing drivers to probe().  The thread doing new device processing checks
+choosing drivers to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code>.  The thread doing new device processing checks
 drivers’ device ID entries from the <code class="docutils literal notranslate"><span class="pre">MODULE_DEVICE_TABLE</span></code> against interface
 and device descriptors for the device.  It will only call <code class="docutils literal notranslate"><span class="pre">probe()</span></code> if there
 is a match, and the third argument to <code class="docutils literal notranslate"><span class="pre">probe()</span></code> will be the entry that

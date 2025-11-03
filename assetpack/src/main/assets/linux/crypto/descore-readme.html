@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -414,7 +414,7 @@ i assume word pointers can be freely cast to and from char pointers.
 note that 99% of C programs make these assumptions.
 i always use unsigned char’s if the high bit could be set.</p></li>
 <li><p>the typedef <code class="docutils literal notranslate"><span class="pre">word</span></code> means a 32 bit unsigned integral type.
-if <code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">long</span></code> is not 32 bits, change the typedef in desCore.h.
+if <code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">long</span></code> is not 32 bits, change the <code class="xref c c-type broken_xref docutils literal notranslate"><span class="pre">typedef</span> <span class="pre">in</span></code> desCore.h.
 i assume sizeof(word) == 4 EVERYWHERE.</p></li>
 </ol>
 <p>the (worst-case) cost of my NOT doing endedness-specific optimizations
@@ -530,7 +530,7 @@ it generates the special 64k table these routines need.</p>
 <dt>DesMethod(m, k)</dt><dd><p>m points to a 128byte block, k points to an 8 byte des key
 which must have odd parity (or -1 is returned) and which must
 not be a (semi-)weak key (or -2 is returned).
-normally DesMethod() returns 0.</p>
+normally <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">DesMethod()</span></code> returns 0.</p>
 <p>m is filled in from k so that when one of the routines below
 is called with m, the routine will act like standard des
 en/decryption with the key k. if you use DesMethod,
@@ -573,7 +573,7 @@ for your compiler (MAX optimization).</p>
 <section id="speeding-up-kerberos-and-or-its-des-library">
 <h2>Speeding up kerberos (and/or its des library)<a class="headerlink" href="#speeding-up-kerberos-and-or-its-des-library" title="Link to this heading">¶</a></h2>
 <p>note that i have included a kerberos-compatible interface in desUtil.c
-through the functions des_key_sched() and des_ecb_encrypt().
+through the functions <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">des_key_sched()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">des_ecb_encrypt()</span></code>.
 to use these with kerberos or kerberos-compatible code put desCore.a
 ahead of the kerberos-compatible library on your linker’s command line.
 you should not need to #include desCore.h;  just include the header

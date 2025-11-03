@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -173,7 +173,7 @@ Please note that implementation details can be changed.</p>
 </div></blockquote>
 <p>swap_cgroup ... an entry per swp_entry.</p>
 <blockquote>
-<div><p>Allocated at swapon(). Freed at swapoff().</p>
+<div><p>Allocated at <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">swapon()</span></code>. Freed at <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">swapoff()</span></code>.</p>
 </div></blockquote>
 <p>The page_cgroup has USED bit and double count against a page_cgroup never
 occurs. swap_cgroup is used only when a charged page is swapped-out.</p>
@@ -184,7 +184,7 @@ occurs. swap_cgroup is used only when a charged page is swapped-out.</p>
 <blockquote>
 <div><p>a page/swp_entry may be charged (usage += PAGE_SIZE) at</p>
 <blockquote>
-<div><p>mem_cgroup_try_charge()</p>
+<div><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mem_cgroup_try_charge()</span></code></p>
 </div></blockquote>
 </div></blockquote>
 </section>
@@ -209,14 +209,14 @@ disappears.</p>
 <div><p>Memcg pages are charged in two steps:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>mem_cgroup_try_charge()</p></li>
-<li><p>mem_cgroup_commit_charge() or mem_cgroup_cancel_charge()</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mem_cgroup_try_charge()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mem_cgroup_commit_charge()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mem_cgroup_cancel_charge()</span></code></p></li>
 </ul>
 </div></blockquote>
-<p>At try_charge(), there are no flags to say “this page is charged”.
+<p>At <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">try_charge()</span></code>, there are no flags to say “this page is charged”.
 at this point, usage += PAGE_SIZE.</p>
-<p>At commit(), the page is associated with the memcg.</p>
-<p>At cancel(), simply usage -= PAGE_SIZE.</p>
+<p>At <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">commit()</span></code>, the page is associated with the memcg.</p>
+<p>At <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cancel()</span></code>, simply usage -= PAGE_SIZE.</p>
 </div></blockquote>
 <p>Under below explanation, we assume CONFIG_SWAP=y.</p>
 </section>
@@ -249,18 +249,18 @@ swp_entry’s refcnt += # of ptes.</p></li>
 swp_entry’s refcnt -= 1.</p></li>
 </ol>
 <p>Finally, at task exit,
-(e) zap_pte() is called and swp_entry’s refcnt -=1 -&gt; 0.</p>
+(e) <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">zap_pte()</span></code> is called and swp_entry’s refcnt -=1 -&gt; 0.</p>
 </div></blockquote>
 </section>
 <section id="page-cache">
 <h2>5. Page Cache<a class="headerlink" href="#page-cache" title="Link to this heading">¶</a></h2>
 <blockquote>
 <div><p>Page Cache is charged at
-- filemap_add_folio().</p>
+- <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">filemap_add_folio()</span></code>.</p>
 <p>The logic is very clear. (About migration, see below)</p>
 <dl class="simple">
-<dt>Note:</dt><dd><p>__filemap_remove_folio() is called by filemap_remove_folio()
-and __remove_mapping().</p>
+<dt>Note:</dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__filemap_remove_folio()</span></code> is called by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">filemap_remove_folio()</span></code>
+and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__remove_mapping()</span></code>.</p>
 </dd>
 </dl>
 </div></blockquote>

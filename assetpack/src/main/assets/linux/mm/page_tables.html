@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -254,10 +254,10 @@ it is folded.</p></li>
 <li><p><strong>pgd</strong>, <cite>pgd_t</cite>, <cite>pgdval_t</cite> = <strong>Page Global Directory</strong> - the Linux kernel
 main page table handling the PGD for the kernel memory is still found in
 <cite>swapper_pg_dir</cite>, but each userspace process in the system also has its own
-memory context and thus its own <em>pgd</em>, found in <cite>struct mm_struct</cite> which
-in turn is referenced to in each <cite>struct task_struct</cite>. So tasks have memory
-context in the form of a <cite>struct mm_struct</cite> and this in turn has a
-<cite>struct pgt_t *pgd</cite> pointer to the corresponding page global directory.</p></li>
+memory context and thus its own <em>pgd</em>, found in <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">mm_struct</span></code></cite> which
+in turn is referenced to in each <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">task_struct</span></code></cite>. So tasks have memory
+context in the form of a <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">mm_struct</span></code></cite> and this in turn has a
+<cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pgt_t</span></code> *pgd</cite> pointer to the corresponding page global directory.</p></li>
 </ul>
 <p>To repeat: each level in the page table hierarchy is a <em>array of pointers</em>, so
 the <strong>pgd</strong> contains <cite>PTRS_PER_PGD</cite> pointers to the next level below, <strong>p4d</strong>
@@ -344,21 +344,21 @@ Linux kernel handles these page faults, creates tables and tables’ entries,
 check if memory is present and, if not, requests to load data from persistent
 storage or from other devices, and updates the MMU and its caches.</p>
 <p>The first steps are architecture dependent. Most architectures jump to
-<cite>do_page_fault()</cite>, whereas the x86 interrupt handler is defined by the
-<cite>DEFINE_IDTENTRY_RAW_ERRORCODE()</cite> macro which calls <cite>handle_page_fault()</cite>.</p>
+<cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_page_fault()</span></code></cite>, whereas the x86 interrupt handler is defined by the
+<cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">DEFINE_IDTENTRY_RAW_ERRORCODE()</span></code></cite> macro which calls <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">handle_page_fault()</span></code></cite>.</p>
 <p>Whatever the routes, all architectures end up to the invocation of
-<cite>handle_mm_fault()</cite> which, in turn, (likely) ends up calling
-<cite>__handle_mm_fault()</cite> to carry out the actual work of allocating the page
+<cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">handle_mm_fault()</span></code></cite> which, in turn, (likely) ends up calling
+<cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__handle_mm_fault()</span></code></cite> to carry out the actual work of allocating the page
 tables.</p>
-<p>The unfortunate case of not being able to call <cite>__handle_mm_fault()</cite> means
+<p>The unfortunate case of not being able to call <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__handle_mm_fault()</span></code></cite> means
 that the virtual address is pointing to areas of physical memory which are not
 permitted to be accessed (at least from the current context). This
 condition resolves to the kernel sending the above-mentioned SIGSEGV signal
 to the process and leads to the consequences already explained.</p>
-<p><cite>__handle_mm_fault()</cite> carries out its work by calling several functions to
+<p><cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__handle_mm_fault()</span></code></cite> carries out its work by calling several functions to
 find the entry’s offsets of the upper layers of the page tables and allocate
 the tables that it may need.</p>
-<p>The functions that look for the offset have names like <cite>*_offset()</cite>, where the
+<p>The functions that look for the offset have names like <cite>*<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_offset()</span></code></cite>, where the
 “*” is for pgd, p4d, pud, pmd, pte; instead the functions to allocate the
 corresponding tables, layer by layer, are called <cite>*_alloc</cite>, using the
 above-mentioned convention to name them after the corresponding types of tables
@@ -374,8 +374,8 @@ reduced page table overhead, memory allocation efficiency, and performance
 improvement for certain workloads. However, these benefits come with
 trade-offs, like wasted memory and allocation challenges.</p>
 <p>At the very end of the walk with allocations, if it didn’t return errors,
-<cite>__handle_mm_fault()</cite> finally calls <cite>handle_pte_fault()</cite>, which via <cite>do_fault()</cite>
-performs one of <cite>do_read_fault()</cite>, <cite>do_cow_fault()</cite>, <cite>do_shared_fault()</cite>.
+<cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__handle_mm_fault()</span></code></cite> finally calls <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">handle_pte_fault()</span></code></cite>, which via <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_fault()</span></code></cite>
+performs one of <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_read_fault()</span></code></cite>, <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_cow_fault()</span></code></cite>, <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_shared_fault()</span></code></cite>.
 “read”, “cow”, “shared” give hints about the reasons and the kind of fault it’s
 handling.</p>
 <p>The actual implementation of the workflow is very complex. Its design allows
@@ -384,7 +384,7 @@ characteristics of each architecture, while still sharing a common overall
 structure.</p>
 <p>To conclude this high altitude view of how Linux handles page faults, let’s
 add that the page faults handler can be disabled and enabled respectively with
-<cite>pagefault_disable()</cite> and <cite>pagefault_enable()</cite>.</p>
+<cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pagefault_disable()</span></code></cite> and <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pagefault_enable()</span></code></cite>.</p>
 <p>Several code path make use of the latter two functions because they need to
 disable traps into the page faults handler, mostly to prevent deadlocks.</p>
 </section>

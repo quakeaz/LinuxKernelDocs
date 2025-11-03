@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -152,14 +152,14 @@ It is likely that subsystem maintainers will ask driver developers to
 conform to these design patterns.</p>
 <ol class="arabic simple">
 <li><p>State Container</p></li>
-<li><p>container_of()</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">container_of()</span></code></p></li>
 </ol>
 <section id="state-container">
 <h2>1. State Container<a class="headerlink" href="#state-container" title="Link to this heading">¶</a></h2>
 <p>While the kernel contains a few device drivers that assume that they will
-only be probed() once on a certain system (singletons), it is custom to assume
+only be <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probed()</span></code> once on a certain system (singletons), it is custom to assume
 that the device the driver binds to will appear in several instances. This
-means that the probe() function and all callbacks need to be reentrant.</p>
+means that the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> function and all callbacks need to be reentrant.</p>
 <p>The most common way to achieve this is to use the state container design
 pattern. It usually has this form:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct foo {
@@ -179,12 +179,12 @@ static int foo_probe(...)
 }
 </pre></div>
 </div>
-<p>This will create an instance of struct foo in memory every time probe() is
+<p>This will create an instance of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">foo</span></code> in memory every time <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> is
 called. This is our state container for this instance of the device driver.
 Of course it is then necessary to always pass this instance of the
 state around to all functions that need access to the state and its members.</p>
 <p>For example, if the driver is registering an interrupt handler, you would
-pass around a pointer to struct foo like this:</p>
+pass around a pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">foo</span></code> like this:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>static irqreturn_t foo_handler(int irq, void *arg)
 {
     struct foo *foo = arg;
@@ -239,15 +239,15 @@ static int foo_probe(...)
 </pre></div>
 </div>
 <p>The design pattern is the same for an hrtimer or something similar that will
-return a single argument which is a pointer to a struct member in the
+return a single argument which is a pointer to a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">member</span></code> in the
 callback.</p>
-<p>container_of() is a macro defined in &lt;linux/kernel.h&gt;</p>
-<p>What container_of() does is to obtain a pointer to the containing struct from
-a pointer to a member by a simple subtraction using the offsetof() macro from
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">container_of()</span></code> is a macro defined in &lt;linux/kernel.h&gt;</p>
+<p>What <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">container_of()</span></code> does is to obtain a pointer to the containing <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">from</span></code>
+a pointer to a member by a simple subtraction using the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">offsetof()</span></code> macro from
 standard C, which allows something similar to object oriented behaviours.
 Notice that the contained member must not be a pointer, but an actual member
 for this to work.</p>
-<p>We can see here that we avoid having global pointers to our struct foo *
+<p>We can see here that we avoid having global pointers to our <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">foo</span></code> *
 instance this way, while still keeping the number of parameters passed to the
 work function to a single pointer.</p>
 </section>

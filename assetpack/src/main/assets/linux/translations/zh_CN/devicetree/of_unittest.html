@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -258,7 +258,7 @@ null        null       child131 -&gt; null
 </div>
 <p>Figure 1: 未扁平化的设备树的通用结构</p>
 <p>在执行OF单元测试之前，需要将测试数据附加到机器的设备树上（如果存在）。因此，当调用
-selftest_data_add()时，首先会读取通过以下内核符号链接到内核镜像中的扁平化设备树
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">selftest_data_add()</span></code>时，首先会读取通过以下内核符号链接到内核镜像中的扁平化设备树
 数据:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>__dtb_testcases_begin - address marking the start of test data blob
 __dtb_testcases_end   - address marking the end of test data blob
@@ -267,7 +267,7 @@ __dtb_testcases_end   - address marking the end of test data blob
 <p>其次，它调用<a class="reference internal" href="../../../devicetree/kernel-api.html#c.of_fdt_unflatten_tree" title="of_fdt_unflatten_tree"><code class="xref c c-func docutils literal notranslate"><span class="pre">of_fdt_unflatten_tree()</span></code></a>来解除扁平化的blob。最后，如果机器的设备树
 （即实时树）是存在的，那么它将未扁平化的测试数据树附加到实时树上，否则它将自己作为
 实时设备树附加。</p>
-<p>attach_node_and_children()使用of_attach_node()将节点附加到实时树上，如下所
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">attach_node_and_children()</span></code>使用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">of_attach_node()</span></code>将节点附加到实时树上，如下所
 述。为了解释这一点，图2中描述的测试数据树被附加到图1中描述的实时树上:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>root (&#39;/&#39;)
     |
@@ -280,8 +280,8 @@ test-child01      null             null             null
 </div>
 <p>Figure 2: 将测试数据树附在实时树上的例子。</p>
 <p>根据上面的方案，实时树已经存在，所以不需要附加根(‘/’)节点。所有其他节点都是通过在
-每个节点上调用of_attach_node()来附加的。</p>
-<p>在函数of_attach_node()中，新的节点被附在实时树中给定的父节点的子节点上。但是，如
+每个节点上调用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">of_attach_node()</span></code>来附加的。</p>
+<p>在函数<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">of_attach_node()</span></code>中，新的节点被附在实时树中给定的父节点的子节点上。但是，如
 果父节点已经有了一个孩子，那么新节点就会取代当前的孩子，并将其变成其兄弟姐妹。因此，
 当测试案例的数据节点被连接到上面的实时树（图1）时，最终的结构如图3所示:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>root (&#39;/&#39;)
@@ -322,14 +322,14 @@ null             null                null         test-child01
 在连接了第一个test-child0节点之后，又连接了test-sibling1节点，该节点推动子节点
 （即test-child0）成为兄弟姐妹，并使自己成为子节点，如上所述。</p>
 <p>如果发现一个重复的节点（即如果一个具有相同full_name属性的节点已经存在于实时树中），
-那么该节点不会被附加，而是通过调用函数update_node_properties()将其属性更新到活
+那么该节点不会被附加，而是通过调用函数<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">update_node_properties()</span></code>将其属性更新到活
 树的节点中。</p>
 </section>
 <section id="id4">
 <h3>2.2. 删除测试数据<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h3>
 <p>一旦测试用例执行完，selftest_data_remove被调用，以移除最初连接的设备节点（首先是
-叶子节点被分离，然后向上移动父节点被移除，最后是整个树）。selftest_data_remove()
-调用detach_node_and_children()，使用<a class="reference internal" href="../../../devicetree/kernel-api.html#c.of_detach_node" title="of_detach_node"><code class="xref c c-func docutils literal notranslate"><span class="pre">of_detach_node()</span></code></a>将节点从实时设备树上分离。</p>
+叶子节点被分离，然后向上移动父节点被移除，最后是整个树）。<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">selftest_data_remove()</span></code>
+调用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">detach_node_and_children()</span></code>，使用<a class="reference internal" href="../../../devicetree/kernel-api.html#c.of_detach_node" title="of_detach_node"><code class="xref c c-func docutils literal notranslate"><span class="pre">of_detach_node()</span></code></a>将节点从实时设备树上分离。</p>
 <p>为了分离一个节点，<a class="reference internal" href="../../../devicetree/kernel-api.html#c.of_detach_node" title="of_detach_node"><code class="xref c c-func docutils literal notranslate"><span class="pre">of_detach_node()</span></code></a>要么将给定节点的父节点的子节点指针更新为其同级节
 点，要么根据情况将前一个同级节点附在给定节点的同级节点上。就这样吧。 :)</p>
 </section>

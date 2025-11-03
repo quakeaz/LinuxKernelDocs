@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -309,7 +309,6 @@ structure below:</p>
 <span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">dax_device</span><span class="w">   </span><span class="o">*</span><span class="n">dax_dev</span><span class="p">;</span>
 <span class="w">    </span><span class="kt">void</span><span class="w">                </span><span class="o">*</span><span class="n">inline_data</span><span class="p">;</span>
 <span class="w">    </span><span class="kt">void</span><span class="w">                </span><span class="o">*</span><span class="n">private</span><span class="p">;</span>
-<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">iomap_folio_ops</span><span class="w"> </span><span class="o">*</span><span class="n">folio_ops</span><span class="p">;</span>
 <span class="w">    </span><span class="n">u64</span><span class="w">                 </span><span class="n">validity_cookie</span><span class="p">;</span>
 <span class="p">};</span>
 </pre></div>
@@ -416,7 +415,6 @@ only for a fsdax operation.</p></li>
 This value is ignored for all other mapping types.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">private</span></code> is a pointer to <a class="reference external" href="https://lore.kernel.org/all/20180619164137.13720-7-hch&#64;lst.de/">filesystem-private information</a>.
 This value will be passed unchanged to <code class="docutils literal notranslate"><span class="pre">-&gt;iomap_end</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">folio_ops</span></code> will be covered in the section on pagecache operations.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">validity_cookie</span></code> is a magic freshness value set by the filesystem
 that should be used to detect stale mappings.
 For pagecache operations this is critical for correct operation

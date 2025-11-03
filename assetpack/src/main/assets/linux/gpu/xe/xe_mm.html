@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -398,9 +398,9 @@ table located in the GSM for easy PTE manipulation</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This struct needs to be initialized (only-once) with <a class="reference internal" href="#c.xe_ggtt_node_init" title="xe_ggtt_node_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">xe_ggtt_node_init()</span></code></a> before any node
+<p>This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">needs</span></code> to be initialized (only-once) with <a class="reference internal" href="#c.xe_ggtt_node_init" title="xe_ggtt_node_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">xe_ggtt_node_init()</span></code></a> before any node
 insertion, reservation, or ‘ballooning’.
-It will, then, be finalized by either <a class="reference internal" href="#c.xe_ggtt_node_remove" title="xe_ggtt_node_remove"><code class="xref c c-func docutils literal notranslate"><span class="pre">xe_ggtt_node_remove()</span></code></a> or xe_ggtt_node_deballoon().</p>
+It will, then, be finalized by either <a class="reference internal" href="#c.xe_ggtt_node_remove" title="xe_ggtt_node_remove"><code class="xref c c-func docutils literal notranslate"><span class="pre">xe_ggtt_node_remove()</span></code></a> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xe_ggtt_node_deballoon()</span></code>.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.xe_ggtt_pt_ops">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">xe_ggtt_pt_ops</span></span></span><a class="headerlink" href="#c.xe_ggtt_pt_ops" title="Link to this definition">¶</a><br /></dt>
@@ -410,18 +410,35 @@ It will, then, be finalized by either <a class="reference internal" href="#c.xe_
 <div class="kernelindent docutils container">
 <p><strong>Definition</strong>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct xe_ggtt_pt_ops {
-    u64 (*pte_encode_bo)(struct xe_bo *bo, u64 bo_offset, u16 pat_index);
+    u64 (*pte_encode_flags)(struct xe_bo *bo, u16 pat_index);
     void (*ggtt_set_pte)(struct xe_ggtt *ggtt, u64 addr, u64 pte);
 };
 </pre></div>
 </div>
 <p><strong>Members</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">pte_encode_bo</span></code></dt><dd><p>Encode PTE address for a given BO</p>
+<dt><code class="docutils literal notranslate"><span class="pre">pte_encode_flags</span></code></dt><dd><p>Encode PTE flags for a given BO</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">ggtt_set_pte</span></code></dt><dd><p>Directly write into GGTT’s PTE</p>
 </dd>
 </dl>
+</div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.xe_ggtt_alloc">
+<span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.xe_ggtt" title="xe_ggtt"><span class="n"><span class="pre">xe_ggtt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">xe_ggtt_alloc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">xe_tile</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">tile</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.xe_ggtt_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Allocate a GGTT for a given <code class="xref c c-type docutils literal notranslate"><span class="pre">xe_tile</span></code></p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">xe_tile</span> <span class="pre">*tile</span></code></dt><dd><p><code class="xref c c-type docutils literal notranslate"><span class="pre">xe_tile</span></code></p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>Allocates a <a class="reference internal" href="#c.xe_ggtt" title="xe_ggtt"><code class="xref c c-type docutils literal notranslate"><span class="pre">xe_ggtt</span></code></a> for a given tile.</p>
+<p><strong>Return</strong></p>
+<p><a class="reference internal" href="#c.xe_ggtt" title="xe_ggtt"><code class="xref c c-type docutils literal notranslate"><span class="pre">xe_ggtt</span></code></a> on success, or NULL when out of memory.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.xe_ggtt_init_early">
@@ -474,8 +491,8 @@ GGTT initialization.</p>
 <p>0 on success or a negative error code on failure.</p>
 </div>
 <dl class="c function">
-<dt class="sig sig-object c" id="c.xe_ggtt_node_insert_balloon">
-<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">xe_ggtt_node_insert_balloon</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.xe_ggtt_node" title="xe_ggtt_node"><span class="n"><span class="pre">xe_ggtt_node</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">node</span></span>, <span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="n"><span class="pre">start</span></span>, <span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="n"><span class="pre">end</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.xe_ggtt_node_insert_balloon" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.xe_ggtt_node_insert_balloon_locked">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">xe_ggtt_node_insert_balloon_locked</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.xe_ggtt_node" title="xe_ggtt_node"><span class="n"><span class="pre">xe_ggtt_node</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">node</span></span>, <span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="n"><span class="pre">start</span></span>, <span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="n"><span class="pre">end</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.xe_ggtt_node_insert_balloon_locked" title="Link to this definition">¶</a><br /></dt>
 <dd><p>prevent allocation of specified GGTT addresses</p>
 </dd></dl>
 
@@ -490,13 +507,14 @@ GGTT initialization.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Use <a class="reference internal" href="#c.xe_ggtt_node_remove_balloon" title="xe_ggtt_node_remove_balloon"><code class="xref c c-func docutils literal notranslate"><span class="pre">xe_ggtt_node_remove_balloon()</span></code></a> to release a reserved GGTT node.</p>
+<p>To be used in cases where ggtt-&gt;lock is already taken.
+Use <a class="reference internal" href="#c.xe_ggtt_node_remove_balloon_locked" title="xe_ggtt_node_remove_balloon_locked"><code class="xref c c-func docutils literal notranslate"><span class="pre">xe_ggtt_node_remove_balloon_locked()</span></code></a> to release a reserved GGTT node.</p>
 <p><strong>Return</strong></p>
 <p>0 on success or a negative error code on failure.</p>
 </div>
 <dl class="c function">
-<dt class="sig sig-object c" id="c.xe_ggtt_node_remove_balloon">
-<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">xe_ggtt_node_remove_balloon</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.xe_ggtt_node" title="xe_ggtt_node"><span class="n"><span class="pre">xe_ggtt_node</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">node</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.xe_ggtt_node_remove_balloon" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.xe_ggtt_node_remove_balloon_locked">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">xe_ggtt_node_remove_balloon_locked</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.xe_ggtt_node" title="xe_ggtt_node"><span class="n"><span class="pre">xe_ggtt_node</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">node</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.xe_ggtt_node_remove_balloon_locked" title="Link to this definition">¶</a><br /></dt>
 <dd><p>release a reserved GGTT region</p>
 </dd></dl>
 
@@ -507,7 +525,32 @@ GGTT initialization.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>See <a class="reference internal" href="#c.xe_ggtt_node_insert_balloon" title="xe_ggtt_node_insert_balloon"><code class="xref c c-func docutils literal notranslate"><span class="pre">xe_ggtt_node_insert_balloon()</span></code></a> for details.</p>
+<p>To be used in cases where ggtt-&gt;lock is already taken.
+See <a class="reference internal" href="#c.xe_ggtt_node_insert_balloon_locked" title="xe_ggtt_node_insert_balloon_locked"><code class="xref c c-func docutils literal notranslate"><span class="pre">xe_ggtt_node_insert_balloon_locked()</span></code></a> for details.</p>
+</div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.xe_ggtt_shift_nodes_locked">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">xe_ggtt_shift_nodes_locked</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.xe_ggtt" title="xe_ggtt"><span class="n"><span class="pre">xe_ggtt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ggtt</span></span>, <span class="n"><span class="pre">s64</span></span><span class="w"> </span><span class="n"><span class="pre">shift</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.xe_ggtt_shift_nodes_locked" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Shift GGTT nodes to adjust for a change in usable address range.</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">xe_ggtt</span> <span class="pre">*ggtt</span></code></dt><dd><p>the <a class="reference internal" href="#c.xe_ggtt" title="xe_ggtt"><code class="xref c c-type docutils literal notranslate"><span class="pre">xe_ggtt</span></code></a> <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">instance</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">s64</span> <span class="pre">shift</span></code></dt><dd><p>change to the location of area provisioned for current VF</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>This function moves all nodes from the GGTT VM, to a temp list. These nodes are expected
+to represent allocations in range formerly assigned to current VF, before the range changed.
+When the GGTT VM is completely clear of any nodes, they are re-added with shifted offsets.</p>
+<p>The function has no ability of failing - because it shifts existing nodes, without
+any additional processing. If the nodes were successfully existing at the old address,
+they will do the same at the new one. A fail inside this function would indicate that
+the list of nodes was either already damaged, or that the shift brings the address range
+outside of valid bounds. Both cases justify an assert rather than error code.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.xe_ggtt_node_insert_locked">
@@ -567,14 +610,14 @@ To be used in cases where ggtt-&gt;lock is already taken.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This function will allocated the struct <code class="docutils literal notranslate"><span class="pre">xe_ggtt_node</span></code> and return it’s pointer.
-This struct will then be freed after the node removal upon <a class="reference internal" href="#c.xe_ggtt_node_remove" title="xe_ggtt_node_remove"><code class="xref c c-func docutils literal notranslate"><span class="pre">xe_ggtt_node_remove()</span></code></a>
-or <a class="reference internal" href="#c.xe_ggtt_node_remove_balloon" title="xe_ggtt_node_remove_balloon"><code class="xref c c-func docutils literal notranslate"><span class="pre">xe_ggtt_node_remove_balloon()</span></code></a>.
-Having <code class="docutils literal notranslate"><span class="pre">xe_ggtt_node</span></code> struct allocated doesn’t mean that the node is already allocated
+<p>This function will allocate the struct <code class="docutils literal notranslate"><span class="pre">xe_ggtt_node</span></code> and return its pointer.
+This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">will</span></code> then be freed after the node removal upon <a class="reference internal" href="#c.xe_ggtt_node_remove" title="xe_ggtt_node_remove"><code class="xref c c-func docutils literal notranslate"><span class="pre">xe_ggtt_node_remove()</span></code></a>
+or <a class="reference internal" href="#c.xe_ggtt_node_remove_balloon_locked" title="xe_ggtt_node_remove_balloon_locked"><code class="xref c c-func docutils literal notranslate"><span class="pre">xe_ggtt_node_remove_balloon_locked()</span></code></a>.
+Having <code class="docutils literal notranslate"><span class="pre">xe_ggtt_node</span></code> <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">allocated</span></code> doesn’t mean that the node is already allocated
 in GGTT. Only the <a class="reference internal" href="#c.xe_ggtt_node_insert" title="xe_ggtt_node_insert"><code class="xref c c-func docutils literal notranslate"><span class="pre">xe_ggtt_node_insert()</span></code></a>, <a class="reference internal" href="#c.xe_ggtt_node_insert_locked" title="xe_ggtt_node_insert_locked"><code class="xref c c-func docutils literal notranslate"><span class="pre">xe_ggtt_node_insert_locked()</span></code></a>,
-<a class="reference internal" href="#c.xe_ggtt_node_insert_balloon" title="xe_ggtt_node_insert_balloon"><code class="xref c c-func docutils literal notranslate"><span class="pre">xe_ggtt_node_insert_balloon()</span></code></a> will ensure the node is inserted or reserved in GGTT.</p>
+<a class="reference internal" href="#c.xe_ggtt_node_insert_balloon_locked" title="xe_ggtt_node_insert_balloon_locked"><code class="xref c c-func docutils literal notranslate"><span class="pre">xe_ggtt_node_insert_balloon_locked()</span></code></a> will ensure the node is inserted or reserved in GGTT.</p>
 <p><strong>Return</strong></p>
-<p>A pointer to <code class="docutils literal notranslate"><span class="pre">xe_ggtt_node</span></code> struct on success. An ERR_PTR otherwise.</p>
+<p>A pointer to <code class="docutils literal notranslate"><span class="pre">xe_ggtt_node</span></code> <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">on</span></code> success. An ERR_PTR otherwise.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.xe_ggtt_node_fini">
@@ -590,7 +633,7 @@ in GGTT. Only the <a class="reference internal" href="#c.xe_ggtt_node_insert" ti
 </dl>
 <p><strong>Description</strong></p>
 <p>If anything went wrong with either <a class="reference internal" href="#c.xe_ggtt_node_insert" title="xe_ggtt_node_insert"><code class="xref c c-func docutils literal notranslate"><span class="pre">xe_ggtt_node_insert()</span></code></a>, <a class="reference internal" href="#c.xe_ggtt_node_insert_locked" title="xe_ggtt_node_insert_locked"><code class="xref c c-func docutils literal notranslate"><span class="pre">xe_ggtt_node_insert_locked()</span></code></a>,
-or <a class="reference internal" href="#c.xe_ggtt_node_insert_balloon" title="xe_ggtt_node_insert_balloon"><code class="xref c c-func docutils literal notranslate"><span class="pre">xe_ggtt_node_insert_balloon()</span></code></a>; and this <strong>node</strong> is not going to be reused, then,
+or <a class="reference internal" href="#c.xe_ggtt_node_insert_balloon_locked" title="xe_ggtt_node_insert_balloon_locked"><code class="xref c c-func docutils literal notranslate"><span class="pre">xe_ggtt_node_insert_balloon_locked()</span></code></a>; and this <strong>node</strong> is not going to be reused, then,
 this function needs to be called to free the <code class="docutils literal notranslate"><span class="pre">xe_ggtt_node</span></code> struct</p>
 </div>
 <dl class="c function">
@@ -610,8 +653,27 @@ this function needs to be called to free the <code class="docutils literal notra
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.xe_ggtt_map_bo">
-<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">xe_ggtt_map_bo</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.xe_ggtt" title="xe_ggtt"><span class="n"><span class="pre">xe_ggtt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ggtt</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">xe_bo</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bo</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.xe_ggtt_map_bo" title="Link to this definition">¶</a><br /></dt>
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">xe_ggtt_map_bo</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.xe_ggtt" title="xe_ggtt"><span class="n"><span class="pre">xe_ggtt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ggtt</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.xe_ggtt_node" title="xe_ggtt_node"><span class="n"><span class="pre">xe_ggtt_node</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">node</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">xe_bo</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bo</span></span>, <span class="n"><span class="pre">u16</span></span><span class="w"> </span><span class="n"><span class="pre">pat_index</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.xe_ggtt_map_bo" title="Link to this definition">¶</a><br /></dt>
 <dd><p>Map the BO into GGTT</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">xe_ggtt</span> <span class="pre">*ggtt</span></code></dt><dd><p>the <a class="reference internal" href="#c.xe_ggtt" title="xe_ggtt"><code class="xref c c-type docutils literal notranslate"><span class="pre">xe_ggtt</span></code></a> where node will be mapped</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">xe_ggtt_node</span> <span class="pre">*node</span></code></dt><dd><p>the <a class="reference internal" href="#c.xe_ggtt_node" title="xe_ggtt_node"><code class="xref c c-type docutils literal notranslate"><span class="pre">xe_ggtt_node</span></code></a> where this BO is mapped</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">xe_bo</span> <span class="pre">*bo</span></code></dt><dd><p>the <code class="xref c c-type docutils literal notranslate"><span class="pre">xe_bo</span></code> to be mapped</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">u16</span> <span class="pre">pat_index</span></code></dt><dd><p>Which pat_index to use.</p>
+</dd>
+</dl>
+</div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.xe_ggtt_map_bo_unlocked">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">xe_ggtt_map_bo_unlocked</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.xe_ggtt" title="xe_ggtt"><span class="n"><span class="pre">xe_ggtt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ggtt</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">xe_bo</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bo</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.xe_ggtt_map_bo_unlocked" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Restore a mapping of a BO into GGTT</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -622,6 +684,8 @@ this function needs to be called to free the <code class="docutils literal notra
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">xe_bo</span> <span class="pre">*bo</span></code></dt><dd><p>the <code class="xref c c-type docutils literal notranslate"><span class="pre">xe_bo</span></code> to be mapped</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<p>This is used to restore a GGTT mapping after suspend.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.xe_ggtt_insert_bo_at">
@@ -752,6 +816,43 @@ platforms VFs can’t modify that either.</p>
 <p><strong>Return</strong></p>
 <p>Total available size.</p>
 </div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.xe_ggtt_encode_pte_flags">
+<span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">xe_ggtt_encode_pte_flags</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.xe_ggtt" title="xe_ggtt"><span class="n"><span class="pre">xe_ggtt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ggtt</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">xe_bo</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bo</span></span>, <span class="n"><span class="pre">u16</span></span><span class="w"> </span><span class="n"><span class="pre">pat_index</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.xe_ggtt_encode_pte_flags" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Get PTE encoding flags for BO</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">xe_ggtt</span> <span class="pre">*ggtt</span></code></dt><dd><p><a class="reference internal" href="#c.xe_ggtt" title="xe_ggtt"><code class="xref c c-type docutils literal notranslate"><span class="pre">xe_ggtt</span></code></a></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">xe_bo</span> <span class="pre">*bo</span></code></dt><dd><p><code class="xref c c-type docutils literal notranslate"><span class="pre">xe_bo</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">u16</span> <span class="pre">pat_index</span></code></dt><dd><p>The pat_index for the PTE.</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>This function returns the pte_flags for a given BO, without  address.
+It’s used for DPT to fill a GGTT mapped BO with a linear lookup table.</p>
+</div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.xe_ggtt_read_pte">
+<span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">xe_ggtt_read_pte</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.xe_ggtt" title="xe_ggtt"><span class="n"><span class="pre">xe_ggtt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ggtt</span></span>, <span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="n"><span class="pre">offset</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.xe_ggtt_read_pte" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Read a PTE from the GGTT</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">xe_ggtt</span> <span class="pre">*ggtt</span></code></dt><dd><p><a class="reference internal" href="#c.xe_ggtt" title="xe_ggtt"><code class="xref c c-type docutils literal notranslate"><span class="pre">xe_ggtt</span></code></a></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">u64</span> <span class="pre">offset</span></code></dt><dd><p>the offset for which the mapping should be read.</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>Used by testcases, and by display reading out an inherited bios FB.</p>
+</div>
 </section>
 </section>
 <section id="pagetable-building">
@@ -766,7 +867,7 @@ The set of shared page-tables can be at most two per level,
 and those can’t be updated immediately because the entries of those
 page-tables may still be in use by the gpu for other mappings. Therefore
 when inserting entries into those, we instead stage those insertions by
-adding insertion data into struct xe_vm_pgtable_update structures. This
+adding insertion data into <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">xe_vm_pgtable_update</span></code> structures. This
 data, (subtrees for the cpu and page-table-entries for the gpu) is then
 added in a separate commit step. CPU-data is committed while still under the
 vm lock, the object lock and for userptr, the notifier lock in read mode.

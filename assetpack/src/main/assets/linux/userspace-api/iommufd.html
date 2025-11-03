@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -187,8 +187,8 @@ container it copies an IOVA map to a list of iommu_domains held within it.</p>
 <li><p>IOMMUFD_OBJ_DEVICE, representing a device that is bound to iommufd by an
 external driver.</p></li>
 <li><p>IOMMUFD_OBJ_HWPT_PAGING, representing an actual hardware I/O page table
-(i.e. a single struct iommu_domain) managed by the iommu driver. “PAGING”
-primarly indicates this type of HWPT should be linked to an IOAS. It also
+(i.e. a single <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">iommu_domain</span></code>) managed by the iommu driver. “PAGING”
+primarily indicates this type of HWPT should be linked to an IOAS. It also
 indicates that it is backed by an iommu_domain with __IOMMU_DOMAIN_PAGING
 feature flag. This can be either an UNMANAGED stage-1 domain for a device
 running in the user space, or a nesting parent stage-2 domain for mappings
@@ -197,7 +197,7 @@ from guest-level physical addresses to host-level physical addresses.</p>
 it will synchronize its mapping with each member HWPT_PAGING.</p>
 </li>
 <li><p>IOMMUFD_OBJ_HWPT_NESTED, representing an actual hardware I/O page table
-(i.e. a single struct iommu_domain) managed by user space (e.g. guest OS).
+(i.e. a single <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">iommu_domain</span></code>) managed by user space (e.g. guest OS).
 “NESTED” indicates that this type of HWPT should be linked to an HWPT_PAGING.
 It also indicates that it is backed by an iommu_domain that has a type of
 IOMMU_DOMAIN_NESTED. This must be a stage-1 domain for a device running in
@@ -218,7 +218,7 @@ features and some SW resources used by the VM. For examples:</p>
 <ul class="simple">
 <li><p>Security namespace for guest owned ID, e.g. guest-controlled cache tags</p></li>
 <li><p>Non-device-affiliated event reporting, e.g. invalidation queue errors</p></li>
-<li><p>Access to a sharable nesting parent pagetable across physical IOMMUs</p></li>
+<li><p>Access to a shareable nesting parent pagetable across physical IOMMUs</p></li>
 <li><p>Virtualization of various platforms IDs, e.g. RIDs and others</p></li>
 <li><p>Delivery of paravirtualized invalidation</p></li>
 <li><p>Direct assigned invalidation queues</p></li>
@@ -264,6 +264,16 @@ This queue object provides user space an FD to poll/read the vIOMMU events. A
 vIOMMU object must be created first to get its viommu_id, which could be then
 used to allocate a vEVENTQ. Each vIOMMU can support multiple types of vEVENTS,
 but is confined to one vEVENTQ per vEVENTQ type.</p></li>
+<li><p>IOMMUFD_OBJ_HW_QUEUE, representing a hardware accelerated queue, as a subset
+of IOMMU’s virtualization features, for the IOMMU HW to directly read or write
+the virtual queue memory owned by a guest OS. This HW-acceleration feature can
+allow VM to work with the IOMMU HW directly without a VM Exit, so as to reduce
+overhead from the hypercalls. Along with the HW QUEUE object, iommufd provides
+user space an mmap interface for VMM to mmap a physical MMIO region from the
+host physical address space to the guest physical address space, allowing the
+guest OS to directly control the allocated HW QUEUE. Thus, when allocating a
+HW QUEUE, the VMM must request a pair of mmap info (offset/length) and pass in
+exactly to an mmap syscall via its offset and length arguments.</p></li>
 </ul>
 <p>All user-visible objects are destroyed via the IOMMU_DESTROY uAPI.</p>
 <p>The diagrams below show relationships between user-visible objects and kernel
@@ -369,13 +379,13 @@ can be allocated by (and then associated to) the same nesting parent.</p>
 <p class="admonition-title">Note</p>
 <p>Either a manual IOMMUFD_OBJ_HWPT_PAGING or an IOMMUFD_OBJ_HWPT_NESTED is
 created via the same IOMMU_HWPT_ALLOC uAPI. The difference is at the type
-of the object passed in via the &#64;pt_id field of struct iommufd_hwpt_alloc.</p>
+of the object passed in via the &#64;pt_id field of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">iommufd_hwpt_alloc</span></code>.</p>
 </div>
 </li>
 <li><p>IOMMUFD_OBJ_VIOMMU can be only manually created via the IOMMU_VIOMMU_ALLOC
 uAPI, provided a dev_id (for the device’s physical IOMMU to back the vIOMMU)
 and an hwpt_id (to associate the vIOMMU to a nesting parent HWPT_PAGING). The
-iommufd core will link the vIOMMU object to the struct iommu_device that the
+iommufd core will link the vIOMMU object to the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">iommu_device</span></code> that the
 <a class="reference internal" href="../driver-api/infrastructure.html#c.device" title="device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span></code></a> is behind. And an IOMMU driver can implement a viommu_alloc op
 to allocate its own vIOMMU data structure embedding the core-level structure
 iommufd_viommu and some driver-specific data. If necessary, the driver can
@@ -407,6 +417,7 @@ most one IOAS object (no support of PASID yet).</p>
 <li><p>iommufd_viommu for IOMMUFD_OBJ_VIOMMU.</p></li>
 <li><p>iommufd_vdevice for IOMMUFD_OBJ_VDEVICE.</p></li>
 <li><p>iommufd_veventq for IOMMUFD_OBJ_VEVENTQ.</p></li>
+<li><p>iommufd_hw_queue for IOMMUFD_OBJ_HW_QUEUE.</p></li>
 </ul>
 <p>Several terminologies when looking at these datastructures:</p>
 <ul class="simple">
@@ -420,17 +431,17 @@ are ready for handling that use case.</p></li>
 <li><p>In-kernel user - refers to something like a VFIO mdev that is using the
 IOMMUFD access interface to access the IOAS. This starts by creating an
 iommufd_access object that is similar to the domain binding a physical device
-would do. The access object will then allow converting IOVA ranges into struct
-page * lists, or doing direct read/write to an IOVA.</p></li>
+would do. The access object will then allow converting IOVA ranges into <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">page</span></code> * lists, or doing direct read/write to an IOVA.</p></li>
 </ul>
 <p>iommufd_ioas serves as the metadata datastructure to manage how IOVA ranges are
 mapped to memory pages, composed of:</p>
 <ul class="simple">
-<li><p>struct io_pagetable holding the IOVA map</p></li>
-<li><p>struct iopt_area’s representing populated portions of IOVA</p></li>
-<li><p>struct iopt_pages representing the storage of PFNs</p></li>
-<li><p>struct iommu_domain representing the IO page table in the IOMMU</p></li>
-<li><p>struct iopt_pages_access representing in-kernel users of PFNs</p></li>
+<li><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">io_pagetable</span></code> holding the IOVA map</p></li>
+<li><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">iopt_area</span></code>’s representing populated portions of IOVA</p></li>
+<li><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">iopt_pages</span></code> representing the storage of PFNs</p></li>
+<li><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">iommu_domain</span></code> representing the IO page table in the IOMMU</p></li>
+<li><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">iopt_pages_access</span></code> representing in-kernel users of PFNs</p></li>
 <li><p><a class="reference internal" href="../core-api/xarray.html#c.xarray" title="xarray"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">xarray</span></code></a> pinned_pfns holding a list of pages pinned by in-kernel users</p></li>
 </ul>
 <p>Each iopt_pages represents a logical linear array of full PFNs. The PFNs are
@@ -1248,6 +1259,41 @@ important that VMMs do not read bits outside the list to allow for
 compatibility with future kernels. Several features in the SMMUv3
 architecture are not currently supported by the kernel for nesting: HTTU,
 BTM, MPAM and others.</p>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.iommu_hw_info_tegra241_cmdqv">
+<span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">iommu_hw_info_tegra241_cmdqv</span></span></span><a class="headerlink" href="#c.iommu_hw_info_tegra241_cmdqv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>NVIDIA Tegra241 CMDQV Hardware Information (IOMMU_HW_INFO_TYPE_TEGRA241_CMDQV)</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Definition</strong>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct iommu_hw_info_tegra241_cmdqv {
+    __u32 flags;
+    __u8 version;
+    __u8 log2vcmdqs;
+    __u8 log2vsids;
+    __u8 __reserved;
+};
+</pre></div>
+</div>
+<p><strong>Members</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">flags</span></code></dt><dd><p>Must be 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">version</span></code></dt><dd><p>Version number for the CMDQ-V HW for PARAM bits[03:00]</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">log2vcmdqs</span></code></dt><dd><p>Log2 of the total number of VCMDQs for PARAM bits[07:04]</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">log2vsids</span></code></dt><dd><p>Log2 of the total number of SID replacements for PARAM bits[15:12]</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">__reserved</span></code></dt><dd><p>Must be 0</p>
+</dd>
+</dl>
+</div>
+<p><strong>Description</strong></p>
+<p>VMM can use these fields directly in its emulated global PARAM register. Note
+that only one Virtual Interface (VINTF) should be exposed to a VM, i.e. PARAM
+bits[11:08] should be set to 0 for log2 of the total number of VINTFs.</p>
 <dl class="c enum">
 <dt class="sig sig-object c" id="c.iommu_hw_info_type">
 <span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">iommu_hw_info_type</span></span></span><a class="headerlink" href="#c.iommu_hw_info_type" title="Link to this definition">¶</a><br /></dt>
@@ -1257,12 +1303,17 @@ BTM, MPAM and others.</p>
 <div class="kernelindent docutils container">
 <p><strong>Constants</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">IOMMU_HW_INFO_TYPE_NONE</span></code></dt><dd><p>Used by the drivers that do not report hardware
+<dt><code class="docutils literal notranslate"><span class="pre">IOMMU_HW_INFO_TYPE_NONE</span></code></dt><dd><p>Output by the drivers that do not report hardware
 info</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">IOMMU_HW_INFO_TYPE_DEFAULT</span></code></dt><dd><p>Input to request for a default type</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">IOMMU_HW_INFO_TYPE_INTEL_VTD</span></code></dt><dd><p>Intel VT-d iommu info type</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">IOMMU_HW_INFO_TYPE_ARM_SMMUV3</span></code></dt><dd><p>ARM SMMUv3 iommu info type</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">IOMMU_HW_INFO_TYPE_TEGRA241_CMDQV</span></code></dt><dd><p>NVIDIA Tegra241 CMDQV (extension for ARM
+SMMUv3) info type</p>
 </dd>
 </dl>
 </div>
@@ -1273,14 +1324,10 @@ info</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Constants</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">IOMMU_HW_CAP_DIRTY_TRACKING</span></code></dt><dd><p>IOMMU hardware support for dirty tracking
 If available, it means the following APIs
 are supported:</p>
-<blockquote>
-<div><p>IOMMU_HWPT_GET_DIRTY_BITMAP
-IOMMU_HWPT_SET_DIRTY_TRACKING</p>
-</div></blockquote>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">IOMMU_HW_CAP_PCI_PASID_EXEC</span></code></dt><dd><p>Execute Permission Supported, user ignores it
 when the <a class="reference internal" href="#c.iommu_hw_info" title="iommu_hw_info"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span>
@@ -1289,6 +1336,25 @@ when the <a class="reference internal" href="#c.iommu_hw_info" title="iommu_hw_i
 <dt><code class="docutils literal notranslate"><span class="pre">IOMMU_HW_CAP_PCI_PASID_PRIV</span></code></dt><dd><p>Privileged Mode Supported, user ignores it
 when the <a class="reference internal" href="#c.iommu_hw_info" title="iommu_hw_info"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span>
 <span class="pre">iommu_hw_info</span></code></a>::out_max_pasid_log2 is zero.</p>
+</dd>
+</dl>
+</div>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>IOMMU_HWPT_GET_DIRTY_BITMAP
+IOMMU_HWPT_SET_DIRTY_TRACKING</p>
+</div></blockquote>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.iommufd_hw_info_flags">
+<span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">iommufd_hw_info_flags</span></span></span><a class="headerlink" href="#c.iommufd_hw_info_flags" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Flags for iommu_hw_info</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Constants</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">IOMMU_HW_INFO_FLAG_INPUT_TYPE</span></code></dt><dd><p>If set, <strong>in_data_type</strong> carries an input type
+for user space to request for a specific info</p>
 </dd>
 </dl>
 </div>
@@ -1306,7 +1372,10 @@ when the <a class="reference internal" href="#c.iommu_hw_info" title="iommu_hw_i
     __u32 dev_id;
     __u32 data_len;
     __aligned_u64 data_uptr;
-    __u32 out_data_type;
+    union {
+        __u32 in_data_type;
+        __u32 out_data_type;
+    };
     __u8 out_max_pasid_log2;
     __u8 __reserved[3];
     __aligned_u64 out_capabilities;
@@ -1327,6 +1396,15 @@ data that kernel supports</p>
 <dt><code class="docutils literal notranslate"><span class="pre">data_uptr</span></code></dt><dd><p>User pointer to a user-space buffer used by the kernel to fill
 the iommu type specific hardware information data</p>
 </dd>
+<dt><code class="docutils literal notranslate"><span class="pre">{unnamed_union}</span></code></dt><dd><p>anonymous</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">in_data_type</span></code></dt><dd><p>This shares the same field with <strong>out_data_type</strong>, making it be
+a bidirectional field. When IOMMU_HW_INFO_FLAG_INPUT_TYPE is
+set, an input type carried via this <strong>in_data_type</strong> field will
+be valid, requesting for the info data to the given type. If
+IOMMU_HW_INFO_FLAG_INPUT_TYPE is unset, any input value will
+be seen as IOMMU_HW_INFO_TYPE_DEFAULT</p>
+</dd>
 <dt><code class="docutils literal notranslate"><span class="pre">out_data_type</span></code></dt><dd><p>Output the iommu hardware info type as defined in the <a class="reference internal" href="#c.iommu_hw_info_type" title="iommu_hw_info_type"><code class="xref c c-enum docutils literal notranslate"><span class="pre">enum</span>
 <span class="pre">iommu_hw_info_type</span></code></a>.</p>
 </dd>
@@ -1337,7 +1415,7 @@ specific capabilities is supported or not.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">__reserved</span></code></dt><dd><p>Must be 0</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">out_capabilities</span></code></dt><dd><p>Output the generic iommu capability info type as defined
-in the enum iommu_hw_capabilities.</p>
+in the <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">iommu_hw_capabilities</span></code>.</p>
 </dd>
 </dl>
 </div>
@@ -1374,7 +1452,7 @@ pointed by <strong>data_uptr</strong>. Input <strong>data_len</strong> == zero i
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">size</span></code></dt><dd><p>sizeof(<a class="reference internal" href="#c.iommu_hwpt_set_dirty_tracking" title="iommu_hwpt_set_dirty_tracking"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">iommu_hwpt_set_dirty_tracking</span></code></a>)</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">flags</span></code></dt><dd><p>Combination of enum iommufd_hwpt_set_dirty_tracking_flags</p>
+<dt><code class="docutils literal notranslate"><span class="pre">flags</span></code></dt><dd><p>Combination of <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">iommufd_hwpt_set_dirty_tracking_flags</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">hwpt_id</span></code></dt><dd><p>HW pagetable ID that represents the IOMMU domain</p>
 </dd>
@@ -1770,8 +1848,38 @@ access. This is the “Invalid Request” in PCI
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">IOMMU_VIOMMU_TYPE_ARM_SMMUV3</span></code></dt><dd><p>ARM SMMUv3 driver specific type</p>
 </dd>
+<dt><code class="docutils literal notranslate"><span class="pre">IOMMU_VIOMMU_TYPE_TEGRA241_CMDQV</span></code></dt><dd><p>NVIDIA Tegra241 CMDQV (extension for ARM
+SMMUv3) enabled ARM SMMUv3 type</p>
+</dd>
 </dl>
 </div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.iommu_viommu_tegra241_cmdqv">
+<span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">iommu_viommu_tegra241_cmdqv</span></span></span><a class="headerlink" href="#c.iommu_viommu_tegra241_cmdqv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>NVIDIA Tegra241 CMDQV Virtual Interface (IOMMU_VIOMMU_TYPE_TEGRA241_CMDQV)</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Definition</strong>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct iommu_viommu_tegra241_cmdqv {
+    __aligned_u64 out_vintf_mmap_offset;
+    __aligned_u64 out_vintf_mmap_length;
+};
+</pre></div>
+</div>
+<p><strong>Members</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">out_vintf_mmap_offset</span></code></dt><dd><p>mmap offset argument for VINTF’s page0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">out_vintf_mmap_length</span></code></dt><dd><p>mmap length argument for VINTF’s page0</p>
+</dd>
+</dl>
+</div>
+<p><strong>Description</strong></p>
+<p>Both <strong>out_vintf_mmap_offset</strong> and <strong>out_vintf_mmap_length</strong> are reported by kernel
+for user space to mmap the VINTF page0 from the host physical address space
+to the guest physical address space so that a guest kernel can directly R/W
+access to the VINTF page0 in order to control its virtual command queues.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.iommu_viommu_alloc">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">iommu_viommu_alloc</span></span></span><a class="headerlink" href="#c.iommu_viommu_alloc" title="Link to this definition">¶</a><br /></dt>
@@ -1787,6 +1895,9 @@ access. This is the “Invalid Request” in PCI
     __u32 dev_id;
     __u32 hwpt_id;
     __u32 out_viommu_id;
+    __u32 data_len;
+    __u32 __reserved;
+    __aligned_u64 data_uptr;
 };
 </pre></div>
 </div>
@@ -1803,6 +1914,12 @@ access. This is the “Invalid Request” in PCI
 <dt><code class="docutils literal notranslate"><span class="pre">hwpt_id</span></code></dt><dd><p>ID of a nesting parent HWPT to associate to</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">out_viommu_id</span></code></dt><dd><p>Output virtual IOMMU ID for the allocated object</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">data_len</span></code></dt><dd><p>Length of the type specific data</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">__reserved</span></code></dt><dd><p>Must be 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">data_uptr</span></code></dt><dd><p>User pointer to a driver-specific virtual IOMMU data</p>
 </dd>
 </dl>
 </div>
@@ -1846,13 +1963,18 @@ to the vIOMMU, such as:
 <dt><code class="docutils literal notranslate"><span class="pre">out_vdevice_id</span></code></dt><dd><p>Object handle for the vDevice. Pass to IOMMU_DESTORY</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">virt_id</span></code></dt><dd><p>Virtual device ID per vIOMMU, e.g. vSID of ARM SMMUv3, vDeviceID
-of AMD IOMMU, and vRID of a nested Intel VT-d to a Context Table</p>
+of AMD IOMMU, and vRID of Intel VT-d</p>
 </dd>
 </dl>
 </div>
 <p><strong>Description</strong></p>
 <p>Allocate a virtual device instance (for a physical device) against a vIOMMU.
-This instance holds the device’s information (related to its vIOMMU) in a VM.</p>
+This instance holds the device’s information (related to its vIOMMU) in a VM.
+User should use IOMMU_DESTROY to destroy the virtual device before
+destroying the physical device (by closing vfio_cdev fd). Otherwise the
+virtual device would be forcibly destroyed on physical device destruction,
+its vdevice_id would be permanently leaked (unremovable &amp; unreusable) until
+iommu fd closed.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.iommu_ioas_change_process">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">iommu_ioas_change_process</span></span></span><a class="headerlink" href="#c.iommu_ioas_change_process" title="Link to this definition">¶</a><br /></dt>
@@ -1970,6 +2092,8 @@ would be added to the tail, and no data would follow this header:</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">IOMMU_VEVENTQ_TYPE_ARM_SMMUV3</span></code></dt><dd><p>ARM SMMUv3 Virtual Event Queue</p>
 </dd>
+<dt><code class="docutils literal notranslate"><span class="pre">IOMMU_VEVENTQ_TYPE_TEGRA241_CMDQV</span></code></dt><dd><p>NVIDIA Tegra241 CMDQV Extension IRQ</p>
+</dd>
 </dl>
 </div>
 <dl class="c struct">
@@ -2003,6 +2127,29 @@ Reported event records: (Refer to “7.3 Event records” in SMMUv3 HW Spec)
 <p><strong>Description</strong></p>
 <p>StreamID field reports a virtual device ID. To receive a virtual event for a
 device, a vDEVICE must be allocated via IOMMU_VDEVICE_ALLOC.</p>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.iommu_vevent_tegra241_cmdqv">
+<span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">iommu_vevent_tegra241_cmdqv</span></span></span><a class="headerlink" href="#c.iommu_vevent_tegra241_cmdqv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Tegra241 CMDQV IRQ (IOMMU_VEVENTQ_TYPE_TEGRA241_CMDQV)</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Definition</strong>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct iommu_vevent_tegra241_cmdqv {
+    __aligned_le64 lvcmdq_err_map[2];
+};
+</pre></div>
+</div>
+<p><strong>Members</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">lvcmdq_err_map</span></code></dt><dd><p>128-bit logical vcmdq error map, little-endian.
+(Refer to register LVCMDQ_ERR_MAPs per VINTF )</p>
+</dd>
+</dl>
+</div>
+<p><strong>Description</strong></p>
+<p>The 128-bit register value from HW exclusively reflect the error bits for a
+Virtual Interface represented by a vIOMMU object. Read and report directly.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.iommu_veventq_alloc">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">iommu_veventq_alloc</span></span></span><a class="headerlink" href="#c.iommu_veventq_alloc" title="Link to this definition">¶</a><br /></dt>
@@ -2068,6 +2215,73 @@ a type-specific data structure, in a normal case:</p>
 </table>
 <p>unless a tailing IOMMU_VEVENTQ_FLAG_LOST_EVENTS header is logged (refer to
 <a class="reference internal" href="#c.iommufd_vevent_header" title="iommufd_vevent_header"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">iommufd_vevent_header</span></code></a>).</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.iommu_hw_queue_type">
+<span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">iommu_hw_queue_type</span></span></span><a class="headerlink" href="#c.iommu_hw_queue_type" title="Link to this definition">¶</a><br /></dt>
+<dd><p>HW Queue Type</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Constants</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">IOMMU_HW_QUEUE_TYPE_DEFAULT</span></code></dt><dd><p>Reserved for future use</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">IOMMU_HW_QUEUE_TYPE_TEGRA241_CMDQV</span></code></dt><dd><p>NVIDIA Tegra241 CMDQV (extension for ARM
+SMMUv3) Virtual Command Queue (VCMDQ)</p>
+</dd>
+</dl>
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.iommu_hw_queue_alloc">
+<span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">iommu_hw_queue_alloc</span></span></span><a class="headerlink" href="#c.iommu_hw_queue_alloc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>ioctl(IOMMU_HW_QUEUE_ALLOC)</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Definition</strong>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct iommu_hw_queue_alloc {
+    __u32 size;
+    __u32 flags;
+    __u32 viommu_id;
+    __u32 type;
+    __u32 index;
+    __u32 out_hw_queue_id;
+    __aligned_u64 nesting_parent_iova;
+    __aligned_u64 length;
+};
+</pre></div>
+</div>
+<p><strong>Members</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">size</span></code></dt><dd><p>sizeof(<a class="reference internal" href="#c.iommu_hw_queue_alloc" title="iommu_hw_queue_alloc"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">iommu_hw_queue_alloc</span></code></a>)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">flags</span></code></dt><dd><p>Must be 0</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">viommu_id</span></code></dt><dd><p>Virtual IOMMU ID to associate the HW queue with</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt><dd><p>One of <a class="reference internal" href="#c.iommu_hw_queue_type" title="iommu_hw_queue_type"><code class="xref c c-enum docutils literal notranslate"><span class="pre">enum</span> <span class="pre">iommu_hw_queue_type</span></code></a></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">index</span></code></dt><dd><p>The logical index to the HW queue per virtual IOMMU for a multi-queue
+model</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">out_hw_queue_id</span></code></dt><dd><p>The ID of the new HW queue</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">nesting_parent_iova</span></code></dt><dd><p>Base address of the queue memory in the guest physical
+address space</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">length</span></code></dt><dd><p>Length of the queue memory</p>
+</dd>
+</dl>
+</div>
+<p><strong>Description</strong></p>
+<p>Allocate a HW queue object for a vIOMMU-specific HW-accelerated queue, which
+allows HW to access a guest queue memory described using <strong>nesting_parent_iova</strong>
+and <strong>length</strong>.</p>
+<p>A vIOMMU can allocate multiple queues, but it must use a different <strong>index</strong> per
+type to separate each allocation, e.g:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Type1 HW queue0, Type1 HW queue1, Type2 HW queue0, ...
+</pre></div>
+</div>
 </section>
 <section id="iommufd-kernel-api">
 <h2>IOMMUFD Kernel API<a class="headerlink" href="#iommufd-kernel-api" title="Link to this heading">¶</a></h2>
@@ -2093,7 +2307,7 @@ explicitly imposing the group semantics in its uAPI as VFIO does.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>A successful bind establishes an ownership over the device and returns
-struct iommufd_device pointer, otherwise returns error pointer.</p>
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">iommufd_device</span></code> pointer, otherwise returns error pointer.</p>
 <p>A driver using this API must set driver_managed_dma and must not touch
 the device until this routine succeeds and establishes ownership.</p>
 <p>Binding a PCI device places the entire RID under iommufd control.</p>
@@ -2262,7 +2476,7 @@ DMA. The underlying CPU memory can be accessed using the
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Return the struct page’s. The caller must stop accessing them before calling
+<p>Return the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code>’s. The caller must stop accessing them before calling
 this. The iova/length must exactly match the one provided to access_pages.</p>
 </div>
 <dl class="c function">
@@ -2286,7 +2500,7 @@ this. The iova/length must exactly match the one provided to access_pages.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Reads <strong>length</strong> bytes starting at iova and returns the struct page * pointers.
+<p>Reads <strong>length</strong> bytes starting at iova and returns the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code> * pointers.
 These can be kmap’d by the caller for CPU access.</p>
 <p>The caller must perform <a class="reference internal" href="#c.iommufd_access_unpin_pages" title="iommufd_access_unpin_pages"><code class="xref c c-func docutils literal notranslate"><span class="pre">iommufd_access_unpin_pages()</span></code></a> when done to balance
 this.</p>
@@ -2318,7 +2532,7 @@ aligned iova.</p>
 <p><strong>Description</strong></p>
 <p>Copy kernel to/from data into the range given by IOVA/length. If flags
 indicates IOMMUFD_ACCESS_RW_KTHREAD then a large copy can be optimized
-by changing it into copy_to/from_user().</p>
+by changing it into copy_to/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">from_user()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.iommufd_ctx_get">
@@ -2395,7 +2609,7 @@ change but better matches the IOMMUFD API semantics and easier to support new
 iommufd features when comparing it to the first approach.</p>
 <p>Currently both approaches are still work-in-progress.</p>
 <p>There are still a few gaps to be resolved to catch up with VFIO type1, as
-documented in iommufd_vfio_check_extension().</p>
+documented in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">iommufd_vfio_check_extension()</span></code>.</p>
 </section>
 </section>
 <section id="future-todos">

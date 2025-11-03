@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -302,12 +302,12 @@ sequence.</p>
 <p>To ensure the safety of this mitigation, the kernel must ensure that the
 safe return sequence is itself free from attacker interference.  In Zen3
 and Zen4, this is accomplished by creating a BTB alias between the
-untraining function srso_alias_untrain_ret() and the safe return
-function srso_alias_safe_ret() which results in evicting a potentially
+untraining function <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">srso_alias_untrain_ret()</span></code> and the safe return
+function <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">srso_alias_safe_ret()</span></code> which results in evicting a potentially
 poisoned BTB entry and using that safe one for all function returns.</p>
 <p>In older Zen1 and Zen2, this is accomplished using a reinterpretation
-technique similar to Retbleed one: srso_untrain_ret() and
-srso_safe_ret().</p>
+technique similar to Retbleed one: <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">srso_untrain_ret()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">srso_safe_ret()</span></code>.</p>
 </section>
 <section id="checking-the-safe-ret-mitigation-actually-works">
 <h2>Checking the safe RET mitigation actually works<a class="headerlink" href="#checking-the-safe-ret-mitigation-actually-works" title="Link to this heading">¶</a></h2>

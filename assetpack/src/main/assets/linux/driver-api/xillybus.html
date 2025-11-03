@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -310,7 +310,7 @@ which execute the DMA-related operations on the bus.</p>
 <h3>Pipe attributes<a class="headerlink" href="#pipe-attributes" title="Link to this heading">¶</a></h3>
 <p>Each pipe has a number of attributes which are set when the FPGA component
 (IP core) is built. They are fetched from the IDT (the data structure which
-defines the core’s configuration, see Probing below) by xilly_setupchannels()
+defines the core’s configuration, see Probing below) by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xilly_setupchannels()</span></code>
 in xillybus_core.c as follows:</p>
 <ul class="simple">
 <li><p>is_writebuf: The pipe’s direction. A non-zero value means it’s an FPGA to
@@ -433,7 +433,7 @@ for this command contains the IDT’s buffer length.</p></li>
 <p>In order to simplify the logic that prevents illegal boundary crossings of
 PCIe packets, the following rule applies: If a buffer is smaller than 4kB,
 it must not cross a 4kB boundary. Otherwise, it must be 4kB aligned. The
-xilly_setupchannels() functions allocates these buffers by requesting whole
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xilly_setupchannels()</span></code> functions allocates these buffers by requesting whole
 pages from the kernel, and diving them into DMA buffers as necessary. Since
 all buffers’ sizes are powers of two, it’s possible to pack any set of such
 buffers, with a maximal waste of one page of memory.</p>

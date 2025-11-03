@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -279,7 +279,7 @@ reset its state machine for I2C transfers to be able to receive new requests.</p
 <li><p>use a standard i2c_driver and its matching mechanisms</p></li>
 <li><p>write the slave_callback which handles the above slave events
 (best using a state machine)</p></li>
-<li><p>register this callback via i2c_slave_register()</p></li>
+<li><p>register this callback via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">i2c_slave_register()</span></code></p></li>
 </ul>
 <p>Check the i2c-slave-eeprom driver as an example.</p>
 </section>
@@ -290,7 +290,7 @@ reset its state machine for I2C transfers to be able to receive new requests.</p
 <li><p>implement calls to register/unregister the slave and add those to the
 <a class="reference internal" href="../driver-api/i2c.html#c.i2c_algorithm" title="i2c_algorithm"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i2c_algorithm</span></code></a>. When registering, you probably need to set the I2C
 slave address and enable slave specific interrupts. If you use runtime pm, you
-should use pm_runtime_get_sync() because your device usually needs to be
+should use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_get_sync()</span></code> because your device usually needs to be
 powered on always to be able to detect its slave address. When unregistering,
 do the inverse of the above.</p></li>
 <li><p>Catch the slave interrupts and send appropriate i2c_slave_events to the backend.</p></li>

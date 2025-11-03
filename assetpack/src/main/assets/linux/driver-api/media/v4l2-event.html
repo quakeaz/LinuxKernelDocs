@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -220,12 +220,12 @@ The driver must use <a class="reference internal" href="v4l2-fh.html#c.v4l2_fh" 
 <code class="docutils literal notranslate"><span class="pre">type</span></code> and is optionally associated with an object identified through the
 <code class="docutils literal notranslate"><span class="pre">id</span></code> field. If unused, then the <code class="docutils literal notranslate"><span class="pre">id</span></code> is 0. So an event is uniquely
 identified by the <code class="docutils literal notranslate"><span class="pre">(type,</span> <span class="pre">id)</span></code> tuple.</p>
-<p>The <a class="reference internal" href="v4l2-fh.html#c.v4l2_fh" title="v4l2_fh"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_fh</span></code></a> struct has a list of subscribed events on its
+<p>The <a class="reference internal" href="v4l2-fh.html#c.v4l2_fh" title="v4l2_fh"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_fh</span></code></a> <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">has</span></code> a list of subscribed events on its
 <code class="docutils literal notranslate"><span class="pre">subscribed</span></code> field.</p>
 <p>When the user subscribes to an event, a <a class="reference internal" href="#c.v4l2_subscribed_event" title="v4l2_subscribed_event"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subscribed_event</span></code></a>
-struct is added to <a class="reference internal" href="v4l2-fh.html#c.v4l2_fh" title="v4l2_fh"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_fh</span></code></a><code class="docutils literal notranslate"><span class="pre">.subscribed</span></code>, one for every
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> added to <a class="reference internal" href="v4l2-fh.html#c.v4l2_fh" title="v4l2_fh"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_fh</span></code></a><code class="docutils literal notranslate"><span class="pre">.subscribed</span></code>, one for every
 subscribed event.</p>
-<p>Each <a class="reference internal" href="#c.v4l2_subscribed_event" title="v4l2_subscribed_event"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subscribed_event</span></code></a> struct ends with a
+<p>Each <a class="reference internal" href="#c.v4l2_subscribed_event" title="v4l2_subscribed_event"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subscribed_event</span></code></a> <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ends</span></code> with a
 <a class="reference internal" href="#c.v4l2_kevent" title="v4l2_kevent"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_kevent</span></code></a> ringbuffer, with the size given by the caller
 of <a class="reference internal" href="#c.v4l2_event_subscribe" title="v4l2_event_subscribe"><code class="xref c c-func docutils literal notranslate"><span class="pre">v4l2_event_subscribe()</span></code></a>. This ringbuffer is used to store any events
 raised by the driver.</p>
@@ -236,13 +236,13 @@ not overwrite events of another type.</p>
 <p>But if you get more events of one type than the size of the
 <a class="reference internal" href="#c.v4l2_kevent" title="v4l2_kevent"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_kevent</span></code></a> ringbuffer, then the oldest event will be dropped
 and the new one added.</p>
-<p>The <a class="reference internal" href="#c.v4l2_kevent" title="v4l2_kevent"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_kevent</span></code></a> struct links into the <code class="docutils literal notranslate"><span class="pre">available</span></code>
-list of the <a class="reference internal" href="v4l2-fh.html#c.v4l2_fh" title="v4l2_fh"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_fh</span></code></a> struct so <a class="reference internal" href="../../userspace-api/media/v4l/vidioc-dqevent.html#vidioc-dqevent"><span class="std std-ref">ioctl VIDIOC_DQEVENT</span></a> will
+<p>The <a class="reference internal" href="#c.v4l2_kevent" title="v4l2_kevent"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_kevent</span></code></a> <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">links</span></code> into the <code class="docutils literal notranslate"><span class="pre">available</span></code>
+list of the <a class="reference internal" href="v4l2-fh.html#c.v4l2_fh" title="v4l2_fh"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_fh</span></code></a> <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">so</span></code> <a class="reference internal" href="../../userspace-api/media/v4l/vidioc-dqevent.html#vidioc-dqevent"><span class="std std-ref">ioctl VIDIOC_DQEVENT</span></a> will
 know which event to dequeue first.</p>
 <p>Finally, if the event subscription is associated with a particular object
 such as a V4L2 control, then that object needs to know about that as well
 so that an event can be raised by that object. So the <code class="docutils literal notranslate"><span class="pre">node</span></code> field can
-be used to link the <a class="reference internal" href="#c.v4l2_subscribed_event" title="v4l2_subscribed_event"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subscribed_event</span></code></a> struct into a list of
+be used to link the <a class="reference internal" href="#c.v4l2_subscribed_event" title="v4l2_subscribed_event"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subscribed_event</span></code></a> <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">into</span></code> a list of
 such objects.</p>
 <p>So to summarize:</p>
 <ul class="simple">
@@ -426,7 +426,7 @@ subdev that need to be informed about such an event.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.v4l2_subscribed_event">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">v4l2_subscribed_event</span></span></span><a class="headerlink" href="#c.v4l2_subscribed_event" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Internal struct representing a subscribed event.</p>
+<dd><p>Internal <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">representing</span></code> a subscribed event.</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -484,7 +484,7 @@ subdev that need to be informed about such an event.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_fh</span> <span class="pre">*fh</span></code></dt><dd><p>pointer to <a class="reference internal" href="v4l2-fh.html#c.v4l2_fh" title="v4l2_fh"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_fh</span></code></a></p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_event</span> <span class="pre">*event</span></code></dt><dd><p>pointer to struct v4l2_event</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_event</span> <span class="pre">*event</span></code></dt><dd><p>pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_event</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">nonblocking</span></code></dt><dd><p>if not zero, waits for an event to arrive</p>
 </dd>

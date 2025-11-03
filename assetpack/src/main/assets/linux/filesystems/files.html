@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -149,7 +149,7 @@
 <section id="file-management-in-the-linux-kernel">
 <h1>File management in the Linux kernel<a class="headerlink" href="#file-management-in-the-linux-kernel" title="Link to this heading">¶</a></h1>
 <p>This document describes how locking for files (<a class="reference internal" href="api-summary.html#c.file" title="file"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file</span></code></a>)
-and file descriptor table (struct files) works.</p>
+and file descriptor table (<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">files</span></code>) works.</p>
 <p>Up until 2.6.12, the file descriptor table has been protected
 with a lock (files-&gt;file_lock) and reference count (files-&gt;count).
 -&gt;file_lock protected accesses to all the file related fields
@@ -157,7 +157,7 @@ of the table. -&gt;count was used for sharing the file descriptor
 table between tasks cloned with CLONE_FILES flag. Typically
 this would be the case for posix threads. As with the common
 refcounting model in the kernel, the last task doing
-a put_files_struct() frees the file descriptor (fd) table.
+a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">put_files_struct()</span></code> frees the file descriptor (fd) table.
 The files (<a class="reference internal" href="api-summary.html#c.file" title="file"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file</span></code></a>) themselves are protected using
 reference count (-&gt;f_count).</p>
 <p>In the new lock-free model of file descriptor management,
@@ -167,8 +167,8 @@ elements - the fd sets (open_fds and close_on_exec, the
 array of file pointers, the sizes of the sets and the array
 etc.). In order for the updates to appear atomic to
 a lock-free reader, all the elements of the file descriptor
-table are in a separate structure - struct fdtable.
-files_struct contains a pointer to struct fdtable through
+table are in a separate structure - <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fdtable</span></code>.
+files_struct contains a pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fdtable</span></code> through
 which the actual fd table is accessed. Initially the
 fdtable is embedded in files_struct itself. On a subsequent
 expansion of fdtable, a new fdtable structure is allocated
@@ -179,7 +179,7 @@ appear atomic. Here are the locking rules for
 the fdtable structure -</p>
 <ol class="arabic">
 <li><p>All references to the fdtable must be done through
-the files_fdtable() macro:</p>
+the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">files_fdtable()</span></code> macro:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct fdtable *fdt;
 
 rcu_read_lock();
@@ -192,7 +192,7 @@ if (n &lt;= fdt-&gt;max_fds)
 rcu_read_unlock();
 </pre></div>
 </div>
-<p>files_fdtable() uses <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_dereference" title="rcu_dereference"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_dereference()</span></code></a> macro which takes care of
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">files_fdtable()</span></code> uses <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_dereference" title="rcu_dereference"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_dereference()</span></code></a> macro which takes care of
 the memory barrier requirements for lock-free dereference.
 The fdtable pointer must be read within the read-side
 critical section.</p>
@@ -202,7 +202,7 @@ by <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_read_lo
 <li><p>For any update to the fd table, files-&gt;file_lock must
 be held.</p></li>
 <li><p>To look up the file structure given an fd, a reader
-must use either lookup_fdget_rcu() or files_lookup_fdget_rcu() APIs. These
+must use either <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lookup_fdget_rcu()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">files_lookup_fdget_rcu()</span></code> APIs. These
 take care of barrier requirements due to lock-free lookup.</p>
 <p>An example:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct file *file;
@@ -221,8 +221,8 @@ if (file) {
 <li><p>Since both fdtable and file structures can be looked up
 lock-free, they must be installed using <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_assign_pointer" title="rcu_assign_pointer"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_assign_pointer()</span></code></a>
 API. If they are looked up lock-free, <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_dereference" title="rcu_dereference"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_dereference()</span></code></a>
-must be used. However it is advisable to use files_fdtable()
-and lookup_fdget_rcu()/files_lookup_fdget_rcu() which take care of these
+must be used. However it is advisable to use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">files_fdtable()</span></code>
+and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lookup_fdget_rcu()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">files_lookup_fdget_rcu()</span></code> which take care of these
 issues.</p></li>
 <li><p>While updating, the fdtable pointer must be looked up while
 holding files-&gt;file_lock. If -&gt;file_lock is dropped, then
@@ -240,8 +240,8 @@ if (fd &gt;= 0) {
 .....
 </pre></div>
 </div>
-<p>Since locate_fd() can drop -&gt;file_lock (and reacquire -&gt;file_lock),
-the fdtable pointer (fdt) must be loaded after locate_fd().</p>
+<p>Since <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">locate_fd()</span></code> can drop -&gt;file_lock (and reacquire -&gt;file_lock),
+the fdtable pointer (fdt) must be loaded after <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">locate_fd()</span></code>.</p>
 </li>
 </ol>
 <p>On newer kernels rcu based file lookup has been switched to rely on
@@ -252,7 +252,7 @@ recycled and someone else might have bumped the reference. In other
 words, callers might see reference count bumps from newer users. For
 this is reason it is necessary to verify that the pointer is the same
 before and after the reference count increment. This pattern can be seen
-in get_file_rcu() and __files_get_rcu().</p>
+in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_file_rcu()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__files_get_rcu()</span></code>.</p>
 <p>In addition, it isn’t possible to access or check fields in <a class="reference internal" href="api-summary.html#c.file" title="file"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file</span></code></a>
 without first acquiring a reference on it under rcu lookup. Not doing
 that was always very dodgy and it was only usable for non-pointer data

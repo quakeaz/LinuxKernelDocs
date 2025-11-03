@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -117,6 +117,7 @@
 <li class="toctree-l3"><a class="reference internal" href="elf_hwcaps.html">POWERPC ELF HWCAPs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="elfnote.html">ELF Note PowerPC Namespace</a></li>
 <li class="toctree-l3"><a class="reference internal" href="firmware-assisted-dump.html">Firmware-Assisted Dump</a></li>
+<li class="toctree-l3"><a class="reference internal" href="htm.html">HTM (Hardware Trace Macro)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="hvcs.html">HVCS IBM “Hypervisor Virtual Console Server” Installation Guide</a></li>
 <li class="toctree-l3"><a class="reference internal" href="imc.html">IMC (In-Memory Collection Counters)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="isa-versions.html">CPU to ISA Version Mapping</a></li>
@@ -211,7 +212,7 @@ Date:   Mon Oct 8 16:31:04 2018 +1100
 KVM: PPC: Book3S HV: Nested guest entry via hypercall
 </pre></div>
 </div>
-<p>This API works primarily using a single hcall h_enter_nested(). This
+<p>This API works primarily using a single hcall <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">h_enter_nested()</span></code>. This
 call made by the L1 to tell the L0 to start an L2 vCPU with the given
 state. The L0 then starts this L2 and runs until an L2 exit condition
 is reached. Once the L2 exits, the state of the L2 is given back to
@@ -220,12 +221,12 @@ and to L1 when the L2 is run. The L0 doesn’t keep any state on the L2
 vCPU (except in the short sequence in the L0 on L1 -&gt; L2 entry and L2
 -&gt; L1 exit).</p>
 <p>The only state kept by the L0 is the partition table. The L1 registers
-it’s partition table using the h_set_partition_table() hcall. All
+it’s partition table using the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">h_set_partition_table()</span></code> hcall. All
 other state held by the L0 about the L2s is cached state (such as
 shadow page tables).</p>
 <p>The L1 may run any L2 or vCPU without first informing the L0. It
-simply starts the vCPU using h_enter_nested(). The creation of L2s and
-vCPUs is done implicitly whenever h_enter_nested() is called.</p>
+simply starts the vCPU using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">h_enter_nested()</span></code>. The creation of L2s and
+vCPUs is done implicitly whenever <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">h_enter_nested()</span></code> is called.</p>
 <p>In this document, we call this existing API the v1 API.</p>
 </section>
 <section id="new-papr-api">
@@ -233,21 +234,21 @@ vCPUs is done implicitly whenever h_enter_nested() is called.</p>
 <p>The new PAPR API changes from the v1 API such that the creating L2 and
 associated vCPUs is explicit. In this document, we call this the v2
 API.</p>
-<p>h_enter_nested() is replaced with H_GUEST_VCPU_RUN().  Before this can
-be called the L1 must explicitly create the L2 using h_guest_create()
-and any associated vCPUs() created with h_guest_create_vCPU(). Getting
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">h_enter_nested()</span></code> is replaced with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">H_GUEST_VCPU_RUN()</span></code>.  Before this can
+be called the L1 must explicitly create the L2 using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">h_guest_create()</span></code>
+and any associated <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vCPUs()</span></code> created with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">h_guest_create_vCPU()</span></code>. Getting
 and setting vCPU state can also be performed using h_guest_{g|s}et
 hcall.</p>
 <p>The basic execution flow is for an L1 to create an L2, run it, and
 delete it is:</p>
 <ul class="simple">
-<li><p>L1 and L0 negotiate capabilities with H_GUEST_{G,S}ET_CAPABILITIES()
+<li><p>L1 and L0 negotiate capabilities with H_GUEST_{G,S}<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ET_CAPABILITIES()</span></code>
 (normally at L1 boot time).</p></li>
-<li><p>L1 requests the L0 create an L2 with H_GUEST_CREATE() and receives a token</p></li>
-<li><p>L1 requests the L0 create an L2 vCPU with H_GUEST_CREATE_VCPU()</p></li>
-<li><p>L1 and L0 communicate the vCPU state using the H_GUEST_{G,S}ET() hcall</p></li>
-<li><p>L1 requests the L0 runs the vCPU running H_GUEST_VCPU_RUN() hcall</p></li>
-<li><p>L1 deletes L2 with H_GUEST_DELETE()</p></li>
+<li><p>L1 requests the L0 create an L2 with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">H_GUEST_CREATE()</span></code> and receives a token</p></li>
+<li><p>L1 requests the L0 create an L2 vCPU with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">H_GUEST_CREATE_VCPU()</span></code></p></li>
+<li><p>L1 and L0 communicate the vCPU state using the H_GUEST_{G,S}<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ET()</span></code> hcall</p></li>
+<li><p>L1 requests the L0 runs the vCPU running <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">H_GUEST_VCPU_RUN()</span></code> hcall</p></li>
+<li><p>L1 deletes L2 with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">H_GUEST_DELETE()</span></code></p></li>
 </ul>
 <p>More details of the individual hcalls follows:</p>
 </section>
@@ -277,7 +278,7 @@ Parameters:
 <h3>H_GUEST_SET_CAPABILITIES()<a class="headerlink" href="#h-guest-set-capabilities" title="Link to this heading">¶</a></h3>
 <p>This is called to inform the L0 of the capabilities of the L1
 hypervisor. The set of flags passed here are the same as
-H_GUEST_GET_CAPABILITIES()</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">H_GUEST_GET_CAPABILITIES()</span></code></p>
 <p>Typically, GET will be called first and then SET will be called with a
 subset of the flags returned from GET. This process allows the L0 and
 L1 to negotiate an agreed set of capabilities:</p>
@@ -320,7 +321,7 @@ Parameters:
 <section id="h-guest-create-vcpu">
 <h3>H_GUEST_CREATE_VCPU()<a class="headerlink" href="#h-guest-create-vcpu" title="Link to this heading">¶</a></h3>
 <p>This is called to create a vCPU associated with an L2. The L2 id
-(returned from H_GUEST_CREATE()) should be passed it. Also passed in
+(returned from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">H_GUEST_CREATE()</span></code>) should be passed it. Also passed in
 is a unique (for this L2) vCPUid. This vCPUid is allocated by the
 L1:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>H_GUEST_CREATE_VCPU(uint64 flags,
@@ -432,13 +433,13 @@ Parameters:
 <h3>H_GUEST_RUN_VCPU()<a class="headerlink" href="#h-guest-run-vcpu" title="Link to this heading">¶</a></h3>
 <p>This is called to run an L2 vCPU. The L2 and vCPU IDs are passed in as
 parameters. The vCPU runs with the state set previously using
-H_GUEST_SET_STATE(). When the L2 exits, the L1 will resume from this
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">H_GUEST_SET_STATE()</span></code>. When the L2 exits, the L1 will resume from this
 hcall.</p>
 <p>This hcall also has associated input and output GSBs. Unlike
-H_GUEST_{S,G}ET_STATE(), these GSB pointers are not passed in as
+H_GUEST_{S,G}<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ET_STATE()</span></code>, these GSB pointers are not passed in as
 parameters to the hcall (This was done in the interest of
 performance). The locations of these GSBs must be preregistered using
-the H_GUEST_SET_STATE() call with ID 0x0c00 and 0x0c01 (see table
+the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">H_GUEST_SET_STATE()</span></code> call with ID 0x0c00 and 0x0c01 (see table
 below).</p>
 <p>The input GSB may contain only VCPU specific elements to be set. This
 GSB may also contain zero elements (ie 0 in the first 4 bytes of the
@@ -449,12 +450,12 @@ NIP is put in GPR4).  The elements returned depend on the exit
 type. For example, if the exit reason is the L2 doing a hcall (GPR4 =
 0xc00), then GPR3-12 are provided in the output GSB as this is the
 state likely needed to service the hcall. If additional state is
-needed, H_GUEST_GET_STATE() may be called by the L1.</p>
-<p>To synthesize interrupts in the L2, when calling H_GUEST_RUN_VCPU()
+needed, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">H_GUEST_GET_STATE()</span></code> may be called by the L1.</p>
+<p>To synthesize interrupts in the L2, when calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">H_GUEST_RUN_VCPU()</span></code>
 the L1 may set a flag (as a hcall parameter) and the L0 will
 synthesize the interrupt in the L2. Alternatively, the L1 may
-synthesize the interrupt itself using H_GUEST_SET_STATE() or the
-H_GUEST_RUN_VCPU() input GSB to set the state appropriately:</p>
+synthesize the interrupt itself using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">H_GUEST_SET_STATE()</span></code> or the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">H_GUEST_RUN_VCPU()</span></code> input GSB to set the state appropriately:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>H_GUEST_RUN_VCPU(uint64 flags,
                  uint64 guestId,
                  uint64 vcpuId,
@@ -510,11 +511,11 @@ Parameters:
 <section id="guest-state-buffer">
 <h2>Guest State Buffer<a class="headerlink" href="#guest-state-buffer" title="Link to this heading">¶</a></h2>
 <p>The Guest State Buffer (GSB) is the main method of communicating state
-about the L2 between the L1 and L0 via H_GUEST_{G,S}ET() and
-H_GUEST_VCPU_RUN() calls.</p>
+about the L2 between the L1 and L0 via H_GUEST_{G,S}<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ET()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">H_GUEST_VCPU_RUN()</span></code> calls.</p>
 <p>State may be associated with a whole L2 (eg timebase offset) or a
 specific L2 vCPU (eg. GPR state). Only L2 VCPU state maybe be set by
-H_GUEST_VCPU_RUN().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">H_GUEST_VCPU_RUN()</span></code>.</p>
 <p>All data in the GSB is big endian (as is standard in PAPR)</p>
 <p>The Guest state buffer has a header which gives the number of
 elements, followed by the GSB elements themselves.</p>
@@ -1134,34 +1135,34 @@ Space due to overcommit</p></td>
 <p>In the v1 API, some state is not in the ptregs/hvstate. This includes
 the vector register and some SPRs. For the L1 to set this state for
 the L2, the L1 loads up these hardware registers before the
-h_enter_nested() call and the L0 ensures they end up as the L2 state
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">h_enter_nested()</span></code> call and the L0 ensures they end up as the L2 state
 (by not touching them).</p>
 <p>The v2 API removes this and explicitly sets this state via the GSB.</p>
 </section>
 <section id="l1-implementation-details-caching-state">
 <h3>L1 Implementation details: Caching state<a class="headerlink" href="#l1-implementation-details-caching-state" title="Link to this heading">¶</a></h3>
 <p>In the v1 API, all state is sent from the L1 to the L0 and vice versa
-on every h_enter_nested() hcall. If the L0 is not currently running
+on every <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">h_enter_nested()</span></code> hcall. If the L0 is not currently running
 any L2s, the L0 has no state information about them. The only
 exception to this is the location of the partition table, registered
-via h_set_partition_table().</p>
+via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">h_set_partition_table()</span></code>.</p>
 <p>The v2 API changes this so that the L0 retains the L2 state even when
 it’s vCPUs are no longer running. This means that the L1 only needs to
 communicate with the L0 about L2 state when it needs to modify the L2
 state, or when it’s value is out of date. This provides an opportunity
 for performance optimisation.</p>
-<p>When a vCPU exits from a H_GUEST_RUN_VCPU() call, the L1 internally
+<p>When a vCPU exits from a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">H_GUEST_RUN_VCPU()</span></code> call, the L1 internally
 marks all L2 state as invalid. This means that if the L1 wants to know
-the L2 state (say via a kvm_get_one_reg() call), it needs call
-H_GUEST_GET_STATE() to get that state. Once it’s read, it’s marked as
+the L2 state (say via a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kvm_get_one_reg()</span></code> call), it needs call
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">H_GUEST_GET_STATE()</span></code> to get that state. Once it’s read, it’s marked as
 valid in L1 until the L2 is run again.</p>
 <p>Also, when an L1 modifies L2 vcpu state, it doesn’t need to write it
 to the L0 until that L2 vcpu runs again. Hence when the L1 updates
-state (say via a kvm_set_one_reg() call), it writes to an internal L1
+state (say via a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kvm_set_one_reg()</span></code> call), it writes to an internal L1
 copy and only flushes this copy to the L0 when the L2 runs again via
-the H_GUEST_VCPU_RUN() input buffer.</p>
+the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">H_GUEST_VCPU_RUN()</span></code> input buffer.</p>
 <p>This lazy updating of state by the L1 avoids unnecessary
-H_GUEST_{G|S}ET_STATE() calls.</p>
+H_GUEST_{G|S}<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ET_STATE()</span></code> calls.</p>
 </section>
 </section>
 </section>

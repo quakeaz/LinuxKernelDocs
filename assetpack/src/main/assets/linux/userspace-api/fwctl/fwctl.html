@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -197,7 +197,7 @@ fit into any specific subsystem. For example, a HW RAID controller is primarily
 operated by the block layer but also comes with a set of RPCs to administer the
 construction of drives within the HW RAID.</p>
 <p>In the past when devices were more single function, individual subsystems would
-grow different approaches to solving some of these common problems. For instance
+grow different approaches to solving some of these common problems. For instance,
 monitoring device health, manipulating its FLASH, debugging the FW,
 provisioning, all have various unique interfaces across the kernel.</p>
 <p>fwctl’s purpose is to define a common set of limited rules, described below,
@@ -226,7 +226,7 @@ used with VMs</p></li>
 </ol>
 </div></blockquote>
 <p>The device may create a logical parent/child relationship between these scopes.
-For instance a child VM’s FW may be within the scope of the hypervisor FW. It is
+For instance, a child VM’s FW may be within the scope of the hypervisor FW. It is
 quite common in the VFIO world that the hypervisor environment has a complex
 provisioning/profiling/configuration responsibility for the function VFIO
 assigns to the VM.</p>
@@ -242,18 +242,18 @@ in the function &amp; child, including FW objects owned by other kernel
 subsystems.</p></li>
 <li><p>Write access to function &amp; child debug information strictly compatible with
 the principles of kernel lockdown and kernel integrity protection. Triggers
-a kernel Taint.</p></li>
-<li><p>Full debug device access. Triggers a kernel Taint, requires CAP_SYS_RAWIO.</p></li>
+a kernel taint.</p></li>
+<li><p>Full debug device access. Triggers a kernel taint, requires CAP_SYS_RAWIO.</p></li>
 </ol>
 </div></blockquote>
 <p>User space will provide a scope label on each RPC and the kernel must enforce the
 above CAPs and taints based on that scope. A combination of kernel and FW can
 enforce that RPCs are placed in the correct scope by user space.</p>
 </section>
-<section id="denied-behavior">
-<h3>Denied behavior<a class="headerlink" href="#denied-behavior" title="Link to this heading">¶</a></h3>
+<section id="disallowed-behavior">
+<h3>Disallowed behavior<a class="headerlink" href="#disallowed-behavior" title="Link to this heading">¶</a></h3>
 <p>There are many things this interface must not allow user space to do (without a
-Taint or CAP), broadly derived from the principles of kernel lockdown. Some
+taint or CAP), broadly derived from the principles of kernel lockdown. Some
 examples:</p>
 <blockquote>
 <div><ol class="arabic simple">
@@ -272,8 +272,8 @@ network packets, or operate an accelerator’s data plane.</p></li>
 </div></blockquote>
 <p>fwctl is not a replacement for device direct access subsystems like uacce or
 VFIO.</p>
-<p>Operations exposed through fwctl’s non-taining interfaces should be fully
-sharable with other users of the device. For instance exposing a RPC through
+<p>Operations exposed through fwctl’s non-tainting interfaces should be fully
+sharable with other users of the device. For instance, exposing a RPC through
 fwctl should never prevent a kernel subsystem from also concurrently using that
 same RPC or hardware unit down the road. In such cases fwctl will be less
 important than proper kernel subsystems that eventually emerge. Mistakes in this
@@ -331,7 +331,7 @@ correct.</p></li>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">flags</span></code></dt><dd><p>Must be 0</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">out_device_type</span></code></dt><dd><p>Returns the type of the device from enum fwctl_device_type</p>
+<dt><code class="docutils literal notranslate"><span class="pre">out_device_type</span></code></dt><dd><p>Returns the type of the device from <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">fwctl_device_type</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">device_data_len</span></code></dt><dd><p>On input the length of the out_device_data memory. On
 output the size of the kernel’s device_data which may be larger or
@@ -600,9 +600,9 @@ called.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Undoes <a class="reference internal" href="#c.fwctl_register" title="fwctl_register"><code class="xref c c-func docutils literal notranslate"><span class="pre">fwctl_register()</span></code></a>. On return no driver ops will be called. The
-caller must still call fwctl_put() to free the fwctl.</p>
+caller must still call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fwctl_put()</span></code> to free the fwctl.</p>
 <p>Unregister will return even if userspace still has file descriptors open.
-This will call ops-&gt;close_uctx() on any open FDs and after return no driver
+This will call ops-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">close_uctx()</span></code> on any open FDs and after return no driver
 op will be called. The FDs remain open but all fops will return -ENODEV.</p>
 <p>The design of fwctl allows this sort of disassociation of the driver from the
 subsystem primarily by keeping memory allocations owned by the core subsytem.
@@ -631,7 +631,7 @@ callback. This allows the module to remain unlocked while FDs are open.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">device_type</span></code></dt><dd><p>The drivers assigned device_type number. This is uABI.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">uctx_size</span></code></dt><dd><p>The size of the fwctl_uctx struct to allocate. The first
+<dt><code class="docutils literal notranslate"><span class="pre">uctx_size</span></code></dt><dd><p>The size of the fwctl_uctx <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">to</span></code> allocate. The first
 bytes of this memory will be a fwctl_uctx. The driver can use the
 remaining bytes as its private memory.</p>
 </dd>
@@ -678,8 +678,8 @@ it will block device hot unplug and module unloading.</p>
 </div>
 <p><strong>Description</strong></p>
 <p>Each driver instance will have one of these structs with the driver private
-data following immediately after. This struct is refcounted, it is freed by
-calling fwctl_put().</p>
+data following immediately after. This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> refcounted, it is freed by
+calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fwctl_put()</span></code>.</p>
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.fwctl_alloc_device">
 <span class="sig-name descname"><span class="n"><span class="pre">fwctl_alloc_device</span></span></span><a class="headerlink" href="#c.fwctl_alloc_device" title="Link to this definition">¶</a><br /></dt>
@@ -696,14 +696,14 @@ calling fwctl_put().</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">ops</span></code></dt><dd><p>Driver ops to register</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">drv_struct</span></code></dt><dd><p>‘struct driver_fwctl’ that holds the <a class="reference internal" href="#c.fwctl_device" title="fwctl_device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fwctl_device</span></code></a></p>
+<dt><code class="docutils literal notranslate"><span class="pre">drv_struct</span></code></dt><dd><p>‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">driver_fwctl</span></code>’ that holds the <a class="reference internal" href="#c.fwctl_device" title="fwctl_device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fwctl_device</span></code></a></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">member</span></code></dt><dd><p>Name of the <a class="reference internal" href="#c.fwctl_device" title="fwctl_device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fwctl_device</span></code></a> in <strong>drv_struct</strong></p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
 <p>This allocates and initializes the fwctl_device embedded in the drv_struct.
-Upon success the pointer must be freed via fwctl_put(). Returns a ‘drv_struct
+Upon success the pointer must be freed via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fwctl_put()</span></code>. Returns a ‘drv_struct
 *’ on success, NULL on error.</p>
 </div>
 <dl class="c struct">
@@ -748,11 +748,11 @@ and RPC layer belongs under fwctl with auxiliary devices connecting to other
 subsystems.</p>
 <p>Each device type must be mindful of Linux’s philosophy for stable ABI. The FW
 RPC interface does not have to meet a strictly stable ABI, but it does need to
-meet an expectation that userspace tools that are deployed and in significant
+meet an expectation that user space tools that are deployed and in significant
 use don’t needlessly break. FW upgrade and kernel upgrade should keep widely
 deployed tooling working.</p>
 <p>Development and debugging focused RPCs under more permissive scopes can have
-less stabilitiy if the tools using them are only run under exceptional
+less stability if the tools using them are only run under exceptional
 circumstances and not for every day use of the device. Debugging tools may even
 require exact version matching as they may require something similar to DWARF
 debug information from the FW binary.</p>
@@ -780,19 +780,19 @@ security considerations are not well defined or agreed upon.</p>
 <div><ul class="simple">
 <li><p>HW RAID controllers. This includes RPCs to do things like compose drives into
 a RAID volume, configure RAID parameters, monitor the HW and more.</p></li>
-<li><p>Baseboard managers. RPCs for configuring settings in the device and more</p></li>
+<li><p>Baseboard managers. RPCs for configuring settings in the device and more.</p></li>
 <li><p>NVMe vendor command capsules. nvme-cli provides access to some monitoring
 functions that different products have defined, but more exist.</p></li>
 <li><p>CXL also has a NVMe-like vendor command system.</p></li>
 <li><p>DRM allows user space drivers to send commands to the device via kernel
-mediation</p></li>
+mediation.</p></li>
 <li><p>RDMA allows user space drivers to directly push commands to the device
-without kernel involvement</p></li>
+without kernel involvement.</p></li>
 <li><p>Various “raw” APIs, raw HID (SDL2), raw USB, NVMe Generic Interface, etc.</p></li>
 </ul>
 </div></blockquote>
 <p>The first 4 are examples of areas that fwctl intends to cover. The latter three
-are examples of denied behavior as they fully overlap with the primary purpose
+are examples of disallowed behavior as they fully overlap with the primary purpose
 of a kernel subsystem.</p>
 <p>Some key lessons learned from these past efforts are the importance of having a
 common user space project to use as a pre-condition for obtaining a kernel

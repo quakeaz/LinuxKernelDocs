@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -214,7 +214,7 @@ Otherwise, it uses the clocksource for the Hyper-V synthetic system
 clock implemented via the shared page (identified as
 “hyperv_clocksource_tsc_page”).</p>
 <p>The Hyper-V synthetic system clock is available to user space via
-vDSO, and gettimeofday() and related system calls can execute
+vDSO, and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">gettimeofday()</span></code> and related system calls can execute
 entirely in user space.  The vDSO is implemented by mapping the
 shared page with scale and offset values into user space.  User
 space code performs the same algorithm of reading the TSC and
@@ -223,7 +223,7 @@ applying the scale and offset to get the constant 10 MHz clock.</p>
 While Hyper-V offers 4 synthetic timers for each CPU, Linux only uses
 timer 0. In older versions of Hyper-V, an interrupt from stimer0
 results in a VMBus control message that is demultiplexed by
-vmbus_isr() as described in the <a class="reference internal" href="vmbus.html"><span class="doc">VMBus</span></a>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vmbus_isr()</span></code> as described in the <a class="reference internal" href="vmbus.html"><span class="doc">VMBus</span></a>
 documentation. In newer versions of Hyper-V, stimer0 interrupts can
 be mapped to an architectural interrupt, which is referred to as
 “Direct Mode”. Linux prefers to use Direct Mode when available. Since

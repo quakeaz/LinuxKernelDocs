@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -144,6 +144,16 @@
 <!-- Copyright © 2023, Oracle and/or its affiliates. -->
 
 
+
+<div class="language-selection">
+English
+
+<ul>
+
+<li><a href="../translations/zh_CN/staging/speculation.html">Chinese (Simplified)</a></li>
+
+</ul>
+</div>
 <section id="speculation">
 <h1>Speculation<a class="headerlink" href="#speculation" title="Link to this heading">¶</a></h1>
 <p>This document explains potential effects of speculation, and how undesirable
@@ -197,7 +207,7 @@ code, building on the prior example:</p>
 }
 </pre></div>
 </div>
-<p>Under speculation, the first call to load_array() may return the value
+<p>Under speculation, the first call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">load_array()</span></code> may return the value
 of an out-of-bounds address, while the second call will influence
 microarchitectural state dependent on this value. This may provide an
 arbitrary read primitive.</p>
@@ -207,12 +217,12 @@ arbitrary read primitive.</p>
 respected even under speculation. Architectures which are affected by
 speculation-based side-channels are expected to implement these
 primitives.</p>
-<p>The array_index_nospec() helper in &lt;linux/nospec.h&gt; can be used to
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">array_index_nospec()</span></code> helper in &lt;linux/nospec.h&gt; can be used to
 prevent information from being leaked via side-channels.</p>
 <p>A call to array_index_nospec(index, size) returns a sanitized index
 value that is bounded to [0, size) even under cpu speculation
 conditions.</p>
-<p>This can be used to protect the earlier load_array() example:</p>
+<p>This can be used to protect the earlier <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">load_array()</span></code> example:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int load_array(int *array, unsigned int index)
 {
         if (index &gt;= MAX_ARRAY_ELEMS)

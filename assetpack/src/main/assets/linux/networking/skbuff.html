@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -160,7 +160,7 @@ into two parts:</p>
 <li><p>data buffer, containing headers and sometimes payload;
 this is the part of the skb operated on by the common helpers
 such as <a class="reference internal" href="kapi.html#c.skb_put" title="skb_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">skb_put()</span></code></a> or <a class="reference internal" href="kapi.html#c.skb_pull" title="skb_pull"><code class="xref c c-func docutils literal notranslate"><span class="pre">skb_pull()</span></code></a>;</p></li>
-<li><p>shared info (struct skb_shared_info) which holds an array of pointers
+<li><p>shared info (<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">skb_shared_info</span></code>) which holds an array of pointers
 to read-only data in the (page, offset, length) format.</p></li>
 </ul>
 </div></blockquote>
@@ -342,7 +342,7 @@ be verified.</p>
 Values are:</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">CHECKSUM_PARTIAL</span></code></p>
-<p>The driver is required to checksum the packet as seen by hard_start_xmit()
+<p>The driver is required to checksum the packet as seen by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hard_start_xmit()</span></code>
 from <a class="reference internal" href="kapi.html#c.sk_buff" title="sk_buff"><code class="xref c c-type docutils literal notranslate"><span class="pre">sk_buff.csum_start</span></code></a> up to the end, and to record/write the checksum at
 offset <a class="reference internal" href="kapi.html#c.sk_buff" title="sk_buff"><code class="xref c c-type docutils literal notranslate"><span class="pre">sk_buff.csum_start</span></code></a> + <a class="reference internal" href="kapi.html#c.sk_buff" title="sk_buff"><code class="xref c c-type docutils literal notranslate"><span class="pre">sk_buff.csum_offset</span></code></a>.
 A driver may verify that the
@@ -358,9 +358,9 @@ that the device does not support offload for a particular checksum).</p>
 <p><code class="docutils literal notranslate"><span class="pre">NETIF_F_IP_CSUM</span></code> and <code class="docutils literal notranslate"><span class="pre">NETIF_F_IPV6_CSUM</span></code> are being deprecated in favor of
 <code class="docutils literal notranslate"><span class="pre">NETIF_F_HW_CSUM</span></code>. New devices should use <code class="docutils literal notranslate"><span class="pre">NETIF_F_HW_CSUM</span></code> to indicate
 checksum offload capability.
-skb_csum_hwoffload_help() can be called to resolve <code class="docutils literal notranslate"><span class="pre">CHECKSUM_PARTIAL</span></code> based
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">skb_csum_hwoffload_help()</span></code> can be called to resolve <code class="docutils literal notranslate"><span class="pre">CHECKSUM_PARTIAL</span></code> based
 on network device checksumming capabilities: if a packet does not match
-them, skb_checksum_help() or skb_crc32c_help() (depending on the value of
+them, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">skb_checksum_help()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">skb_crc32c_help()</span></code> (depending on the value of
 <a class="reference internal" href="kapi.html#c.sk_buff" title="sk_buff"><code class="xref c c-type docutils literal notranslate"><span class="pre">sk_buff.csum_not_inet</span></code></a>, see <a class="reference internal" href="#crc"><span class="std std-ref">Non-IP checksum (CRC) offloads</span></a>)
 is called to resolve the checksum.</p>
 </li>
@@ -390,7 +390,7 @@ will set csum_start and csum_offset accordingly, set ip_summed to
 in the skbuff that the <code class="docutils literal notranslate"><span class="pre">CHECKSUM_PARTIAL</span></code> refers to CRC32c.
 A driver that supports both IP checksum offload and SCTP CRC32c offload
 must verify which offload is configured for a packet by testing the
-value of <a class="reference internal" href="kapi.html#c.sk_buff" title="sk_buff"><code class="xref c c-type docutils literal notranslate"><span class="pre">sk_buff.csum_not_inet</span></code></a>; skb_crc32c_csum_help() is provided to
+value of <a class="reference internal" href="kapi.html#c.sk_buff" title="sk_buff"><code class="xref c c-type docutils literal notranslate"><span class="pre">sk_buff.csum_not_inet</span></code></a>; <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">skb_crc32c_csum_help()</span></code> is provided to
 resolve <code class="docutils literal notranslate"><span class="pre">CHECKSUM_PARTIAL</span></code> on skbs where csum_not_inet is set to 1.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">NETIF_F_FCOE_CRC</span></code></p></td>
@@ -407,7 +407,7 @@ is configured for a packet, presumably by inspecting packet headers.</p></td>
 </section>
 <section id="checksumming-on-output-with-gso">
 <h3>Checksumming on output with GSO<a class="headerlink" href="#checksumming-on-output-with-gso" title="Link to this heading">¶</a></h3>
-<p>In the case of a GSO packet (skb_is_gso() is true), checksum offload
+<p>In the case of a GSO packet (<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">skb_is_gso()</span></code> is true), checksum offload
 is implied by the SKB_GSO_* flags in gso_type. Most obviously, if the
 gso_type is <code class="docutils literal notranslate"><span class="pre">SKB_GSO_TCPV4</span></code> or <code class="docutils literal notranslate"><span class="pre">SKB_GSO_TCPV6</span></code>, TCP checksum offload as
 part of the GSO operation is implied. If a checksum is being offloaded

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -325,15 +325,15 @@ until the process terminates or the exec system call is invoked.</p>
 <dt>For example:</dt><dd><ul>
 <li><p>aio/shm
 aio/shm can call mmap and  munmap on behalf of userspace, e.g.
-ksys_shmdt() in shm.c. The lifetimes of those mapping are not tied to
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ksys_shmdt()</span></code> in shm.c. The lifetimes of those mapping are not tied to
 the lifetime of the process. If those memories are sealed from userspace,
 then munmap will fail, causing leaks in VMA address space during the
 lifetime of the process.</p></li>
 <li><p>ptr allocated by malloc (heap)
-Don’t use mseal on the memory ptr return from malloc().
-malloc() is implemented by allocator, e.g. by glibc. Heap manager might
+Don’t use mseal on the memory ptr return from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">malloc()</span></code>.
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">malloc()</span></code> is implemented by allocator, e.g. by glibc. Heap manager might
 allocate a ptr from brk or mapping created by mmap.
-If an app calls mseal on a ptr returned from malloc(), this can affect
+If an app calls mseal on a ptr returned from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">malloc()</span></code>, this can affect
 the heap manager’s ability to manage the mappings; the outcome is
 non-deterministic.</p>
 <p>Example:</p>

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -2537,8 +2537,8 @@ there are never partial messages received by read().</p>
 <p>In case messages get overwritten in the circular buffer while
 the device is kept open, the next read() will return -EPIPE,
 and the seek position be updated to the next available record.
-Subsequent reads() will return available records again.</p>
-<p>Unlike the classic syslog() interface, the 64 bit record
+Subsequent <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">reads()</span></code> will return available records again.</p>
+<p>Unlike the classic <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">syslog()</span></code> interface, the 64 bit record
 sequence numbers allow to calculate the amount of lost
 messages, in case the buffer gets overwritten. And they allow
 to reconnect to the buffer and reconstruct the read position
@@ -2611,7 +2611,7 @@ lines are not necessarily correct, and the stream could be
 interleaved with unrelated messages, but merging the lines in
 the output usually produces better human readable results. A
 similar logic is used internally when messages are printed to
-the console, /proc/kmsg or the syslog() syscall.</p>
+the console, /proc/kmsg or the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">syslog()</span></code> syscall.</p>
 <p>By default, kernel tries to avoid fragments by concatenating
 when it can and fragments are rare; however, when extended
 console support is enabled, the in-kernel concatenation is
@@ -2806,7 +2806,7 @@ AppArmor user-space</p>
 <p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-procfs-attr-exec"><span class="std std-ref">procfs-attr-exec</span></a></p>
 <p>The security information to be used on the process
 by a Linux security module (LSM) active on the system
-after a subsequent exec() call.
+after a subsequent <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">exec()</span></code> call.
 The details of permissions required to read from
 this interface and hence obtain the security state
 of the task identified is LSM dependent.
@@ -2832,7 +2832,7 @@ AppArmor user-space</p>
 <p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-procfs-attr-prev"><span class="std std-ref">procfs-attr-prev</span></a></p>
 <p>The security information used on the process by
 a Linux security module (LSM) active on the system
-prior to the most recent exec() call.
+prior to the most recent <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">exec()</span></code> call.
 The details of permissions required to read from
 this interface is LSM dependent.
 A process cannot write to this interface unless it
@@ -3014,7 +3014,7 @@ directory of which this mediated device is created.</p>
 </table>
 <p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-bus-vfio-mdev"><span class="std std-ref">sysfs-bus-vfio-mdev</span></a></p>
 <p>Writing ‘1’ to this file destroys the mediated device. The
-vendor driver can fail the remove() callback if that device
+vendor driver can fail the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove()</span></code> callback if that device
 is active and the vendor driver doesn’t support hot unplug.
 Example:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span># echo 1 &gt; /sys/bus/mdev/devices/&lt;UUID&gt;/remove
@@ -3873,14 +3873,6 @@ steps.</p>
 </tr>
 <tr class="row-odd"><td><p><strong>/sys/.../iio:deviceX/bufferY/in_voltageY_supply_type</strong></p></td>
 </tr>
-<tr class="row-even"><td><p><strong>/sys/.../iio:deviceX/bufferY/in_voltageY_i_type</strong></p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>/sys/.../iio:deviceX/bufferY/in_voltageY_q_type</strong></p></td>
-</tr>
-<tr class="row-even"><td><p><strong>/sys/.../iio:deviceX/bufferY/in_voltage_i_type</strong></p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>/sys/.../iio:deviceX/bufferY/in_voltage_q_type</strong></p></td>
-</tr>
 <tr class="row-even"><td><p><strong>/sys/.../iio:deviceX/bufferY/in_timestamp_type</strong></p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>/sys/.../iio:deviceX/bufferY/in_pressureY_type</strong></p></td>
@@ -3961,14 +3953,6 @@ appropriately.</p>
 </tr>
 <tr class="row-odd"><td><p><strong>/sys/.../iio:deviceX/bufferY/in_voltageY-voltageZ_en</strong></p></td>
 </tr>
-<tr class="row-even"><td><p><strong>/sys/.../iio:deviceX/bufferY/in_voltageY_i_en</strong></p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>/sys/.../iio:deviceX/bufferY/in_voltageY_q_en</strong></p></td>
-</tr>
-<tr class="row-even"><td><p><strong>/sys/.../iio:deviceX/bufferY/in_voltage_i_en</strong></p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>/sys/.../iio:deviceX/bufferY/in_voltage_q_en</strong></p></td>
-</tr>
 <tr class="row-even"><td><p><strong>/sys/.../iio:deviceX/bufferY/in_incli_x_en</strong></p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>/sys/.../iio:deviceX/bufferY/in_incli_y_en</strong></p></td>
@@ -3990,14 +3974,6 @@ appropriately.</p>
 <tr class="row-odd"><td><p><strong>/sys/.../iio:deviceX/bufferY/in_voltageY_index</strong></p></td>
 </tr>
 <tr class="row-even"><td><p><strong>/sys/.../iio:deviceX/bufferY/in_voltageY_supply_index</strong></p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>/sys/.../iio:deviceX/bufferY/in_voltageY_i_index</strong></p></td>
-</tr>
-<tr class="row-even"><td><p><strong>/sys/.../iio:deviceX/bufferY/in_voltageY_q_index</strong></p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>/sys/.../iio:deviceX/bufferY/in_voltage_i_index</strong></p></td>
-</tr>
-<tr class="row-even"><td><p><strong>/sys/.../iio:deviceX/bufferY/in_voltage_q_index</strong></p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>/sys/.../iio:deviceX/bufferY/in_accel_x_index</strong></p></td>
 </tr>
@@ -8699,8 +8675,8 @@ filter is disabled.</p>
 </tbody>
 </table>
 <p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-bus-counter"><span class="std std-ref">sysfs-bus-counter</span></a></p>
-<p>Size of the Counter events queue in number of struct
-counter_event data structures. The number of elements will be
+<p>Size of the Counter events queue in number of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">counter_event</span></code> data structures. The number of elements will be
 rounded-up to a power of 2.</p>
 <table class="docutils align-default" id="abi-sys-bus-counter-devices-counterx-external-input-phase-clock-select">
 <tbody>
@@ -12738,6 +12714,9 @@ values are given by the filter_type_available attribute.</p>
 <p>Reading returns a list with the possible filter modes. Options
 for the attribute:</p>
 <ul class="simple">
+<li><p>“none” - Filter is disabled/bypassed.</p></li>
+<li><p>“sinc1” - The digital sinc1 filter. Fast 1st
+conversion time. Poor noise performance.</p></li>
 <li><p>“sinc3” - The digital sinc3 filter. Moderate 1st
 conversion time. Good noise performance.</p></li>
 <li><p>“sinc4” - Sinc 4. Excellent noise performance. Long
@@ -12753,6 +12732,8 @@ time.</p></li>
 <li><p>“sinc3+pf2” - Sinc3 + device specific Post Filter 2.</p></li>
 <li><p>“sinc3+pf3” - Sinc3 + device specific Post Filter 3.</p></li>
 <li><p>“sinc3+pf4” - Sinc3 + device specific Post Filter 4.</p></li>
+<li><p>“sinc5+pf1” - Sinc5 + device specific Post Filter 1.</p></li>
+<li><p>“sinc5+avg” - Sinc5 + averaging by 4.</p></li>
 <li><p>“wideband” - filter with wideband low ripple passband
 and sharp transition band.</p></li>
 </ul>
@@ -12853,6 +12834,10 @@ acceleration due to gravity.</p>
 </tr>
 <tr class="row-even"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_accel_z_offset</strong></p></td>
 </tr>
+<tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_altvoltage_q_offset</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_altvoltage_i_offset</strong></p></td>
+</tr>
 <tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_voltageY_offset</strong></p></td>
 </tr>
 <tr class="row-even"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_voltage_offset</strong></p></td>
@@ -12861,21 +12846,9 @@ acceleration due to gravity.</p>
 </tr>
 <tr class="row-even"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_voltageY_q_offset</strong></p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_voltage_q_offset</strong></p></td>
-</tr>
-<tr class="row-even"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_voltage_i_offset</strong></p></td>
-</tr>
 <tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_currentY_offset</strong></p></td>
 </tr>
 <tr class="row-even"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_current_offset</strong></p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_currentY_i_offset</strong></p></td>
-</tr>
-<tr class="row-even"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_currentY_q_offset</strong></p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_current_q_offset</strong></p></td>
-</tr>
-<tr class="row-even"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_current_i_offset</strong></p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_tempY_offset</strong></p></td>
 </tr>
@@ -13088,15 +13061,7 @@ for gyroscope)/</p>
 </tr>
 <tr class="row-even"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_voltage_calibscale</strong></p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_voltage_i_calibscale</strong></p></td>
-</tr>
-<tr class="row-even"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_voltage_q_calibscale</strong></p></td>
-</tr>
 <tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_voltageY_calibscale</strong></p></td>
-</tr>
-<tr class="row-even"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_voltageY_i_calibscale</strong></p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_voltageY_q_calibscale</strong></p></td>
 </tr>
 <tr class="row-even"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_voltageY_supply_calibscale</strong></p></td>
 </tr>
@@ -13214,17 +13179,17 @@ save the additional i2c transaction, which will improve the bandwidth
 available for reading data. However, samples can be occasionally skipped
 or repeated, depending on the beat between the capture and conversion
 rates.</p>
-<table class="docutils align-default" id="abi-sys-bus-iio-devices-iio-devicex-in-altvoltage0-1-i-calibphase">
+<table class="docutils align-default" id="abi-sys-bus-iio-devices-iio-devicex-in-altvoltage0-altvoltage1-i-calibphase">
 <tbody>
-<tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_altvoltage0-1_i_calibphase</strong></p></td>
+<tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_altvoltage0-altvoltage1_i_calibphase</strong></p></td>
 </tr>
 </tbody>
 </table>
 <p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-bus-iio-frequency-admv1013"><span class="std std-ref">sysfs-bus-iio-frequency-admv1013</span></a></p>
 <p>Read/write unscaled value for the Local Oscillatior path quadrature I phase shift.</p>
-<table class="docutils align-default" id="abi-sys-bus-iio-devices-iio-devicex-in-altvoltage0-1-q-calibphase">
+<table class="docutils align-default" id="abi-sys-bus-iio-devices-iio-devicex-in-altvoltage0-altvoltage1-q-calibphase">
 <tbody>
-<tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_altvoltage0-1_q_calibphase</strong></p></td>
+<tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_altvoltage0-altvoltage1_q_calibphase</strong></p></td>
 </tr>
 </tbody>
 </table>
@@ -13307,6 +13272,26 @@ side.</p>
 <p>Number of milliseconds to wait for the comparator in each
 step of the binary search for the input peak level. Needs
 to relate to the frequency of the input signal.</p>
+<table class="docutils align-default" id="abi-sys-bus-iio-devices-iio-devicex-in-altvoltagey-i-phase">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_altvoltageY_i_phase</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_altvoltageY_q_phase</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_phase</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_i_phase</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_q_phase</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-bus-iio"><span class="std std-ref">sysfs-bus-iio</span></a></p>
+<p>Phase in radians of one frequency/clock output Y
+(out_altvoltageY) relative to another frequency/clock output
+(out_altvoltageZ) of the device X. The number must always be
+specified and unique if the output corresponds to a single
+channel.</p>
 <table class="docutils align-default" id="abi-sys-bus-iio-devices-iio-devicex-in-altvoltagey-invert">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_altvoltageY_invert</strong></p></td>
@@ -13616,10 +13601,6 @@ Calculating with scale and offset returns voltage in uV</p>
 <tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_currentY_raw</strong></p></td>
 </tr>
 <tr class="row-even"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_currentY_supply_raw</strong></p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_currentY_i_raw</strong></p></td>
-</tr>
-<tr class="row-even"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_currentY_q_raw</strong></p></td>
 </tr>
 </tbody>
 </table>
@@ -14459,6 +14440,33 @@ physically equivalent inputs when non differential readings are
 separately available. In differential only parts, then all that
 is required is a consistent labeling.  Units after application
 of scale and offset are millivolts.</p>
+<table class="docutils align-default" id="abi-sys-bus-iio-devices-iio-devicex-in-voltagey-convdelay">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_voltageY_convdelay</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-bus-iio"><span class="std std-ref">sysfs-bus-iio</span></a></p>
+<p>Delay of start of conversion from common reference point shared
+by all channels. Can be writable when used to compensate for
+delay variation introduced by external filters feeding a
+simultaneous sampling ADC.</p>
+<p>E.g., for the ad7606 ADC series, this value is intended as a
+configurable time delay in seconds, to correct delay introduced
+by an optional external filtering circuit.</p>
+<table class="docutils align-default" id="abi-sys-bus-iio-devices-iio-devicex-in-voltagey-convdelay-available">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_voltageY_convdelay_available</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-bus-iio"><span class="std std-ref">sysfs-bus-iio</span></a></p>
+<p>Available values of convdelay. Maybe expressed as:</p>
+<ul class="simple">
+<li><p>a range specified as “[min step max]”</p></li>
+</ul>
+<p>If shared across all channels, &lt;type&gt;_convdelay_available
+is used.</p>
 <table class="docutils align-default" id="abi-sys-bus-iio-devices-iio-devicex-in-voltagey-dither-enable">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_voltageY_dither_enable</strong></p></td>
@@ -14520,10 +14528,6 @@ better identify an individual channel.</p>
 </tr>
 <tr class="row-even"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_voltageY_supply_raw</strong></p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_voltageY_i_raw</strong></p></td>
-</tr>
-<tr class="row-even"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_voltageY_q_raw</strong></p></td>
-</tr>
 </tbody>
 </table>
 <p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-bus-iio"><span class="std std-ref">sysfs-bus-iio</span></a></p>
@@ -14556,35 +14560,23 @@ per channel sampling frequencies.</p>
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_voltageY_scale</strong></p></td>
 </tr>
-<tr class="row-even"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_voltageY_i_scale</strong></p></td>
+<tr class="row-even"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_voltageY_q_scale</strong></p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_voltageY_q_scale</strong></p></td>
+<tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_voltageY_supply_scale</strong></p></td>
 </tr>
-<tr class="row-even"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_voltageY_supply_scale</strong></p></td>
+<tr class="row-even"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_voltage_scale</strong></p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_voltage_scale</strong></p></td>
+<tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_voltage-voltage_scale</strong></p></td>
 </tr>
-<tr class="row-even"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_voltage_i_scale</strong></p></td>
+<tr class="row-even"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/out_voltageY_scale</strong></p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_voltage_q_scale</strong></p></td>
+<tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_scale</strong></p></td>
 </tr>
-<tr class="row-even"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_voltage-voltage_scale</strong></p></td>
+<tr class="row-even"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_currentY_scale</strong></p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/out_voltageY_scale</strong></p></td>
+<tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_currentY_supply_scale</strong></p></td>
 </tr>
-<tr class="row-even"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_scale</strong></p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_currentY_scale</strong></p></td>
-</tr>
-<tr class="row-even"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_currentY_supply_scale</strong></p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_current_scale</strong></p></td>
-</tr>
-<tr class="row-even"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_currentY_i_scale</strong></p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_currentY_q_scale</strong></p></td>
-</tr>
-<tr class="row-even"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_current_i_scale</strong></p></td>
+<tr class="row-even"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_current_scale</strong></p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/in_current_q_scale</strong></p></td>
 </tr>
@@ -14987,18 +14979,6 @@ out_altvoltage2_name: RF16x
 out_altvoltage3_name: RF32x
 </pre></div>
 </div>
-<table class="docutils align-default" id="abi-sys-bus-iio-devices-iio-devicex-out-altvoltagey-phase">
-<tbody>
-<tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_phase</strong></p></td>
-</tr>
-</tbody>
-</table>
-<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-bus-iio"><span class="std std-ref">sysfs-bus-iio</span></a></p>
-<p>Phase in radians of one frequency/clock output Y
-(out_altvoltageY) relative to another frequency/clock output
-(out_altvoltageZ) of the device X. The number must always be
-specified and unique if the output corresponds to a single
-channel.</p>
 <table class="docutils align-default" id="abi-sys-bus-iio-devices-iio-devicex-out-altvoltagey-refin-frequency">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_refin_frequency</strong></p></td>
@@ -17546,7 +17526,7 @@ vectors to optimally divide them between VFs based on VF usage.</p>
 </dd>
 </dl>
 <p>The file is writable if the PF is bound to a driver that
-implements -&gt;sriov_set_msix_vec_count().</p>
+implements -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sriov_set_msix_vec_count()</span></code>.</p>
 <table class="docutils align-default" id="abi-sys-bus-pci-devices-sriov-vf-total-msix">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/bus/pci/devices/.../sriov_vf_total_msix</strong></p></td>
@@ -17660,7 +17640,7 @@ unrecoverable error, it will be reset automatically.</p></li>
 <li><p>0/Nn/off: auto reset disabled. If the device encounters an
 unrecoverable error, it will not be reset.</p></li>
 </ul>
-<p>This attribute is only available for qat_4xxx devices.</p>
+<p>This attribute is available for qat_4xxx and qat_6xxx devices.</p>
 <table class="docutils align-default" id="abi-sys-bus-pci-devices-bdf-qat-cfg-services">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/bus/pci/devices/&lt;BDF&gt;/qat/cfg_services</strong></p></td>
@@ -17670,25 +17650,27 @@ unrecoverable error, it will not be reset.</p></li>
 <p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-driver-qat"><span class="std std-ref">sysfs-driver-qat</span></a></p>
 <p>(RW) Reports the current configuration of the QAT device.
 Write to the file to change the configured services.</p>
-<p>The values are:</p>
+<p>One or more services can be enabled per device.
+Certain configurations are restricted to specific device types;
+where applicable this is explicitly indicated, for example
+(qat_6xxx) denotes applicability exclusively to that device series.</p>
+<p>The available services include:</p>
 <ul class="simple">
-<li><p>sym;asym: the device is configured for running crypto
-services</p></li>
-<li><p>asym;sym: identical to sym;asym</p></li>
-<li><p>dc: the device is configured for running compression services</p></li>
-<li><p>dcc: identical to dc but enables the dc chaining feature,
-hash then compression. If this is not required chose dc</p></li>
-<li><p>sym: the device is configured for running symmetric crypto
-services</p></li>
-<li><p>asym: the device is configured for running asymmetric crypto
-services</p></li>
-<li><p>asym;dc: the device is configured for running asymmetric
-crypto services and compression services</p></li>
-<li><p>dc;asym: identical to asym;dc</p></li>
-<li><p>sym;dc: the device is configured for running symmetric crypto
-services and compression services</p></li>
-<li><p>dc;sym: identical to sym;dc</p></li>
+<li><p>sym: Configures the device for symmetric cryptographic operations.</p></li>
+<li><p>asym: Configures the device for asymmetric cryptographic operations.</p></li>
+<li><p>dc: Configures the device for compression and decompression
+operations.</p></li>
+<li><p>dcc: Similar to dc, but with the additional dc chaining feature
+enabled, cipher then compress (qat_6xxx), hash then compression.
+If this is not required choose dc.</p></li>
+<li><p>decomp: Configures the device for decompression operations (qat_6xxx).</p></li>
 </ul>
+<p>Service combinations are permitted for all services except dcc.
+On QAT GEN4 devices (qat_4xxx driver) a maximum of two services can be
+combined and on QAT GEN6 devices (qat_6xxx driver ) a maximum of three
+services can be combined.
+The order of services is not significant. For instance, sym;asym is
+functionally equivalent to asym;sym.</p>
 <p>It is possible to set the configuration only if the device
 is in the <cite>down</cite> state (see /sys/bus/pci/devices/&lt;BDF&gt;/qat/state)</p>
 <p>The following example shows how to change the configuration of
@@ -17705,7 +17687,7 @@ sym;asym
 dc
 </pre></div>
 </div>
-<p>This attribute is only available for qat_4xxx devices.</p>
+<p>This attribute is available for qat_4xxx and qat_6xxx devices.</p>
 <table class="docutils align-default" id="abi-sys-bus-pci-devices-bdf-qat-num-rps">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/bus/pci/devices/&lt;BDF&gt;/qat/num_rps</strong></p></td>
@@ -17719,7 +17701,7 @@ dc
 64
 </pre></div>
 </div>
-<p>This attribute is only available for qat_4xxx devices.</p>
+<p>This attribute is available for qat_4xxx and qat_6xxx devices.</p>
 <table class="docutils align-default" id="abi-sys-bus-pci-devices-bdf-qat-pm-idle-enabled">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/bus/pci/devices/&lt;BDF&gt;/qat/pm_idle_enabled</strong></p></td>
@@ -17753,7 +17735,7 @@ up
 0
 </pre></div>
 </div>
-<p>This attribute is only available for qat_4xxx devices.</p>
+<p>This attribute is available for qat_4xxx and qat_6xxx devices.</p>
 <table class="docutils align-default" id="abi-sys-bus-pci-devices-bdf-qat-rp2srv">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/bus/pci/devices/&lt;BDF&gt;/qat/rp2srv</strong></p></td>
@@ -17783,7 +17765,7 @@ services</p></li>
 sym
 </pre></div>
 </div>
-<p>This attribute is only available for qat_4xxx devices.</p>
+<p>This attribute is available for qat_4xxx and qat_6xxx devices.</p>
 <table class="docutils align-default" id="abi-sys-bus-pci-devices-bdf-qat-state">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/bus/pci/devices/&lt;BDF&gt;/qat/state</strong></p></td>
@@ -17800,7 +17782,7 @@ the file to start or stop the device.</p>
 </ul>
 <p>It is possible to transition the device from up to down only
 if the device is up and vice versa.</p>
-<p>This attribute is only available for qat_4xxx devices.</p>
+<p>This attribute is available for qat_4xxx and qat_6xxx devices.</p>
 <table class="docutils align-default" id="abi-sys-bus-pci-devices-bdf-qat-ras-errors-correctable">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/bus/pci/devices/&lt;BDF&gt;/qat_ras/errors_correctable</strong></p></td>
@@ -17867,7 +17849,7 @@ SLA can be set to or a current SLA can be increased with.</p>
 0
 </pre></div>
 </div>
-<p>This attribute is only available for qat_4xxx devices.</p>
+<p>This attribute is only available for qat_4xxx and qat_6xxx devices.</p>
 <table class="docutils align-default" id="abi-sys-bus-pci-devices-bdf-qat-rl-cir">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/bus/pci/devices/&lt;BDF&gt;/qat_rl/cir</strong></p></td>
@@ -17900,7 +17882,7 @@ the SLA to the specified value.</p>
 500
 </pre></div>
 </div>
-<p>This attribute is only available for qat_4xxx devices.</p>
+<p>This attribute is only available for qat_4xxx and qat_6xxx devices.</p>
 <table class="docutils align-default" id="abi-sys-bus-pci-devices-bdf-qat-rl-id">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/bus/pci/devices/&lt;BDF&gt;/qat_rl/id</strong></p></td>
@@ -17933,7 +17915,7 @@ after creation of an SLA.</p>
 0x5  ## ring pair ID 0 and ring pair ID 2
 </pre></div>
 </div>
-<p>This attribute is only available for qat_4xxx devices.</p>
+<p>This attribute is only available for qat_4xxx and qat_6xxx devices.</p>
 <table class="docutils align-default" id="abi-sys-bus-pci-devices-bdf-qat-rl-pir">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/bus/pci/devices/&lt;BDF&gt;/qat_rl/pir</strong></p></td>
@@ -17966,7 +17948,7 @@ the SLA to the specified value.</p>
 750
 </pre></div>
 </div>
-<p>This attribute is only available for qat_4xxx devices.</p>
+<p>This attribute is only available for qat_4xxx and qat_6xxx devices.</p>
 <table class="docutils align-default" id="abi-sys-bus-pci-devices-bdf-qat-rl-rp">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/bus/pci/devices/&lt;BDF&gt;/qat_rl/rp</strong></p></td>
@@ -18000,7 +17982,7 @@ the attribute qat/rp2srv.</p>
 # echo 0x5 &gt; /sys/bus/pci/devices/&lt;BDF&gt;/qat_rl/rp
 </pre></div>
 </div>
-<p>This attribute is only available for qat_4xxx devices.</p>
+<p>This attribute is only available for qat_4xxx and qat_6xxx devices.</p>
 <table class="docutils align-default" id="abi-sys-bus-pci-devices-bdf-qat-rl-sla-op">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/bus/pci/devices/&lt;BDF&gt;/qat_rl/sla_op</strong></p></td>
@@ -18055,7 +18037,7 @@ The associated attributes are: cir, pir, srv, rp, and id.</p>
 </dl>
 </li>
 </ul>
-<p>This attribute is only available for qat_4xxx devices.</p>
+<p>This attribute is only available for qat_4xxx and qat_6xxx devices.</p>
 <table class="docutils align-default" id="abi-sys-bus-pci-devices-bdf-qat-rl-srv">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/bus/pci/devices/&lt;BDF&gt;/qat_rl/srv</strong></p></td>
@@ -18088,7 +18070,7 @@ associated to that SLA.</p>
 dc
 </pre></div>
 </div>
-<p>This attribute is only available for qat_4xxx devices.</p>
+<p>This attribute is only available for qat_4xxx and qat_6xxx devices.</p>
 <table class="docutils align-default" id="abi-sys-bus-pci-devices-bdf-rom-armor-enforced">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/bus/pci/devices/&lt;BDF&gt;/rom_armor_enforced</strong></p></td>
@@ -18711,6 +18693,31 @@ When HPD is disabled, the device will not be able to detect
 the presence of a human.</p>
 <p>Access: Read/Write
 Valid values: enabled/disabled</p>
+<table class="docutils align-default" id="abi-sys-bus-pci-drivers-qaic-xxxx-xx-xx-x-ce-count">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/bus/pci/drivers/qaic/XXXX:XX:XX.X/ce_count</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-driver-qaic"><span class="std std-ref">sysfs-driver-qaic</span></a></p>
+<p>Number of correctable errors received from device since driver is loaded.</p>
+<table class="docutils align-default" id="abi-sys-bus-pci-drivers-qaic-xxxx-xx-xx-x-ue-count">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/bus/pci/drivers/qaic/XXXX:XX:XX.X/ue_count</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-driver-qaic"><span class="std std-ref">sysfs-driver-qaic</span></a></p>
+<p>Number of uncorrectable errors received from device since driver is loaded.</p>
+<table class="docutils align-default" id="abi-sys-bus-pci-drivers-qaic-xxxx-xx-xx-x-ue-nonfatal-count">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/bus/pci/drivers/qaic/XXXX:XX:XX.X/ue_nonfatal_count</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-driver-qaic"><span class="std std-ref">sysfs-driver-qaic</span></a></p>
+<p>Number of uncorrectable non-fatal errors received from device since driver
+is loaded.</p>
 <table class="docutils align-default" id="abi-sys-bus-pci-drivers-xe-hwmon-hwmon-i-curr1-crit">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/bus/pci/drivers/xe/.../hwmon/hwmon&lt;i&gt;/curr1_crit</strong></p></td>
@@ -18777,6 +18784,31 @@ exceeds this limit.</p>
 <p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-driver-intel-xe-hwmon"><span class="std std-ref">sysfs-driver-intel-xe-hwmon</span></a></p>
 <p>RO. Package current voltage in millivolt.</p>
 <p>Only supported for particular Intel Xe graphics platforms.</p>
+<table class="docutils align-default" id="abi-sys-bus-pci-drivers-xe-hwmon-hwmon-i-power1-cap">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/bus/pci/drivers/xe/.../hwmon/hwmon&lt;i&gt;/power1_cap</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-driver-intel-xe-hwmon"><span class="std std-ref">sysfs-driver-intel-xe-hwmon</span></a></p>
+<p>RW. Card burst (PL2) power limit in microwatts.</p>
+<p>The power controller will throttle the operating frequency
+if the power averaged over a window (typically milli seconds)
+exceeds this limit. A read value of 0 means that the PL2
+power limit is disabled, writing 0 disables the limit.
+PL2 is greater than PL1 and its time window is lesser
+compared to PL1.</p>
+<p>Only supported for particular Intel Xe graphics platforms.</p>
+<table class="docutils align-default" id="abi-sys-bus-pci-drivers-xe-hwmon-hwmon-i-power1-cap-interval">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/bus/pci/drivers/xe/.../hwmon/hwmon&lt;i&gt;/power1_cap_interval</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-driver-intel-xe-hwmon"><span class="std std-ref">sysfs-driver-intel-xe-hwmon</span></a></p>
+<p>RW. Card burst power limit interval (Tau in PL2/Tau) in
+milliseconds over which sustained power is averaged.</p>
+<p>Only supported for particular Intel Xe graphics platforms.</p>
 <table class="docutils align-default" id="abi-sys-bus-pci-drivers-xe-hwmon-hwmon-i-power1-crit">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/bus/pci/drivers/xe/.../hwmon/hwmon&lt;i&gt;/power1_crit</strong></p></td>
@@ -18822,6 +18854,31 @@ milliseconds over which sustained power is averaged.</p>
 </table>
 <p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-driver-intel-xe-hwmon"><span class="std std-ref">sysfs-driver-intel-xe-hwmon</span></a></p>
 <p>RO. Card default power limit (default TDP setting).</p>
+<p>Only supported for particular Intel Xe graphics platforms.</p>
+<table class="docutils align-default" id="abi-sys-bus-pci-drivers-xe-hwmon-hwmon-i-power2-cap">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/bus/pci/drivers/xe/.../hwmon/hwmon&lt;i&gt;/power2_cap</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-driver-intel-xe-hwmon"><span class="std std-ref">sysfs-driver-intel-xe-hwmon</span></a></p>
+<p>RW. Package burst (PL2) power limit in microwatts.</p>
+<p>The power controller will throttle the operating frequency
+if the power averaged over a window (typically milli seconds)
+exceeds this limit. A read value of 0 means that the PL2
+power limit is disabled, writing 0 disables the limit.
+PL2 is greater than PL1 and its time window is lesser
+compared to PL1.</p>
+<p>Only supported for particular Intel Xe graphics platforms.</p>
+<table class="docutils align-default" id="abi-sys-bus-pci-drivers-xe-hwmon-hwmon-i-power2-cap-interval">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/bus/pci/drivers/xe/.../hwmon/hwmon&lt;i&gt;/power2_cap_interval</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-driver-intel-xe-hwmon"><span class="std std-ref">sysfs-driver-intel-xe-hwmon</span></a></p>
+<p>RW. Package burst power limit interval (Tau in PL2/Tau) in
+milliseconds over which sustained power is averaged.</p>
 <p>Only supported for particular Intel Xe graphics platforms.</p>
 <table class="docutils align-default" id="abi-sys-bus-pci-drivers-xe-hwmon-hwmon-i-power2-max">
 <tbody>
@@ -19621,7 +19678,7 @@ firmware verification step and the kernel verification step
 <p>Boot on AC is a policy which makes the device boot from S5
 when AC power is connected. This is useful for users who
 want to run their device headless or with a dock.</p>
-<p>Input should be parseable by kstrtou8() to 0 or 1.</p>
+<p>Input should be parseable by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kstrtou8()</span></code> to 0 or 1.</p>
 <table class="docutils align-default" id="abi-sys-bus-platform-devices-goog000c-00-build-date">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/bus/platform/devices/GOOG000C\:00/build_date</strong></p></td>
@@ -20164,16 +20221,6 @@ This value is provided by the manufacturing team.</p>
 </table>
 <p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-platform-ideapad-laptop"><span class="std std-ref">sysfs-platform-ideapad-laptop</span></a></p>
 <p>Control the power of camera module. 1 means on, 0 means off.</p>
-<table class="docutils align-default" id="abi-sys-bus-platform-devices-vpc2004-conservation-mode">
-<tbody>
-<tr class="row-odd"><td><p><strong>/sys/bus/platform/devices/VPC2004:*/conservation_mode</strong></p></td>
-</tr>
-</tbody>
-</table>
-<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-platform-ideapad-laptop"><span class="std std-ref">sysfs-platform-ideapad-laptop</span></a></p>
-<p>Controls whether the conservation mode is enabled or not.
-This feature limits the maximum battery charge percentage to
-around 50-60% in order to prolong the lifetime of the battery.</p>
 <table class="docutils align-default" id="abi-sys-bus-platform-devices-vpc2004-fan-mode">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/bus/platform/devices/VPC2004:*/fan_mode</strong></p></td>
@@ -23080,6 +23127,131 @@ could be found at UFS specifications 2.1.</p>
 parameters. The full information about the descriptor
 could be found at UFS specifications 2.1.</p>
 <p>The file is read only.</p>
+<table class="docutils align-default" id="abi-sys-bus-platform-drivers-ufshcd-hid-analysis-trigger">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/bus/platform/drivers/ufshcd/*/hid/analysis_trigger</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>/sys/bus/platform/devices/*.ufs/hid/analysis_trigger</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-driver-ufs"><span class="std std-ref">sysfs-driver-ufs</span></a></p>
+<p>The host can enable or disable HID analysis operation.</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>disable</p></td>
+<td><p>disable HID analysis operation</p></td>
+</tr>
+<tr class="row-even"><td><p>enable</p></td>
+<td><p>enable HID analysis operation</p></td>
+</tr>
+</tbody>
+</table>
+<p>The file is write only.</p>
+<table class="docutils align-default" id="abi-sys-bus-platform-drivers-ufshcd-hid-defrag-size">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/bus/platform/drivers/ufshcd/*/hid/defrag_size</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>/sys/bus/platform/devices/*.ufs/hid/defrag_size</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-driver-ufs"><span class="std std-ref">sysfs-driver-ufs</span></a></p>
+<p>The host sets the size to be defragmented by an HID
+defragmentation operation.</p>
+<p>The attribute is read/write.</p>
+<table class="docutils align-default" id="abi-sys-bus-platform-drivers-ufshcd-hid-defrag-trigger">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/bus/platform/drivers/ufshcd/*/hid/defrag_trigger</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>/sys/bus/platform/devices/*.ufs/hid/defrag_trigger</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-driver-ufs"><span class="std std-ref">sysfs-driver-ufs</span></a></p>
+<p>The host can enable or disable HID defragmentation operation.</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>disable</p></td>
+<td><p>disable HID defragmentation operation</p></td>
+</tr>
+<tr class="row-even"><td><p>enable</p></td>
+<td><p>enable HID defragmentation operation</p></td>
+</tr>
+</tbody>
+</table>
+<p>The attribute is write only.</p>
+<table class="docutils align-default" id="abi-sys-bus-platform-drivers-ufshcd-hid-fragmented-size">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/bus/platform/drivers/ufshcd/*/hid/fragmented_size</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>/sys/bus/platform/devices/*.ufs/hid/fragmented_size</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-driver-ufs"><span class="std std-ref">sysfs-driver-ufs</span></a></p>
+<p>The total fragmented size in the device is reported through
+this attribute.</p>
+<p>The attribute is read only.</p>
+<table class="docutils align-default" id="abi-sys-bus-platform-drivers-ufshcd-hid-progress-ratio">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/bus/platform/drivers/ufshcd/*/hid/progress_ratio</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>/sys/bus/platform/devices/*.ufs/hid/progress_ratio</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-driver-ufs"><span class="std std-ref">sysfs-driver-ufs</span></a></p>
+<p>Defragmentation progress is reported by this attribute,
+indicates the ratio of the completed defragmentation size
+over the requested defragmentation size.</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>1%</p></td>
+</tr>
+<tr class="row-even"><td><p>...</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>100</p></td>
+<td><p>100%</p></td>
+</tr>
+</tbody>
+</table>
+<p>The attribute is read only.</p>
+<table class="docutils align-default" id="abi-sys-bus-platform-drivers-ufshcd-hid-state">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/bus/platform/drivers/ufshcd/*/hid/state</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>/sys/bus/platform/devices/*.ufs/hid/state</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-driver-ufs"><span class="std std-ref">sysfs-driver-ufs</span></a></p>
+<p>The HID state is reported by this attribute.</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>idle</p></td>
+<td><p>Idle (analysis required)</p></td>
+</tr>
+<tr class="row-even"><td><p>analysis_in_progress</p></td>
+<td><p>Analysis in progress</p></td>
+</tr>
+<tr class="row-odd"><td><p>defrag_required</p></td>
+<td><p>Defrag required</p></td>
+</tr>
+<tr class="row-even"><td><p>defrag_in_progress</p></td>
+<td><p>Defrag in progress</p></td>
+</tr>
+<tr class="row-odd"><td><p>defrag_completed</p></td>
+<td><p>Defrag completed</p></td>
+</tr>
+<tr class="row-even"><td><p>defrag_not_required</p></td>
+<td><p>Defrag is not required</p></td>
+</tr>
+</tbody>
+</table>
+<p>The attribute is read only.</p>
 <table class="docutils align-default" id="abi-sys-bus-platform-drivers-ufshcd-interconnect-descriptor-mphy-version">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/bus/platform/drivers/ufshcd/*/interconnect_descriptor/mphy_version</strong></p></td>
@@ -25231,6 +25403,18 @@ reflects the current state of HPD.</p>
 </ul>
 </dd>
 </dl>
+<table class="docutils align-default" id="abi-sys-bus-typec-devices-displayport-irq-hpd">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/bus/typec/devices/.../displayport/irq_hpd</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-driver-typec-displayport"><span class="std std-ref">sysfs-driver-typec-displayport</span></a></p>
+<p>IRQ_HPD events are sent over the USB PD protocol in Status Update and
+Attention messages. IRQ_HPD can only be asserted when HPD is high,
+and is asserted when an IRQ_HPD has been issued since the last Status
+Update. This is a read only node that returns the number of IRQ events
+raised in the driver’s lifetime.</p>
 <table class="docutils align-default" id="abi-sys-bus-typec-devices-displayport-pin-assignment">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/bus/typec/devices/.../displayport/pin_assignment</strong></p></td>
@@ -27094,9 +27278,9 @@ two ASCII letters.</p>
 associated with the given WMI device is writable. If the
 given WMI device is not associated with a data block, then
 this file will not exist.</p>
-<table class="docutils align-default" id="abi-sys-bus-wmi-devices-44fadeb1-b204-40f2-8581-394bbdc1b651-firmware-update-request">
+<table class="docutils align-default" id="abi-sys-bus-wmi-devices-44fadeb1-b204-40f2-8581-394bbdc1b651-x-firmware-update-request">
 <tbody>
-<tr class="row-odd"><td><p><strong>/sys/bus/wmi/devices/44FADEB1-B204-40F2-8581-394BBDC1B651/firmware_update_request</strong></p></td>
+<tr class="row-odd"><td><p><strong>/sys/bus/wmi/devices/44FADEB1-B204-40F2-8581-394BBDC1B651[-X]/firmware_update_request</strong></p></td>
 </tr>
 </tbody>
 </table>
@@ -27112,9 +27296,9 @@ There are two available states:</p>
 <li><p>1 -&gt; Attempt firmware update on next reboot</p></li>
 </ul>
 </div></blockquote>
-<table class="docutils align-default" id="abi-sys-bus-wmi-devices-6932965f-1671-4ceb-b988-d3ab0a901919-dell-privacy-current-state">
+<table class="docutils align-default" id="abi-sys-bus-wmi-devices-6932965f-1671-4ceb-b988-d3ab0a901919-x-dell-privacy-current-state">
 <tbody>
-<tr class="row-odd"><td><p><strong>/sys/bus/wmi/devices/6932965F-1671-4CEB-B988-D3AB0A901919/dell_privacy_current_state</strong></p></td>
+<tr class="row-odd"><td><p><strong>/sys/bus/wmi/devices/6932965F-1671-4CEB-B988-D3AB0A901919[-X]/dell_privacy_current_state</strong></p></td>
 </tr>
 </tbody>
 </table>
@@ -27146,14 +27330,14 @@ and camera module to OS applications</p>
 </dd>
 </dl>
 <p>For example to check all supported current privacy device states:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># cat /sys/bus/wmi/drivers/dell-privacy/6932965F-1671-4CEB-B988-D3AB0A901919/dell_privacy_current_state
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># cat /sys/bus/wmi/drivers/dell-privacy/6932965F-1671-4CEB-B988-D3AB0A901919*/dell_privacy_current_state
 [Microphone] [unmuted]
 [Camera Shutter] [unmuted]
 </pre></div>
 </div>
-<table class="docutils align-default" id="abi-sys-bus-wmi-devices-6932965f-1671-4ceb-b988-d3ab0a901919-dell-privacy-supported-type">
+<table class="docutils align-default" id="abi-sys-bus-wmi-devices-6932965f-1671-4ceb-b988-d3ab0a901919-x-dell-privacy-supported-type">
 <tbody>
-<tr class="row-odd"><td><p><strong>/sys/bus/wmi/devices/6932965F-1671-4CEB-B988-D3AB0A901919/dell_privacy_supported_type</strong></p></td>
+<tr class="row-odd"><td><p><strong>/sys/bus/wmi/devices/6932965F-1671-4CEB-B988-D3AB0A901919[-X]/dell_privacy_supported_type</strong></p></td>
 </tr>
 </tbody>
 </table>
@@ -27185,12 +27369,29 @@ from outside the laptop</p>
 </dl>
 </div></blockquote>
 <p>For example to check which privacy devices are supported:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># cat /sys/bus/wmi/drivers/dell-privacy/6932965F-1671-4CEB-B988-D3AB0A901919/dell_privacy_supported_type
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># cat /sys/bus/wmi/drivers/dell-privacy/6932965F-1671-4CEB-B988-D3AB0A901919*/dell_privacy_supported_type
 [Microphone Mute] [supported]
 [Camera Shutter] [supported]
 [ePrivacy Screen] [unsupported]
 </pre></div>
 </div>
+<table class="docutils align-default" id="abi-sys-bus-wmi-devices-86ccfd48-205e-4a77-9c48-2021cbede341-x-force-power">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/bus/wmi/devices/86CCFD48-205E-4A77-9C48-2021CBEDE341[-X]/force_power</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-platform-intel-wmi-thunderbolt"><span class="std std-ref">sysfs-platform-intel-wmi-thunderbolt</span></a></p>
+<p>Modify the platform force power state, influencing
+Thunderbolt controllers to turn on or off when no
+devices are connected (write-only)
+There are two available states:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>0 -&gt; Force power disabled</p></li>
+<li><p>1 -&gt; Force power enabled</p></li>
+</ul>
+</div></blockquote>
 <section id="symbols-under-sys-class">
 <h2>Symbols under /sys/class<a class="headerlink" href="#symbols-under-sys-class" title="Link to this heading">¶</a></h2>
 <table class="docutils align-default" id="abi-sys-class">
@@ -28566,7 +28767,7 @@ currently available governors in the system.</p>
 <p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-class-devfreq"><span class="std std-ref">sysfs-class-devfreq</span></a></p>
 <p>The /sys/class/devfreq/.../cur_freq shows the current
 frequency of the corresponding devfreq object. Same as
-target_freq when get_cur_freq() is not implemented by
+target_freq when <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_cur_freq()</span></code> is not implemented by
 devfreq driver.</p>
 <table class="docutils align-default" id="abi-sys-class-devfreq-governor">
 <tbody>
@@ -28626,6 +28827,17 @@ not polling.</p>
 <p>A list of governors that support the node:
 - simple_ondmenad
 - tegra_actmon</p>
+<table class="docutils align-default" id="abi-sys-class-devfreq-related-cpus">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/class/devfreq/.../related_cpus</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-class-devfreq"><span class="std std-ref">sysfs-class-devfreq</span></a></p>
+<p>The list of CPUs whose performance is closely related to the
+frequency of this devfreq domain.</p>
+<p>This file is only present if a specific devfreq device is
+closely associated with a subset of CPUs.</p>
 <table class="docutils align-default" id="abi-sys-class-devfreq-target-freq">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/class/devfreq/.../target_freq</strong></p></td>
@@ -31289,6 +31501,157 @@ device node. When read it provides data on if the crashlog has
 been triggered. When written to it can be used to either clear
 the current trigger by writing false, or to trigger a new
 event if the trigger is not currently set.</p>
+<table class="docutils align-default" id="abi-sys-class-intel-pmt-features-pci-bdf">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/class/intel_pmt/features-&lt;PCI BDF&gt;/</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-class-intel-pmt-features"><span class="std std-ref">sysfs-class-intel_pmt-features</span></a></p>
+<p>The <cite>features-&lt;PCI BDF&gt;/</cite> directory represents the “features”
+capability exposed by Intel PMT (Platform Monitoring Technology)
+for the given PCI device.</p>
+<p>Each directory corresponds to a PMT feature and contains
+attributes describing the available telemetry, monitoring, or
+control functionalities.</p>
+<p>Directory Structure:</p>
+<blockquote>
+<div><p>/sys/class/intel_pmt/features-&lt;PCI BDF&gt;/
+├── accelerator_telemetry/            # Per-accelerator telemetry data
+├── crash_log/                        # Contains system crash telemetry logs
+├── per_core_environment_telemetry/   # Environmental telemetry per core
+├── per_core_performance_telemetry/   # Performance telemetry per core
+├── per_rmid_energy_telemetry/        # Energy telemetry for RMIDs
+├── per_rmid_perf_telemetry/          # Performance telemetry for RMIDs
+├── tpmi_control/                     # TPMI-related controls and telemetry
+├── tracing/                          # PMT tracing features
+└── uncore_telemetry/                 # Uncore telemetry data</p>
+</div></blockquote>
+<p>Common Files (Present in all feature directories):</p>
+<blockquote>
+<div><dl class="simple">
+<dt>caps</dt><dd><ul class="simple">
+<li><p>Read-only</p></li>
+<li><p>Lists available capabilities for this feature.</p></li>
+</ul>
+</dd>
+<dt>guids</dt><dd><ul class="simple">
+<li><p>Read-only</p></li>
+<li><p>Lists GUIDs associated with this feature.</p></li>
+</ul>
+</dd>
+</dl>
+</div></blockquote>
+<p>Additional Attributes (Conditional Presence):</p>
+<blockquote>
+<div><dl class="simple">
+<dt>max_command_size</dt><dd><ul class="simple">
+<li><p>Read-only</p></li>
+<li><p>Present if the feature supports out-of-band MCTP access.</p></li>
+<li><p>Maximum supported MCTP command size for out-of-band PMT access (bytes).</p></li>
+</ul>
+</dd>
+<dt>max_stream_size</dt><dd><ul class="simple">
+<li><p>Read-only</p></li>
+<li><p>Present if the feature supports out-of-band MCTP access.</p></li>
+<li><p>Maximum supported MCTP stream size (bytes).</p></li>
+</ul>
+</dd>
+<dt>min_watcher_period_ms</dt><dd><ul class="simple">
+<li><p>Read-only</p></li>
+<li><p>Present if the feature supports the watcher API.
+The watcher API provides a writable control interface that allows user
+configuration of monitoring behavior, such as setting the sampling or
+reporting interval.</p></li>
+<li><p>Minimum supported time period for the watcher interface (milliseconds).</p></li>
+</ul>
+</dd>
+<dt>num_rmids</dt><dd><ul class="simple">
+<li><p>Read-only</p></li>
+<li><p>Present if the feature supports RMID (Resource Monitoring ID) telemetry.
+RMIDs are identifiers used by hardware to track and report resource usage,
+such as memory bandwidth or energy consumption, on a per-logical-entity
+basis (e.g., per core, thread, or process group).</p></li>
+<li><p>Maximum number of RMIDs tracked simultaneously.</p></li>
+</ul>
+</dd>
+</dl>
+</div></blockquote>
+<p>Example:
+For a device with PCI BDF <cite>0000:00:03.1</cite>, the directory tree could look like:</p>
+<blockquote>
+<div><p>/sys/class/intel_pmt/features-0000:00:03.1/
+├── accelerator_telemetry/
+│   ├── caps
+│   ├── guids
+│   ├── max_command_size
+│   ├── max_stream_size
+│   ├── min_watcher_period_ms
+├── crash_log/
+│   ├── caps
+│   ├── guids
+│   ├── max_command_size
+│   ├── max_stream_size
+├── per_core_environment_telemetry/
+│   ├── caps
+│   ├── guids
+│   ├── max_command_size
+│   ├── max_stream_size
+│   ├── min_watcher_period_ms
+├── per_rmid_energy_telemetry/
+│   ├── caps
+│   ├── guids
+│   ├── max_command_size
+│   ├── max_stream_size
+│   ├── min_watcher_period_ms
+│   ├── num_rmids
+├── tpmi_control/
+│   ├── caps
+│   ├── guids
+├── tracing/
+│   ├── caps
+│   ├── guids
+├── uncore_telemetry/
+│   ├── caps
+│   ├── guids
+│   ├── max_command_size
+│   ├── max_stream_size
+│   ├── min_watcher_period_ms</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Notes:</dt><dd><ul class="simple">
+<li><p>Some attributes are only present if the corresponding feature supports
+the capability (e.g., <cite>max_command_size</cite> for MCTP-capable features).</p></li>
+<li><p>Features supporting RMIDs include <cite>num_rmids</cite>.</p></li>
+<li><p>Features supporting the watcher API include <cite>min_watcher_period_ms</cite>.</p></li>
+<li><p>The <cite>caps</cite> file provides additional information about the functionality
+of the feature.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example ‘caps’ content for the ‘tracing’ feature:</p>
+<blockquote>
+<div><p>/sys/class/intel_pmt/features-0000:00:03.1/
+├── tracing/
+│   ├── caps</p>
+<blockquote>
+<div><p>telemetry                                Available: No
+watcher                                  Available: Yes
+crashlog                                 Available: No
+streaming                                Available: No
+threashold                               Available: No
+window                                   Available: No
+config                                   Available: Yes
+tracing                                  Available: No
+inband                                   Available: Yes
+oob                                      Available: Yes
+secure_chan                              Available: No
+pmt_sp                                   Available: Yes
+pmt_sp_policy                            Available: Yes
+mailbox                                  Available: Yes
+bios_lock                                Available: Yes</p>
+</div></blockquote>
+</div></blockquote>
 <table class="docutils align-default" id="abi-sys-class-intel-pmt-telem-x">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/class/intel_pmt/telem&lt;x&gt;</strong></p></td>
@@ -32332,6 +32695,17 @@ an invalid timeout is written to this file.</p>
 <p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-class-net-phydev"><span class="std std-ref">sysfs-class-net-phydev</span></a></p>
 <p>Symbolic link to the network device this PHY device is
 attached to.</p>
+<table class="docutils align-default" id="abi-sys-class-mdio-bus-bus-device-c45-phy-ids-mmd-n-device-id">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/class/mdio_bus/&lt;bus&gt;/&lt;device&gt;/c45_phy_ids/mmd&lt;n&gt;_device_id</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-class-net-phydev"><span class="std std-ref">sysfs-class-net-phydev</span></a></p>
+<p>This attribute contains the 32-bit PHY Identifier as reported
+by the device during bus enumeration, encoded in hexadecimal.
+These C45 IDs are used to match the device with the appropriate
+driver. These files are invisible to the C22 device.</p>
 <table class="docutils align-default" id="abi-sys-class-mdio-bus-bus-device-phy-dev-flags">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/class/mdio_bus/&lt;bus&gt;/&lt;device&gt;/phy_dev_flags</strong></p></td>
@@ -32825,7 +33199,7 @@ bad block table (BBT).</p>
 </table>
 <p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-class-mtd"><span class="std std-ref">sysfs-class-mtd</span></a></p>
 <p>This allows the user to examine and adjust the criteria by which
-mtd returns -EUCLEAN from mtd_read() and mtd_read_oob().  If the
+mtd returns -EUCLEAN from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mtd_read()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mtd_read_oob()</span></code>.  If the
 maximum number of bit errors that were corrected on any single
 region comprising an ecc step (as reported by the driver) equals
 or exceeds this value, -EUCLEAN is returned.  Otherwise, absent
@@ -33417,7 +33791,7 @@ On write, this file changes the tagging protocol of the
 attached DSA switches, if this operation is supported by the
 driver. Changing the tagging protocol must be done with the DSA
 interfaces and the master interface all administratively down.
-See the “name” field of each registered struct dsa_device_ops
+See the “name” field of each registered <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dsa_device_ops</span></code>
 for a list of valid values.</p>
 <table class="docutils align-default" id="abi-sys-class-net-iface-duplex">
 <tbody>
@@ -34276,115 +34650,6 @@ through a vendor-specific logic block on the FPGA.</p>
 </tbody>
 </table>
 </div></blockquote>
-<table class="docutils align-default" id="abi-sys-class-pktcdvd-add">
-<tbody>
-<tr class="row-odd"><td><p><strong>/sys/class/pktcdvd/add</strong></p></td>
-</tr>
-<tr class="row-even"><td><p><strong>/sys/class/pktcdvd/remove</strong></p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>/sys/class/pktcdvd/device_map</strong></p></td>
-</tr>
-</tbody>
-</table>
-<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-class-pktcdvd"><span class="std std-ref">sysfs-class-pktcdvd</span></a></p>
-<table class="docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p>add</p></td>
-<td><p>(WO) Write a block device id (major:minor) to
-create a new pktcdvd device and map it to the
-block device.</p></td>
-</tr>
-<tr class="row-even"><td><p>remove</p></td>
-<td><p>(WO) Write the pktcdvd device id (major:minor)
-to remove the pktcdvd device.</p></td>
-</tr>
-<tr class="row-odd"><td><p>device_map</p></td>
-<td><p>(RO) Shows the device mapping in format:
-pktcdvd[0-7] &lt;pktdevid&gt; &lt;blkdevid&gt;</p></td>
-</tr>
-</tbody>
-</table>
-<table class="docutils align-default" id="abi-sys-class-pktcdvd-pktcdvd-0-7-dev">
-<tbody>
-<tr class="row-odd"><td><p><strong>/sys/class/pktcdvd/pktcdvd[0-7]/dev</strong></p></td>
-</tr>
-<tr class="row-even"><td><p><strong>/sys/class/pktcdvd/pktcdvd[0-7]/uevent</strong></p></td>
-</tr>
-</tbody>
-</table>
-<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-class-pktcdvd"><span class="std std-ref">sysfs-class-pktcdvd</span></a></p>
-<p>dev:    (RO) Device id</p>
-<p>uevent: (WO) To send a uevent</p>
-<table class="docutils align-default" id="abi-sys-class-pktcdvd-pktcdvd-0-7-stat-packets-started">
-<tbody>
-<tr class="row-odd"><td><p><strong>/sys/class/pktcdvd/pktcdvd[0-7]/stat/packets_started</strong></p></td>
-</tr>
-<tr class="row-even"><td><p><strong>/sys/class/pktcdvd/pktcdvd[0-7]/stat/packets_finished</strong></p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>/sys/class/pktcdvd/pktcdvd[0-7]/stat/kb_written</strong></p></td>
-</tr>
-<tr class="row-even"><td><p><strong>/sys/class/pktcdvd/pktcdvd[0-7]/stat/kb_read</strong></p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>/sys/class/pktcdvd/pktcdvd[0-7]/stat/kb_read_gather</strong></p></td>
-</tr>
-<tr class="row-even"><td><p><strong>/sys/class/pktcdvd/pktcdvd[0-7]/stat/reset</strong></p></td>
-</tr>
-</tbody>
-</table>
-<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-class-pktcdvd"><span class="std std-ref">sysfs-class-pktcdvd</span></a></p>
-<p>packets_started:        (RO) Number of started packets.</p>
-<p>packets_finished:       (RO) Number of finished packets.</p>
-<p>kb_written:             (RO) kBytes written.</p>
-<p>kb_read:                (RO) kBytes read.</p>
-<p>kb_read_gather:         (RO) kBytes read to fill write packets.</p>
-<dl class="simple">
-<dt>reset:                  (WO) Write any value to it to reset</dt><dd><p>pktcdvd device statistic values, like
-bytes read/written.</p>
-</dd>
-</dl>
-<table class="docutils align-default" id="abi-sys-class-pktcdvd-pktcdvd-0-7-write-queue-size">
-<tbody>
-<tr class="row-odd"><td><p><strong>/sys/class/pktcdvd/pktcdvd[0-7]/write_queue/size</strong></p></td>
-</tr>
-<tr class="row-even"><td><p><strong>/sys/class/pktcdvd/pktcdvd[0-7]/write_queue/congestion_off</strong></p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>/sys/class/pktcdvd/pktcdvd[0-7]/write_queue/congestion_on</strong></p></td>
-</tr>
-</tbody>
-</table>
-<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-class-pktcdvd"><span class="std std-ref">sysfs-class-pktcdvd</span></a></p>
-<table class="docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p>size</p></td>
-<td><p>(RO) Contains the size of the bio write queue.</p></td>
-</tr>
-<tr class="row-even"><td><p>congestion_off</p></td>
-<td><p>(RW) If bio write queue size is below this mark,
-accept new bio requests from the block layer.</p></td>
-</tr>
-<tr class="row-odd"><td><p>congestion_on</p></td>
-<td><p>(RW) If bio write queue size is higher as this
-mark, do no longer accept bio write requests
-from the block layer and wait till the pktcdvd
-device has processed enough bio’s so that bio
-write queue size is below congestion off mark.
-A value of &lt;= 0 disables congestion control.</p></td>
-</tr>
-</tbody>
-</table>
-<p>Example:</p>
-<p>To use the pktcdvd sysfs interface directly, you can do:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># create a new pktcdvd device mapped to /dev/hdc
-echo &quot;22:0&quot; &gt;/sys/class/pktcdvd/add
-cat /sys/class/pktcdvd/device_map
-# assuming device pktcdvd0 was created, look at stat&#39;s
-cat /sys/class/pktcdvd/pktcdvd0/stat/kb_written
-# print the device id of the mapped block device
-fgrep pktcdvd0 /sys/class/pktcdvd/device_map
-# remove device, using pktcdvd0 device id   253:0
-echo &quot;253:0&quot; &gt;/sys/class/pktcdvd/remove
-</pre></div>
-</div>
 <table class="docutils align-default" id="abi-sys-class-platform-profile-platform-profile-x-choices">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/class/platform-profile/platform-profile-X/choices</strong></p></td>
@@ -40652,9 +40917,9 @@ for a given device.</p>
 </table>
 <p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-devices-coredump"><span class="std std-ref">sysfs-devices-coredump</span></a></p>
 <p>The /sys/devices/.../coredump attribute is only present when the
-device is bound to a driver, which provides the .coredump()
+device is bound to a driver, which provides the .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">coredump()</span></code>
 callback. The attribute is write only. Anything written to this
-file will trigger the .coredump() callback.</p>
+file will trigger the .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">coredump()</span></code> callback.</p>
 <p>Available when CONFIG_DEV_COREDUMP is enabled.</p>
 <table class="docutils align-default" id="abi-sys-devices-firmware-node">
 <tbody>
@@ -40799,20 +41064,20 @@ Unit KByte. Format decimal.</p>
 </table>
 <p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-devices-online"><span class="std std-ref">sysfs-devices-online</span></a></p>
 <p>The /sys/devices/.../online attribute is only present for
-devices whose bus types provide .online() and .offline()
+devices whose bus types provide .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">online()</span></code> and .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">offline()</span></code>
 callbacks.  The number read from it (0 or 1) reflects the value
 of the device’s ‘offline’ field.  If that number is 1 and ‘0’
 (or ‘n’, or ‘N’) is written to this file, the device bus type’s
-.offline() callback is executed for the device and (if
+.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">offline()</span></code> callback is executed for the device and (if
 successful) its ‘offline’ field is updated accordingly.  In
 turn, if that number is 0 and ‘1’ (or ‘y’, or ‘Y’) is written to
-this file, the device bus type’s .online() callback is executed
+this file, the device bus type’s .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">online()</span></code> callback is executed
 for the device and (if successful) its ‘offline’ field is
 updated as appropriate.</p>
-<p>After a successful execution of the bus type’s .offline()
+<p>After a successful execution of the bus type’s .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">offline()</span></code>
 callback the device cannot be used for any purpose until either
 it is removed (i.e. <a class="reference internal" href="../driver-api/infrastructure.html#c.device_del" title="device_del"><code class="xref c c-func docutils literal notranslate"><span class="pre">device_del()</span></code></a> is called for it), or its bus
-type’s .online() is executed successfully.</p>
+type’s .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">online()</span></code> is executed successfully.</p>
 <table class="docutils align-default" id="abi-sys-devices-physical-location">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/devices/.../physical_location</strong></p></td>
@@ -41392,25 +41657,25 @@ relationship it has to some of the other devices.</p>
 </table>
 <p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-devices-state-synced"><span class="std std-ref">sysfs-devices-state_synced</span></a></p>
 <p>The /sys/devices/.../state_synced attribute is only present for
-devices whose bus types or driver provides the .sync_state()
+devices whose bus types or driver provides the .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sync_state()</span></code>
 callback. The number read from it (0 or 1) reflects the value
 of the device’s ‘state_synced’ field. A value of 0 means the
-.sync_state() callback hasn’t been called yet. A value of 1
-means the .sync_state() callback has been called.</p>
-<p>Generally, if a device has sync_state() support and has some of
+.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sync_state()</span></code> callback hasn’t been called yet. A value of 1
+means the .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sync_state()</span></code> callback has been called.</p>
+<p>Generally, if a device has <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sync_state()</span></code> support and has some of
 the resources it provides enabled at the time the kernel starts
 (Eg: enabled by hardware reset or bootloader or anything that
 run before the kernel starts), then it’ll keep those resources
 enabled and in a state that’s compatible with the state they
 were in at the start of the kernel. The device will stop doing
-this only when the sync_state() callback has been called --
+this only when the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sync_state()</span></code> callback has been called --
 which happens only when all its consumer devices are registered
 and have probed successfully. Resources that were left disabled
 at the time the kernel starts are not affected or limited in
-any way by sync_state() callbacks.</p>
+any way by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sync_state()</span></code> callbacks.</p>
 <p>Writing “1” to this file will force a call to the device’s
-sync_state() function if it hasn’t been called already. The
-sync_state() call happens independent of the state of the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sync_state()</span></code> function if it hasn’t been called already. The
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sync_state()</span></code> call happens independent of the state of the
 consumer devices.</p>
 <table class="docutils align-default" id="abi-sys-devices-sun">
 <tbody>
@@ -42513,23 +42778,6 @@ system and the file is in read-only mode.</p>
 </ul>
 </dd>
 </dl>
-<table class="docutils align-default" id="abi-sys-devices-platform-platform-force-power">
-<tbody>
-<tr class="row-odd"><td><p><strong>/sys/devices/platform/&lt;platform&gt;/force_power</strong></p></td>
-</tr>
-</tbody>
-</table>
-<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-platform-intel-wmi-thunderbolt"><span class="std std-ref">sysfs-platform-intel-wmi-thunderbolt</span></a></p>
-<p>Modify the platform force power state, influencing
-Thunderbolt controllers to turn on or off when no
-devices are connected (write-only)
-There are two available states:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>0 -&gt; Force power disabled</p></li>
-<li><p>1 -&gt; Force power enabled</p></li>
-</ul>
-</div></blockquote>
 <table class="docutils align-default" id="abi-sys-devices-platform-platform-gpu-mux-mode">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/devices/platform/&lt;platform&gt;/gpu_mux_mode</strong></p></td>
@@ -44053,20 +44301,6 @@ changed.</p>
 </table>
 <p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-platform-msi-laptop"><span class="std std-ref">sysfs-platform-msi-laptop</span></a></p>
 <p>WLAN subsystem enabled: contains either 0 or 1.</p>
-<table class="docutils align-default" id="abi-sys-devices-platform-samsung-battery-life-extender">
-<tbody>
-<tr class="row-odd"><td><p><strong>/sys/devices/platform/samsung/battery_life_extender</strong></p></td>
-</tr>
-</tbody>
-</table>
-<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-driver-samsung-laptop"><span class="std std-ref">sysfs-driver-samsung-laptop</span></a></p>
-<p>Max battery charge level can be modified, battery cycle
-life can be extended by reducing the max battery charge
-level.</p>
-<ul class="simple">
-<li><p>0 means normal battery mode (100% charge)</p></li>
-<li><p>1 means battery life extender mode (80% charge)</p></li>
-</ul>
 <table class="docutils align-default" id="abi-sys-devices-platform-samsung-lid-handling">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/devices/platform/samsung/lid_handling</strong></p></td>
@@ -45521,6 +45755,8 @@ Low order two bits must be zero.</p>
 </tr>
 <tr class="row-odd"><td><p><strong>/sys/devices/system/cpu/vulnerabilities/tsx_async_abort</strong></p></td>
 </tr>
+<tr class="row-even"><td><p><strong>/sys/devices/system/cpu/vulnerabilities/vmscape</strong></p></td>
+</tr>
 </tbody>
 </table>
 <p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-devices-system-cpu"><span class="std std-ref">sysfs-devices-system-cpu</span></a></p>
@@ -46447,14 +46683,14 @@ well known (fixed feature) interrupts sources, such
 as the power button, it can also handle a variable
 number of a “General Purpose Events” (GPE).</p>
 <p>A GPE vectors to a specified handler in AML, which
-can do a anything the BIOS writer wants from
+can do anything the BIOS writer wants from
 OS context.  GPE 0x12, for example, would vector
 to a level or edge handler called _L12 or _E12.
 The handler may do its business and return.
-Or the handler may send send a Notify event
+Or the handler may send a Notify event
 to a Linux device driver registered on an ACPI device,
 such as a battery, or a processor.</p>
-<p>To figure out where all the SCI’s are coming from,
+<p>To figure out where all the SCIs are coming from,
 /sys/firmware/acpi/interrupts contains a file listing
 every possible source, and the count of how many
 times it has triggered:</p>
@@ -46890,7 +47126,7 @@ example: /sys/firmware/efi/esrt/entries/entry0/</p>
 </tbody>
 </table>
 <p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-firmware-efi-esrt"><span class="std std-ref">sysfs-firmware-efi-esrt</span></a></p>
-<p>Flags that must be passed to UpdateCapsule()</p>
+<p>Flags that must be passed to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">UpdateCapsule()</span></code></p>
 <table class="docutils align-default" id="abi-sys-firmware-efi-esrt-entries-entry-n-fw-class">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/firmware/efi/esrt/entries/entry&lt;N&gt;/fw_class</strong></p></td>
@@ -47021,6 +47257,16 @@ EFI system table.</p>
 <dt>Users:</dt><dd><p>Kexec</p>
 </dd>
 </dl>
+<table class="docutils align-default" id="abi-sys-firmware-efi-ovmf-debug-log">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/firmware/efi/ovmf_debug_log</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-firmware-efi"><span class="std std-ref">sysfs-firmware-efi</span></a></p>
+<p>Displays the content of the OVMF debug log buffer.  The file is
+only present in case the firmware supports logging to a memory
+buffer.</p>
 <table class="docutils align-default" id="abi-sys-firmware-efi-runtime">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/firmware/efi/runtime</strong></p></td>
@@ -47720,9 +47966,13 @@ format of variable updates.</p>
 <p>On powernv/OPAL, this value is provided by the OPAL firmware
 and is expected to be “ibm,edk2-compat-v1”.</p>
 <p>On pseries/PLPKS, this is generated by the kernel based on the
-version number in the SB_VERSION variable in the keystore, and
-has the form “ibm,plpks-sb-v&lt;version&gt;”, or
-“ibm,plpks-sb-unknown” if there is no SB_VERSION variable.</p>
+version number in the SB_VERSION variable in the keystore. The
+version numbering in the SB_VERSION variable starts from 1. The
+format string takes the form “ibm,plpks-sb-v&lt;version&gt;” in the
+case of dynamic key management mode. If the SB_VERSION variable
+does not exist (or there is an error while reading it), it takes
+the form “ibm,plpks-sb-v0”, indicating that the key management
+mode is static.</p>
 <table class="docutils align-default" id="abi-sys-firmware-secvar-vars">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/firmware/secvar/vars</strong></p></td>
@@ -47743,6 +47993,12 @@ by the firmware.</p>
 &lt;variable_name&gt;. The variable name is unique and is in ASCII
 representation. The data and size can be determined by reading
 their respective attribute files.</p>
+<p>Only secvars relevant to the key management mode are exposed.
+Only in the dynamic key management mode should the user have
+access (read and write) to the secure boot secvars db, dbx,
+grubdb, grubdbx, and sbat. These secvars are not consumed in the
+static key management mode. PK, trustedcadb and moduledb are the
+secvars common to both static and dynamic key management modes.</p>
 <table class="docutils align-default" id="abi-sys-firmware-secvar-vars-variable-name-data">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/firmware/secvar/vars/&lt;variable_name&gt;/data</strong></p></td>
@@ -47954,6 +48210,19 @@ Format: %i</p>
 Format: %016X</p>
 <section id="symbols-under-sys-fs">
 <h2>Symbols under /sys/fs<a class="headerlink" href="#symbols-under-sys-fs" title="Link to this heading">¶</a></h2>
+<table class="docutils align-default" id="abi-sys-fs-erofs-disk-dir-ra-bytes">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/fs/erofs/&lt;disk&gt;/dir_ra_bytes</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-fs-erofs"><span class="std std-ref">sysfs-fs-erofs</span></a></p>
+<p>Used to set or show readahead bytes during <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">readdir()</span></code>, by
+default the value is 16384.</p>
+<ul class="simple">
+<li><p>0: disable readahead.</p></li>
+</ul>
+</section>
 <table class="docutils align-default" id="abi-sys-fs-erofs-disk-drop-caches">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/fs/erofs/&lt;disk&gt;/drop_caches</strong></p></td>
@@ -47969,7 +48238,6 @@ compressed folios:</p>
 <li><p>2 : drop in-memory pclusters</p></li>
 <li><p>3 : drop in-memory pclusters and cached compressed folios</p></li>
 </ul>
-</section>
 <table class="docutils align-default" id="abi-sys-fs-erofs-disk-sync-decompress">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/fs/erofs/&lt;disk&gt;/sync_decompress</strong></p></td>
@@ -48006,7 +48274,7 @@ Disable all accelerators with an empty string (echo &gt; accel).</p>
 Supported features:
 zero_padding, compr_cfgs, big_pcluster, chunked_file,
 device_table, compr_head2, sb_chksum, ztailpacking,
-dedupe, fragments.</p>
+dedupe, fragments, 48bit, metabox.</p>
 <table class="docutils align-default" id="abi-sys-fs-ext4-disk-delayed-allocation-blocks">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/fs/ext4/&lt;disk&gt;/delayed_allocation_blocks</strong></p></td>
@@ -48680,6 +48948,25 @@ verity, sb_checksum, casefold, readonly, compression, pin_file.</p>
 <p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-fs-f2fs"><span class="std std-ref">sysfs-fs-f2fs</span></a></p>
 <p>Number of garbage collection operations triggered in background.
 Available when CONFIG_F2FS_STAT_FS=y.</p>
+<table class="docutils align-default" id="abi-sys-fs-f2fs-disk-gc-boost-gc-greedy">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/fs/f2fs/&lt;disk&gt;/gc_boost_gc_greedy</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-fs-f2fs"><span class="std std-ref">sysfs-fs-f2fs</span></a></p>
+<p>Control GC algorithm for boost GC. 0: cost benefit, 1: greedy
+Default: 1</p>
+<table class="docutils align-default" id="abi-sys-fs-f2fs-disk-gc-boost-gc-multiple">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/fs/f2fs/&lt;disk&gt;/gc_boost_gc_multiple</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-fs-f2fs"><span class="std std-ref">sysfs-fs-f2fs</span></a></p>
+<p>Set a multiplier for the background GC migration window when F2FS GC is
+boosted. The range should be from 1 to the segment count in a section.
+Default: 5</p>
 <table class="docutils align-default" id="abi-sys-fs-f2fs-disk-gc-boost-zoned-gc-percent">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/fs/f2fs/&lt;disk&gt;/gc_boost_zoned_gc_percent</strong></p></td>
@@ -49307,6 +49594,18 @@ By default, 5% over total # of segments.</p>
 <p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-fs-f2fs"><span class="std std-ref">sysfs-fs-f2fs</span></a></p>
 <p>Controls target reserved blocks in system, the threshold
 is soft, it could exceed current available user space.</p>
+<table class="docutils align-default" id="abi-sys-fs-f2fs-disk-reserved-pin-section">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/fs/f2fs/&lt;disk&gt;/reserved_pin_section</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-fs-f2fs"><span class="std std-ref">sysfs-fs-f2fs</span></a></p>
+<p>This threshold is used to control triggering garbage collection while
+fallocating on pinned file, so, it can guarantee there is enough free
+reserved section before preallocating on pinned file.
+By default, the value is ovp_sections, especially, for zoned ufs, the
+value is 1.</p>
 <table class="docutils align-default" id="abi-sys-fs-f2fs-disk-reserved-segments">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/fs/f2fs/&lt;disk&gt;/reserved_segments</strong></p></td>
@@ -50226,9 +50525,9 @@ Might return “&lt;denied&gt;” in case of special security settings
 in the hypervisor.</p>
 <section id="symbols-under-sys-kernel">
 <h2>Symbols under /sys/kernel<a class="headerlink" href="#symbols-under-sys-kernel" title="Link to this heading">¶</a></h2>
-<table class="docutils align-default" id="abi-sys-kernel-address-bit">
+<table class="docutils align-default" id="abi-sys-kernel-address-bits">
 <tbody>
-<tr class="row-odd"><td><p><strong>/sys/kernel/address_bit</strong></p></td>
+<tr class="row-odd"><td><p><strong>/sys/kernel/address_bits</strong></p></td>
 </tr>
 </tbody>
 </table>
@@ -50253,7 +50552,7 @@ It is used to export the kernel boot parameters of an x86
 platform to userspace for kexec and debugging purpose.</p>
 <p>If there’s no setup_data in boot_params the subdirectory will
 not be created.</p>
-<p>“data” file is the binary representation of struct boot_params.</p>
+<p>“data” file is the binary representation of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">boot_params</span></code>.</p>
 <p>“version” file is the string representation of boot
 protocol version.</p>
 <p>“setup_data” subdirectory contains the setup_data data
@@ -51088,7 +51387,7 @@ blob</p>
 </tbody>
 </table>
 <p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-debugfs-driver-habanalabs"><span class="std std-ref">debugfs-driver-habanalabs</span></a></p>
-<p>Exposes the device’s server type, maps to enum hl_server_type.</p>
+<p>Exposes the device’s server type, maps to <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">hl_server_type</span></code>.</p>
 <table class="docutils align-default" id="abi-sys-kernel-debug-accel-parent-device-set-power-state">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/kernel/debug/accel/&lt;parent_device&gt;/set_power_state</strong></p></td>
@@ -51298,6 +51597,22 @@ the platform in the format:</p>
 </div></blockquote>
 <p>The &lt;error number&gt; can be written to einj_inject to inject
 &lt;error type&gt; into a chosen dport.</p>
+<table class="docutils align-default" id="abi-sys-kernel-debug-cxl-memx-clear-poison">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/kernel/debug/cxl/memX/clear_poison</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-debugfs-cxl"><span class="std std-ref">debugfs-cxl</span></a></p>
+<p>(WO) When a Device Physical Address (DPA) is written to this
+attribute, the memdev driver sends a clear poison command to
+the device for the specified address. Clearing poison removes
+the address from the device’s Poison List and writes 0 (zero)
+for 64 bytes starting at address. It is not an error to clear
+poison from an address that does not have poison set. If the
+device cannot clear poison from the address, -ENXIO is returned.
+The clear_poison attribute is only visible for devices
+supporting the capability.</p>
 <table class="docutils align-default" id="abi-sys-kernel-debug-cxl-memx-inject-poison">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/kernel/debug/cxl/memX/inject_poison</strong></p></td>
@@ -52706,6 +53021,149 @@ additional information about the data correctness is given.</p>
 <p>Note that depending on the actual device being used, some of the
 above might not be available (and they won’t be listed when
 reading the file).</p>
+<table class="docutils align-default" id="abi-sys-kernel-debug-iommu-amd-devid">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/kernel/debug/iommu/amd/devid</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-debugfs-amd-iommu"><span class="std std-ref">debugfs-amd-iommu</span></a></p>
+<p>This file provides read/write access for user input. Users specify the
+device ID, which can be used to dump IOMMU data structures such as the
+interrupt remapping table and device table.</p>
+<p>Example:</p>
+<ol class="arabic">
+<li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ echo 0000:01:00.0 &gt; /sys/kernel/debug/iommu/amd/devid
+$ cat /sys/kernel/debug/iommu/amd/devid
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>0000:01:00.0
+</pre></div>
+</div>
+</li>
+<li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ echo 01:00.0 &gt; /sys/kernel/debug/iommu/amd/devid
+$ cat /sys/kernel/debug/iommu/amd/devid
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>0000:01:00.0
+</pre></div>
+</div>
+</li>
+</ol>
+<table class="docutils align-default" id="abi-sys-kernel-debug-iommu-amd-devtbl">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/kernel/debug/iommu/amd/devtbl</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-debugfs-amd-iommu"><span class="std std-ref">debugfs-amd-iommu</span></a></p>
+<p>This file is a read-only output file containing the device table entry
+for the device ID provided in /sys/kernel/debug/iommu/amd/devid.</p>
+<p>Example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ cat /sys/kernel/debug/iommu/amd/devtbl
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>DeviceId             QWORD[3]         QWORD[2]         QWORD[1]         QWORD[0] iommu
+0000:01:00.0 0000000000000000 20000001373b8013 0000000000000038 6000000114d7b603 iommu3
+</pre></div>
+</div>
+<table class="docutils align-default" id="abi-sys-kernel-debug-iommu-amd-iommu-x-capability">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/kernel/debug/iommu/amd/iommu&lt;x&gt;/capability</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-debugfs-amd-iommu"><span class="std std-ref">debugfs-amd-iommu</span></a></p>
+<p>This file provides read/write access for user input. Users specify the
+capability register offset for iommu&lt;x&gt;, and the file outputs the
+corresponding capability register value of iommu&lt;x&gt;.</p>
+<p>Example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ echo &quot;0x10&quot; &gt; /sys/kernel/debug/iommu/amd/iommu00/capability
+$ cat /sys/kernel/debug/iommu/amd/iommu00/capability
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Offset:0x10 Value:0x00203040
+</pre></div>
+</div>
+<table class="docutils align-default" id="abi-sys-kernel-debug-iommu-amd-iommu-x-cmdbuf">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/kernel/debug/iommu/amd/iommu&lt;x&gt;/cmdbuf</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-debugfs-amd-iommu"><span class="std std-ref">debugfs-amd-iommu</span></a></p>
+<p>This file is a read-only output file containing iommu&lt;x&gt; command
+buffer entries.</p>
+<p>Examples:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ cat /sys/kernel/debug/iommu/amd/iommu&lt;x&gt;/cmdbuf
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>CMD Buffer Head Offset:339 Tail Offset:339
+  0: 00835001 10000001 00003c00 00000000
+  1: 00000000 30000005 fffff003 7fffffff
+  2: 00835001 10000001 00003c01 00000000
+  3: 00000000 30000005 fffff003 7fffffff
+  4: 00835001 10000001 00003c02 00000000
+  5: 00000000 30000005 fffff003 7fffffff
+  6: 00835001 10000001 00003c03 00000000
+  7: 00000000 30000005 fffff003 7fffffff
+  8: 00835001 10000001 00003c04 00000000
+  9: 00000000 30000005 fffff003 7fffffff
+ 10: 00835001 10000001 00003c05 00000000
+ 11: 00000000 30000005 fffff003 7fffffff
+[...]
+</pre></div>
+</div>
+<table class="docutils align-default" id="abi-sys-kernel-debug-iommu-amd-iommu-x-mmio">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/kernel/debug/iommu/amd/iommu&lt;x&gt;/mmio</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-debugfs-amd-iommu"><span class="std std-ref">debugfs-amd-iommu</span></a></p>
+<p>This file provides read/write access for user input. Users specify the
+MMIO register offset for iommu&lt;x&gt;, and the file outputs the corresponding
+MMIO register value of iommu&lt;x&gt;</p>
+<p>Example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ echo &quot;0x18&quot; &gt; /sys/kernel/debug/iommu/amd/iommu00/mmio
+$ cat /sys/kernel/debug/iommu/amd/iommu00/mmio
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Offset:0x18 Value:0x000c22000003f48d
+</pre></div>
+</div>
+<table class="docutils align-default" id="abi-sys-kernel-debug-iommu-amd-irqtbl">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/kernel/debug/iommu/amd/irqtbl</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-debugfs-amd-iommu"><span class="std std-ref">debugfs-amd-iommu</span></a></p>
+<p>This file is a read-only output file containing valid IRT table entries
+for the device ID provided in /sys/kernel/debug/iommu/amd/devid.</p>
+<p>Example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ cat /sys/kernel/debug/iommu/amd/irqtbl
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>DeviceId 0000:01:00.0
+IRT[0000] 0000000000000020 0000000000000241
+IRT[0001] 0000000000000020 0000000000000841
+IRT[0002] 0000000000000020 0000000000002041
+IRT[0003] 0000000000000020 0000000000008041
+IRT[0004] 0000000000000020 0000000000020041
+IRT[0005] 0000000000000020 0000000000080041
+IRT[0006] 0000000000000020 0000000000200041
+IRT[0007] 0000000000000020 0000000000800041
+[...]
+</pre></div>
+</div>
 <table class="docutils align-default" id="abi-sys-kernel-debug-iommu-intel-bdf-domain-translation-struct">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/kernel/debug/iommu/intel/&lt;bdf&gt;/domain_translation_struct</strong></p></td>
@@ -52976,22 +53434,6 @@ IR table address:100900000
 Entry SrcID   PDA_high PDA_low  Vct IRTE_high          IRTE_low
 </pre></div>
 </div>
-<table class="docutils align-default" id="abi-sys-kernel-debug-memx-clear-poison">
-<tbody>
-<tr class="row-odd"><td><p><strong>/sys/kernel/debug/memX/clear_poison</strong></p></td>
-</tr>
-</tbody>
-</table>
-<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-debugfs-cxl"><span class="std std-ref">debugfs-cxl</span></a></p>
-<p>(WO) When a Device Physical Address (DPA) is written to this
-attribute, the memdev driver sends a clear poison command to
-the device for the specified address. Clearing poison removes
-the address from the device’s Poison List and writes 0 (zero)
-for 64 bytes starting at address. It is not an error to clear
-poison from an address that does not have poison set. If the
-device cannot clear poison from the address, -ENXIO is returned.
-The clear_poison attribute is only visible for devices
-supporting the capability.</p>
 <table class="docutils align-default" id="abi-sys-kernel-debug-moxtet-input">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/kernel/debug/moxtet/input</strong></p></td>
@@ -53197,30 +53639,6 @@ Root Complex controllers.</p>
 <p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-debugfs-pcie-ptm"><span class="std std-ref">debugfs-pcie-ptm</span></a></p>
 <p>(RO) PTM T4 timestamp in nanoseconds. Applicable only for
 Endpoint controllers.</p>
-<table class="docutils align-default" id="abi-sys-kernel-debug-pktcdvd-pktcdvd-0-7">
-<tbody>
-<tr class="row-odd"><td><p><strong>/sys/kernel/debug/pktcdvd/pktcdvd[0-7]</strong></p></td>
-</tr>
-</tbody>
-</table>
-<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-debugfs-pktcdvd"><span class="std std-ref">debugfs-pktcdvd</span></a></p>
-<p>The pktcdvd module (packet writing driver) creates
-these files in debugfs:</p>
-<p>/sys/kernel/debug/pktcdvd/pktcdvd[0-7]/</p>
-<blockquote>
-<div><table class="docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p>info</p></td>
-<td><p>0444</p></td>
-<td><p>Lots of driver statistics and infos.</p></td>
-</tr>
-</tbody>
-</table>
-</div></blockquote>
-<p>Example:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cat /sys/kernel/debug/pktcdvd/pktcdvd0/info
-</pre></div>
-</div>
 <table class="docutils align-default" id="abi-sys-kernel-debug-powerpc-memtrace">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/kernel/debug/powerpc/memtrace</strong></p></td>
@@ -53396,7 +53814,7 @@ to poll the status periodically.</p>
 <p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-debugfs-driver-qat"><span class="std std-ref">debugfs-driver-qat</span></a></p>
 <p>(RO) Read returns power management information specific to the
 QAT device.</p>
-<p>This attribute is only available for qat_4xxx devices.</p>
+<p>This attribute is only available for qat_4xxx and qat_6xxx devices.</p>
 <table class="docutils align-default" id="abi-sys-kernel-debug-qat-device-bdf-telemetry-control">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/kernel/debug/qat_&lt;device&gt;_&lt;BDF&gt;/telemetry/control</strong></p></td>
@@ -53432,7 +53850,7 @@ metrics:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>echo 0 &gt; /sys/kernel/debug/qat_4xxx_0000:6b:00.0/telemetry/control
 </pre></div>
 </div>
-<p>This attribute is only available for qat_4xxx devices.</p>
+<p>This attribute is only available for qat_4xxx and qat_6xxx devices.</p>
 <table class="docutils align-default" id="abi-sys-kernel-debug-qat-device-bdf-telemetry-device-data">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/kernel/debug/qat_&lt;device&gt;_&lt;BDF&gt;/telemetry/device_data</strong></p></td>
@@ -53506,6 +53924,18 @@ request latency [ns]</p></td>
 <tr class="row-even"><td><p>exec_dcpr&lt;N&gt;</p></td>
 <td><p>execution count of Decompression slice N</p></td>
 </tr>
+<tr class="row-odd"><td><p>util_cnv&lt;N&gt;</p></td>
+<td><p>utilization of Compression and verify slice N [%]</p></td>
+</tr>
+<tr class="row-even"><td><p>exec_cnv&lt;N&gt;</p></td>
+<td><p>execution count of Compression and verify slice N</p></td>
+</tr>
+<tr class="row-odd"><td><p>util_dcprz&lt;N&gt;</p></td>
+<td><p>utilization of Decompression slice N [%]</p></td>
+</tr>
+<tr class="row-even"><td><p>exec_dcprz&lt;N&gt;</p></td>
+<td><p>execution count of Decompression slice N</p></td>
+</tr>
 <tr class="row-odd"><td><p>util_pke&lt;N&gt;</p></td>
 <td><p>utilization of PKE N [%]</p></td>
 </tr>
@@ -53562,7 +53992,7 @@ following format:</p>
 </div>
 <p>If a device lacks of a specific accelerator, the corresponding
 attribute is not reported.</p>
-<p>This attribute is only available for qat_4xxx devices.</p>
+<p>This attribute is only available for qat_4xxx and qat_6xxx devices.</p>
 <table class="docutils align-default" id="abi-sys-kernel-debug-qat-device-bdf-telemetry-rp-a-b-c-d-data">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/kernel/debug/qat_&lt;device&gt;_&lt;BDF&gt;/telemetry/rp_&lt;A/B/C/D&gt;_data</strong></p></td>
@@ -53843,7 +54273,7 @@ the PF 0000:6b:0.0 configured for <cite>dc</cite>:</p>
 <p>The mapping of a RP to a service can be retrieved using
 <code class="docutils literal notranslate"><span class="pre">rp2srv</span></code> from sysfs.
 See <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-driver-qat"><span class="std std-ref">testing/sysfs-driver-qat</span></a> for details.</p>
-<p>This attribute is only available for qat_4xxx devices.</p>
+<p>This attribute is only available for qat_4xxx and qat_6xxx devices.</p>
 <table class="docutils align-default" id="abi-sys-kernel-debug-scmi-n-atomic-threshold-us">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/kernel/debug/scmi/&lt;n&gt;/atomic_threshold_us</strong></p></td>
@@ -54361,8 +54791,8 @@ of the lines:
 <p>You can write a hexadecimal sentence to raw, and that series of
 bytes will be sent to the EC. Then, you can read the bytes of
 response by reading from raw.</p>
-<p>For writing, bytes 0-1 indicate the message type, one of enum
-wilco_ec_msg_type. Byte 2+ consist of the data passed in the
+<p>For writing, bytes 0-1 indicate the message type, one of <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span>
+<span class="pre">wilco_ec_msg_type</span></code>. Byte 2+ consist of the data passed in the
 request, starting at MBOX[0]. At least three bytes are required
 for writing, two for the type and at least a single byte of
 data.</p>
@@ -54523,7 +54953,7 @@ Available only if CONFIG_HARDLOCKUP_DETECTOR is enabled.</p>
 <p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-kernel-iommu-groups"><span class="std std-ref">sysfs-kernel-iommu_groups</span></a></p>
 <p>/sys/kernel/iommu_groups/ contains a number of sub-
 directories, each representing an IOMMU group.  The
-name of the sub-directory matches the iommu_group_id()
+name of the sub-directory matches the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">iommu_group_id()</span></code>
 for the group, which is an integer value.  Within each
 subdirectory is another directory named “devices” with
 links to the sysfs devices contained in this group.
@@ -54599,7 +55029,7 @@ those RMRR are considered to be relaxable and safe.</p>
 </table>
 <p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-kernel-irq"><span class="std std-ref">sysfs-kernel-irq</span></a></p>
 <p>Directory containing information about the system’s IRQs.
-Specifically, data from the associated struct irq_desc.
+Specifically, data from the associated <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">irq_desc</span></code>.
 The information here is similar to that in /proc/interrupts
 but in a more machine-friendly format.  This directory contains
 one subdirectory for each Linux IRQ number.</p>
@@ -55057,6 +55487,37 @@ value.</p>
 under this directory works same to those of
 /sys/kernel/mm/damon/admin/kdamonds/&lt;K&gt;/contexts/&lt;C&gt;/schemes/&lt;S&gt;/filters
 directory.</p>
+<table class="docutils align-default" id="abi-sys-kernel-mm-damon-admin-kdamonds-k-contexts-c-schemes-s-dests-d-id">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/kernel/mm/damon/admin/kdamonds/&lt;K&gt;/contexts/&lt;C&gt;/schemes/&lt;S&gt;/dests/&lt;D&gt;/id</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-kernel-mm-damon"><span class="std std-ref">sysfs-kernel-mm-damon</span></a></p>
+<p>Writing to and reading from this file sets and gets the id of
+the DAMOS action destination.  For DAMOS_MIGRATE_{HOT,COLD}
+actions, the destination node’s node id can be written and
+read.</p>
+<table class="docutils align-default" id="abi-sys-kernel-mm-damon-admin-kdamonds-k-contexts-c-schemes-s-dests-d-weight">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/kernel/mm/damon/admin/kdamonds/&lt;K&gt;/contexts/&lt;C&gt;/schemes/&lt;S&gt;/dests/&lt;D&gt;/weight</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-kernel-mm-damon"><span class="std std-ref">sysfs-kernel-mm-damon</span></a></p>
+<p>Writing to and reading from this file sets and gets the weight
+of the DAMOS action destination to select as the destination of
+each action among the destinations.</p>
+<table class="docutils align-default" id="abi-sys-kernel-mm-damon-admin-kdamonds-k-contexts-c-schemes-s-dests-nr-dests">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/kernel/mm/damon/admin/kdamonds/&lt;K&gt;/contexts/&lt;C&gt;/schemes/&lt;S&gt;/dests/nr_dests</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-kernel-mm-damon"><span class="std std-ref">sysfs-kernel-mm-damon</span></a></p>
+<p>Writing a number ‘N’ to this file creates the number of
+directories for setting action destinations of the scheme named
+‘0’ to ‘N-1’ under the dests/ directory.</p>
 <table class="docutils align-default" id="abi-sys-kernel-mm-damon-admin-kdamonds-k-contexts-c-schemes-s-filters-f-addr-end">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/kernel/mm/damon/admin/kdamonds/&lt;K&gt;/contexts/&lt;C&gt;/schemes/&lt;S&gt;/filters/&lt;F&gt;/addr_end</strong></p></td>
@@ -55533,6 +55994,16 @@ directories for controlling each DAMON context named ‘0’ to
 <p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-kernel-mm-damon"><span class="std std-ref">sysfs-kernel-mm-damon</span></a></p>
 <p>Reading this file returns the pid of the kdamond if it is
 running.</p>
+<table class="docutils align-default" id="abi-sys-kernel-mm-damon-admin-kdamonds-k-refresh-ms">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/kernel/mm/damon/admin/kdamonds/&lt;K&gt;/refresh_ms</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-kernel-mm-damon"><span class="std std-ref">sysfs-kernel-mm-damon</span></a></p>
+<p>Writing a value to this file sets the time interval for
+automatic DAMON status file contents update.  Writing ‘0’
+disables the update.  Reading this file returns the value.</p>
 <table class="docutils align-default" id="abi-sys-kernel-mm-damon-admin-kdamonds-k-state">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/kernel/mm/damon/admin/kdamonds/&lt;K&gt;/state</strong></p></td>
@@ -56232,7 +56703,8 @@ alignment in bytes.</p>
 <p>The alloc_calls file is read-only and lists the kernel code
 locations from which allocations for this cache were performed.
 The alloc_calls file only contains information if debugging is
-enabled for that cache (see <a class="reference internal" href="../mm/slub.html"><span class="doc">Short users guide for SLUB</span></a>).</p>
+enabled for that cache (see
+<a class="reference internal" href="mm/slab.html"><span class="doc">Short users guide for the slab allocator</span></a>).</p>
 <table class="docutils align-default" id="abi-sys-kernel-slab-cache-alloc-fastpath">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/kernel/slab/&lt;cache&gt;/alloc_fastpath</strong></p></td>
@@ -56423,7 +56895,7 @@ Available when CONFIG_SLUB_STATS is enabled.</p>
 <p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-kernel-slab"><span class="std std-ref">sysfs-kernel-slab</span></a></p>
 <p>The free_calls file is read-only and lists the locations of
 object frees if slab debugging is enabled (see
-<a class="reference internal" href="../mm/slub.html"><span class="doc">Short users guide for SLUB</span></a>).</p>
+<a class="reference internal" href="mm/slab.html"><span class="doc">Short users guide for the slab allocator</span></a>).</p>
 <table class="docutils align-default" id="abi-sys-kernel-slab-cache-free-fastpath">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/kernel/slab/&lt;cache&gt;/free_fastpath</strong></p></td>
@@ -56736,7 +57208,7 @@ First value contains physical address of note in hex and
 second value contains the size of note in hex. This ELF
 note info is parsed by second kernel and exported to user
 space as part of ELF note in /proc/vmcore file. This note
-contains various information like struct size, symbol
+contains various information like <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">size</span></code>, symbol
 values, page size etc.</p>
 <table class="docutils align-default" id="abi-sys-kernel-warn-count">
 <tbody>
@@ -57360,10 +57832,10 @@ is measured in microseconds.</p>
 </tbody>
 </table>
 <p>Defined on file <a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-power"><span class="std std-ref">sysfs-power</span></a></p>
-<p>This file controls whether or not the kernel will sync()
+<p>This file controls whether or not the kernel will <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sync()</span></code>
 filesystems during system suspend (after freezing user space
 and before suspending devices).</p>
-<p>Writing a “1” to this file enables the sync() and writing a “0”
+<p>Writing a “1” to this file enables the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sync()</span></code> and writing a “0”
 disables it.  Reads from the file return the current value.
 The default is “1” if the build-time “SUSPEND_SKIP_SYNC” config
 flag is unset, or “0” otherwise.</p>

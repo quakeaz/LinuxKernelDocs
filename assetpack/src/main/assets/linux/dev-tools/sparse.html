@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -193,11 +193,11 @@ enum pm_request {
 <p>which makes PM_SUSPEND and PM_RESUME “bitwise” integers (the “__force” is
 there because sparse will complain about casting to/from a bitwise type,
 but in this case we really _do_ want to force the conversion). And because
-the enum values are all the same type, now “enum pm_request” will be that
+the <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">values</span></code> are all the same type, now “<code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">pm_request</span></code>” will be that
 type too.</p>
 <p>And with gcc, all the “__bitwise”/”__force stuff” goes away, and it all
 ends up looking just like integers to gcc.</p>
-<p>Quite frankly, you don’t need the enum there. The above all really just
+<p>Quite frankly, you don’t need the <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">there</span></code>. The above all really just
 boils down to one special “int __bitwise” type.</p>
 <p>So the simpler way is to just do:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>typedef int __bitwise pm_request_t;

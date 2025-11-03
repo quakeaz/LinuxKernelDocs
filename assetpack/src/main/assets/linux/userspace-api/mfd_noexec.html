@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -159,7 +159,7 @@ Jeff Xu &lt;<a class="reference external" href="mailto:jeffxu&#37;&#52;&#48;chro
 </dd>
 </dl>
 <p>Since Linux introduced the memfd feature, memfds have always had their
-execute bit set, and the memfd_create() syscall doesn’t allow setting
+execute bit set, and the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">memfd_create()</span></code> syscall doesn’t allow setting
 it differently.</p>
 <p>However, in a secure-by-default system, such as ChromeOS, (where all
 executables should come from the rootfs, which is protected by verified
@@ -174,7 +174,7 @@ execute them. For such a system, we need a solution to differentiate runc’s
 use of executable memfds and an attacker’s [3].</p>
 <dl class="simple">
 <dt>To address those above:</dt><dd><ul class="simple">
-<li><p>Let memfd_create() set X bit at creation time.</p></li>
+<li><p>Let <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">memfd_create()</span></code> set X bit at creation time.</p></li>
 <li><p>Let memfd be sealed for modifying X bit when NX is set.</p></li>
 <li><p>Add a new pid namespace sysctl: vm.memfd_noexec to help applications in
 migrating and enforcing non-executable MFD.</p></li>
@@ -204,19 +204,19 @@ an app doesn’t want sealing, it can add F_SEAL_SEAL after creation.</p>
 <blockquote>
 <div><ul class="simple">
 <li><dl class="simple">
-<dt>0: MEMFD_NOEXEC_SCOPE_EXEC</dt><dd><p>memfd_create() without MFD_EXEC nor MFD_NOEXEC_SEAL acts like
+<dt>0: MEMFD_NOEXEC_SCOPE_EXEC</dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">memfd_create()</span></code> without MFD_EXEC nor MFD_NOEXEC_SEAL acts like
 MFD_EXEC was set.</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>1: MEMFD_NOEXEC_SCOPE_NOEXEC_SEAL</dt><dd><p>memfd_create() without MFD_EXEC nor MFD_NOEXEC_SEAL acts like
+<dt>1: MEMFD_NOEXEC_SCOPE_NOEXEC_SEAL</dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">memfd_create()</span></code> without MFD_EXEC nor MFD_NOEXEC_SEAL acts like
 MFD_NOEXEC_SEAL was set.</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>2: MEMFD_NOEXEC_SCOPE_NOEXEC_ENFORCED</dt><dd><p>memfd_create() without MFD_NOEXEC_SEAL will be rejected.</p>
+<dt>2: MEMFD_NOEXEC_SCOPE_NOEXEC_ENFORCED</dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">memfd_create()</span></code> without MFD_NOEXEC_SEAL will be rejected.</p>
 </dd>
 </dl>
 </li>

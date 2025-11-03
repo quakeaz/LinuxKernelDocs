@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -258,18 +258,18 @@ interface for this is being worked on.</p>
 <h2>4. Block Layer Implementation Details<a class="headerlink" href="#block-layer-implementation-details" title="Link to this heading">¶</a></h2>
 <section id="bio">
 <h3>4.1 Bio<a class="headerlink" href="#bio" title="Link to this heading">¶</a></h3>
-<p>The data integrity patches add a new field to struct bio when
+<p>The data integrity patches add a new field to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">bio</span></code> when
 CONFIG_BLK_DEV_INTEGRITY is enabled.  bio_integrity(bio) returns a
-pointer to a struct bip which contains the bio integrity payload.
-Essentially a bip is a trimmed down struct bio which holds a bio_vec
+pointer to a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">bip</span></code> which contains the bio integrity payload.
+Essentially a bip is a trimmed down <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">bio</span></code> which holds a bio_vec
 containing the integrity metadata and the required housekeeping
 information (bvec pool, vector count, etc.)</p>
 <p>A kernel subsystem can enable data integrity protection on a bio by
 calling bio_integrity_alloc(bio).  This will allocate and attach the
 bip to the bio.</p>
 <p>Individual pages containing integrity metadata can subsequently be
-attached using bio_integrity_add_page().</p>
-<p>bio_free() will automatically free the bip.</p>
+attached using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bio_integrity_add_page()</span></code>.</p>
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bio_free()</span></code> will automatically free the bip.</p>
 </section>
 <section id="block-device">
 <h3>4.2 Block Device<a class="headerlink" href="#block-device" title="Link to this heading">¶</a></h3>
@@ -326,25 +326,25 @@ Complete bio with error if prepare failed for some reason.</p>
 <div><p>Filesystems that either generate their own integrity metadata or
 are capable of transferring IMD from user space can use the
 following calls:</p>
-<p><cite>struct bip * bio_integrity_alloc(bio, gfp_mask, nr_pages);</cite></p>
+<p><cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">bip</span></code> * bio_integrity_alloc(bio, gfp_mask, nr_pages);</cite></p>
 <blockquote>
 <div><p>Allocates the bio integrity payload and hangs it off of the bio.
 nr_pages indicate how many pages of protection data need to be
-stored in the integrity bio_vec list (similar to bio_alloc()).</p>
-<p>The integrity payload will be freed at bio_free() time.</p>
+stored in the integrity bio_vec list (similar to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bio_alloc()</span></code>).</p>
+<p>The integrity payload will be freed at <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bio_free()</span></code> time.</p>
 </div></blockquote>
 <p><cite>int bio_integrity_add_page(bio, page, len, offset);</cite></p>
 <blockquote>
 <div><p>Attaches a page containing integrity metadata to an existing
 bio.  The bio must have an existing bip,
-i.e. bio_integrity_alloc() must have been called.  For a WRITE,
+i.e. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bio_integrity_alloc()</span></code> must have been called.  For a WRITE,
 the integrity metadata in the pages must be in a format
 understood by the target device with the notable exception that
 the sector numbers will be remapped as the request traverses the
 I/O stack.  This implies that the pages added using this call
 will be modified during I/O!  The first reference tag in the
 integrity metadata must have a value of bip-&gt;bip_sector.</p>
-<p>Pages can be added using bio_integrity_add_page() as long as
+<p>Pages can be added using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bio_integrity_add_page()</span></code> as long as
 there is room in the bip bio_vec array (nr_pages).</p>
 <p>Upon completion of a READ operation, the attached pages will
 contain the integrity metadata received from the storage device.

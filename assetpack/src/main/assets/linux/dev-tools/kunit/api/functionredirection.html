@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -182,7 +182,7 @@ function, followed by all of the arguments passed to the real function.</p>
 <li><p>Write one or more replacement functions.</p>
 <p>These functions should have the same function signature as the real function.
 In the event they need to access or modify test-specific state, they can use
-kunit_get_current_test() to get a <a class="reference internal" href="test.html#c.kunit" title="kunit"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kunit</span></code></a> pointer. This can then
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kunit_get_current_test()</span></code> to get a <a class="reference internal" href="test.html#c.kunit" title="kunit"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kunit</span></code></a> pointer. This can then
 be passed to the expectation/assertion macros, or used to look up KUnit
 resources.</p>
 <p>For example:</p>
@@ -283,6 +283,7 @@ function to be redirected by a KUnit test. KUnit tests can call
 replacement function will be called by <a class="reference internal" href="#c.KUNIT_STATIC_STUB_REDIRECT" title="KUNIT_STATIC_STUB_REDIRECT"><code class="xref c c-func docutils literal notranslate"><span class="pre">KUNIT_STATIC_STUB_REDIRECT()</span></code></a>, which
 will then return from the function. If the caller is not in a KUnit context,
 the function will continue execution as normal.</p>
+<p><strong>Example</strong></p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">real_func</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">)</span>
 <span class="p">{</span>
 <span class="w">        </span><span class="n">KUNIT_STATIC_STUB_REDIRECT</span><span class="p">(</span><span class="n">real_func</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">);</span>
@@ -301,7 +302,6 @@ the function will continue execution as normal.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p><strong>Example</strong></p>
 </div>
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.kunit_activate_static_stub">
@@ -346,7 +346,7 @@ replacement_addr must have the same type.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Deactivates a redirection configured with <a class="reference internal" href="#c.kunit_activate_static_stub" title="kunit_activate_static_stub"><code class="xref c c-func docutils literal notranslate"><span class="pre">kunit_activate_static_stub()</span></code></a>. After
-this function returns, calls to real_fn_addr() will execute the original
+this function returns, calls to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">real_fn_addr()</span></code> will execute the original
 real_fn, not any previously-configured replacement.</p>
 </div>
 </section>

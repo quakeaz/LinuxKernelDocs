@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -316,7 +316,7 @@ instead.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Constants</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">TTY_DRIVER_INSTALLED</span></code></dt><dd><p>Whether this driver was succesfully installed. This is a tty internal
 flag. Do not touch.</p>
 </dd>
@@ -325,12 +325,6 @@ process has closed the device. Used for PTYs, in particular.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">TTY_DRIVER_REAL_RAW</span></code></dt><dd><p>Indicates that the driver will guarantee not to set any special
 character handling flags if this is set for the tty:</p>
-<p><code class="docutils literal notranslate"><span class="pre">(IGNBRK</span> <span class="pre">||</span> <span class="pre">(!BRKINT</span> <span class="pre">&amp;&amp;</span> <span class="pre">!PARMRK))</span> <span class="pre">&amp;&amp;</span> <span class="pre">(IGNPAR</span> <span class="pre">||</span> <span class="pre">!INPCK)</span></code></p>
-<p>That is, if there is no reason for the driver to
-send notifications of parity and break characters up to the line
-driver, it won’t do so.  This allows the line driver to optimize for
-this case if this flag is set.  (Note that there is also a promise, if
-the above case is true, not to signal overruns, either.)</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">TTY_DRIVER_DYNAMIC_DEV</span></code></dt><dd><p>The individual tty devices need to be registered with a call to
 <a class="reference internal" href="#c.tty_register_device" title="tty_register_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">tty_register_device()</span></code></a> when the device is found in the system and
@@ -360,6 +354,14 @@ driver for a single tty device is being allocated.</p>
 </div>
 <p><strong>Description</strong></p>
 <p>These are flags passed to <a class="reference internal" href="#c.tty_alloc_driver" title="tty_alloc_driver"><code class="xref c c-func docutils literal notranslate"><span class="pre">tty_alloc_driver()</span></code></a>.</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">(IGNBRK</span> <span class="pre">||</span> <span class="pre">(!BRKINT</span> <span class="pre">&amp;&amp;</span> <span class="pre">!PARMRK))</span> <span class="pre">&amp;&amp;</span> <span class="pre">(IGNPAR</span> <span class="pre">||</span> <span class="pre">!INPCK)</span></code></p>
+<p>That is, if there is no reason for the driver to
+send notifications of parity and break characters up to the line
+driver, it won’t do so.  This allows the line driver to optimize for
+this case if this flag is set.  (Note that there is also a promise, if
+the above case is true, not to signal overruns, either.)</p>
+</div></blockquote>
 </section>
 </section>
 <hr class="docutils" />
@@ -406,13 +408,13 @@ registering devices can be skipped for such drivers. However, the <a class="refe
 <p>Every TTY device shall be backed by a <a class="reference internal" href="tty_port.html#c.tty_port" title="tty_port"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">tty_port</span></code></a>. Usually, TTY drivers
 embed tty_port into device’s private structures. Further details about handling
 tty_port can be found in <a class="reference internal" href="tty_port.html"><span class="doc">TTY Port</span></a>. The driver is also recommended to use
-tty_port’s reference counting by tty_port_get() and <a class="reference internal" href="tty_port.html#c.tty_port_put" title="tty_port_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">tty_port_put()</span></code></a>. The final
+tty_port’s reference counting by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">tty_port_get()</span></code> and <a class="reference internal" href="tty_port.html#c.tty_port_put" title="tty_port_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">tty_port_put()</span></code></a>. The final
 put is supposed to free the tty_port including the device’s private struct.</p>
 <p>Unless <code class="docutils literal notranslate"><span class="pre">TTY_DRIVER_DYNAMIC_DEV</span></code> was passed as flags to <a class="reference internal" href="#c.tty_alloc_driver" title="tty_alloc_driver"><code class="xref c c-func docutils literal notranslate"><span class="pre">tty_alloc_driver()</span></code></a>,
 TTY driver is supposed to register every device discovered in the system
 (the latter is preferred). This is performed by <a class="reference internal" href="#c.tty_register_device" title="tty_register_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">tty_register_device()</span></code></a>. Or by
 <a class="reference internal" href="#c.tty_register_device_attr" title="tty_register_device_attr"><code class="xref c c-func docutils literal notranslate"><span class="pre">tty_register_device_attr()</span></code></a> if the driver wants to expose some information
-through struct attribute_group. Both of them register <code class="docutils literal notranslate"><span class="pre">index</span></code>’th device and
+through <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">attribute_group</span></code>. Both of them register <code class="docutils literal notranslate"><span class="pre">index</span></code>’th device and
 upon return, the device can be opened. There are also preferred tty_port
 variants described in <a class="reference internal" href="#linking-devices-to-ports">Linking Devices to Ports</a> later. It is up to driver to
 manage free indices and choosing the right one. The TTY layer only refuses to
@@ -652,9 +654,9 @@ Automatically set by <a class="reference internal" href="#c.tty_alloc_driver" ti
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">num</span></code></dt><dd><p>number of devices allocated</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt><dd><p>type of tty driver (enum tty_driver_type)</p>
+<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt><dd><p>type of tty driver (<code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">tty_driver_type</span></code>)</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">subtype</span></code></dt><dd><p>subtype of tty driver (enum tty_driver_subtype)</p>
+<dt><code class="docutils literal notranslate"><span class="pre">subtype</span></code></dt><dd><p>subtype of tty driver (<code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">tty_driver_subtype</span></code>)</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">init_termios</span></code></dt><dd><p>termios to set to each tty initially (e.g. <code class="docutils literal notranslate"><span class="pre">tty_std_termios</span></code>)</p>
 </dd>
@@ -673,7 +675,7 @@ Automatically set by <a class="reference internal" href="#c.tty_alloc_driver" ti
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">driver_state</span></code></dt><dd><p>pointer to driver’s arbitrary data</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">ops</span></code></dt><dd><p>driver hooks for TTYs. Set them using tty_set_operations(). Use <a class="reference internal" href="tty_port.html#c.tty_port" title="tty_port"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span>
+<dt><code class="docutils literal notranslate"><span class="pre">ops</span></code></dt><dd><p>driver hooks for TTYs. Set them using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">tty_set_operations()</span></code>. Use <a class="reference internal" href="tty_port.html#c.tty_port" title="tty_port"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span>
 <span class="pre">tty_port</span></code></a> helpers in them as much as possible.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">tty_drivers</span></code></dt><dd><p>used internally to link tty_drivers together</p>
@@ -746,48 +748,115 @@ Automatically set by <a class="reference internal" href="#c.tty_alloc_driver" ti
 </pre></div>
 </div>
 <p><strong>Members</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">lookup</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">tty_struct</span> <span class="pre">*()(struct</span> <span class="pre">tty_driver</span> <span class="pre">*self,</span> <span class="pre">struct</span> <span class="pre">file</span> <span class="pre">*,</span>
 <span class="pre">int</span> <span class="pre">idx)</span></code></p>
-<p>Return the tty device corresponding to <strong>idx</strong>, <code class="docutils literal notranslate"><span class="pre">NULL</span></code> if there is not
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">install</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_driver</span> <span class="pre">*self,</span> <span class="pre">struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">remove</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_driver</span> <span class="pre">*self,</span> <span class="pre">struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">open</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">struct</span> <span class="pre">file</span> <span class="pre">*)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">close</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">struct</span> <span class="pre">file</span> <span class="pre">*)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">shutdown</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cleanup</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">write</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">ssize_t</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">const</span> <span class="pre">u8</span> <span class="pre">*buf,</span> <span class="pre">size_t</span> <span class="pre">count)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">put_char</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">u8</span> <span class="pre">ch)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">flush_chars</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">write_room</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">chars_in_buffer</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ioctl</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">cmd,</span>
+<span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">arg)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">compat_ioctl</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">long</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">cmd,</span>
+<span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">arg)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">set_termios</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">const</span> <span class="pre">struct</span> <span class="pre">ktermios</span> <span class="pre">*old)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">throttle</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">unthrottle</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">stop</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">start</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">hangup</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">break_ctl</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">int</span> <span class="pre">state)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">flush_buffer</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ldisc_ok</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">int</span> <span class="pre">ldisc)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">set_ldisc</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">wait_until_sent</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">int</span> <span class="pre">timeout)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">send_xchar</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">u8</span> <span class="pre">ch)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">tiocmget</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">tiocmset</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span>
+<span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">set,</span> <span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">clear)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">resize</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">struct</span> <span class="pre">winsize</span> <span class="pre">*ws)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">get_icount</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span>
+<span class="pre">struct</span> <span class="pre">serial_icounter</span> <span class="pre">*icount)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">get_serial</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">struct</span> <span class="pre">serial_struct</span> <span class="pre">*p)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">set_serial</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">struct</span> <span class="pre">serial_struct</span> <span class="pre">*p)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">show_fdinfo</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">struct</span> <span class="pre">seq_file</span> <span class="pre">*m)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">poll_init</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_driver</span> <span class="pre">*driver,</span> <span class="pre">int</span> <span class="pre">line,</span> <span class="pre">char</span> <span class="pre">*options)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">poll_get_char</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_driver</span> <span class="pre">*driver,</span> <span class="pre">int</span> <span class="pre">line)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">poll_put_char</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_driver</span> <span class="pre">*driver,</span> <span class="pre">int</span> <span class="pre">line,</span> <span class="pre">char</span> <span class="pre">ch)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">proc_show</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">seq_file</span> <span class="pre">*m,</span> <span class="pre">void</span> <span class="pre">*driver)</span></code></p>
+</dd>
+</dl>
+</div>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Return the tty device corresponding to <strong>idx</strong>, <code class="docutils literal notranslate"><span class="pre">NULL</span></code> if there is not
 one currently in use and an <code class="docutils literal notranslate"><span class="pre">ERR_PTR</span></code> value on error. Called under
 <code class="docutils literal notranslate"><span class="pre">tty_mutex</span></code> (for now!)</p>
 <p>Optional method. Default behaviour is to use the <strong>self-&gt;ttys</strong> array.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">install</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_driver</span> <span class="pre">*self,</span> <span class="pre">struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
 <p>Install a new <strong>tty</strong> into the <strong>self</strong>’s internal tables. Used in
 conjunction with <strong>lookup</strong> and <strong>remove</strong> methods.</p>
 <p>Optional method. Default behaviour is to use the <strong>self-&gt;ttys</strong> array.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">remove</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_driver</span> <span class="pre">*self,</span> <span class="pre">struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
 <p>Remove a closed <strong>tty</strong> from the <strong>self</strong>’s internal tables. Used in
 conjunction with <strong>lookup</strong> and <strong>remove</strong> methods.</p>
 <p>Optional method. Default behaviour is to use the <strong>self-&gt;ttys</strong> array.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">open</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">struct</span> <span class="pre">file</span> <span class="pre">*)</span></code></p>
 <p>This routine is called when a particular <strong>tty</strong> device is opened. This
 routine is mandatory; if this routine is not filled in, the attempted
 open will fail with <code class="docutils literal notranslate"><span class="pre">ENODEV</span></code>.</p>
 <p>Required method. Called with tty lock held. May sleep.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">close</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">struct</span> <span class="pre">file</span> <span class="pre">*)</span></code></p>
 <p>This routine is called when a particular <strong>tty</strong> device is closed. At the
 point of return from this call the driver must make no further ldisc
 calls of any kind.</p>
 <p>Remark: called even if the corresponding <strong>open()</strong> failed.</p>
 <p>Required method. Called with tty lock held. May sleep.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">shutdown</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
 <p>This routine is called under the tty lock when a particular <strong>tty</strong> device
 is closed for the last time. It executes before the <strong>tty</strong> resources
 are freed so may execute while another function holds a <strong>tty</strong> kref.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">cleanup</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
 <p>This routine is called asynchronously when a particular <strong>tty</strong> device
 is closed for the last time freeing up the resources. This is
 actually the second part of shutdown for routines that might sleep.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">write</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">ssize_t</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">const</span> <span class="pre">u8</span> <span class="pre">*buf,</span> <span class="pre">size_t</span> <span class="pre">count)</span></code></p>
 <p>This routine is called by the kernel to write a series (<strong>count</strong>) of
 characters (<strong>buf</strong>) to the <strong>tty</strong> device. The characters may come from
 user space or kernel space.  This routine will return the
@@ -795,23 +864,17 @@ number of characters actually accepted for writing.</p>
 <p>May occur in parallel in special cases. Because this includes panic
 paths drivers generally shouldn’t try and do clever locking here.</p>
 <p>Optional: Required for writable devices. May not sleep.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">put_char</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">u8</span> <span class="pre">ch)</span></code></p>
 <p>This routine is called by the kernel to write a single character <strong>ch</strong> to
 the <strong>tty</strong> device. If the kernel uses this routine, it must call the
-<strong>flush_chars()</strong> routine (if defined) when it is done stuffing characters
+<strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">flush_chars()</span></code></strong> routine (if defined) when it is done stuffing characters
 into the driver. If there is no room in the queue, the character is
 ignored.</p>
 <p>Optional: Kernel will use the <strong>write</strong> method if not provided. Do not
 call this function directly, call <a class="reference internal" href="tty_struct.html#c.tty_put_char" title="tty_put_char"><code class="xref c c-func docutils literal notranslate"><span class="pre">tty_put_char()</span></code></a>.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">flush_chars</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
 <p>This routine is called by the kernel after it has written a
-series of characters to the tty device using <strong>put_char()</strong>.</p>
+series of characters to the tty device using <strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">put_char()</span></code></strong>.</p>
 <p>Optional. Do not call this function directly, call
-tty_driver_flush_chars().</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">write_room</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">tty_driver_flush_chars()</span></code>.</p>
 <p>This routine returns the numbers of characters the <strong>tty</strong> driver
 will accept for queuing to be written.  This number is subject
 to change as output buffers get emptied, or if the output flow
@@ -820,27 +883,17 @@ control is acted.</p>
 write_room/write calls</p>
 <p>Required if <strong>write</strong> method is provided else not needed. Do not call this
 function directly, call <a class="reference internal" href="tty_ioctl.html#c.tty_write_room" title="tty_write_room"><code class="xref c c-func docutils literal notranslate"><span class="pre">tty_write_room()</span></code></a></p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">chars_in_buffer</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
 <p>This routine returns the number of characters in the device private
 output queue. Used in <a class="reference internal" href="tty_ioctl.html#c.tty_wait_until_sent" title="tty_wait_until_sent"><code class="xref c c-func docutils literal notranslate"><span class="pre">tty_wait_until_sent()</span></code></a> and for poll()
 implementation.</p>
 <p>Optional: if not provided, it is assumed there is no queue on the
 device. Do not call this function directly, call <a class="reference internal" href="tty_ioctl.html#c.tty_chars_in_buffer" title="tty_chars_in_buffer"><code class="xref c c-func docutils literal notranslate"><span class="pre">tty_chars_in_buffer()</span></code></a>.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">ioctl</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">cmd,</span>
-<span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">arg)</span></code></p>
 <p>This routine allows the <strong>tty</strong> driver to implement device-specific
 ioctls. If the ioctl number passed in <strong>cmd</strong> is not recognized by the
 driver, it should return <code class="docutils literal notranslate"><span class="pre">ENOIOCTLCMD</span></code>.</p>
 <p>Optional.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">compat_ioctl</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">long</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">cmd,</span>
-<span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">arg)</span></code></p>
 <p>Implement ioctl processing for 32 bit process on 64 bit system.</p>
 <p>Optional.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">set_termios</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">const</span> <span class="pre">struct</span> <span class="pre">ktermios</span> <span class="pre">*old)</span></code></p>
 <p>This routine allows the <strong>tty</strong> driver to be notified when device’s
 termios settings have changed. New settings are in <strong>tty-&gt;termios</strong>.
 Previous settings are passed in the <strong>old</strong> argument.</p>
@@ -849,41 +902,36 @@ selected. This means that the driver is responsible for modifying any
 bits in <strong>tty-&gt;termios</strong> it cannot fulfill to indicate the actual modes
 being used.</p>
 <p>Optional. Called under the <strong>tty-&gt;termios_rwsem</strong>. May sleep.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">throttle</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
+<p>This routine allows the <strong>tty</strong> driver to decide if it can deal
+with a particular <strong>ldisc</strong>.</p>
+<p>Optional. Called under the <strong>tty-&gt;ldisc_sem</strong> and <strong>tty-&gt;termios_rwsem</strong>.</p>
+<p>This routine allows the <strong>tty</strong> driver to be notified when the device’s
+line discipline is being changed. At the point this is done the
+discipline is not yet usable.</p>
+<p>Optional. Called under the <strong>tty-&gt;ldisc_sem</strong> and <strong>tty-&gt;termios_rwsem</strong>.</p>
 <p>This routine notifies the <strong>tty</strong> driver that input buffers for the line
 discipline are close to full, and it should somehow signal that no more
 characters should be sent to the <strong>tty</strong>.</p>
-<p>Serialization including with <strong>unthrottle()</strong> is the job of the ldisc
+<p>Serialization including with <strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unthrottle()</span></code></strong> is the job of the ldisc
 layer.</p>
 <p>Optional: Always invoke via <a class="reference internal" href="tty_ioctl.html#c.tty_throttle_safe" title="tty_throttle_safe"><code class="xref c c-func docutils literal notranslate"><span class="pre">tty_throttle_safe()</span></code></a>. Called under the
 <strong>tty-&gt;termios_rwsem</strong>.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">unthrottle</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
 <p>This routine notifies the <strong>tty</strong> driver that it should signal that
 characters can now be sent to the <strong>tty</strong> without fear of overrunning the
 input buffers of the line disciplines.</p>
 <p>Optional. Always invoke via <a class="reference internal" href="tty_ioctl.html#c.tty_unthrottle" title="tty_unthrottle"><code class="xref c c-func docutils literal notranslate"><span class="pre">tty_unthrottle()</span></code></a>. Called under the
 <strong>tty-&gt;termios_rwsem</strong>.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">stop</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
 <p>This routine notifies the <strong>tty</strong> driver that it should stop outputting
 characters to the tty device.</p>
 <p>Called with <strong>tty-&gt;flow.lock</strong> held. Serialized with <strong><a class="reference internal" href="../../networking/ieee802154.html#c.start" title="start"><code class="xref c c-func docutils literal notranslate"><span class="pre">start()</span></code></a></strong> method.</p>
 <p>Optional. Always invoke via <a class="reference internal" href="tty_struct.html#c.stop_tty" title="stop_tty"><code class="xref c c-func docutils literal notranslate"><span class="pre">stop_tty()</span></code></a>.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">start</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
 <p>This routine notifies the <strong>tty</strong> driver that it resumed sending
 characters to the <strong>tty</strong> device.</p>
 <p>Called with <strong>tty-&gt;flow.lock</strong> held. Serialized with <a class="reference internal" href="../../networking/ieee802154.html#c.stop" title="stop"><code class="xref c c-func docutils literal notranslate"><span class="pre">stop()</span></code></a> method.</p>
 <p>Optional. Always invoke via <a class="reference internal" href="tty_struct.html#c.start_tty" title="start_tty"><code class="xref c c-func docutils literal notranslate"><span class="pre">start_tty()</span></code></a>.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">hangup</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
 <p>This routine notifies the <strong>tty</strong> driver that it should hang up the <strong>tty</strong>
 device.</p>
 <p>Optional. Called with tty lock held.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">break_ctl</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">int</span> <span class="pre">state)</span></code></p>
 <p>This optional routine requests the <strong>tty</strong> driver to turn on or off BREAK
 status on the RS-232 port. If <strong>state</strong> is -1, then the BREAK status
 should be turned on; if <strong>state</strong> is 0, then BREAK should be turned off.</p>
@@ -894,52 +942,28 @@ then the interface will also be called with actual times and the
 hardware is expected to do the delay work itself. 0 and -1 are still
 used for on/off.</p>
 <p>Optional: Required for <code class="docutils literal notranslate"><span class="pre">TCSBRK</span></code>/<code class="docutils literal notranslate"><span class="pre">BRKP</span></code>/etc. handling. May sleep.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">flush_buffer</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
 <p>This routine discards device private output buffer. Invoked on close,
 hangup, to implement <code class="docutils literal notranslate"><span class="pre">TCOFLUSH</span></code> ioctl and similar.</p>
 <p>Optional: if not provided, it is assumed there is no queue on the
 device. Do not call this function directly, call
 <a class="reference internal" href="tty_ioctl.html#c.tty_driver_flush_buffer" title="tty_driver_flush_buffer"><code class="xref c c-func docutils literal notranslate"><span class="pre">tty_driver_flush_buffer()</span></code></a>.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">ldisc_ok</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">int</span> <span class="pre">ldisc)</span></code></p>
-<p>This routine allows the <strong>tty</strong> driver to decide if it can deal
-with a particular <strong>ldisc</strong>.</p>
-<p>Optional. Called under the <strong>tty-&gt;ldisc_sem</strong> and <strong>tty-&gt;termios_rwsem</strong>.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">set_ldisc</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
-<p>This routine allows the <strong>tty</strong> driver to be notified when the device’s
-line discipline is being changed. At the point this is done the
-discipline is not yet usable.</p>
-<p>Optional. Called under the <strong>tty-&gt;ldisc_sem</strong> and <strong>tty-&gt;termios_rwsem</strong>.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">wait_until_sent</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">int</span> <span class="pre">timeout)</span></code></p>
 <p>This routine waits until the device has written out all of the
 characters in its transmitter FIFO. Or until <strong>timeout</strong> (in jiffies) is
 reached.</p>
 <p>Optional: If not provided, the device is assumed to have no FIFO.
 Usually correct to invoke via <a class="reference internal" href="tty_ioctl.html#c.tty_wait_until_sent" title="tty_wait_until_sent"><code class="xref c c-func docutils literal notranslate"><span class="pre">tty_wait_until_sent()</span></code></a>. May sleep.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">send_xchar</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">u8</span> <span class="pre">ch)</span></code></p>
 <p>This routine is used to send a high-priority XON/XOFF character (<strong>ch</strong>)
 to the <strong>tty</strong> device.</p>
 <p>Optional: If not provided, then the <strong>write</strong> method is called under
 the <strong>tty-&gt;atomic_write_lock</strong> to keep it serialized with the ldisc.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">tiocmget</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
 <p>This routine is used to obtain the modem status bits from the <strong>tty</strong>
 driver.</p>
 <p>Optional: If not provided, then <code class="docutils literal notranslate"><span class="pre">ENOTTY</span></code> is returned from the <code class="docutils literal notranslate"><span class="pre">TIOCMGET</span></code>
 ioctl. Do not call this function directly, call <a class="reference internal" href="tty_internals.html#c.tty_tiocmget" title="tty_tiocmget"><code class="xref c c-func docutils literal notranslate"><span class="pre">tty_tiocmget()</span></code></a>.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">tiocmset</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span>
-<span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">set,</span> <span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">clear)</span></code></p>
 <p>This routine is used to set the modem status bits to the <strong>tty</strong> driver.
 First, <strong>clear</strong> bits should be cleared, then <strong>set</strong> bits set.</p>
 <p>Optional: If not provided, then <code class="docutils literal notranslate"><span class="pre">ENOTTY</span></code> is returned from the <code class="docutils literal notranslate"><span class="pre">TIOCMSET</span></code>
 ioctl. Do not call this function directly, call <a class="reference internal" href="tty_internals.html#c.tty_tiocmset" title="tty_tiocmset"><code class="xref c c-func docutils literal notranslate"><span class="pre">tty_tiocmset()</span></code></a>.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">resize</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">struct</span> <span class="pre">winsize</span> <span class="pre">*ws)</span></code></p>
 <p>Called when a termios request is issued which changes the requested
 terminal geometry to <strong>ws</strong>.</p>
 <p>Optional: the default action is to update the termios structure
@@ -947,58 +971,38 @@ without error. This is usually the correct behaviour. Drivers should
 not force errors here if they are not resizable objects (e.g. a serial
 line). See <a class="reference internal" href="tty_struct.html#c.tty_do_resize" title="tty_do_resize"><code class="xref c c-func docutils literal notranslate"><span class="pre">tty_do_resize()</span></code></a> if you need to wrap the standard method
 in your own logic -- the usual case.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">get_icount</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span>
-<span class="pre">struct</span> <span class="pre">serial_icounter</span> <span class="pre">*icount)</span></code></p>
 <p>Called when the <strong>tty</strong> device receives a <code class="docutils literal notranslate"><span class="pre">TIOCGICOUNT</span></code> ioctl. Passed a
 kernel structure <strong>icount</strong> to complete.</p>
 <p>Optional: called only if provided, otherwise <code class="docutils literal notranslate"><span class="pre">ENOTTY</span></code> will be returned.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">get_serial</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">struct</span> <span class="pre">serial_struct</span> <span class="pre">*p)</span></code></p>
 <p>Called when the <strong>tty</strong> device receives a <code class="docutils literal notranslate"><span class="pre">TIOCGSERIAL</span></code> ioctl. Passed a
 kernel structure <strong>p</strong> (<code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">serial_struct</span></code>) to complete.</p>
 <p>Optional: called only if provided, otherwise <code class="docutils literal notranslate"><span class="pre">ENOTTY</span></code> will be returned.
-Do not call this function directly, call tty_tiocgserial().</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">set_serial</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">struct</span> <span class="pre">serial_struct</span> <span class="pre">*p)</span></code></p>
+Do not call this function directly, call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">tty_tiocgserial()</span></code>.</p>
 <p>Called when the <strong>tty</strong> device receives a <code class="docutils literal notranslate"><span class="pre">TIOCSSERIAL</span></code> ioctl. Passed a
 kernel structure <strong>p</strong> (<code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">serial_struct</span></code>) to set the values from.</p>
 <p>Optional: called only if provided, otherwise <code class="docutils literal notranslate"><span class="pre">ENOTTY</span></code> will be returned.
-Do not call this function directly, call tty_tiocsserial().</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">show_fdinfo</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">struct</span> <span class="pre">seq_file</span> <span class="pre">*m)</span></code></p>
+Do not call this function directly, call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">tty_tiocsserial()</span></code>.</p>
 <p>Called when the <strong>tty</strong> device file descriptor receives a fdinfo request
 from VFS (to show in /proc/&lt;pid&gt;/fdinfo/). <strong>m</strong> should be filled with
 information.</p>
 <p>Optional: called only if provided, otherwise nothing is written to <strong>m</strong>.
-Do not call this function directly, call tty_show_fdinfo().</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">poll_init</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_driver</span> <span class="pre">*driver,</span> <span class="pre">int</span> <span class="pre">line,</span> <span class="pre">char</span> <span class="pre">*options)</span></code></p>
+Do not call this function directly, call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">tty_show_fdinfo()</span></code>.</p>
 <p>kgdboc support (<a class="reference internal" href="../../process/debugging/kgdb.html"><span class="doc">Using kgdb, kdb and the kernel debugger internals</span></a>). This routine is
 called to initialize the HW for later use by calling <strong>poll_get_char</strong> or
 <strong>poll_put_char</strong>.</p>
 <p>Optional: called only if provided, otherwise skipped as a non-polling
 driver.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">poll_get_char</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_driver</span> <span class="pre">*driver,</span> <span class="pre">int</span> <span class="pre">line)</span></code></p>
 <p>kgdboc support (see <strong>poll_init</strong>). <strong>driver</strong> should read a character from a
 tty identified by <strong>line</strong> and return it.</p>
 <p>Optional: called only if <strong>poll_init</strong> provided.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">poll_put_char</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_driver</span> <span class="pre">*driver,</span> <span class="pre">int</span> <span class="pre">line,</span> <span class="pre">char</span> <span class="pre">ch)</span></code></p>
 <p>kgdboc support (see <strong>poll_init</strong>). <strong>driver</strong> should write character <strong>ch</strong> to
 a tty identified by <strong>line</strong>.</p>
 <p>Optional: called only if <strong>poll_init</strong> provided.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">proc_show</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">seq_file</span> <span class="pre">*m,</span> <span class="pre">void</span> <span class="pre">*driver)</span></code></p>
 <p>Driver <strong>driver</strong> (cast to <a class="reference internal" href="#c.tty_driver" title="tty_driver"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">tty_driver</span></code></a>) can show additional info in
 /proc/tty/driver/&lt;driver_name&gt;. It is enough to fill in the information
 into <strong>m</strong>.</p>
 <p>Optional: called only if provided, otherwise no /proc entry created.</p>
-</dd>
-</dl>
-</div>
-<p><strong>Description</strong></p>
+</div></blockquote>
 <p>This structure defines the interface between the low-level tty driver and
 the tty routines. These routines can be defined. Unless noted otherwise,
 they are optional, and can be filled in with a <code class="docutils literal notranslate"><span class="pre">NULL</span></code> pointer.</p>

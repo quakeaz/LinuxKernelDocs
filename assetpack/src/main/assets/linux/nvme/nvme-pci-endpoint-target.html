@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -153,19 +153,19 @@
 <dd class="field-odd"><p>Damien Le Moal &lt;<a class="reference external" href="mailto:dlemoal&#37;&#52;&#48;kernel&#46;org">dlemoal<span>&#64;</span>kernel<span>&#46;</span>org</a>&gt;</p>
 </dd>
 </dl>
-<p>The NVMe PCI endpoint function target driver implements a NVMe PCIe controller
-using a NVMe fabrics target controller configured with the PCI transport type.</p>
+<p>The NVMe PCI endpoint function target driver implements an NVMe PCIe controller
+using an NVMe fabrics target controller configured with the PCI transport type.</p>
 <section id="overview">
 <h2><span class="section-number">2.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
-<p>The NVMe PCI endpoint function target driver allows exposing a NVMe target
+<p>The NVMe PCI endpoint function target driver allows exposing an NVMe target
 controller over a PCIe link, thus implementing an NVMe PCIe device similar to a
 regular M.2 SSD. The target controller is created in the same manner as when
 using NVMe over fabrics: the controller represents the interface to an NVMe
 subsystem using a port. The port transfer type must be configured to be
 “pci”. The subsystem can be configured to have namespaces backed by regular
 files or block devices, or can use NVMe passthrough to expose to the PCI host an
-existing physical NVMe device or a NVMe fabrics host controller (e.g. a NVMe TCP
-host controller).</p>
+existing physical NVMe device or an NVMe fabrics host controller (e.g. a NVMe
+TCP host controller).</p>
 <p>The NVMe PCI endpoint function target driver relies as much as possible on the
 NVMe target core code to parse and execute NVMe commands submitted by the PCIe
 host. However, using the PCI endpoint framework API and DMA API, the driver is
@@ -307,9 +307,9 @@ endpoint device is configured.</p>
 subsystem and port must be defined. Second, the NVMe PCI endpoint device must
 be setup and bound to the subsystem and port created.</p>
 </section>
-<section id="creating-a-nvme-subsystem-and-port">
-<h3><span class="section-number">2.2.4. </span>Creating a NVMe Subsystem and Port<a class="headerlink" href="#creating-a-nvme-subsystem-and-port" title="Link to this heading">¶</a></h3>
-<p>Details about how to configure a NVMe target subsystem and port are outside the
+<section id="creating-an-nvme-subsystem-and-port">
+<h3><span class="section-number">2.2.4. </span>Creating an NVMe Subsystem and Port<a class="headerlink" href="#creating-an-nvme-subsystem-and-port" title="Link to this heading">¶</a></h3>
+<p>Details about how to configure an NVMe target subsystem and port are outside the
 scope of this document. The following only provides a simple example of a port
 and subsystem with a single namespace backed by a null_blk device.</p>
 <p>First, make sure that configfs is enabled:</p>
@@ -359,8 +359,8 @@ device:</p>
 </pre></div>
 </div>
 </section>
-<section id="creating-a-nvme-pci-endpoint-device">
-<h3><span class="section-number">2.2.5. </span>Creating a NVMe PCI Endpoint Device<a class="headerlink" href="#creating-a-nvme-pci-endpoint-device" title="Link to this heading">¶</a></h3>
+<section id="creating-an-nvme-pci-endpoint-device">
+<h3><span class="section-number">2.2.5. </span>Creating an NVMe PCI Endpoint Device<a class="headerlink" href="#creating-an-nvme-pci-endpoint-device" title="Link to this heading">¶</a></h3>
 <p>With the NVMe target subsystem and port ready for use, the NVMe PCI endpoint
 device can now be created and enabled. The NVMe PCI endpoint target driver
 should already be loaded (that is done automatically when the port is created):</p>
@@ -425,7 +425,7 @@ device controller:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>nvmet_pci_epf nvmet_pci_epf.0: Enabling controller
 </pre></div>
 </div>
-<p>On the host side, the NVMe PCI endpoint function target device will is
+<p>On the host side, the NVMe PCI endpoint function target device is
 discoverable as a PCI device, with the vendor ID and device ID as configured:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span># lspci -n
 0000:01:00.0 0108: 1b96:beef

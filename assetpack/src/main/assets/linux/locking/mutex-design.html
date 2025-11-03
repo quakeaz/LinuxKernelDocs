@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -186,10 +186,10 @@ code (see Disadvantages).</p>
 </section>
 <section id="implementation">
 <h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">¶</a></h2>
-<p>Mutexes are represented by ‘struct mutex’, defined in include/linux/mutex.h
+<p>Mutexes are represented by ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">mutex</span></code>’, defined in include/linux/mutex.h
 and implemented in kernel/locking/mutex.c. These locks use an atomic variable
 (-&gt;owner) to keep track of the lock state during its lifetime.  Field owner
-actually contains <cite>struct task_struct *</cite> to the current lock owner and it is
+actually contains <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">task_struct</span></code> *</cite> to the current lock owner and it is
 therefore NULL if not currently owned. Since task_struct pointers are aligned
 to at least L1_CACHE_BYTES, low bits (3) are used to store extra state (e.g.,
 if waiter list is non-empty).  In its most basic form it also includes a
@@ -199,8 +199,8 @@ below in (ii).</p>
 <p>When acquiring a mutex, there are three possible paths that can be
 taken, depending on the state of the lock:</p>
 <ol class="lowerroman">
-<li><p>fastpath: tries to atomically acquire the lock by cmpxchg()ing the owner with
-the current task. This only works in the uncontended case (cmpxchg() checks
+<li><p>fastpath: tries to atomically acquire the lock by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cmpxchg()</span></code>ing the owner with
+the current task. This only works in the uncontended case (<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cmpxchg()</span></code> checks
 against 0UL, so all 3 state bits above have to be 0). If the lock is
 contended it goes to the next possible path.</p></li>
 <li><p>midpath: aka optimistic spinning, tries to spin for acquisition
@@ -268,7 +268,7 @@ implicit reference for the memory they occupy, which reference is released
 with <a class="reference internal" href="../kernel-hacking/locking.html#c.mutex_unlock" title="mutex_unlock"><code class="xref c c-func docutils literal notranslate"><span class="pre">mutex_unlock()</span></code></a>.</p>
 <dl class="simple">
 <dt>[ This is in contrast with spin_unlock() [or completion_done()], which</dt><dd><p>APIs can be used to guarantee that the memory is not touched by the
-lock implementation after spin_unlock()/completion_done() releases
+lock implementation after <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_unlock()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">completion_done()</span></code> releases
 the lock. ]</p>
 </dd>
 </dl>
@@ -318,8 +318,8 @@ int mutex_lock_interruptible(struct mutex *lock);
 </section>
 <section id="disadvantages">
 <h2>Disadvantages<a class="headerlink" href="#disadvantages" title="Link to this heading">¶</a></h2>
-<p>Unlike its original design and purpose, ‘struct mutex’ is among the largest
-locks in the kernel. E.g: on x86-64 it is 32 bytes, where ‘struct semaphore’
+<p>Unlike its original design and purpose, ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">mutex</span></code>’ is among the largest
+locks in the kernel. E.g: on x86-64 it is 32 bytes, where ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">semaphore</span></code>’
 is 24 bytes and rw_semaphore is 40 bytes. Larger structure sizes mean more CPU
 cache and memory footprint.</p>
 </section>

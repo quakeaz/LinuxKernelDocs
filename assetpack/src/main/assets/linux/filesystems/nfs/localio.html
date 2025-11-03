@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -283,9 +283,9 @@ so makes AUTH_UNIX easier to support.</p>
 </li>
 <li><p>How do export options that translate RPC user IDs behave for LOCALIO
 operations (eg. root_squash, all_squash)?</p>
-<p>Export options that translate user IDs are managed by nfsd_setuser()
-which is called by nfsd_setuser_and_check_port() which is called by
-__fh_verify().  So they get handled exactly the same way for LOCALIO
+<p>Export options that translate user IDs are managed by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nfsd_setuser()</span></code>
+which is called by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nfsd_setuser_and_check_port()</span></code> which is called by
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__fh_verify()</span></code>.  So they get handled exactly the same way for LOCALIO
 as they do for non-LOCALIO.</p>
 </li>
 <li><p>How does LOCALIO make certain that object lifetimes are managed
@@ -337,7 +337,7 @@ verification by the NFS server and if matched the NFS server populates
 members in the nfs_uuid_t struct. The NFS client then uses nfs_common to
 transfer the nfs_uuid_t from its nfs_uuids to the nn-&gt;nfsd_serv
 clients_list from the nfs_common’s uuids_list.  See:
-fs/nfs/localio.c:nfs_local_probe()</p>
+fs/nfs/localio.c:<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nfs_local_probe()</span></code></p>
 <p>nfs_common’s nfs_uuids list is the basis for LOCALIO enablement, as such
 it has members that point to nfsd memory for direct use by the client
 (e.g. ‘net’ is the server’s network namespace, through it the client can
@@ -352,25 +352,25 @@ host.</p>
 <p>LOCALIO provides the nfs_uuid_t object and associated interfaces to
 allow proper network namespace (net-ns) and NFSD object refcounting.</p>
 <p>LOCALIO required the introduction and use of NFSD’s percpu nfsd_net_ref
-to interlock nfsd_shutdown_net() and nfsd_open_local_fh(), to ensure
-each net-ns is not destroyed while in use by nfsd_open_local_fh(), and
+to interlock <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nfsd_shutdown_net()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nfsd_open_local_fh()</span></code>, to ensure
+each net-ns is not destroyed while in use by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nfsd_open_local_fh()</span></code>, and
 warrants a more detailed explanation:</p>
 <blockquote>
-<div><p>nfsd_open_local_fh() uses nfsd_net_try_get() before opening its
+<div><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nfsd_open_local_fh()</span></code> uses <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nfsd_net_try_get()</span></code> before opening its
 nfsd_file handle and then the caller (NFS client) must drop the
 reference for the nfsd_file and associated net-ns using
-nfsd_file_put_local() once it has completed its IO.</p>
-<p>This interlock working relies heavily on nfsd_open_local_fh() being
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nfsd_file_put_local()</span></code> once it has completed its IO.</p>
+<p>This interlock working relies heavily on <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nfsd_open_local_fh()</span></code> being
 afforded the ability to safely deal with the possibility that the
 NFSD’s net-ns (and nfsd_net by association) may have been destroyed
-by nfsd_destroy_serv() via nfsd_shutdown_net().</p>
+by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nfsd_destroy_serv()</span></code> via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nfsd_shutdown_net()</span></code>.</p>
 </div></blockquote>
 <p>This interlock of the NFS client and server has been verified to fix an
 easy to hit crash that would occur if an NFSD instance running in a
 container, with a LOCALIO client mounted, is shutdown. Upon restart of
 the container and associated NFSD, the client would go on to crash due
 to NULL pointer dereference that occurred due to the LOCALIO client’s
-attempting to nfsd_open_local_fh() without having a proper reference on
+attempting to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nfsd_open_local_fh()</span></code> without having a proper reference on
 NFSD’s net-ns.</p>
 </section>
 <section id="nfs-client-issues-io-instead-of-server">
@@ -378,25 +378,25 @@ NFSD’s net-ns.</p>
 <p>Because LOCALIO is focused on protocol bypass to achieve improved IO
 performance, alternatives to the traditional NFS wire protocol (SUNRPC
 with XDR) must be provided to access the backing filesystem.</p>
-<p>See fs/nfs/localio.c:nfs_local_open_fh() and
-fs/nfsd/localio.c:nfsd_open_local_fh() for the interface that makes
+<p>See fs/nfs/localio.c:<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nfs_local_open_fh()</span></code> and
+fs/nfsd/localio.c:<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nfsd_open_local_fh()</span></code> for the interface that makes
 focused use of select nfs server objects to allow a client local to a
 server to open a file pointer without needing to go over the network.</p>
-<p>The client’s fs/nfs/localio.c:nfs_local_open_fh() will call into the
-server’s fs/nfsd/localio.c:nfsd_open_local_fh() and carefully access
+<p>The client’s fs/nfs/localio.c:<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nfs_local_open_fh()</span></code> will call into the
+server’s fs/nfsd/localio.c:<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nfsd_open_local_fh()</span></code> and carefully access
 both the associated nfsd network namespace and nn-&gt;nfsd_serv in terms of
-RCU. If nfsd_open_local_fh() finds that the client no longer sees valid
-nfsd objects (be it struct net or nn-&gt;nfsd_serv) it returns -ENXIO
-to nfs_local_open_fh() and the client will try to reestablish the
-LOCALIO resources needed by calling nfs_local_probe() again. This
+RCU. If <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nfsd_open_local_fh()</span></code> finds that the client no longer sees valid
+nfsd objects (be it <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">net</span></code> or nn-&gt;nfsd_serv) it returns -ENXIO
+to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nfs_local_open_fh()</span></code> and the client will try to reestablish the
+LOCALIO resources needed by calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nfs_local_probe()</span></code> again. This
 recovery is needed if/when an nfsd instance running in a container were
 to reboot while a LOCALIO client is connected to it.</p>
 <p>Once the client has an open nfsd_file pointer it will issue reads,
 writes and commits directly to the underlying local filesystem (normally
 done by the nfs server). As such, for these operations, the NFS client
 is issuing IO to the underlying local filesystem that it is sharing with
-the NFS server. See: fs/nfs/localio.c:nfs_local_doio() and
-fs/nfs/localio.c:nfs_local_commit().</p>
+the NFS server. See: fs/nfs/localio.c:<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nfs_local_doio()</span></code> and
+fs/nfs/localio.c:<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nfs_local_commit()</span></code>.</p>
 <p>With normal NFS that makes use of RPC to issue IO to the server, if an
 application uses O_DIRECT the NFS client will bypass the pagecache but
 the NFS server will not. The NFS server’s use of buffered IO affords

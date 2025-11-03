@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -681,13 +681,15 @@ the new ruleset.</p>
 backward and forward compatibility).</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">__u32</span> <span class="pre">flags</span></code></dt><dd><p>Supported values:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">LANDLOCK_CREATE_RULESET_VERSION</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">LANDLOCK_CREATE_RULESET_ERRATA</span></code></p></li>
-</ul>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LANDLOCK_CREATE_RULESET_VERSION</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LANDLOCK_CREATE_RULESET_ERRATA</span></code></p></li>
+</ul>
+</div></blockquote>
 <p>This system call enables to create a new Landlock ruleset, and returns the
 related file descriptor on success.</p>
 <p>If <code class="docutils literal notranslate"><span class="pre">LANDLOCK_CREATE_RULESET_VERSION</span></code> or <code class="docutils literal notranslate"><span class="pre">LANDLOCK_CREATE_RULESET_ERRATA</span></code> is
@@ -892,14 +894,16 @@ automatically translate to binding on the related port range.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">int</span> <span class="pre">ruleset_fd</span></code></dt><dd><p>File descriptor tied to the ruleset to merge with the target.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">__u32</span> <span class="pre">flags</span></code></dt><dd><p>Supported values:</p>
-<ul class="simple">
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">LANDLOCK_RESTRICT_SELF_LOG_SAME_EXEC_OFF</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">LANDLOCK_RESTRICT_SELF_LOG_NEW_EXEC_ON</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">LANDLOCK_RESTRICT_SELF_LOG_SUBDOMAINS_OFF</span></code></p></li>
 </ul>
-</dd>
-</dl>
-<p><strong>Description</strong></p>
+</div></blockquote>
 <p>This system call enables to enforce a Landlock ruleset on the current
 thread.  Enforcing a ruleset requires that the task has <code class="docutils literal notranslate"><span class="pre">CAP_SYS_ADMIN</span></code> in its
 namespace or is running with no_new_privs.  This avoids scenarios where

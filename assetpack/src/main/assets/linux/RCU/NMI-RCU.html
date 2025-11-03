@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -164,7 +164,7 @@ brief explanation:</p>
 }
 </pre></div>
 </div>
-<p>The dummy_nmi_callback() function is a “dummy” NMI handler that does
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dummy_nmi_callback()</span></code> function is a “dummy” NMI handler that does
 nothing, but returns zero, thus saying that it did nothing, allowing
 the NMI handler to take the default machine-specific action:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>static nmi_callback_t nmi_callback = dummy_nmi_callback;
@@ -188,11 +188,11 @@ NMI handler:</p>
 }
 </pre></div>
 </div>
-<p>The do_nmi() function processes each NMI.  It first disables preemption
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_nmi()</span></code> function processes each NMI.  It first disables preemption
 in the same way that a hardware irq would, then increments the per-CPU
 count of NMIs.  It then invokes the NMI handler stored in the nmi_callback
-function pointer.  If this handler returns zero, do_nmi() invokes the
-default_do_nmi() function to handle a machine-specific NMI.  Finally,
+function pointer.  If this handler returns zero, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_nmi()</span></code> invokes the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">default_do_nmi()</span></code> function to handle a machine-specific NMI.  Finally,
 preemption is restored.</p>
 <p>In theory, <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_dereference_sched" title="rcu_dereference_sched"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_dereference_sched()</span></code></a> is not needed, since this code runs
 only on i386, which in theory does not need <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_dereference_sched" title="rcu_dereference_sched"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_dereference_sched()</span></code></a>
@@ -211,9 +211,9 @@ with aggressive optimizing compilers.</p>
 }
 </pre></div>
 </div>
-<p>The set_nmi_callback() function registers an NMI handler.  Note that any
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_nmi_callback()</span></code> function registers an NMI handler.  Note that any
 data that is to be used by the callback must be initialized up -before-
-the call to set_nmi_callback().  On architectures that do not order
+the call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_nmi_callback()</span></code>.  On architectures that do not order
 writes, the <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_assign_pointer" title="rcu_assign_pointer"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_assign_pointer()</span></code></a> ensures that the NMI handler sees the
 initialized values:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>void unset_nmi_callback(void)
@@ -223,7 +223,7 @@ initialized values:</p>
 </pre></div>
 </div>
 <p>This function unregisters an NMI handler, restoring the original
-dummy_nmi_handler().  However, there may well be an NMI handler
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dummy_nmi_handler()</span></code>.  However, there may well be an NMI handler
 currently executing on some other CPU.  We therefore cannot free
 up any data structures used by the old NMI handler until execution
 of it completes on all other CPUs.</p>
@@ -241,10 +241,10 @@ Since NMI handlers disable preemption, <a class="reference internal" href="../co
 not to return until all ongoing NMI handlers exit.  It is therefore safe
 to free up the handler’s data as soon as <a class="reference internal" href="../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a> returns.</p>
 <p>Important note: for this to work, the architecture in question must
-invoke nmi_enter() and nmi_exit() on NMI entry and exit, respectively.</p>
+invoke <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nmi_enter()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nmi_exit()</span></code> on NMI entry and exit, respectively.</p>
 <dl id="answer-quick-quiz-nmi">
 <dt>Answer to Quick Quiz:</dt><dd><p>Why might the <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_dereference_sched" title="rcu_dereference_sched"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_dereference_sched()</span></code></a> be necessary on Alpha, given that the code referenced by the pointer is read-only?</p>
-<p>The caller to set_nmi_callback() might well have
+<p>The caller to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_nmi_callback()</span></code> might well have
 initialized some data that is to be used by the new NMI
 handler.  In this case, the <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_dereference_sched" title="rcu_dereference_sched"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_dereference_sched()</span></code></a> would
 be needed, because otherwise a CPU that received an NMI

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -199,7 +199,7 @@ RCU的优势来执行查找而不需要锁定。</p>
 你的索引可以大于 <code class="docutils literal notranslate"><span class="pre">ULONG_MAX</span></code> ，那么XArray就不适合你的数据类型。XArray最重要
 的用户是页面高速缓存。</p>
 <p>普通指针可以直接存储在XArray中。它们必须是4字节对齐的，这对任何从<a class="reference internal" href="../../../core-api/mm-api.html#c.kmalloc" title="kmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmalloc()</span></code></a>和
-alloc_page()返回的指针来说都是如此。这对任意的用户空间指针和函数指针来说都不是
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">alloc_page()</span></code>返回的指针来说都是如此。这对任意的用户空间指针和函数指针来说都不是
 真的。你可以存储指向静态分配对象的指针，只要这些对象的对齐方式至少是4（字节）。</p>
 <p>你也可以在XArray中存储0到 <code class="docutils literal notranslate"><span class="pre">LONG_MAX</span></code> 之间的整数。你必须首先使用<a class="reference internal" href="../../../core-api/xarray.html#c.xa_mk_value" title="xa_mk_value"><code class="xref c c-func docutils literal notranslate"><span class="pre">xa_mk_value()</span></code></a>
 将其转换为一个条目。当你从XArray中检索一个条目时，你可以通过调用<a class="reference internal" href="../../../core-api/xarray.html#c.xa_is_value" title="xa_is_value"><code class="xref c c-func docutils literal notranslate"><span class="pre">xa_is_value()</span></code></a>检
@@ -222,7 +222,7 @@ XArray可以用<a class="reference internal" href="../../../core-api/xarray.html
 何条目，并返回存储在该索引的上一个条目。你可以使用<a class="reference internal" href="../../../core-api/xarray.html#c.xa_erase" title="xa_erase"><code class="xref c c-func docutils literal notranslate"><span class="pre">xa_erase()</span></code></a>来代替调用<a class="reference internal" href="../../../core-api/xarray.html#c.xa_store" title="xa_store"><code class="xref c c-func docutils literal notranslate"><span class="pre">xa_store()</span></code></a>的
 <code class="docutils literal notranslate"><span class="pre">NULL</span></code> 条目。一个从未被存储过的条目、一个被擦除的条目和一个最近被存储过 <code class="docutils literal notranslate"><span class="pre">NULL</span></code> 的
 条目之间没有区别。</p>
-<p>你可以通过使用<a class="reference internal" href="../../../core-api/xarray.html#c.xa_cmpxchg" title="xa_cmpxchg"><code class="xref c c-func docutils literal notranslate"><span class="pre">xa_cmpxchg()</span></code></a>有条件地替换一个索引中的条目。和cmpxchg()一样，它只有在该索
+<p>你可以通过使用<a class="reference internal" href="../../../core-api/xarray.html#c.xa_cmpxchg" title="xa_cmpxchg"><code class="xref c c-func docutils literal notranslate"><span class="pre">xa_cmpxchg()</span></code></a>有条件地替换一个索引中的条目。和<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cmpxchg()</span></code>一样，它只有在该索
 引的条目有 ‘旧‘ 值时才会成功。它也会返回该索引上的条目；如果它返回与传递的 ‘旧‘ 相同的条
 目，那么<a class="reference internal" href="../../../core-api/xarray.html#c.xa_cmpxchg" title="xa_cmpxchg"><code class="xref c c-func docutils literal notranslate"><span class="pre">xa_cmpxchg()</span></code></a>就成功了。</p>
 <p>如果你只想在某个索引的当前条目为 <code class="docutils literal notranslate"><span class="pre">NULL</span></code> 时将一个新条目存储到该索引，你可以使用<a class="reference internal" href="../../../core-api/xarray.html#c.xa_insert" title="xa_insert"><code class="xref c c-func docutils literal notranslate"><span class="pre">xa_insert()</span></code></a>，
@@ -335,8 +335,8 @@ XArray可以用<a class="reference internal" href="../../../core-api/xarray.html
 </ul>
 </dd>
 </dl>
-<p>如果你想利用锁来保护你存储在XArray中的数据结构，你可以在调用<a class="reference internal" href="../../../core-api/xarray.html#c.xa_load" title="xa_load"><code class="xref c c-func docutils literal notranslate"><span class="pre">xa_load()</span></code></a>之前调用xa_lock()，然后在
-调用xa_unlock()之前对你找到的对象进行一个引用计数。这将防止存储操作在查找对象和增加refcount期间
+<p>如果你想利用锁来保护你存储在XArray中的数据结构，你可以在调用<a class="reference internal" href="../../../core-api/xarray.html#c.xa_load" title="xa_load"><code class="xref c c-func docutils literal notranslate"><span class="pre">xa_load()</span></code></a>之前调用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xa_lock()</span></code>，然后在
+调用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xa_unlock()</span></code>之前对你找到的对象进行一个引用计数。这将防止存储操作在查找对象和增加refcount期间
 从数组中删除对象。你也可以使用RCU来避免解除对已释放内存的引用，但对这一点的解释已经超出了本文的范
 围。</p>
 <p>在修改数组时，XArray不会禁用中断或softirqs。从中断或softirq上下文中读取XArray是安全的，因为RCU锁
@@ -373,8 +373,8 @@ void foo_erase(struct foo *foo, unsigned long index)
 <code class="docutils literal notranslate"><span class="pre">XA_FLAGS_LOCK_IRQ</span></code> 或 <code class="docutils literal notranslate"><span class="pre">XA_FLAGS_LOCK_BH</span></code> （参数）。</p>
 <p>上面的例子还显示了一个常见的模式，即希望在存储端扩展xa_lock的覆盖范围，以保护与数组相关的一些统计
 数据。</p>
-<p>与中断上下文共享XArray也是可能的，可以在中断处理程序和进程上下文中都使用xa_lock_irqsave()，或者
-在进程上下文中使用xa_lock_irq()，在中断处理程序中使用xa_lock()。一些更常见的模式有一些辅助函数，
+<p>与中断上下文共享XArray也是可能的，可以在中断处理程序和进程上下文中都使用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xa_lock_irqsave()</span></code>，或者
+在进程上下文中使用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xa_lock_irq()</span></code>，在中断处理程序中使用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xa_lock()</span></code>。一些更常见的模式有一些辅助函数，
 如<a class="reference internal" href="../../../core-api/xarray.html#c.xa_store_bh" title="xa_store_bh"><code class="xref c c-func docutils literal notranslate"><span class="pre">xa_store_bh()</span></code></a>、<a class="reference internal" href="../../../core-api/xarray.html#c.xa_store_irq" title="xa_store_irq"><code class="xref c c-func docutils literal notranslate"><span class="pre">xa_store_irq()</span></code></a>、<a class="reference internal" href="../../../core-api/xarray.html#c.xa_erase_bh" title="xa_erase_bh"><code class="xref c c-func docutils literal notranslate"><span class="pre">xa_erase_bh()</span></code></a>、<a class="reference internal" href="../../../core-api/xarray.html#c.xa_erase_irq" title="xa_erase_irq"><code class="xref c c-func docutils literal notranslate"><span class="pre">xa_erase_irq()</span></code></a>、<a class="reference internal" href="../../../core-api/xarray.html#c.xa_cmpxchg_bh" title="xa_cmpxchg_bh"><code class="xref c c-func docutils literal notranslate"><span class="pre">xa_cmpxchg_bh()</span></code></a> 和<a class="reference internal" href="../../../core-api/xarray.html#c.xa_cmpxchg_irq" title="xa_cmpxchg_irq"><code class="xref c c-func docutils literal notranslate"><span class="pre">xa_cmpxchg_irq()</span></code></a>。</p>
 <p>有时你需要用一个mutex来保护对XArray的访问，因为这个锁在锁的层次结构中位于另一个mutex之上。这并不
 意味着你有权使用像<a class="reference internal" href="../../../core-api/xarray.html#c.__xa_erase" title="__xa_erase"><code class="xref c c-func docutils literal notranslate"><span class="pre">__xa_erase()</span></code></a>这样的函数而不占用xa_lock；xa_lock是用来进行lockdep验证的，将来也
@@ -391,7 +391,7 @@ void foo_erase(struct foo *foo, unsigned long index)
 许可证的模块可用。</p>
 <p>高级API是基于xa_state的。这是一个不透明的数据结构，你使用<a class="reference internal" href="../../../core-api/xarray.html#c.XA_STATE" title="XA_STATE"><code class="xref c c-func docutils literal notranslate"><span class="pre">XA_STATE()</span></code></a>宏在堆栈中声明。这个宏初始化了
 xa_state，准备开始在XArray上移动。它被用作一个游标来保持在XArray中的位置，并让你把各种操作组合在一
-起，而不必每次都从头开始。xa_state的内容受<a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_read_lock" title="rcu_read_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_lock()</span></code></a>或xas_lock()的保护。如果需要删除保护状态
+起，而不必每次都从头开始。xa_state的内容受<a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_read_lock" title="rcu_read_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_lock()</span></code></a>或<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xas_lock()</span></code>的保护。如果需要删除保护状态
 和树的这些锁中的任何一个，你必须调用<a class="reference internal" href="../../../core-api/xarray.html#c.xas_pause" title="xas_pause"><code class="xref c c-func docutils literal notranslate"><span class="pre">xas_pause()</span></code></a>以便将来的调用不会依赖于状态中未受保护的部分。</p>
 <p>xa_state也被用来存储错误(store errors)。你可以调用<a class="reference internal" href="../../../core-api/xarray.html#c.xas_error" title="xas_error"><code class="xref c c-func docutils literal notranslate"><span class="pre">xas_error()</span></code></a>来检索错误。所有的操作在进行之前都
 会检查xa_state是否处于错误状态，所以你没有必要在每次调用之后检查错误；你可以连续进行多次调用，只在
@@ -413,7 +413,7 @@ xa_state，准备开始在XArray上移动。它被用作一个游标来保持在
 <td><p>用途</p></td>
 </tr>
 <tr class="row-even"><td><p>Node</p></td>
-<td><p>xa_is_node()</p></td>
+<td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xa_is_node()</span></code></p></td>
 <td><p>一个XArray节点。 在使用多索引xa_state时可能是可见的。</p></td>
 </tr>
 <tr class="row-odd"><td><p>Sibling</p></td>

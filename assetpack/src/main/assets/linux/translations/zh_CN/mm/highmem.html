@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -249,7 +249,7 @@ Chinese (Simplified)
 后才睡眠。</p>
 <p>内核中对<a class="reference internal" href="../../../mm/highmem.html#c.kmap_atomic" title="kmap_atomic"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmap_atomic()</span></code></a>的每次调用都会创建一个不可抢占的段，并禁用缺页异常。这可能是
 未预期延迟的来源之一。因此用户应该选择<a class="reference internal" href="../../../mm/highmem.html#c.kmap_local_page" title="kmap_local_page"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmap_local_page()</span></code></a>而不是<a class="reference internal" href="../../../mm/highmem.html#c.kmap_atomic" title="kmap_atomic"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmap_atomic()</span></code></a>。</p>
-<p>假设k[un]map_atomic()不会失败。</p>
+<p>假设k[un]<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">map_atomic()</span></code>不会失败。</p>
 </li>
 <li><p><a class="reference internal" href="../../../mm/highmem.html#c.kmap" title="kmap"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmap()</span></code></a>。这应该被用来对单个页面进行短时间的映射，对抢占或迁移没有限制。它会带来开销，
 因为映射空间是受限制的，并且受到全局锁的保护，以实现同步。当不再需要映射时，必须用
@@ -282,7 +282,7 @@ Chinese (Simplified)
 <p>在某些情况下，i386 架构将允许你在 32 位机器上安装多达 64GiB 的内存。但这有一些后果:</p>
 <ul class="simple">
 <li><p>Linux需要为系统中的每个页面建立一个页帧结构，而且页帧需要驻在永久映射中，这意味着：</p></li>
-<li><p>你最多可以有896M/sizeof(struct page)页帧；由于页结构体是32字节的，所以最终会有
+<li><p>你最多可以有896M/sizeof(<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code>)页帧；由于页结构体是32字节的，所以最终会有
 112G的页；然而，内核需要在内存中存储更多的页帧......</p></li>
 <li><p>PAE使你的页表变大--这使系统变慢，因为更多的数据需要在TLB填充等方面被访问。一个好处
 是，PAE有更多的PTE位，可以提供像NX和PAT这样的高级功能。</p></li>

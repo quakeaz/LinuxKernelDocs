@@ -13,7 +13,7 @@
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="2.13.10. V4L2_META_FMT_VIVID (‘VIVD’)" href="metafmt-vivid.html" />
+    <link rel="next" title="2.13.10. V4L2_META_FMT_UVC_MSXU_1_5 (‘UVCM’)" href="metafmt-uvc-msxu-1-5.html" />
     <link rel="prev" title="2.13.8. V4L2_META_FMT_RK_ISP1_PARAMS (‘rk1p’), V4L2_META_FMT_RK_ISP1_STAT_3A (‘rk1s’), V4L2_META_FMT_RK_ISP1_EXT_PARAMS (‘rk1e’)" href="metafmt-rkisp1.html" />
    
   <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -187,7 +187,9 @@ them</p></td>
 <tr class="row-even"><td colspan="2"><p> <em>The rest is an exact copy of the UVC payload header:</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>__u8 length;</p></td>
-<td><p>length of the rest of the block, including this field</p></td>
+<td><p>length of the rest of the block, including this field. Please note that
+regardless of this value, for V4L2_META_FMT_UVC the kernel will never
+copy more than 2-12 bytes.</p></td>
 </tr>
 <tr class="row-even"><td><p>__u8 flags;</p></td>
 <td><p>Flags, indicating presence of other standard UVC fields</p></td>

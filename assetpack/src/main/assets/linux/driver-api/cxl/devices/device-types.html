@@ -14,7 +14,7 @@
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="BIOS/EFI Configuration" href="../platform/bios-and-efi.html" />
-    <link rel="prev" title="Compute Express Link Subsystem Maturity Map" href="../maturity-map.html" />
+    <link rel="prev" title="Compute Express Link: Linux Conventions" href="../conventions.html" />
    
   <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
   
@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -206,12 +206,12 @@ devices largely rely on CPU-attached memory.</p>
 <ul class="simple">
 <li><p>Supports cxl.io, cxl.cache, and cxl.mem protocols</p></li>
 <li><p>Optionally implements coherent cache and Host-Managed Device Memory</p></li>
-<li><p>Is typically an accelerator device w/ high bandwidth memory.</p></li>
+<li><p>Is typically an accelerator device with high bandwidth memory.</p></li>
 </ul>
 <p>The primary difference between a type-1 and type-2 device is the presence
 of host-managed device memory, which allows the device to operate on a
-local memory bank - while the CPU sill has coherent DMA to the same memory.</p>
-<p>The allows things like GPUs to expose their memory via DAX devices or file
+local memory bank - while the CPU still has coherent DMA to the same memory.</p>
+<p>This allows things like GPUs to expose their memory via DAX devices or file
 descriptors, allows drivers and programs direct access to device memory
 rather than use block-transfer semantics.</p>
 </section>
@@ -229,7 +229,7 @@ basic coherent DMA.</p>
 </section>
 <section id="switch">
 <h3>Switch<a class="headerlink" href="#switch" title="Link to this heading">¶</a></h3>
-<p>A CXL switch is a device capacity of routing any CXL (and by extension, PCIe)
+<p>A CXL switch is a device capable of routing any CXL (and by extension, PCIe)
 protocol between an upstream, downstream, or peer devices.  Many devices, such
 as Multi-Logical Devices, imply the presence of switching in some manner.</p>
 </section>
@@ -240,7 +240,7 @@ as Multi-Logical Devices, imply the presence of switching in some manner.</p>
 <p>A Single-Logical Device (SLD) is a device which presents a single device to
 one or more heads.</p>
 <p>A Multi-Logical Device (MLD) is a device which may present multiple devices
-to one or more devices.</p>
+to one or more upstream devices.</p>
 <p>A Single-Headed Device exposes only a single physical connection.</p>
 <p>A Multi-Headed Device exposes multiple physical connections.</p>
 <section id="mhsld">

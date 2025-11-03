@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -252,7 +252,7 @@ Dato che durante la loro esecuzione le interruzioni vengono disabilitate,
 i gestori d’interruzioni devono essere veloci: spesso si limitano
 esclusivamente a notificare la presa in carico dell’interruzione,
 programmare una ‘interruzione software’ per l’esecuzione e quindi terminare.</p>
-<p>Potete dire d’essere in una interruzione hardware perché in_hardirq()
+<p>Potete dire d’essere in una interruzione hardware perché <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">in_hardirq()</span></code>
 ritorna vero.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -481,7 +481,7 @@ Accetta un argomento che definisce l’ordine (0 per per la dimensione di una
 pagine, 1 per una doppia pagina, 2 per quattro pagine, eccetra) e le stesse
 opzioni d’allocazione viste precedentemente.</p>
 <p>Se state allocando un numero di byte notevolemnte superiore ad una pagina
-potete usare <code class="xref c c-func docutils literal notranslate"><span class="pre">vmalloc()</span></code>. Essa allocherà memoria virtuale all’interno
+potete usare <a class="reference internal" href="../../../core-api/mm-api.html#c.vmalloc" title="vmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">vmalloc()</span></code></a>. Essa allocherà memoria virtuale all’interno
 dello spazio kernel. Questo è un blocco di memoria fisica non contiguo, ma
 la MMU vi darà l’impressione che lo sia (quindi, sarà contiguo solo dal punto
 di vista dei processori, non dal punto di vista dei driver dei dispositivi
@@ -555,7 +555,7 @@ che la numerazione dei processori sia continua. Quando avete terminato,
 ritornate allo stato precedente con <code class="xref c c-func docutils literal notranslate"><span class="pre">put_cpu()</span></code>.</p>
 <p>Se sapete che non dovete essere interrotti da altri processi (per esempio,
 se siete in un contesto d’interruzione, o il diritto di prelazione
-è disabilitato) potete utilizzare smp_processor_id().</p>
+è disabilitato) potete utilizzare <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smp_processor_id()</span></code>.</p>
 </section>
 <section id="init-exit-initdata">
 <h3><code class="docutils literal notranslate"><span class="pre">__init</span></code>/<code class="docutils literal notranslate"><span class="pre">__exit</span></code>/<code class="docutils literal notranslate"><span class="pre">__initdata</span></code><a class="headerlink" href="#init-exit-initdata" title="Link to this heading">¶</a></h3>
@@ -706,14 +706,14 @@ interfacce.</p>
 <section id="export-symbol-ns">
 <h3><code class="xref c c-func docutils literal notranslate"><span class="pre">EXPORT_SYMBOL_NS()</span></code><a class="headerlink" href="#export-symbol-ns" title="Link to this heading">¶</a></h3>
 <p>Definita in <code class="docutils literal notranslate"><span class="pre">include/linux/export.h</span></code></p>
-<p>Questa è una variate di <cite>EXPORT_SYMBOL()</cite> che permette di specificare uno
+<p>Questa è una variate di <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">EXPORT_SYMBOL()</span></code></cite> che permette di specificare uno
 spazio dei nomi. Lo spazio dei nomi è documentato in
 <a class="reference internal" href="../core-api/symbol-namespaces.html"><span class="doc">Spazio dei nomi dei simboli</span></a>.</p>
 </section>
 <section id="export-symbol-ns-gpl">
 <h3><code class="xref c c-func docutils literal notranslate"><span class="pre">EXPORT_SYMBOL_NS_GPL()</span></code><a class="headerlink" href="#export-symbol-ns-gpl" title="Link to this heading">¶</a></h3>
 <p>Definita in <code class="docutils literal notranslate"><span class="pre">include/linux/export.h</span></code></p>
-<p>Questa è una variate di <cite>EXPORT_SYMBOL_GPL()</cite> che permette di specificare uno
+<p>Questa è una variate di <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">EXPORT_SYMBOL_GPL()</span></code></cite> che permette di specificare uno
 spazio dei nomi. Lo spazio dei nomi è documentato in
 <a class="reference internal" href="../core-api/symbol-namespaces.html"><span class="doc">Spazio dei nomi dei simboli</span></a>.</p>
 </section>
@@ -725,7 +725,7 @@ spazio dei nomi. Lo spazio dei nomi è documentato in
 <p>Un tempo negli header del kernel c’erano tre gruppi di funzioni per
 le liste concatenate, ma questa è stata la vincente. Se non avete particolari
 necessità per una semplice lista concatenata, allora questa è una buona scelta.</p>
-<p>In particolare, <a class="reference internal" href="../../../core-api/kernel-api.html#c.list_for_each_entry" title="list_for_each_entry"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_for_each_entry()</span></code></a> è utile.</p>
+<p>In particolare, <a class="reference internal" href="../../../core-api/list.html#c.list_for_each_entry" title="list_for_each_entry"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_for_each_entry()</span></code></a> è utile.</p>
 </section>
 <section id="convenzione-dei-valori-di-ritorno">
 <h3>Convenzione dei valori di ritorno<a class="headerlink" href="#convenzione-dei-valori-di-ritorno" title="Link to this heading">¶</a></h3>
@@ -785,7 +785,7 @@ pagina info).</p>
 <li><p>Inizializzatori non costanti</p></li>
 <li><p>Istruzioni assembler (non al di fuori di ‘arch/’ e ‘include/asm/’)</p></li>
 <li><p>Nomi delle funzioni come stringhe (__func__).</p></li>
-<li><p>__builtin_constant_p()</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__builtin_constant_p()</span></code></p></li>
 </ul>
 <p>Siate sospettosi quando utilizzate long long nel kernel, il codice generato
 da gcc è orribile ed anche peggio: le divisioni e le moltiplicazioni non

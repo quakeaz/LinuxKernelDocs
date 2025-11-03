@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -154,7 +154,7 @@
 <li><p><a class="reference internal" href="#buffered-i-o" id="id1">Buffered I/O</a></p>
 <ul>
 <li><p><a class="reference internal" href="#struct-address-space-operations" id="id2"><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">address_space_operations</span></code></a></p></li>
-<li><p><a class="reference internal" href="#struct-iomap-folio-ops" id="id3"><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">iomap_folio_ops</span></code></a></p></li>
+<li><p><a class="reference internal" href="#struct-iomap-write-ops" id="id3"><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">iomap_write_ops</span></code></a></p></li>
 <li><p><a class="reference internal" href="#internal-per-folio-state" id="id4">Internal per-Folio State</a></p></li>
 <li><p><a class="reference internal" href="#buffered-readahead-and-reads" id="id5">Buffered Readahead and Reads</a></p></li>
 <li><p><a class="reference internal" href="#buffered-writes" id="id6">Buffered Writes</a></p>
@@ -252,17 +252,16 @@ address space operations structure:</p>
 </ul>
 </div></blockquote>
 </section>
-<section id="struct-iomap-folio-ops">
-<h3><a class="toc-backref" href="#id3" role="doc-backlink"><span class="section-number">2.1.2. </span><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">iomap_folio_ops</span></code></a><a class="headerlink" href="#struct-iomap-folio-ops" title="Link to this heading">¶</a></h3>
-<p>The <code class="docutils literal notranslate"><span class="pre">-&gt;iomap_begin</span></code> function for pagecache operations may set the
-<code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">iomap::folio_ops</span></code> field to an ops structure to override
-default behaviors of iomap:</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">iomap_folio_ops</span><span class="w"> </span><span class="p">{</span>
+<section id="struct-iomap-write-ops">
+<h3><a class="toc-backref" href="#id3" role="doc-backlink"><span class="section-number">2.1.2. </span><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">iomap_write_ops</span></code></a><a class="headerlink" href="#struct-iomap-write-ops" title="Link to this heading">¶</a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">iomap_write_ops</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">folio</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="n">get_folio</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">iomap_iter</span><span class="w"> </span><span class="o">*</span><span class="n">iter</span><span class="p">,</span><span class="w"> </span><span class="n">loff_t</span><span class="w"> </span><span class="n">pos</span><span class="p">,</span>
 <span class="w">                               </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">len</span><span class="p">);</span>
 <span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">put_folio</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">inode</span><span class="w"> </span><span class="o">*</span><span class="n">inode</span><span class="p">,</span><span class="w"> </span><span class="n">loff_t</span><span class="w"> </span><span class="n">pos</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">copied</span><span class="p">,</span>
 <span class="w">                      </span><span class="k">struct</span><span class="w"> </span><span class="nc">folio</span><span class="w"> </span><span class="o">*</span><span class="n">folio</span><span class="p">);</span>
 <span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">iomap_valid</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">inode</span><span class="w"> </span><span class="o">*</span><span class="n">inode</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">iomap</span><span class="w"> </span><span class="o">*</span><span class="n">iomap</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">read_folio_range</span><span class="p">)(</span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">iomap_iter</span><span class="w"> </span><span class="o">*</span><span class="n">iter</span><span class="p">,</span>
+<span class="w">                       </span><span class="k">struct</span><span class="w"> </span><span class="nc">folio</span><span class="w"> </span><span class="o">*</span><span class="n">folio</span><span class="p">,</span><span class="w"> </span><span class="n">loff_t</span><span class="w"> </span><span class="n">pos</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">len</span><span class="p">);</span>
 <span class="p">};</span>
 </pre></div>
 </div>
@@ -311,6 +310,9 @@ the filesystem holds when the mapping is passed back to
 <code class="docutils literal notranslate"><span class="pre">-&gt;iomap_valid</span></code>, then the iomap should considered stale and the
 validation failed.</p>
 </li>
+<li><p><code class="docutils literal notranslate"><span class="pre">read_folio_range</span></code>: Called to synchronously read in the range that will
+be written to. If this function is not provided, iomap will default to
+submitting a bio read request.</p></li>
 </ul>
 </div></blockquote>
 <p>These <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kiocb</span></code> flags are significant for buffered I/O with iomap:</p>
@@ -442,24 +444,23 @@ be initialized to zero.</p>
 writeback.
 It does not lock <code class="docutils literal notranslate"><span class="pre">i_rwsem</span></code> or <code class="docutils literal notranslate"><span class="pre">invalidate_lock</span></code>.</p>
 <p>The dirty bit will be cleared for all folios run through the
-<code class="docutils literal notranslate"><span class="pre">-&gt;map_blocks</span></code> machinery described below even if the writeback fails.
+<code class="docutils literal notranslate"><span class="pre">-&gt;writeback_range</span></code> machinery described below even if the writeback fails.
 This is to prevent dirty folio clots when storage devices fail; an
 <code class="docutils literal notranslate"><span class="pre">-EIO</span></code> is recorded for userspace to collect via <code class="docutils literal notranslate"><span class="pre">fsync</span></code>.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">ops</span></code> structure must be specified and is as follows:</p>
 <section id="struct-iomap-writeback-ops">
 <h4><a class="toc-backref" href="#id13" role="doc-backlink"><span class="section-number">2.1.7.1. </span><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">iomap_writeback_ops</span></code></a><a class="headerlink" href="#struct-iomap-writeback-ops" title="Link to this heading">¶</a></h4>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">iomap_writeback_ops</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">map_blocks</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">iomap_writepage_ctx</span><span class="w"> </span><span class="o">*</span><span class="n">wpc</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">inode</span><span class="w"> </span><span class="o">*</span><span class="n">inode</span><span class="p">,</span>
-<span class="w">                      </span><span class="n">loff_t</span><span class="w"> </span><span class="n">offset</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">len</span><span class="p">);</span>
-<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">submit_ioend</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">iomap_writepage_ctx</span><span class="w"> </span><span class="o">*</span><span class="n">wpc</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">status</span><span class="p">);</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">discard_folio</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">folio</span><span class="w"> </span><span class="o">*</span><span class="n">folio</span><span class="p">,</span><span class="w"> </span><span class="n">loff_t</span><span class="w"> </span><span class="n">pos</span><span class="p">);</span>
+<span class="w">   </span><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">writeback_range</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">iomap_writepage_ctx</span><span class="w"> </span><span class="o">*</span><span class="n">wpc</span><span class="p">,</span>
+<span class="w">       </span><span class="k">struct</span><span class="w"> </span><span class="nc">folio</span><span class="w"> </span><span class="o">*</span><span class="n">folio</span><span class="p">,</span><span class="w"> </span><span class="n">u64</span><span class="w"> </span><span class="n">pos</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="p">,</span><span class="w"> </span><span class="n">u64</span><span class="w"> </span><span class="n">end_pos</span><span class="p">);</span>
+<span class="w">   </span><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">writeback_submit</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">iomap_writepage_ctx</span><span class="w"> </span><span class="o">*</span><span class="n">wpc</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">error</span><span class="p">);</span>
 <span class="p">};</span>
 </pre></div>
 </div>
 <p>The fields are as follows:</p>
 <blockquote>
-<div><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">map_blocks</span></code>: Sets <code class="docutils literal notranslate"><span class="pre">wpc-&gt;iomap</span></code> to the space mapping of the file
+<div><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">writeback_range</span></code>: Sets <code class="docutils literal notranslate"><span class="pre">wpc-&gt;iomap</span></code> to the space mapping of the file
 range (in bytes) given by <code class="docutils literal notranslate"><span class="pre">offset</span></code> and <code class="docutils literal notranslate"><span class="pre">len</span></code>.
 iomap calls this function for each dirty fs block in each dirty folio,
 though it will <a class="reference external" href="https://lore.kernel.org/all/20231207072710.176093-15-hch&#64;lst.de/">reuse mappings</a>
@@ -472,25 +473,25 @@ Filesystems can skip a potentially expensive mapping lookup if the
 mappings have not changed.
 This revalidation must be open-coded by the filesystem; it is
 unclear if <code class="docutils literal notranslate"><span class="pre">iomap::validity_cookie</span></code> can be reused for this
-purpose.
-This function must be supplied by the filesystem.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">submit_ioend</span></code>: Allows the file systems to hook into writeback bio
-submission.
-This might include pre-write space accounting updates, or installing
-a custom <code class="docutils literal notranslate"><span class="pre">-&gt;bi_end_io</span></code> function for internal purposes, such as
-deferring the ioend completion to a workqueue to run metadata update
-transactions from process context before submitting the bio.
-This function is optional.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">discard_folio</span></code>: iomap calls this function after <code class="docutils literal notranslate"><span class="pre">-&gt;map_blocks</span></code>
-fails to schedule I/O for any part of a dirty folio.
-The function should throw away any reservations that may have been
-made for the write.
+purpose.</p>
+<p>If this methods fails to schedule I/O for any part of a dirty folio, it
+should throw away any reservations that may have been made for the write.
 The folio will be marked clean and an <code class="docutils literal notranslate"><span class="pre">-EIO</span></code> recorded in the
 pagecache.
 Filesystems can use this callback to <a class="reference external" href="https://lore.kernel.org/all/20201029163313.1766967-1-bfoster&#64;redhat.com/">remove</a>
 delalloc reservations to avoid having delalloc reservations for
 clean pagecache.
-This function is optional.</p></li>
+This function must be supplied by the filesystem.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">writeback_submit</span></code>: Submit the previous built writeback context.
+Block based file systems should use the iomap_ioend_writeback_submit
+helper, other file system can implement their own.
+File systems can optionall to hook into writeback bio submission.
+This might include pre-write space accounting updates, or installing
+a custom <code class="docutils literal notranslate"><span class="pre">-&gt;bi_end_io</span></code> function for internal purposes, such as
+deferring the ioend completion to a workqueue to run metadata update
+transactions from process context before submitting the bio.
+This function must be supplied by the filesystem.</p></li>
 </ul>
 </div></blockquote>
 </section>
@@ -504,10 +505,10 @@ bit on the folios attached to the <code class="docutils literal notranslate"><sp
 If the write failed, it will also set the error bits on the folios and
 the address space.
 This can happen in interrupt or process context, depending on the
-storage device.</p>
-<p>Filesystems that need to update internal bookkeeping (e.g. unwritten
-extent conversions) should provide a <code class="docutils literal notranslate"><span class="pre">-&gt;submit_ioend</span></code> function to
-set <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">iomap_end::bio::bi_end_io</span></code> to its own function.
+storage device.
+Filesystems that need to update internal bookkeeping (e.g. unwritten
+extent conversions) should set their own bi_end_io on the bios
+submitted by <code class="docutils literal notranslate"><span class="pre">-&gt;submit_writeback</span></code>
 This function should call <code class="docutils literal notranslate"><span class="pre">iomap_finish_ioends</span></code> after finishing its
 own work (e.g. unwritten extent conversion).</p>
 <p>Some filesystems may wish to <a class="reference external" href="https://lore.kernel.org/all/20220120034733.221737-1-david&#64;fromorbit.com/">amortize the cost of running metadata

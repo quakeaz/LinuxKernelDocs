@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -279,7 +279,7 @@ present or not (for example for an optional feature which is not present
 on cheap variants of a board but you have no way to tell them apart), or
 it may have different addresses from one board to the next (manufacturer
 changing its design without notice). In this case, you can call
-i2c_new_scanned_device() instead of <a class="reference internal" href="../driver-api/i2c.html#c.i2c_new_client_device" title="i2c_new_client_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">i2c_new_client_device()</span></code></a>.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">i2c_new_scanned_device()</span></code> instead of <a class="reference internal" href="../driver-api/i2c.html#c.i2c_new_client_device" title="i2c_new_client_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">i2c_new_client_device()</span></code></a>.</p>
 <p>Example (from the nxp OHCI driver):</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">short</span><span class="w"> </span><span class="n">normal_i2c</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x2c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x2d</span><span class="p">,</span><span class="w"> </span><span class="n">I2C_CLIENT_END</span><span class="w"> </span><span class="p">};</span>
 
@@ -307,12 +307,12 @@ simply gives up.</p>
 <p>The driver which instantiated the I2C device is responsible for destroying
 it on cleanup. This is done by calling <a class="reference internal" href="../driver-api/i2c.html#c.i2c_unregister_device" title="i2c_unregister_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">i2c_unregister_device()</span></code></a> on the
 pointer that was earlier returned by <a class="reference internal" href="../driver-api/i2c.html#c.i2c_new_client_device" title="i2c_new_client_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">i2c_new_client_device()</span></code></a> or
-i2c_new_scanned_device().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">i2c_new_scanned_device()</span></code>.</p>
 </section>
 <section id="method-3-probe-an-i2c-bus-for-certain-devices">
 <h2>Method 3: Probe an I2C bus for certain devices<a class="headerlink" href="#method-3-probe-an-i2c-bus-for-certain-devices" title="Link to this heading">¶</a></h2>
 <p>Sometimes you do not have enough information about an I2C device, not even
-to call i2c_new_scanned_device(). The typical case is hardware monitoring
+to call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">i2c_new_scanned_device()</span></code>. The typical case is hardware monitoring
 chips on PC mainboards. There are several dozen models, which can live
 at 25 different addresses. Given the huge number of mainboards out there,
 it is next to impossible to build an exhaustive list of the hardware
@@ -325,14 +325,14 @@ drivers are loaded, and if any is found, an I2C device will be
 instantiated automatically. In order to prevent any misbehavior of this
 mechanism, the following restrictions apply:</p>
 <ul class="simple">
-<li><p>The I2C device driver must implement the detect() method, which
+<li><p>The I2C device driver must implement the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">detect()</span></code> method, which
 identifies a supported device by reading from arbitrary registers.</p></li>
 <li><p>Only buses which are likely to have a supported device and agree to be
 probed, will be probed. For example this avoids probing for hardware
 monitoring chips on a TV adapter.</p></li>
 </ul>
 <p>Example:
-See lm90_driver and lm90_detect() in drivers/hwmon/lm90.c</p>
+See lm90_driver and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lm90_detect()</span></code> in drivers/hwmon/lm90.c</p>
 <p>I2C devices instantiated as a result of such a successful probe will be
 destroyed automatically when the driver which detected them is removed,
 or when the underlying I2C bus is itself destroyed, whichever happens

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -256,7 +256,7 @@ trace, it is strongly recommended that architectures positively identify code
 which is known to be reliable to unwind from, and reject unwinding from all
 other code.</p>
 <p>Kernel code including modules and eBPF can be distinguished from foreign code
-using ‘__kernel_text_address()’. Checking for this also helps to detect stack
+using ‘<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__kernel_text_address()</span></code>’. Checking for this also helps to detect stack
 corruption.</p>
 <p>There are several ways an architecture may identify kernel code which is deemed
 unreliable to unwind from, e.g.</p>
@@ -331,15 +331,15 @@ SYM_CODE_END(return_to_handler)
 <p>While the traced function runs its return address on the stack points to
 the start of return_to_handler, and the original return address is stored in
 the task’s cur_ret_stack. During this time the unwinder can find the return
-address using ftrace_graph_ret_addr().</p>
+address using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_graph_ret_addr()</span></code>.</p>
 <p>When the traced function returns to return_to_handler, there is no longer a
 return address on the stack, though the original return address is still stored
-in the task’s cur_ret_stack. Within ftrace_return_to_handler(), the original
+in the task’s cur_ret_stack. Within <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_return_to_handler()</span></code>, the original
 return address is removed from cur_ret_stack and is transiently moved
 arbitrarily by the compiler before being returned in rax. The return_to_handler
 trampoline moves this into rdi before jumping to it.</p>
 <p>Architectures might not always be able to unwind such sequences, such as when
-ftrace_return_to_handler() has removed the address from cur_ret_stack, and the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_return_to_handler()</span></code> has removed the address from cur_ret_stack, and the
 location of the return address cannot be reliably determined.</p>
 <p>It is recommended that architectures unwind cases where return_to_handler has
 not yet been returned to, but architectures are not required to unwind from the

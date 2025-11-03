@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -159,8 +159,8 @@ Please see <a class="reference internal" href="overview.html"><span class="doc">
 </div>
 <p>The consumer passes in its <a class="reference internal" href="../../driver-api/infrastructure.html#c.device" title="device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span></code></a> pointer and power supply ID. The core
 then finds the correct regulator by consulting a machine specific lookup table.
-If the lookup is successful then this call will return a pointer to the struct
-regulator that supplies this consumer.</p>
+If the lookup is successful then this call will return a pointer to the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">regulator</span></code> that supplies this consumer.</p>
 <p>To release the regulator the consumer driver should call</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>regulator_put(regulator);
 </pre></div>
@@ -172,7 +172,7 @@ analog = regulator_get(dev, &quot;Avdd&quot;);  /* analog */
 </pre></div>
 </div>
 <p>The regulator access functions <a class="reference internal" href="../../driver-api/regulator.html#c.regulator_get" title="regulator_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">regulator_get()</span></code></a> and <a class="reference internal" href="../../driver-api/regulator.html#c.regulator_put" title="regulator_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">regulator_put()</span></code></a> will
-usually be called in your device drivers probe() and remove() respectively.</p>
+usually be called in your device drivers <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove()</span></code> respectively.</p>
 </section>
 <section id="regulator-output-enable-disable-static-dynamic-drivers">
 <h2>2. Regulator Output Enable &amp; Disable (static &amp; dynamic drivers)<a class="headerlink" href="#regulator-output-enable-disable-static-dynamic-drivers" title="Link to this heading">¶</a></h2>
@@ -231,9 +231,9 @@ next enabled.</p>
 </pre></div>
 </div>
 <dl class="simple">
-<dt>NOTE:</dt><dd><p>get_voltage() will return the configured output voltage whether the
+<dt>NOTE:</dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_voltage()</span></code> will return the configured output voltage whether the
 regulator is enabled or disabled and should NOT be used to determine regulator
-output state. However this can be used in conjunction with is_enabled() to
+output state. However this can be used in conjunction with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">is_enabled()</span></code> to
 determine the regulator physical output voltage.</p>
 </dd>
 </dl>
@@ -262,7 +262,7 @@ regulator is next enabled.</p>
 </pre></div>
 </div>
 <dl class="simple">
-<dt>NOTE:</dt><dd><p>get_current_limit() will return the current limit whether the regulator
+<dt>NOTE:</dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_current_limit()</span></code> will return the current limit whether the regulator
 is enabled or disabled and should not be used to determine regulator current
 load.</p>
 </dd>

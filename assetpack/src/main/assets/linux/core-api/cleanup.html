@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -90,6 +90,7 @@
 <li class="toctree-l3"><a class="reference internal" href="union_find.html">Union-Find in Linux</a></li>
 <li class="toctree-l3"><a class="reference internal" href="min_heap.html">Min Heap API</a></li>
 <li class="toctree-l3"><a class="reference internal" href="parser.html">Generic parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="list.html">Linked Lists in Linux</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#low-level-entry-and-exit">Low level entry and exit</a></li>
@@ -175,9 +176,9 @@ unwind ordering to avoid unintentional leaks.</p>
 <p>As drivers make up the majority of the kernel code base, here is an
 example of using these helpers to clean up PCI drivers. The target of
 the cleanups are occasions where a goto is used to unwind a device
-reference (<a class="reference internal" href="../driver-api/pci/pci.html#c.pci_dev_put" title="pci_dev_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_dev_put()</span></code></a>), or unlock the device (pci_dev_unlock())
+reference (<a class="reference internal" href="../driver-api/pci/pci.html#c.pci_dev_put" title="pci_dev_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_dev_put()</span></code></a>), or unlock the device (<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_dev_unlock()</span></code>)
 before returning.</p>
-<p>The DEFINE_FREE() macro can arrange for PCI device references to be
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">DEFINE_FREE()</span></code> macro can arrange for PCI device references to be
 dropped when the associated variable goes out of scope:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>DEFINE_FREE(pci_dev_put, struct pci_dev *, if (_T) pci_dev_put(_T))
 ...
@@ -196,14 +197,14 @@ freeing it) on success, it can do:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>return_ptr(dev);
 </pre></div>
 </div>
-<p>The DEFINE_GUARD() macro can arrange for the PCI device lock to be
-dropped when the scope where guard() is invoked ends:</p>
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">DEFINE_GUARD()</span></code> macro can arrange for the PCI device lock to be
+dropped when the scope where <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">guard()</span></code> is invoked ends:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>DEFINE_GUARD(pci_dev, struct pci_dev *, pci_dev_lock(_T), pci_dev_unlock(_T))
 ...
 guard(pci_dev)(dev);
 </pre></div>
 </div>
-<p>The lifetime of the lock obtained by the guard() helper follows the
+<p>The lifetime of the lock obtained by the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">guard()</span></code> helper follows the
 scope of automatic variable declaration. Take the following example:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>func(...)
 {
@@ -216,10 +217,21 @@ scope of automatic variable declaration. Take the following example:</p>
 </pre></div>
 </div>
 <p>Observe the lock is held for the remainder of the “if ()” block not
-the remainder of “func()”.</p>
-<p>Now, when a function uses both __free() and guard(), or multiple
-instances of __free(), the LIFO order of variable definition order
-matters. GCC documentation says:</p>
+the remainder of “<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">func()</span></code>”.</p>
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ACQUIRE()</span></code> macro can be used in all places that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">guard()</span></code> can be
+used and additionally support conditional locks:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>DEFINE_GUARD_COND(pci_dev, _try, pci_dev_trylock(_T))
+...
+ACQUIRE(pci_dev_try, lock)(dev);
+rc = ACQUIRE_ERR(pci_dev_try, &amp;lock);
+if (rc)
+        return rc;
+// @lock is held
+</pre></div>
+</div>
+<p>Now, when a function uses both <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__free()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">guard()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ACQUIRE()</span></code>, or
+multiple instances of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__free()</span></code>, the LIFO order of variable definition
+order matters. GCC documentation says:</p>
 <p>“When multiple variables in the same scope have cleanup attributes,
 at exit from the scope their associated cleanup functions are run in
 reverse order of definition (last defined, first cleanup).”</p>
@@ -274,7 +286,7 @@ static int init(void)
 }
 </pre></div>
 </div>
-<p>That bug is fixed by changing init() to call guard() and define +
+<p>That bug is fixed by changing <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init()</span></code> to call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">guard()</span></code> and define +
 initialize <strong>obj</strong> in this order:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>guard(mutex)(&amp;lock);
 struct object *obj __free(remove_free) = alloc_add();
@@ -284,7 +296,7 @@ struct object *obj __free(remove_free) = alloc_add();
 the top of the function poses this potential interdependency problem
 the recommendation is to always define and assign variables in one
 statement and not group variable definitions at the top of the
-function when __free() is used.</p>
+function when <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__free()</span></code> is used.</p>
 <p>Lastly, given that the benefit of cleanup helpers is removal of
 “goto”, and that the “goto” statement can jump between scopes, the
 expectation is that usage of “goto” and cleanup helpers is never

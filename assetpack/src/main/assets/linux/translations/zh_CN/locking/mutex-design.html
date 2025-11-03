@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -198,10 +198,10 @@ Chinese (Simplified)
 </section>
 <section id="id3">
 <h2>实现<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h2>
-<p>互斥锁由“struct mutex”表示，在include/linux/mutex.h中定义，并在
+<p>互斥锁由“<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">mutex</span></code>”表示，在include/linux/mutex.h中定义，并在
 kernel/locking/mutex.c中实现。这些锁使用一个原子变量（-&gt;owner）来跟踪
 它们生命周期内的锁状态。字段owner实际上包含的是指向当前锁所有者的
-<cite>struct task_struct *</cite> 指针，因此如果无人持有锁，则它的值为空（NULL）。
+<cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">task_struct</span></code> *</cite> 指针，因此如果无人持有锁，则它的值为空（NULL）。
 由于task_struct的指针至少按L1_CACHE_BYTES对齐，低位（3）被用来存储额外
 的状态（例如，等待者列表非空）。在其最基本的形式中，它还包括一个等待队列和
 一个确保对其序列化访问的自旋锁。此外，CONFIG_MUTEX_SPIN_ON_OWNER=y的
@@ -209,8 +209,8 @@ kernel/locking/mutex.c中实现。这些锁使用一个原子变量（-&gt;owner
 （ii）中描述。</p>
 <p>准备获得一把自旋锁时，有三种可能经过的路径，取决于锁的状态：</p>
 <ol class="lowerroman">
-<li><p>快速路径：试图通过调用cmpxchg()修改锁的所有者为当前任务，以此原子化地
-获取锁。这只在无竞争的情况下有效（cmpxchg()检查值是否为0，所以3个状态
+<li><p>快速路径：试图通过调用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cmpxchg()</span></code>修改锁的所有者为当前任务，以此原子化地
+获取锁。这只在无竞争的情况下有效（<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cmpxchg()</span></code>检查值是否为0，所以3个状态
 比特必须为0）。如果锁处在竞争状态，代码进入下一个可能的路径。</p></li>
 <li><p>中速路径：也就是乐观自旋，当锁的所有者正在运行并且没有其它优先级更高的
 任务（need_resched，需要重新调度）准备运行时，当前任务试图自旋来获得
@@ -298,8 +298,8 @@ int mutex_lock_interruptible(struct mutex *lock);
 </section>
 <section id="id6">
 <h2>缺陷<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h2>
-<p>与它最初的设计和目的不同，’struct mutex’ 是内核中最大的锁之一。例如：在
-x86-64上它是32字节，而 ‘struct semaphore’ 是24字节，rw_semaphore是
+<p>与它最初的设计和目的不同，’<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">mutex</span></code>’ 是内核中最大的锁之一。例如：在
+x86-64上它是32字节，而 ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">semaphore</span></code>’ 是24字节，rw_semaphore是
 40字节。更大的结构体大小意味着更多的CPU缓存和内存占用。</p>
 </section>
 <section id="id7">

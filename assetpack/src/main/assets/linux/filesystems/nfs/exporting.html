@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -255,9 +255,9 @@ when -&gt;lookup finds an inode for a given parent and name.</p>
 </ol>
 </div></blockquote>
 <p>A file system implementation declares that instances of the filesystem
-are exportable by setting the s_export_op field in the struct
-super_block.  This field must point to a “struct export_operations”
-struct which has the following members:</p>
+are exportable by setting the s_export_op field in the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">super_block</span></code>.  This field must point to a “<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">export_operations</span></code>”
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">which</span></code> has the following members:</p>
 <blockquote>
 <div><dl class="simple">
 <dt>encode_fh (mandatory)</dt><dd><p>Takes a dentry and creates a filehandle fragment which may later be used
@@ -285,7 +285,7 @@ to find potential names, and matches inode numbers to find the correct
 match.</p>
 </dd>
 <dt>flags</dt><dd><p>Some filesystems may need to be handled differently than others. The
-export_operations struct also includes a flags field that allows the
+export_operations <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">also</span></code> includes a flags field that allows the
 filesystem to communicate such information to nfsd. See the Export
 Operations Flags section below for more explanation.</p>
 </dd>
@@ -302,7 +302,7 @@ it should be interpreted.</p>
 </section>
 <section id="export-operations-flags">
 <h2>Export Operations Flags<a class="headerlink" href="#export-operations-flags" title="Link to this heading">¶</a></h2>
-<p>In addition to the operation vector pointers, struct export_operations also
+<p>In addition to the operation vector pointers, <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">export_operations</span></code> also
 contains a “flags” field that allows the filesystem to communicate to nfsd
 that it may want to do things differently when dealing with it. The
 following flags are defined:</p>

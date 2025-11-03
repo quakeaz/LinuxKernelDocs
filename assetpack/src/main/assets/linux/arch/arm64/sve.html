@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -241,12 +241,12 @@ in the target.</p></li>
 between userspace and the kernel, the register value is encoded in memory in
 an endianness-invariant layout, with bits [(8 * i + 7) : (8 * i)] encoded at
 byte offset i from the start of the memory representation.  This affects for
-example the signal frame (struct sve_context) and ptrace interface
-(struct user_sve_header) and associated data.</p>
+example the signal frame (<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">sve_context</span></code>) and ptrace interface
+(<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">user_sve_header</span></code>) and associated data.</p>
 <p>Beware that on big-endian systems this results in a different byte order than
 for the FPSIMD V-registers, which are stored as single host-endian 128-bit
 values, with bits [(127 - 8 * i) : (120 - 8 * i)] of the register encoded at
-byte offset i.  (struct fpsimd_context, struct user_fpsimd_state).</p>
+byte offset i.  (<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fpsimd_context</span></code>, <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">user_fpsimd_state</span></code>).</p>
 </li>
 </ul>
 </section>
@@ -338,7 +338,7 @@ vector length in the new mode.</p></li>
 </section>
 <section id="prctl-extensions">
 <h2>6.  prctl extensions<a class="headerlink" href="#prctl-extensions" title="Link to this heading">¶</a></h2>
-<p>Some new prctl() calls are added to allow programs to manage the SVE vector
+<p>Some new <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prctl()</span></code> calls are added to allow programs to manage the SVE vector
 length:</p>
 <p>prctl(PR_SVE_SET_VL, unsigned long arg)</p>
 <blockquote>
@@ -410,7 +410,7 @@ flag, does not constitute a change to the vector length for this purpose.</p></l
 </div></blockquote>
 <p>There is no way to determine whether there is an outstanding deferred
 vector length change (which would only normally be the case between a
-fork() or vfork() and the corresponding execve() in typical use).</p>
+fork() or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vfork()</span></code> and the corresponding execve() in typical use).</p>
 <p>To extract the vector length from the result, bitwise and it with
 PR_SVE_VL_LEN_MASK.</p>
 <dl class="simple">
@@ -432,7 +432,7 @@ using data beyond the subset shared with the FPSIMD Vn registers.</p>
 <p>Refer to [2] for definitions.</p>
 </li>
 </ul>
-<p>The regset data starts with struct user_sve_header, containing:</p>
+<p>The regset data starts with <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">user_sve_header</span></code>, containing:</p>
 <blockquote>
 <div><p>size</p>
 <blockquote>
@@ -464,7 +464,7 @@ thread changes its vector length etc.</p>
 <blockquote>
 <div><p>SVE registers are not live (GETREGSET) or are to be made
 non-live (SETREGSET).</p>
-<p>The payload is of type struct user_fpsimd_state, with the same
+<p>The payload is of type <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">user_fpsimd_state</span></code>, with the same
 meaning as for NT_PRFPREG, starting at offset
 SVE_PT_FPSIMD_OFFSET from the start of user_sve_header.</p>
 <p>Extra data might be appended in the future: the size of the

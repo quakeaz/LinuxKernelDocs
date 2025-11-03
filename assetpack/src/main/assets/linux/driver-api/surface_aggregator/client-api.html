@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -533,7 +533,7 @@ events.</p>
 </div>
 <p><strong>Description</strong></p>
 <p>A reference to a (non-owned) buffer segment, consisting of pointer and
-length. Use of this struct indicates non-owned data, i.e. data of which the
+length. Use of this <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">indicates</span></code> non-owned data, i.e. data of which the
 life-time is managed (i.e. it is allocated/freed) via another pointer.</p>
 <dl class="c enum">
 <dt class="sig sig-object c" id="c.ssam_ssh_tid">
@@ -756,12 +756,12 @@ in any way.</p>
 <p><strong>Definition</strong>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct ssh_request_ops {
     void (*release)(struct ssh_request *rqst);
-    void (*complete)(struct ssh_request *rqst,const struct ssh_command *cmd, const struct ssam_span *data, int status);
+    void (*complete)(struct ssh_request *rqst, const struct ssh_command *cmd, const struct ssam_span *data, int status);
 };
 </pre></div>
 </div>
 <p><strong>Members</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">release</span></code></dt><dd><p>Function called when the request’s reference count reaches zero.
 This callback must be relied upon to ensure that the request has
 left the transport systems (both, packet an request systems).</p>
@@ -771,7 +771,12 @@ success or failure. The command data for the request response
 is provided via the <a class="reference internal" href="#c.ssh_command" title="ssh_command"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ssh_command</span></code></a> parameter (<code class="docutils literal notranslate"><span class="pre">cmd</span></code>),
 the command payload of the request response via the <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span>
 <span class="pre">ssh_span</span></code> parameter (<code class="docutils literal notranslate"><span class="pre">data</span></code>).</p>
-<p>If the request does not have any response or has not been
+</dd>
+</dl>
+</div>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>If the request does not have any response or has not been
 completed with success, both <code class="docutils literal notranslate"><span class="pre">cmd</span></code> and <code class="docutils literal notranslate"><span class="pre">data</span></code> parameters will
 be NULL. If the request response does not have any command
 payload, the <code class="docutils literal notranslate"><span class="pre">data</span></code> span will be an empty (zero-length) span.</p>
@@ -781,9 +786,7 @@ value will be zero in case of success and a regular errno
 otherwise.</p>
 <p>Note that a call to this callback does not guarantee that the
 request is not in use by the transport systems any more.</p>
-</dd>
-</dl>
-</div>
+</div></blockquote>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.ssh_request">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ssh_request</span></span></span><a class="headerlink" href="#c.ssh_request" title="Link to this definition">¶</a><br /></dt>
@@ -1044,7 +1047,7 @@ flag and the <code class="docutils literal notranslate"><span class="pre">SSAM_R
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This struct fully describes a SAM request with payload. It is intended to
+<p>This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fully</span></code> describes a SAM request with payload. It is intended to
 help set up the actual transport struct, e.g. <a class="reference internal" href="#c.ssam_request_sync" title="ssam_request_sync"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ssam_request_sync</span></code></a>,
 and specifically its raw message data via <a class="reference internal" href="#c.ssam_request_write_data" title="ssam_request_write_data"><code class="xref c c-func docutils literal notranslate"><span class="pre">ssam_request_write_data()</span></code></a>.</p>
 <dl class="c struct">
@@ -1094,7 +1097,7 @@ and specifically its raw message data via <a class="reference internal" href="#c
 <dt><code class="docutils literal notranslate"><span class="pre">base</span></code></dt><dd><p>Underlying SSH request.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">comp</span></code></dt><dd><p>Completion used to signal full completion of the request. After the
-request has been submitted, this struct may only be modified or
+request has been submitted, this <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">may</span></code> only be modified or
 deallocated after the completion has been signaled.
 request has been submitted,</p>
 </dd>
@@ -1288,7 +1291,7 @@ three times in total.</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>Blue-print specification for a SAM request. This struct describes the
+<p>Blue-print specification for a SAM request. This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">describes</span></code> the
 unique static parameters of a request (i.e. type) without specifying any of
 its instance-specific data (e.g. payload). It is intended to be used as base
 for defining simple request functions via the
@@ -1321,7 +1324,7 @@ for defining simple request functions via the
 <p><strong>Description</strong></p>
 <p>Blue-print specification for a multi-device SAM request, i.e. a request
 that is applicable to multiple device instances, described by their
-individual target and instance IDs. This struct describes the unique static
+individual target and instance IDs. This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">describes</span></code> the unique static
 parameters of a request (i.e. type) without specifying any of its
 instance-specific data (e.g. payload) and without specifying any of its
 device specific IDs (i.e. target and instance ID). It is intended to be
@@ -1348,7 +1351,7 @@ families of macros.</p>
 <p><strong>Description</strong></p>
 <p>Defines a function executing the synchronous SAM request specified by
 <strong>spec</strong>, with the request having neither argument nor return value. The
-generated function takes care of setting up the request struct and buffer
+generated function takes care of setting up the request <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">and</span></code> buffer
 allocation, as well as execution of the request itself, returning once the
 request has been fully completed. The required transport buffer will be
 allocated on the stack.</p>
@@ -1616,14 +1619,11 @@ the generated function.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Constants</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">SSAM_NOTIF_HANDLED</span></code></dt><dd><p>Indicates that the notification has been handled. This flag should be
 set by the handler if the handler can act/has acted upon the event
 provided to it. This flag should not be set if the handler is not a
 primary handler intended for the provided event.</p>
-<p>If this flag has not been set by any handler after the notifier chain
-has been traversed, a warning will be emitted, stating that the event
-has not been handled.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">SSAM_NOTIF_STOP</span></code></dt><dd><p>Indicates that the notifier traversal should stop. If this flag is
 returned from a notifier callback, notifier chain traversal will
@@ -1633,6 +1633,12 @@ with a negative error value.</p>
 </dd>
 </dl>
 </div>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>If this flag has not been set by any handler after the notifier chain
+has been traversed, a warning will be emitted, stating that the event
+has not been handled.</p>
+</div></blockquote>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.ssam_notifier_block">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ssam_notifier_block</span></span></span><a class="headerlink" href="#c.ssam_notifier_block" title="Link to this definition">¶</a><br /></dt>
@@ -1729,7 +1735,7 @@ indicates success.</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This struct describes a SAM event registry via the minimal collection of
+<p>This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">describes</span></code> a SAM event registry via the minimal collection of
 SAM IDs specifying the requests to use for enabling and disabling an event.
 The individual event to be enabled/disabled itself is specified via <a class="reference internal" href="#c.ssam_event_id" title="ssam_event_id"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span>
 <span class="pre">ssam_event_id</span></code></a>.</p>
@@ -1756,7 +1762,7 @@ The individual event to be enabled/disabled itself is specified via <a class="re
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This struct specifies the event to be enabled/disabled via an externally
+<p>This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">specifies</span></code> the event to be enabled/disabled via an externally
 provided registry. It does not specify the registry to be used itself, this
 is done via <a class="reference internal" href="#c.ssam_event_registry" title="ssam_event_registry"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ssam_event_registry</span></code></a>.</p>
 <dl class="c enum">
@@ -1953,7 +1959,7 @@ remain in this state at least until the lock has been released.</p>
 <code class="docutils literal notranslate"><span class="pre">statelock</span></code> functions represent the read-lock part of a r/w-semaphore.
 Actions causing state transitions of the controller must be executed while
 holding the write-part of this r/w-semaphore (see <a class="reference internal" href="internal-api.html#c.ssam_controller_lock" title="ssam_controller_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">ssam_controller_lock()</span></code></a>
-and ssam_controller_unlock() for that).</p>
+and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ssam_controller_unlock()</span></code> for that).</p>
 <p>See <a class="reference internal" href="#c.ssam_controller_stateunlock" title="ssam_controller_stateunlock"><code class="xref c c-func docutils literal notranslate"><span class="pre">ssam_controller_stateunlock()</span></code></a> for the corresponding unlock function.</p>
 </div>
 <dl class="c function">
@@ -2145,15 +2151,15 @@ before freeing it and returning its status.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Allocates a synchronous request struct on the stack, fully initializes it
+<p>Allocates a synchronous request <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">on</span></code> the stack, fully initializes it
 using the provided buffer as message data buffer, submits it, and then
 waits for its completion before returning its status. The
 <a class="reference internal" href="#c.SSH_COMMAND_MESSAGE_LENGTH" title="SSH_COMMAND_MESSAGE_LENGTH"><code class="xref c c-func docutils literal notranslate"><span class="pre">SSH_COMMAND_MESSAGE_LENGTH()</span></code></a> macro can be used to compute the required
 message buffer size.</p>
 <p>This function does essentially the same as <a class="reference internal" href="#c.ssam_request_do_sync" title="ssam_request_do_sync"><code class="xref c c-func docutils literal notranslate"><span class="pre">ssam_request_do_sync()</span></code></a>, but
 instead of dynamically allocating the request and message data buffer, it
-uses the provided message data buffer and stores the (small) request struct
-on the heap.</p>
+uses the provided message data buffer and stores the (small) request <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">on</span></code> the heap.</p>
 <p><strong>Return</strong></p>
 <p>Returns the status of the request or any failure during setup.</p>
 </div>

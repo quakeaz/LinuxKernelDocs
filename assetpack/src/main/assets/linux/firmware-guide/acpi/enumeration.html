@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -174,8 +174,8 @@ possible we decided to do following:</p>
 platform devices.</p></li>
 <li><p>Devices behind real busses where there is a connector resource
 are represented as <a class="reference internal" href="../../driver-api/spi.html#c.spi_device" title="spi_device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">spi_device</span></code></a> or <a class="reference internal" href="../../driver-api/i2c.html#c.i2c_client" title="i2c_client"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i2c_client</span></code></a>. Note
-that standard UARTs are not busses so there is no struct uart_device,
-although some of them may be represented by struct serdev_device.</p></li>
+that standard UARTs are not busses so there is no <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">uart_device</span></code>,
+although some of them may be represented by <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">serdev_device</span></code>.</p></li>
 </ul>
 </div></blockquote>
 <p>As both ACPI and Device Tree represent a tree of devices (and their
@@ -224,33 +224,33 @@ without the platform firmware assistance, and devices that need to be described
 by the platform firmware so that they can be discovered.  Still, for any device
 known to the platform firmware, regardless of which category it falls into,
 there can be a corresponding ACPI device object in the ACPI Namespace in which
-case the Linux kernel will create a struct acpi_device object based on it for
+case the Linux kernel will create a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">acpi_device</span></code> object based on it for
 that device.</p>
-<p>Those struct acpi_device objects are never used for binding drivers to natively
+<p>Those <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">acpi_device</span></code> objects are never used for binding drivers to natively
 discoverable devices, because they are represented by other types of device
-objects (for example, struct pci_dev for PCI devices) that are bound to by
-device drivers (the corresponding struct acpi_device object is then used as
+objects (for example, <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pci_dev</span></code> for PCI devices) that are bound to by
+device drivers (the corresponding <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">acpi_device</span></code> object is then used as
 an additional source of information on the configuration of the given device).
-Moreover, the core ACPI device enumeration code creates struct platform_device
+Moreover, the core ACPI device enumeration code creates <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">platform_device</span></code>
 objects for the majority of devices that are discovered and enumerated with the
 help of the platform firmware and those platform device objects can be bound to
 by platform drivers in direct analogy with the natively enumerable devices
 case.  Therefore it is logically inconsistent and so generally invalid to bind
-drivers to struct acpi_device objects, including drivers for devices that are
+drivers to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">acpi_device</span></code> objects, including drivers for devices that are
 discovered with the help of the platform firmware.</p>
-<p>Historically, ACPI drivers that bound directly to struct acpi_device objects
+<p>Historically, ACPI drivers that bound directly to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">acpi_device</span></code> objects
 were implemented for some devices enumerated with the help of the platform
 firmware, but this is not recommended for any new drivers.  As explained above,
 platform device objects are created for those devices as a rule (with a few
 exceptions that are not relevant here) and so platform drivers should be used
 for handling them, even though the corresponding ACPI device objects are the
 only source of device configuration information in that case.</p>
-<p>For every device having a corresponding struct acpi_device object, the pointer
-to it is returned by the ACPI_COMPANION() macro, so it is always possible to
+<p>For every device having a corresponding <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">acpi_device</span></code> object, the pointer
+to it is returned by the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ACPI_COMPANION()</span></code> macro, so it is always possible to
 get to the device configuration information stored in the ACPI device object
-this way.  Accordingly, struct acpi_device can be regarded as a part of the
+this way.  Accordingly, <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">acpi_device</span></code> can be regarded as a part of the
 interface between the kernel and the ACPI Namespace, whereas device objects of
-other types (for example, struct pci_dev or struct platform_device) are used
+other types (for example, <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pci_dev</span></code> or <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">platform_device</span></code>) are used
 for interacting with the rest of the system.</p>
 </section>
 <section id="dma-support">
@@ -258,15 +258,15 @@ for interacting with the rest of the system.</p>
 <p>DMA controllers enumerated via ACPI should be registered in the system to
 provide generic access to their resources. For example, a driver that would
 like to be accessible to slave devices via generic API call
-dma_request_chan() must register itself at the end of the probe function like
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_request_chan()</span></code> must register itself at the end of the probe function like
 this:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>err = devm_acpi_dma_controller_register(dev, xlate_func, dw);
 /* Handle the error if it&#39;s not a case of !CONFIG_ACPI */
 </pre></div>
 </div>
-<p>and implement custom xlate function if needed (usually acpi_dma_simple_xlate()
-is enough) which converts the FixedDMA resource provided by struct
-acpi_dma_spec into the corresponding DMA channel. A piece of code for that case
+<p>and implement custom xlate function if needed (usually <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">acpi_dma_simple_xlate()</span></code>
+is enough) which converts the FixedDMA resource provided by <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">acpi_dma_spec</span></code> into the corresponding DMA channel. A piece of code for that case
 could look like:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>#ifdef CONFIG_ACPI
 struct filter_args {
@@ -299,11 +299,11 @@ static struct dma_chan *xlate_func(struct acpi_dma_spec *dma_spec,
 #endif
 </pre></div>
 </div>
-<p>dma_request_chan() will call xlate_func() for each registered DMA controller.
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_request_chan()</span></code> will call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xlate_func()</span></code> for each registered DMA controller.
 In the xlate function the proper channel must be chosen based on
-information in struct acpi_dma_spec and the properties of the controller
-provided by struct acpi_dma.</p>
-<p>Clients must call dma_request_chan() with the string parameter that corresponds
+information in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">acpi_dma_spec</span></code> and the properties of the controller
+provided by <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">acpi_dma</span></code>.</p>
+<p>Clients must call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_request_chan()</span></code> with the string parameter that corresponds
 to a specific FixedDMA resource. By default “tx” means the first entry of the
 FixedDMA resource array, “rx” means the second entry. The table below shows a
 layout:</p>
@@ -325,7 +325,7 @@ layout:</p>
 <p>So, the FixedDMA with request line 0x0018 is “tx” and next one is “rx” in
 this example.</p>
 <p>In robust cases the client unfortunately needs to call
-acpi_dma_request_slave_chan_by_index() directly and therefore choose the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">acpi_dma_request_slave_chan_by_index()</span></code> directly and therefore choose the
 specific FixedDMA resource by its index.</p>
 </section>
 <section id="named-interrupts">
@@ -333,7 +333,7 @@ specific FixedDMA resource by its index.</p>
 <p>Drivers enumerated via ACPI can have names to interrupts in the ACPI table
 which can be used to get the IRQ number in the driver.</p>
 <p>The interrupt name can be listed in _DSD as ‘interrupt-names’. The names
-should be listed as an array of strings which will map to the Interrupt()
+should be listed as an array of strings which will map to the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">Interrupt()</span></code>
 resource in the ACPI table corresponding to its index.</p>
 <p>The table below shows an example of its usage:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Device (DEV0) {
@@ -356,17 +356,17 @@ resource in the ACPI table corresponding to its index.</p>
 }
 </pre></div>
 </div>
-<p>The interrupt name ‘default’ will correspond to 0x20 in Interrupt()
-resource and ‘alert’ to 0x24. Note that only the Interrupt() resource
-is mapped and not GpioInt() or similar.</p>
-<p>The driver can call the function - fwnode_irq_get_byname() with the fwnode
+<p>The interrupt name ‘default’ will correspond to 0x20 in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">Interrupt()</span></code>
+resource and ‘alert’ to 0x24. Note that only the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">Interrupt()</span></code> resource
+is mapped and not <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">GpioInt()</span></code> or similar.</p>
+<p>The driver can call the function - <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fwnode_irq_get_byname()</span></code> with the fwnode
 and interrupt name as arguments to get the corresponding IRQ number.</p>
 </section>
 <section id="spi-serial-bus-support">
 <h2>SPI serial bus support<a class="headerlink" href="#spi-serial-bus-support" title="Link to this heading">¶</a></h2>
 <p>Slave devices behind SPI bus have SpiSerialBus resource attached to them.
 This is extracted automatically by the SPI core and the slave devices are
-enumerated once spi_register_master() is called by the bus driver.</p>
+enumerated once <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spi_register_master()</span></code> is called by the bus driver.</p>
 <p>Here is what the ACPI namespace for a SPI slave might look like:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Device (EEP0)
 {
@@ -421,7 +421,7 @@ eeprom, etc. This information can be passed via _DSD method like:</p>
 </pre></div>
 </div>
 <p>Then the at25 SPI driver can get this configuration by calling device property
-APIs during -&gt;probe() phase like:</p>
+APIs during -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> phase like:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>err = device_property_read_u32(dev, &quot;size&quot;, &amp;size);
 if (err)
         ...error handling...
@@ -600,7 +600,7 @@ we provide two ways:</p>
 </ul>
 </div></blockquote>
 <p>For the first case, the MFD drivers do not need to do anything. The
-resulting child platform device will have its ACPI_COMPANION() set to point
+resulting child platform device will have its <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ACPI_COMPANION()</span></code> set to point
 to the parent device.</p>
 <p>If the ACPI namespace has a device that we can match using an ACPI id or ACPI
 adr, the cell should be set like:</p>

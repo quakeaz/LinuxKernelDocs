@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -531,6 +531,15 @@ according to message purpose:</p>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_TSCONFIG_SET</span></code></p></td>
 <td><p>set hw timestamping configuration</p></td>
 </tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_RSS_SET</span></code></p></td>
+<td><p>set RSS settings</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_RSS_CREATE_ACT</span></code></p></td>
+<td><p>create an additional RSS context</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_RSS_DELETE_ACT</span></code></p></td>
+<td><p>delete an additional RSS context</p></td>
+</tr>
 </tbody>
 </table>
 </div></blockquote>
@@ -649,32 +658,50 @@ according to message purpose:</p>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_RSS_GET_REPLY</span></code></p></td>
 <td><p>RSS settings</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_PLCA_GET_CFG_REPLY</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_RSS_NTF</span></code></p></td>
+<td><p>RSS settings</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_PLCA_GET_CFG_REPLY</span></code></p></td>
 <td><p>PLCA RS parameters</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_PLCA_GET_STATUS_REPLY</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_PLCA_GET_STATUS_REPLY</span></code></p></td>
 <td><p>PLCA RS status</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_PLCA_NTF</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_PLCA_NTF</span></code></p></td>
 <td><p>PLCA RS parameters</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_MM_GET_REPLY</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_MM_GET_REPLY</span></code></p></td>
 <td><p>MAC merge layer status</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_MODULE_FW_FLASH_NTF</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_MODULE_FW_FLASH_NTF</span></code></p></td>
 <td><p>transceiver module flash updates</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_PHY_GET_REPLY</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_PHY_GET_REPLY</span></code></p></td>
 <td><p>Ethernet PHY information</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_PHY_NTF</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_PHY_NTF</span></code></p></td>
 <td><p>Ethernet PHY information change</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_TSCONFIG_GET_REPLY</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_TSCONFIG_GET_REPLY</span></code></p></td>
 <td><p>hw timestamping configuration</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_TSCONFIG_SET_REPLY</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_TSCONFIG_SET_REPLY</span></code></p></td>
 <td><p>new hw timestamping configuration</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_PSE_NTF</span></code></p></td>
+<td><p>PSE events notification</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_RSS_NTF</span></code></p></td>
+<td><p>RSS settings notification</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_RSS_CREATE_ACT_REPLY</span></code></p></td>
+<td><p>create an additional RSS context</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_RSS_CREATE_NTF</span></code></p></td>
+<td><p>additional RSS context created</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_RSS_DELETE_NTF</span></code></p></td>
+<td><p>additional RSS context deleted</p></td>
 </tr>
 </tbody>
 </table>
@@ -2222,22 +2249,25 @@ the statistics in the following structure:</p>
 </pre></div>
 </div>
 <p><strong>Members</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">src</span></code></dt><dd><p>input field denoting whether stats should be queried from the eMAC or
 pMAC (if the MM layer is supported). To be ignored otherwise.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">tx_pause_frames</span></code></dt><dd><p>transmitted pause frame count. Reported to user space
 as <code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_PAUSE_STAT_TX_FRAMES</span></code>.</p>
-<p>Equivalent to <cite>30.3.4.2 aPAUSEMACCtrlFramesTransmitted</cite>
-from the standard.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">rx_pause_frames</span></code></dt><dd><p>received pause frame count. Reported to user space
 as <code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_PAUSE_STAT_RX_FRAMES</span></code>. Equivalent to:</p>
-<p>Equivalent to <cite>30.3.4.3 aPAUSEMACCtrlFramesReceived</cite>
-from the standard.</p>
 </dd>
 </dl>
 </div>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Equivalent to <cite>30.3.4.2 aPAUSEMACCtrlFramesTransmitted</cite>
+from the standard.</p>
+<p>Equivalent to <cite>30.3.4.3 aPAUSEMACCtrlFramesReceived</cite>
+from the standard.</p>
+</div></blockquote>
 <p>Each member has a corresponding attribute defined.</p>
 </section>
 <section id="pause-set">
@@ -2874,14 +2904,12 @@ the array will be:</p>
 </pre></div>
 </div>
 <p><strong>Members</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">corrected_blocks</span></code></dt><dd><p>number of received blocks corrected by FEC
 Reported to user space as <code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_FEC_STAT_CORRECTED</span></code>.</p>
-<p>Equivalent to <cite>30.5.1.1.17 aFECCorrectedBlocks</cite> from the standard.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">uncorrectable_blocks</span></code></dt><dd><p>number of received blocks FEC was not able to correct
 Reported to user space as <code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_FEC_STAT_UNCORR</span></code>.</p>
-<p>Equivalent to <cite>30.5.1.1.18 aFECUncorrectableBlocks</cite> from the standard.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">corrected_bits</span></code></dt><dd><p>number of bits corrected by FEC
 Similar to <strong>corrected_blocks</strong> but counts individual bit changes,
@@ -2891,6 +2919,10 @@ Reported to user space as <code class="docutils literal notranslate"><span class
 </dl>
 </div>
 <p><strong>Description</strong></p>
+<blockquote>
+<div><p>Equivalent to <cite>30.5.1.1.17 aFECCorrectedBlocks</cite> from the standard.</p>
+<p>Equivalent to <cite>30.5.1.1.18 aFECUncorrectableBlocks</cite> from the standard.</p>
+</div></blockquote>
 <p>For each of the above fields, the two substructure members are:</p>
 <ul class="simple">
 <li><p><strong>lanes</strong>: per-lane/PCS-instance counts as defined by the standard</p></li>
@@ -3356,6 +3388,20 @@ limit of the PoE PSE.</p></td>
 <td><p>Supported power limit
 configuration ranges.</p></td>
 </tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_PSE_PW_D_ID</span></code></p></td>
+<td><p>u32</p></td>
+<td><p>Index of the PSE power domain</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_PSE_PRIO_MAX</span></code></p></td>
+<td><p>u32</p></td>
+<td><p>Priority maximum configurable
+on the PoE PSE</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_PSE_PRIO</span></code></p></td>
+<td><p>u32</p></td>
+<td><p>Priority of the PoE PSE
+currently configured</p></td>
+</tr>
 </tbody>
 </table>
 </div></blockquote>
@@ -3690,6 +3736,13 @@ identifies the C33 PSE power limit ranges through
 <code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_C33_PSE_PWR_VAL_LIMIT_RANGE_MAX</span></code>.
 If the controller works with fixed classes, the min and max values will be
 equal.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_PSE_PW_D_ID</span></code> attribute identifies the index of PSE power
+domain.</p>
+<p>When set, the optional <code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_PSE_PRIO_MAX</span></code> attribute identifies
+the PSE maximum priority value.
+When set, the optional <code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_PSE_PRIO</span></code> attributes is used to
+identifies the currently configured PSE priority.
+For a description of PSE priority attributes, see <code class="docutils literal notranslate"><span class="pre">PSE_SET</span></code>.</p>
 </section>
 <section id="pse-set">
 <h2>PSE_SET<a class="headerlink" href="#pse-set" title="Link to this heading">¶</a></h2>
@@ -3715,6 +3768,11 @@ equal.</p>
 <td><p>Control PoE PSE available
 power limit</p></td>
 </tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_PSE_PRIO</span></code></p></td>
+<td><p>u32</p></td>
+<td><p>Control priority of the
+PoE PSE</p></td>
+</tr>
 </tbody>
 </table>
 </div></blockquote>
@@ -3734,6 +3792,75 @@ power monitoring interfaces, which also use milliwatts, and to align with
 various existing products that document power consumption in watts rather than
 classes. If power limit configuration based on classes is needed, the
 conversion can be done in user space, for example by ethtool.</p>
+<p>When set, the optional <code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_PSE_PRIO</span></code> attributes is used to
+control the PSE priority. Allowed priority value are between zero and
+the value of <code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_PSE_PRIO_MAX</span></code> attribute.</p>
+<p>A lower value indicates a higher priority, meaning that a priority value
+of 0 corresponds to the highest port priority.
+Port priority serves two functions:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Power-up Order: After a reset, ports are powered up in order of their
+priority from highest to lowest. Ports with higher priority
+(lower values) power up first.</p></li>
+<li><p>Shutdown Order: When the power budget is exceeded, ports with lower
+priority (higher values) are turned off first.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="pse-ntf">
+<h2>PSE_NTF<a class="headerlink" href="#pse-ntf" title="Link to this heading">¶</a></h2>
+<p>Notify PSE events.</p>
+<p>Notification contents:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_PSE_HEADER</span></code></p></td>
+<td><p>nested</p></td>
+<td><p>request header</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_PSE_EVENTS</span></code></p></td>
+<td><p>bitset</p></td>
+<td><p>PSE events</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>When set, the optional <code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_PSE_EVENTS</span></code> attribute identifies the
+PSE events.</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.ethtool_pse_event">
+<span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ethtool_pse_event</span></span></span><a class="headerlink" href="#c.ethtool_pse_event" title="Link to this definition">¶</a><br /></dt>
+<dd><p>PSE event list for the PSE controller</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Constants</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">ETHTOOL_PSE_EVENT_OVER_CURRENT</span></code></dt><dd><p>PSE output current is too high</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ETHTOOL_PSE_EVENT_OVER_TEMP</span></code></dt><dd><p>PSE in over temperature state</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ETHTOOL_C33_PSE_EVENT_DETECTION</span></code></dt><dd><p>detection process occur on the PSE. IEEE
+802.3-2022 33.2.5 and 145.2.6 PSE detection of PDs. IEEE 802.3-202
+30.9.1.1.5 aPSEPowerDetectionStatus</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ETHTOOL_C33_PSE_EVENT_CLASSIFICATION</span></code></dt><dd><p>classification process occur on the
+PSE. IEEE 802.3-2022 33.2.6 and 145.2.8 classification of PDs mutual
+identification. IEEE 802.3-2022 30.9.1.1.8 aPSEPowerClassification.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ETHTOOL_C33_PSE_EVENT_DISCONNECTION</span></code></dt><dd><p>PD has been disconnected on the PSE.
+IEEE 802.3-2022 33.3.8 and 145.3.9 PD Maintain Power Signature. IEEE
+802.3-2022 33.5.1.2.9 MPS Absent. IEEE 802.3-2022 30.9.1.1.20
+aPSEMPSAbsentCounter.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ETHTOOL_PSE_EVENT_OVER_BUDGET</span></code></dt><dd><p>PSE turned off due to over budget situation</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ETHTOOL_PSE_EVENT_SW_PW_CONTROL_ERROR</span></code></dt><dd><p>PSE faced an error managing the
+power control from software</p>
+</dd>
+</dl>
+</div>
 </section>
 <section id="rss-get">
 <h2>RSS_GET<a class="headerlink" href="#rss-get" title="Link to this heading">¶</a></h2>
@@ -3789,6 +3916,10 @@ used to ignore context 0s and only dump additional contexts).</p>
 <td><p>u32</p></td>
 <td><p>RSS input data transformation</p></td>
 </tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_RSS_FLOW_HASH</span></code></p></td>
+<td><p>nested</p></td>
+<td><p>Header fields included in hash</p></td>
+</tr>
 </tbody>
 </table>
 <p>ETHTOOL_A_RSS_HFUNC attribute is bitmap indicating the hash function
@@ -3797,7 +3928,116 @@ ETHTOOL_A_RSS_INDIR attribute returns RSS indirection table where each byte
 indicates queue number.
 ETHTOOL_A_RSS_INPUT_XFRM attribute is a bitmap indicating the type of
 transformation applied to the input protocol fields before given to the RSS
-hfunc. Current supported options are symmetric-xor and symmetric-or-xor.</p>
+hfunc. Current supported options are symmetric-xor and symmetric-or-xor.
+ETHTOOL_A_RSS_FLOW_HASH carries per-flow type bitmask of which header
+fields are included in the hash calculation.</p>
+</section>
+<section id="rss-set">
+<h2>RSS_SET<a class="headerlink" href="#rss-set" title="Link to this heading">¶</a></h2>
+<p>Request contents:</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_RSS_HEADER</span></code></p></td>
+<td><p>nested</p></td>
+<td><p>request header</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_RSS_CONTEXT</span></code></p></td>
+<td><p>u32</p></td>
+<td><p>context number</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_RSS_HFUNC</span></code></p></td>
+<td><p>u32</p></td>
+<td><p>RSS hash func</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_RSS_INDIR</span></code></p></td>
+<td><p>binary</p></td>
+<td><p>Indir table bytes</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_RSS_HKEY</span></code></p></td>
+<td><p>binary</p></td>
+<td><p>Hash key bytes</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_RSS_INPUT_XFRM</span></code></p></td>
+<td><p>u32</p></td>
+<td><p>RSS input data transformation</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_RSS_FLOW_HASH</span></code></p></td>
+<td><p>nested</p></td>
+<td><p>Header fields included in hash</p></td>
+</tr>
+</tbody>
+</table>
+<p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_RSS_INDIR</span></code> is the minimal RSS table the user expects. Kernel and
+the device driver may replicate the table if its smaller than smallest table
+size supported by the device. For example if user requests <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1]</span></code> but the
+device needs at least 8 entries - the real table in use will end up being
+<code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">0,</span> <span class="pre">1,</span> <span class="pre">0,</span> <span class="pre">1,</span> <span class="pre">0,</span> <span class="pre">1]</span></code>. Most devices require the table size to be power
+of 2, so tables which size is not a power of 2 will likely be rejected.
+Using table of size 0 will reset the indirection table to the default.</p>
+</section>
+<section id="rss-create-act">
+<h2>RSS_CREATE_ACT<a class="headerlink" href="#rss-create-act" title="Link to this heading">¶</a></h2>
+<p>Request contents:</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_RSS_HEADER</span></code></p></td>
+<td><p>nested</p></td>
+<td><p>request header</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_RSS_CONTEXT</span></code></p></td>
+<td><p>u32</p></td>
+<td><p>context number</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_RSS_HFUNC</span></code></p></td>
+<td><p>u32</p></td>
+<td><p>RSS hash func</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_RSS_INDIR</span></code></p></td>
+<td><p>binary</p></td>
+<td><p>Indir table bytes</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_RSS_HKEY</span></code></p></td>
+<td><p>binary</p></td>
+<td><p>Hash key bytes</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_RSS_INPUT_XFRM</span></code></p></td>
+<td><p>u32</p></td>
+<td><p>RSS input data transformation</p></td>
+</tr>
+</tbody>
+</table>
+<p>Kernel response contents:</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_RSS_HEADER</span></code></p></td>
+<td><p>nested</p></td>
+<td><p>request header</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_RSS_CONTEXT</span></code></p></td>
+<td><p>u32</p></td>
+<td><p>context number</p></td>
+</tr>
+</tbody>
+</table>
+<p>Create an additional RSS context, if <code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_RSS_CONTEXT</span></code> is not
+specified kernel will allocate one automatically.</p>
+</section>
+<section id="rss-delete-act">
+<h2>RSS_DELETE_ACT<a class="headerlink" href="#rss-delete-act" title="Link to this heading">¶</a></h2>
+<p>Request contents:</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_RSS_HEADER</span></code></p></td>
+<td><p>nested</p></td>
+<td><p>request header</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_A_RSS_CONTEXT</span></code></p></td>
+<td><p>u32</p></td>
+<td><p>context number</p></td>
+</tr>
+</tbody>
+</table>
+<p>Delete an additional RSS context.</p>
 </section>
 <section id="plca-get-cfg">
 <h2>PLCA_GET_CFG<a class="headerlink" href="#plca-get-cfg" title="Link to this heading">¶</a></h2>
@@ -4487,7 +4727,7 @@ structure:</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.kernel_hwtstamp_config">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">kernel_hwtstamp_config</span></span></span><a class="headerlink" href="#c.kernel_hwtstamp_config" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Kernel copy of struct hwtstamp_config</p>
+<dd><p>Kernel copy of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hwtstamp_config</span></code></p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -4505,11 +4745,11 @@ structure:</p>
 </div>
 <p><strong>Members</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">flags</span></code></dt><dd><p>see struct hwtstamp_config</p>
+<dt><code class="docutils literal notranslate"><span class="pre">flags</span></code></dt><dd><p>see <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hwtstamp_config</span></code></p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">tx_type</span></code></dt><dd><p>see struct hwtstamp_config</p>
+<dt><code class="docutils literal notranslate"><span class="pre">tx_type</span></code></dt><dd><p>see <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hwtstamp_config</span></code></p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">rx_filter</span></code></dt><dd><p>see struct hwtstamp_config</p>
+<dt><code class="docutils literal notranslate"><span class="pre">rx_filter</span></code></dt><dd><p>see <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hwtstamp_config</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">ifr</span></code></dt><dd><p>pointer to ifreq structure from the original ioctl request, to pass to
 a legacy implementation of a lower driver</p>
@@ -4526,7 +4766,7 @@ an attached phylib PHY</p>
 </div>
 <p><strong>Description</strong></p>
 <p>Prefer using this structure for in-kernel processing of hardware
-timestamping configuration, over the inextensible struct hwtstamp_config
+timestamping configuration, over the inextensible <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hwtstamp_config</span></code>
 exposed to the <code class="docutils literal notranslate"><span class="pre">SIOCGHWTSTAMP</span></code> and <code class="docutils literal notranslate"><span class="pre">SIOCSHWTSTAMP</span></code> ioctl UAPI.</p>
 </section>
 <section id="tsconfig-set">
@@ -4724,10 +4964,10 @@ are netlink only.</p>
 <td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_PRIVFLAGS_SET</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_GRXFH</span></code></p></td>
-<td><p>n/a</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_RSS_GET</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_SRXFH</span></code></p></td>
-<td><p>n/a</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_RSS_SET</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_GGRO</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_FEATURES_GET</span></code></p></td>
@@ -4769,10 +5009,10 @@ are netlink only.</p>
 <td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_STRSET_GET</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_GRXFHINDIR</span></code></p></td>
-<td><p>n/a</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_RSS_GET</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_SRXFHINDIR</span></code></p></td>
-<td><p>n/a</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_RSS_SET</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_GFEATURES</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ETHTOOL_MSG_FEATURES_GET</span></code></p></td>

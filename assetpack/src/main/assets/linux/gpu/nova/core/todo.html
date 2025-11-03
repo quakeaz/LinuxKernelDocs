@@ -13,7 +13,7 @@
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Backlight support" href="../../backlight.html" />
+    <link rel="next" title="VBIOS" href="vbios.html" />
     <link rel="prev" title="Guidelines" href="guidelines.html" />
    
   <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -158,17 +158,19 @@ corresponding kernel APIs or subsystems. There are four different complexities,
 <li><p><code class="docutils literal notranslate"><span class="pre">Contact</span></code>: The person that can be contacted for further information about
 the task.</p></li>
 </ul>
+<p>A task might have <cite>[ABCD]</cite> code after its name. This code can be used to grep
+into the code for <cite>TODO</cite> entries related to it.</p>
 <section id="enablement-rust">
 <h2>Enablement (Rust)<a class="headerlink" href="#enablement-rust" title="Link to this heading">¶</a></h2>
 <p>Tasks that are not directly related to nova-core, but are preconditions in terms
 of required APIs.</p>
-<section id="fromprimitive-api">
-<h3>FromPrimitive API<a class="headerlink" href="#fromprimitive-api" title="Link to this heading">¶</a></h3>
-<p>Sometimes the need arises to convert a number to a value of an enum or a
+<section id="fromprimitive-api-fpri">
+<h3>FromPrimitive API [FPRI]<a class="headerlink" href="#fromprimitive-api-fpri" title="Link to this heading">¶</a></h3>
+<p>Sometimes the need arises to convert a number to a value of an <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">or</span></code> a
 structure.</p>
-<p>A good example from nova-core would be the <code class="docutils literal notranslate"><span class="pre">Chipset</span></code> enum type, which defines
+<p>A good example from nova-core would be the <code class="docutils literal notranslate"><span class="pre">Chipset</span></code> <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">type</span></code>, which defines
 the value <code class="docutils literal notranslate"><span class="pre">AD102</span></code>. When probing the GPU the value <code class="docutils literal notranslate"><span class="pre">0x192</span></code> can be read from a
-certain register indication the chipset AD102. Hence, the enum value <code class="docutils literal notranslate"><span class="pre">AD102</span></code>
+certain register indication the chipset AD102. Hence, the <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">value</span></code> <code class="docutils literal notranslate"><span class="pre">AD102</span></code>
 should be derived from the number <code class="docutils literal notranslate"><span class="pre">0x192</span></code>. Currently, nova-core uses a custom
 implementation (<code class="docutils literal notranslate"><span class="pre">Chipset::from_u32</span></code> for this.</p>
 <p>Instead, it would be desirable to have something like the <code class="docutils literal notranslate"><span class="pre">FromPrimitive</span></code>
@@ -180,8 +182,27 @@ automatically generates the corresponding mappings between a value and a number.
 <div class="line">Link: <a class="reference external" href="https://docs.rs/num/latest/num/trait.FromPrimitive.html">https://docs.rs/num/latest/num/trait.FromPrimitive.html</a></div>
 </div>
 </section>
-<section id="generic-register-abstraction">
-<h3>Generic register abstraction<a class="headerlink" href="#generic-register-abstraction" title="Link to this heading">¶</a></h3>
+<section id="conversion-from-byte-slices-for-types-implementing-frombytes-trsm">
+<h3>Conversion from byte slices for types implementing FromBytes [TRSM]<a class="headerlink" href="#conversion-from-byte-slices-for-types-implementing-frombytes-trsm" title="Link to this heading">¶</a></h3>
+<p>We retrieve several structures from byte streams coming from the BIOS or loaded
+firmware. At the moment converting the bytes slice into the proper type require
+an inelegant <cite>unsafe</cite> operation; this will go away once <cite>FromBytes</cite> implements
+a proper <cite>from_bytes</cite> method.</p>
+<div class="line-block">
+<div class="line">Complexity: Beginner</div>
+</div>
+</section>
+<section id="coherentallocation-improvements-coha">
+<h3>CoherentAllocation improvements [COHA]<a class="headerlink" href="#coherentallocation-improvements-coha" title="Link to this heading">¶</a></h3>
+<p><cite>CoherentAllocation</cite> needs a safe way to write into the allocation, and to
+obtain slices within the allocation.</p>
+<div class="line-block">
+<div class="line">Complexity: Beginner</div>
+<div class="line">Contact: Abdiel Janulgue</div>
+</div>
+</section>
+<section id="generic-register-abstraction-rega">
+<h3>Generic register abstraction [REGA]<a class="headerlink" href="#generic-register-abstraction-rega" title="Link to this heading">¶</a></h3>
 <p>Work out how register constants and structures can be automatically generated
 through generalized macros.</p>
 <p>Example:</p>
@@ -233,19 +254,43 @@ through generalized macros.</p>
 <span class="n">pr_info</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;Revision: {}</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">boot0</span><span class="p">.</span><span class="n">revision</span><span class="p">());</span>
 </pre></div>
 </div>
-<p>Note: a work-in-progress implementation currently resides in
+<p>A work-in-progress implementation currently resides in
 <cite>drivers/gpu/nova-core/regs/macros.rs</cite> and is used in nova-core. It would be
 nice to improve it (possibly using proc macros) and move it to the <cite>kernel</cite>
 crate so it can be used by other components as well.</p>
+<p>Features desired before this happens:</p>
+<ul class="simple">
+<li><p>Relative register with build-time base address validation,</p></li>
+<li><p>Arrays of registers with build-time index validation,</p></li>
+<li><p>Make I/O optional I/O (for field values that are not registers),</p></li>
+<li><p>Support other sizes than <cite>u32</cite>,</p></li>
+<li><p>Allow visibility control for registers and individual fields,</p></li>
+<li><p>Use Rust slice syntax to express fields ranges.</p></li>
+</ul>
 <div class="line-block">
 <div class="line">Complexity: Advanced</div>
 <div class="line">Contact: Alexandre Courbot</div>
 </div>
 </section>
-<section id="delay-sleep-abstractions">
-<h3>Delay / Sleep abstractions<a class="headerlink" href="#delay-sleep-abstractions" title="Link to this heading">¶</a></h3>
-<p>Rust abstractions for the kernel’s delay() and sleep() functions.</p>
-<p>FUJITA Tomonori plans to work on abstractions for read_poll_timeout_atomic()
+<section id="numerical-operations-numm">
+<h3>Numerical operations [NUMM]<a class="headerlink" href="#numerical-operations-numm" title="Link to this heading">¶</a></h3>
+<p>Nova uses integer operations that are not part of the standard library (or not
+implemented in an optimized way for the kernel). These include:</p>
+<ul class="simple">
+<li><p>Aligning up and down to a power of two,</p></li>
+<li><p>The “Find Last Set Bit” (<cite>fls</cite> function of the C part of the kernel)
+operation.</p></li>
+</ul>
+<p>A <cite>num</cite> core kernel module is being designed to provide these operations.</p>
+<div class="line-block">
+<div class="line">Complexity: Intermediate</div>
+<div class="line">Contact: Alexandre Courbot</div>
+</div>
+</section>
+<section id="delay-sleep-abstractions-dlay">
+<h3>Delay / Sleep abstractions [DLAY]<a class="headerlink" href="#delay-sleep-abstractions-dlay" title="Link to this heading">¶</a></h3>
+<p>Rust abstractions for the kernel’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">delay()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sleep()</span></code> functions.</p>
+<p>FUJITA Tomonori plans to work on abstractions for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">read_poll_timeout_atomic()</span></code>
 (and friends) [1].</p>
 <div class="line-block">
 <div class="line">Complexity: Beginner</div>
@@ -286,17 +331,6 @@ mailing list yet.</p>
 <div class="line">Contact: Abdiel Janulgue</div>
 </div>
 </section>
-<section id="elf-utils">
-<h3>ELF utils<a class="headerlink" href="#elf-utils" title="Link to this heading">¶</a></h3>
-<p>Rust implementation of ELF header representation to retrieve section header
-tables, names, and data from an ELF-formatted images.</p>
-<p>There is preceding work from Abdiel Janulgue, which hasn’t made it to the
-mailing list yet.</p>
-<div class="line-block">
-<div class="line">Complexity: Beginner</div>
-<div class="line">Contact: Abdiel Janulgue</div>
-</div>
-</section>
 <section id="pci-misc-apis">
 <h3>PCI MISC APIs<a class="headerlink" href="#pci-misc-apis" title="Link to this heading">¶</a></h3>
 <p>Extend the existing PCI device / driver abstractions by SR-IOV, config space,
@@ -305,10 +339,10 @@ capability, MSI API abstractions.</p>
 <div class="line">Complexity: Beginner</div>
 </div>
 </section>
-<section id="auxiliary-bus-abstractions">
-<h3>Auxiliary bus abstractions<a class="headerlink" href="#auxiliary-bus-abstractions" title="Link to this heading">¶</a></h3>
-<p>Rust abstraction for the auxiliary bus APIs.</p>
-<p>This is needed to connect nova-core to the nova-drm driver.</p>
+<section id="xarray-bindings-xarr">
+<h3>XArray bindings [XARR]<a class="headerlink" href="#xarray-bindings-xarr" title="Link to this heading">¶</a></h3>
+<p>We need bindings for <cite>xa_alloc</cite>/<cite>xa_alloc_cyclic</cite> in order to generate the
+auxiliary device IDs.</p>
 <div class="line-block">
 <div class="line">Complexity: Intermediate</div>
 </div>
@@ -341,15 +375,6 @@ capability, MSI API abstractions.</p>
 <div class="line">Contact: Abdiel Janulgue</div>
 </div>
 </section>
-<section id="vbios-support">
-<h3>vBIOS support<a class="headerlink" href="#vbios-support" title="Link to this heading">¶</a></h3>
-<p>Parse the vBIOS and probe the structures required for driver initialization.</p>
-<div class="line-block">
-<div class="line">Contact: Dave Airlie</div>
-<div class="line">Reference: Vec extensions</div>
-<div class="line">Complexity: Intermediate</div>
-</div>
-</section>
 <section id="initial-devinit-support">
 <h3>Initial Devinit support<a class="headerlink" href="#initial-devinit-support" title="Link to this heading">¶</a></h3>
 <p>Implement BIOS Device Initialization, i.e. memory sizing, waiting, PLL
@@ -357,23 +382,6 @@ configuration.</p>
 <div class="line-block">
 <div class="line">Contact: Dave Airlie</div>
 <div class="line">Complexity: Beginner</div>
-</div>
-</section>
-<section id="boot-falcon-controller">
-<h3>Boot Falcon controller<a class="headerlink" href="#boot-falcon-controller" title="Link to this heading">¶</a></h3>
-<p>Infrastructure to load and execute falcon (sec2) firmware images; handle the
-GSP falcon processor and fwsec loading.</p>
-<div class="line-block">
-<div class="line">Complexity: Advanced</div>
-<div class="line">Contact: Dave Airlie</div>
-</div>
-</section>
-<section id="gpu-timer-support">
-<h3>GPU Timer support<a class="headerlink" href="#gpu-timer-support" title="Link to this heading">¶</a></h3>
-<p>Support for the GPU’s internal timer peripheral.</p>
-<div class="line-block">
-<div class="line">Complexity: Beginner</div>
-<div class="line">Contact: Dave Airlie</div>
 </div>
 </section>
 <section id="mmu-pt-management">

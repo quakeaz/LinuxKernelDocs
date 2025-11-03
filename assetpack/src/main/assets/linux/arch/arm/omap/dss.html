@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -228,7 +228,7 @@ VESA video timing). The audio_supported function is intended to query whether
 the current configuration of the display supports audio.</p>
 <p>The audio_config function is intended to configure all the relevant audio
 parameters of the display. In order to make the function independent of any
-specific DSS device driver, a struct omap_dss_audio is defined. Its purpose
+specific DSS device driver, a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">omap_dss_audio</span></code> is defined. Its purpose
 is to contain all the required parameters for audio configuration. At the
 moment, such structure contains pointers to IEC-60958 channel status word
 and CEA-861 audio infoframe structures. This should be enough to support
@@ -243,7 +243,7 @@ called only after all the needed resources for audio playback (audio FIFOs,
 DMA channels, companion chips, etc) have been enabled to begin data transfers.
 audio_stop is designed to only stop the audio transfers. The resources used
 for playback are released using audio_disable.</p>
-<p>The enum omap_dss_audio_state may be used to help the implementations of
+<p>The <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">omap_dss_audio_state</span></code> may be used to help the implementations of
 the interface to keep track of the audio state. The initial state is _DISABLED;
 then, the state transitions to _CONFIGURED, and then, when it is ready to
 play audio, to _ENABLED. The state _PLAYING is used when the audio is being
@@ -530,7 +530,7 @@ kernel config.</p></li>
 <p>DSS locking</p>
 <p>Error checking</p>
 <ul class="simple">
-<li><p>Lots of checks are missing or implemented just as BUG()</p></li>
+<li><p>Lots of checks are missing or implemented just as <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">BUG()</span></code></p></li>
 </ul>
 <p>System DMA update for DSI</p>
 <ul class="simple">

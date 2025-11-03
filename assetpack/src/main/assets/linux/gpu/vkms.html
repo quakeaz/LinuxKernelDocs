@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -231,6 +231,16 @@ sudo IGT_DEVICE=&quot;sys:/sys/devices/platform/vkms&quot; ./build/tests/kms_fli
 </pre></div>
 </div>
 </section>
+<section id="testing-with-kunit">
+<h2>Testing With KUnit<a class="headerlink" href="#testing-with-kunit" title="Link to this heading">¶</a></h2>
+<p>KUnit (Kernel unit testing framework) provides a common framework for unit tests
+within the Linux kernel.
+More information in <a class="reference internal" href="../dev-tools/kunit/index.html"><span class="doc">KUnit - Linux Kernel Unit Testing</span></a> .</p>
+<p>To run the VKMS KUnit tests:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>tools/testing/kunit/kunit.py run --kunitconfig=drivers/gpu/drm/vkms/tests
+</pre></div>
+</div>
+</section>
 <section id="todo">
 <h2>TODO<a class="headerlink" href="#todo" title="Link to this heading">¶</a></h2>
 <p>If you want to do any of the items listed below, please share your interest
@@ -259,8 +269,8 @@ multiple scenarios.</p></li>
 <ul class="simple">
 <li><p>Add background color KMS property[Good to get started].</p></li>
 <li><p>Scaling.</p></li>
-<li><p>Additional buffer formats, especially YUV formats for video like NV12.
-Low/high bpp RGB formats would also be interesting.</p></li>
+<li><p>Additional buffer formats. Low/high bpp RGB formats would be interesting
+[Good to get started].</p></li>
 <li><p>Async updates (currently only possible on cursor plane using the legacy
 cursor api).</p></li>
 </ul>

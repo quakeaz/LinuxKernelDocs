@@ -34,7 +34,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -172,12 +172,12 @@ FLATMEM and SPARSEMEM. Each architecture defines what
 memory models it supports, what the default memory model is and
 whether it is possible to manually override that default.</p>
 <p>All the memory models track the status of physical page frames using
-struct page arranged in one or more arrays.</p>
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code> arranged in one or more arrays.</p>
 <p>Regardless of the selected memory model, there exists one-to-one
 mapping between the physical page frame number (PFN) and the
-corresponding <cite>struct page</cite>.</p>
+corresponding <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code></cite>.</p>
 <p>Each memory model defines <code class="xref c c-func docutils literal notranslate"><span class="pre">pfn_to_page()</span></code> and <code class="xref c c-func docutils literal notranslate"><span class="pre">page_to_pfn()</span></code>
-helpers that allow the conversion from PFN to <cite>struct page</cite> and vice
+helpers that allow the conversion from PFN to <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code></cite> and vice
 versa.</p>
 <section id="flatmem">
 <h2>FLATMEM<a class="headerlink" href="#flatmem" title="Link to this heading">¶</a></h2>
@@ -186,7 +186,7 @@ non-NUMA systems with contiguous, or mostly contiguous, physical
 memory.</p>
 <p>In the FLATMEM memory model, there is a global <cite>mem_map</cite> array that
 maps the entire physical memory. For most architectures, the holes
-have entries in the <cite>mem_map</cite> array. The <cite>struct page</cite> objects
+have entries in the <cite>mem_map</cite> array. The <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code></cite> objects
 corresponding to the holes are never fully initialized.</p>
 <p>To allocate the <cite>mem_map</cite> array, architecture specific setup code should
 call <code class="xref c c-func docutils literal notranslate"><span class="pre">free_area_init()</span></code> function. Yet, the mappings array is not
@@ -196,7 +196,7 @@ memory to the page allocator.</p>
 actual physical pages. In such case, the architecture specific
 <a class="reference internal" href="../core-api/mm-api.html#c.pfn_valid" title="pfn_valid"><code class="xref c c-func docutils literal notranslate"><span class="pre">pfn_valid()</span></code></a> implementation should take the holes in the
 <cite>mem_map</cite> into account.</p>
-<p>With FLATMEM, the conversion between a PFN and the <cite>struct page</cite> is
+<p>With FLATMEM, the conversion between a PFN and the <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code></cite> is
 straightforward: <cite>PFN - ARCH_PFN_OFFSET</cite> is an index to the
 <cite>mem_map</cite> array.</p>
 <p>The <cite>ARCH_PFN_OFFSET</cite> defines the first page frame number for
@@ -210,9 +210,9 @@ as hot-plug and hot-remove of the physical memory, alternative memory
 maps for non-volatile memory devices and deferred initialization of
 the memory map for larger systems.</p>
 <p>The SPARSEMEM model presents the physical memory as a collection of
-sections. A section is represented with struct mem_section
+sections. A section is represented with <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">mem_section</span></code>
 that contains <cite>section_mem_map</cite> that is, logically, a pointer to an
-array of struct pages. However, it is stored with some other magic
+array of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pages</span></code>. However, it is stored with some other magic
 that aids the sections management. The section size and maximal number
 of section is specified using <cite>SECTION_SIZE_BITS</cite> and
 <cite>MAX_PHYSMEM_BITS</cite> constants defined by each architecture that
@@ -236,20 +236,20 @@ array is dynamically allocated. Each row contains PAGE_SIZE worth of
 <cite>mem_section</cite> objects and the number of rows is calculated to fit
 all the memory sections.</p></li>
 </ul>
-<p>The architecture setup code should call sparse_init() to
+<p>The architecture setup code should call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sparse_init()</span></code> to
 initialize the memory sections and the memory maps.</p>
 <p>With SPARSEMEM there are two possible ways to convert a PFN to the
-corresponding <cite>struct page</cite> - a “classic sparse” and “sparse
+corresponding <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code></cite> - a “classic sparse” and “sparse
 vmemmap”. The selection is made at build time and it is determined by
 the value of <cite>CONFIG_SPARSEMEM_VMEMMAP</cite>.</p>
 <p>The classic sparse encodes the section number of a page in page-&gt;flags
 and uses high bits of a PFN to access the section that maps that page
 frame. Inside a section, the PFN is the index to the array of pages.</p>
 <p>The sparse vmemmap uses a virtually mapped memory map to optimize
-pfn_to_page and page_to_pfn operations. There is a global <cite>struct
-page *vmemmap</cite> pointer that points to a virtually contiguous array of
-<cite>struct page</cite> objects. A PFN is an index to that array and the
-offset of the <cite>struct page</cite> from <cite>vmemmap</cite> is the PFN of that
+pfn_to_page and page_to_pfn operations. There is a global <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">page</span></code> *vmemmap</cite> pointer that points to a virtually contiguous array of
+<cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code></cite> objects. A PFN is an index to that array and the
+offset of the <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code></cite> from <cite>vmemmap</cite> is the PFN of that
 page.</p>
 <p>To use vmemmap, an architecture has to reserve a range of virtual
 addresses that will map the physical pages containing the memory
@@ -260,18 +260,18 @@ virtual memory map. If an architecture does not have any special
 requirements for the vmemmap mappings, it can use default
 <code class="xref c c-func docutils literal notranslate"><span class="pre">vmemmap_populate_basepages()</span></code> provided by the generic memory
 management.</p>
-<p>The virtually mapped memory map allows storing <cite>struct page</cite> objects
+<p>The virtually mapped memory map allows storing <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code></cite> objects
 for persistent memory devices in pre-allocated storage on those
-devices. This storage is represented with struct vmem_altmap
-that is eventually passed to vmemmap_populate() through a long chain
-of function calls. The vmemmap_populate() implementation may use the
+devices. This storage is represented with <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">vmem_altmap</span></code>
+that is eventually passed to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vmemmap_populate()</span></code> through a long chain
+of function calls. The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vmemmap_populate()</span></code> implementation may use the
 <cite>vmem_altmap</cite> along with <code class="xref c c-func docutils literal notranslate"><span class="pre">vmemmap_alloc_block_buf()</span></code> helper to
 allocate memory map on the persistent memory device.</p>
 </section>
 <section id="zone-device">
 <h2>ZONE_DEVICE<a class="headerlink" href="#zone-device" title="Link to this heading">¶</a></h2>
 <p>The <cite>ZONE_DEVICE</cite> facility builds upon <cite>SPARSEMEM_VMEMMAP</cite> to offer
-<cite>struct page</cite> <cite>mem_map</cite> services for device driver identified physical
+<cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code></cite> <cite>mem_map</cite> services for device driver identified physical
 address ranges. The “device” aspect of <cite>ZONE_DEVICE</cite> relates to the fact
 that the page objects for these address ranges are never marked online,
 and that a reference must be taken against the device, not just the page
@@ -280,7 +280,7 @@ to keep the memory pinned for active use. <cite>ZONE_DEVICE</cite>, via
 turn on <code class="xref c c-func docutils literal notranslate"><span class="pre">pfn_to_page()</span></code>, <code class="xref c c-func docutils literal notranslate"><span class="pre">page_to_pfn()</span></code>, and
 <code class="xref c c-func docutils literal notranslate"><span class="pre">get_user_pages()</span></code> service for the given range of pfns. Since the
 page reference count never drops below 1 the page is never tracked as
-free memory and the page’s <cite>struct list_head lru</cite> space is repurposed
+free memory and the page’s <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">list_head</span></code> lru</cite> space is repurposed
 for back referencing to the host device / driver that mapped the memory.</p>
 <p>While <cite>SPARSEMEM</cite> presents memory as a collection of sections,
 optionally collected into memory blocks, <cite>ZONE_DEVICE</cite> users have a need
@@ -296,11 +296,11 @@ common alignment granularity for <a class="reference internal" href="../core-api
 <ul class="simple">
 <li><p>pmem: Map platform persistent memory to be used as a direct-I/O target
 via DAX mappings.</p></li>
-<li><p>hmm: Extend <cite>ZONE_DEVICE</cite> with <cite>-&gt;page_fault()</cite> and <cite>-&gt;page_free()</cite>
+<li><p>hmm: Extend <cite>ZONE_DEVICE</cite> with <cite>-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">page_fault()</span></code></cite> and <cite>-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">page_free()</span></code></cite>
 event callbacks to allow a device-driver to coordinate memory management
 events related to device-memory, typically GPU memory. See
 <a class="reference internal" href="hmm.html"><span class="doc">Heterogeneous Memory Management (HMM)</span></a>.</p></li>
-<li><p>p2pdma: Create <cite>struct page</cite> objects to allow peer devices in a
+<li><p>p2pdma: Create <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code></cite> objects to allow peer devices in a
 PCI/-E topology to coordinate direct-DMA operations between themselves,
 i.e. bypass host memory.</p></li>
 </ul>

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -261,7 +261,7 @@ the same way as in capturing described in the previous paragraph:</p>
 </pre></div>
 </div>
 <p>The protocol can optionally be 0 in case we only want to transmit
-via this socket, which avoids an expensive call to packet_rcv().
+via this socket, which avoids an expensive call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">packet_rcv()</span></code>.
 In this case, you also need to bind(2) the TX_RING with sll_protocol = 0
 set. Otherwise, htons(ETH_P_ALL) or any other protocol, for example.</p>
 <p>Binding the socket to your network interface is mandatory (with zero copy) to
@@ -314,7 +314,7 @@ the beginning of the user data will be at:</p>
 <p>If you wish to put user data at a custom offset from the beginning of
 the frame (for payload alignment with SOCK_RAW mode for instance) you
 can set tp_net (with SOCK_DGRAM) or tp_mac (with SOCK_RAW). In order
-to make this work it must be enabled previously with setsockopt()
+to make this work it must be enabled previously with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setsockopt()</span></code>
 and the PACKET_TX_HAS_OFF option.</p>
 </section>
 <section id="packet-mmap-settings">
@@ -392,7 +392,7 @@ the PACKET_MMAP buffer could hold only 32768 frames in a 32 bit architecture or
 <section id="block-size-limit">
 <h3>Block size limit<a class="headerlink" href="#block-size-limit" title="Link to this heading">¶</a></h3>
 <p>As stated earlier, each block is a contiguous physical region of memory. These
-memory regions are allocated with calls to the __get_free_pages() function. As
+memory regions are allocated with calls to the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__get_free_pages()</span></code> function. As
 the name indicates, this function allocates pages of memory, and the second
 argument is “order” or a power of two number of pages, that is
 (for PAGE_SIZE == 4096) order=0 ==&gt; 4096 bytes, order=1 ==&gt; 8192 bytes,
@@ -506,7 +506,7 @@ the necessary memory, so normally limits can be reached.</p>
 <h3>Other constraints<a class="headerlink" href="#other-constraints" title="Link to this heading">¶</a></h3>
 <p>If you check the source code you will see that what I draw here as a frame
 is not only the link level frame. At the beginning of each frame there is a
-header called struct tpacket_hdr used in PACKET_MMAP to hold link level’s frame
+header called <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">tpacket_hdr</span></code> used in PACKET_MMAP to hold link level’s frame
 meta information like timestamp. So what we draw here a frame it’s really
 the following (from include/linux/if_packet.h):</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>/*
@@ -563,7 +563,7 @@ tx_ring = rx_ring + size;
 <p>RX must be the first as the kernel maps the TX ring memory right
 after the RX one.</p>
 <p>At the beginning of each frame there is an status field (see
-struct tpacket_hdr). If this field is 0 means that the frame is ready
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">tpacket_hdr</span></code>). If this field is 0 means that the frame is ready
 to be used for the kernel, If not, there is a frame the user can read
 and the following flags apply:</p>
 <section id="capture-process">
@@ -581,9 +581,9 @@ and the following flags apply:</p>
 <td><p>This flag indicates that the frame (and associated
 meta information) has been truncated because it’s
 larger than tp_frame_size. This packet can be
-read entirely with recvfrom().</p>
+read entirely with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recvfrom()</span></code>.</p>
 <p>In order to make this work it must to be
-enabled previously with setsockopt() and
+enabled previously with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setsockopt()</span></code> and
 the PACKET_COPY_THRESH option.</p>
 <p>The number of frames that can be buffered to
 be read with recvfrom is limited like a normal socket.
@@ -592,7 +592,7 @@ See the SO_RCVBUF option in the socket (7) man page.</p>
 </tr>
 <tr class="row-even"><td><p>TP_STATUS_LOSING</p></td>
 <td><p>indicates there were packet drops from last time
-statistics where checked with getsockopt() and
+statistics where checked with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">getsockopt()</span></code> and
 the PACKET_STATISTICS option.</p></td>
 </tr>
 <tr class="row-odd"><td><p>TP_STATUS_CSUMNOTREADY</p></td>
@@ -648,7 +648,7 @@ then poll for frames.</p>
 packet, the user fills a data buffer of an available frame, sets tp_len to
 current data buffer size and sets its status field to TP_STATUS_SEND_REQUEST.
 This can be done on multiple frames. Once the user is ready to transmit, it
-calls send(). Then all buffers with status equal to TP_STATUS_SEND_REQUEST are
+calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">send()</span></code>. Then all buffers with status equal to TP_STATUS_SEND_REQUEST are
 forwarded to the network device. The kernel updates each status of sent
 frames with TP_STATUS_SENDING until the end of transfer.</p>
 <p>At the end of each transfer, buffer status returns to TP_STATUS_AVAILABLE.</p>
@@ -704,7 +704,7 @@ indicates that the tp_vlan_tpid field has valid VLAN TPID value</p></li>
 <li><p>How to switch to TPACKET_V2:</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li><p>Replace struct tpacket_hdr by struct tpacket2_hdr</p></li>
+<li><p>Replace <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">tpacket_hdr</span></code> by <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">tpacket2_hdr</span></code></p></li>
 <li><p>Query header len and save</p></li>
 <li><p>Set protocol version to 2, set up ring as usual</p></li>
 <li><p>For getting the sockaddr_ll,
@@ -1194,7 +1194,7 @@ RX_RING, if neither is set (i.e. PACKET_TIMESTAMP is not set), then a
 software fallback was invoked <em>within</em> PF_PACKET’s processing code (less
 precise).</p>
 <p>Getting timestamps for the TX_RING works as follows: i) fill the ring frames,
-ii) call sendto() e.g. in blocking mode, iii) wait for status of relevant
+ii) call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sendto()</span></code> e.g. in blocking mode, iii) wait for status of relevant
 frames to be updated resp. the frame handed over to the application, iv) walk
 through the frames to pick up the individual hw/sw timestamps.</p>
 <p>Only (!) if transmit timestamping is enabled, then these bits are combined

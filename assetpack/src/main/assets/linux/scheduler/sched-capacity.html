@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -193,7 +193,7 @@ per Hz, leading to:</p>
 <p>Two different capacity values are used within the scheduler. A CPU’s
 <code class="docutils literal notranslate"><span class="pre">original</span> <span class="pre">capacity</span></code> is its maximum attainable capacity, i.e. its maximum
 attainable performance level. This original capacity is returned by
-the function arch_scale_cpu_capacity(). A CPU’s <code class="docutils literal notranslate"><span class="pre">capacity</span></code> is its <code class="docutils literal notranslate"><span class="pre">original</span>
+the function <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">arch_scale_cpu_capacity()</span></code>. A CPU’s <code class="docutils literal notranslate"><span class="pre">capacity</span></code> is its <code class="docutils literal notranslate"><span class="pre">original</span>
 <span class="pre">capacity</span></code> to which some loss of available performance (e.g. time spent
 handling IRQs) is subtracted.</p>
 <p>Note that a CPU’s <code class="docutils literal notranslate"><span class="pre">capacity</span></code> is solely intended to be used by the CFS class,
@@ -238,7 +238,7 @@ CPU0, and thus only completes W/2 in T.</p>
 <section id="different-max-opps">
 <h4>1.3.2 Different max OPPs<a class="headerlink" href="#different-max-opps" title="Link to this heading">¶</a></h4>
 <p>Usually, CPUs of different capacity values also have different maximum
-OPPs. Consider the same CPUs as above (i.e. same work_per_hz()) with:</p>
+OPPs. Consider the same CPUs as above (i.e. same <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">work_per_hz()</span></code>) with:</p>
 <ul class="simple">
 <li><p>max_freq(CPU0) = F</p></li>
 <li><p>max_freq(CPU1) = 2/3 * F</p></li>
@@ -392,7 +392,7 @@ will only ever be able to use an estimator thereof.</p>
 <section id="id2">
 <h3>3.1 CPU capacity<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h3>
 <p>Linux cannot currently figure out CPU capacity on its own, this information thus
-needs to be handed to it. Architectures must define arch_scale_cpu_capacity()
+needs to be handed to it. Architectures must define <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">arch_scale_cpu_capacity()</span></code>
 for that purpose.</p>
 <p>The arm, arm64, and RISC-V architectures directly map this to the arch_topology driver
 CPU scaling data, which is derived from the capacity-dmips-mhz CPU binding; see
@@ -473,9 +473,9 @@ CPU or group thereof)</p></li>
 task “fits” on its CPU. If it is violated, the task will need to achieve more
 work than what its CPU can provide: it will be CPU-bound.</p>
 <p>Furthermore, uclamp lets userspace specify a minimum and a maximum utilization
-value for a task, either via sched_setattr() or via the cgroup interface (see
+value for a task, either via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sched_setattr()</span></code> or via the cgroup interface (see
 <a class="reference internal" href="../admin-guide/cgroup-v2.html"><span class="doc">Control Group v2</span></a>). As its name imply, this can be used to
-clamp task_util() in the previous criterion.</p>
+clamp <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">task_util()</span></code> in the previous criterion.</p>
 </section>
 <section id="wakeup-cpu-selection">
 <h4>5.1.2 Wakeup CPU selection<a class="headerlink" href="#wakeup-cpu-selection" title="Link to this heading">¶</a></h4>

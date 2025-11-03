@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -164,7 +164,7 @@ parameters can also be handled.</p></li>
 <li><p>Destroy the context.</p></li>
 </ol>
 </div></blockquote>
-<p>To support this, the file_system_type struct gains two new fields:</p>
+<p>To support this, the file_system_type <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">gains</span></code> two new fields:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int (*init_fs_context)(struct fs_context *fc);
 const struct fs_parameter_description *parameters;
 </pre></div>
@@ -207,7 +207,7 @@ context.  This is represented by the fs_context structure:</p>
 </pre></div>
 </div>
 <p>These are operations that can be done on a filesystem context (see
-below).  This must be set by the -&gt;init_fs_context() file_system_type
+below).  This must be set by the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init_fs_context()</span></code> file_system_type
 operation.</p>
 </li>
 <li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct file_system_type *fs_type
@@ -226,7 +226,7 @@ will need to store any options it parses.</p>
 </pre></div>
 </div>
 <p>A pointer to the root of the mountable tree (and indirectly, the
-superblock thereof).  This is filled in by the -&gt;get_tree() op.  If this
+superblock thereof).  This is filled in by the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_tree()</span></code> op.  If this
 is set, an active reference on root-&gt;d_sb must also be held.</p>
 </li>
 <li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct user_namespace *user_ns
@@ -302,12 +302,12 @@ available values are:</p>
 </li>
 </ul>
 </div></blockquote>
-<p>The mount context is created by calling vfs_new_fs_context() or
-vfs_dup_fs_context() and is destroyed with put_fs_context().  Note that the
+<p>The mount context is created by calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vfs_new_fs_context()</span></code> or
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vfs_dup_fs_context()</span></code> and is destroyed with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">put_fs_context()</span></code>.  Note that the
 structure is not refcounted.</p>
 <p>VFS, security and filesystem mount options are set individually with
-vfs_parse_mount_option().  Options provided by the old mount(2) system call as
-a page of data can be parsed with generic_parse_monolithic().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vfs_parse_mount_option()</span></code>.  Options provided by the old mount(2) system call as
+a page of data can be parsed with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">generic_parse_monolithic()</span></code>.</p>
 <p>When mounting, the filesystem is allowed to take data from any of the pointers
 and attach it to the superblock (or whatever), provided it clears the pointer
 in the mount context.</p>
@@ -338,7 +338,7 @@ manage the filesystem context.  They are as follows:</p>
 </div>
 <p>Called to clean up the filesystem-specific part of the filesystem context
 when the context is destroyed.  It should be aware that parts of the
-context may have been removed and NULL’d out by -&gt;get_tree().</p>
+context may have been removed and NULL’d out by -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_tree()</span></code>.</p>
 </li>
 <li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int (*dup)(struct fs_context *fc, struct fs_context *src_fc);
 </pre></div>
@@ -348,9 +348,9 @@ filesystem-private data.  An error may be returned to indicate failure to
 do this.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>Note that even if this fails, put_fs_context() will be called
-immediately thereafter, so -&gt;dup() <em>must</em> make the
-filesystem-private data safe for -&gt;free().</p>
+<p>Note that even if this fails, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">put_fs_context()</span></code> will be called
+immediately thereafter, so -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dup()</span></code> <em>must</em> make the
+filesystem-private data safe for -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">free()</span></code>.</p>
 </div>
 </li>
 <li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int (*parse_param)(struct fs_context *fc,
@@ -361,7 +361,7 @@ filesystem-private data safe for -&gt;free().</p>
 points to the key name and maybe a value object.  VFS-specific options
 will have been weeded out and fc-&gt;sb_flags updated in the context.
 Security options will also have been weeded out and fc-&gt;security updated.</p>
-<p>The parameter can be parsed with fs_parse() and fs_lookup_param().  Note
+<p>The parameter can be parsed with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fs_parse()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fs_lookup_param()</span></code>.  Note
 that the source(s) are presented as parameters named “source”.</p>
 <p>If successful, 0 should be returned or a negative error code otherwise.</p>
 </li>
@@ -371,10 +371,10 @@ that the source(s) are presented as parameters named “source”.</p>
 <p>Called when the mount(2) system call is invoked to pass the entire data
 page in one go.  If this is expected to be just a list of “key[=val]”
 items separated by commas, then this may be set to NULL.</p>
-<p>The return value is as for -&gt;parse_param().</p>
+<p>The return value is as for -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">parse_param()</span></code>.</p>
 <p>If the filesystem (e.g. NFS) needs to examine the data first and then
 finds it’s the standard key-val list then it may pass it off to
-generic_parse_monolithic().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">generic_parse_monolithic()</span></code>.</p>
 </li>
 <li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int (*get_tree)(struct fs_context *fc);
 </pre></div>
@@ -446,7 +446,7 @@ during get_tree.</p>
 </pre></div>
 </div>
 <p>Called for each mount parameter, including the source.  The arguments are
-as for the -&gt;parse_param() method.  It should return 0 to indicate that
+as for the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">parse_param()</span></code> method.  It should return 0 to indicate that
 the parameter should be passed on to the filesystem, 1 to indicate that
 the parameter should be discarded or an error to indicate that the
 parameter should be rejected.</p>
@@ -459,7 +459,7 @@ returned to prevent it being passed to the filesystem.</p>
 </div>
 <p>Called after all the options have been parsed to validate the collection
 as a whole and to do any necessary allocation so that
-security_sb_get_tree() and security_sb_reconfigure() are less likely to
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">security_sb_get_tree()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">security_sb_reconfigure()</span></code> are less likely to
 fail.  It should return 0 or a negative error code.</p>
 <p>In the case of reconfiguration, the target superblock will be accessible
 via fc-&gt;root.</p>
@@ -503,7 +503,7 @@ destroying a context:</p>
 <p>Allocate a filesystem context for the purpose of setting up a new mount,
 whether that be with a new superblock or sharing an existing one.  This
 sets the superblock flags, initialises the security and calls
-fs_type-&gt;init_fs_context() to initialise the filesystem private data.</p>
+fs_type-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init_fs_context()</span></code> to initialise the filesystem private data.</p>
 <p>fs_type specifies the filesystem type that will manage the context and
 sb_flags presets the superblock flags stored therein.</p>
 </li>
@@ -545,7 +545,7 @@ private pathwalk to the target directory.</p>
 </pre></div>
 </div>
 <p>Destroy a filesystem context, releasing any resources it holds.  This
-calls the -&gt;free() operation.  This is intended to be called by anyone who
+calls the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">free()</span></code> operation.  This is intended to be called by anyone who
 created a filesystem context.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -596,7 +596,7 @@ filesystem.</p>
 </tbody>
 </table>
 </div></blockquote>
-<p>If there is a value, that value is stored in a union in the struct in one
+<p>If there is a value, that value is stored in a <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">in</span></code> the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">in</span></code> one
 of param-&gt;{string,blob,name,file}.  Note that the function may steal and
 clear the pointer, but then becomes responsible for disposing of the
 object.</p>
@@ -605,23 +605,23 @@ object.</p>
                         const char *value, size_t v_size);
 </pre></div>
 </div>
-<p>A wrapper around vfs_parse_fs_param() that copies the value string it is
+<p>A wrapper around <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vfs_parse_fs_param()</span></code> that copies the value string it is
 passed.</p>
 </li>
 <li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int generic_parse_monolithic(struct fs_context *fc, void *data);
 </pre></div>
 </div>
-<p>Parse a sys_mount() data page, assuming the form to be a text list
+<p>Parse a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sys_mount()</span></code> data page, assuming the form to be a text list
 consisting of key[=val] options separated by commas.  Each item in the
-list is passed to vfs_mount_option().  This is the default when the
--&gt;parse_monolithic() method is NULL.</p>
+list is passed to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vfs_mount_option()</span></code>.  This is the default when the
+-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">parse_monolithic()</span></code> method is NULL.</p>
 </li>
 <li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int vfs_get_tree(struct fs_context *fc);
 </pre></div>
 </div>
 <p>Get or create the mountable root and superblock, using the parameters in
 the filesystem context to select/configure the superblock.  This invokes
-the -&gt;get_tree() method.</p>
+the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_tree()</span></code> method.</p>
 </li>
 <li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct vfsmount *vfs_create_mount(struct fs_context *fc);
 </pre></div>
@@ -678,7 +678,7 @@ one.</p>
 <section id="parameter-description">
 <h2>Parameter Description<a class="headerlink" href="#parameter-description" title="Link to this heading">¶</a></h2>
 <p>Parameters are described using structures defined in linux/fs_parser.h.
-There’s a core description struct that links everything together:</p>
+There’s a core description <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">that</span></code> links everything together:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct fs_parameter_description {
         const struct fs_parameter_spec *specs;
         const struct fs_parameter_enum *enums;
@@ -718,7 +718,7 @@ entries are of type:</p>
 </div>
 <p>The ‘name’ field is a string to match exactly to the parameter key (no
 wildcards, patterns and no case-independence) and ‘opt’ is the value that
-will be returned by the fs_parser() function in the case of a successful
+will be returned by the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fs_parser()</span></code> function in the case of a successful
 match.</p>
 <p>The ‘type’ field indicates the desired value type and must be one of:</p>
 <blockquote>
@@ -799,7 +799,7 @@ match.</p>
 </tbody>
 </table>
 </div></blockquote>
-<p>Note that if the value is of fs_param_is_bool type, fs_parse() will try
+<p>Note that if the value is of fs_param_is_bool type, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fs_parse()</span></code> will try
 to match any string value against “0”, “1”, “no”, “yes”, “false”, “true”.</p>
 <p>Each parameter can also be qualified with ‘flags’:</p>
 <blockquote>
@@ -829,49 +829,49 @@ to match any string value against “0”, “1”, “no”, “yes”, “fals
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>fsparam_flag()</p></td>
+<tr class="row-even"><td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fsparam_flag()</span></code></p></td>
 <td><p>fs_param_is_flag</p></td>
 </tr>
-<tr class="row-odd"><td><p>fsparam_flag_no()</p></td>
+<tr class="row-odd"><td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fsparam_flag_no()</span></code></p></td>
 <td><p>fs_param_is_flag, fs_param_neg_with_no</p></td>
 </tr>
-<tr class="row-even"><td><p>fsparam_bool()</p></td>
+<tr class="row-even"><td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fsparam_bool()</span></code></p></td>
 <td><p>fs_param_is_bool</p></td>
 </tr>
-<tr class="row-odd"><td><p>fsparam_u32()</p></td>
+<tr class="row-odd"><td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fsparam_u32()</span></code></p></td>
 <td><p>fs_param_is_u32</p></td>
 </tr>
-<tr class="row-even"><td><p>fsparam_u32oct()</p></td>
+<tr class="row-even"><td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fsparam_u32oct()</span></code></p></td>
 <td><p>fs_param_is_u32_octal</p></td>
 </tr>
-<tr class="row-odd"><td><p>fsparam_s32()</p></td>
+<tr class="row-odd"><td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fsparam_s32()</span></code></p></td>
 <td><p>fs_param_is_s32</p></td>
 </tr>
-<tr class="row-even"><td><p>fsparam_u64()</p></td>
+<tr class="row-even"><td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fsparam_u64()</span></code></p></td>
 <td><p>fs_param_is_u64</p></td>
 </tr>
-<tr class="row-odd"><td><p>fsparam_enum()</p></td>
+<tr class="row-odd"><td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fsparam_enum()</span></code></p></td>
 <td><p>fs_param_is_enum</p></td>
 </tr>
-<tr class="row-even"><td><p>fsparam_string()</p></td>
+<tr class="row-even"><td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fsparam_string()</span></code></p></td>
 <td><p>fs_param_is_string</p></td>
 </tr>
-<tr class="row-odd"><td><p>fsparam_blob()</p></td>
+<tr class="row-odd"><td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fsparam_blob()</span></code></p></td>
 <td><p>fs_param_is_blob</p></td>
 </tr>
-<tr class="row-even"><td><p>fsparam_bdev()</p></td>
+<tr class="row-even"><td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fsparam_bdev()</span></code></p></td>
 <td><p>fs_param_is_blockdev</p></td>
 </tr>
-<tr class="row-odd"><td><p>fsparam_path()</p></td>
+<tr class="row-odd"><td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fsparam_path()</span></code></p></td>
 <td><p>fs_param_is_path</p></td>
 </tr>
-<tr class="row-even"><td><p>fsparam_fd()</p></td>
+<tr class="row-even"><td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fsparam_fd()</span></code></p></td>
 <td><p>fs_param_is_fd</p></td>
 </tr>
-<tr class="row-odd"><td><p>fsparam_uid()</p></td>
+<tr class="row-odd"><td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fsparam_uid()</span></code></p></td>
 <td><p>fs_param_is_uid</p></td>
 </tr>
-<tr class="row-even"><td><p>fsparam_gid()</p></td>
+<tr class="row-even"><td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fsparam_gid()</span></code></p></td>
 <td><p>fs_param_is_gid</p></td>
 </tr>
 </tbody>
@@ -888,14 +888,14 @@ example:</p>
 };
 </pre></div>
 </div>
-<p>An addition macro, __fsparam() is provided that takes an additional pair
+<p>An addition macro, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__fsparam()</span></code> is provided that takes an additional pair
 of arguments to specify the type and the flags for anything that doesn’t
 match one of the above macros.</p>
 </li>
 <li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>const struct fs_parameter_enum *enums;
 </pre></div>
 </div>
-<p>Table of enum value names to integer mappings, terminated with a null
+<p>Table of <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">value</span></code> names to integer mappings, terminated with a null
 entry.  This is of type:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct fs_parameter_enum {
         u8              opt;
@@ -913,16 +913,16 @@ elements that indicate the value to map to, e.g.:</p>
 };
 </pre></div>
 </div>
-<p>If a parameter of type fs_param_is_enum is encountered, fs_parse() will
-try to look the value up in the enum table and the result will be stored
+<p>If a parameter of type fs_param_is_enum is encountered, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fs_parse()</span></code> will
+try to look the value up in the <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">table</span></code> and the result will be stored
 in the parse result.</p>
 </li>
 </ol>
 </div></blockquote>
 <p>The parser should be pointed to by the parser pointer in the file_system_type
-struct as this will provide validation on registration (if
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">as</span></code> this will provide validation on registration (if
 CONFIG_VALIDATE_FS_PARSER=y) and will allow the description to be queried from
-userspace using the fsinfo() syscall.</p>
+userspace using the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fsinfo()</span></code> syscall.</p>
 </section>
 <section id="parameter-helper-functions">
 <h2>Parameter Helper Functions<a class="headerlink" href="#parameter-helper-functions" title="Link to this heading">¶</a></h2>

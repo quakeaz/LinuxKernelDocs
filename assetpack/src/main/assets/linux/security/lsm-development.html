@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -375,7 +375,7 @@ hook is called by the fs code as part of the inode creation transaction and
 provides for atomic labeling of the inode, unlike the post_create/mkdir/...
 hooks called by the VFS.</p>
 <p>The hook function is expected to populate the xattrs array, by calling
-lsm_get_xattr_slot() to retrieve the slots reserved by the security module
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lsm_get_xattr_slot()</span></code> to retrieve the slots reserved by the security module
 with the lbs_xattr_count field of the lsm_blob_sizes structure.  For each
 slot, the hook function should set -&gt;name to the attribute name suffix
 (e.g. selinux), to allocate -&gt;value (will be freed by the caller) and set it
@@ -384,10 +384,8 @@ the security module does not use security attributes or does not wish to put
 a security attribute on this particular inode, then it should return
 -EOPNOTSUPP to skip this processing.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Returns 0 if the LSM successfully initialized all of the inode</dt><dd><p>security attributes that are required, negative values otherwise.</p>
-</dd>
-</dl>
+<p>Returns 0 if the LSM successfully initialized all of the inode
+security attributes that are required, negative values otherwise.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.security_path_mknod">
@@ -502,7 +500,7 @@ if mknod operation is being done for a regular file.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.security_inode_mkdir">
 <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">security_inode_mkdir</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">inode</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dir</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.security_inode_mkdir" title="dentry"><span class="n"><span class="pre">dentry</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dentry</span></span>, <span class="n"><span class="pre">umode_t</span></span><span class="w"> </span><span class="n"><span class="pre">mode</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.security_inode_mkdir" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Check if creation a new director is allowed</p>
+<dd><p>Check if creating a new directory is allowed</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -578,7 +576,7 @@ required.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dentry</span> <span class="pre">*src</span></code></dt><dd><p>union dentry of copy-up file</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dentry</span> <span class="pre">*src</span></code></dt><dd><p><code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">dentry</span></code> of copy-up file</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cred</span> <span class="pre">**new</span></code></dt><dd><p>newly created creds</p>
 </dd>
@@ -600,7 +598,7 @@ create new file and release newly allocated creds.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dentry</span> <span class="pre">*src</span></code></dt><dd><p>union dentry of copy-up file</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dentry</span> <span class="pre">*src</span></code></dt><dd><p><code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">dentry</span></code> of copy-up file</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*name</span></code></dt><dd><p>xattr name</p>
 </dd>
@@ -610,11 +608,9 @@ create new file and release newly allocated creds.</p>
 lower layer to the union/overlay layer.   The caller is responsible for
 reading and writing the xattrs, this hook is merely a filter.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Returns 0 to accept the xattr, -ECANCELED to discard the xattr,</dt><dd><p>-EOPNOTSUPP if the security module does not know about attribute,
+<p>Returns 0 to accept the xattr, -ECANCELED to discard the xattr,
+-EOPNOTSUPP if the security module does not know about attribute,
 or a negative error code to abort the copy up.</p>
-</dd>
-</dl>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.security_inode_setintegrity">
@@ -1148,10 +1144,8 @@ socket, which is not looked up until we are inside the af_unix code.</p>
 <p><strong>Description</strong></p>
 <p>Check permissions before creating a fresh pair of sockets.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Returns 0 if permission is granted and the connection was</dt><dd><p>established.</p>
-</dd>
-</dl>
+<p>Returns 0 if permission is granted and the connection was
+established.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.security_sock_rcv_skb">
@@ -1500,7 +1494,7 @@ with the TUN device’s security structure.</p>
 <p>Validiate permissions required for each address associated with sock <strong>sk</strong>.
 Depending on <strong>optname</strong>, the addresses will be treated as either a connect or
 bind service. The <strong>addrlen</strong> is calculated on each IPv4 and IPv6 address using
-sizeof(struct sockaddr_in) or sizeof(struct sockaddr_in6).</p>
+sizeof(<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">sockaddr_in</span></code>) or sizeof(<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">sockaddr_in6</span></code>).</p>
 <p><strong>Return</strong></p>
 <p>Returns 0 on success, error on failure.</p>
 </div>

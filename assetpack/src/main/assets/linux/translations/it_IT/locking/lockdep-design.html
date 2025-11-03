@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -385,7 +385,7 @@ tratta di una partizione.</p>
 <p>Ai fini della validazione, il validatore lo considererà con una - sotto - classe
 di blocco separata.</p>
 <p>Nota: Prestate estrema attenzione che la vostra gerarchia sia corretta quando si
-vogliono usare le primitive _nested(); altrimenti potreste avere sia falsi
+vogliono usare le primitive <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_nested()</span></code>; altrimenti potreste avere sia falsi
 positivi che falsi negativi.</p>
 </section>
 <section id="annotazioni">
@@ -395,7 +395,7 @@ devono essere trattenuti: lockdep_assert_held*(&amp;lock) e
 lockdep_*pin_lock(&amp;lock).</p>
 <p>Come suggerito dal nome, la famiglia di macro lockdep_assert_held* asseriscono
 che un dato blocco in un dato momento deve essere trattenuto (altrimenti, verrà
-generato un WARN()). Queste vengono usate abbondantemente nel kernel, per
+generato un <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">WARN()</span></code>). Queste vengono usate abbondantemente nel kernel, per
 esempio in kernel/sched/core.c:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>void update_rq_clock(struct rq *rq)
 {
@@ -408,14 +408,14 @@ esempio in kernel/sched/core.c:</p>
 </div>
 <p>dove aver trattenuto rq-&gt;lock è necessario per aggiornare in sicurezza il clock
 rq.</p>
-<p>L’altra famiglia di macro è lockdep_*pin_lock(), che a dire il vero viene usata
+<p>L’altra famiglia di macro è lockdep_*<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pin_lock()</span></code>, che a dire il vero viene usata
 solo per rq-&gt;lock ATM. Se per caso un blocco non viene trattenuto, queste
-genereranno un WARN(). Questo si rivela particolarmente utile quando si deve
+genereranno un <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">WARN()</span></code>. Questo si rivela particolarmente utile quando si deve
 verificare la correttezza di codice con <em>callback</em>, dove livelli superiori
 potrebbero assumere che un blocco rimanga trattenuto, ma livelli inferiori
 potrebbero invece pensare che il blocco possa essere rilasciato e poi
-riacquisito (involontariamente si apre una sezione critica). lockdep_pin_lock()
-restituisce ‘struct pin_cookie’ che viene usato da lockdep_unpin_lock() per
+riacquisito (involontariamente si apre una sezione critica). <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lockdep_pin_lock()</span></code>
+restituisce ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pin_cookie</span></code>’ che viene usato da <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lockdep_unpin_lock()</span></code> per
 verificare che nessuno abbia manomesso il blocco. Per esempio in
 kernel/sched/sched.h abbiamo:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>static inline void rq_pin_lock(struct rq *rq, struct rq_flags *rf)
@@ -510,10 +510,10 @@ a raggiungere, eventualmente, il limite.</p></li>
 <li><p>Usare array con un gran numero di blocchi che non vengono esplicitamente
 inizializzati. Per esempio, una tabella hash con 8192 <em>bucket</em> dove ognuno ha
 il proprio spinlock_t consumerà 8192 classi di blocco a meno che non vengano
-esplicitamente inizializzati in esecuzione usando spin_lock_init() invece
-dell’inizializzazione durante la compilazione con __SPIN_LOCK_UNLOCKED().
+esplicitamente inizializzati in esecuzione usando <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_init()</span></code> invece
+dell’inizializzazione durante la compilazione con <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__SPIN_LOCK_UNLOCKED()</span></code>.
 Sbagliare questa inizializzazione garantisce un esaurimento di classi di
-blocco. Viceversa, un ciclo che invoca spin_lock_init() su tutti i blocchi li
+blocco. Viceversa, un ciclo che invoca <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_init()</span></code> su tutti i blocchi li
 mapperebbe tutti alla stessa classe di blocco.</p>
 <p>La morale della favola è che dovete sempre inizializzare esplicitamente i
 vostri blocchi.</p>
@@ -550,8 +550,8 @@ blocco è stata omessa.</p>
 <p>Il resto di questo documento vuole dimostrare che certi cicli equivalgono ad una
 possibilità di stallo.</p>
 <p>Ci sono tre tipi di bloccatori: gli scrittori (bloccatori esclusivi, come
-spin_lock() o write_lock()), lettori non ricorsivi (bloccatori condivisi, come
-down_read()), e lettori ricorsivi (bloccatori condivisi ricorsivi, come
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock()</span></code> o <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">write_lock()</span></code>), lettori non ricorsivi (bloccatori condivisi, come
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">down_read()</span></code>), e lettori ricorsivi (bloccatori condivisi ricorsivi, come
 <a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_read_lock" title="rcu_read_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_lock()</span></code></a>). D’ora in poi, per questi tipi di bloccatori, useremo la
 seguente notazione:</p>
 <blockquote>
@@ -587,11 +587,11 @@ read_lock_2(X);
 </pre></div>
 </div>
 <p>L’attività A acquisisce il blocco di lettura X (non importa se di tipo ricorsivo
-o meno) usando read_lock(). Quando l’attività B tenterà di acquisire il blocco
-X, si fermerà e rimarrà in attesa che venga rilasciato. Ora se read_lock_2() è
+o meno) usando <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">read_lock()</span></code>. Quando l’attività B tenterà di acquisire il blocco
+X, si fermerà e rimarrà in attesa che venga rilasciato. Ora se <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">read_lock_2()</span></code> è
 un tipo lettore ricorsivo, l’attività A continuerà perché gli scrittori in
 attesa non possono bloccare lettori ricorsivi, e non avremo alcuno stallo.
-Tuttavia, se read_lock_2() è un lettore non ricorsivo, allora verrà bloccato
+Tuttavia, se <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">read_lock_2()</span></code> è un lettore non ricorsivo, allora verrà bloccato
 dall’attività B e si causerà uno stallo.</p>
 </section>
 <section id="condizioni-bloccanti-per-lettori-scrittori-su-uno-stesso-blocco">
@@ -647,11 +647,11 @@ read_lock(X);
 </pre></div>
 </div>
 <p>non produce uno stallo per i lettori ricorsivi, in quanto il processo B rimane
-in attesta del blocco X, mentre il secondo read_lock() non ha bisogno di
-aspettare perché si tratta di un lettore ricorsivo. Tuttavia, se read_lock()
+in attesta del blocco X, mentre il secondo <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">read_lock()</span></code> non ha bisogno di
+aspettare perché si tratta di un lettore ricorsivo. Tuttavia, se <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">read_lock()</span></code>
 fosse un lettore non ricorsivo, questo codice produrrebbe uno stallo.</p>
 <p>Da notare che in funzione dell’operazione di blocco usate per l’acquisizione (in
-particolare il valore del parametro ‘read’ in lock_acquire()), un blocco può
+particolare il valore del parametro ‘read’ in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lock_acquire()</span></code>), un blocco può
 essere di scrittura (blocco esclusivo), di lettura non ricorsivo (blocco
 condiviso e non ricorsivo), o di lettura ricorsivo (blocco condiviso e
 ricorsivo). In altre parole, per un’istanza di blocco esistono tre tipi di
@@ -671,8 +671,8 @@ write_lock(Y);
                         write_lock(X);
 </pre></div>
 </div>
-<p>Il processo A attende che il processo B esegua read_unlock() so Y, mentre il
-processo B attende che A esegua read_unlock() su X.</p>
+<p>Il processo A attende che il processo B esegua <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">read_unlock()</span></code> so Y, mentre il
+processo B attende che A esegua <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">read_unlock()</span></code> su X.</p>
 </section>
 <section id="tipi-di-dipendenze-e-percorsi-forti">
 <h2>Tipi di dipendenze e percorsi forti<a class="headerlink" href="#tipi-di-dipendenze-e-percorsi-forti" title="Link to this heading">¶</a></h2>

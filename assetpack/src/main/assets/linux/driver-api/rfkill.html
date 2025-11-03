@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -276,12 +276,12 @@ the device.</p>
 <p>The rfkill core code also notifies userspace of state changes, and provides
 ways for userspace to query the current states. See the “Userspace support”
 section below.</p>
-<p>When the device is hard-blocked (either by a call to rfkill_set_hw_state()
-or from query_hw_block), set_block() will be invoked for additional software
+<p>When the device is hard-blocked (either by a call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rfkill_set_hw_state()</span></code>
+or from query_hw_block), <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_block()</span></code> will be invoked for additional software
 block, but drivers can ignore the method call since they can use the return
-value of the function rfkill_set_hw_state() to sync the software state
-instead of keeping track of calls to set_block(). In fact, drivers should
-use the return value of rfkill_set_hw_state() unless the hardware actually
+value of the function <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rfkill_set_hw_state()</span></code> to sync the software state
+instead of keeping track of calls to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_block()</span></code>. In fact, drivers should
+use the return value of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rfkill_set_hw_state()</span></code> unless the hardware actually
 keeps track of soft and hard block separately.</p>
 </section>
 <section id="kernel-api">
@@ -302,9 +302,9 @@ core with the current state at resume time.</p>
 case allows the driver to be built when rfkill is not configured, in which
 case all rfkill API can still be used but will be provided by static inlines
 which compile to almost nothing.</p>
-<p>Calling rfkill_set_hw_state() when a state change happens is required from
+<p>Calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rfkill_set_hw_state()</span></code> when a state change happens is required from
 rfkill drivers that control devices that can be hard-blocked unless they also
-assign the poll_hw_block() callback (then the rfkill core will poll the
+assign the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">poll_hw_block()</span></code> callback (then the rfkill core will poll the
 device). Don’t do this unless you cannot get the event in any other way.</p>
 <p>rfkill provides per-switch LED triggers, which can be used to drive LEDs
 according to the switch state (LED_FULL when blocked, LED_OFF otherwise).</p>
@@ -318,7 +318,7 @@ and removal. The API is a simple read/write API that is defined in
 linux/rfkill.h, with one ioctl that allows turning off the deprecated input
 handler in the kernel for the transition period.</p>
 <p>Except for the one ioctl, communication with the kernel is done via read()
-and write() of instances of ‘struct rfkill_event’. In this structure, the
+and write() of instances of ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rfkill_event</span></code>’. In this structure, the
 soft and hard block are properly separated (unlike sysfs, see below) and
 userspace is able to get a consistent snapshot of all rfkill devices in the
 system. Also, it is possible to switch all rfkill drivers (or all drivers of

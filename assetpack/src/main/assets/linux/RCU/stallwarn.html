@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -166,9 +166,9 @@ warnings:</p>
 <li><p>A CPU looping with preemption disabled.</p></li>
 <li><p>A CPU looping with bottom halves disabled.</p></li>
 <li><p>For !CONFIG_PREEMPTION kernels, a CPU looping anywhere in the
-kernel without potentially invoking schedule().  If the looping
+kernel without potentially invoking <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">schedule()</span></code>.  If the looping
 in the kernel is really expected and desirable behavior, you
-might need to add some calls to cond_resched().</p></li>
+might need to add some calls to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cond_resched()</span></code>.</p></li>
 <li><p>Booting Linux using a console connection that is too slow to
 keep up with the boot-time console-message rate.  For example,
 a 115Kbaud serial console can be <em>way</em> too slow to keep up
@@ -234,12 +234,12 @@ timer hardware bugs, timer driver bugs, or even corruption of
 the “jiffies” global variable.  These sorts of timer hardware
 and driver bugs are not uncommon when testing new hardware.</p></li>
 <li><p>A low-level kernel issue that either fails to invoke one of the
-variants of rcu_eqs_enter(true), rcu_eqs_exit(true), ct_idle_enter(),
-ct_idle_exit(), ct_irq_enter(), or ct_irq_exit() on the one
+variants of rcu_eqs_enter(true), rcu_eqs_exit(true), <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ct_idle_enter()</span></code>,
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ct_idle_exit()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ct_irq_enter()</span></code>, or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ct_irq_exit()</span></code> on the one
 hand, or that invokes one of them too many times on the other.
 Historically, the most frequent issue has been an omission
-of either irq_enter() or irq_exit(), which in turn invoke
-ct_irq_enter() or ct_irq_exit(), respectively.  Building your
+of either <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irq_enter()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irq_exit()</span></code>, which in turn invoke
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ct_irq_enter()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ct_irq_exit()</span></code>, respectively.  Building your
 kernel with CONFIG_RCU_EQS_DEBUG=y can help track down these types
 of issues, which sometimes arise in architecture-specific code.</p></li>
 <li><p>A bug in the RCU implementation.</p></li>
@@ -344,7 +344,7 @@ starts with the line:</p>
 <blockquote>
 <div><p>INFO: rcu_tasks detected stalls on tasks:</p>
 </div></blockquote>
-<p>And continues with the output of sched_show_task() for each
+<p>And continues with the output of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sched_show_task()</span></code> for each
 task stalling the current RCU-tasks grace period.</p>
 <p>An RCU-tasks-trace stall warning starts (and continues) similarly:</p>
 <blockquote>
@@ -415,7 +415,7 @@ the following:</p>
 possible for a zero-jiffy stall to be flagged in this case, depending
 on how the stall warning and the grace-period initialization happen to
 interact.  Please note that it is not possible to entirely eliminate this
-sort of false positive without resorting to things like stop_machine(),
+sort of false positive without resorting to things like <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">stop_machine()</span></code>,
 which is overkill for this sort of problem.</p>
 <p>If all CPUs and tasks have passed through quiescent states, but the
 grace period has nevertheless failed to end, the stall-warning splat
@@ -557,7 +557,7 @@ rcu: cputime:       49          0         2446   ==&gt; 2500(ms)
 </pre></div>
 </div>
 <p>The fact that there are zero softirqs gives a hint that these were
-disabled, perhaps via local_bh_disable().  It is of course possible
+disabled, perhaps via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">local_bh_disable()</span></code>.  It is of course possible
 that there were no softirqs, perhaps because all events that would
 result in softirq execution are confined to other CPUs.  In this case,
 the diagnosis should continue as shown in the next example.</p>
@@ -585,7 +585,7 @@ non-zero, but could be zero, for example, if the CPU was spinning
 within a single hard interrupt handler.</p>
 <p>If this type of RCU CPU stall warning can be reproduced, you can
 narrow it down by looking at /proc/interrupts or by writing code to
-trace each interrupt, for example, by referring to show_interrupts().</p>
+trace each interrupt, for example, by referring to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">show_interrupts()</span></code>.</p>
 </li>
 </ol>
 </section>

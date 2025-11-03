@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -335,7 +335,7 @@ status of the device is reported with watchdog WDIOF_* status flags/bits.</p>
 <p>WDIOF_MAGICCLOSE and WDIOF_KEEPALIVEPING are reported by the watchdog core;
 it is not necessary to report those bits from the driver. Also, if no status
 function is provided by the driver, the watchdog core reports the status bits
-provided in the bootstatus variable of struct watchdog_device.</p>
+provided in the bootstatus variable of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">watchdog_device</span></code>.</p>
 </li>
 <li><p>set_timeout: this routine checks and changes the timeout of the watchdog
 timer device. It returns 0 on success, -EINVAL for “parameter out of range”
@@ -401,7 +401,7 @@ request instead.</p>
 <p>To set the WDOG_NO_WAY_OUT status bit (before registering your watchdog
 timer device) you can either:</p>
 <ul>
-<li><p>set it statically in your watchdog_device struct with</p>
+<li><p>set it statically in your watchdog_device <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">with</span></code></p>
 <blockquote>
 <div><p>.status = WATCHDOG_NOWAYOUT_INIT_STATUS,</p>
 </div></blockquote>
@@ -478,7 +478,7 @@ available, and/or if restart is sufficient to restart the entire system</p></li>
 governor framework (kbuild CONFIG_WATCHDOG_PRETIMEOUT_GOV symbol) is enabled,
 an action is taken by a preconfigured pretimeout governor preassigned to
 the watchdog device. If watchdog pretimeout governor framework is not
-enabled, watchdog_notify_pretimeout() prints a notification message to
+enabled, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">watchdog_notify_pretimeout()</span></code> prints a notification message to
 the kernel log buffer.</p>
 <p>To set the last known HW keepalive time for a watchdog, the following function
 should be used:</p>

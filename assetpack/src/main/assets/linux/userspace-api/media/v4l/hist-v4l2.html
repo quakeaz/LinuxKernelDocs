@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -233,10 +233,10 @@ compatible</em> with 0.19 and earlier versions. Purpose of these changes was
 to simplify the API, while making it more extensible and following
 common Linux driver API conventions.</p>
 <ol class="arabic">
-<li><p>Some typos in <code class="docutils literal notranslate"><span class="pre">V4L2_FMT_FLAG</span></code> symbols were fixed. <a class="reference internal" href="dev-overlay.html#c.v4l2_clip" title="v4l2_clip"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_clip</span></code></a>
+<li><p>Some typos in <code class="docutils literal notranslate"><span class="pre">V4L2_FMT_FLAG</span></code> symbols were fixed. <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_clip</span></code>
 was changed for compatibility with v4l. (1999-08-30)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">V4L2_TUNER_SUB_LANG1</span></code> was added. (1999-09-05)</p></li>
-<li><p>All ioctl() commands that used an integer argument now take a pointer
+<li><p>All <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ioctl()</span></code> commands that used an integer argument now take a pointer
 to an integer. Where it makes sense, ioctls will return the actual
 new value in the integer pointed to by the argument, a common
 convention in the V4L2 API. The affected ioctls are: VIDIOC_PREVIEW,
@@ -252,21 +252,21 @@ VIDIOC_S_INPUT, VIDIOC_S_OUTPUT, VIDIOC_S_EFFECT. For example</p>
 </li>
 <li><p>All the different get- and set-format commands were swept into one
 <a class="reference internal" href="vidioc-g-fmt.html#vidioc-g-fmt"><span class="std std-ref">VIDIOC_G_FMT</span></a> and
-<a class="reference internal" href="vidioc-g-fmt.html#vidioc-g-fmt"><span class="std std-ref">VIDIOC_S_FMT</span></a> ioctl taking a union and a
-type field selecting the union member as parameter. Purpose is to
+<a class="reference internal" href="vidioc-g-fmt.html#vidioc-g-fmt"><span class="std std-ref">VIDIOC_S_FMT</span></a> ioctl taking a <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">and</span></code> a
+type field selecting the <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">member</span></code> as parameter. Purpose is to
 simplify the API by eliminating several ioctls and to allow new and
 driver private data streams without adding new ioctls.</p>
 <p>This change obsoletes the following ioctls: <code class="docutils literal notranslate"><span class="pre">VIDIOC_S_INFMT</span></code>,
 <code class="docutils literal notranslate"><span class="pre">VIDIOC_G_INFMT</span></code>, <code class="docutils literal notranslate"><span class="pre">VIDIOC_S_OUTFMT</span></code>, <code class="docutils literal notranslate"><span class="pre">VIDIOC_G_OUTFMT</span></code>,
 <code class="docutils literal notranslate"><span class="pre">VIDIOC_S_VBIFMT</span></code> and <code class="docutils literal notranslate"><span class="pre">VIDIOC_G_VBIFMT</span></code>. The image format
-<a class="reference internal" href="vidioc-g-fmt.html#c.V4L.v4l2_format" title="V4L.v4l2_format"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_format</span></code></a> was renamed to <a class="reference internal" href="pixfmt-v4l2.html#c.v4l2_pix_format" title="v4l2_pix_format"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_pix_format</span></code></a>, while
+<a class="reference internal" href="vidioc-g-fmt.html#c.V4L.v4l2_format" title="V4L.v4l2_format"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_format</span></code></a> was renamed to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_pix_format</span></code>, while
 <a class="reference internal" href="vidioc-g-fmt.html#c.V4L.v4l2_format" title="V4L.v4l2_format"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_format</span></code></a> is now the enveloping structure
 for all format negotiations.</p>
 </li>
 <li><p>Similar to the changes above, the <code class="docutils literal notranslate"><span class="pre">VIDIOC_G_PARM</span></code> and
 <code class="docutils literal notranslate"><span class="pre">VIDIOC_S_PARM</span></code> ioctls were merged with <code class="docutils literal notranslate"><span class="pre">VIDIOC_G_OUTPARM</span></code> and
 <code class="docutils literal notranslate"><span class="pre">VIDIOC_S_OUTPARM</span></code>. A <code class="docutils literal notranslate"><span class="pre">type</span></code> field in the new <a class="reference internal" href="vidioc-g-parm.html#c.V4L.v4l2_streamparm" title="V4L.v4l2_streamparm"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_streamparm</span></code></a>
-selects the respective union member.</p>
+selects the respective <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">member</span></code>.</p>
 <p>This change obsoletes the <code class="docutils literal notranslate"><span class="pre">VIDIOC_G_OUTPARM</span></code> and
 <code class="docutils literal notranslate"><span class="pre">VIDIOC_S_OUTPARM</span></code> ioctls.</p>
 </li>
@@ -293,7 +293,7 @@ follow SGI’s lead, and adopt a multimedia timestamping system like
 their UST (Unadjusted System Time). See
 <a class="reference external" href="http://web.archive.org/web/*/http://reality.sgi.com">http://web.archive.org/web/*/http://reality.sgi.com</a>
 /cpirazzi_engr/lg/time/intro.html. UST uses timestamps that are
-64-bit signed integers (not struct timeval’s) and given in nanosecond
+64-bit signed integers (not <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">timeval</span></code>’s) and given in nanosecond
 units. The UST clock starts at zero when the system is booted and
 runs continuously and uniformly. It takes a little over 292 years for
 UST to overflow. There is no way to set the UST clock. The regular
@@ -302,7 +302,7 @@ cause errors if it were being used for timestamping a multimedia
 stream. A real UST style clock will require some support in the
 kernel that is not there yet. But in anticipation, I will change the
 timestamp field to a 64-bit integer, and I will change the
-v4l2_masterclock_gettime() function (used only by drivers) to
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">v4l2_masterclock_gettime()</span></code> function (used only by drivers) to
 return a 64-bit integer.</p></li>
 <li><p>A <code class="docutils literal notranslate"><span class="pre">sequence</span></code> field was added to <a class="reference internal" href="buffer.html#c.V4L.v4l2_buffer" title="V4L.v4l2_buffer"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_buffer</span></code></a>. The <code class="docutils literal notranslate"><span class="pre">sequence</span></code>
 field counts captured frames, it is ignored by output devices. When a
@@ -498,8 +498,8 @@ implemented as expected and therefore removed.</p></li>
 negotiate data formats as with
 <a class="reference internal" href="vidioc-g-fmt.html#vidioc-g-fmt"><span class="std std-ref">VIDIOC_S_FMT</span></a>, but without the overhead of
 programming the hardware and regardless of I/O in progress.</p>
-<p>In <a class="reference internal" href="vidioc-g-fmt.html#c.V4L.v4l2_format" title="V4L.v4l2_format"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_format</span></code></a> the <code class="docutils literal notranslate"><span class="pre">fmt</span></code> union was
-extended to contain <a class="reference internal" href="dev-overlay.html#c.v4l2_window" title="v4l2_window"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_window</span></code></a>. All
+<p>In <a class="reference internal" href="vidioc-g-fmt.html#c.V4L.v4l2_format" title="V4L.v4l2_format"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_format</span></code></a> the <code class="docutils literal notranslate"><span class="pre">fmt</span></code> <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">was</span></code>
+extended to contain <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_window</span></code>. All
 image format negotiations are now possible with <code class="docutils literal notranslate"><span class="pre">VIDIOC_G_FMT</span></code>,
 <code class="docutils literal notranslate"><span class="pre">VIDIOC_S_FMT</span></code> and <code class="docutils literal notranslate"><span class="pre">VIDIOC_TRY_FMT</span></code>; ioctl. The <code class="docutils literal notranslate"><span class="pre">VIDIOC_G_WIN</span></code>
 and <code class="docutils literal notranslate"><span class="pre">VIDIOC_S_WIN</span></code> ioctls to prepare for a video overlay were
@@ -558,7 +558,7 @@ the buffer type names changed as follows.</p>
 added as in <a class="reference internal" href="vidioc-g-fmt.html#c.V4L.v4l2_format" title="V4L.v4l2_format"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_format</span></code></a>. The <code class="docutils literal notranslate"><span class="pre">VIDIOC_ENUM_FBUFFMT</span></code> ioctl is no
 longer needed and was removed. These calls can be replaced by
 <a class="reference internal" href="vidioc-enum-fmt.html#vidioc-enum-fmt"><span class="std std-ref">ioctl VIDIOC_ENUM_FMT</span></a> with type <code class="docutils literal notranslate"><span class="pre">V4L2_BUF_TYPE_VIDEO_OVERLAY</span></code>.</p></li>
-<li><p>In <a class="reference internal" href="pixfmt-v4l2.html#c.v4l2_pix_format" title="v4l2_pix_format"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_pix_format</span></code></a> the <code class="docutils literal notranslate"><span class="pre">depth</span></code>
+<li><p>In <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_pix_format</span></code> the <code class="docutils literal notranslate"><span class="pre">depth</span></code>
 field was removed, assuming applications which recognize the format
 by its four-character-code already know the color depth, and others
 do not care about it. The same rationale lead to the removal of the
@@ -570,12 +570,12 @@ of conversion functions should be provided instead. The
 set the <code class="docutils literal notranslate"><span class="pre">bytesperline</span></code> field to zero to get a reasonable default.
 Since the remaining flags were replaced as well, the <code class="docutils literal notranslate"><span class="pre">flags</span></code> field
 itself was removed.</p>
-<p>The interlace flags were replaced by a <a class="reference internal" href="field-order.html#c.v4l2_field" title="v4l2_field"><code class="xref c c-enum docutils literal notranslate"><span class="pre">enum</span> <span class="pre">v4l2_field</span></code></a> value in a
+<p>The interlace flags were replaced by a <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">v4l2_field</span></code> value in a
 newly added <code class="docutils literal notranslate"><span class="pre">field</span></code> field.</p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Old flag</p></th>
-<th class="head"><p><a class="reference internal" href="field-order.html#c.v4l2_field" title="v4l2_field"><code class="xref c c-enum docutils literal notranslate"><span class="pre">enum</span> <span class="pre">v4l2_field</span></code></a></p></th>
+<th class="head"><p><code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">v4l2_field</span></code></p></th>
 </tr>
 </thead>
 <tbody>
@@ -602,7 +602,7 @@ newly added <code class="docutils literal notranslate"><span class="pre">field</
 </tr>
 </tbody>
 </table>
-<p>The color space flags were replaced by a <a class="reference internal" href="colorspaces-defs.html#c.v4l2_colorspace" title="v4l2_colorspace"><code class="xref c c-enum docutils literal notranslate"><span class="pre">enum</span> <span class="pre">v4l2_colorspace</span></code></a> value in
+<p>The color space flags were replaced by a <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">v4l2_colorspace</span></code> value in
 a newly added <code class="docutils literal notranslate"><span class="pre">colorspace</span></code> field, where one of
 <code class="docutils literal notranslate"><span class="pre">V4L2_COLORSPACE_SMPTE170M</span></code>, <code class="docutils literal notranslate"><span class="pre">V4L2_COLORSPACE_BT878</span></code>,
 <code class="docutils literal notranslate"><span class="pre">V4L2_COLORSPACE_470_SYSTEM_M</span></code> or
@@ -611,20 +611,20 @@ a newly added <code class="docutils literal notranslate"><span class="pre">color
 <li><p>In <a class="reference internal" href="vidioc-reqbufs.html#c.V4L.v4l2_requestbuffers" title="V4L.v4l2_requestbuffers"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_requestbuffers</span></code></a> the
 <code class="docutils literal notranslate"><span class="pre">type</span></code> field was properly defined as <a class="reference internal" href="buffer.html#c.V4L.v4l2_buf_type" title="V4L.v4l2_buf_type"><code class="xref c c-enum docutils literal notranslate"><span class="pre">enum</span> <span class="pre">v4l2_buf_type</span></code></a>. Buffer types
 changed as mentioned above. A new <code class="docutils literal notranslate"><span class="pre">memory</span></code> field of type
-enum v4l2_memory was added to distinguish between
+<code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">v4l2_memory</span></code> was added to distinguish between
 I/O methods using buffers allocated by the driver or the
 application. See <a class="reference internal" href="io.html#io"><span class="std std-ref">Input/Output</span></a> for details.</p></li>
 <li><p>In <a class="reference internal" href="buffer.html#c.V4L.v4l2_buffer" title="V4L.v4l2_buffer"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_buffer</span></code></a> the <code class="docutils literal notranslate"><span class="pre">type</span></code> field was
 properly defined as <a class="reference internal" href="buffer.html#c.V4L.v4l2_buf_type" title="V4L.v4l2_buf_type"><code class="xref c c-enum docutils literal notranslate"><span class="pre">enum</span> <span class="pre">v4l2_buf_type</span></code></a>.
 Buffer types changed as mentioned above. A <code class="docutils literal notranslate"><span class="pre">field</span></code> field of type
-<a class="reference internal" href="field-order.html#c.v4l2_field" title="v4l2_field"><code class="xref c c-enum docutils literal notranslate"><span class="pre">enum</span> <span class="pre">v4l2_field</span></code></a> was added to indicate if a
+<code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">v4l2_field</span></code> was added to indicate if a
 buffer contains a top or bottom field. The old field flags were
 removed. Since no unadjusted system time clock was added to the
 kernel as planned, the <code class="docutils literal notranslate"><span class="pre">timestamp</span></code> field changed back from type
 stamp_t, an unsigned 64 bit integer expressing the sample time in
-nanoseconds, to struct timeval. With the addition
+nanoseconds, to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">timeval</span></code>. With the addition
 of a second memory mapping method the <code class="docutils literal notranslate"><span class="pre">offset</span></code> field moved into
-union <code class="docutils literal notranslate"><span class="pre">m</span></code>, and a new <code class="docutils literal notranslate"><span class="pre">memory</span></code> field of type enum v4l2_memory
+union <code class="docutils literal notranslate"><span class="pre">m</span></code>, and a new <code class="docutils literal notranslate"><span class="pre">memory</span></code> field of type <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">v4l2_memory</span></code>
 was added to distinguish between
 I/O methods. See <a class="reference internal" href="io.html#io"><span class="std std-ref">Input/Output</span></a> for details.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">V4L2_BUF_REQ_CONTIG</span></code> flag was used by the V4L compatibility
@@ -643,14 +643,14 @@ using the new cropping and scaling interface. The
 <code class="docutils literal notranslate"><span class="pre">V4L2_FBUF_CAP_CLIPPING</span></code> flag was replaced by
 <code class="docutils literal notranslate"><span class="pre">V4L2_FBUF_CAP_LIST_CLIPPING</span></code> and
 <code class="docutils literal notranslate"><span class="pre">V4L2_FBUF_CAP_BITMAP_CLIPPING</span></code>.</p></li>
-<li><p>In <a class="reference internal" href="dev-overlay.html#c.v4l2_clip" title="v4l2_clip"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_clip</span></code></a> the <code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code>,
+<li><p>In <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_clip</span></code> the <code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code>,
 <code class="docutils literal notranslate"><span class="pre">width</span></code> and <code class="docutils literal notranslate"><span class="pre">height</span></code> field moved into a <code class="docutils literal notranslate"><span class="pre">c</span></code> substructure of
-type <a class="reference internal" href="dev-overlay.html#c.v4l2_rect" title="v4l2_rect"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_rect</span></code></a>. The <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code>
+type <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_rect</span></code>. The <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code>
 fields were renamed to <code class="docutils literal notranslate"><span class="pre">left</span></code> and <code class="docutils literal notranslate"><span class="pre">top</span></code>, i. e. offsets to a
 context dependent origin.</p></li>
-<li><p>In <a class="reference internal" href="dev-overlay.html#c.v4l2_window" title="v4l2_window"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_window</span></code></a> the <code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code>,
+<li><p>In <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_window</span></code> the <code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code>,
 <code class="docutils literal notranslate"><span class="pre">width</span></code> and <code class="docutils literal notranslate"><span class="pre">height</span></code> field moved into a <code class="docutils literal notranslate"><span class="pre">w</span></code> substructure as
-above. A <code class="docutils literal notranslate"><span class="pre">field</span></code> field of type <a class="reference internal" href="field-order.html#c.v4l2_field" title="v4l2_field"><code class="xref c c-enum docutils literal notranslate"><span class="pre">enum</span> <span class="pre">v4l2_field</span></code></a> was added to
+above. A <code class="docutils literal notranslate"><span class="pre">field</span></code> field of type <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">v4l2_field</span></code> was added to
 distinguish between field and frame (interlaced) overlay.</p></li>
 <li><p>The digital zoom interface, including struct <code class="docutils literal notranslate"><span class="pre">v4l2_zoomcap</span></code>,
 struct <code class="docutils literal notranslate"><span class="pre">v4l2_zoom</span></code>, <code class="docutils literal notranslate"><span class="pre">V4L2_ZOOM_NONCAP</span></code> and
@@ -857,10 +857,10 @@ field gives the time in seconds, not microseconds.</p></li>
 <section id="v4l2-spec-erratum-2006-02-04">
 <h2><span class="section-number">6.2.20. </span>V4L2 spec erratum 2006-02-04<a class="headerlink" href="#v4l2-spec-erratum-2006-02-04" title="Link to this heading">¶</a></h2>
 <ol class="arabic simple">
-<li><p>The <code class="docutils literal notranslate"><span class="pre">clips</span></code> field in <a class="reference internal" href="dev-overlay.html#c.v4l2_window" title="v4l2_window"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_window</span></code></a>
-must point to an array of <a class="reference internal" href="dev-overlay.html#c.v4l2_clip" title="v4l2_clip"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_clip</span></code></a>, not
+<li><p>The <code class="docutils literal notranslate"><span class="pre">clips</span></code> field in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_window</span></code>
+must point to an array of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_clip</span></code>, not
 a linked list, because drivers ignore the
-<a class="reference internal" href="dev-overlay.html#c.v4l2_clip" title="v4l2_clip"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_clip</span></code></a>. <code class="docutils literal notranslate"><span class="pre">next</span></code> pointer.</p></li>
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_clip</span></code>. <code class="docutils literal notranslate"><span class="pre">next</span></code> pointer.</p></li>
 </ol>
 </section>
 <section id="v4l2-in-linux-2-6-17">
@@ -920,7 +920,7 @@ flag to skip unsupported controls with
 <ol class="arabic simple">
 <li><p>In <a class="reference internal" href="vidioc-g-sliced-vbi-cap.html#c.V4L.v4l2_sliced_vbi_cap" title="V4L.v4l2_sliced_vbi_cap"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_sliced_vbi_cap</span></code></a> a
 buffer type field was added replacing a reserved field. Note on
-architectures where the size of enum types differs from int types the
+architectures where the size of <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">types</span></code> differs from int types the
 size of the structure changed. The
 <a class="reference internal" href="vidioc-g-sliced-vbi-cap.html#vidioc-g-sliced-vbi-cap"><span class="std std-ref">VIDIOC_G_SLICED_VBI_CAP</span></a> ioctl
 was redefined from being read-only to write-read. Applications must
@@ -954,20 +954,20 @@ BSD-style license.</p></li>
 <h2><span class="section-number">6.2.27. </span>V4L2 in Linux 2.6.22<a class="headerlink" href="#v4l2-in-linux-2-6-22" title="Link to this heading">¶</a></h2>
 <ol class="arabic">
 <li><p>Two new field orders <code class="docutils literal notranslate"><span class="pre">V4L2_FIELD_INTERLACED_TB</span></code> and
-<code class="docutils literal notranslate"><span class="pre">V4L2_FIELD_INTERLACED_BT</span></code> were added. See <a class="reference internal" href="field-order.html#c.v4l2_field" title="v4l2_field"><code class="xref c c-enum docutils literal notranslate"><span class="pre">enum</span> <span class="pre">v4l2_field</span></code></a> for
+<code class="docutils literal notranslate"><span class="pre">V4L2_FIELD_INTERLACED_BT</span></code> were added. See <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">v4l2_field</span></code> for
 details.</p></li>
 <li><p>Three new clipping/blending methods with a global or straight or
 inverted local alpha value were added to the video overlay interface.
 See the description of the <a class="reference internal" href="vidioc-g-fbuf.html#vidioc-g-fbuf"><span class="std std-ref">VIDIOC_G_FBUF</span></a>
 and <a class="reference internal" href="vidioc-g-fbuf.html#vidioc-g-fbuf"><span class="std std-ref">VIDIOC_S_FBUF</span></a> ioctls for details.</p>
-<p>A new <code class="docutils literal notranslate"><span class="pre">global_alpha</span></code> field was added to <a class="reference internal" href="dev-overlay.html#c.v4l2_window" title="v4l2_window"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_window</span></code></a>,
+<p>A new <code class="docutils literal notranslate"><span class="pre">global_alpha</span></code> field was added to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_window</span></code>,
 extending the structure. This may <strong>break compatibility</strong> with
-applications using a <a class="reference internal" href="dev-overlay.html#c.v4l2_window" title="v4l2_window"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_window</span></code></a> directly. However the
+applications using a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_window</span></code> directly. However the
 <a class="reference internal" href="vidioc-g-fmt.html#vidioc-g-fmt"><span class="std std-ref">VIDIOC_G/S/TRY_FMT</span></a> ioctls, which take a
 pointer to a <a class="reference internal" href="vidioc-g-fmt.html#c.V4L.v4l2_format" title="V4L.v4l2_format"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_format</span></code></a> parent structure
 with padding bytes at the end, are not affected.</p>
 </li>
-<li><p>The format of the <code class="docutils literal notranslate"><span class="pre">chromakey</span></code> field in <a class="reference internal" href="dev-overlay.html#c.v4l2_window" title="v4l2_window"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_window</span></code></a> changed from
+<li><p>The format of the <code class="docutils literal notranslate"><span class="pre">chromakey</span></code> field in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_window</span></code> changed from
 “host order RGB32” to a pixel value in the same format as the framebuffer.
 This may <strong>break compatibility</strong> with existing applications. Drivers
 supporting the “host order RGB32” format are not known.</p></li>
@@ -1132,7 +1132,7 @@ applications. See <a class="reference internal" href="selection-api.html#selecti
 <ol class="arabic simple">
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">V4L2_CID_ALPHA_COMPONENT</span></code> control to the
 <a class="reference internal" href="control.html#control"><span class="std std-ref">User controls class</span></a>.</p></li>
-<li><p>Added the device_caps field to struct v4l2_capabilities and added
+<li><p>Added the device_caps field to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_capabilities</span></code> and added
 the new V4L2_CAP_DEVICE_CAPS capability.</p></li>
 </ol>
 </section>
@@ -1209,7 +1209,7 @@ capability flags V4L2_IN_CAP_PRESETS and V4L2_OUT_CAP_PRESETS.</p></li>
 <section id="v4l2-in-linux-3-14">
 <h2><span class="section-number">6.2.49. </span>V4L2 in Linux 3.14<a class="headerlink" href="#v4l2-in-linux-3-14" title="Link to this heading">¶</a></h2>
 <ol class="arabic simple">
-<li><p>In <a class="reference internal" href="dev-overlay.html#c.v4l2_rect" title="v4l2_rect"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_rect</span></code></a>, the type of <code class="docutils literal notranslate"><span class="pre">width</span></code> and
+<li><p>In <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_rect</span></code>, the type of <code class="docutils literal notranslate"><span class="pre">width</span></code> and
 <code class="docutils literal notranslate"><span class="pre">height</span></code> fields changed from _s32 to _u32.</p></li>
 </ol>
 </section>
@@ -1228,7 +1228,7 @@ capability flags V4L2_IN_CAP_PRESETS and V4L2_OUT_CAP_PRESETS.</p></li>
 <section id="v4l2-in-linux-3-17">
 <h2><span class="section-number">6.2.52. </span>V4L2 in Linux 3.17<a class="headerlink" href="#v4l2-in-linux-3-17" title="Link to this heading">¶</a></h2>
 <ol class="arabic simple">
-<li><p>Extended <a class="reference internal" href="pixfmt-v4l2.html#c.v4l2_pix_format" title="v4l2_pix_format"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_pix_format</span></code></a>. Added
+<li><p>Extended <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_pix_format</span></code>. Added
 format flags.</p></li>
 <li><p>Added compound control types and
 <a class="reference internal" href="vidioc-queryctrl.html#vidioc-queryctrl"><span class="std std-ref">VIDIOC_QUERY_EXT_CTRL</span></a>.</p></li>
@@ -1244,9 +1244,9 @@ controls.</p></li>
 <section id="v4l2-in-linux-3-19">
 <h2><span class="section-number">6.2.54. </span>V4L2 in Linux 3.19<a class="headerlink" href="#v4l2-in-linux-3-19" title="Link to this heading">¶</a></h2>
 <ol class="arabic simple">
-<li><p>Rewrote Colorspace chapter, added new <a class="reference internal" href="colorspaces-defs.html#c.v4l2_ycbcr_encoding" title="v4l2_ycbcr_encoding"><code class="xref c c-enum docutils literal notranslate"><span class="pre">enum</span> <span class="pre">v4l2_ycbcr_encoding</span></code></a>
-and <a class="reference internal" href="colorspaces-defs.html#c.v4l2_quantization" title="v4l2_quantization"><code class="xref c c-enum docutils literal notranslate"><span class="pre">enum</span> <span class="pre">v4l2_quantization</span></code></a> fields to <a class="reference internal" href="pixfmt-v4l2.html#c.v4l2_pix_format" title="v4l2_pix_format"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_pix_format</span></code></a>,
-<a class="reference internal" href="pixfmt-v4l2-mplane.html#c.v4l2_pix_format_mplane" title="v4l2_pix_format_mplane"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_pix_format_mplane</span></code></a> and <a class="reference internal" href="subdev-formats.html#c.v4l2_mbus_framefmt" title="v4l2_mbus_framefmt"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_mbus_framefmt</span></code></a>.</p></li>
+<li><p>Rewrote Colorspace chapter, added new <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">v4l2_ycbcr_encoding</span></code>
+and <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">v4l2_quantization</span></code> fields to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_pix_format</span></code>,
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_pix_format_mplane</span></code> and <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_mbus_framefmt</span></code>.</p></li>
 </ol>
 </section>
 <section id="v4l2-in-linux-4-4">

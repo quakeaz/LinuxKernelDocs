@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -204,8 +204,8 @@ socket API is used.</p>
 </div>
 <p>UDP socket programming doesn’t need to be covered here.</p>
 <p>IPPROTO_L2TP is an IP protocol type implemented by the kernel’s L2TP
-subsystem. The L2TPIP socket address is defined in struct
-sockaddr_l2tpip and struct sockaddr_l2tpip6 at
+subsystem. The L2TPIP socket address is defined in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">sockaddr_l2tpip</span></code> and <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">sockaddr_l2tpip6</span></code> at
 <a class="reference external" href="../../../include/uapi/linux/l2tp.h">include/uapi/linux/l2tp.h</a>. The address includes the L2TP tunnel
 (connection) id. To use L2TP IP encapsulation, an L2TPv3 application
 should bind the L2TPIP socket using the locally assigned
@@ -654,10 +654,10 @@ mnl_attr_put_u32(nlh, L2TP_ATTR_CONN_ID, tid);
 <p>For PPP session types, a PPPoL2TP socket must be opened and connected
 to the L2TP session.</p>
 <p>When creating PPPoL2TP sockets, the application provides information
-to the kernel about the tunnel and session in a socket connect()
+to the kernel about the tunnel and session in a socket <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">connect()</span></code>
 call. Source and destination tunnel and session ids are provided, as
-well as the file descriptor of a UDP or L2TPIP socket. See struct
-pppol2tp_addr in <a class="reference external" href="../../../include/linux/if_pppol2tp.h">include/linux/if_pppol2tp.h</a>. For historical reasons,
+well as the file descriptor of a UDP or L2TPIP socket. See <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">pppol2tp_addr</span></code> in <a class="reference external" href="../../../include/linux/if_pppol2tp.h">include/linux/if_pppol2tp.h</a>. For historical reasons,
 there are unfortunately slightly different address structures for
 L2TPv2/L2TPv3 IPv4/IPv6 tunnels and userspace must use the appropriate
 structure that matches the tunnel socket type.</p>
@@ -870,7 +870,7 @@ implemented only L2TPv2 and did not include a netlink API. Instead,
 tunnel and session instances in the kernel were managed directly using
 only PPPoL2TP sockets. The PPPoL2TP socket is used as described in
 section “PPPoL2TP Session Socket API” but tunnel and session instances
-are automatically created on a connect() of the socket instead of
+are automatically created on a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">connect()</span></code> of the socket instead of
 being created by a separate netlink request:</p>
 <blockquote>
 <div><ul class="simple">
@@ -947,7 +947,7 @@ when userspace closes the socket.</p>
 </section>
 <section id="tunnels">
 <h3>Tunnels<a class="headerlink" href="#tunnels" title="Link to this heading">¶</a></h3>
-<p>The kernel keeps a struct l2tp_tunnel context per L2TP tunnel. The
+<p>The kernel keeps a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">l2tp_tunnel</span></code> context per L2TP tunnel. The
 l2tp_tunnel is always associated with a UDP or L2TP/IP socket and
 keeps a list of sessions in the tunnel. When a tunnel is first
 registered with L2TP core, the reference count on the socket is
@@ -972,7 +972,7 @@ reaches zero, the tunnel drops its socket ref.</p>
 </section>
 <section id="sessions">
 <h3>Sessions<a class="headerlink" href="#sessions" title="Link to this heading">¶</a></h3>
-<p>The kernel keeps a struct l2tp_session context for each session.  Each
+<p>The kernel keeps a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">l2tp_session</span></code> context for each session.  Each
 session has private data which is used for data specific to the
 session type. With L2TPv2, the session always carries PPP
 traffic. With L2TPv3, the session can carry Ethernet frames (Ethernet

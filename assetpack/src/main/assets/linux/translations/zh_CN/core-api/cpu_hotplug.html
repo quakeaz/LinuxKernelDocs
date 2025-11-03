@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -539,7 +539,7 @@ cpuhp_state枚举中的常量描述，可以在include/linux/cpuhotplug.h中找�
 </ul>
 </div></blockquote>
 <p>状态设置和回调调用是针对CPU热拔插操作进行序列化的。如果设置函数必须从CPU热插拔的读
-锁定区域调用，那么必须使用_cpuslocked()变体。这些函数不能在CPU热拔插回调中使用。</p>
+锁定区域调用，那么必须使用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_cpuslocked()</span></code>变体。这些函数不能在CPU热拔插回调中使用。</p>
 <dl>
 <dt>函数返回值：</dt><dd><table class="docutils align-default">
 <tbody>
@@ -586,7 +586,7 @@ teardown回调（如果不是NULL）。根据状态阶段，回调要么在当�
 </ul>
 </div></blockquote>
 <p>状态移除和回调调用是针对CPU热拔插操作进行序列化的。如果移除函数必须从CPU hotplug
-读取锁定区域调用，那么必须使用_cpuslocked()变体。这些函数不能从CPU热插拔的回调中使用。</p>
+读取锁定区域调用，那么必须使用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_cpuslocked()</span></code>变体。这些函数不能从CPU热插拔的回调中使用。</p>
 <p>如果一个多实例的状态被移除，那么调用者必须先移除所有的实例。</p>
 </section>
 <section id="id12">
@@ -601,7 +601,7 @@ teardown回调（如果不是NULL）。根据状态阶段，回调要么在当�
 <p>&#64;state参数是一个静态分配的状态或由<a class="reference internal" href="../../../core-api/cpu_hotplug.html#c.cpuhp_setup_state_multi" title="cpuhp_setup_state_multi"><code class="xref c c-func docutils literal notranslate"><span class="pre">cpuhp_setup_state_multi()</span></code></a>在动态范围内分配的状
 态编号。</p>
 <p>&#64;node参数是一个指向hlist_node的指针，它被嵌入到实例的数据结构中。这个指针被交给
-多实例状态的回调，可以被回调用来通过container_of()检索到实例。</p>
+多实例状态的回调，可以被回调用来通过<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">container_of()</span></code>检索到实例。</p>
 <p>这些函数在处理已注册回调的方式上有所不同:</p>
 <blockquote>
 <div><ul>

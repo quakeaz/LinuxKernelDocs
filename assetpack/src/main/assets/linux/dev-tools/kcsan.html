@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -491,13 +491,13 @@ check that this property actually holds as follows:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
+<p><strong>Note</strong></p>
 <ol class="arabic simple">
 <li><p><a class="reference internal" href="#c.ASSERT_EXCLUSIVE_ACCESS_SCOPED" title="ASSERT_EXCLUSIVE_ACCESS_SCOPED"><code class="xref c c-func docutils literal notranslate"><span class="pre">ASSERT_EXCLUSIVE_ACCESS_SCOPED()</span></code></a>, if applicable, performs more thorough
 checking if a clear scope where no concurrent accesses are expected exists.</p></li>
 <li><p>For cases where the object is freed, <a class="reference external" href="kasan.html">KASAN</a> is a better
 fit to detect use-after-free bugs.</p></li>
 </ol>
-<p><strong>Note</strong></p>
 </div>
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.ASSERT_EXCLUSIVE_ACCESS_SCOPED">
@@ -556,6 +556,15 @@ assert that this is true as follows:</p>
 <span class="n">foo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">READ_ONCE</span><span class="p">(</span><span class="n">flags</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">READ_ONLY_MASK</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">READ_ONLY_SHIFT</span><span class="p">;</span>
 </pre></div>
 </div>
+<p><strong>Note</strong></p>
+<p>The access that immediately follows <a class="reference internal" href="#c.ASSERT_EXCLUSIVE_BITS" title="ASSERT_EXCLUSIVE_BITS"><code class="xref c c-func docutils literal notranslate"><span class="pre">ASSERT_EXCLUSIVE_BITS()</span></code></a> is assumed
+to access the masked bits only, and KCSAN optimistically assumes it is
+therefore safe, even in the presence of data races, and marking it with
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">READ_ONCE()</span></code> is optional from KCSAN’s point-of-view. We caution, however, that
+it may still be advisable to do so, since we cannot reason about all compiler
+optimizations when it comes to bit manipulations (on the reader and writer
+side). If you are sure nothing can go wrong, we can write the above simply
+as:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">ASSERT_EXCLUSIVE_BITS</span><span class="p">(</span><span class="n">flags</span><span class="p">,</span><span class="w"> </span><span class="n">READ_ONLY_MASK</span><span class="p">);</span>
 <span class="n">foo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">flags</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">READ_ONLY_MASK</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">READ_ONLY_SHIFT</span><span class="p">;</span>
 </pre></div>
@@ -572,15 +581,6 @@ could use the assertion as follows:</p>
 <span class="n">spin_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">foo_lock</span><span class="p">);</span>
 </pre></div>
 </div>
-<p><strong>Note</strong></p>
-<p>The access that immediately follows <a class="reference internal" href="#c.ASSERT_EXCLUSIVE_BITS" title="ASSERT_EXCLUSIVE_BITS"><code class="xref c c-func docutils literal notranslate"><span class="pre">ASSERT_EXCLUSIVE_BITS()</span></code></a> is assumed
-to access the masked bits only, and KCSAN optimistically assumes it is
-therefore safe, even in the presence of data races, and marking it with
-READ_ONCE() is optional from KCSAN’s point-of-view. We caution, however, that
-it may still be advisable to do so, since we cannot reason about all compiler
-optimizations when it comes to bit manipulations (on the reader and writer
-side). If you are sure nothing can go wrong, we can write the above simply
-as:</p>
 </div>
 </section>
 <section id="implementation-details">

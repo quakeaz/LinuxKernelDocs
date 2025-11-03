@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -198,11 +198,11 @@ switch_to可能需要获取运行队列锁。这通常是由于上下文切换�
 <h2>CPU空转<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
 <p>你的cpu_idle程序需要遵守以下规则：</p>
 <ol class="arabic">
-<li><p>现在抢占应该在空闲的例程上禁用。应该只在调用schedule()时启用，然后再禁用。</p></li>
-<li><p>need_resched/TIF_NEED_RESCHED 只会被设置，并且在运行任务调用 schedule()
+<li><p>现在抢占应该在空闲的例程上禁用。应该只在调用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">schedule()</span></code>时启用，然后再禁用。</p></li>
+<li><p>need_resched/TIF_NEED_RESCHED 只会被设置，并且在运行任务调用 <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">schedule()</span></code>
 之前永远不会被清除。空闲线程只需要查询need_resched，并且永远不会设置或清除它。</p></li>
-<li><p>当cpu_idle发现（need_resched() == ‘true’），它应该调用schedule()。否则
-它不应该调用schedule()。</p></li>
+<li><p>当cpu_idle发现（<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">need_resched()</span></code> == ‘true’），它应该调用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">schedule()</span></code>。否则
+它不应该调用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">schedule()</span></code>。</p></li>
 <li><p>在检查need_resched时，唯一需要禁用中断的情况是，我们要让处理器休眠到下一个中
 断（这并不对need_resched提供任何保护，它可以防止丢失一个中断）:</p>
 <blockquote>

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -219,6 +219,7 @@ will be only compatible with devices aware of it.</p>
     unsigned long *freq_table;
     unsigned int max_state;
     bool is_cooling_device;
+    const struct attribute_group **dev_groups;
 };
 </pre></div>
 </div>
@@ -242,7 +243,7 @@ explained above with “DEVFREQ_FLAG_*” macros.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">get_dev_status</span></code></dt><dd><p>The device should provide the current performance
 status to devfreq. Governors are recommended not to
 use this directly. Instead, governors are recommended
-to use devfreq_update_stats() along with
+to use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devfreq_update_stats()</span></code> along with
 devfreq.last_status.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">get_cur_freq</span></code></dt><dd><p>The device should provide the current frequency
@@ -261,6 +262,9 @@ and freq_table must be generated in ascending order.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">is_cooling_device</span></code></dt><dd><p>A self-explanatory boolean giving the device a
 cooling effect property.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">dev_groups</span></code></dt><dd><p>Optional device-specific sysfs attribute groups that to
+be attached to the devfreq device.</p>
 </dd>
 </dl>
 </div>
@@ -396,9 +400,9 @@ devfreq.nb to the corresponding register notifier call chain.</p>
 <p><strong>Description</strong></p>
 <p>This structure stores the devfreq information for a given device.</p>
 <p>Note that when a governor accesses entries in <a class="reference internal" href="#c.devfreq" title="devfreq"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">devfreq</span></code></a> in its
-functions except for the context of callbacks defined in struct
-devfreq_governor, the governor should protect its access with the
-struct mutex lock in <a class="reference internal" href="#c.devfreq" title="devfreq"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">devfreq</span></code></a>. A governor may use this mutex
+functions except for the context of callbacks defined in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">devfreq_governor</span></code>, the governor should protect its access with the
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">mutex</span></code> lock in <a class="reference internal" href="#c.devfreq" title="devfreq"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">devfreq</span></code></a>. A governor may use this mutex
 to protect its own private data in <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">*data</span></code> as well.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.devfreq_simple_ondemand_data">
@@ -937,7 +941,7 @@ holds the devfreq.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>The callers are required to call dev_pm_opp_put() for the returned OPP after
+<p>The callers are required to call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_pm_opp_put()</span></code> for the returned OPP after
 use.</p>
 </div>
 <dl class="c function">
@@ -970,7 +974,7 @@ use.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>At exit() callback of devfreq_dev_profile, this must be included if
+<p>At <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">exit()</span></code> callback of devfreq_dev_profile, this must be included if
 devfreq_recommended_opp is used.</p>
 </div>
 <dl class="c function">
@@ -1064,7 +1068,7 @@ devfreq_recommended_opp is used.</p>
 <p><strong>Description</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><p>Resource-managed devfreq_unregister_notifier()</p></li>
+<li><p>Resource-managed <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devfreq_unregister_notifier()</span></code></p></li>
 </ul>
 </div></blockquote>
 </div>

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -610,7 +610,7 @@ extensions are loaded into A.</p>
 <td><p>skb-&gt;hash</p></td>
 </tr>
 <tr class="row-odd"><td><p>cpu</p></td>
-<td><p>raw_smp_processor_id()</p></td>
+<td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">raw_smp_processor_id()</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>vlan_tci</p></td>
 <td><p>skb_vlan_tag_get(skb)</p></td>
@@ -622,7 +622,7 @@ extensions are loaded into A.</p>
 <td><p>skb-&gt;vlan_proto</p></td>
 </tr>
 <tr class="row-odd"><td><p>rand</p></td>
-<td><p>get_random_u32()</p></td>
+<td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_random_u32()</span></code></p></td>
 </tr>
 </tbody>
 </table>
@@ -953,11 +953,11 @@ extension, PTP dissector/classifier, and much more. They are all internally
 converted by the kernel into the new instruction set representation and run
 in the eBPF interpreter. For in-kernel handlers, this all works transparently
 by using <a class="reference internal" href="kapi.html#c.bpf_prog_create" title="bpf_prog_create"><code class="xref c c-func docutils literal notranslate"><span class="pre">bpf_prog_create()</span></code></a> for setting up the filter, resp.
-bpf_prog_destroy() for destroying it. The function
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bpf_prog_destroy()</span></code> for destroying it. The function
 bpf_prog_run(filter, ctx) transparently invokes eBPF interpreter or JITed
-code to run the filter. ‘filter’ is a pointer to struct bpf_prog that we
+code to run the filter. ‘filter’ is a pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">bpf_prog</span></code> that we
 got from <a class="reference internal" href="kapi.html#c.bpf_prog_create" title="bpf_prog_create"><code class="xref c c-func docutils literal notranslate"><span class="pre">bpf_prog_create()</span></code></a>, and ‘ctx’ the given context (e.g.
-skb pointer). All constraints and restrictions from bpf_check_classic() apply
+skb pointer). All constraints and restrictions from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bpf_check_classic()</span></code> apply
 before a conversion to the new layout is being done behind the scenes!</p>
 <p>Currently, the classic BPF format is being used for JITing on most
 32-bit architectures, whereas x86-64, aarch64, s390x, powerpc64,

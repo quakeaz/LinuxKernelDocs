@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -196,7 +196,7 @@ together to achieve this:</p>
 <p><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_soc_usb</span></code></p>
 <blockquote>
 <div><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">list</span></code>: list head for SND SoC struct list</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">list</span></code>: list head for SND SoC <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">list</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">component</span></code>: reference to ASoC component</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">connection_status_cb</span></code>: callback to notify connection events</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">update_offload_route_info</span></code>: callback to fetch selected USB sound card/PCM
@@ -220,7 +220,7 @@ ASoC BE DAI link using this structure.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">list</span></code>: list head for the USB sound device list</p></li>
 </ul>
 </div></blockquote>
-<p>The struct snd_soc_usb_device is created by the USB sound offload driver.
+<p>The <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_soc_usb_device</span></code> is created by the USB sound offload driver.
 This will carry basic parameters/limitations that will be used to
 determine the possible offloading paths for this USB audio device.</p>
 </section>
@@ -237,7 +237,7 @@ determine the possible offloading paths for this USB audio device.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">direction</span></code>: capture or playback</p></li>
 </ul>
 </div></blockquote>
-<p><strong>snd_soc_usb_find_supported_format()</strong> ensures that the requested audio profile
+<p><strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">snd_soc_usb_find_supported_format()</span></code></strong> ensures that the requested audio profile
 being requested by the external DSP is supported by the USB device.</p>
 <p>Returns 0 on success, and -EOPNOTSUPP on failure.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>int snd_soc_usb_connect(struct device <span class="ge">*usbdev, struct snd_soc_usb_device *</span>sdev)
@@ -249,7 +249,7 @@ being requested by the external DSP is supported by the USB device.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">sdev</span></code>: capabilities of the device</p></li>
 </ul>
 </div></blockquote>
-<p><strong>snd_soc_usb_connect()</strong> notifies the ASoC USB DCPM BE DAI link of a USB
+<p><strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">snd_soc_usb_connect()</span></code></strong> notifies the ASoC USB DCPM BE DAI link of a USB
 audio device detection.  This can be utilized in the BE DAI
 driver to keep track of available USB audio devices.  This is intended
 to be called by the USB offload driver residing in USB SND.</p>
@@ -263,7 +263,7 @@ to be called by the USB offload driver residing in USB SND.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">sdev</span></code>: capabilities to free</p></li>
 </ul>
 </div></blockquote>
-<p><strong>snd_soc_usb_disconnect()</strong> notifies the ASoC USB DCPM BE DAI link of a USB
+<p><strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">snd_soc_usb_disconnect()</span></code></strong> notifies the ASoC USB DCPM BE DAI link of a USB
 audio device removal.  This is intended to be called by the USB offload
 driver that resides in USB SND.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>void <span class="ge">*snd_soc_usb_find_priv_data(struct device *</span>usbdev)
@@ -274,7 +274,7 @@ driver that resides in USB SND.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">usbdev</span></code>: the usb device to reference to find private data</p></li>
 </ul>
 </div></blockquote>
-<p><strong>snd_soc_usb_find_priv_data()</strong> fetches the private data saved to the SoC USB
+<p><strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">snd_soc_usb_find_priv_data()</span></code></strong> fetches the private data saved to the SoC USB
 device.</p>
 <p>Returns pointer to priv_data on success, NULL on failure.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>int snd_soc_usb_setup_offload_jack(struct snd_soc_component *component,
@@ -287,7 +287,7 @@ device.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">jack</span></code>: jack component to populate</p></li>
 </ul>
 </div></blockquote>
-<p><strong>snd_soc_usb_setup_offload_jack()</strong> is a helper to add a sound jack control to
+<p><strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">snd_soc_usb_setup_offload_jack()</span></code></strong> is a helper to add a sound jack control to
 the platform sound card.  This will allow for consistent naming to be used on
 designs that support USB audio offloading.  Additionally, this will enable the
 jack to notify of changes.</p>
@@ -313,7 +313,7 @@ output.</p>
 </li>
 </ul>
 </div></blockquote>
-<p><strong>snd_soc_usb_update_offload_route()</strong> calls a registered callback to the USB BE DAI
+<p><strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">snd_soc_usb_update_offload_route()</span></code></strong> calls a registered callback to the USB BE DAI
 link to fetch the information about the mapped ASoC devices for executing USB audio
 offload for the device. <code class="docutils literal notranslate"><span class="pre">route</span></code> may be a pointer to a kcontrol value output array,
 which carries values when the kcontrol is read.</p>
@@ -328,9 +328,9 @@ which carries values when the kcontrol is read.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: private data</p></li>
 </ul>
 </div></blockquote>
-<p><strong>snd_soc_usb_allocate_port()</strong> allocates a SoC USB device and populates standard
+<p><strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">snd_soc_usb_allocate_port()</span></code></strong> allocates a SoC USB device and populates standard
 parameters that is used for further operations.</p>
-<p>Returns a pointer to struct soc_usb on success, negative on error.</p>
+<p>Returns a pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">soc_usb</span></code> on success, negative on error.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>void snd_soc_usb_free_port(struct snd_soc_usb *usb);
 </pre></div>
 </div>
@@ -339,7 +339,7 @@ parameters that is used for further operations.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">usb</span></code>: SoC USB device to free</p></li>
 </ul>
 </div></blockquote>
-<p><strong>snd_soc_usb_free_port()</strong> frees a SoC USB device.</p>
+<p><strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">snd_soc_usb_free_port()</span></code></strong> frees a SoC USB device.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>void snd_soc_usb_add_port(struct snd_soc_usb *usb);
 </pre></div>
 </div>
@@ -348,7 +348,7 @@ parameters that is used for further operations.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">usb</span></code>: SoC USB device to add</p></li>
 </ul>
 </div></blockquote>
-<p><strong>snd_soc_usb_add_port()</strong> add an allocated SoC USB device to the SOC USB framework.
+<p><strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">snd_soc_usb_add_port()</span></code></strong> add an allocated SoC USB device to the SOC USB framework.
 Once added, this device can be referenced by further operations.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>void snd_soc_usb_remove_port(struct snd_soc_usb *usb);
 </pre></div>
@@ -358,7 +358,7 @@ Once added, this device can be referenced by further operations.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">usb</span></code>: SoC USB device to remove</p></li>
 </ul>
 </div></blockquote>
-<p><strong>snd_soc_usb_remove_port()</strong> removes a SoC USB device from the SoC USB framework.
+<p><strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">snd_soc_usb_remove_port()</span></code></strong> removes a SoC USB device from the SoC USB framework.
 After removing a device, any SOC USB operations would not be able to reference the
 device removed.</p>
 </section>
@@ -410,9 +410,9 @@ resides in USB SND.</p>
 <p>USB devices can be hotplugged into the USB ports at any point in time.
 The BE DAI link should be aware of the current state of the physical USB
 port, i.e. if there are any USB devices with audio interface(s) connected.
-connection_status_cb() can be used to notify the BE DAI link of any change.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">connection_status_cb()</span></code> can be used to notify the BE DAI link of any change.</p>
 <p>This is called whenever there is a USB SND interface bind or remove event,
-using snd_soc_usb_connect() or snd_soc_usb_disconnect():</p>
+using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">snd_soc_usb_connect()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">snd_soc_usb_disconnect()</span></code>:</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>static void qc_usb_audio_offload_probe(struct snd_usb_audio *chip)
 {
         ...
@@ -429,7 +429,7 @@ static void qc_usb_audio_offload_disconnect(struct snd_usb_audio *chip)
 </pre></div>
 </div>
 <p>In order to account for conditions where driver or device existence is
-not guaranteed, USB SND exposes snd_usb_rediscover_devices() to resend the
+not guaranteed, USB SND exposes <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">snd_usb_rediscover_devices()</span></code> to resend the
 connect events for any identified USB audio interfaces.  Consider the
 the following situation:</p>
 <blockquote>
@@ -447,7 +447,7 @@ the following situation:</p>
 </dd>
 </dl>
 </div></blockquote>
-<p>To ensure connection events are not missed, <strong>snd_usb_rediscover_devices()</strong>
+<p>To ensure connection events are not missed, <strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">snd_usb_rediscover_devices()</span></code></strong>
 is executed when the SoC USB device is registered.  Now, when the BE DAI
 link component probe occurs, the following highlights the sequence:</p>
 <blockquote>
@@ -467,7 +467,7 @@ link component probe occurs, the following highlights the sequence:</p>
 </dl>
 </div></blockquote>
 <p>In the case where the USB offload driver is unbound, while USB SND is ready,
-the <strong>snd_usb_rediscover_devices()</strong> is called during module init.  This allows
+the <strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">snd_usb_rediscover_devices()</span></code></strong> is called during module init.  This allows
 for the offloading path to also be enabled with the following flow:</p>
 <blockquote>
 <div><dl>
@@ -496,7 +496,7 @@ for the offloading path to also be enabled with the following flow:</p>
 <section id="details">
 <h3>Details<a class="headerlink" href="#details" title="Link to this heading">¶</a></h3>
 <p>A set of kcontrols can be utilized by applications to help select the proper sound
-devices to enable USB audio offloading.  SoC USB exposes the get_offload_dev()
+devices to enable USB audio offloading.  SoC USB exposes the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_offload_dev()</span></code>
 callback that designs can use to ensure that the proper indices are returned to the
 application.</p>
 </section>

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -1632,7 +1632,7 @@ bytes.</p>
 <p>Defined on file <a class="reference internal" href="abi-stable-files.html#abi-file-stable-sysfs-block"><span class="std std-ref">sysfs-block</span></a></p>
 <p>[RW] If the device is registered for writeback throttling, then
 this file shows the target minimum read latency. If this latency
-is exceeded in a given window of time (see wb_window_usec), then
+is exceeded in a given window of time (see curr_win_nsec), then
 the writeback throttling will start scaling back writes. Writing
 a value of ‘0’ to this file disables the feature. Writing a
 value of ‘-1’ to this file resets the value to the default
@@ -1690,6 +1690,41 @@ This can be used to optimize writing zeroes to the devices.
 write_zeroes_max_bytes indicates how many bytes can be written
 in a single write zeroes command. If write_zeroes_max_bytes is
 0, write zeroes is not supported by the device.</p>
+<table class="docutils align-default" id="abi-sys-block-disk-queue-write-zeroes-unmap-max-bytes">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/block/&lt;disk&gt;/queue/write_zeroes_unmap_max_bytes</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-stable-files.html#abi-file-stable-sysfs-block"><span class="std std-ref">sysfs-block</span></a></p>
+<p>[RW] While write_zeroes_unmap_max_hw_bytes is the hardware limit
+for the device, this setting is the software limit. Since the
+unmap write zeroes operation is a best-effort optimization, some
+devices may still physically writing zeroes to media. So the
+speed of this operation is not guaranteed. Writing a value of
+‘0’ to this file disables this operation. Otherwise, this
+parameter should be equal to write_zeroes_unmap_max_hw_bytes.</p>
+<table class="docutils align-default" id="abi-sys-block-disk-queue-write-zeroes-unmap-max-hw-bytes">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/block/&lt;disk&gt;/queue/write_zeroes_unmap_max_hw_bytes</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-stable-files.html#abi-file-stable-sysfs-block"><span class="std std-ref">sysfs-block</span></a></p>
+<p>[RO] This file indicates whether a device supports zeroing data
+in a specified block range without incurring the cost of
+physically writing zeroes to the media for each individual
+block. If this parameter is set to write_zeroes_max_bytes, the
+device implements a zeroing operation which opportunistically
+avoids writing zeroes to media while still guaranteeing that
+subsequent reads from the specified block range will return
+zeroed data. This operation is a best-effort optimization, a
+device may fall back to physically writing zeroes to the media
+due to other factors such as misalignment or being asked to
+clear a block range smaller than the device’s internal
+allocation unit. If this parameter is set to 0, the device may
+have to write each logical block media during a zeroing
+operation.</p>
 <table class="docutils align-default" id="abi-sys-block-disk-queue-zone-append-max-bytes">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/block/&lt;disk&gt;/queue/zone_append_max_bytes</strong></p></td>
@@ -7140,6 +7175,16 @@ other or unknown.</p>
 <p>Defined on file <a class="reference internal" href="abi-stable-files.html#abi-file-stable-sysfs-devices-node"><span class="std std-ref">sysfs-devices-node</span></a></p>
 <p>The node’s hit/miss statistics, in units of pages.
 See <a class="reference internal" href="numastat.html"><span class="doc">Numa policy hit/miss statistics</span></a></p>
+<table class="docutils align-default" id="abi-sys-devices-system-node-nodex-reclaim">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/devices/system/node/nodeX/reclaim</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-stable-files.html#abi-file-stable-sysfs-devices-node"><span class="std std-ref">sysfs-devices-node</span></a></p>
+<p>Perform user-triggered proactive reclaim on a NUMA node.
+This interface is equivalent to the memcg variant.</p>
+<p>See <a class="reference internal" href="cgroup-v2.html"><span class="doc">Control Group v2</span></a></p>
 <table class="docutils align-default" id="abi-sys-devices-system-node-nodex-vmstat">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/devices/system/node/nodeX/vmstat</strong></p></td>
@@ -7753,6 +7798,14 @@ This is the &lt;minor&gt; part of it.</p>
 <p>The /sys/kernel/notes file contains the binary representation
 of the running vmlinux’s .notes section.</p>
 </section>
+<table class="docutils align-default" id="abi-sys-kernel-time-aux-clocks-id-enable">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/kernel/time/aux_clocks/&lt;ID&gt;/enable</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-stable-files.html#abi-file-stable-sysfs-kernel-time-aux-clocks"><span class="std std-ref">sysfs-kernel-time-aux-clocks</span></a></p>
+<p>Controls the enablement of auxiliary clock timekeepers.</p>
 <section id="symbols-under-sys-module">
 <h2>Symbols under /sys/module<a class="headerlink" href="#symbols-under-sys-module" title="Link to this heading">¶</a></h2>
 <table class="docutils align-default" id="abi-sys-module-modulename">

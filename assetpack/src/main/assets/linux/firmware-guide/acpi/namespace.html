@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -350,7 +350,7 @@ current namespace node).</p></li>
 </section>
 <section id="linux-acpi-device-objects">
 <h2>Linux ACPI Device Objects<a class="headerlink" href="#linux-acpi-device-objects" title="Link to this heading">¶</a></h2>
-<p>The Linux kernel’s core ACPI subsystem creates struct acpi_device
+<p>The Linux kernel’s core ACPI subsystem creates <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">acpi_device</span></code>
 objects for ACPI namespace objects representing devices, power resources
 processors, thermal zones.  Those objects are exported to user space via
 sysfs as directories in the subtree under /sys/devices/LNXSYSTM:00.  The
@@ -389,7 +389,7 @@ part of as listed in the table below:</p>
  Table 1. ACPI Namespace Objects Mapping
 </pre></div>
 </div>
-<p>The following rules apply when creating struct acpi_device objects on
+<p>The following rules apply when creating <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">acpi_device</span></code> objects on
 the basis of the contents of ACPI System Description Tables (as
 indicated by the letter in the first column and the notation in the
 second column of the table above):</p>
@@ -400,27 +400,27 @@ named object’s type in the second column).  In that case the object’s
 directory in sysfs will contain the ‘path’ attribute whose value is
 the full path to the node from the namespace root.</p>
 </dd>
-<dt>F:</dt><dd><p>The struct acpi_device object is created for a fixed hardware
+<dt>F:</dt><dd><p>The <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">acpi_device</span></code> object is created for a fixed hardware
 feature (as indicated by the fixed feature flag’s name in the second
 column), so its sysfs directory will not contain the ‘path’
 attribute.</p>
 </dd>
-<dt>M:</dt><dd><p>The struct acpi_device object is created for an ACPI namespace node
+<dt>M:</dt><dd><p>The <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">acpi_device</span></code> object is created for an ACPI namespace node
 with specific control methods (as indicated by the ACPI defined
 device’s type in the second column).  The ‘path’ attribute containing
 its namespace path will be present in its sysfs directory.  For
 example, if the _BCL method is present for an ACPI namespace node, a
-struct acpi_device object with LNXVIDEO ‘bus_id’ will be created for
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">acpi_device</span></code> object with LNXVIDEO ‘bus_id’ will be created for
 it.</p>
 </dd>
 </dl>
 </div></blockquote>
 <p>The third column of the above table indicates which ACPI System
 Description Tables contain information used for the creation of the
-struct acpi_device objects represented by the given row (xSDT means DSDT
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">acpi_device</span></code> objects represented by the given row (xSDT means DSDT
 or SSDT).</p>
 <p>The fourth column of the above table indicates the ‘bus_id’ generation
-rule of the struct acpi_device object:</p>
+rule of the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">acpi_device</span></code> object:</p>
 <blockquote>
 <div><dl class="simple">
 <dt>_HID:</dt><dd><p>_HID in the last column of the table means that the object’s bus_id
@@ -429,7 +429,7 @@ the corresponding ACPI namespace node. The object’s sysfs directory
 will then contain the ‘hid’ and ‘modalias’ attributes that can be
 used to retrieve the _HID and _CIDs of that object.</p>
 </dd>
-<dt>LNXxxxxx:</dt><dd><p>The ‘modalias’ attribute is also present for struct acpi_device
+<dt>LNXxxxxx:</dt><dd><p>The ‘modalias’ attribute is also present for <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">acpi_device</span></code>
 objects having bus_id of the “LNXxxxxx” form (pseudo devices), in
 which cases it contains the bus_id string itself.</p>
 </dd>
@@ -445,7 +445,7 @@ object’s bus_id.</p>
 </section>
 <section id="linux-acpi-physical-device-glue">
 <h2>Linux ACPI Physical Device Glue<a class="headerlink" href="#linux-acpi-physical-device-glue" title="Link to this heading">¶</a></h2>
-<p>ACPI device (i.e. struct acpi_device) objects may be linked to other
+<p>ACPI device (i.e. <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">acpi_device</span></code>) objects may be linked to other
 objects in the Linux’ device hierarchy that represent “physical” devices
 (for example, devices on the PCI bus).  If that happens, it means that
 the ACPI device object is a “companion” of a device otherwise
@@ -464,7 +464,7 @@ ACPI namespace.  For example, if there’s an ACPI namespace object
 representing a PCI device (i.e. a device object under an ACPI namespace
 object representing a PCI bridge) whose _ADR returns 0x00020000 and the
 bus number of the parent PCI bridge is 0, the sysfs directory
-representing the struct acpi_device object created for that ACPI
+representing the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">acpi_device</span></code> object created for that ACPI
 namespace object will contain the ‘physical_node’ symbolic link to the
 /sys/devices/pci0000:00/0000:00:02:0/ sysfs directory of the
 corresponding PCI device.</p>
@@ -476,7 +476,7 @@ drivers/pci/pci-acpi.c.</p>
 </section>
 <section id="example-linux-acpi-device-tree">
 <h2>Example Linux ACPI Device Tree<a class="headerlink" href="#example-linux-acpi-device-tree" title="Link to this heading">¶</a></h2>
-<p>The sysfs hierarchy of struct acpi_device objects corresponding to the
+<p>The sysfs hierarchy of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">acpi_device</span></code> objects corresponding to the
 example ACPI namespace illustrated in Figure 2 with the addition of
 fixed PWR_BUTTON/SLP_BUTTON devices is shown below:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>+--------------+---+-----------------+

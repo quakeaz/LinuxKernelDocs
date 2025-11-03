@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -171,7 +171,8 @@ must be freed by the user otherwise.</p>
 <a class="reference internal" href="#c.kunit_alloc_and_get_resource" title="kunit_alloc_and_get_resource"><code class="xref c c-func docutils literal notranslate"><span class="pre">kunit_alloc_and_get_resource()</span></code></a> or <a class="reference internal" href="#c.kunit_find_resource" title="kunit_find_resource"><code class="xref c c-func docutils literal notranslate"><span class="pre">kunit_find_resource()</span></code></a>, we need
 to call <a class="reference internal" href="#c.kunit_put_resource" title="kunit_put_resource"><code class="xref c c-func docutils literal notranslate"><span class="pre">kunit_put_resource()</span></code></a> to reduce the resource reference count
 when finished with it.  Note that <a class="reference internal" href="#c.kunit_alloc_resource" title="kunit_alloc_resource"><code class="xref c c-func docutils literal notranslate"><span class="pre">kunit_alloc_resource()</span></code></a> does not require a
-kunit_resource_put() because it does not retrieve the resource itself.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kunit_resource_put()</span></code> because it does not retrieve the resource itself.</p>
+<p><strong>Example</strong></p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">kunit_kmalloc_params</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="kt">size_t</span><span class="w"> </span><span class="n">size</span><span class="p">;</span>
 <span class="w">        </span><span class="n">gfp_t</span><span class="w"> </span><span class="n">gfp</span><span class="p">;</span>
@@ -207,9 +208,8 @@ kunit_resource_put() because it does not retrieve the resource itself.</p>
 </div>
 <p>Resources can also be named, with lookup/removal done on a name
 basis also.  <a class="reference internal" href="#c.kunit_add_named_resource" title="kunit_add_named_resource"><code class="xref c c-func docutils literal notranslate"><span class="pre">kunit_add_named_resource()</span></code></a>, <a class="reference internal" href="#c.kunit_find_named_resource" title="kunit_find_named_resource"><code class="xref c c-func docutils literal notranslate"><span class="pre">kunit_find_named_resource()</span></code></a>
-and kunit_destroy_named_resource().  Resource names must be
+and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kunit_destroy_named_resource()</span></code>.  Resource names must be
 unique within the test instance.</p>
-<p><strong>Example</strong></p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.kunit_get_resource">
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">kunit_get_resource</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.kunit_resource" title="kunit_resource"><span class="n"><span class="pre">kunit_resource</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">res</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.kunit_get_resource" title="Link to this definition">¶</a><br /></dt>
@@ -226,7 +226,7 @@ unique within the test instance.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.kunit_put_resource">
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">kunit_put_resource</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.kunit_resource" title="kunit_resource"><span class="n"><span class="pre">kunit_resource</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">res</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.kunit_put_resource" title="Link to this definition">¶</a><br /></dt>
-<dd><p>When caller is done with retrieved resource, <a class="reference internal" href="#c.kunit_put_resource" title="kunit_put_resource"><code class="xref c c-func docutils literal notranslate"><span class="pre">kunit_put_resource()</span></code></a> should be called to drop reference count. The resource list maintains a reference count on resources, so if no users are utilizing a resource and it is removed from the resource list, it will be freed via the associated free function (if any). Only needs to be used if we alloc_and_get() or find() resource.</p>
+<dd><p>When caller is done with retrieved resource, <a class="reference internal" href="#c.kunit_put_resource" title="kunit_put_resource"><code class="xref c c-func docutils literal notranslate"><span class="pre">kunit_put_resource()</span></code></a> should be called to drop reference count. The resource list maintains a reference count on resources, so if no users are utilizing a resource and it is removed from the resource list, it will be freed via the associated free function (if any). Only needs to be used if we <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">alloc_and_get()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">find()</span></code> resource.</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -453,7 +453,7 @@ resource.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Note that the resource will not be immediately freed since it is likely
-the caller has a reference to it via alloc_and_get() or find();
+the caller has a reference to it via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">alloc_and_get()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">find()</span></code>;
 in this case a final call to <a class="reference internal" href="#c.kunit_put_resource" title="kunit_put_resource"><code class="xref c c-func docutils literal notranslate"><span class="pre">kunit_put_resource()</span></code></a> is required.</p>
 </div>
 <dl class="c macro">
@@ -506,11 +506,9 @@ they were registered in.</p>
 <p>This is useful for cleaning up allocated memory and resources, as these
 functions are called even if the test aborts early due to, e.g., a failed
 assertion.</p>
-<p>See also: devm_add_action() for the devres equivalent.</p>
+<p>See also: <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_add_action()</span></code> for the devres equivalent.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p>0 on success, an error if the action could not be deferred.</p>
-</div></blockquote>
+<p>0 on success, an error if the action could not be deferred.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.kunit_add_action_or_reset">
@@ -538,11 +536,9 @@ functions are called even if the test aborts early due to, e.g., a failed
 assertion.</p>
 <p>If the action cannot be created (e.g., due to the system being out of memory),
 then action(ctx) will be called immediately, and an error will be returned.</p>
-<p>See also: devm_add_action_or_reset() for the devres equivalent.</p>
+<p>See also: <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_add_action_or_reset()</span></code> for the devres equivalent.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p>0 on success, an error if the action could not be deferred.</p>
-</div></blockquote>
+<p>0 on success, an error if the action could not be deferred.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.kunit_remove_action">
@@ -565,7 +561,7 @@ then action(ctx) will be called immediately, and an error will be returned.</p>
 test terminates.</p>
 <p>If the function/context pair was deferred multiple times, only the most
 recent one will be cancelled.</p>
-<p>See also: devm_remove_action() for the devres equivalent.</p>
+<p>See also: <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_remove_action()</span></code> for the devres equivalent.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.kunit_release_action">
@@ -634,7 +630,7 @@ This driver will automatically be cleaned up on test exit.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Creates a struct kunit_device (which is a <a class="reference internal" href="../../../driver-api/infrastructure.html#c.device" title="device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span></code></a>) with the given name,
+<p>Creates a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kunit_device</span></code> (which is a <a class="reference internal" href="../../../driver-api/infrastructure.html#c.device" title="device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span></code></a>) with the given name,
 and a corresponding driver. The device and driver will be cleaned up on test
 exit, or when kunit_device_unregister is called. See also
 kunit_device_register_with_driver, if you wish to provide your own
@@ -660,7 +656,7 @@ exits, or an error pointer if the device could not be allocated or registered.</
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Creates a struct kunit_device (which is a <a class="reference internal" href="../../../driver-api/infrastructure.html#c.device" title="device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span></code></a>) with the given
+<p>Creates a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kunit_device</span></code> (which is a <a class="reference internal" href="../../../driver-api/infrastructure.html#c.device" title="device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span></code></a>) with the given
 name, and driver. The device will be cleaned up on test exit, or when
 kunit_device_unregister is called. See also kunit_device_register, if you
 wish KUnit to create and manage a driver for you.</p>

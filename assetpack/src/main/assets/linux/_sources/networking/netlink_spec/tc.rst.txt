@@ -279,6 +279,56 @@ flower-key-ctrl-flags
     - ``tuncrit``
 
 
+.. _tc-definition-dualpi2-drop-overload:
+
+dualpi2-drop-overload
+=====================
+:type: enum
+
+
+:entries:
+    - ``overflow``
+    - ``drop``
+
+
+.. _tc-definition-dualpi2-drop-early:
+
+dualpi2-drop-early
+==================
+:type: enum
+
+
+:entries:
+    - ``drop-dequeue``
+    - ``drop-enqueue``
+
+
+.. _tc-definition-dualpi2-ecn-mask:
+
+dualpi2-ecn-mask
+================
+:type: enum
+:value-start: 1
+
+
+:entries:
+    - ``l4s-ect``
+    - ``cla-ect``
+    - ``any-ect``
+
+
+.. _tc-definition-dualpi2-split-gso:
+
+dualpi2-split-gso
+=================
+:type: enum
+
+
+:entries:
+    - ``no-split-gso``
+    - ``split-gso``
+
+
 .. _tc-definition-tc-stats:
 
 tc-stats
@@ -789,6 +839,28 @@ tc-fq-codel-xstats
     :drop-overmemory (``u32``): 
 
 
+.. _tc-definition-tc-dualpi2-xstats:
+
+tc-dualpi2-xstats
+=================
+:type: struct
+
+
+:members:
+    :prob (``u32``): Current base PI probability
+    :delay-c (``u32``): Current C-queue delay in microseconds
+    :delay-l (``u32``): Current L-queue delay in microseconds
+    :pkts-in-c (``u32``): Number of packets enqueued in the C-queue
+    :pkts-in-l (``u32``): Number of packets enqueued in the L-queue
+    :maxq (``u32``): Maximum number of packets seen by the DualPI2
+    :ecn-mark (``u32``): All packets marked with ECN
+    :step-mark (``u32``): Only packets marked with ECN due to L-queue step AQM
+    :credit (``s32``): Current credit value for WRR
+    :memory-used (``u32``): Memory used in bytes by the DualPI2
+    :max-memory-used (``u32``): Maximum memory used in bytes by the DualPI2
+    :memory-limit (``u32``): Memory limit in bytes
+
+
 .. _tc-definition-tc-fq-pie-xstats:
 
 tc-fq-pie-xstats
@@ -801,7 +873,7 @@ tc-fq-pie-xstats
     :dropped (``u32``): Packets dropped due to fq_pie_action
     :overlimit (``u32``): Dropped due to lack of space in queue
     :overmemory (``u32``): Dropped due to lack of memory in queue
-    :ecn-mark (``u32``): Packets marked with ecn
+    :ecn-mark (``u32``): Packets marked with ECN
     :new-flow-count (``u32``): Count of new flows created by packets
     :new-flows-len (``u32``): Count of flows in new list
     :old-flows-len (``u32``): Count of flows in old list
@@ -866,7 +938,7 @@ tc-pie-xstats
     :dropped (``u32``): Packets dropped due to pie action
     :overlimit (``u32``): Dropped due to lack of space in queue
     :maxq (``u32``): Maximum queue size
-    :ecn-mark (``u32``): Packets marked with ecn
+    :ecn-mark (``u32``): Packets marked with ECN
 
 
 .. _tc-definition-tc-red-xstats:
@@ -2308,6 +2380,89 @@ drr-attrs
 =========
 quantum (``u32``)
 ~~~~~~~~~~~~~~~~~
+
+
+.. _tc-attribute-set-dualpi2-attrs:
+
+dualpi2-attrs
+=============
+limit (``u32``)
+~~~~~~~~~~~~~~~
+:doc: Limit of total number of packets in queue
+
+
+memory-limit (``u32``)
+~~~~~~~~~~~~~~~~~~~~~~
+:doc: Memory limit of total number of packets in queue
+
+
+target (``u32``)
+~~~~~~~~~~~~~~~~
+:doc: Classic target delay in microseconds
+
+
+tupdate (``u32``)
+~~~~~~~~~~~~~~~~~
+:doc: Drop probability update interval time in microseconds
+
+
+alpha (``u32``)
+~~~~~~~~~~~~~~~
+:doc: Integral gain factor in Hz for PI controller
+
+
+beta (``u32``)
+~~~~~~~~~~~~~~
+:doc: Proportional gain factor in Hz for PI controller
+
+
+step-thresh-pkts (``u32``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+:doc: L4S step marking threshold in packets
+
+
+step-thresh-us (``u32``)
+~~~~~~~~~~~~~~~~~~~~~~~~
+:doc: L4S Step marking threshold in microseconds
+
+
+min-qlen-step (``u32``)
+~~~~~~~~~~~~~~~~~~~~~~~
+:doc: Packets enqueued to the L-queue can apply the step threshold when the queue length of L-queue is larger than this value. (0 is recommended)
+
+
+coupling (``u8``)
+~~~~~~~~~~~~~~~~~
+:doc: Probability coupling factor between Classic and L4S (2 is recommended)
+
+
+drop-overload (``u8``)
+~~~~~~~~~~~~~~~~~~~~~~
+:doc: Control the overload strategy (drop to preserve latency or let the queue overflow)
+:enum: :ref:`tc-definition-dualpi2-drop-overload`
+
+
+drop-early (``u8``)
+~~~~~~~~~~~~~~~~~~~
+:doc: Decide where the Classic packets are PI-based dropped or marked
+:enum: :ref:`tc-definition-dualpi2-drop-early`
+
+
+c-protection (``u8``)
+~~~~~~~~~~~~~~~~~~~~~
+:doc: Classic WRR weight in percentage (from 0 to 100)
+
+
+ecn-mask (``u8``)
+~~~~~~~~~~~~~~~~~
+:doc: Configure the L-queue ECN classifier
+:enum: :ref:`tc-definition-dualpi2-ecn-mask`
+
+
+split-gso (``u8``)
+~~~~~~~~~~~~~~~~~~
+:doc: Split aggregated skb or not
+:enum: :ref:`tc-definition-dualpi2-split-gso`
 
 
 .. _tc-attribute-set-ematch-attrs:
@@ -4095,6 +4250,10 @@ options-msg
     :attribute-set: :ref:`tc-attribute-set-drr-attrs`
 
 
+- **dualpi2**
+    :attribute-set: :ref:`tc-attribute-set-dualpi2-attrs`
+
+
 - **etf**
     :attribute-set: :ref:`tc-attribute-set-etf-attrs`
 
@@ -4316,6 +4475,10 @@ tca-stats-app-msg
 
 - **codel**
     :fixed-header: :ref:`tc-definition-tc-codel-xstats`
+
+
+- **dualpi2**
+    :fixed-header: :ref:`tc-definition-tc-dualpi2-xstats`
 
 
 - **fq**

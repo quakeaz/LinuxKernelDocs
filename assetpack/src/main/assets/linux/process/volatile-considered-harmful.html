@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -198,7 +198,7 @@ want to play with that data will be waiting on the lock.  The spinlock
 primitives act as memory barriers - they are explicitly written to do so -
 meaning that data accesses will not be optimized across them.  So the
 compiler might think it knows what will be in shared_data, but the
-spin_lock() call, since it acts as a memory barrier, will force it to
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock()</span></code> call, since it acts as a memory barrier, will force it to
 forget anything it knows.  There will be no optimization problems with
 accesses to that data.</p>
 <p>If shared_data were declared volatile, the locking would still be
@@ -222,7 +222,7 @@ way to perform a busy wait is:</p>
     cpu_relax();
 </pre></div>
 </div>
-<p>The cpu_relax() call can lower CPU power consumption or yield to a
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpu_relax()</span></code> call can lower CPU power consumption or yield to a
 hyperthreaded twin processor; it also happens to serve as a compiler
 barrier, so, once again, volatile is unnecessary.  Of course, busy-
 waiting is generally an anti-social act to begin with.</p>

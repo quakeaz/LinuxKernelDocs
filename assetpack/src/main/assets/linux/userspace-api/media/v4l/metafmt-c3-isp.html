@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -163,7 +163,7 @@ Auto-exposure and Auto-focus information.</p>
 <section id="configuration-parameters">
 <h2><span class="section-number">2.13.1.2. </span>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading">¶</a></h2>
 <p>The configuration parameters are passed to the c3-isp-params metadata output video node,
-using the <a class="reference internal" href="dev-meta.html#c.v4l2_meta_format" title="v4l2_meta_format"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_meta_format</span></code></a> interface. Rather than a single struct containing
+using the <a class="reference internal" href="dev-meta.html#c.v4l2_meta_format" title="v4l2_meta_format"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_meta_format</span></code></a> interface. Rather than a single <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">containing</span></code>
 sub-structs for each configurable area of the ISP, parameters for the C3-ISP
 are defined as distinct structs or “blocks” which may be added to the data
 member of <a class="reference internal" href="#c.c3_isp_params_cfg" title="c3_isp_params_cfg"><code class="xref c c-type docutils literal notranslate"><span class="pre">c3_isp_params_cfg</span></code></a>. Userspace is responsible for
@@ -171,7 +171,7 @@ populating the data member with the blocks that need to be configured by the dri
 need not populate it with <strong>all</strong> the blocks, or indeed with any at all if there
 are no configuration changes to make. Populated blocks <strong>must</strong> be consecutive
 in the buffer. To assist both userspace and the driver in identifying the
-blocks each block-specific struct embeds
+blocks each block-specific <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">embeds</span></code>
 <a class="reference internal" href="#c.c3_isp_params_block_header" title="c3_isp_params_block_header"><code class="xref c c-type docutils literal notranslate"><span class="pre">c3_isp_params_block_header</span></code></a> as its first member and userspace
 must populate the type member with a value from
 <a class="reference internal" href="#c.c3_isp_params_block_type" title="c3_isp_params_block_type"><code class="xref c c-type docutils literal notranslate"><span class="pre">c3_isp_params_block_type</span></code></a>. Once the blocks have been populated
@@ -557,7 +557,7 @@ fields (<strong>type</strong>, <strong>flags</strong> and <strong>size</strong>)
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This struct allows users to configure the gains for white balance.
+<p>This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">allows</span></code> users to configure the gains for white balance.
 There are four gain settings corresponding to each colour channel in
 the bayer domain. All of the gains are stored in Q4.8 format.</p>
 <p>header.type should be set to C3_ISP_PARAMS_BLOCK_AWB_GAINS
@@ -613,7 +613,7 @@ from <a class="reference internal" href="#c.c3_isp_params_block_type" title="c3_
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">header</span></code></dt><dd><p>the C3 ISP parameters block header</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">tap_point</span></code></dt><dd><p>the tap point from enum c3_isp_params_awb_tap_point</p>
+<dt><code class="docutils literal notranslate"><span class="pre">tap_point</span></code></dt><dd><p>the tap point from <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">c3_isp_params_awb_tap_point</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">satur_vald</span></code></dt><dd><p>AWB statistic over saturation control
 value: 0: disable, 1: enable</p>
@@ -647,7 +647,7 @@ value: 0: disable, 1: enable</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This struct allows the configuration of the statistics generated for auto
+<p>This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">allows</span></code> the configuration of the statistics generated for auto
 white balance.</p>
 <p>header.type should be set to C3_ISP_PARAMS_BLOCK_AWB_CONFIG
 from <a class="reference internal" href="#c.c3_isp_params_block_type" title="c3_isp_params_block_type"><code class="xref c c-type docutils literal notranslate"><span class="pre">c3_isp_params_block_type</span></code></a></p>
@@ -690,7 +690,7 @@ from <a class="reference internal" href="#c.c3_isp_params_block_type" title="c3_
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">header</span></code></dt><dd><p>the C3 ISP parameters block header</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">tap_point</span></code></dt><dd><p>the tap point from enum c3_isp_params_ae_tap_point</p>
+<dt><code class="docutils literal notranslate"><span class="pre">tap_point</span></code></dt><dd><p>the tap point from <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">c3_isp_params_ae_tap_point</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">horiz_zones_num</span></code></dt><dd><p>active number of horizontal zones [0..17]</p>
 </dd>
@@ -707,7 +707,7 @@ from <a class="reference internal" href="#c.c3_isp_params_block_type" title="c3_
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This struct allows the configuration of the statistics generated for
+<p>This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">allows</span></code> the configuration of the statistics generated for
 auto exposure.</p>
 <p>header.type should be set to C3_ISP_PARAMS_BLOCK_AE_CONFIG
 from <a class="reference internal" href="#c.c3_isp_params_block_type" title="c3_isp_params_block_type"><code class="xref c c-type docutils literal notranslate"><span class="pre">c3_isp_params_block_type</span></code></a></p>
@@ -749,7 +749,7 @@ from <a class="reference internal" href="#c.c3_isp_params_block_type" title="c3_
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">header</span></code></dt><dd><p>the C3 ISP parameters block header</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">tap_point</span></code></dt><dd><p>the tap point from enum c3_isp_params_af_tap_point</p>
+<dt><code class="docutils literal notranslate"><span class="pre">tap_point</span></code></dt><dd><p>the tap point from <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">c3_isp_params_af_tap_point</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">horiz_zones_num</span></code></dt><dd><p>active number of hotizontal zones [0..17]</p>
 </dd>
@@ -764,7 +764,7 @@ from <a class="reference internal" href="#c.c3_isp_params_block_type" title="c3_
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This struct allows the configuration of the statistics generated for
+<p>This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">allows</span></code> the configuration of the statistics generated for
 auto focus.</p>
 <p>header.type should be set to C3_ISP_PARAMS_BLOCK_AF_CONFIG
 from <a class="reference internal" href="#c.c3_isp_params_block_type" title="c3_isp_params_block_type"><code class="xref c c-type docutils literal notranslate"><span class="pre">c3_isp_params_block_type</span></code></a></p>
@@ -794,7 +794,7 @@ from <a class="reference internal" href="#c.c3_isp_params_block_type" title="c3_
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This struct allows the configuration of the look up table for
+<p>This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">allows</span></code> the configuration of the look up table for
 post gamma. The gamma curve consists of 129 points, so need to
 set lut[129].</p>
 <p>header.type should be set to C3_ISP_PARAMS_BLOCK_PST_GAMMA
@@ -826,7 +826,7 @@ the value of matrix[x][y] is orig_value x 256. [-4096..4095]</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This struct allows the configuration of the matrix for
+<p>This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">allows</span></code> the configuration of the matrix for
 color correction. The matrix consists of 3 x 3 points,
 so need to set matrix[3][3].</p>
 <p>header.type should be set to C3_ISP_PARAMS_BLOCK_CCM
@@ -858,7 +858,7 @@ the value of matrix[x][y] is orig_value x 256. [-4096..4095]</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This struct allows the configuration of the matrix for color space
+<p>This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">allows</span></code> the configuration of the matrix for color space
 conversion. The matrix consists of 3 x 3 points, so need to set matrix[3][3].</p>
 <p>header.type should be set to C3_ISP_PARAMS_BLOCK_CSC
 from <a class="reference internal" href="#c.c3_isp_params_block_type" title="c3_isp_params_block_type"><code class="xref c c-type docutils literal notranslate"><span class="pre">c3_isp_params_block_type</span></code></a></p>
@@ -894,7 +894,7 @@ from <a class="reference internal" href="#c.c3_isp_params_block_type" title="c3_
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This struct allows the configuration of the block level offset for each
+<p>This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">allows</span></code> the configuration of the block level offset for each
 color channel.</p>
 <p>header.type should be set to C3_ISP_PARAMS_BLOCK_BLC
 from <a class="reference internal" href="#c.c3_isp_params_block_type" title="c3_isp_params_block_type"><code class="xref c c-type docutils literal notranslate"><span class="pre">c3_isp_params_block_type</span></code></a></p>
@@ -941,7 +941,7 @@ header</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This struct contains the configuration parameters of the C3 ISP
+<p>This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">contains</span></code> the configuration parameters of the C3 ISP
 algorithms, serialized by userspace into an opaque data buffer. Each
 configuration parameter block is represented by a block-specific structure
 which contains a <code class="xref c c-type docutils literal notranslate"><span class="pre">c3_isp_param_block_header</span></code> entry as first

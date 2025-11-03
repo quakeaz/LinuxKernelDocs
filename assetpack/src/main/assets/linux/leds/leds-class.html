@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -285,7 +285,7 @@ blinking, returns -EBUSY if software blink fallback is enabled.</p>
 <section id="led-registration-api">
 <h2>LED registration API<a class="headerlink" href="#led-registration-api" title="Link to this heading">¶</a></h2>
 <p>A driver wanting to register a LED classdev for use by other drivers /
-userspace needs to allocate and fill a led_classdev struct and then call
+userspace needs to allocate and fill a led_classdev <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">and</span></code> then call
 <cite>[devm_]led_classdev_register</cite>. If the non devm version is used the driver
 must call led_classdev_unregister from its remove function before
 free-ing the led_classdev struct.</p>
@@ -299,17 +299,17 @@ the LED_BRIGHT_HW_CHANGED flag is a bug and will trigger a WARN_ON.</p>
 <h2>Hardware accelerated blink of LEDs<a class="headerlink" href="#hardware-accelerated-blink-of-leds" title="Link to this heading">¶</a></h2>
 <p>Some LEDs can be programmed to blink without any CPU interaction. To
 support this feature, a LED driver can optionally implement the
-blink_set() function (see &lt;linux/leds.h&gt;). To set an LED to blinking,
-however, it is better to use the API function led_blink_set(), as it
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">blink_set()</span></code> function (see &lt;linux/leds.h&gt;). To set an LED to blinking,
+however, it is better to use the API function <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">led_blink_set()</span></code>, as it
 will check and implement software fallback if necessary.</p>
-<p>To turn off blinking, use the API function led_brightness_set()
+<p>To turn off blinking, use the API function <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">led_brightness_set()</span></code>
 with brightness value LED_OFF, which should stop any software
 timers that may have been required for blinking.</p>
-<p>The blink_set() function should choose a user friendly blinking value
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">blink_set()</span></code> function should choose a user friendly blinking value
 if it is called with <cite>*delay_on==0</cite> &amp;&amp; <cite>*delay_off==0</cite> parameters. In this
 case the driver should give back the chosen value through delay_on and
 delay_off parameters to the leds subsystem.</p>
-<p>Setting the brightness to zero with brightness_set() callback function
+<p>Setting the brightness to zero with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">brightness_set()</span></code> callback function
 should completely turn off the LED and cancel the previously programmed
 hardware blinking function, if any.</p>
 </section>
@@ -337,7 +337,7 @@ mode.</p>
 <dt>hw_control_is_supported:</dt><dd><p>check if the flags passed by the supported trigger can
 be parsed and activate hw control on the LED.</p>
 <p>Return 0 if the passed flags mask is supported and
-can be set with hw_control_set().</p>
+can be set with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hw_control_set()</span></code>.</p>
 <p>If the passed flags mask is not supported -EOPNOTSUPP
 must be returned, the LED trigger will use software
 fallback in this case.</p>

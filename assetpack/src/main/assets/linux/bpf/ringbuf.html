@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -258,10 +258,10 @@ significantly.</p>
 <p><code class="docutils literal notranslate"><span class="pre">bpf_ringbuf_reserve()</span></code> avoids the extra copy of memory by providing a memory
 pointer directly to ring buffer memory. In a lot of cases records are larger
 than BPF stack space allows, so many programs have use extra per-CPU array as
-a temporary heap for preparing sample. bpf_ringbuf_reserve() avoid this needs
+a temporary heap for preparing sample. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bpf_ringbuf_reserve()</span></code> avoid this needs
 completely. But in exchange, it only allows a known constant size of memory to
 be reserved, such that verifier can verify that BPF program can’t access memory
-outside its reserved record space. bpf_ringbuf_output(), while slightly slower
+outside its reserved record space. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bpf_ringbuf_output()</span></code>, while slightly slower
 due to extra memory copy, covers some use cases that are not suitable for
 <code class="docutils literal notranslate"><span class="pre">bpf_ringbuf_reserve()</span></code>.</p>
 <p>The difference between commit and discard is very small. Discard just marks

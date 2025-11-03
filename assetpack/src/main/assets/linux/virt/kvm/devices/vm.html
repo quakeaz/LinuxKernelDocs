@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -166,7 +166,7 @@
 <h1>Generic vm interface<a class="headerlink" href="#generic-vm-interface" title="Link to this heading">¶</a></h1>
 <p>The virtual machine “device” also accepts the ioctls KVM_SET_DEVICE_ATTR,
 KVM_GET_DEVICE_ATTR, and KVM_HAS_DEVICE_ATTR. The interface uses the same
-struct kvm_device_attr as other devices, but targets VM-wide settings
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_device_attr</span></code> as other devices, but targets VM-wide settings
 and controls.</p>
 <p>The groups and attributes per virtual machine, if any, are architecture
 specific.</p>
@@ -247,7 +247,7 @@ the limit to KVM_S390_NO_MEM_LIMIT (U64_MAX).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p>address of buffer to store the machine related cpu data
-of type struct kvm_s390_vm_cpu_machine*</p>
+of type <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_s390_vm_cpu_machine</span></code>*</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>-EFAULT if the given address is not accessible from kernel space;
@@ -276,7 +276,7 @@ are not handled by KVM need to by implemented in the VM driver code.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p>address of buffer to store/set the processor related cpu
-data of type struct kvm_s390_vm_cpu_processor*.</p>
+data of type <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_s390_vm_cpu_processor</span></code>*.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>-EBUSY in case 1 or more vcpus are already activated (only in write case);
@@ -333,7 +333,7 @@ STFL(E) bit introducing the affected instruction. If the affected instruction
 indicates subfunctions via a “query subfunction”, the response block is
 contained in the returned struct. If the affected instruction
 indicates subfunctions via a “test bit” mechanism, the subfunction codes are
-contained in the returned struct in MSB 0 bit numbering.</p>
+contained in the returned <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">in</span></code> MSB 0 bit numbering.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct kvm_s390_vm_cpu_subfunc {
      u8 plo[32];           # always valid (ESA/390 feature)
      u8 ptff[16];          # valid with TOD-clock steering

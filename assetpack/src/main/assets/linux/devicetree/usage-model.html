@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -255,13 +255,13 @@ machine during early boot so that it has the opportunity to run
 machine-specific fixups.</p>
 <p>In the majority of cases, the machine identity is irrelevant, and the
 kernel will instead select setup code based on the machine’s core
-CPU or SoC.  On ARM for example, setup_arch() in
-arch/arm/kernel/setup.c will call setup_machine_fdt() in
+CPU or SoC.  On ARM for example, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setup_arch()</span></code> in
+arch/arm/kernel/setup.c will call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setup_machine_fdt()</span></code> in
 arch/arm/kernel/devtree.c which searches through the machine_desc
 table and selects the machine_desc which best matches the device tree
 data.  It determines the best match by looking at the ‘compatible’
 property in the root device tree node, and comparing it with the
-dt_compat list in struct machine_desc (which is defined in
+dt_compat list in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">machine_desc</span></code> (which is defined in
 arch/arm/include/asm/mach/arch.h if you’re curious).</p>
 <p>The ‘compatible’ property contains a sorted list of strings starting
 with the exact name of the machine, followed by an optional list of
@@ -293,7 +293,7 @@ documentation for compatible strings in Documentation/devicetree/bindings.</p>
 any of the dt_compat list entries appear in the compatible property.
 If one does, then that machine_desc is a candidate for driving the
 machine.  After searching the entire table of machine_descs,
-setup_machine_fdt() returns the ‘most compatible’ machine_desc based
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setup_machine_fdt()</span></code> returns the ‘most compatible’ machine_desc based
 on which entry in the compatible property each machine_desc matches
 against.  If no matching machine_desc is found, then it returns NULL.</p>
 <p>The reasoning behind this scheme is the observation that in the majority
@@ -313,7 +313,7 @@ generic board support can claim compatibility with “ti,omap3” or
 that required special workaround code during early boot, then a new
 machine_desc could be added which implements the workarounds and only
 matches on “ti,omap3-beagleboard”.</p>
-<p>PowerPC uses a slightly different scheme where it calls the .probe()
+<p>PowerPC uses a slightly different scheme where it calls the .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code>
 hook from each machine_desc, and the first one returning TRUE is used.
 However, this approach does not take into account the priority of the
 compatible list, and probably should be avoided for new architecture
@@ -337,19 +337,19 @@ Linux it will look something like this:</p>
 <p>The bootargs property contains the kernel arguments, and the initrd-*
 properties define the address and size of an initrd blob.  Note that
 initrd-end is the first address after the initrd image, so this doesn’t
-match the usual semantic of struct resource.  The chosen node may also
+match the usual semantic of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">resource</span></code>.  The chosen node may also
 optionally contain an arbitrary number of additional properties for
 platform-specific configuration data.</p>
-<p>During early boot, the architecture setup code calls of_scan_flat_dt()
+<p>During early boot, the architecture setup code calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">of_scan_flat_dt()</span></code>
 several times with different helper callbacks to parse device tree
-data before paging is setup.  The of_scan_flat_dt() code scans through
+data before paging is setup.  The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">of_scan_flat_dt()</span></code> code scans through
 the device tree and uses the helpers to extract information required
-during early boot.  Typically the early_init_dt_scan_chosen() helper
+during early boot.  Typically the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">early_init_dt_scan_chosen()</span></code> helper
 is used to parse the chosen node including kernel parameters,
-early_init_dt_scan_root() to initialize the DT address space model,
-and early_init_dt_scan_memory() to determine the size and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">early_init_dt_scan_root()</span></code> to initialize the DT address space model,
+and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">early_init_dt_scan_memory()</span></code> to determine the size and
 location of usable RAM.</p>
-<p>On ARM, the function setup_machine_fdt() is responsible for early
+<p>On ARM, the function <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setup_machine_fdt()</span></code> is responsible for early
 scanning of the device tree after selecting the correct machine_desc
 that supports the board.</p>
 </section>
@@ -357,30 +357,30 @@ that supports the board.</p>
 <h2>2.4 Device population<a class="headerlink" href="#device-population" title="Link to this heading">¶</a></h2>
 <p>After the board has been identified, and after the early configuration data
 has been parsed, then kernel initialization can proceed in the normal
-way.  At some point in this process, unflatten_device_tree() is called
+way.  At some point in this process, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unflatten_device_tree()</span></code> is called
 to convert the data into a more efficient runtime representation.
 This is also when machine-specific setup hooks will get called, like
-the machine_desc .init_early(), .init_irq() and .init_machine() hooks
+the machine_desc .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init_early()</span></code>, .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init_irq()</span></code> and .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init_machine()</span></code> hooks
 on ARM.  The remainder of this section uses examples from the ARM
 implementation, but all architectures will do pretty much the same
 thing when using a DT.</p>
-<p>As can be guessed by the names, .init_early() is used for any machine-
+<p>As can be guessed by the names, .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init_early()</span></code> is used for any machine-
 specific setup that needs to be executed early in the boot process,
-and .init_irq() is used to set up interrupt handling.  Using a DT
+and .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init_irq()</span></code> is used to set up interrupt handling.  Using a DT
 doesn’t materially change the behaviour of either of these functions.
-If a DT is provided, then both .init_early() and .init_irq() are able
+If a DT is provided, then both .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init_early()</span></code> and .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init_irq()</span></code> are able
 to call any of the DT query functions (of_* in include/linux/of*.h) to
 get additional data about the platform.</p>
-<p>The most interesting hook in the DT context is .init_machine() which
+<p>The most interesting hook in the DT context is .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init_machine()</span></code> which
 is primarily responsible for populating the Linux device model with
 data about the platform.  Historically this has been implemented on
 embedded platforms by defining a set of static clock structures,
 platform_devices, and other data in the board support .c file, and
-registering it en-masse in .init_machine().  When DT is used, then
+registering it en-masse in .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init_machine()</span></code>.  When DT is used, then
 instead of hard coding static devices for each platform, the list of
 devices can be obtained by parsing the DT, and allocating device
 structures dynamically.</p>
-<p>The simplest case is when .init_machine() is only responsible for
+<p>The simplest case is when .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init_machine()</span></code> is only responsible for
 registering a block of platform_devices.  A platform_device is a concept
 used by Linux for memory or I/O mapped devices which cannot be detected
 by hardware, and for ‘composite’ or ‘virtual’ devices (more on those
@@ -452,7 +452,7 @@ device tree for the NVIDIA Tegra board:</p>
 };
 </pre></div>
 </div>
-<p>At .init_machine() time, Tegra board support code will need to look at
+<p>At .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init_machine()</span></code> time, Tegra board support code will need to look at
 this DT and decide which nodes to create platform_devices for.
 However, looking at the tree, it is not immediately obvious what kind
 of device each node represents, or even if a node represents a device
@@ -490,13 +490,13 @@ parameters are all NULL because when starting from the root of the
 tree, there is no need to provide a starting node (the first NULL), a
 parent <a class="reference internal" href="../driver-api/infrastructure.html#c.device" title="device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span></code></a> (the last NULL), and we’re not using a match
 table (yet).  For a board that only needs to register devices,
-.init_machine() can be completely empty except for the
+.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init_machine()</span></code> can be completely empty except for the
 <a class="reference internal" href="kernel-api.html#c.of_platform_populate" title="of_platform_populate"><code class="xref c c-func docutils literal notranslate"><span class="pre">of_platform_populate()</span></code></a> call.</p>
 <p>In the Tegra example, this accounts for the /soc and /sound nodes, but
 what about the children of the SoC node?  Shouldn’t they be registered
 as platform devices too?  For Linux DT support, the generic behaviour
 is for child devices to be registered by the parent’s device driver at
-driver .probe() time.  So, an i2c bus device driver will register a
+driver .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> time.  So, an i2c bus device driver will register a
 i2c_client for each child node, an SPI bus driver will register
 its spi_device children, and similarly for other bus_types.
 According to that model, a driver could be written that binds to the
@@ -504,7 +504,7 @@ SoC node and simply registers platform_devices for each of its
 children.  The board support code would allocate and register an SoC
 device, a (theoretical) SoC device driver could bind to the SoC device,
 and register platform_devices for /soc/interrupt-controller, /soc/serial,
-/soc/i2s, and /soc/i2c in its .probe() hook.  Easy, right?</p>
+/soc/i2s, and /soc/i2c in its .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> hook.  Easy, right?</p>
 <p>Actually, it turns out that registering children of some
 platform_devices as more platform_devices is a common pattern, and the
 device tree support code reflects that and makes the above example
@@ -530,7 +530,7 @@ board support code can always override the default behaviour.</p>
 <h2>Appendix A: AMBA devices<a class="headerlink" href="#appendix-a-amba-devices" title="Link to this heading">¶</a></h2>
 <p>ARM Primecells are a certain kind of device attached to the ARM AMBA
 bus which include some support for hardware detection and power
-management.  In Linux, struct amba_device and the amba_bus_type is
+management.  In Linux, <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">amba_device</span></code> and the amba_bus_type is
 used to represent Primecell devices.  However, the fiddly bit is that
 not all devices on an AMBA bus are Primecells, and for Linux it is
 typical for both amba_device and platform_device instances to be

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -596,10 +596,10 @@ modified, but more specific locks may be more appropriate in that
 situation.</p>
 <p>See kernel/cgroup.c for more details.</p>
 <p>Subsystems can take/release the cgroup_mutex via the functions
-cgroup_lock()/cgroup_unlock().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cgroup_lock()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cgroup_unlock()</span></code>.</p>
 <p>Accessing a task’s cgroup pointer may be done in the following ways:
 - while holding cgroup_mutex
-- while holding the task’s alloc_lock (via task_lock())
+- while holding the task’s alloc_lock (via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">task_lock()</span></code>)
 - inside an <a class="reference internal" href="../../core-api/kernel-api.html#c.rcu_read_lock" title="rcu_read_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_lock()</span></code></a> section via <a class="reference internal" href="../../core-api/kernel-api.html#c.rcu_dereference" title="rcu_dereference"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_dereference()</span></code></a></p>
 </section>
 <section id="subsystem-api">
@@ -632,14 +632,14 @@ visible to cgroup_for_each_child/descendant_*() iterators. The
 subsystem may choose to fail creation by returning -errno. This
 callback can be used to implement reliable state sharing and
 propagation along the hierarchy. See the comment on
-cgroup_for_each_live_descendant_pre() for details.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cgroup_for_each_live_descendant_pre()</span></code> for details.</p>
 <p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">css_offline(struct</span> <span class="pre">cgroup</span> <span class="pre">*cgrp);</span></code>
 (cgroup_mutex held by caller)</p>
-<p>This is the counterpart of css_online() and called iff css_online()
+<p>This is the counterpart of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">css_online()</span></code> and called iff <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">css_online()</span></code>
 has succeeded on &#64;cgrp. This signifies the beginning of the end of
 &#64;cgrp. &#64;cgrp is being removed and the subsystem should start dropping
 all references it’s holding on &#64;cgrp. When all references are dropped,
-cgroup removal will proceed to the next step - css_free(). After this
+cgroup removal will proceed to the next step - <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">css_free()</span></code>. After this
 callback, &#64;cgrp should be considered dead to the subsystem.</p>
 <p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">css_free(struct</span> <span class="pre">cgroup</span> <span class="pre">*cgrp)</span></code>
 (cgroup_mutex held by caller)</p>
@@ -647,7 +647,7 @@ callback, &#64;cgrp should be considered dead to the subsystem.</p>
 its subsystem state object. By the time this method is called, &#64;cgrp
 is completely unused; &#64;cgrp-&gt;parent is still valid. (Note - can also
 be called for a newly-created cgroup if an error occurs after this
-subsystem’s create() method has been called for the new cgroup).</p>
+subsystem’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">create()</span></code> method has been called for the new cgroup).</p>
 <p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">can_attach(struct</span> <span class="pre">cgroup</span> <span class="pre">*cgrp,</span> <span class="pre">struct</span> <span class="pre">cgroup_taskset</span> <span class="pre">*tset)</span></code>
 (cgroup_mutex held by caller)</p>
 <p>Called prior to moving one or more tasks into a cgroup; if the
@@ -665,10 +665,10 @@ they’re switching cgroups</p></li>
 </dl>
 <p>Each &#64;tset entry also contains the task’s old cgroup and tasks which
 aren’t switching cgroup can be skipped easily using the
-cgroup_taskset_for_each() iterator. Note that this isn’t called on a
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cgroup_taskset_for_each()</span></code> iterator. Note that this isn’t called on a
 fork. If this method returns 0 (success) then this should remain valid
 while the caller holds cgroup_mutex and it is ensured that either
-attach() or cancel_attach() will be called in future.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">attach()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cancel_attach()</span></code> will be called in future.</p>
 <p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">css_reset(struct</span> <span class="pre">cgroup_subsys_state</span> <span class="pre">*css)</span></code>
 (cgroup_mutex held by caller)</p>
 <p>An optional operation which should restore &#64;css’s configuration to the
@@ -683,16 +683,16 @@ ensures that the configuration is in the initial state when it is made
 visible again later.</p>
 <p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">cancel_attach(struct</span> <span class="pre">cgroup</span> <span class="pre">*cgrp,</span> <span class="pre">struct</span> <span class="pre">cgroup_taskset</span> <span class="pre">*tset)</span></code>
 (cgroup_mutex held by caller)</p>
-<p>Called when a task attach operation has failed after can_attach() has succeeded.
-A subsystem whose can_attach() has some side-effects should provide this
+<p>Called when a task attach operation has failed after <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">can_attach()</span></code> has succeeded.
+A subsystem whose <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">can_attach()</span></code> has some side-effects should provide this
 function, so that the subsystem can implement a rollback. If not, not necessary.
-This will be called only about subsystems whose can_attach() operation have
-succeeded. The parameters are identical to can_attach().</p>
+This will be called only about subsystems whose <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">can_attach()</span></code> operation have
+succeeded. The parameters are identical to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">can_attach()</span></code>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">attach(struct</span> <span class="pre">cgroup</span> <span class="pre">*cgrp,</span> <span class="pre">struct</span> <span class="pre">cgroup_taskset</span> <span class="pre">*tset)</span></code>
 (cgroup_mutex held by caller)</p>
 <p>Called after the task has been attached to the cgroup, to allow any
 post-attachment activity that requires memory allocations or blocking.
-The parameters are identical to can_attach().</p>
+The parameters are identical to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">can_attach()</span></code>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">fork(struct</span> <span class="pre">task_struct</span> <span class="pre">*task)</span></code></p>
 <p>Called when a task is forked into a cgroup.</p>
 <p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">exit(struct</span> <span class="pre">task_struct</span> <span class="pre">*task)</span></code></p>

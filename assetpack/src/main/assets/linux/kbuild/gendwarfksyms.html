@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -191,7 +191,7 @@ external symbols. For example, this is done when calculating symbol
 versions for exports in stand-alone assembly code.</p>
 <p>To ensure the compiler emits the necessary DWARF type information in the
 TU where symbols are actually exported, gendwarfksyms adds a pointer
-to exported symbols in the <cite>EXPORT_SYMBOL()</cite> macro using the following
+to exported symbols in the <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">EXPORT_SYMBOL()</span></code></cite> macro using the following
 macro:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>#define __GENDWARFKSYMS_EXPORT(sym)                             \
         static typeof(sym) *__gendwarfksyms_ptr_##sym __used    \
@@ -337,7 +337,7 @@ KABI_ENUMERATOR_IGNORE(e, B);
 KABI_ENUMERATOR_IGNORE(e, C);
 </pre></div>
 </div>
-<p>If the enum additionally includes an end marker and new values must
+<p>If the <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">additionally</span></code> includes an end marker and new values must
 be added in the middle, we may need to use the old value for the last
 enumerator when calculating versions. The <cite>enumerator_value</cite> rule allows
 us to override the value of an enumerator for version calculation:</p>
@@ -478,12 +478,12 @@ union, which includes the original type and the replacement member:</p>
 </pre></div>
 </div>
 <p>If the <cite>__kabi_</cite> naming scheme was used when reserving space, the name
-of the first member of the union must start with <cite>__kabi_reserved</cite>. This
+of the first member of the <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">must</span></code> start with <cite>__kabi_reserved</cite>. This
 ensures the original type is used when calculating versions, but the name
-is again left out. The rest of the union is ignored.</p>
+is again left out. The rest of the <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">is</span></code> ignored.</p>
 <p>If we’re replacing a member that doesn’t follow this naming convention,
 we also need to preserve the original name to avoid changing versions,
-which we can do by changing the first union member’s name to start with
+which we can do by changing the first <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">member</span></code>’s name to start with
 <cite>__kabi_renamed</cite> followed by the original name.</p>
 <p>The examples include <cite>KABI_(RESERVE|USE|REPLACE)*</cite> macros that help
 simplify the process and also ensure the replacement member is correctly
@@ -504,7 +504,7 @@ to placing new members into existing alignment holes:</p>
 <p>While this won’t change the size of the data structure, one needs to
 be able to hide the added members from symbol versioning. Similarly
 to reserved fields, this can be accomplished by wrapping the added
-member to a union where one of the fields has a name starting with
+member to a <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">where</span></code> one of the fields has a name starting with
 <cite>__kabi_ignored</cite>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct s {
         int a;

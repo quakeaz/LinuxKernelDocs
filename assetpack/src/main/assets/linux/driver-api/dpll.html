@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -361,7 +361,7 @@ related to parent pin</p></td>
 <section id="pin-priority">
 <h2>Pin priority<a class="headerlink" href="#pin-priority" title="Link to this heading">¶</a></h2>
 <p>Some devices might offer a capability of automatic pin selection mode
-(enum value <code class="docutils literal notranslate"><span class="pre">DPLL_MODE_AUTOMATIC</span></code> of <code class="docutils literal notranslate"><span class="pre">DPLL_A_MODE</span></code> attribute).
+(<code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">value</span></code> <code class="docutils literal notranslate"><span class="pre">DPLL_MODE_AUTOMATIC</span></code> of <code class="docutils literal notranslate"><span class="pre">DPLL_A_MODE</span></code> attribute).
 Usually, automatic selection is performed on the hardware level, which
 means only pins directly connected to the dpll can be used for automatic
 input pin selection.
@@ -448,6 +448,28 @@ offset values are fractional with 3-digit decimal places and shell be
 divided with <code class="docutils literal notranslate"><span class="pre">DPLL_PIN_PHASE_OFFSET_DIVIDER</span></code> to get integer part and
 modulo divided to get fractional part.</p>
 </section>
+<section id="phase-offset-monitor">
+<h2>Phase offset monitor<a class="headerlink" href="#phase-offset-monitor" title="Link to this heading">¶</a></h2>
+<p>Phase offset measurement is typically performed against the current active
+source. However, some DPLL (Digital Phase-Locked Loop) devices may offer
+the capability to monitor phase offsets across all available inputs.
+The attribute and current feature state shall be included in the response
+message of the <code class="docutils literal notranslate"><span class="pre">DPLL_CMD_DEVICE_GET</span></code> command for supported DPLL devices.
+In such cases, users can also control the feature using the
+<code class="docutils literal notranslate"><span class="pre">DPLL_CMD_DEVICE_SET</span></code> command by setting the <code class="docutils literal notranslate"><span class="pre">enum</span> <span class="pre">dpll_feature_state</span></code>
+values for the attribute.
+Once enabled the phase offset measurements for the input shall be returned
+in the <code class="docutils literal notranslate"><span class="pre">DPLL_A_PIN_PHASE_OFFSET</span></code> attribute.</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DPLL_A_PHASE_OFFSET_MONITOR</span></code></p></td>
+<td><p>attr state of a feature</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
 <section id="embedded-sync">
 <h2>Embedded SYNC<a class="headerlink" href="#embedded-sync" title="Link to this heading">¶</a></h2>
 <p>Device may provide ability to use Embedded SYNC feature. It allows
@@ -476,6 +498,38 @@ frequency ranges</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DPLL_A_PIN_ESYNC_PULSE</span></code></p></td>
 <td><p>pulse type of Embedded SYNC</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="reference-sync">
+<h2>Reference SYNC<a class="headerlink" href="#reference-sync" title="Link to this heading">¶</a></h2>
+<p>The device may support the Reference SYNC feature, which allows the combination
+of two inputs into a input pair. In this configuration, clock signals
+from both inputs are used to synchronize the DPLL device. The higher frequency
+signal is utilized for the loop bandwidth of the DPLL, while the lower frequency
+signal is used to syntonize the output signal of the DPLL device. This feature
+enables the provision of a high-quality loop bandwidth signal from an external
+source.</p>
+<p>A capable input provides a list of inputs that can be bound with to create
+Reference SYNC. To control this feature, the user must request a desired
+state for a target pin: use <code class="docutils literal notranslate"><span class="pre">DPLL_PIN_STATE_CONNECTED</span></code> to enable or
+<code class="docutils literal notranslate"><span class="pre">DPLL_PIN_STATE_DISCONNECTED</span></code> to disable the feature. An input pin can be
+bound to only one other pin at any given time.</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DPLL_A_PIN_REFERENCE_SYNC</span></code></p></td>
+<td><p>nested attribute for providing info or
+requesting configuration of the Reference
+SYNC feature</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DPLL_A_PIN_ID</span></code></p></td>
+<td><p>target pin id for Reference SYNC feature</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DPLL_A_PIN_STATE</span></code></p></td>
+<td><p>state of Reference SYNC connection</p></td>
 </tr>
 </tbody>
 </table>
@@ -929,6 +983,21 @@ input</p>
 </dd>
 </dl>
 </div>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.dpll_feature_state">
+<span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dpll_feature_state</span></span></span><a class="headerlink" href="#c.dpll_feature_state" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Allow control (enable/disable) and status checking over features.</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Constants</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">DPLL_FEATURE_STATE_DISABLE</span></code></dt><dd><p>feature shall be disabled</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DPLL_FEATURE_STATE_ENABLE</span></code></dt><dd><p>feature shall be enabled</p>
+</dd>
+</dl>
+</div>
 </section>
 <section id="notifications">
 <h2>Notifications<a class="headerlink" href="#notifications" title="Link to this heading">¶</a></h2>
@@ -969,28 +1038,28 @@ Format of <code class="docutils literal notranslate"><span class="pre">DPLL_CMD_
 </section>
 <section id="device-driver-implementation">
 <h2>Device driver implementation<a class="headerlink" href="#device-driver-implementation" title="Link to this heading">¶</a></h2>
-<p>Device is allocated by dpll_device_get() call. Second call with the
+<p>Device is allocated by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dpll_device_get()</span></code> call. Second call with the
 same arguments will not create new object but provides pointer to
 previously created device for given arguments, it also increases
 refcount of that object.
-Device is deallocated by dpll_device_put() call, which first
+Device is deallocated by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dpll_device_put()</span></code> call, which first
 decreases the refcount, once refcount is cleared the object is
 destroyed.</p>
 <p>Device should implement set of operations and register device via
-dpll_device_register() at which point it becomes available to the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dpll_device_register()</span></code> at which point it becomes available to the
 users. Multiple driver instances can obtain reference to it with
-dpll_device_get(), as well as register dpll device with their own
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dpll_device_get()</span></code>, as well as register dpll device with their own
 ops and priv.</p>
-<p>The pins are allocated separately with dpll_pin_get(), it works
-similarly to dpll_device_get(). Function first creates object and then
+<p>The pins are allocated separately with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dpll_pin_get()</span></code>, it works
+similarly to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dpll_device_get()</span></code>. Function first creates object and then
 for each call with the same arguments only the object refcount
-increases. Also dpll_pin_put() works similarly to dpll_device_put().</p>
+increases. Also <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dpll_pin_put()</span></code> works similarly to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dpll_device_put()</span></code>.</p>
 <p>A pin can be registered with parent dpll device or parent pin, depending
 on hardware needs. Each registration requires registerer to provide set
 of pin callbacks, and private data pointer for calling them:</p>
 <ul class="simple">
-<li><p>dpll_pin_register() - register pin with a dpll device,</p></li>
-<li><p>dpll_pin_on_pin_register() - register pin with another MUX type pin.</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dpll_pin_register()</span></code> - register pin with a dpll device,</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dpll_pin_on_pin_register()</span></code> - register pin with another MUX type pin.</p></li>
 </ul>
 <p>Notifications of adding or removing dpll devices are created within
 subsystem itself.
@@ -1001,8 +1070,8 @@ invoked in two ways:</p>
 <ul class="simple">
 <li><p>after successful change was requested on dpll subsystem, the subsystem
 calls corresponding notification,</p></li>
-<li><p>requested by device driver with dpll_device_change_ntf() or
-dpll_pin_change_ntf() when driver informs about the status change.</p></li>
+<li><p>requested by device driver with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dpll_device_change_ntf()</span></code> or
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dpll_pin_change_ntf()</span></code> when driver informs about the status change.</p></li>
 </ul>
 <p>The device driver using dpll interface is not required to implement all
 the callback operation. Nevertheless, there are few required to be

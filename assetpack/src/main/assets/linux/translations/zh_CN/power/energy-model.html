@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -266,19 +266,19 @@ powercap，用“抽象刻度”描述功率值可能会导致问题。这些子
 <section id="id5">
 <h5>“人工”EM的注册<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h5>
 <p>有一个选项可以为缺少关于每个性能状态的功率值的详细知识的驱动程序提供一个自
-定义回调。回调.get_cost()是可选的，它提供EAS使用的“成本”值。这对那些只提
+定义回调。回调.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_cost()</span></code>是可选的，它提供EAS使用的“成本”值。这对那些只提
 供CPU类型之间相对效率信息的平台很有用，人们可以利用这些信息来创建一个抽象的
 功率模型。但是，考虑到输入功率值的大小限制，即使是抽象的功率模型有时也很难装
-进去。.get_cost()允许提供反映CPU效率的“成本”值。这将允许提供EAS信息，它
+进去。.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_cost()</span></code>允许提供反映CPU效率的“成本”值。这将允许提供EAS信息，它
 与EM内部计算’成本’值的公式有不同的关系。要为这样的平台注册EM，驱动程序必须
-将标志“microwatts”设置为0，提供.get_power()回调和.get_cost()回调。EM
+将标志“microwatts”设置为0，提供.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_power()</span></code>回调和.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_cost()</span></code>回调。EM
 框架会在注册过程中正确处理这样的平台。这种平台会被设置EM_PERF_DOMAIN_ARTIFICIAL
 标志。其他使用EM的框架应该特别注意测试和正确对待这个标志。</p>
 </section>
 </section>
 <section id="id6">
 <h4>“简单”EM的注册<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h4>
-<p>“简单”EM是用框架的辅助函数cpufreq_register_em_with_opp()注册的。它实现了
+<p>“简单”EM是用框架的辅助函数<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpufreq_register_em_with_opp()</span></code>注册的。它实现了
 一个和以下数学公式紧密相关的功率模型:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Power = C * V^2 * f
 </pre></div>
@@ -306,9 +306,9 @@ powercap，用“抽象刻度”描述功率值可能会导致问题。这些子
 <section id="id9">
 <h2>3. 驱动示例<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h2>
 <p>CPUFreq框架支持专用的回调函数，用于为指定的CPU（们）注册EM：
-cpufreq_driver::register_em()。这个回调必须为每个特定的驱动程序正确实现，
+cpufreq_driver::<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">register_em()</span></code>。这个回调必须为每个特定的驱动程序正确实现，
 因为框架会在设置过程中适时地调用它。本节提供了一个简单的例子，展示CPUFreq驱动
-在能量模型框架中使用（假的）“foo”协议注册性能域。该驱动实现了一个est_power()
+在能量模型框架中使用（假的）“foo”协议注册性能域。该驱动实现了一个<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">est_power()</span></code>
 函数提供给EM框架:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-&gt; drivers/cpufreq/foo_cpufreq.c
 

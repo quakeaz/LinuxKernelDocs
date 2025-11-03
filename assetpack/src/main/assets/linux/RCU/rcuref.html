@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -188,9 +188,9 @@ release_referenced()                    delete()
 </pre></div>
 </div>
 <p>If this list/array is made lock free using RCU as in changing the
-write_lock() in add() and delete() to spin_lock() and changing read_lock()
-in search_and_reference() to <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_read_lock" title="rcu_read_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_lock()</span></code></a>, the <a class="reference internal" href="../driver-api/basics.html#c.atomic_inc" title="atomic_inc"><code class="xref c c-func docutils literal notranslate"><span class="pre">atomic_inc()</span></code></a> in
-search_and_reference() could potentially hold reference to an element which
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">write_lock()</span></code> in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">add()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">delete()</span></code> to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock()</span></code> and changing <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">read_lock()</span></code>
+in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">search_and_reference()</span></code> to <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_read_lock" title="rcu_read_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_lock()</span></code></a>, the <a class="reference internal" href="../driver-api/basics.html#c.atomic_inc" title="atomic_inc"><code class="xref c c-func docutils literal notranslate"><span class="pre">atomic_inc()</span></code></a> in
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">search_and_reference()</span></code> could potentially hold reference to an element which
 has already been deleted from the list/array.  Use <a class="reference internal" href="../driver-api/basics.html#c.atomic_inc_not_zero" title="atomic_inc_not_zero"><code class="xref c c-func docutils literal notranslate"><span class="pre">atomic_inc_not_zero()</span></code></a>
 in this scenario as follows:</p>
 <p>CODE LISTING B:</p>
@@ -225,8 +225,8 @@ update (write) stream.  In such cases, <a class="reference internal" href="../dr
 overkill, since we hold the update-side spinlock.  One might instead
 use <a class="reference internal" href="../driver-api/basics.html#c.atomic_inc" title="atomic_inc"><code class="xref c c-func docutils literal notranslate"><span class="pre">atomic_inc()</span></code></a> in such cases.</p>
 <p>It is not always convenient to deal with “FAIL” in the
-search_and_reference() code path.  In such cases, the
-<a class="reference internal" href="../driver-api/basics.html#c.atomic_dec_and_test" title="atomic_dec_and_test"><code class="xref c c-func docutils literal notranslate"><span class="pre">atomic_dec_and_test()</span></code></a> may be moved from delete() to el_free()
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">search_and_reference()</span></code> code path.  In such cases, the
+<a class="reference internal" href="../driver-api/basics.html#c.atomic_dec_and_test" title="atomic_dec_and_test"><code class="xref c c-func docutils literal notranslate"><span class="pre">atomic_dec_and_test()</span></code></a> may be moved from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">delete()</span></code> to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">el_free()</span></code>
 as follows:</p>
 <p>CODE LISTING C:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>1.                                      2.
@@ -256,26 +256,26 @@ void el_free(struct rcu_head *rhp)
 }
 </pre></div>
 </div>
-<p>The key point is that the initial reference added by add() is not removed
+<p>The key point is that the initial reference added by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">add()</span></code> is not removed
 until after a grace period has elapsed following removal.  This means that
-search_and_reference() cannot find this element, which means that the value
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">search_and_reference()</span></code> cannot find this element, which means that the value
 of el-&gt;rc cannot increase.  Thus, once it reaches zero, there are no
 readers that can or ever will be able to reference the element.  The
 element can therefore safely be freed.  This in turn guarantees that if
 any reader finds the element, that reader may safely acquire a reference
 without checking the value of the reference counter.</p>
 <p>A clear advantage of the RCU-based pattern in listing C over the one
-in listing B is that any call to search_and_reference() that locates
+in listing B is that any call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">search_and_reference()</span></code> that locates
 a given object will succeed in obtaining a reference to that object,
-even given a concurrent invocation of delete() for that same object.
+even given a concurrent invocation of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">delete()</span></code> for that same object.
 Similarly, a clear advantage of both listings B and C over listing A is
-that a call to delete() is not delayed even if there are an arbitrarily
-large number of calls to search_and_reference() searching for the same
-object that delete() was invoked on.  Instead, all that is delayed is
+that a call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">delete()</span></code> is not delayed even if there are an arbitrarily
+large number of calls to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">search_and_reference()</span></code> searching for the same
+object that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">delete()</span></code> was invoked on.  Instead, all that is delayed is
 the eventual invocation of <a class="reference internal" href="../core-api/mm-api.html#c.kfree" title="kfree"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree()</span></code></a>, which is usually not a problem on
 modern computer systems, even the small ones.</p>
-<p>In cases where delete() can sleep, <a class="reference internal" href="../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a> can be called from
-delete(), so that el_free() can be subsumed into delete as follows:</p>
+<p>In cases where <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">delete()</span></code> can sleep, <a class="reference internal" href="../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a> can be called from
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">delete()</span></code>, so that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">el_free()</span></code> can be subsumed into delete as follows:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>4.
 delete()
 {
@@ -292,8 +292,8 @@ delete()
 </pre></div>
 </div>
 <p>As additional examples in the kernel, the pattern in listing C is used by
-reference counting of struct pid, while the pattern in listing B is used by
-struct posix_acl.</p>
+reference counting of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pid</span></code>, while the pattern in listing B is used by
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">posix_acl</span></code>.</p>
 </section>
 
 

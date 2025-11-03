@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -279,7 +279,7 @@ current kthread on failure, so you can call them from anywhere.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Warning: There is an exception to the above rule. You shouldn’t use assertions
-in the suite’s exit() function, or in the free function for a resource. These
+in the suite’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">exit()</span></code> function, or in the free function for a resource. These
 run when a test is shutting down, and an assertion here prevents further
 cleanup code from running, potentially leading to a memory leak.</p>
 </div>
@@ -403,7 +403,7 @@ project that does not use a standardized object oriented library (like GNOME’s
 GObject) has their own slightly different way of doing object oriented
 programming; the Linux kernel is no exception.</p>
 <p>The central concept in kernel object oriented programming is the class. In the
-kernel, a <em>class</em> is a struct that contains function pointers. This creates a
+kernel, a <em>class</em> is a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">that</span></code> contains function pointers. This creates a
 contract between <em>implementers</em> and <em>users</em> since it forces them to use the
 same function signature without having to call the function directly. To be a
 class, the function pointers must specify that a pointer to the class, known as
@@ -799,7 +799,7 @@ the template below.</p>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;kunit/visibility.h&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;my_file.h&gt;</span>
 <span class="p">...</span>
-<span class="n">MODULE_IMPORT_NS</span><span class="p">(</span><span class="n">EXPORTED_FOR_KUNIT_TESTING</span><span class="p">);</span>
+<span class="n">MODULE_IMPORT_NS</span><span class="p">(</span><span class="s">&quot;EXPORTED_FOR_KUNIT_TESTING&quot;</span><span class="p">);</span>
 <span class="p">...</span>
 <span class="c1">// Use do_interesting_thing() in tests</span>
 </pre></div>

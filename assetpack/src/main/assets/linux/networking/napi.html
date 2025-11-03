@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -145,6 +145,16 @@
 <!-- Copyright © 2023, Oracle and/or its affiliates. -->
 
 
+
+<div class="language-selection">
+English
+
+<ul>
+
+<li><a href="../translations/zh_CN/networking/napi.html">Chinese (Simplified)</a></li>
+
+</ul>
+</div>
 <section id="napi">
 <span id="id1"></span><h1>NAPI<a class="headerlink" href="#napi" title="Link to this heading">¶</a></h1>
 <p>NAPI is the event handling mechanism used by the Linux networking stack.
@@ -161,8 +171,8 @@ for NAPI processing.</p>
 of event (packet Rx and Tx) processing.</p>
 <section id="driver-api">
 <h2>Driver API<a class="headerlink" href="#driver-api" title="Link to this heading">¶</a></h2>
-<p>The two most important elements of NAPI are the struct napi_struct
-and the associated poll method. struct napi_struct holds the state
+<p>The two most important elements of NAPI are the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">napi_struct</span></code>
+and the associated poll method. <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">napi_struct</span></code> holds the state
 of the NAPI instance while the method is the driver-specific event
 handler. The method will typically free Tx packets that have been
 transmitted and process newly received packets.</p>
@@ -263,7 +273,7 @@ IRQs are threaded (such as if <code class="docutils literal notranslate"><span c
 </section>
 <section id="instance-to-queue-mapping">
 <h3>Instance to queue mapping<a class="headerlink" href="#instance-to-queue-mapping" title="Link to this heading">¶</a></h3>
-<p>Modern devices have multiple NAPI instances (struct napi_struct) per
+<p>Modern devices have multiple NAPI instances (<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">napi_struct</span></code>) per
 interface. There is no strong requirement on how the instances are
 mapped to queues and interrupts. NAPI is primarily a polling/processing
 abstraction without specific user-facing semantics. That said, most networking
@@ -495,16 +505,20 @@ might not have any discernible effect.</p>
 <span id="threaded"></span><h3>Threaded NAPI<a class="headerlink" href="#threaded-napi" title="Link to this heading">¶</a></h3>
 <p>Threaded NAPI is an operating mode that uses dedicated kernel
 threads rather than software IRQ context for NAPI processing.
-The configuration is per netdevice and will affect all
-NAPI instances of that device. Each NAPI instance will spawn a separate
-thread (called <code class="docutils literal notranslate"><span class="pre">napi/${ifc-name}-${napi-id}</span></code>).</p>
+Each threaded NAPI instance will spawn a separate thread
+(called <code class="docutils literal notranslate"><span class="pre">napi/${ifc-name}-${napi-id}</span></code>).</p>
 <p>It is recommended to pin each kernel thread to a single CPU, the same
 CPU as the CPU which services the interrupt. Note that the mapping
 between IRQs and NAPI instances may not be trivial (and is driver
 dependent). The NAPI instance IDs will be assigned in the opposite
 order than the process IDs of the kernel threads.</p>
 <p>Threaded NAPI is controlled by writing 0/1 to the <code class="docutils literal notranslate"><span class="pre">threaded</span></code> file in
-netdev’s sysfs directory.</p>
+netdev’s sysfs directory. It can also be enabled for a specific NAPI using
+netlink interface.</p>
+<p>For example, using the script:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>ynl<span class="w"> </span>--family<span class="w"> </span>netdev<span class="w"> </span>--do<span class="w"> </span>napi-set<span class="w"> </span>--json<span class="o">=</span><span class="s1">&#39;{&quot;id&quot;: 66, &quot;threaded&quot;: 1}&#39;</span>
+</pre></div>
+</div>
 <p class="rubric">Footnotes</p>
 <aside class="footnote-list brackets">
 <aside class="footnote brackets" id="id3" role="doc-footnote">

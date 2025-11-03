@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -228,7 +228,7 @@ tasks and CPUs computed by the Per-Entity Load Tracking (PELT) mechanism. Thanks
 to capacity and utilization values, EAS is able to estimate how big/busy a
 task/CPU is, and to take this into consideration when evaluating performance vs
 energy trade-offs. The capacity of CPUs is provided via arch-specific code
-through the arch_scale_cpu_capacity() callback.</p>
+through the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">arch_scale_cpu_capacity()</span></code> callback.</p>
 <p>The rest of platform knowledge used by EAS is directly read from the Energy
 Model (EM) framework. The EM of a platform is composed of a power cost table
 per ‘performance domain’ in the system (see <a class="reference internal" href="../power/energy-model.html"><span class="doc">Energy Model of devices</span></a>
@@ -277,17 +277,17 @@ are summarized in Section 6.</p>
 <h2>4. Energy-Aware task placement<a class="headerlink" href="#energy-aware-task-placement" title="Link to this heading">¶</a></h2>
 <p>EAS overrides the CFS task wake-up balancing code. It uses the EM of the
 platform and the PELT signals to choose an energy-efficient target CPU during
-wake-up balance. When EAS is enabled, select_task_rq_fair() calls
-find_energy_efficient_cpu() to do the placement decision. This function looks
+wake-up balance. When EAS is enabled, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">select_task_rq_fair()</span></code> calls
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">find_energy_efficient_cpu()</span></code> to do the placement decision. This function looks
 for the CPU with the highest spare capacity (CPU capacity - CPU utilization) in
 each performance domain since it is the one which will allow us to keep the
 frequency the lowest. Then, the function checks if placing the task there could
 save energy compared to leaving it on prev_cpu, i.e. the CPU where the task ran
 in its previous activation.</p>
-<p>find_energy_efficient_cpu() uses compute_energy() to estimate what will be the
-energy consumed by the system if the waking task was migrated. compute_energy()
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">find_energy_efficient_cpu()</span></code> uses <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">compute_energy()</span></code> to estimate what will be the
+energy consumed by the system if the waking task was migrated. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">compute_energy()</span></code>
 looks at the current utilization landscape of the CPUs and adjusts it to
-‘simulate’ the task migration. The EM framework provides the em_pd_energy() API
+‘simulate’ the task migration. The EM framework provides the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">em_pd_energy()</span></code> API
 which computes the expected energy consumption of each performance domain for
 the given utilization landscape.</p>
 <p>An example of energy-optimized task placement decision is detailed below.</p>
@@ -322,7 +322,7 @@ below as ‘PP’:</p>
  Current OPP: =====       Other OPP: - - -     util_avg (100 each): ##
 </pre></div>
 </div>
-<p>find_energy_efficient_cpu() will first look for the CPUs with the
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">find_energy_efficient_cpu()</span></code> will first look for the CPUs with the
 maximum spare capacity in the two performance domains. In this example,
 CPU1 and CPU3. Then it will estimate the energy of the system if P was
 placed on either of them, and check if that would save some energy
@@ -502,7 +502,7 @@ frequency requests and energy predictions.</p>
 <h3>6.5 Scale-invariant utilization signals<a class="headerlink" href="#scale-invariant-utilization-signals" title="Link to this heading">¶</a></h3>
 <p>In order to make accurate prediction across CPUs and for all performance
 states, EAS needs frequency-invariant and CPU-invariant PELT signals. These can
-be obtained using the architecture-defined arch_scale{cpu,freq}_capacity()
+be obtained using the architecture-defined arch_scale{cpu,freq}<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_capacity()</span></code>
 callbacks.</p>
 <p>Using EAS on a platform that doesn’t implement these two callbacks is not
 supported.</p>

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -211,7 +211,7 @@ may rule out many 32-bit architectures.</p></li>
 <li><p>Stacks in vmalloc space need to work reliably.  For example, if
 vmap page tables are created on demand, either this mechanism
 needs to work while the stack points to a virtual address with
-unpopulated page tables or arch code (switch_to() and switch_mm(),
+unpopulated page tables or arch code (<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">switch_to()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">switch_mm()</span></code>,
 most likely) needs to ensure that the stack’s page table entries
 are populated before running on a possibly unpopulated stack.</p></li>
 <li><p>If the stack overflows into a guard page, something reasonable
@@ -249,22 +249,22 @@ the latest code base:</p>
 virtually contiguous memory pages from the page level allocator. These
 pages are mapped into contiguous kernel virtual space with PAGE_KERNEL
 protections.</p>
-<p>alloc_thread_stack_node() calls __vmalloc_node_range() to allocate stack
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">alloc_thread_stack_node()</span></code> calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__vmalloc_node_range()</span></code> to allocate stack
 with PAGE_KERNEL protections.</p>
 <ul class="simple">
 <li><p>Allocated stacks are cached and later reused by new threads, so memcg
 accounting is performed manually on assigning/releasing stacks to tasks.
 Hence, __vmalloc_node_range is called without __GFP_ACCOUNT.</p></li>
 <li><p>vm_struct is cached to be able to find when thread free is initiated
-in interrupt context. free_thread_stack() can be called in interrupt
+in interrupt context. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">free_thread_stack()</span></code> can be called in interrupt
 context.</p></li>
 <li><p>On arm64, all VMAP’s stacks need to have the same alignment to ensure
 that VMAP’d stack overflow detection works correctly. Arch specific
 vmap stack allocator takes care of this detail.</p></li>
 <li><p>This does not address interrupt stacks - according to the original patch</p></li>
 </ul>
-<p>Thread stack allocation is initiated from clone(), fork(), vfork(),
-kernel_thread() via kernel_clone(). These are a few hints for searching
+<p>Thread stack allocation is initiated from clone(), fork(), <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vfork()</span></code>,
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kernel_thread()</span></code> via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kernel_clone()</span></code>. These are a few hints for searching
 the code base to understand when and how a thread stack is allocated.</p>
 <p>Bulk of the code is in:
 <cite>kernel/fork.c &lt;https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/kernel/fork.c&gt;</cite>.</p>

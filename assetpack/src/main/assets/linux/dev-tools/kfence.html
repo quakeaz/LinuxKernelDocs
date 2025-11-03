@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -477,7 +477,7 @@ constant (until immediate patching support is added to the kernel).</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.kfence_shutdown_cache">
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">kfence_shutdown_cache</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">kmem_cache</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.kfence_shutdown_cache" title="Link to this definition">¶</a><br /></dt>
-<dd><p>handle shutdown_cache() for KFENCE objects</p>
+<dd><p>handle <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shutdown_cache()</span></code> for KFENCE objects</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -490,7 +490,7 @@ constant (until immediate patching support is added to the kernel).</p>
 <p>Before shutting down a cache, one must ensure there are no remaining objects
 allocated from it. Because KFENCE objects are not referenced from the cache
 directly, we need to check them here.</p>
-<p>Note that shutdown_cache() is internal to SL*B, and kmem_cache_destroy() does
+<p>Note that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shutdown_cache()</span></code> is internal to SL*B, and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kmem_cache_destroy()</span></code> does
 not return if allocated objects still exist: it prints an error message and
 simply aborts destruction of a cache, leaking memory.</p>
 <p>If the only such objects are KFENCE objects, we will not leak the entire
@@ -498,7 +498,7 @@ cache, but instead try to provide more useful debug info by making allocated
 objects “zombie allocations”. Objects may then still be used or freed (which
 is handled gracefully), but usage will result in showing KFENCE error reports
 which include stack traces to the user of the object, the original allocation
-site, and caller to shutdown_cache().</p>
+site, and caller to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shutdown_cache()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.kfence_alloc">
@@ -509,7 +509,7 @@ site, and caller to shutdown_cache().</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kmem_cache</span> <span class="pre">*s</span></code></dt><dd><p>struct kmem_cache with object requirements</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kmem_cache</span> <span class="pre">*s</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kmem_cache</span></code> with object requirements</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">size</span></code></dt><dd><p>exact size of the object to allocate (can be less than <strong>s-&gt;size</strong>
 e.g. for kmalloc caches)</p>
@@ -542,13 +542,13 @@ kfence.sample_interval boot parameter).</p>
 </dl>
 <p><strong>Return</strong></p>
 <ul class="simple">
-<li><p>0     - not a KFENCE object, must call __ksize() instead,</p></li>
+<li><p>0     - not a KFENCE object, must call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__ksize()</span></code> instead,</p></li>
 <li><p>non-0 - this many bytes can be accessed without causing a memory error.</p></li>
 </ul>
 <p><strong>Description</strong></p>
 <p><a class="reference internal" href="#c.kfence_ksize" title="kfence_ksize"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfence_ksize()</span></code></a> returns the number of bytes requested for a KFENCE object at
 allocation time. This number may be less than the object size of the
-corresponding struct kmem_cache.</p>
+corresponding <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kmem_cache</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.kfence_object_start">
@@ -623,7 +623,7 @@ determine if it was a KFENCE object or not.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">is_write</span></code></dt><dd><p>is access a write</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pt_regs</span> <span class="pre">*regs</span></code></dt><dd><p>current struct pt_regs (can be NULL, but shows full stack trace)</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pt_regs</span> <span class="pre">*regs</span></code></dt><dd><p>current <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pt_regs</span></code> (can be NULL, but shows full stack trace)</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -182,19 +182,19 @@
 <p>XDP_REDIRECT works by a three-step process, implemented in the functions
 below:</p>
 <ol class="arabic simple">
-<li><p>The bpf_redirect() and bpf_redirect_map() helpers will lookup the target
+<li><p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bpf_redirect()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bpf_redirect_map()</span></code> helpers will lookup the target
 of the redirect and store it (along with some other metadata) in a per-CPU
-struct bpf_redirect_info.</p></li>
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">bpf_redirect_info</span></code>.</p></li>
 <li><p>When the program returns the XDP_REDIRECT return code, the driver will
-call xdp_do_redirect() which will use the information in struct
-bpf_redirect_info to actually enqueue the frame into a map type-specific
+call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xdp_do_redirect()</span></code> which will use the information in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">bpf_redirect_info</span></code> to actually enqueue the frame into a map type-specific
 bulk queue structure.</p></li>
 <li><p>Before exiting its NAPI poll loop, the driver will call
-xdp_do_flush(), which will flush all the different bulk queues,
-thus completing the redirect. Note that xdp_do_flush() must be
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xdp_do_flush()</span></code>, which will flush all the different bulk queues,
+thus completing the redirect. Note that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xdp_do_flush()</span></code> must be
 called before <a class="reference internal" href="../networking/kapi.html#c.napi_complete_done" title="napi_complete_done"><code class="xref c c-func docutils literal notranslate"><span class="pre">napi_complete_done()</span></code></a> in the driver, as the
 XDP_REDIRECT logic relies on being inside a single NAPI instance
-through to the xdp_do_flush() call for RCU protection of all
+through to the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xdp_do_flush()</span></code> call for RCU protection of all
 in-kernel data structures.</p></li>
 </ol>
 <div class="admonition note">

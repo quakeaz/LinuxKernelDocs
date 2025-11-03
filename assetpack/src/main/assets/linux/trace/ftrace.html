@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -86,6 +86,7 @@
 <li class="toctree-l3"><a class="reference internal" href="kprobes.html">Kernel Probes (Kprobes)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="kprobetrace.html">Kprobe-based Event Tracing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="fprobetrace.html">Fprobe-based Event Tracing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eprobetrace.html">Eprobe - Event-based Probe Tracing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="fprobe.html">Fprobe - Function entry/exit probe</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ring-buffer-design.html">Lockless Ring Buffer Design</a></li>
 </ul>
@@ -255,7 +256,7 @@ ring buffer is enabled. Echo 0 into this file to disable
 the tracer or 1 to enable it. Note, this only disables
 writing to the ring buffer, the tracing overhead may
 still be occurring.</p>
-<p>The kernel function tracing_off() can be used within the
+<p>The kernel function <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">tracing_off()</span></code> can be used within the
 kernel to disable writing to the ring buffer, which will
 set this file to “0”. User space can re-enable tracing by
 echoing “1” into the file.</p>
@@ -529,7 +530,7 @@ used to know if a function was every modified by the ftrace infrastructure,
 and can be used for debugging.</p>
 <p>If the architecture supports it, it will also show what callback
 is being directly called by the function. If the count is greater
-than 1 it most likely will be ftrace_ops_list_func().</p>
+than 1 it most likely will be <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_ops_list_func()</span></code>.</p>
 <p>If the callback of a function jumps to a trampoline that is
 specific to the callback and which is not the standard trampoline,
 its address will be printed as well as the function that the
@@ -696,7 +697,7 @@ discontinuities and backwards jumps caused by NTP inserting leap
 seconds. Since the clock access is designed for use in tracing,
 side effects are possible. The clock access may yield wrong
 readouts in case the internal TAI offset is updated e.g., caused
-by setting the system time or using adjtimex() with an offset.
+by setting the system time or using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">adjtimex()</span></code> with an offset.
 These effects are rare and post processing should be able to
 handle them. See comments in the <a class="reference internal" href="../core-api/timekeeping.html#c.ktime_get_tai_fast_ns" title="ktime_get_tai_fast_ns"><code class="xref c c-func docutils literal notranslate"><span class="pre">ktime_get_tai_fast_ns()</span></code></a>
 function for more information.</p>
@@ -843,7 +844,7 @@ for the CPU.</p>
 <blockquote>
 <div><p>For tools that can parse the ftrace ring buffer binary format,
 the trace_pipe_raw file can be used to extract the data
-from the ring buffer directly. With the use of the splice()
+from the ring buffer directly. With the use of the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">splice()</span></code>
 system call, the buffer data can be quickly transferred to
 a file or to the network where a server is collecting the
 data.</p>
@@ -1336,8 +1337,8 @@ x494] &lt;- /root/a.out[+0x4a8] &lt;- /lib/libc-2.7.so[+0x1e1a6]
 </div>
 </dd>
 <dt>printk-msg-only</dt><dd><p>When set, <a class="reference internal" href="../driver-api/basics.html#c.trace_printk" title="trace_printk"><code class="xref c c-func docutils literal notranslate"><span class="pre">trace_printk()</span></code></a>s will only show the format
-and not their parameters (if trace_bprintk() or
-trace_bputs() was used to save the <a class="reference internal" href="../driver-api/basics.html#c.trace_printk" title="trace_printk"><code class="xref c c-func docutils literal notranslate"><span class="pre">trace_printk()</span></code></a>).</p>
+and not their parameters (if <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">trace_bprintk()</span></code> or
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">trace_bputs()</span></code> was used to save the <a class="reference internal" href="../driver-api/basics.html#c.trace_printk" title="trace_printk"><code class="xref c c-func docutils literal notranslate"><span class="pre">trace_printk()</span></code></a>).</p>
 </dd>
 <dt>context-info</dt><dd><p>Show only the event data. Hides the comm, PID,
 timestamp, CPU, and other useful data.</p>
@@ -1863,11 +1864,11 @@ preempt_enable();
 </pre></div>
 </div>
 <p>The irqsoff tracer will record the total length of
-call_function_with_irqs_off() and
-call_function_with_irqs_and_preemption_off().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">call_function_with_irqs_off()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">call_function_with_irqs_and_preemption_off()</span></code>.</p>
 <p>The preemptoff tracer will record the total length of
-call_function_with_irqs_and_preemption_off() and
-call_function_with_preemption_off().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">call_function_with_irqs_and_preemption_off()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">call_function_with_preemption_off()</span></code>.</p>
 <p>But neither will trace the time that interrupts and/or
 preemption is disabled. This total time is the time that we can
 not schedule. To record this time, use the preemptirqsoff
@@ -2260,7 +2261,7 @@ and it too is in the running state.</p>
 <p>This isn’t that big of a trace, even with function tracing enabled,
 so I included the entire trace.</p>
 <p>The interrupt went off while when the system was idle. Somewhere
-before task_woken_rt() was called, the NEED_RESCHED flag was set,
+before <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">task_woken_rt()</span></code> was called, the NEED_RESCHED flag was set,
 this is indicated by the first occurrence of the ‘N’ flag.</p>
 </section>
 <section id="latency-tracing-and-events">
@@ -2932,8 +2933,8 @@ it may be recorded as 0x123456789abcdef instead of 0xef.</p>
 </ul>
 <p>You can put some comments on specific functions by using
 <a class="reference internal" href="../driver-api/basics.html#c.trace_printk" title="trace_printk"><code class="xref c c-func docutils literal notranslate"><span class="pre">trace_printk()</span></code></a> For example, if you want to put a comment inside
-the __might_sleep() function, you just have to include
-&lt;linux/ftrace.h&gt; and call <a class="reference internal" href="../driver-api/basics.html#c.trace_printk" title="trace_printk"><code class="xref c c-func docutils literal notranslate"><span class="pre">trace_printk()</span></code></a> inside __might_sleep():</p>
+the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__might_sleep()</span></code> function, you just have to include
+&lt;linux/ftrace.h&gt; and call <a class="reference internal" href="../driver-api/basics.html#c.trace_printk" title="trace_printk"><code class="xref c c-func docutils literal notranslate"><span class="pre">trace_printk()</span></code></a> inside <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__might_sleep()</span></code>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>trace_printk(&quot;I&#39;m a comment!\n&quot;)
 </pre></div>
 </div>
@@ -3225,7 +3226,7 @@ you just have to echo its name into set_graph_function:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>echo __do_fault &gt; set_graph_function
 </pre></div>
 </div>
-<p>will produce the following “expanded” trace of the __do_fault()
+<p>will produce the following “expanded” trace of the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__do_fault()</span></code>
 function:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>0)               |  __do_fault() {
 0)               |    filemap_fault() {

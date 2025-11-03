@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -214,8 +214,8 @@ of_xlate 实现。of_xlate 仅用于 dt 启动情况。</p>
 启动情况，所有 PHY provider 都应使用上述两个宏之一来注册 PHY provider。</p>
 <p>与 PHY provider 关联的设备树节点通常包含一组子节点，每个子节点代表一个
 PHY。某些绑定可能会为了上下文和可扩展性将子节点嵌套在特别的层级中，在这种
-情况下，可以使用低级别的 of_phy_provider_register_full() 和
-devm_of_phy_provider_register_full() 宏来覆盖包含子节点的节点。</p>
+情况下，可以使用低级别的 <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">of_phy_provider_register_full()</span></code> 和
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_of_phy_provider_register_full()</span></code> 宏来覆盖包含子节点的节点。</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>#define of_phy_provider_register_full(dev, children, xlate) \
         __of_phy_provider_register(dev, children, THIS_MODULE, xlate)
 
@@ -246,8 +246,8 @@ struct phy *devm_phy_create(struct device *dev,
 来创建 PHY。</p>
 <p>phy_ops 是一组用于执行 PHY 操作（例如 init、exit、power_on 和
 power_off）的函数指针。</p>
-<p>在 phy_ops 中，PHY provider驱动程序在创建 PHY 后使用 phy_set_drvdata()
-设置私有数据，使用 phy_get_drvdata() 获取私有数据。</p>
+<p>在 phy_ops 中，PHY provider驱动程序在创建 PHY 后使用 <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">phy_set_drvdata()</span></code>
+设置私有数据，使用 <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">phy_get_drvdata()</span></code> 获取私有数据。</p>
 </section>
 <section id="id3">
 <h2>获取对 PHY 的引用<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h2>
@@ -278,7 +278,7 @@ devres 数据上调用 release 函数并释放 devres 数据。当 phy 是可选
 用于根据名称或索引获取 phy 引用。</p>
 <p>需要注意的是，NULL 是有效的 phy 引用。NULL phy 上的所有 phy 使用
 者调用都将成为 NOP。也就是说释放调用，当应用于 NULL phy 时，release
-调用、phy_init()/phy_exit() 调用、phy_power_on()/phy_power_off()
+调用、<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">phy_init()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">phy_exit()</span></code> 调用、<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">phy_power_on()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">phy_power_off()</span></code>
 调用都是 NOP。NULL phy 在处理可选的 phy 设备中很有用。</p>
 </section>
 <section id="api">
@@ -339,7 +339,7 @@ phy_pm_runtime_allow 和 phy_pm_runtime_forbid，用于执行 PM 操作。</p>
 <section id="id6">
 <h2>PHY映射<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h2>
 <p>为了在没有 DeviceTree 帮助的情况下获取对 PHY 的引用，框架提供了可与
-clkdev 进行比较的查找，允许将 clk 结构体绑定到设备。当 struct phy 的
+clkdev 进行比较的查找，允许将 clk 结构体绑定到设备。当 <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">phy</span></code> 的
 句柄已存在时，可以在运行时进行查找。</p>
 <p>该框架提供以下 API 用于注册和注销查找:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int phy_create_lookup(struct phy *phy, const char *con_id,

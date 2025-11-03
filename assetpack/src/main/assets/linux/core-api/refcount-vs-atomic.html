@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -209,7 +209,7 @@ atomics &amp; refcounters only provide atomicity and
 program order (po) relation (on the same CPU). It guarantees that
 each <code class="docutils literal notranslate"><span class="pre">atomic_*()</span></code> and <code class="docutils literal notranslate"><span class="pre">refcount_*()</span></code> operation is atomic and instructions
 are executed in program order on a single CPU.
-This is implemented using READ_ONCE()/WRITE_ONCE() and
+This is implemented using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">READ_ONCE()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">WRITE_ONCE()</span></code> and
 compare-and-swap primitives.</p>
 <p>A strong (full) memory ordering guarantees that all prior loads and
 stores (all po-earlier instructions) on the same CPU are completed
@@ -217,20 +217,20 @@ before any po-later instruction is executed on the same CPU.
 It also guarantees that all po-earlier stores on the same CPU
 and all propagated stores from other CPUs must propagate to all
 other CPUs before any po-later instruction is executed on the original
-CPU (A-cumulative property). This is implemented using smp_mb().</p>
+CPU (A-cumulative property). This is implemented using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smp_mb()</span></code>.</p>
 <p>A RELEASE memory ordering guarantees that all prior loads and
 stores (all po-earlier instructions) on the same CPU are completed
 before the operation. It also guarantees that all po-earlier
 stores on the same CPU and all propagated stores from other CPUs
 must propagate to all other CPUs before the release operation
 (A-cumulative property). This is implemented using
-smp_store_release().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smp_store_release()</span></code>.</p>
 <p>An ACQUIRE memory ordering guarantees that all post loads and
 stores (all po-later instructions) on the same CPU are
 completed after the acquire operation. It also guarantees that all
 po-later stores on the same CPU must propagate to all other CPUs
 after the acquire operation executes. This is implemented using
-smp_acquire__after_ctrl_dep().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smp_acquire__after_ctrl_dep()</span></code>.</p>
 <p>A control dependency (on success) for refcounters guarantees that
 if a reference for an object was successfully obtained (reference
 counter increment or addition happened, function returned true),
@@ -381,7 +381,7 @@ result of obtaining pointer to the object!</p>
 <p>Function changes:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>atomic_dec_and_lock() --&gt; <a class="reference internal" href="../driver-api/basics.html#c.refcount_dec_and_lock" title="refcount_dec_and_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">refcount_dec_and_lock()</span></code></a></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">atomic_dec_and_lock()</span></code> --&gt; <a class="reference internal" href="../driver-api/basics.html#c.refcount_dec_and_lock" title="refcount_dec_and_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">refcount_dec_and_lock()</span></code></a></p></li>
 <li><p><a class="reference internal" href="../kernel-hacking/locking.html#c.atomic_dec_and_mutex_lock" title="atomic_dec_and_mutex_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">atomic_dec_and_mutex_lock()</span></code></a> --&gt; <a class="reference internal" href="../driver-api/basics.html#c.refcount_dec_and_mutex_lock" title="refcount_dec_and_mutex_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">refcount_dec_and_mutex_lock()</span></code></a></p></li>
 </ul>
 </div></blockquote>
@@ -389,7 +389,7 @@ result of obtaining pointer to the object!</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>fully ordered --&gt; RELEASE ordering + control dependency + hold
-spin_lock() on success</p></li>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock()</span></code> on success</p></li>
 </ul>
 </div></blockquote>
 </section>

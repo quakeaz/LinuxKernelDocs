@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -194,7 +194,7 @@ zone. The good part is, while balancing, we do not need to look at sizes
 of lower class zones, the bad part is, we might do too frequent balancing
 due to ignoring possibly lower usage in the lower class zones. Also,
 with a slight change in the allocation routine, it is possible to reduce
-the memclass() macro to be a simple equality.</p>
+the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">memclass()</span></code> macro to be a simple equality.</p>
 <p>Another possible solution is that we balance only when the free memory
 of a zone _and_ all its lower class zones falls below 1/64th of the
 total memory in the zone and its lower class zones. This fixes the 2.2
@@ -210,7 +210,7 @@ becomes more attractive then.</p>
 <p>The appended patch implements the second solution. It also “fixes” two
 problems: first, kswapd is woken up as in 2.2 on low memory conditions
 for non-sleepable allocations. Second, the HIGHMEM zone is also balanced,
-so as to give a fighting chance for replace_with_highmem() to get a
+so as to give a fighting chance for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">replace_with_highmem()</span></code> to get a
 HIGHMEM page, as well as to ensure that HIGHMEM allocations do not
 fall back into regular zone. This also makes sure that HIGHMEM pages
 are not leaked (for example, in situations where a HIGHMEM page is in
@@ -238,7 +238,7 @@ pages is below watermark[WMARK_LOW]; in which case zone_wake_kswapd is also set.
 <ol class="arabic simple">
 <li><p>Dynamic experience should influence balancing: number of failed requests
 for a zone can be tracked and fed into the balancing scheme (<a class="reference external" href="mailto:jalvo&#37;&#52;&#48;mbay&#46;net">jalvo<span>&#64;</span>mbay<span>&#46;</span>net</a>)</p></li>
-<li><p>Implement a replace_with_highmem()-like replace_with_regular() to preserve
+<li><p>Implement a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">replace_with_highmem()</span></code>-like <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">replace_with_regular()</span></code> to preserve
 dma pages. (<a class="reference external" href="mailto:lkd&#37;&#52;&#48;tantalophile&#46;demon&#46;co&#46;uk">lkd<span>&#64;</span>tantalophile<span>&#46;</span>demon<span>&#46;</span>co<span>&#46;</span>uk</a>)</p></li>
 </ol>
 </section>

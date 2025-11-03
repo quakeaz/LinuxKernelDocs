@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -330,15 +330,15 @@ that a standard index will detect.</p>
 <section id="the-vio-and-data-vio-structures">
 <h3>The vio and data_vio Structures<a class="headerlink" href="#the-vio-and-data-vio-structures" title="Link to this heading">¶</a></h3>
 <p>A vio (short for Vdo I/O) is conceptually similar to a bio, with additional
-fields and data to track vdo-specific information. A struct vio maintains a
+fields and data to track vdo-specific information. A <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">vio</span></code> maintains a
 pointer to a bio but also tracks other fields specific to the operation of
 vdo. The vio is kept separate from its related bio because there are many
 circumstances where vdo completes the bio but must continue to do work
 related to deduplication or compression.</p>
 <p>Metadata reads and writes, and other writes that originate within vdo, use
-a struct vio directly. Application reads and writes use a larger structure
-called a data_vio to track information about their progress. A struct
-data_vio contain a struct vio and also includes several other fields
+a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">vio</span></code> directly. Application reads and writes use a larger structure
+called a data_vio to track information about their progress. A <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">data_vio</span></code> contain a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">vio</span></code> and also includes several other fields
 related to deduplication and other vdo features. The data_vio is the
 primary unit of application work in vdo. Each data_vio proceeds through a
 set of steps to handle the application data, after which it is reset and
@@ -517,8 +517,8 @@ block or decides there are none. If the first zone has no free space,
 it will proceed to search the next physical zone by taking the implicit
 lock for that zone and releasing the previous one until it finds a
 free block or runs out of zones to search. The data_vio will acquire a
-struct pbn_lock (the “physical block lock”) on the free block. The
-struct pbn_lock also has several fields to record the various kinds of
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pbn_lock</span></code> (the “physical block lock”) on the free block. The
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pbn_lock</span></code> also has several fields to record the various kinds of
 claims that data_vios can have on physical blocks. The pbn_lock is
 added to a hashtable like the logical block locks in step 2. This
 hashtable is also covered by the implicit physical zone lock. The
@@ -539,7 +539,7 @@ acknowledged because the vdo device may be out of space.</p>
 <li><p>At this point vdo must determine where to store the application data.
 The data_vio’s data is hashed and the hash (the “record name”) is
 recorded in the data_vio.</p></li>
-<li><p>The data_vio reserves or joins a struct hash_lock, which manages all of
+<li><p>The data_vio reserves or joins a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hash_lock</span></code>, which manages all of
 the data_vios currently writing the same data. Active hash locks are
 tracked in a hashtable similar to the way logical block locks are
 tracked in step 2. This hashtable is covered by the implicit lock on
@@ -562,7 +562,7 @@ different data blocks produce the same hash, for example.</p>
 the following steps.</p>
 <ol class="loweralpha">
 <li><p>The agent initializes and sends its embedded deduplication request
-(struct uds_request) to the deduplication index. This does not
+(<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">uds_request</span></code>) to the deduplication index. This does not
 require the data_vio to get any locks because the index components
 manage their own locking. The data_vio waits until it either gets a
 response from the index or times out.</p></li>
@@ -590,8 +590,8 @@ are out of space, so they proceed to step 13 for cleanup.</p></li>
 compress, the data_vio will continue to step 8h to write its data
 directly.</p>
 <p>If the compressed size is small enough, the agent will release the
-implicit hash zone lock and go to the packer (struct packer) where
-it will be placed in a bin (struct packer_bin) along with other
+implicit hash zone lock and go to the packer (<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">packer</span></code>) where
+it will be placed in a bin (<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">packer_bin</span></code>) along with other
 data_vios. All compression operations require the implicit lock on
 the packer zone.</p>
 <p>The packer can combine up to 14 compressed blocks in a single 4k
@@ -613,7 +613,7 @@ using the allocated physical block from one of its data_vios. Step
 8d has already ensured that an allocation is available.</p></li>
 <li><p>Each data_vio sets the compressed block as its new physical address.
 The data_vio obtains an implicit lock on the physical zone and
-acquires the struct pbn_lock for the compressed block, which is
+acquires the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pbn_lock</span></code> for the compressed block, which is
 modified to be a shared lock. Then it releases the implicit physical
 zone lock and proceeds to step 8i.</p></li>
 <li><p>Any data_vio evicted from the packer will have an allocation from
@@ -662,7 +662,7 @@ physical block. At this point the write operation is complete.</p></li>
 <li><p>If the data_vio has a hash lock, it acquires the implicit hash zone
 lock and releases its hash lock to the pool.</p>
 <p>The data_vio then acquires the implicit physical zone lock and releases
-the struct pbn_lock it holds for its allocated block. If it had an
+the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pbn_lock</span></code> it holds for its allocated block. If it had an
 allocation that it did not use, it also sets the reference count for
 that block back to zero to free it for use by subsequent data_vios.</p>
 <p>The data_vio then acquires the implicit logical zone lock and releases

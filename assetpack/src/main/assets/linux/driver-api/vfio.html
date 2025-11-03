@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -514,16 +514,16 @@ void vfio_unregister_group_dev(struct vfio_device *device);
 </pre></div>
 </div>
 <p>The driver should embed the vfio_device in its own structure and use
-vfio_alloc_device() to allocate the structure, and can register
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vfio_alloc_device()</span></code> to allocate the structure, and can register
 &#64;init/&#64;release callbacks to manage any private state wrapping the
 vfio_device:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>vfio_alloc_device(dev_struct, member, dev, ops);
 void vfio_put_device(struct vfio_device *device);
 </pre></div>
 </div>
-<p>vfio_register_group_dev() indicates to the core to begin tracking the
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vfio_register_group_dev()</span></code> indicates to the core to begin tracking the
 iommu_group of the specified dev and register the dev as owned by a VFIO bus
-driver. Once vfio_register_group_dev() returns it is possible for userspace to
+driver. Once <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vfio_register_group_dev()</span></code> returns it is possible for userspace to
 start accessing the driver, thus the driver should ensure it is completely
 ready before calling it. The driver provides an ops structure for callbacks
 similar to a file operations structure:</p>
@@ -554,9 +554,9 @@ similar to a file operations structure:</p>
 </pre></div>
 </div>
 <p>Each function is passed the vdev that was originally registered
-in the vfio_register_group_dev() or vfio_register_emulated_iommu_dev()
+in the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vfio_register_group_dev()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vfio_register_emulated_iommu_dev()</span></code>
 call above. This allows the bus driver to obtain its private data using
-container_of().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">container_of()</span></code>.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>- The init/release callbacks are issued when vfio_device is initialized
   and released.
 

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -197,10 +197,10 @@ queue, to be sent in the future, when the hardware is able.</p>
 <section id="software-staging-queues">
 <h4>Software staging queues<a class="headerlink" href="#software-staging-queues" title="Link to this heading">¶</a></h4>
 <p>The block IO subsystem adds requests in the software staging queues
-(represented by struct blk_mq_ctx) in case that they weren’t sent
+(represented by <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">blk_mq_ctx</span></code>) in case that they weren’t sent
 directly to the driver. A request is one or more BIOs. They arrived at the
-block layer through the data structure struct bio. The block layer
-will then build a new structure from it, the struct request that will
+block layer through the data structure <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">bio</span></code>. The block layer
+will then build a new structure from it, the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">request</span></code> that will
 be used to communicate with the device driver. Each queue has its own lock and
 the number of queues is defined by a per-CPU or per-node basis.</p>
 <p>The staging queue can be used to merge requests for adjacent sectors. For
@@ -231,8 +231,8 @@ hardware queue will be drained in sequence according to their mapping.</p>
 </section>
 <section id="hardware-dispatch-queues">
 <h4>Hardware dispatch queues<a class="headerlink" href="#hardware-dispatch-queues" title="Link to this heading">¶</a></h4>
-<p>The hardware queue (represented by <a class="reference internal" href="#c.blk_mq_hw_ctx" title="blk_mq_hw_ctx"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">blk_mq_hw_ctx</span></code></a>) is a struct
-used by device drivers to map the device submission queues (or device DMA ring
+<p>The hardware queue (represented by <a class="reference internal" href="#c.blk_mq_hw_ctx" title="blk_mq_hw_ctx"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">blk_mq_hw_ctx</span></code></a>) is a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">used</span></code> by device drivers to map the device submission queues (or device DMA ring
 buffer), and are the last step of the block layer submission code before the
 low level device driver taking ownership of the request. To run this queue, the
 block layer removes requests from the associated software queues and tries to
@@ -359,7 +359,7 @@ queue (active, scheduled to restart, stopped).</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">cpumask</span></code></dt><dd><p>Map of available CPUs where this hctx can run.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">next_cpu</span></code></dt><dd><p>Used by blk_mq_hctx_next_cpu() for round-robin CPU
+<dt><code class="docutils literal notranslate"><span class="pre">next_cpu</span></code></dt><dd><p>Used by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">blk_mq_hctx_next_cpu()</span></code> for round-robin CPU
 selection from <strong>cpumask</strong>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">next_cpu_batch</span></code></dt><dd><p>Counter of how many works left in the batch before
@@ -383,7 +383,7 @@ pending request in that software queue.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">dispatch_from</span></code></dt><dd><p>Software queue to be used when no scheduler was
 selected.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">dispatch_busy</span></code></dt><dd><p>Number used by blk_mq_update_dispatch_busy() to
+<dt><code class="docutils literal notranslate"><span class="pre">dispatch_busy</span></code></dt><dd><p>Number used by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">blk_mq_update_dispatch_busy()</span></code> to
 decide if the hw_queue is busy using Exponential Weighted Moving
 Average algorithm.</p>
 </dd>
@@ -776,10 +776,10 @@ the quiesce flag set using blk_mq_quiesce_queue_nowait.</p>
 </dd>
 </dl>
 <p><strong>Note</strong></p>
-<p>this function does not prevent that the struct request end_io()
+<p>this function does not prevent that the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">request</span></code> <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">end_io()</span></code>
 callback function is invoked. Once this function is returned, we make
 sure no dispatch can happen until the queue is unquiesced via
-blk_mq_unquiesce_queue().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">blk_mq_unquiesce_queue()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.blk_update_request">
@@ -802,7 +802,7 @@ blk_mq_unquiesce_queue().</p>
 <div><p>Ends I/O on a number of bytes attached to <strong>req</strong>, but doesn’t complete
 the request structure even if <strong>req</strong> doesn’t have leftover.
 If <strong>req</strong> has leftover, sets it up for the next range of segments.</p>
-<p>Passing the result of blk_rq_bytes() as <strong>nr_bytes</strong> guarantees
+<p>Passing the result of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">blk_rq_bytes()</span></code> as <strong>nr_bytes</strong> guarantees
 <code class="docutils literal notranslate"><span class="pre">false</span></code> return from this function.</p>
 </div></blockquote>
 <p><strong>Note</strong></p>
@@ -811,10 +811,8 @@ If <strong>req</strong> has leftover, sets it up for the next range of segments.
 except in the consistency check at the end of this function.</p>
 </div></blockquote>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">false</span></code> - this request doesn’t have any more data
+<p><code class="docutils literal notranslate"><span class="pre">false</span></code> - this request doesn’t have any more data
 <code class="docutils literal notranslate"><span class="pre">true</span></code>  - this request has more data</p>
-</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.blk_mq_complete_request">
@@ -894,7 +892,7 @@ for execution.  Don’t wait for completion.</p>
 for execution and wait for completion.</p>
 </div></blockquote>
 <p><strong>Return</strong></p>
-<p>The blk_status_t result provided to blk_mq_end_request().</p>
+<p>The blk_status_t result provided to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">blk_mq_end_request()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.blk_mq_delay_run_hw_queue">
@@ -1096,9 +1094,9 @@ the caller must complete <strong>rq</strong> before <strong>rq_src</strong>.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This shuts down a request queue allocated by blk_mq_alloc_queue(). All future
+<p>This shuts down a request queue allocated by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">blk_mq_alloc_queue()</span></code>. All future
 requests will be failed with -ENODEV. The caller is responsible for dropping
-the reference from blk_mq_alloc_queue() by calling <a class="reference internal" href="../core-api/kernel-api.html#c.blk_put_queue" title="blk_put_queue"><code class="xref c c-func docutils literal notranslate"><span class="pre">blk_put_queue()</span></code></a>.</p>
+the reference from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">blk_mq_alloc_queue()</span></code> by calling <a class="reference internal" href="../core-api/kernel-api.html#c.blk_put_queue" title="blk_put_queue"><code class="xref c c-func docutils literal notranslate"><span class="pre">blk_put_queue()</span></code></a>.</p>
 <p><strong>Context</strong></p>
 <p>can sleep</p>
 </div>

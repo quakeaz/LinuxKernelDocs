@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -181,10 +181,10 @@ supported as well.</p>
 <p>To use the <a class="reference internal" href="format.html#format"><span class="std std-ref">Data Formats</span></a> ioctls applications set the <code class="docutils literal notranslate"><span class="pre">type</span></code> field of the
 <code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_format</span></code> structure to <code class="docutils literal notranslate"><span class="pre">V4L2_BUF_TYPE_META_CAPTURE</span></code> or to
 <code class="docutils literal notranslate"><span class="pre">V4L2_BUF_TYPE_META_OUTPUT</span></code> and use the <a class="reference internal" href="#c.v4l2_meta_format" title="v4l2_meta_format"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_meta_format</span></code></a> <code class="docutils literal notranslate"><span class="pre">meta</span></code>
-member of the <code class="docutils literal notranslate"><span class="pre">fmt</span></code> union as needed per the desired operation. Both drivers
+member of the <code class="docutils literal notranslate"><span class="pre">fmt</span></code> <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">as</span></code> needed per the desired operation. Both drivers
 and applications must set the remainder of the <code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_format</span></code> structure
 to 0.</p>
-<p>Devices that capture metadata by line have the struct v4l2_fmtdesc
+<p>Devices that capture metadata by line have the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_fmtdesc</span></code>
 <code class="docutils literal notranslate"><span class="pre">V4L2_FMT_FLAG_META_LINE_BASED</span></code> flag set for <code class="xref c c-func docutils literal notranslate"><span class="pre">VIDIOC_ENUM_FMT()</span></code>. Such
 devices can typically also <a class="reference internal" href="dev-capture.html#capture"><span class="std std-ref">capture image data</span></a>. This primarily
 involves devices that receive the data from a different devices such as a camera

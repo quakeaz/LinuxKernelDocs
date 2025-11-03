@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -217,8 +217,8 @@ used by the host either for reading or for writing but not for both.</p>
 reference definitions of virtqueues and “Virtqueues and virtio ring: How
 the data travels” blog post (<a class="reference internal" href="#id3">[2]</a>) for an illustrated overview of how
 the host device and the guest driver communicate.</p>
-<p>The <code class="xref c c-type docutils literal notranslate"><span class="pre">vring_virtqueue</span></code> struct models a virtqueue, including the
-ring buffers and management data. Embedded in this struct is the
+<p>The <code class="xref c c-type docutils literal notranslate"><span class="pre">vring_virtqueue</span></code> <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">models</span></code> a virtqueue, including the
+ring buffers and management data. Embedded in this <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> the
 <a class="reference internal" href="#c.virtqueue" title="virtqueue"><code class="xref c c-type docutils literal notranslate"><span class="pre">virtqueue</span></code></a> struct, which is the data structure that’s
 ultimately used by virtio drivers:</p>
 <dl class="c struct">
@@ -268,7 +268,7 @@ ultimately used by virtio drivers:</p>
 <p>A note on <strong>num_free</strong>: with indirect buffers, each buffer needs one
 element in the queue, otherwise a buffer will need one element per
 sg element.</p>
-<p>The callback function pointed by this struct is triggered when the
+<p>The callback function pointed by this <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> triggered when the
 device has consumed the buffers provided by the driver. More
 specifically, the trigger will be an interrupt issued by the hypervisor
 (see <a class="reference internal" href="#c.vring_interrupt" title="vring_interrupt"><code class="xref c c-func docutils literal notranslate"><span class="pre">vring_interrupt()</span></code></a>). Interrupt request handlers are registered for
@@ -346,7 +346,7 @@ for a driver in the bus that can handle the device and call that
 driver’s <code class="docutils literal notranslate"><span class="pre">probe</span></code> method.</p>
 <p>At this point, the virtqueues will be allocated and configured by
 calling the appropriate <code class="docutils literal notranslate"><span class="pre">virtio_find</span></code> helper function, such as
-virtio_find_single_vq() or virtio_find_vqs(), which will end up calling
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">virtio_find_single_vq()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">virtio_find_vqs()</span></code>, which will end up calling
 a transport-specific <code class="docutils literal notranslate"><span class="pre">find_vqs</span></code> method.</p>
 </section>
 <section id="references">

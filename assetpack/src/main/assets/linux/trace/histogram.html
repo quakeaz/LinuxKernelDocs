@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -423,7 +423,7 @@ created for it in the table.  The ‘val=bytes_req’ parameter tells
 the hist trigger that for each unique entry (call_site) in the
 table, it should keep a running total of the number of bytes
 requested by that call_site.</p>
-<p>We’ll let it run for awhile and then dump the contents of the ‘hist’
+<p>We’ll let it run for a while and then dump the contents of the ‘hist’
 file in the kmalloc event’s subdirectory (for readability, a number
 of entries have been omitted):</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span># cat /sys/kernel/tracing/events/kmem/kmalloc/hist
@@ -1945,7 +1945,7 @@ usage for normal events.</p>
 consisting of the name of the new event along with one or more
 variables and their types, which can be any valid field type,
 separated by semicolons, to the tracing/synthetic_events file.</p>
-<p>See synth_field_size() for available types.</p>
+<p>See <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_field_size()</span></code> for available types.</p>
 <p>If field_name contains [n], the field is considered to be a static array.</p>
 <p>If field_names contains[] (no subscript), the field is considered to
 be a dynamic array, which will only take as much space in the event as
@@ -2270,7 +2270,7 @@ of descriptions of some common and useful handler.action combinations.</p>
 <div><ul class="simple">
 <li><p>trace(&lt;synthetic_event_name&gt;,param list)   - generate synthetic event</p></li>
 <li><p>save(field,...)                            - save current event fields</p></li>
-<li><p>snapshot()                                 - snapshot the trace buffer</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">snapshot()</span></code>                                 - snapshot the trace buffer</p></li>
 </ul>
 </div></blockquote>
 <p>The following commonly-used handler.action pairs are available:</p>
@@ -2309,7 +2309,7 @@ fully-qualified name is of the form ‘system.event_name.$var_name’
 or ‘system.event_name.field’.</p>
 <p>The ‘matching.event’ specification is simply the fully qualified
 event name of the event that matches the target event for the
-onmatch() functionality, in the form ‘system.event_name’. Histogram
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">onmatch()</span></code> functionality, in the form ‘system.event_name’. Histogram
 keys of both events are compared to find if events match. In case
 multiple histogram keys are used, they all must match in the specified
 order.</p>
@@ -2328,7 +2328,7 @@ event:</p>
 </pre></div>
 </div>
 <p>The following hist trigger both defines the missing testpid
-variable and specifies an onmatch() action that generates a
+variable and specifies an <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">onmatch()</span></code> action that generates a
 wakeup_new_test synthetic event whenever a sched_wakeup_new event
 occurs, which because of the ‘if comm == “cyclictest”’ filter only
 happens when the executable is cyclictest:</p>
@@ -2399,7 +2399,7 @@ synthetic event’s hist file:</p>
 whenever the value of ‘var’ associated with a histogram entry
 exceeds the current maximum contained in that variable.</p>
 <p>The end result is that the trace event fields specified as the
-onmax.save() params will be saved if ‘var’ exceeds the current
+onmax.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">save()</span></code> params will be saved if ‘var’ exceeds the current
 maximum for that hist trigger entry.  This allows context from the
 event that exhibited the new maximum to be saved for later
 reference.  When the histogram is displayed, additional fields
@@ -2410,7 +2410,7 @@ a sched_waking occurs, the timestamp is saved in the entry
 corresponding to the current pid, and when the scheduler switches
 back to that pid, the timestamp difference is calculated.  If the
 resulting latency, stored in wakeup_lat, exceeds the current
-maximum latency, the values specified in the save() fields are
+maximum latency, the values specified in the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">save()</span></code> fields are
 recorded:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span># echo &#39;hist:keys=pid:ts0=common_timestamp.usecs \
         if comm==&quot;cyclictest&quot;&#39; &gt;&gt; \
@@ -2445,8 +2445,8 @@ of the fields:</p>
 </pre></div>
 </div>
 </li>
-<li><p>onmax(var).snapshot()</p>
-<p>The ‘onmax(var).snapshot()’ hist trigger action is invoked
+<li><p>onmax(var).<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">snapshot()</span></code></p>
+<p>The ‘onmax(var).<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">snapshot()</span></code>’ hist trigger action is invoked
 whenever the value of ‘var’ associated with a histogram entry
 exceeds the current maximum contained in that variable.</p>
 <p>The end result is that a global snapshot of the trace buffer will
@@ -2512,7 +2512,7 @@ Totals:
 </div>
 <p>In the above case, the event that triggered the global maximum has
 the key with next_pid == 2103.  If you look at the bucket that has
-2103 as the key, you’ll find the additional values save()’d along
+2103 as the key, you’ll find the additional values <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">save()</span></code>’d along
 with the local maximum for that bucket, which should be the same
 as the global maximum (since that was the same value that
 triggered the global snapshot).</p>
@@ -2554,14 +2554,14 @@ gnome-terminal--1699  [004] d.h2   309.874941: sched_stat_runtime: comm=gnome-te
 whenever the value of ‘var’ associated with a histogram entry
 changes.</p>
 <p>The end result is that the trace event fields specified as the
-onchange.save() params will be saved if ‘var’ changes for that
+onchange.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">save()</span></code> params will be saved if ‘var’ changes for that
 hist trigger entry.  This allows context from the event that
 changed the value to be saved for later reference.  When the
 histogram is displayed, additional fields displaying the saved
 values will be printed.</p>
 </li>
-<li><p>onchange(var).snapshot()</p>
-<p>The ‘onchange(var).snapshot()’ hist trigger action is invoked
+<li><p>onchange(var).<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">snapshot()</span></code></p>
+<p>The ‘onchange(var).<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">snapshot()</span></code>’ hist trigger action is invoked
 whenever the value of ‘var’ associated with a histogram entry
 changes.</p>
 <p>The end result is that a global snapshot of the trace buffer will
@@ -2622,7 +2622,7 @@ Totals:
 </div>
 <p>In the above case, the event that triggered the snapshot has the
 key with dport == 80.  If you look at the bucket that has 80 as
-the key, you’ll find the additional values save()’d along with the
+the key, you’ll find the additional values <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">save()</span></code>’d along with the
 changed value for that bucket, which should be the same as the
 global changed value (since that was the same value that triggered
 the global snapshot).</p>

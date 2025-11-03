@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -299,7 +299,7 @@ giving an <em class="manpage">fxyzzy(3)</em> operation for free:</p>
 - xyzzyat(fd, &quot;&quot;, ..., AT_EMPTY_PATH) is equivalent to fxyzzy(fd, ...)
 </pre></div>
 </div>
-<p>(For more details on the rationale of the *at() calls, see the
+<p>(For more details on the rationale of the *<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">at()</span></code> calls, see the
 <em class="manpage">openat(2)</em> man page; for an example of AT_EMPTY_PATH, see the
 <em class="manpage">fstatat(2)</em> man page.)</p>
 <p>If your new <em class="manpage">xyzzy(2)</em> system call involves a parameter describing an
@@ -475,10 +475,10 @@ is:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>a pointer to a pointer</p></li>
-<li><p>a pointer to a struct containing a pointer (e.g. <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">iovec</span> <span class="pre">__user</span> <span class="pre">*</span></code>)</p></li>
+<li><p>a pointer to a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">containing</span></code> a pointer (e.g. <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">iovec</span> <span class="pre">__user</span> <span class="pre">*</span></code>)</p></li>
 <li><p>a pointer to a varying sized integral type (<code class="docutils literal notranslate"><span class="pre">time_t</span></code>, <code class="docutils literal notranslate"><span class="pre">off_t</span></code>,
 <code class="docutils literal notranslate"><span class="pre">long</span></code>, ...)</p></li>
-<li><p>a pointer to a struct containing a varying sized integral type.</p></li>
+<li><p>a pointer to a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">containing</span></code> a varying sized integral type.</p></li>
 </ul>
 </div></blockquote>
 <p>The second situation that requires a compatibility layer is if one of the
@@ -518,7 +518,7 @@ parse the arguments from a 32-bit invocation.</p>
 };
 </pre></div>
 </div>
-<p>in struct xyzzy_args, then struct compat_xyzzy_args would have:</p>
+<p>in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">xyzzy_args</span></code>, then <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">compat_xyzzy_args</span></code> would have:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct compat_xyzzy_args {
     compat_uptr_t ptr;
     compat_long_t varying_val;
@@ -539,7 +539,7 @@ __SC_COMP(__NR_xyzzy, sys_xyzzy, compat_sys_xyzzy)
 <div><ul class="simple">
 <li><p>a <code class="docutils literal notranslate"><span class="pre">COMPAT_SYSCALL_DEFINEn(xyzzy,</span> <span class="pre">...)</span></code> for the compat entry point</p></li>
 <li><p>corresponding prototype in <code class="docutils literal notranslate"><span class="pre">include/linux/compat.h</span></code></p></li>
-<li><p>(if needed) 32-bit mapping struct in <code class="docutils literal notranslate"><span class="pre">include/linux/compat.h</span></code></p></li>
+<li><p>(if needed) 32-bit mapping <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">in</span></code> <code class="docutils literal notranslate"><span class="pre">include/linux/compat.h</span></code></p></li>
 <li><p>instance of <code class="docutils literal notranslate"><span class="pre">__SC_COMP</span></code> not <code class="docutils literal notranslate"><span class="pre">__SYSCALL</span></code> in
 <code class="docutils literal notranslate"><span class="pre">include/uapi/asm-generic/unistd.h</span></code></p></li>
 </ul>
@@ -562,7 +562,7 @@ hit the compat entry point:</p>
 <li><p>corresponding prototype in <code class="docutils literal notranslate"><span class="pre">include/linux/compat.h</span></code></p></li>
 <li><p>modification of the entry in <code class="docutils literal notranslate"><span class="pre">scripts/syscall.tbl</span></code> to include an extra
 “compat” column</p></li>
-<li><p>(if needed) 32-bit mapping struct in <code class="docutils literal notranslate"><span class="pre">include/linux/compat.h</span></code></p></li>
+<li><p>(if needed) 32-bit mapping <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">in</span></code> <code class="docutils literal notranslate"><span class="pre">include/linux/compat.h</span></code></p></li>
 </ul>
 </div></blockquote>
 <section id="compatibility-system-calls-arm64">

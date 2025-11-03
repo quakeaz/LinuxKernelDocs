@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -215,7 +215,7 @@ in attesa del lock.  Gli spinlock agiscono come barriere di sincronizzazione
 - sono stati esplicitamente scritti per agire così - il che significa che gli
 accessi al dato condiviso non saranno ottimizzati.  Quindi il compilatore
 potrebbe pensare di sapere cosa ci sarà nel dato condiviso ma la chiamata
-spin_lock(), che agisce come una barriera di sincronizzazione, gli imporrà di
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock()</span></code>, che agisce come una barriera di sincronizzazione, gli imporrà di
 dimenticarsi tutto ciò che sapeva su di esso.</p>
 <p>Se il dato condiviso fosse stato dichiarato come <em>volatile</em>, la
 sincronizzazione rimarrebbe comunque necessaria.  Ma verrà impedito al
@@ -240,7 +240,7 @@ di una variabile.  Il modo giusto di fare questo tipo di attesa è il seguente:<
     cpu_relax();
 </pre></div>
 </div>
-<p>La chiamata cpu_relax() può ridurre il consumo di energia del processore
+<p>La chiamata <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpu_relax()</span></code> può ridurre il consumo di energia del processore
 o cedere il passo ad un processore hyperthreaded gemello; funziona anche come
 una barriera per il compilatore, quindi, ancora una volta, <em>volatile</em> non è
 necessario.  Ovviamente, tanto per puntualizzare, le attese attive sono

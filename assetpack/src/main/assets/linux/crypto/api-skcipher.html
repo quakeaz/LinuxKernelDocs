@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -165,7 +165,7 @@
 <section id="block-cipher-algorithm-definitions">
 <h1>Block Cipher Algorithm Definitions<a class="headerlink" href="#block-cipher-algorithm-definitions" title="Link to this heading">¶</a></h1>
 <p>These data structures define modular crypto algorithm implementations,
-managed via crypto_register_alg() and crypto_unregister_alg().</p>
+managed via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">crypto_register_alg()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">crypto_unregister_alg()</span></code>.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.cipher_alg">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cipher_alg</span></span></span><a class="headerlink" href="#c.cipher_alg" title="Link to this definition">¶</a><br /></dt>
@@ -327,13 +327,13 @@ name of the chip or provider and the name of the
 transformation algorithm.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">cra_type</span></code></dt><dd><p>Type of the cryptographic transformation. This is a pointer to
-struct crypto_type, which implements callbacks common for all
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">crypto_type</span></code>, which implements callbacks common for all
 transformation types. There are multiple options, such as
 <code class="xref c c-type docutils literal notranslate"><span class="pre">crypto_skcipher_type</span></code>, <code class="xref c c-type docutils literal notranslate"><span class="pre">crypto_ahash_type</span></code>, <code class="xref c c-type docutils literal notranslate"><span class="pre">crypto_rng_type</span></code>.
 This field might be empty. In that case, there are no common
 callbacks. This is the case for: cipher.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">cra_u</span></code></dt><dd><p>Callbacks implementing the transformation. This is a union of
+<dt><code class="docutils literal notranslate"><span class="pre">cra_u</span></code></dt><dd><p>Callbacks implementing the transformation. This is a <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">of</span></code>
 multiple structures. Depending on the type of transformation selected
 by <strong>cra_type</strong> and <strong>cra_flags</strong> above, the associated structure must be
 filled with callbacks. This field might be empty. This is the case
@@ -399,14 +399,12 @@ skcipher cipher</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Allocate a cipher handle for an skcipher. The returned struct
-crypto_skcipher is the cipher handle that is required for any subsequent
+<p>Allocate a cipher handle for an skcipher. The returned <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">crypto_skcipher</span></code> is the cipher handle that is required for any subsequent
 API invocation for that skcipher.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>allocated cipher handle in case of success; IS_ERR() is true in case</dt><dd><p>of an error, <a class="reference internal" href="../core-api/kernel-api.html#c.PTR_ERR" title="PTR_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">PTR_ERR()</span></code></a> returns the error code.</p>
-</dd>
-</dl>
+<p>allocated cipher handle in case of success; <a class="reference internal" href="../core-api/kernel-api.html#c.IS_ERR" title="IS_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">IS_ERR()</span></code></a> is true in case
+of an error, <a class="reference internal" href="../core-api/kernel-api.html#c.PTR_ERR" title="PTR_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">PTR_ERR()</span></code></a> returns the error code.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.crypto_free_skcipher">
@@ -441,10 +439,8 @@ skcipher</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>true when the skcipher is known to the kernel crypto API; false</dt><dd><p>otherwise</p>
-</dd>
-</dl>
+<p>true when the skcipher is known to the kernel crypto API; false
+otherwise</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.crypto_skcipher_ivsize">
@@ -739,14 +735,12 @@ single block cipher</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Allocate a cipher handle for a single block cipher. The returned struct
-crypto_cipher is the cipher handle that is required for any subsequent API
+<p>Allocate a cipher handle for a single block cipher. The returned <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">crypto_cipher</span></code> is the cipher handle that is required for any subsequent API
 invocation for that single block cipher.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>allocated cipher handle in case of success; IS_ERR() is true in case</dt><dd><p>of an error, <a class="reference internal" href="../core-api/kernel-api.html#c.PTR_ERR" title="PTR_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">PTR_ERR()</span></code></a> returns the error code.</p>
-</dd>
-</dl>
+<p>allocated cipher handle in case of success; <a class="reference internal" href="../core-api/kernel-api.html#c.IS_ERR" title="IS_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">IS_ERR()</span></code></a> is true in case
+of an error, <a class="reference internal" href="../core-api/kernel-api.html#c.PTR_ERR" title="PTR_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">PTR_ERR()</span></code></a> returns the error code.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.crypto_free_cipher">
@@ -779,10 +773,8 @@ single block cipher</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>true when the single block cipher is known to the kernel crypto API;</dt><dd><p>false otherwise</p>
-</dd>
-</dl>
+<p>true when the single block cipher is known to the kernel crypto API;
+false otherwise</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.crypto_cipher_blocksize">

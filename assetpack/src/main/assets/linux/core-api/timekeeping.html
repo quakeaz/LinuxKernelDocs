@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -90,6 +90,7 @@
 <li class="toctree-l3"><a class="reference internal" href="union_find.html">Union-Find in Linux</a></li>
 <li class="toctree-l3"><a class="reference internal" href="min_heap.html">Min Heap API</a></li>
 <li class="toctree-l3"><a class="reference internal" href="parser.html">Generic parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="list.html">Linked Lists in Linux</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#low-level-entry-and-exit">Low level entry and exit</a></li>
@@ -196,11 +197,11 @@ with other machines across a suspend operation.</p>
 <span class="n"><span class="pre">ktime_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ktime_get_real</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ktime_get_real" title="Link to this definition">¶</a><br /></dt>
 <dd><p>CLOCK_REALTIME</p>
 <p>Returns the time in relative to the UNIX epoch starting in 1970
-using the Coordinated Universal Time (UTC), same as gettimeofday()
+using the Coordinated Universal Time (UTC), same as <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">gettimeofday()</span></code>
 user space. This is used for all timestamps that need to
 persist across a reboot, like inode times, but should be avoided
 for internal uses, since it can jump backwards due to a leap
-second update, NTP adjustment settimeofday() operation from user
+second update, NTP adjustment <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">settimeofday()</span></code> operation from user
 space.</p>
 </dd></dl>
 
@@ -256,7 +257,7 @@ more convenient for some callers.</p>
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ktime_get_clocktai_ts64</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">timespec64</span></span><span class="p"><span class="pre">*</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ktime_get_clocktai_ts64" title="Link to this definition">¶</a><br /></dt>
 <dt class="sig sig-object c" id="c.ktime_get_raw_ts64">
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ktime_get_raw_ts64</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">timespec64</span></span><span class="p"><span class="pre">*</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ktime_get_raw_ts64" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Same above, but returns the time in a ‘struct timespec64’, split
+<dd><p>Same above, but returns the time in a ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">timespec64</span></code>’, split
 into seconds and nanoseconds. This can avoid an extra division
 when printing the time, or when passing it into an external
 interface that expects a ‘timespec’ or ‘timeval’ structure.</p>
@@ -353,7 +354,7 @@ since the time is allowed to jump under certain conditions.</p>
 <h2>Deprecated time interfaces<a class="headerlink" href="#deprecated-time-interfaces" title="Link to this heading">¶</a></h2>
 <p>Older kernels used some other interfaces that are now being phased out
 but may appear in third-party drivers being ported here. In particular,
-all interfaces returning a ‘struct timeval’ or ‘struct timespec’ have
+all interfaces returning a ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">timeval</span></code>’ or ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">timespec</span></code>’ have
 been replaced because the tv_sec member overflows in year 2038 on 32-bit
 architectures. These are the recommended replacements:</p>
 <dl class="c function">

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -230,7 +230,7 @@ not be freed until both the parent (original) process and its child have
 put their references to the VM’s file descriptor.</p>
 <p>Because a VM’s resources are not freed until the last reference to its
 file descriptor is released, creating additional references to a VM
-via fork(), dup(), etc... without careful consideration is strongly
+via fork(), <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dup()</span></code>, etc... without careful consideration is strongly
 discouraged and may have unwanted side effects, e.g. memory allocated
 by and on behalf of the VM’s process may not be freed/unaccounted when
 the VM is shut down.</p>
@@ -387,7 +387,7 @@ host physical address translations).</p>
 <dd class="field-odd"><p>system ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_msr_list (in/out)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_msr_list</span></code> (in/out)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success; -1 on error</p>
@@ -552,7 +552,7 @@ cpu’s hardware control block.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_dirty_log (in/out)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_dirty_log</span></code> (in/out)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -625,8 +625,8 @@ KVM_CAP_ARM_NISV_TO_USER not enabled (arm64)</p></td>
 <p>This ioctl is used to run a guest virtual cpu.  While there are no
 explicit parameters, there is an implicit parameter block that can be
 obtained by mmap()ing the vcpu fd at offset 0, with the size given by
-KVM_GET_VCPU_MMAP_SIZE.  The parameter block is formatted as a ‘struct
-kvm_run’ (see below).</p>
+KVM_GET_VCPU_MMAP_SIZE.  The parameter block is formatted as a ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">kvm_run</span></code>’ (see below).</p>
 </section>
 <section id="kvm-get-regs">
 <h3>4.11 KVM_GET_REGS<a class="headerlink" href="#kvm-get-regs" title="Link to this heading">¶</a></h3>
@@ -641,7 +641,7 @@ kvm_run’ (see below).</p>
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_regs (out)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_regs</span></code> (out)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -689,7 +689,7 @@ struct kvm_regs {
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_regs (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_regs</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -711,7 +711,7 @@ struct kvm_regs {
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_sregs (out)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_sregs</span></code> (out)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -749,7 +749,7 @@ but not yet injected into the cpu core.</p>
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_sregs (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_sregs</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -771,7 +771,7 @@ data structures.</p>
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_translation (in/out)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_translation</span></code> (in/out)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -806,7 +806,7 @@ translation mode.</p>
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_interrupt (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_interrupt</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, negative on failure.</p>
@@ -913,7 +913,7 @@ interrupt number dequeues the interrupt.</p>
 <dd class="field-odd"><p>system ioctl, vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_msrs (in/out)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_msrs</span></code> (in/out)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>number of msrs successfully returned;
@@ -959,7 +959,7 @@ kvm will fill in the ‘data’ member.</p>
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_msrs (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_msrs</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>number of msrs successfully set (see below), -1 on error</p>
@@ -988,7 +988,7 @@ MSRs that have been set successfully.</p>
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_cpuid (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_cpuid</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -1039,7 +1039,7 @@ struct kvm_cpuid {
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_signal_mask (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_signal_mask</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -1072,7 +1072,7 @@ struct kvm_signal_mask {
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_fpu (out)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_fpu</span></code> (out)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -1118,7 +1118,7 @@ struct kvm_fpu {
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_fpu (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_fpu</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -1194,7 +1194,7 @@ before KVM_CREATE_IRQCHIP can be used.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_irq_level</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_irq_level</span></code></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -1205,7 +1205,7 @@ On some architectures it is required that an interrupt controller model has
 been previously created with KVM_CREATE_IRQCHIP.  Note that edge-triggered
 interrupts require the level to be set to 1 and then back to 0.</p>
 <p>On real hardware, interrupt pins can be active-low or active-high.  This
-does not matter for the level field of struct kvm_irq_level: 1 always
+does not matter for the level field of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_irq_level</span></code>: 1 always
 means active (asserted), 0 means inactive (deasserted).</p>
 <p>x86 allows the operating system to program the interrupt polarity
 (active-low/active-high) for level-triggered interrupts, and KVM used
@@ -1273,7 +1273,7 @@ be used for a userspace interrupt controller.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_irqchip (in/out)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_irqchip</span></code> (in/out)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -1306,7 +1306,7 @@ KVM_CREATE_IRQCHIP into a buffer provided by the caller.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_irqchip (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_irqchip</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -1339,7 +1339,7 @@ KVM_CREATE_IRQCHIP from a buffer provided by the caller.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_xen_hvm_config (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_xen_hvm_config</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -1378,7 +1378,7 @@ such as intercepting the SCHEDOP_poll hypercall to accelerate PV
 spinlock operation for the guest. Userspace may still use the ioctl
 to deliver events if it was advertised, even if userspace does not
 send this indication that it will always do so</p>
-<p>No other flags are currently valid in the struct kvm_xen_hvm_config.</p>
+<p>No other flags are currently valid in the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_xen_hvm_config</span></code>.</p>
 </section>
 <section id="kvm-get-clock">
 <h3>4.29 KVM_GET_CLOCK<a class="headerlink" href="#kvm-get-clock" title="Link to this heading">¶</a></h3>
@@ -1393,7 +1393,7 @@ send this indication that it will always do so</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_clock_data (out)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_clock_data</span></code> (out)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -1403,7 +1403,7 @@ send this indication that it will always do so</p>
 conjunction with KVM_SET_CLOCK, it is used to ensure monotonicity on scenarios
 such as migration.</p>
 <p>When KVM_CAP_ADJUST_CLOCK is passed to KVM_CHECK_EXTENSION, it returns the
-set of bits that KVM can return in struct kvm_clock_data’s flag member.</p>
+set of bits that KVM can return in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_clock_data</span></code>’s flag member.</p>
 <p>The following flags are defined:</p>
 <dl class="simple">
 <dt>KVM_CLOCK_TSC_STABLE</dt><dd><p>If set, the returned value is the exact kvmclock
@@ -1448,7 +1448,7 @@ does not contain a value.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_clock_data (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_clock_data</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -1493,7 +1493,7 @@ kvmclock value that will be provided to guests.</p>
 <dd class="field-even"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p>struct kvm_vcpu_events (out)</p>
+<dd class="field-odd"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_vcpu_events</span></code> (out)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>0 on success, -1 on error</p>
@@ -1562,7 +1562,7 @@ pending until the guest takes the exception by unmasking PSTATE.A.</p>
 causes an SError to become pending. The event’s description is only valid while
 the VPCU is not running.</p>
 <p>This API provides a way to read and write the pending ‘event’ state that is not
-visible to the guest. To save, restore or migrate a VCPU the struct representing
+visible to the guest. To save, restore or migrate a VCPU the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">representing</span></code>
 the state can be read then written using this GET/SET API, along with the other
 guest-visible registers. It is not possible to ‘cancel’ an SError that has been
 made pending.</p>
@@ -1616,7 +1616,7 @@ directly to the virtual CPU).</p>
 <dd class="field-even"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p>struct kvm_vcpu_events (in)</p>
+<dd class="field-odd"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_vcpu_events</span></code> (in)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>0 on success, -1 on error</p>
@@ -1688,7 +1688,7 @@ exceptions by manipulating individual registers using the KVM_SET_ONE_REG API.</
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_debugregs (out)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_debugregs</span></code> (out)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -1718,7 +1718,7 @@ exceptions by manipulating individual registers using the KVM_SET_ONE_REG API.</
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_debugregs (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_debugregs</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -1741,7 +1741,7 @@ yet and must be cleared on entry.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_userspace_memory_region (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_userspace_memory_region</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -1850,7 +1850,7 @@ documentation when it pops into existence).</p>
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_enable_cap (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_enable_cap</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success; -1 on error</p>
@@ -1865,7 +1865,7 @@ documentation when it pops into existence).</p>
 <dd class="field-even"><p>vm ioctl</p>
 </dd>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p>struct kvm_enable_cap (in)</p>
+<dd class="field-odd"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_enable_cap</span></code> (in)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>0 on success; -1 on error</p>
@@ -1915,7 +1915,7 @@ for vm-wide capabilities.</p>
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_mp_state (out)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_mp_state</span></code> (out)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success; -1 on error</p>
@@ -2021,7 +2021,7 @@ whether the vcpu is runnable.</p>
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_mp_state (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_mp_state</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success; -1 on error</p>
@@ -2108,7 +2108,7 @@ otherwise it will return EBUSY error.</p>
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_xsave (out)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_xsave</span></code> (out)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -2120,7 +2120,7 @@ otherwise it will return EBUSY error.</p>
 };
 </pre></div>
 </div>
-<p>This ioctl would copy current vcpu’s xsave struct to the userspace.</p>
+<p>This ioctl would copy current vcpu’s xsave <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">to</span></code> the userspace.</p>
 </section>
 <section id="kvm-set-xsave">
 <h3>4.43 KVM_SET_XSAVE<a class="headerlink" href="#kvm-set-xsave" title="Link to this heading">¶</a></h3>
@@ -2135,7 +2135,7 @@ otherwise it will return EBUSY error.</p>
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_xsave (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_xsave</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -2147,13 +2147,13 @@ otherwise it will return EBUSY error.</p>
 };
 </pre></div>
 </div>
-<p>This ioctl would copy userspace’s xsave struct to the kernel. It copies
+<p>This ioctl would copy userspace’s xsave <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">to</span></code> the kernel. It copies
 as many bytes as are returned by KVM_CHECK_EXTENSION(KVM_CAP_XSAVE2),
 when invoked on the vm file descriptor. The size value returned by
 KVM_CHECK_EXTENSION(KVM_CAP_XSAVE2) will always be at least 4096.
 Currently, it is only greater than 4096 if a dynamic feature has been
 enabled with <code class="docutils literal notranslate"><span class="pre">arch_prctl()</span></code>, but this may change in the future.</p>
-<p>The offsets of the state save areas in struct kvm_xsave follow the
+<p>The offsets of the state save areas in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_xsave</span></code> follow the
 contents of CPUID leaf 0xD on the host.</p>
 </section>
 <section id="kvm-get-xcrs">
@@ -2169,7 +2169,7 @@ contents of CPUID leaf 0xD on the host.</p>
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_xcrs (out)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_xcrs</span></code> (out)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -2204,7 +2204,7 @@ struct kvm_xcrs {
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_xcrs (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_xcrs</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -2239,7 +2239,7 @@ struct kvm_xcrs {
 <dd class="field-odd"><p>system ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_cpuid2 (in/out)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_cpuid2</span></code> (in/out)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -2341,7 +2341,7 @@ emulating x2APIC in userspace.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_ppc_pvinfo (out)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_ppc_pvinfo</span></code> (out)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, !0 on error</p>
@@ -2378,7 +2378,7 @@ additional piece of information will be set in the flags bitmap.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_irq_routing (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_irq_routing</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -2504,7 +2504,7 @@ the future.</p>
 frequency is KHz.</p>
 <p>If the KVM_CAP_VM_TSC_CONTROL capability is advertised, this can also
 be used as a vm ioctl to set the initial tsc frequency of subsequently
-created vCPUs.</p>
+created vCPUs.  Note, the vm ioctl is only allowed prior to creating vCPUs.</p>
 <p>For TSC protected Confidential Computing (CoCo) VMs where TSC frequency
 is configured once at VM scope and remains unchanged during VM’s
 lifetime, the vm ioctl should be used to configure the TSC frequency
@@ -2547,7 +2547,7 @@ error.</p>
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_lapic_state (out)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_lapic_state</span></code> (out)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -2566,9 +2566,9 @@ enabled, then the format of APIC_ID register depends on the APIC mode
 (reported by MSR_IA32_APICBASE) of its VCPU.  x2APIC stores APIC ID in
 the APIC_ID register (bytes 32-35).  xAPIC only allows an 8-bit APIC ID
 which is stored in bits 31-24 of the APIC register, or equivalently in
-byte 35 of struct kvm_lapic_state’s regs field.  KVM_GET_LAPIC must then
+byte 35 of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_lapic_state</span></code>’s regs field.  KVM_GET_LAPIC must then
 be called after MSR_IA32_APICBASE has been set with KVM_SET_MSR.</p>
-<p>If KVM_X2APIC_API_USE_32BIT_IDS feature is disabled, struct kvm_lapic_state
+<p>If KVM_X2APIC_API_USE_32BIT_IDS feature is disabled, <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_lapic_state</span></code>
 always uses xAPIC format.</p>
 </section>
 <section id="kvm-set-lapic">
@@ -2584,7 +2584,7 @@ always uses xAPIC format.</p>
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_lapic_state (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_lapic_state</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -2598,7 +2598,7 @@ struct kvm_lapic_state {
 </div>
 <p>Copies the input argument into the Local APIC registers.  The data format
 and layout are the same as documented in the architecture manual.</p>
-<p>The format of the APIC ID register (bytes 32-35 of struct kvm_lapic_state’s
+<p>The format of the APIC ID register (bytes 32-35 of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_lapic_state</span></code>’s
 regs field) depends on the state of the KVM_CAP_X2APIC_API capability.
 See the note in KVM_GET_LAPIC.</p>
 </section>
@@ -2615,7 +2615,7 @@ See the note in KVM_GET_LAPIC.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_ioeventfd (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_ioeventfd</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, !0 on error</p>
@@ -2645,7 +2645,7 @@ to a subchannel/virtqueue tuple instead.</p>
 </pre></div>
 </div>
 <p>If datamatch flag is set, the event will be signaled only if the written value
-to the registered address is equal to datamatch in struct kvm_ioeventfd.</p>
+to the registered address is equal to datamatch in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_ioeventfd</span></code>.</p>
 <p>For virtio-ccw devices, addr contains the subchannel id and datamatch the
 virtqueue index.</p>
 <p>With KVM_CAP_IOEVENTFD_ANY_LENGTH, a zero length ioeventfd is allowed, and
@@ -2666,7 +2666,7 @@ work anyway.</p>
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_dirty_tlb (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_dirty_tlb</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -2706,7 +2706,7 @@ be set to the number of set bits in the bitmap.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_create_spapr_tce (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_create_spapr_tce</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>file descriptor for manipulating the created TCE table</p>
@@ -2787,7 +2787,7 @@ debugging.</p>
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_s390_ucas_mapping (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_s390_ucas_mapping</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 in case of success</p>
@@ -2818,7 +2818,7 @@ be aligned by 1 megabyte.</p>
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_s390_ucas_mapping (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_s390_ucas_mapping</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 in case of success</p>
@@ -2876,7 +2876,7 @@ prior to calling the KVM_RUN ioctl.</p>
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_one_reg (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_one_reg</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, negative value on failure</p>
@@ -2912,7 +2912,7 @@ code being returned in a specific situation.)</p>
 </pre></div>
 </div>
 <p>Using this ioctl, a single vcpu register can be set to a specific value
-defined by user space with the passed in struct kvm_one_reg, where id
+defined by user space with the passed in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_one_reg</span></code>, where id
 refers to the register identifier as described below and addr is a pointer
 to a variable with the respective size. There can be architecture agnostic
 and architecture specific registers. Each have their own range of operation
@@ -3987,7 +3987,7 @@ id bit patterns depending on the size of the register being accessed. They are
 always accessed according to the current guest FPU mode (Status.FR and
 Config5.FRE), i.e. as the guest would see them, and they become unpredictable
 if the guest FPU mode is changed. MIPS SIMD Architecture (MSA) vector
-registers (see KVM_REG_MIPS_VEC_128() above) have similar patterns as they
+registers (see <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">KVM_REG_MIPS_VEC_128()</span></code> above) have similar patterns as they
 overlap the FPU registers:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>0x7020 0000 0003 00 &lt;0:3&gt; &lt;reg:5&gt; (32-bit FPU registers)
 0x7030 0000 0003 00 &lt;0:3&gt; &lt;reg:5&gt; (64-bit FPU registers)
@@ -4355,7 +4355,7 @@ such as set vcpu counter or reset vcpu, and they have the following id bit patte
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_one_reg (in and out)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_one_reg</span></code> (in and out)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, negative value on failure</p>
@@ -4382,7 +4382,7 @@ protected virtualization mode on s390</p></td>
 code being returned in a specific situation.)</p>
 <p>This ioctl allows to receive the value of a single register implemented
 in a vcpu. The register to read is indicated by the “id” field of the
-kvm_one_reg struct passed in. On success, the register value can be found
+kvm_one_reg <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">passed</span></code> in. On success, the register value can be found
 at the memory location pointed to by “addr”.</p>
 <p>The list of registers accessible using this interface is identical to the
 list in 4.68.</p>
@@ -4432,7 +4432,7 @@ after pausing the vcpu, but before it is resumed.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_msi (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_msi</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>&gt;0 on delivery, 0 if guest blocked the MSI, and -1 on error</p>
@@ -4478,7 +4478,7 @@ address_hi must be zero.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_pit_config (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_pit_config</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -4519,7 +4519,7 @@ this thread may have to be adjusted accordingly.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_pit_state2 (out)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_pit_state2</span></code> (out)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -4556,14 +4556,14 @@ KVM_CREATE_PIT2. The state is returned in the following structure:</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_pit_state2 (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_pit_state2</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
 </dd>
 </dl>
 <p>Sets the state of the in-kernel PIT model. Only valid after KVM_CREATE_PIT2.
-See KVM_GET_PIT2 for details on struct kvm_pit_state2.</p>
+See KVM_GET_PIT2 for details on <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_pit_state2</span></code>.</p>
 <p>This IOCTL replaces the obsolete KVM_SET_PIT.</p>
 </section>
 <section id="kvm-ppc-get-smmu-info">
@@ -4669,7 +4669,7 @@ into the hash PTE second double word).</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_irqfd (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_irqfd</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -4760,7 +4760,7 @@ HPTEs on the next KVM_RUN of any vcpu.</p>
 <dd class="field-odd"><p>vm ioctl, vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_s390_interrupt (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_s390_interrupt</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -4848,7 +4848,7 @@ supported by this ioctl)</p></li>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>Pointer to struct kvm_get_htab_fd (in)</p>
+<dd class="field-even"><p>Pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_get_htab_fd</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>file descriptor number (&gt;= 0) on success, -1 on error</p>
@@ -4858,7 +4858,7 @@ supported by this ioctl)</p></li>
 entries in the guest’s hashed page table (HPT), or to write entries to
 initialize the HPT.  The returned fd can only be written to if the
 KVM_GET_HTAB_WRITE bit is set in the flags field of the argument, and
-can only be read if that bit is clear.  The argument struct looks like
+can only be read if that bit is clear.  The argument <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">looks</span></code> like
 this:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>/* For KVM_PPC_GET_HTAB_FD */
 struct kvm_get_htab_fd {
@@ -4911,7 +4911,7 @@ valid entries found.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_create_device (in/out)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_create_device</span></code> (in/out)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -4964,7 +4964,7 @@ KVM_CAP_SYS_ATTRIBUTES for system (/dev/kvm) device (no set)</p>
 <dd class="field-odd"><p>device ioctl, vm ioctl, vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_device_attr</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_device_attr</span></code></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -5012,7 +5012,7 @@ KVM_CAP_SYS_ATTRIBUTES for system (/dev/kvm) device</p>
 <dd class="field-even"><p>device ioctl, vm ioctl, vcpu ioctl</p>
 </dd>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p>struct kvm_device_attr</p>
+<dd class="field-odd"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_device_attr</span></code></p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>0 on success, -1 on error</p>
@@ -5047,7 +5047,7 @@ current state.  “addr” is ignored.</p>
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_vcpu_init (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_vcpu_init</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success; -1 on error</p>
@@ -5144,7 +5144,7 @@ vector lengths possible for a vcpu on this host.</p></li>
 <li><p>KVM_RUN and KVM_GET_REG_LIST are not available;</p></li>
 <li><p>KVM_GET_ONE_REG and KVM_SET_ONE_REG cannot be used to access
 the scalable architectural SVE registers
-KVM_REG_ARM64_SVE_ZREG(), KVM_REG_ARM64_SVE_PREG() or
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">KVM_REG_ARM64_SVE_ZREG()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">KVM_REG_ARM64_SVE_PREG()</span></code> or
 KVM_REG_ARM64_SVE_FFR;</p></li>
 <li><p>KVM_REG_ARM64_SVE_VLS may optionally be written using
 KVM_SET_ONE_REG, to modify the set of vector lengths available
@@ -5188,7 +5188,7 @@ KVM_ARM_VCPU_HAS_EL2 must also be set.</p></li>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_vcpu_init (out)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_vcpu_init</span></code> (out)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success; -1 on error</p>
@@ -5206,13 +5206,13 @@ KVM_ARM_VCPU_HAS_EL2 must also be set.</p></li>
 </div></blockquote>
 <p>This queries KVM for preferred CPU target type which can be emulated
 by KVM on underlying host.</p>
-<p>The ioctl returns struct kvm_vcpu_init instance containing information
+<p>The ioctl returns <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_vcpu_init</span></code> instance containing information
 about preferred CPU target type and recommended features for it.  The
 kvm_vcpu_init-&gt;features bitmap returned will have feature bits set if
 the preferred target recommends setting these features, but this is
 not mandatory.</p>
 <p>The information returned by this ioctl can be used to prepare an instance
-of struct kvm_vcpu_init for KVM_ARM_VCPU_INIT ioctl which will result in
+of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_vcpu_init</span></code> for KVM_ARM_VCPU_INIT ioctl which will result in
 VCPU matching underlying host.</p>
 </section>
 <section id="kvm-get-reg-list">
@@ -5228,7 +5228,7 @@ VCPU matching underlying host.</p>
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_reg_list (in/out)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_reg_list</span></code> (in/out)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success; -1 on error</p>
@@ -5280,7 +5280,7 @@ KVM_GET_ONE_REG/KVM_SET_ONE_REG calls.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_arm_device_address (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_arm_device_address</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -5347,7 +5347,7 @@ should be used instead.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_rtas_token_args</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_rtas_token_args</span></code></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -5355,7 +5355,7 @@ should be used instead.</p>
 </dl>
 <p>Defines a token value for a RTAS (Run Time Abstraction Services)
 service in order to allow it to be handled in the kernel.  The
-argument struct gives the name of the service, which must be the name
+argument <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">gives</span></code> the name of the service, which must be the name
 of a service that has a kernel-side implementation.  If the token
 value is non-zero, it will be associated with that service, and
 subsequent RTAS calls by the guest specifying that token will be
@@ -5377,7 +5377,7 @@ handled.</p>
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_guest_debug (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_guest_debug</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success; -1 on error</p>
@@ -5446,7 +5446,7 @@ structure containing architecture specific debug information.</p>
 <dd class="field-odd"><p>system ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_cpuid2 (in/out)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_cpuid2</span></code> (in/out)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -5532,7 +5532,7 @@ this function/index combination</p>
 <dd class="field-odd"><p>vm ioctl, vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_s390_mem_op (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_s390_mem_op</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>= 0 on success,
@@ -5688,7 +5688,7 @@ SIDA accesses are permitted for protected guests only.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_s390_skeys</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_s390_skeys</span></code></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, KVM_S390_GET_SKEYS_NONE if guest is not using storage
@@ -5728,7 +5728,7 @@ bytes. This buffer will be filled with storage key data by the ioctl.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_s390_skeys</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_s390_skeys</span></code></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, negative value on error</p>
@@ -5736,7 +5736,7 @@ bytes. This buffer will be filled with storage key data by the ioctl.</p>
 </dl>
 <p>This ioctl is used to set guest storage key values on the s390
 architecture. The ioctl takes parameters via the kvm_s390_skeys struct.
-See section on KVM_S390_GET_SKEYS for struct definition.</p>
+See section on KVM_S390_GET_SKEYS for <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">definition</span></code>.</p>
 <p>The start_gfn field is the number of the first guest frame whose storage keys
 you want to set.</p>
 <p>The count field is the number of consecutive frames (starting from start_gfn)
@@ -5762,7 +5762,7 @@ the ioctl will return -EINVAL.</p>
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_s390_irq (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_s390_irq</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -5788,7 +5788,7 @@ is already pending</p></td>
 </table>
 </div></blockquote>
 <p>Allows to inject an interrupt to the guest.</p>
-<p>Using struct kvm_s390_irq as a parameter allows
+<p>Using <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_s390_irq</span></code> as a parameter allows
 to inject additional payload which is not
 possible via KVM_S390_INTERRUPT.</p>
 <p>Interrupt parameters are passed via kvm_s390_irq:</p>
@@ -5835,7 +5835,7 @@ possible via KVM_S390_INTERRUPT.</p>
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_s390_irq_state (out)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_s390_irq_state</span></code> (out)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>&gt;= number of bytes copied into buffer,
@@ -5856,8 +5856,8 @@ userspace buffer and its length:</p>
 };
 </pre></div>
 </div>
-<p>Userspace passes in the above struct and for each pending interrupt a
-struct kvm_s390_irq is copied to the provided buffer.</p>
+<p>Userspace passes in the above <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">and</span></code> for each pending interrupt a
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_s390_irq</span></code> is copied to the provided buffer.</p>
 <p>The structure contains a flags and a reserved field for future extensions. As
 the kernel never checked for flags == 0 and QEMU never pre-zeroed flags and
 reserved, these fields can not be used in the future without breaking
@@ -5878,7 +5878,7 @@ may retry with a bigger buffer.</p>
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_s390_irq_state (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_s390_irq_state</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success,
@@ -5892,7 +5892,7 @@ interrupt. See KVM_S390_IRQ.</p>
 <p>This ioctl allows userspace to set the complete state of all cpu-local
 interrupts currently pending for the vcpu. It is intended for restoring
 interrupt state after a migration. The input parameter is a userspace buffer
-containing a struct kvm_s390_irq_state:</p>
+containing a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_s390_irq_state</span></code>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct kvm_s390_irq_state {
       __u64 buf;
       __u32 flags;        /* will stay unused for compatibility reasons */
@@ -5903,12 +5903,12 @@ containing a struct kvm_s390_irq_state:</p>
 </div>
 <p>The restrictions for flags and reserved apply as well.
 (see KVM_S390_GET_IRQ_STATE)</p>
-<p>The userspace memory referenced by buf contains a struct kvm_s390_irq
+<p>The userspace memory referenced by buf contains a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_s390_irq</span></code>
 for each interrupt to be injected into the guest.
 If one of the interrupts could not be injected for some reason the
 ioctl aborts.</p>
-<p>len must be a multiple of sizeof(struct kvm_s390_irq). It must be &gt; 0
-and it must not exceed (max_vcpus + 32) * sizeof(struct kvm_s390_irq),
+<p>len must be a multiple of sizeof(<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_s390_irq</span></code>). It must be &gt; 0
+and it must not exceed (max_vcpus + 32) * sizeof(<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_s390_irq</span></code>),
 which is the maximum number of possibly pending cpu-local interrupts.</p>
 </section>
 <section id="kvm-smi">
@@ -5945,7 +5945,7 @@ which is the maximum number of possibly pending cpu-local interrupts.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_msr_filter</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_msr_filter</span></code></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, &lt; 0 on error</p>
@@ -6057,7 +6057,7 @@ result in KVM injecting a #GP instead of exiting to userspace.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_create_spapr_tce_64 (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_create_spapr_tce_64</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>file descriptor for manipulating the created TCE table</p>
@@ -6065,7 +6065,7 @@ result in KVM injecting a #GP instead of exiting to userspace.</p>
 </dl>
 <p>This is an extension for KVM_CAP_SPAPR_TCE which only supports 32bit
 windows, described in 4.62 KVM_CREATE_SPAPR_TCE</p>
-<p>This capability uses extended struct in ioctl interface:</p>
+<p>This capability uses extended <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">in</span></code> ioctl interface:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>/* for KVM_CAP_SPAPR_TCE_64 */
 struct kvm_create_spapr_tce_64 {
       __u64 liobn;
@@ -6097,11 +6097,11 @@ of IOMMU pages.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_reinject_control (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_reinject_control</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success,
--EFAULT if struct kvm_reinject_control cannot be read,
+-EFAULT if <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_reinject_control</span></code> cannot be read,
 -ENXIO if KVM_CREATE_PIT or KVM_CREATE_PIT2 didn’t succeed earlier.</p>
 </dd>
 </dl>
@@ -6132,11 +6132,11 @@ operating system that uses the PIT for timing (e.g. Linux 2.4.x).</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_ppc_mmuv3_cfg (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_ppc_mmuv3_cfg</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success,
--EFAULT if struct kvm_ppc_mmuv3_cfg cannot be read,
+-EFAULT if <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_ppc_mmuv3_cfg</span></code> cannot be read,
 -EINVAL if the configuration is invalid</p>
 </dd>
 </dl>
@@ -6173,11 +6173,11 @@ the Power ISA V3.00, Book III section 5.7.6.1.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_ppc_rmmu_info (out)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_ppc_rmmu_info</span></code> (out)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success,
--EFAULT if struct kvm_ppc_rmmu_info cannot be written,
+-EFAULT if <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_ppc_rmmu_info</span></code> cannot be written,
 -EINVAL if no useful information can be returned</p>
 </dd>
 </dl>
@@ -6217,13 +6217,13 @@ base 2 of the page size in the bottom 6 bits.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_ppc_resize_hpt (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_ppc_resize_hpt</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on successful completion,
 &gt;0 if a new HPT is being prepared, the value is an estimated
 number of milliseconds until preparation is complete,
--EFAULT if struct kvm_reinject_control cannot be read,
+-EFAULT if <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_reinject_control</span></code> cannot be read,
 -EINVAL if the supplied shift or flags are invalid,
 -ENOMEM if unable to allocate the new HPT,</p>
 </dd>
@@ -6277,11 +6277,11 @@ ones will monitor preparation until it completes or fails.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_ppc_resize_hpt (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_ppc_resize_hpt</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on successful completion,
--EFAULT if struct kvm_reinject_control cannot be read,
+-EFAULT if <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_reinject_control</span></code> cannot be read,
 -EINVAL if the supplied shift or flags are invalid,
 -ENXIO is there is no pending HPT, or the pending HPT doesn’t
 have the requested size,
@@ -6379,11 +6379,11 @@ retrieved with KVM_X86_GET_MCE_CAP_SUPPORTED.</p>
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_x86_mce (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_x86_mce</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success,
--EFAULT if struct kvm_x86_mce cannot be read,
+-EFAULT if <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_x86_mce</span></code> cannot be read,
 -EINVAL if the bank number is invalid,
 -EINVAL if VAL bit is not set in status field.</p>
 </dd>
@@ -6422,7 +6422,7 @@ not holding a previously reported uncorrected error).</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_s390_cmma_log (in, out)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_s390_cmma_log</span></code> (in, out)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, a negative value on error</p>
@@ -6462,7 +6462,7 @@ KVM_S390_CMMA_PEEK set.</p></li>
 </ul>
 <p>The ioctl takes parameters via the kvm_s390_cmma_log struct. The desired
 values are written to a buffer whose location is indicated via the “values”
-member in the kvm_s390_cmma_log struct.  The values in the input struct are
+member in the kvm_s390_cmma_log struct.  The values in the input <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">are</span></code>
 also updated as needed.</p>
 <p>Each CMMA value takes up one byte.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct kvm_s390_cmma_log {
@@ -6529,7 +6529,7 @@ not enabled.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_s390_cmma_log (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_s390_cmma_log</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, a negative value on error</p>
@@ -6579,18 +6579,18 @@ hugepages).</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_ppc_cpu_char (out)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_ppc_cpu_char</span></code> (out)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on successful completion,
--EFAULT if struct kvm_ppc_cpu_char cannot be written</p>
+-EFAULT if <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_ppc_cpu_char</span></code> cannot be written</p>
 </dd>
 </dl>
 <p>This ioctl gives userspace information about certain characteristics
 of the CPU relating to speculative execution of instructions and
 possible information leakage resulting from speculative execution (see
 CVE-2017-5715, CVE-2017-5753 and CVE-2017-5754).  The information is
-returned in struct kvm_ppc_cpu_char, which looks like this:</p>
+returned in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_ppc_cpu_char</span></code>, which looks like this:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct kvm_ppc_cpu_char {
       __u64   character;              /* characteristics of the CPU */
       __u64   behaviour;              /* recommended software behaviour */
@@ -6661,7 +6661,7 @@ on Intel Processors.  The detailed commands are defined in
 <dd class="field-odd"><p>system</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_enc_region (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_enc_region</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success; -1 on error</p>
@@ -6693,7 +6693,7 @@ memory region registered with the ioctl.</p>
 <dd class="field-odd"><p>system</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_enc_region (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_enc_region</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success; -1 on error</p>
@@ -6715,7 +6715,7 @@ with KVM_MEMORY_ENCRYPT_REG_REGION ioctl above.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_hyperv_eventfd (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_hyperv_eventfd</span></code> (in)</p>
 </dd>
 </dl>
 <p>This ioctl (un)registers an eventfd to receive notifications from the guest on
@@ -6760,7 +6760,7 @@ causing a user exit.  SIGNAL_EVENT hypercall with non-zero event flag number
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_nested_state (in/out)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_nested_state</span></code> (in/out)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -6846,14 +6846,14 @@ to the KVM_CHECK_EXTENSION ioctl().</p>
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_nested_state (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_nested_state</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
 </dd>
 </dl>
-<p>This copies the vcpu’s kvm_nested_state struct from userspace to the kernel.
-For the definition of struct kvm_nested_state, see KVM_GET_NESTED_STATE.</p>
+<p>This copies the vcpu’s kvm_nested_state <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">from</span></code> userspace to the kernel.
+For the definition of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_nested_state</span></code>, see KVM_GET_NESTED_STATE.</p>
 </section>
 <section id="kvm-un-register-coalesced-mmio">
 <h3>4.116 KVM_(UN)REGISTER_COALESCED_MMIO<a class="headerlink" href="#kvm-un-register-coalesced-mmio" title="Link to this heading">¶</a></h3>
@@ -6869,7 +6869,7 @@ KVM_CAP_COALESCED_PIO (for coalesced pio)</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_coalesced_mmio_zone</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_coalesced_mmio_zone</span></code></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, &lt; 0 on error</p>
@@ -6904,7 +6904,7 @@ to I/O ports.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_clear_dirty_log (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_clear_dirty_log</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -6923,7 +6923,7 @@ struct kvm_clear_dirty_log {
 </pre></div>
 </div>
 <p>The ioctl clears the dirty status of pages in a memory slot, according to
-the bitmap that is passed in struct kvm_clear_dirty_log’s dirty_bitmap
+the bitmap that is passed in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_clear_dirty_log</span></code>’s dirty_bitmap
 field.  Bit 0 of the bitmap corresponds to page “first_page” in the
 memory slot, and num_pages is the size in bits of the input bitmap.
 first_page must be a multiple of 64; num_pages must also be a multiple of
@@ -6953,7 +6953,7 @@ that KVM_CAP_MANUAL_DIRTY_LOG_PROTECT2 is present.</p>
 <dd class="field-odd"><p>system ioctl, vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_cpuid2 (in/out)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_cpuid2</span></code> (in/out)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -7006,7 +7006,7 @@ array ‘entries’.  If the number of entries is too low to describe all Hyper-
 feature leaves, an error (E2BIG) is returned. If the number is more or equal
 to the number of Hyper-V feature leaves, the ‘nent’ field is adjusted to the
 number of valid entries in the ‘entries’ array, which is then filled.</p>
-<p>‘index’ and ‘flags’ fields in ‘struct kvm_cpuid_entry2’ are currently reserved,
+<p>‘index’ and ‘flags’ fields in ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_cpuid_entry2</span></code>’ are currently reserved,
 userspace should not expect to get any particular value there.</p>
 <p>Note, vcpu version of KVM_GET_SUPPORTED_HV_CPUID is currently deprecated. Unlike
 system ioctl which exposes all supported feature bits unconditionally, vcpu
@@ -7087,7 +7087,7 @@ using this ioctl.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_pmu_event_filter (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_pmu_event_filter</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -7325,7 +7325,7 @@ into ESA mode. This reset is a superset of the initial reset.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_pv_cmd</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_pv_cmd</span></code></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, &lt; 0 on error</p>
@@ -7535,7 +7535,7 @@ process termination.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_xen_hvm_attr</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_xen_hvm_attr</span></code></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, &lt; 0 on error</p>
@@ -7659,7 +7659,7 @@ hypercall.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_xen_hvm_attr</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_xen_hvm_attr</span></code></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, &lt; 0 on error</p>
@@ -7682,7 +7682,7 @@ attribute cannot be read.</p>
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_xen_vcpu_attr</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_xen_vcpu_attr</span></code></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, &lt; 0 on error</p>
@@ -7796,7 +7796,7 @@ setting the vector to zero.</p>
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_xen_vcpu_attr</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_xen_vcpu_attr</span></code></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, &lt; 0 on error</p>
@@ -7820,7 +7820,7 @@ with the KVM_XEN_VCPU_GET_ATTR ioctl.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_arm_copy_mte_tags</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_arm_copy_mte_tags</span></code></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>number of bytes copied, &lt; 0 on error (-EINVAL for incorrect
@@ -7864,7 +7864,7 @@ then <code class="docutils literal notranslate"><span class="pre">length</span><
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_sregs2 (out)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_sregs2</span></code> (out)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -7888,7 +7888,7 @@ This ioctl (when supported) replaces the KVM_GET_SREGS.</p>
 <p>flags values for <code class="docutils literal notranslate"><span class="pre">kvm_sregs2</span></code>:</p>
 <p><code class="docutils literal notranslate"><span class="pre">KVM_SREGS2_FLAGS_PDPTRS_VALID</span></code></p>
 <blockquote>
-<div><p>Indicates that the struct contains valid PDPTR values.</p>
+<div><p>Indicates that the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">contains</span></code> valid PDPTR values.</p>
 </div></blockquote>
 </section>
 <section id="kvm-set-sregs2">
@@ -7904,7 +7904,7 @@ This ioctl (when supported) replaces the KVM_GET_SREGS.</p>
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_sregs2 (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_sregs2</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -8136,7 +8136,7 @@ as the descriptors in Descriptors block.</p>
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_xsave (out)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_xsave</span></code> (out)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -8148,13 +8148,13 @@ as the descriptors in Descriptors block.</p>
 };
 </pre></div>
 </div>
-<p>This ioctl would copy current vcpu’s xsave struct to the userspace. It
+<p>This ioctl would copy current vcpu’s xsave <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">to</span></code> the userspace. It
 copies as many bytes as are returned by KVM_CHECK_EXTENSION(KVM_CAP_XSAVE2)
 when invoked on the vm file descriptor. The size value returned by
 KVM_CHECK_EXTENSION(KVM_CAP_XSAVE2) will always be at least 4096.
 Currently, it is only greater than 4096 if a dynamic feature has been
 enabled with <code class="docutils literal notranslate"><span class="pre">arch_prctl()</span></code>, but this may change in the future.</p>
-<p>The offsets of the state save areas in struct kvm_xsave follow the contents
+<p>The offsets of the state save areas in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_xsave</span></code> follow the contents
 of CPUID leaf 0xD on the host.</p>
 </section>
 <section id="kvm-xen-hvm-evtchn-send">
@@ -8170,7 +8170,7 @@ of CPUID leaf 0xD on the host.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_irq_routing_xen_evtchn</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_irq_routing_xen_evtchn</span></code></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, &lt; 0 on error</p>
@@ -8205,7 +8205,7 @@ of CPUID leaf 0xD on the host.</p>
 </dd>
 </dl>
 <p>This ioctl closely mirrors <cite>KVM_S390_PV_COMMAND</cite> but handles requests
-for vcpus. It re-uses the kvm_s390_pv_dmp struct and hence also shares
+for vcpus. It re-uses the kvm_s390_pv_dmp <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">and</span></code> hence also shares
 the command ids.</p>
 <p><strong>command:</strong></p>
 <dl class="simple">
@@ -8233,7 +8233,7 @@ The length of the returned data is provided by uv_info.guest_cpu_stor_len.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_s390_zpci_op (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_s390_zpci_op</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, &lt;0 on error</p>
@@ -8287,7 +8287,7 @@ set to 0s by userspace.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_arm_counter_offset (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_arm_counter_offset</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, &lt; 0 on error</p>
@@ -8330,7 +8330,7 @@ applied.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct reg_mask_range (in/out)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">reg_mask_range</span></code> (in/out)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, &lt; 0 on error</p>
@@ -8381,7 +8381,7 @@ superset of the features supported by the system.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_userspace_memory_region2 (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_userspace_memory_region2</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, -1 on error</p>
@@ -8438,7 +8438,7 @@ Returns -EINVAL if called on a protected VM.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_memory_attributes (in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_memory_attributes</span></code> (in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 on success, &lt;0 on error</p>
@@ -8480,7 +8480,7 @@ the state of a gfn/page as needed.</p>
 <dd class="field-odd"><p>vm ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_create_guest_memfd(in)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_create_guest_memfd</span></code>(in)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A file descriptor on success, &lt;0 on error</p>
@@ -8488,9 +8488,9 @@ the state of a gfn/page as needed.</p>
 </dl>
 <p>KVM_CREATE_GUEST_MEMFD creates an anonymous file and returns a file descriptor
 that refers to it.  guest_memfd files are roughly analogous to files created
-via memfd_create(), e.g. guest_memfd files live in RAM, have volatile storage,
+via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">memfd_create()</span></code>, e.g. guest_memfd files live in RAM, have volatile storage,
 and are automatically released when the last reference is dropped.  Unlike
-“regular” memfd_create() files, guest_memfd files are bound to their owning
+“regular” <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">memfd_create()</span></code> files, guest_memfd files are bound to their owning
 virtual machine (see below), cannot be mapped, read, or written by userspace,
 and cannot be resized  (guest_memfd files do however support PUNCH_HOLE).</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct kvm_create_guest_memfd {
@@ -8501,15 +8501,15 @@ and cannot be resized  (guest_memfd files do however support PUNCH_HOLE).</p>
 </pre></div>
 </div>
 <p>Conceptually, the inode backing a guest_memfd file represents physical memory,
-i.e. is coupled to the virtual machine as a thing, not to a “struct kvm”.  The
-file itself, which is bound to a “struct kvm”, is that instance’s view of the
+i.e. is coupled to the virtual machine as a thing, not to a “<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm</span></code>”.  The
+file itself, which is bound to a “<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm</span></code>”, is that instance’s view of the
 underlying memory, e.g. effectively provides the translation of guest addresses
 to host memory.  This allows for use cases where multiple KVM structures are
 used to manage a single virtual machine, e.g. when performing intrahost
 migration of a virtual machine.</p>
 <p>KVM currently only supports mapping guest_memfd via KVM_SET_USER_MEMORY_REGION2,
 and more specifically via the guest_memfd and guest_memfd_offset fields in
-“struct kvm_userspace_memory_region2”, where guest_memfd_offset is the offset
+“<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_userspace_memory_region2</span></code>”, where guest_memfd_offset is the offset
 into the guest_memfd instance.  For a given guest_memfd file, there can be at
 most one mapping per page, i.e. binding multiple memory regions to a single
 guest_memfd range is not allowed (any number of memory regions can be bound to
@@ -8529,7 +8529,7 @@ a single guest_memfd file, but the bound ranges must not overlap).</p>
 <dd class="field-odd"><p>vcpu ioctl</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p>struct kvm_pre_fault_memory (in/out)</p>
+<dd class="field-even"><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_pre_fault_memory</span></code> (in/out)</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0 if at least one page is processed, &lt; 0 on error</p>
@@ -8585,7 +8585,7 @@ ensured.</p>
 case, the ioctl can be called in parallel.</p>
 <p>When the ioctl returns, the input values are updated to point to the
 remaining range.  If <cite>size</cite> &gt; 0 on return, the caller can just issue
-the ioctl again with the same <cite>struct kvm_map_memory</cite> argument.</p>
+the ioctl again with the same <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_map_memory</span></code></cite> argument.</p>
 <p>Shadow page tables cannot support this ioctl because they
 are indexed by virtual address or nested guest physical address.
 Calling this ioctl when the guest is using shadow page tables (for
@@ -8847,7 +8847,7 @@ struct {
 </pre></div>
 </div>
 <p>MOL uses a special hypercall interface it calls ‘OSI’. To enable it, we catch
-hypercalls and exit with this exit struct that contains all the guest gprs.</p>
+hypercalls and exit with this exit <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">that</span></code> contains all the guest gprs.</p>
 <p>If exit_reason is KVM_EXIT_OSI, then the vcpu has triggered such a hypercall.
 Userspace can now handle the hypercall and when it’s done modify the gprs as
 necessary. Upon guest entry all guest GPRs will then be replaced by the values
@@ -9259,10 +9259,10 @@ struct {
 <p>Process a TDVMCALL from the guest.  KVM forwards select TDVMCALL based
 on the Guest-Hypervisor Communication Interface (GHCI) specification;
 KVM bridges these requests to the userspace VMM with minimal changes,
-placing the inputs in the union and copying them back to the guest
+placing the inputs in the <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">and</span></code> copying them back to the guest
 on re-entry.</p>
 <p>Flags are currently always zero, whereas <code class="docutils literal notranslate"><span class="pre">nr</span></code> contains the TDVMCALL
-number from register R11.  The remaining field of the union provide the
+number from register R11.  The remaining field of the <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">provide</span></code> the
 inputs and outputs of the TDVMCALL.  Currently the following values of
 <code class="docutils literal notranslate"><span class="pre">nr</span></code> are defined:</p>
 <blockquote>
@@ -9288,7 +9288,7 @@ set up a notification interrupt for vector <code class="docutils literal notrans
 <p>KVM may add support for more values in the future that may cause a userspace
 exit, even without calls to <code class="docutils literal notranslate"><span class="pre">KVM_ENABLE_CAP</span></code> or similar.  In this case,
 it will enter with output fields already valid; in the common case, the
-<code class="docutils literal notranslate"><span class="pre">unknown.ret</span></code> field of the union will be <code class="docutils literal notranslate"><span class="pre">TDVMCALL_STATUS_SUBFUNC_UNSUPPORTED</span></code>.
+<code class="docutils literal notranslate"><span class="pre">unknown.ret</span></code> field of the <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">will</span></code> be <code class="docutils literal notranslate"><span class="pre">TDVMCALL_STATUS_SUBFUNC_UNSUPPORTED</span></code>.
 Userspace need not do anything if it does not wish to support a TDVMCALL.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>        /* Fix the size of the union. */
         char padding[256];
@@ -9400,7 +9400,7 @@ HTAB invisible to the guest.</p>
 <dd class="field-even"><p>vcpu</p>
 </dd>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p>args[0] is the address of a struct kvm_config_tlb</p>
+<dd class="field-odd"><p>args[0] is the address of a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_config_tlb</span></code></p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>0 on success; -1 on error</p>
@@ -9430,9 +9430,9 @@ on this vcpu.</p>
 <p>For mmu types KVM_MMU_FSL_BOOKE_NOHV and KVM_MMU_FSL_BOOKE_HV:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>The “params” field is of type “struct kvm_book3e_206_tlb_params”.</p></li>
-<li><p>The “array” field points to an array of type “struct
-kvm_book3e_206_tlb_entry”.</p></li>
+<li><p>The “params” field is of type “<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_book3e_206_tlb_params</span></code>”.</p></li>
+<li><p>The “array” field points to an array of type “<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">kvm_book3e_206_tlb_entry</span></code>”.</p></li>
 <li><p>The array consists of all entries in the first TLB, followed by all
 entries in the second TLB.</p></li>
 <li><p>Within a TLB, entries are ordered first by increasing set number.  Within a
@@ -9594,7 +9594,7 @@ sets are supported
 (bitfields defined in arch/x86/include/uapi/asm/kvm.h).</p>
 </dd>
 </dl>
-<p>As described above in the kvm_sync_regs struct info in section <a class="reference internal" href="#id20"><span class="std std-ref">5. The kvm_run structure</span></a>,
+<p>As described above in the kvm_sync_regs <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">info</span></code> in section <a class="reference internal" href="#id20"><span class="std std-ref">5. The kvm_run structure</span></a>,
 KVM_CAP_SYNC_REGS “allow[s] userspace to access certain guest registers
 without having to call SET/GET_*REGS”. This reduces overhead by eliminating
 repeated ioctl calls for setting and/or getting register values. This is
@@ -9608,7 +9608,7 @@ userspace.</p>
 by userspace (rather that all sets being copied out for every exit).</p></li>
 <li><p>vcpu_events are available in addition to regs and sregs.</p></li>
 </ul>
-<p>For x86, the ‘kvm_valid_regs’ field of struct kvm_run is overloaded to
+<p>For x86, the ‘kvm_valid_regs’ field of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_run</span></code> is overloaded to
 function as an input bit-array field set by userspace to indicate the
 specific register sets to be copied out on the next exit.</p>
 <p>To indicate when userspace has modified values that should be copied into
@@ -10017,6 +10017,7 @@ or if any vCPUs have already been created</p>
 #define KVM_X86_DISABLE_EXITS_HLT              (1 &lt;&lt; 1)
 #define KVM_X86_DISABLE_EXITS_PAUSE            (1 &lt;&lt; 2)
 #define KVM_X86_DISABLE_EXITS_CSTATE           (1 &lt;&lt; 3)
+#define KVM_X86_DISABLE_EXITS_APERFMPERF       (1 &lt;&lt; 4)
 </pre></div>
 </div>
 <p>Enabling this capability on a VM provides userspace with a way to no
@@ -10026,6 +10027,25 @@ physical CPUs.  More bits can be added in the future; userspace can
 just pass the KVM_CHECK_EXTENSION result to KVM_ENABLE_CAP to disable
 all such vmexits.</p>
 <p>Do not enable KVM_FEATURE_PV_UNHALT if you disable HLT exits.</p>
+<p>Virtualizing the <code class="docutils literal notranslate"><span class="pre">IA32_APERF</span></code> and <code class="docutils literal notranslate"><span class="pre">IA32_MPERF</span></code> MSRs requires more
+than just disabling APERF/MPERF exits. While both Intel and AMD
+document strict usage conditions for these MSRs--emphasizing that only
+the ratio of their deltas over a time interval (T0 to T1) is
+architecturally defined--simply passing through the MSRs can still
+produce an incorrect ratio.</p>
+<p>This erroneous ratio can occur if, between T0 and T1:</p>
+<ol class="arabic simple">
+<li><p>The vCPU thread migrates between logical processors.</p></li>
+<li><p>Live migration or suspend/resume operations take place.</p></li>
+<li><p>Another task shares the vCPU’s logical processor.</p></li>
+<li><p>C-states lower than C0 are emulated (e.g., via HLT interception).</p></li>
+<li><p>The guest TSC frequency doesn’t match the host TSC frequency.</p></li>
+</ol>
+<p>Due to these complexities, KVM does not automatically associate this
+passthrough capability with the guest CPUID bit,
+<code class="docutils literal notranslate"><span class="pre">CPUID.6:ECX.APERFMPERF[bit</span> <span class="pre">0]</span></code>. Userspace VMMs that deem this
+mechanism adequate for virtualizing the <code class="docutils literal notranslate"><span class="pre">IA32_APERF</span></code> and
+<code class="docutils literal notranslate"><span class="pre">IA32_MPERF</span></code> MSRs must set the guest CPUID bit explicitly.</p>
 </section>
 <section id="kvm-cap-s390-hpage-1m">
 <h3>7.14 KVM_CAP_S390_HPAGE_1M<a class="headerlink" href="#kvm-cap-s390-hpage-1m" title="Link to this heading">¶</a></h3>
@@ -10106,8 +10126,8 @@ exception_payload field. Similarly, when userspace injects a #PF (or
 #DB) into L2 using KVM_SET_VCPU_EVENTS, it is expected to set
 exception.has_payload and to put the faulting address - or the new DR6
 bits<a class="footnote-reference brackets" href="#id23" id="id22" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a> - in the exception_payload field.</p>
-<p>This capability also enables exception.pending in struct
-kvm_vcpu_events, which allows userspace to distinguish between pending
+<p>This capability also enables exception.pending in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">kvm_vcpu_events</span></code>, which allows userspace to distinguish between pending
 and injected exceptions.</p>
 <aside class="footnote-list brackets">
 <aside class="footnote brackets" id="id23" role="doc-footnote">
@@ -10374,11 +10394,11 @@ default.</p>
 to userspace with KVM_INTERNAL_ERROR (except when the emulator was invoked
 to handle a VMware backdoor instruction). Furthermore, KVM will now provide up
 to 15 instruction bytes for any exit to userspace resulting from an emulation
-failure.  When these exits to userspace occur use the emulation_failure struct
-instead of the internal struct.  They both have the same layout, but the
-emulation_failure struct matches the content better.  It also explicitly
-defines the ‘flags’ field which is used to describe the fields in the struct
-that are valid (ie: if KVM_INTERNAL_ERROR_EMULATION_FLAG_INSTRUCTION_BYTES is
+failure.  When these exits to userspace occur use the emulation_failure <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">instead</span></code> of the internal struct.  They both have the same layout, but the
+emulation_failure <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">matches</span></code> the content better.  It also explicitly
+defines the ‘flags’ field which is used to describe the fields in the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">that</span></code> are valid (ie: if KVM_INTERNAL_ERROR_EMULATION_FLAG_INSTRUCTION_BYTES is
 set in the ‘flags’ field then both ‘insn_size’ and ‘insn_bytes’ have valid data
 in them.)</p>
 </section>
@@ -10664,7 +10684,7 @@ core crystal clock frequency, if a non-zero CPUID 0x15 is exposed to the guest.<
 <h3>7.36 KVM_CAP_DIRTY_LOG_RING/KVM_CAP_DIRTY_LOG_RING_ACQ_REL<a class="headerlink" href="#kvm-cap-dirty-log-ring-kvm-cap-dirty-log-ring-acq-rel" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">Architectures<span class="colon">:</span></dt>
-<dd class="field-odd"><p>x86, arm64</p>
+<dd class="field-odd"><p>x86, arm64, riscv</p>
 </dd>
 <dt class="field-even">Type<span class="colon">:</span></dt>
 <dd class="field-even"><p>vm</p>
@@ -10891,7 +10911,7 @@ ENOSYS for the others.</p>
 type KVM_SYSTEM_EVENT_SUSPEND to process the guest suspend request.</p>
 </section>
 <section id="kvm-cap-arm-writable-imp-id-regs">
-<h3>7.37 KVM_CAP_ARM_WRITABLE_IMP_ID_REGS<a class="headerlink" href="#kvm-cap-arm-writable-imp-id-regs" title="Link to this heading">¶</a></h3>
+<h3>7.42 KVM_CAP_ARM_WRITABLE_IMP_ID_REGS<a class="headerlink" href="#kvm-cap-arm-writable-imp-id-regs" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">Architectures<span class="colon">:</span></dt>
 <dd class="field-odd"><p>arm64</p>
@@ -10933,6 +10953,23 @@ given VM.</p>
 </dl>
 <p>When this capability is enabled, KVM resets the VCPU when setting
 MP_STATE_INIT_RECEIVED through IOCTL.  The original MP_STATE is preserved.</p>
+</section>
+<section id="kvm-cap-arm-cacheable-pfnmap-supported">
+<h3>7.43 KVM_CAP_ARM_CACHEABLE_PFNMAP_SUPPORTED<a class="headerlink" href="#kvm-cap-arm-cacheable-pfnmap-supported" title="Link to this heading">¶</a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">Architectures<span class="colon">:</span></dt>
+<dd class="field-odd"><p>arm64</p>
+</dd>
+<dt class="field-even">Target<span class="colon">:</span></dt>
+<dd class="field-even"><p>VM</p>
+</dd>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+<p>This capability indicate to the userspace whether a PFNMAP memory region
+can be safely mapped as cacheable. This relies on the presence of
+force write back (FWB) feature support on the hardware.</p>
 </section>
 </section>
 <section id="other-capabilities">

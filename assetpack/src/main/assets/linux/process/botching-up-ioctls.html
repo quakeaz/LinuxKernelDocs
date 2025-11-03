@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -189,7 +189,7 @@ the kernel has special types like __u32, __s64. Use them.</p></li>
 platforms don’t necessarily align 64-bit values to 64-bit boundaries, but
 64-bit platforms do. So we always need padding to the natural size to get
 this right.</p></li>
-<li><p>Pad the entire struct to a multiple of 64-bits if the structure contains
+<li><p>Pad the entire <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">to</span></code> a multiple of 64-bits if the structure contains
 64-bit types - the structure size will otherwise differ on 32-bit versus
 64-bit. Having a different structure size hurts when passing arrays of
 structures to the kernel, or if the kernel checks the structure size, which
@@ -224,7 +224,7 @@ needs a new driver feature flags.</p></li>
 <li><p>Check all unused fields and flags and all the padding for whether it’s 0,
 and reject the ioctl if that’s not the case. Otherwise your nice plan for
 future extensions is going right down the gutters since someone will submit
-an ioctl struct with random stack garbage in the yet unused parts. Which
+an ioctl <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">with</span></code> random stack garbage in the yet unused parts. Which
 then bakes in the ABI that those fields can never be used for anything else
 but garbage. This is also the reason why you must explicitly pad all
 structures, even if you never use them in an array - the padding the compiler
@@ -292,7 +292,7 @@ performance counter sampling instructions) consider exposing those also.</p></li
 <li><p>Use __s64 seconds plus __u64 nanoseconds to specify time. It’s not the most
 convenient time specification, but it’s mostly the standard.</p></li>
 <li><p>Check that input time values are normalized and reject them if not. Note
-that the kernel native struct ktime has a signed integer for both seconds
+that the kernel native <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ktime</span></code> has a signed integer for both seconds
 and nanoseconds, so beware here.</p></li>
 <li><p>For timeouts, use absolute times. If you’re a good fellow and made your
 ioctl restartable relative timeouts tend to be too coarse and can

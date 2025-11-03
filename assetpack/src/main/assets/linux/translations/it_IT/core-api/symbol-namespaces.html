@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -177,7 +177,7 @@ Per maggiori informazioni consultate le <a class="reference internal" href="../i
 <h1>Spazio dei nomi dei simboli<a class="headerlink" href="#spazio-dei-nomi-dei-simboli" title="Link to this heading">¶</a></h1>
 <p>Questo documento descrive come usare lo spazio dei nomi dei simboli
 per strutturare quello che viene esportato internamente al kernel
-grazie alle macro della famiglia EXPORT_SYMBOL().</p>
+grazie alle macro della famiglia <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">EXPORT_SYMBOL()</span></code>.</p>
 <section id="introduzione">
 <h2>Introduzione<a class="headerlink" href="#introduzione" title="Link to this heading">¶</a></h2>
 <p>Lo spazio dei nomi dei simboli è stato introdotto come mezzo per strutturare
@@ -198,10 +198,10 @@ meccanismi.  Tutti questi meccanismi cambiano il modo in cui
 EXPORT_SYMBOL e simili vengono guidati verso la creazione di voci in ksymtab.</p>
 <section id="usare-le-macro-export-symbol">
 <h3>Usare le macro EXPORT_SYMBOL<a class="headerlink" href="#usare-le-macro-export-symbol" title="Link to this heading">¶</a></h3>
-<p>In aggiunta alle macro EXPORT_SYMBOL() e EXPORT_SYMBOL_GPL(), che permettono
+<p>In aggiunta alle macro <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">EXPORT_SYMBOL()</span></code> e <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">EXPORT_SYMBOL_GPL()</span></code>, che permettono
 di esportare simboli del kernel nella rispettiva tabella, ci sono
 varianti che permettono di esportare simboli all’interno di uno spazio dei
-nomi: EXPORT_SYMBOL_NS() ed EXPORT_SYMBOL_NS_GPL(). Queste macro richiedono un
+nomi: <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">EXPORT_SYMBOL_NS()</span></code> ed <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">EXPORT_SYMBOL_NS_GPL()</span></code>. Queste macro richiedono un
 argomento aggiuntivo: lo spazio dei nomi.
 Tenete presente che per via dell’espansione delle macro questo argomento deve
 essere un simbolo di preprocessore. Per esempio per esportare il
@@ -222,8 +222,8 @@ caricamento di un modulo.</p>
 <p>Definire lo spazio dei nomi per tutti i simboli di un sottosistema può essere
 logorante e di difficile manutenzione. Perciò è stato fornito un simbolo
 di preprocessore di base (DEFAULT_SYMBOL_NAMESPACE), che, se impostato,
-diventa lo spazio dei simboli di base per tutti gli usi di EXPORT_SYMBOL()
-ed EXPORT_SYMBOL_GPL() che non specificano esplicitamente uno spazio dei nomi.</p>
+diventa lo spazio dei simboli di base per tutti gli usi di <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">EXPORT_SYMBOL()</span></code>
+ed <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">EXPORT_SYMBOL_GPL()</span></code> che non specificano esplicitamente uno spazio dei nomi.</p>
 <p>Ci sono molti modi per specificare questo simbolo di preprocessore e il loro
 uso dipende dalle preferenze del manutentore di un sottosistema. La prima
 possibilità è quella di definire il simbolo nel <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> del sottosistema.
@@ -233,8 +233,8 @@ drivers/usb/common/Makefile:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ccflags-y += -DDEFAULT_SYMBOL_NAMESPACE=&#39;&quot;USB_COMMON&quot;&#39;
 </pre></div>
 </div>
-<p>Questo cambierà tutte le macro EXPORT_SYMBOL() ed EXPORT_SYMBOL_GPL(). Invece,
-un simbolo esportato con EXPORT_SYMBOL_NS() non verrà cambiato e il simbolo
+<p>Questo cambierà tutte le macro <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">EXPORT_SYMBOL()</span></code> ed <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">EXPORT_SYMBOL_GPL()</span></code>. Invece,
+un simbolo esportato con <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">EXPORT_SYMBOL_NS()</span></code> non verrà cambiato e il simbolo
 verrà esportato nello spazio dei nomi indicato.</p>
 <p>Una seconda possibilità è quella di definire il simbolo di preprocessore
 direttamente nei file da compilare. L’esempio precedente diventerebbe:</p>
@@ -267,8 +267,8 @@ import_ns:      USB_STORAGE
 [...]
 </pre></div>
 </div>
-<p>Si consiglia di posizionare la dichiarazione MODULE_IMPORT_NS() vicino
-ai metadati del modulo come MODULE_AUTHOR() o MODULE_LICENSE().</p>
+<p>Si consiglia di posizionare la dichiarazione <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">MODULE_IMPORT_NS()</span></code> vicino
+ai metadati del modulo come <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">MODULE_AUTHOR()</span></code> o <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">MODULE_LICENSE()</span></code>.</p>
 </section>
 <section id="caricare-moduli-che-usano-simboli-provenienti-da-spazi-dei-nomi">
 <h2>Caricare moduli che usano simboli provenienti da spazi dei nomi<a class="headerlink" href="#caricare-moduli-che-usano-simboli-provenienti-da-spazi-dei-nomi" title="Link to this heading">¶</a></h2>
@@ -287,7 +287,7 @@ emetterà un avviso.</p>
 <p>La mancanza di un’importazione può essere individuata facilmente al momento
 della compilazione. Infatti, modpost emetterà un avviso se il modulo usa
 un simbolo da uno spazio dei nomi che non è stato importato.
-La dichiarazione MODULE_IMPORT_NS() viene solitamente aggiunta in un posto
+La dichiarazione <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">MODULE_IMPORT_NS()</span></code> viene solitamente aggiunta in un posto
 ben definito (assieme agli altri metadati del modulo). Per facilitare
 la vita di chi scrive moduli (e i manutentori di sottosistemi), esistono uno
 script e un target make per correggere le importazioni mancanti. Questo può

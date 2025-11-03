@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -178,7 +178,7 @@ buses support most of those operations.</p>
 data structure. These fields must still be accessed by the bus layers,
 and sometimes by the device-specific drivers.</p>
 <p>Other bus layers are encouraged to do what has been done for the PCI layer.
-struct pci_dev now looks like this:</p>
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pci_dev</span></code> now looks like this:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct pci_dev {
       ...
 
@@ -187,14 +187,14 @@ struct pci_dev now looks like this:</p>
 };
 </pre></div>
 </div>
-<p>Note first that the <a class="reference internal" href="../infrastructure.html#c.device" title="device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span></code></a> dev within the struct pci_dev is
+<p>Note first that the <a class="reference internal" href="../infrastructure.html#c.device" title="device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span></code></a> dev within the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pci_dev</span></code> is
 statically allocated. This means only one allocation on device discovery.</p>
 <p>Note also that that <a class="reference internal" href="../infrastructure.html#c.device" title="device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span></code></a> dev is not necessarily defined at the
 front of the pci_dev structure.  This is to make people think about what
 they’re doing when switching between the bus driver and the global driver,
 and to discourage meaningless and incorrect casts between the two.</p>
 <p>The PCI bus layer freely accesses the fields of <a class="reference internal" href="../infrastructure.html#c.device" title="device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span></code></a>. It knows about
-the structure of struct pci_dev, and it should know the structure of <a class="reference internal" href="../infrastructure.html#c.device" title="device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span>
+the structure of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pci_dev</span></code>, and it should know the structure of <a class="reference internal" href="../infrastructure.html#c.device" title="device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span>
 <span class="pre">device</span></code></a>. Individual PCI device drivers that have been converted to the current
 driver model generally do not and should not touch the fields of <a class="reference internal" href="../infrastructure.html#c.device" title="device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span></code></a>,
 unless there is a compelling reason to do so.</p>

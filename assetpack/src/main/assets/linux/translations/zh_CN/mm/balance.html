@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -201,7 +201,7 @@ Chinese (Simplified)
 <p>在2.3中，区域平衡可以用两种方式之一来完成：根据区域的大小（可能是低级区域的大小），
 我们可以在初始化阶段决定在平衡任何区域时应该争取多少空闲页。好的方面是，在平衡的时
 候，我们不需要看低级区的大小，坏的方面是，我们可能会因为忽略低级区可能较低的使用率
-而做过于频繁的平衡。另外，只要对分配程序稍作修改，就有可能将memclass()宏简化为一
+而做过于频繁的平衡。另外，只要对分配程序稍作修改，就有可能将<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">memclass()</span></code>宏简化为一
 个简单的等式。</p>
 <p>另一个可能的解决方案是，我们只在一个区 <strong>和</strong> 其所有低级区的空闲内存低于该区及其
 低级区总内存的1/64时进行平衡。这就解决了2.2的平衡问题，并尽可能地保持了与2.2行为
@@ -210,7 +210,7 @@ Chinese (Simplified)
 <p>请注意，如果普通区的大小与dma区相比是巨大的，那么在决定是否平衡普通区的时候，考虑
 空闲的dma页就变得不那么重要了。那么第一个解决方案就变得更有吸引力。</p>
 <p>所附的补丁实现了第二个解决方案。它还 “修复”了两个问题：首先，在低内存条件下，kswapd
-被唤醒，就像2.2中的非睡眠分配。第二，HIGHMEM区也被平衡了，以便给replace_with_highmem()
+被唤醒，就像2.2中的非睡眠分配。第二，HIGHMEM区也被平衡了，以便给<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">replace_with_highmem()</span></code>
 一个争取获得HIGHMEM页的机会，同时确保HIGHMEM分配不会落回普通区。这也确保了HIGHMEM
 页不会被泄露（例如，在一个HIGHMEM页在交换缓存中但没有被任何人使用的情况下）。</p>
 <p>kswapd还需要知道它应该平衡哪些区。kswapd主要是在无法进行平衡的情况下需要的，可能
@@ -229,7 +229,7 @@ zone_wake_kswapd也被设置。</p>
 <p>我所听到的（超棒的）想法：</p>
 <ol class="arabic simple">
 <li><p>动态经历应该影响平衡：可以跟踪一个区的失败请求的数量，并反馈到平衡方案中（<a class="reference external" href="mailto:jalvo&#37;&#52;&#48;mbay&#46;net">jalvo<span>&#64;</span>mbay<span>&#46;</span>net</a>）。</p></li>
-<li><p>实现一个类似于replace_with_highmem()的replace_with_regular()，以保留dma页面。
+<li><p>实现一个类似于<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">replace_with_highmem()</span></code>的<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">replace_with_regular()</span></code>，以保留dma页面。
 (<a class="reference external" href="mailto:lkd&#37;&#52;&#48;tantalophile&#46;demon&#46;co&#46;uk">lkd<span>&#64;</span>tantalophile<span>&#46;</span>demon<span>&#46;</span>co<span>&#46;</span>uk</a>)</p></li>
 </ol>
 </section>

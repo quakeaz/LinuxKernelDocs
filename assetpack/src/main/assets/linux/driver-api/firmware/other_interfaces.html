@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -224,19 +224,22 @@
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">dmi_system_id</span> <span class="pre">*list</span></code></dt><dd><p>array of dmi_system_id structures to match against
 All non-null elements of the list must match
 their slot’s (field index’s) data (i.e., each
 list string must be a substring of the specified
 DMI slot’s string data) to be considered a
 successful match.</p>
-<p>Walk the blacklist table running matching functions until someone
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Walk the blacklist table running matching functions until someone
 returns non zero or we hit the end. Callback function is called for
 each successful match. Returns the number of matches.</p>
 <p>dmi_setup must be called before this function is called.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.dmi_first_match">
@@ -246,18 +249,21 @@ each successful match. Returns the number of matches.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">dmi_system_id</span> <span class="pre">*list</span></code></dt><dd><p>array of dmi_system_id structures to match against
 All non-null elements of the list must match
 their slot’s (field index’s) data (i.e., each
 list string must be a substring of the specified
 DMI slot’s string data) to be considered a
 successful match.</p>
-<p>Walk the blacklist table until the first match is found.  Return the
-pointer to the matching entry or NULL if there’s no match.</p>
-<p>dmi_setup must be called before this function is called.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Walk the blacklist table until the first match is found.  Return the
+pointer to the matching entry or NULL if there’s no match.</p>
+<p>dmi_setup must be called before this function is called.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.dmi_get_system_info">
@@ -267,12 +273,15 @@ pointer to the matching entry or NULL if there’s no match.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
-<dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">field</span></code></dt><dd><p>data index (see enum dmi_field)</p>
-<p>Returns one DMI data value, can be used to perform
-complex DMI data checks.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">field</span></code></dt><dd><p>data index (see <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">dmi_field</span></code>)</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Returns one DMI data value, can be used to perform
+complex DMI data checks.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.dmi_name_in_vendors">
@@ -295,19 +304,22 @@ complex DMI data checks.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">type</span></code></dt><dd><p>device type or <code class="docutils literal notranslate"><span class="pre">DMI_DEV_TYPE_ANY</span></code> to match all device types</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*name</span></code></dt><dd><p>device name string or <code class="docutils literal notranslate"><span class="pre">NULL</span></code> to match all</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">dmi_device</span> <span class="pre">*from</span></code></dt><dd><p>previous device found in search, or <code class="docutils literal notranslate"><span class="pre">NULL</span></code> for new search.</p>
-<p>Iterates through the list of known onboard devices. If a device is
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Iterates through the list of known onboard devices. If a device is
 found with a matching <strong>type</strong> and <strong>name</strong>, a pointer to its device
 structure is returned.  Otherwise, <code class="docutils literal notranslate"><span class="pre">NULL</span></code> is returned.
 A new search is initiated by passing <code class="docutils literal notranslate"><span class="pre">NULL</span></code> as the <strong>from</strong> argument.
 If <strong>from</strong> is not <code class="docutils literal notranslate"><span class="pre">NULL</span></code>, searches continue from next device.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.dmi_get_date">
@@ -317,15 +329,19 @@ If <strong>from</strong> is not <code class="docutils literal notranslate"><span
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
-<dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">field</span></code></dt><dd><p>data index (see enum dmi_field)</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">field</span></code></dt><dd><p>data index (see <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">dmi_field</span></code>)</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">*yearp</span></code></dt><dd><p>optional out parameter for the year</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">*monthp</span></code></dt><dd><p>optional out parameter for the month</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">*dayp</span></code></dt><dd><p>optional out parameter for the day</p>
-<p>The date field is assumed to be in the form resembling
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>The date field is assumed to be in the form resembling
 [mm[/dd]]/yy[yy] and the result is stored in the out
 parameters any or all of which can be omitted.</p>
 <p>If the field doesn’t exist, all out parameters are set to zero
@@ -333,8 +349,7 @@ and false is returned.  Otherwise, true is returned with any
 invalid part of date set to zero.</p>
 <p>On return, year, month and day are guaranteed to be in the
 range of [0,9999], [0,12] and [0,31] respectively.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.dmi_get_bios_year">
@@ -363,14 +378,17 @@ or not parseable.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">(*decode)(const</span> <span class="pre">struct</span> <span class="pre">dmi_header</span> <span class="pre">*,</span> <span class="pre">void</span> <span class="pre">*)</span></code></dt><dd><p>Callback function</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">*private_data</span></code></dt><dd><p>Private data to be passed to the callback function</p>
-<p>Returns 0 on success, -ENXIO if DMI is not selected or not present,
-or a different negative error code if DMI walking fails.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Returns 0 on success, -ENXIO if DMI is not selected or not present,
+or a different negative error code if DMI walking fails.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.dmi_match">
@@ -413,12 +431,15 @@ given DMI handle, or 0x0 if no such DMI handle exists.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">slot</span></code></dt><dd><p>slot number</p>
-<p>Return the DMI handle associated with a given memory slot, or <code class="docutils literal notranslate"><span class="pre">0xFFFF</span></code>
-if there is no such slot.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Return the DMI handle associated with a given memory slot, or <code class="docutils literal notranslate"><span class="pre">0xFFFF</span></code>
+if there is no such slot.</p>
+</div></blockquote>
 </div>
 </section>
 <section id="edd-interfaces">
@@ -448,13 +469,16 @@ if there is no such slot.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kobject</span> <span class="pre">*</span> <span class="pre">kobj</span></code></dt><dd><p>kobject of edd structure</p>
-<p>This is called when the refcount of the edd structure
-reaches 0. This should happen right after we unregister,
-but just in case, we use the release callback anyway.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This is called when the refcount of the edd structure
+reaches 0. This should happen right after we unregister,
+but just in case, we use the release callback anyway.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.edd_dev_is_type">
@@ -519,10 +543,10 @@ but just in case, we use the release callback anyway.</p>
 <p><strong>Description</strong></p>
 <p>This disables the registration of system framebuffer devices that match the
 generic drivers that make use of the system framebuffer set up by firmware.</p>
-<p>It also unregisters a device if this was already registered by sysfb_init().</p>
+<p>It also unregisters a device if this was already registered by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sysfb_init()</span></code>.</p>
 <p><strong>Context</strong></p>
 <p>The function can sleep. A <strong>disable_lock</strong> mutex is acquired to serialize
-against sysfb_init(), that registers a system framebuffer device.</p>
+against <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sysfb_init()</span></code>, that registers a system framebuffer device.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.sysfb_handles_screen_info">

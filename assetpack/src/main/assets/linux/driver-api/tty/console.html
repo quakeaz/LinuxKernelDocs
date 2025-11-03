@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -242,7 +242,7 @@
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">CON_PRINTBUFFER</span></code></dt><dd><p>Used by newly registered consoles to avoid duplicate
 output of messages that were already shown by boot
-consoles or read by userspace via syslog() syscall.</p>
+consoles or read by userspace via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">syslog()</span></code> syscall.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">CON_CONSDEV</span></code></dt><dd><p>Indicates that the console driver is backing
 /dev/console.</p>
@@ -358,10 +358,10 @@ constraints.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">write_atomic</span></code></dt><dd><p>NBCON callback to write out text in any context. (Optional)</p>
 <p>This callback is called with the console already acquired. However,
 a higher priority context is allowed to take it over by default.</p>
-<p>The callback must call nbcon_enter_unsafe() and nbcon_exit_unsafe()
+<p>The callback must call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nbcon_enter_unsafe()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nbcon_exit_unsafe()</span></code>
 around any code where the takeover is not safe, for example, when
 manipulating the serial port registers.</p>
-<p>nbcon_enter_unsafe() will fail if the context has lost the console
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nbcon_enter_unsafe()</span></code> will fail if the context has lost the console
 ownership in the meantime. In this case, the callback is no longer
 allowed to go forward. It must back out immediately and carefully.
 The buffer content is also no longer trusted since it no longer
@@ -369,7 +369,7 @@ belongs to the context.</p>
 <p>The callback should allow the takeover whenever it is safe. It
 increases the chance to see messages when the system is in trouble.
 If the driver must reacquire ownership in order to finalize or
-revert hardware changes, nbcon_reacquire_nobuf() can be used.
+revert hardware changes, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nbcon_reacquire_nobuf()</span></code> can be used.
 However, on reacquire the buffer content is no longer available. A
 reacquire cannot be used to resume printing.</p>
 <p>The callback can be called from any context (including NMI).
@@ -378,20 +378,20 @@ on the console ownership for synchronization.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">write_thread</span></code></dt><dd><p>NBCON callback to write out text in task context.</p>
 <p>This callback must be called only in task context with both
-device_lock() and the nbcon console acquired with
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">device_lock()</span></code> and the nbcon console acquired with
 NBCON_PRIO_NORMAL.</p>
 <p>The same rules for console ownership verification and unsafe
-sections handling applies as with write_atomic().</p>
+sections handling applies as with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">write_atomic()</span></code>.</p>
 <p>The console ownership handling is necessary for synchronization
-against write_atomic() which is synchronized only via the context.</p>
-<p>The device_lock() provides the primary serialization for operations
+against <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">write_atomic()</span></code> which is synchronized only via the context.</p>
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">device_lock()</span></code> provides the primary serialization for operations
 on the device. It might be as relaxed (mutex)[*] or as tight
 (disabled preemption and interrupts) as needed. It allows
 the kthread to operate in the least restrictive mode[**].</p>
 <dl class="simple">
-<dt>[*] Standalone nbcon_context_try_acquire() is not safe with</dt><dd><p>the preemption enabled, see nbcon_owner_matches(). But it
+<dt>[*] Standalone nbcon_context_try_acquire() is not safe with</dt><dd><p>the preemption enabled, see <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nbcon_owner_matches()</span></code>. But it
 can be safe when always called in the preemptive context
-under the device_lock().</p>
+under the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">device_lock()</span></code>.</p>
 </dd>
 <dt>[**] The device_lock() makes sure that nbcon_context_try_acquire()</dt><dd><p>would never need to spin which is important especially with
 PREEMPT_RT.</p>
@@ -411,20 +411,20 @@ synchronization method required by the driver.</p>
 <dl class="simple">
 <dt>IMPORTANT: The callback MUST disable migration. The console driver</dt><dd><p>may be using a synchronization mechanism that already takes
 care of this (such as spinlocks). Otherwise this function must
-explicitly call migrate_disable().</p>
+explicitly call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">migrate_disable()</span></code>.</p>
 </dd>
 </dl>
 <p>The flags argument is provided as a convenience to the driver. It
-will be passed again to device_unlock(). It can be ignored if the
+will be passed again to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">device_unlock()</span></code>. It can be ignored if the
 driver does not need it.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">device_unlock</span></code></dt><dd><p>NBCON callback to finish synchronization with driver code.</p>
-<p>It is the counterpart to device_lock().</p>
+<p>It is the counterpart to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">device_lock()</span></code>.</p>
 <p>This callback is always called from task context. It must
-appropriately re-enable migration (depending on how device_lock()
+appropriately re-enable migration (depending on how <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">device_lock()</span></code>
 disabled migration).</p>
 <p>The flags argument is the value of the same variable that was
-passed to device_lock().</p>
+passed to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">device_lock()</span></code>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">nbcon_state</span></code></dt><dd><p>State for nbcon consoles</p>
 </dd>
@@ -518,7 +518,7 @@ assigned the lock after giving up.</p>
 </div>
 <p><strong>Description</strong></p>
 <p>A higher priority context can takeover the console when it is
-in the safe state. The final attempt to flush consoles in <a class="reference internal" href="../basics.html#c.panic" title="panic"><code class="xref c c-func docutils literal notranslate"><span class="pre">panic()</span></code></a>
+in the safe state. The final attempt to flush consoles in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">panic()</span></code>
 can be allowed to do so even in an unsafe state (Hope and pray).</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.nbcon_context">
@@ -607,12 +607,12 @@ is used later.</p>
     void (*con_deinit)(struct vc_data *vc);
     void (*con_clear)(struct vc_data *vc, unsigned int y, unsigned int x, unsigned int count);
     void (*con_putc)(struct vc_data *vc, u16 ca, unsigned int y, unsigned int x);
-    void (*con_putcs)(struct vc_data *vc, const u16 *s,unsigned int count, unsigned int ypos, unsigned int xpos);
+    void (*con_putcs)(struct vc_data *vc, const u16 *s, unsigned int count, unsigned int ypos, unsigned int xpos);
     void (*con_cursor)(struct vc_data *vc, bool enable);
-    bool (*con_scroll)(struct vc_data *vc, unsigned int top,unsigned int bottom, enum con_scroll dir, unsigned int lines);
+    bool (*con_scroll)(struct vc_data *vc, unsigned int top, unsigned int bottom, enum con_scroll dir, unsigned int lines);
     bool (*con_switch)(struct vc_data *vc);
     bool (*con_blank)(struct vc_data *vc, enum vesa_blank_mode blank, bool mode_switch);
-    int (*con_font_set)(struct vc_data *vc,const struct console_font *font, unsigned int vpitch, unsigned int flags);
+    int (*con_font_set)(struct vc_data *vc, const struct console_font *font, unsigned int vpitch, unsigned int flags);
     int (*con_font_get)(struct vc_data *vc, struct console_font *font, unsigned int vpitch);
     int (*con_font_default)(struct vc_data *vc, struct console_font *font, const char *name);
     int (*con_resize)(struct vc_data *vc, unsigned int width, unsigned int height, bool from_user);
@@ -620,7 +620,7 @@ is used later.</p>
     void (*con_scrolldelta)(struct vc_data *vc, int lines);
     bool (*con_set_origin)(struct vc_data *vc);
     void (*con_save_screen)(struct vc_data *vc);
-    u8 (*con_build_attr)(struct vc_data *vc, u8 color,enum vc_intensity intensity, bool blink, bool underline, bool reverse, bool italic);
+    u8 (*con_build_attr)(struct vc_data *vc, u8 color, enum vc_intensity intensity, bool blink, bool underline, bool reverse, bool italic);
     void (*con_invert_region)(struct vc_data *vc, u16 *p, int count);
     void (*con_debug_enter)(struct vc_data *vc);
     void (*con_debug_leave)(struct vc_data *vc);
@@ -1120,7 +1120,7 @@ virtual console number. The virtual terminal number <code class="docutils litera
 return value) means no redirection (i.e. always printed on the currently
 active console).</p>
 <p>The parameter -1 means that only the current console is returned, but the
-value is not modified. You may use the macro vt_get_kmsg_redirect() in that
+value is not modified. You may use the macro <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vt_get_kmsg_redirect()</span></code> in that
 case to make the code more understandable.</p>
 <p>When the kernel is compiled without <code class="docutils literal notranslate"><span class="pre">CONFIG_VT_CONSOLE</span></code>, this function ignores
 the parameter and always returns <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -881,7 +881,7 @@ struct v4l2_pix_format {
 #define <a class="reference internal" href="pixfmt-srggb12.html#v4l2-pix-fmt-sgbrg12"><span class="std std-ref">V4L2_PIX_FMT_SGBRG12</span></a> v4l2_fourcc('G', 'B', '1', '2') /* 12  GBGB.. RGRG.. */
 #define <a class="reference internal" href="pixfmt-srggb12.html#v4l2-pix-fmt-sgrbg12"><span class="std std-ref">V4L2_PIX_FMT_SGRBG12</span></a> v4l2_fourcc('B', 'A', '1', '2') /* 12  GRGR.. BGBG.. */
 #define <a class="reference internal" href="pixfmt-srggb12.html#v4l2-pix-fmt-srggb12"><span class="std std-ref">V4L2_PIX_FMT_SRGGB12</span></a> v4l2_fourcc('R', 'G', '1', '2') /* 12  RGRG.. GBGB.. */
-        /* 12bit raw bayer packed, 6 bytes for every 4 pixels */
+        /* 12bit raw bayer packed, 3 bytes for every 2 pixels */
 #define <a class="reference internal" href="pixfmt-srggb12p.html#v4l2-pix-fmt-sbggr12p"><span class="std std-ref">V4L2_PIX_FMT_SBGGR12P</span></a> v4l2_fourcc('p', 'B', 'C', 'C')
 #define <a class="reference internal" href="pixfmt-srggb12p.html#v4l2-pix-fmt-sgbrg12p"><span class="std std-ref">V4L2_PIX_FMT_SGBRG12P</span></a> v4l2_fourcc('p', 'G', 'C', 'C')
 #define <a class="reference internal" href="pixfmt-srggb12p.html#v4l2-pix-fmt-sgrbg12p"><span class="std std-ref">V4L2_PIX_FMT_SGRBG12P</span></a> v4l2_fourcc('p', 'g', 'C', 'C')
@@ -995,6 +995,12 @@ struct v4l2_pix_format {
 #define <a class="reference internal" href="pixfmt-srggb8-pisp-comp.html#v4l2-pix-fmt-pisp-comp2-bggr"><span class="std std-ref">V4L2_PIX_FMT_PISP_COMP2_BGGR</span></a>    v4l2_fourcc('P', 'C', '2', 'B') /* PiSP 8-bit mode 2 compressed BGGR bayer */
 #define <a class="reference internal" href="pixfmt-srggb8-pisp-comp.html#v4l2-pix-fmt-pisp-comp2-mono"><span class="std std-ref">V4L2_PIX_FMT_PISP_COMP2_MONO</span></a>    v4l2_fourcc('P', 'C', '2', 'M') /* PiSP 8-bit mode 2 compressed monochrome */
 
+/* Renesas RZ/V2H CRU packed formats. 64-bit units with contiguous pixels */
+#define <a class="reference internal" href="pixfmt-rawnn-cru.html#v4l2-pix-fmt-raw-cru10"><span class="std std-ref">V4L2_PIX_FMT_RAW_CRU10</span></a>  v4l2_fourcc('C', 'R', '1', '0')
+#define <a class="reference internal" href="pixfmt-rawnn-cru.html#v4l2-pix-fmt-raw-cru12"><span class="std std-ref">V4L2_PIX_FMT_RAW_CRU12</span></a>  v4l2_fourcc('C', 'R', '1', '2')
+#define <a class="reference internal" href="pixfmt-rawnn-cru.html#v4l2-pix-fmt-raw-cru14"><span class="std std-ref">V4L2_PIX_FMT_RAW_CRU14</span></a>  v4l2_fourcc('C', 'R', '1', '4')
+#define <a class="reference internal" href="pixfmt-rawnn-cru.html#v4l2-pix-fmt-raw-cru20"><span class="std std-ref">V4L2_PIX_FMT_RAW_CRU20</span></a>  v4l2_fourcc('C', 'R', '2', '0')
+
 /* SDR formats - used only for Software Defined Radio devices */
 #define <a class="reference internal" href="pixfmt-sdr-cu08.html#v4l2-sdr-fmt-cu8"><span class="std std-ref">V4L2_SDR_FMT_CU8</span></a>          v4l2_fourcc('C', 'U', '0', '8') /* IQ u8 */
 #define <a class="reference internal" href="pixfmt-sdr-cu16le.html#v4l2-sdr-fmt-cu16le"><span class="std std-ref">V4L2_SDR_FMT_CU16LE</span></a>       v4l2_fourcc('C', 'U', '1', '6') /* IQ u16le */
@@ -1016,6 +1022,7 @@ struct v4l2_pix_format {
 #define <a class="reference internal" href="metafmt-vsp1-hgt.html#v4l2-meta-fmt-vsp1-hgt"><span class="std std-ref">V4L2_META_FMT_VSP1_HGT</span></a>    v4l2_fourcc('V', 'S', 'P', 'T') /* R-Car VSP1 2-D Histogram */
 #define <a class="reference internal" href="metafmt-uvc.html#v4l2-meta-fmt-uvc"><span class="std std-ref">V4L2_META_FMT_UVC</span></a>         v4l2_fourcc('U', 'V', 'C', 'H') /* UVC Payload Header metadata */
 #define <a class="reference internal" href="metafmt-d4xx.html#v4l2-meta-fmt-d4xx"><span class="std std-ref">V4L2_META_FMT_D4XX</span></a>        v4l2_fourcc('D', '4', 'X', 'X') /* D4XX Payload Header metadata */
+#define <a class="reference internal" href="metafmt-uvc-msxu-1-5.html#v4l2-meta-fmt-uvc-msxu-1-5"><span class="std std-ref">V4L2_META_FMT_UVC_MSXU_1_5</span></a>  v4l2_fourcc('U', 'V', 'C', 'M') /* UVC MSXU metadata */
 #define <a class="reference internal" href="metafmt-vivid.html#v4l2-meta-fmt-vivid"><span class="std std-ref">V4L2_META_FMT_VIVID</span></a>       v4l2_fourcc('V', 'I', 'V', 'D') /* Vivid Metadata */
 
 /* Vendor specific - used for RK_ISP1 camera sub-system */

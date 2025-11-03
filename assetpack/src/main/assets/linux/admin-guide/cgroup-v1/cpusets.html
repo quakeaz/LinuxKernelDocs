@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -266,7 +266,7 @@ into the rest of the kernel, none in performance critical paths:</p>
 <li><p>in fork and exit, to attach and detach a task from its cpuset.</p></li>
 <li><p>in sched_setaffinity, to mask the requested CPUs by what’s
 allowed in that task’s cpuset.</p></li>
-<li><p>in sched.c migrate_live_tasks(), to keep migrating tasks within
+<li><p>in sched.c <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">migrate_live_tasks()</span></code>, to keep migrating tasks within
 the CPUs allowed by their cpuset, if possible.</p></li>
 <li><p>in the mbind and set_mempolicy system calls, to mask the requested
 Memory Nodes by what’s allowed in that task’s cpuset.</p></li>
@@ -345,7 +345,7 @@ and name space for cpusets, with a minimum of additional kernel code.</p>
 read-only.  The cpus file automatically tracks the value of
 cpu_online_mask using a CPU hotplug notifier, and the mems file
 automatically tracks the value of node_states[N_MEMORY]--i.e.,
-nodes with memory--using the cpuset_track_online_nodes() hook.</p>
+nodes with memory--using the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpuset_track_online_nodes()</span></code> hook.</p>
 <p>The cpuset.effective_cpus and cpuset.effective_mems files are
 normally read-only copies of cpuset.cpus and cpuset.mems files
 respectively.  If the cpuset cgroup filesystem is mounted with the
@@ -397,7 +397,7 @@ take action.</p>
 <dl class="simple">
 <dt>==&gt;</dt><dd><p>Unless this feature is enabled by writing “1” to the special file
 /dev/cpuset/memory_pressure_enabled, the hook in the rebalance
-code of __alloc_pages() for this metric reduces to simply noticing
+code of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__alloc_pages()</span></code> for this metric reduces to simply noticing
 that the cpuset_memory_pressure_enabled flag is zero.  So only
 systems that enable this feature will compute the metric.</p>
 </dd>
@@ -451,7 +451,7 @@ configuration, so long as sufficient free memory pages are available.</p>
 of their parent.</p>
 <p>Setting memory spreading causes allocations for the affected page
 or slab caches to ignore the task’s NUMA mempolicy and be spread
-instead.    Tasks using mbind() or set_mempolicy() calls to set NUMA
+instead.    Tasks using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mbind()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_mempolicy()</span></code> calls to set NUMA
 mempolicies will not notice any change in these calls as a result of
 their containing task’s memory spread settings.  If memory spreading
 is turned off, then the currently specified NUMA mempolicy once again
@@ -465,12 +465,12 @@ the named feature on.</p>
 PFA_SPREAD_PAGE for each task that is in that cpuset or subsequently
 joins that cpuset.  The page allocation calls for the page cache
 is modified to perform an inline check for this PFA_SPREAD_PAGE task
-flag, and if set, a call to a new routine cpuset_mem_spread_node()
+flag, and if set, a call to a new routine <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpuset_mem_spread_node()</span></code>
 returns the node to prefer for the allocation.</p>
 <p>Similarly, setting ‘cpuset.memory_spread_slab’ turns on the flag
 PFA_SPREAD_SLAB, and appropriately marked slab caches will allocate
-pages from the node returned by cpuset_mem_spread_node().</p>
-<p>The cpuset_mem_spread_node() routine is also simple.  It uses the
+pages from the node returned by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpuset_mem_spread_node()</span></code>.</p>
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpuset_mem_spread_node()</span></code> routine is also simple.  It uses the
 value of a per-task rotor cpuset_mem_spread_rotor to select the next
 node in the current task’s mems_allowed to prefer for the allocation.</p>
 <p>This memory placement policy is also known (in other contexts) as
@@ -591,7 +591,7 @@ of CPUs allowed to a cpuset having ‘cpuset.sched_load_balance’ enabled.</p>
 <p>The internal kernel cpuset to scheduler interface passes from the
 cpuset code to the scheduler code a partition of the load balanced
 CPUs in the system. This partition is a set of subsets (represented
-as an array of struct cpumask) of CPUs, pairwise disjoint, that cover
+as an array of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpumask</span></code>) of CPUs, pairwise disjoint, that cover
 all the CPUs that must be load balanced.</p>
 <p>The cpuset code builds a new such partition and passes it to the
 scheduler sched domain setup code, to have the sched domains rebuilt
@@ -607,10 +607,10 @@ and with this flag enabled changes,</p></li>
 </ul>
 </div></blockquote>
 <p>This partition exactly defines what sched domains the scheduler should
-setup - one sched domain for each element (struct cpumask) in the
+setup - one sched domain for each element (<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpumask</span></code>) in the
 partition.</p>
 <p>The scheduler remembers the currently active sched domain partitions.
-When the scheduler routine partition_sched_domains() is invoked from
+When the scheduler routine <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">partition_sched_domains()</span></code> is invoked from
 the cpuset code to update these sched domains, it compares the new
 partition requested with the current, and updates its sched domains,
 removing the old and adding the new, for each change.</p>
@@ -715,7 +715,7 @@ of MPOL_BIND nodes are still allowed in the new cpuset.  If the task
 was using MPOL_BIND and now none of its MPOL_BIND nodes are allowed
 in the new cpuset, then the task will be essentially treated as if it
 was MPOL_BIND bound to the new cpuset (even though its NUMA placement,
-as queried by get_mempolicy(), doesn’t change).  If a task is moved
+as queried by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_mempolicy()</span></code>, doesn’t change).  If a task is moved
 from one cpuset to another, then the kernel will adjust the task’s
 memory placement, as above, the next time that the kernel attempts
 to allocate a page of memory for that task.</p>
@@ -723,9 +723,9 @@ to allocate a page of memory for that task.</p>
 will have its allowed CPU placement changed immediately.  Similarly,
 if a task’s pid is written to another cpuset’s ‘tasks’ file, then its
 allowed CPU placement is changed immediately.  If such a task had been
-bound to some subset of its cpuset using the sched_setaffinity() call,
+bound to some subset of its cpuset using the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sched_setaffinity()</span></code> call,
 the task will be allowed to run on any CPU allowed in its new cpuset,
-negating the effect of the prior sched_setaffinity() call.</p>
+negating the effect of the prior <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sched_setaffinity()</span></code> call.</p>
 <p>In summary, the memory placement of a task whose cpuset is changed is
 updated by the kernel, on the next allocation of a page for that task,
 and the processor placement is updated immediately.</p>

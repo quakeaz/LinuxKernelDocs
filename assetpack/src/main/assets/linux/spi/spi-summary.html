@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -352,7 +352,7 @@ chips that do support some of automated discovery/enumeration.</p>
 <p>The first kind of information is a list of what SPI controllers exist.
 For System-on-Chip (SOC) based boards, these will usually be platform
 devices, and the controller may need some platform_data in order to
-operate properly.  The “struct platform_device” will include resources
+operate properly.  The “<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">platform_device</span></code>” will include resources
 like the physical address of the controller’s first register and its IRQ.</p>
 <p>Platforms will often abstract the “register SPI controller” operation,
 maybe coupling it with code to initialize pin configurations, so that
@@ -485,7 +485,7 @@ for userspace drivers.  Here we talk only about kernel drivers.</p>
 </pre></div>
 </div>
 <p>The driver core will automatically attempt to bind this driver to any SPI
-device whose board_info gave a modalias of “CHIP”.  Your probe() code
+device whose board_info gave a modalias of “CHIP”.  Your <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> code
 might look like this unless you’re creating a device which is managing
 a bus (appearing under /sys/class/spi_master).</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>static int CHIP_probe(struct spi_device *spi)
@@ -509,9 +509,9 @@ a bus (appearing under /sys/class/spi_master).</p>
 }
 </pre></div>
 </div>
-<p>As soon as it enters probe(), the driver may issue I/O requests to
-the SPI device using “<a class="reference internal" href="../driver-api/spi.html#c.spi_message" title="spi_message"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">spi_message</span></code></a>”.  When remove() returns,
-or after probe() fails, the driver guarantees that it won’t submit
+<p>As soon as it enters <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code>, the driver may issue I/O requests to
+the SPI device using “<a class="reference internal" href="../driver-api/spi.html#c.spi_message" title="spi_message"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">spi_message</span></code></a>”.  When <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove()</span></code> returns,
+or after <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> fails, the driver guarantees that it won’t submit
 any more such messages.</p>
 <blockquote>
 <div><ul>
@@ -563,7 +563,7 @@ wrappers, doing exactly that.</p></li>
 </div></blockquote>
 <p>Some drivers may need to modify spi_device characteristics like the
 transfer mode, wordsize, or clock rate.  This is done with <a class="reference internal" href="../driver-api/spi.html#c.spi_setup" title="spi_setup"><code class="xref c c-func docutils literal notranslate"><span class="pre">spi_setup()</span></code></a>,
-which would normally be called from probe() before the first I/O is
+which would normally be called from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> before the first I/O is
 done to the device.  However, that can also be called at any time
 that no message is pending for that device.</p>
 <p>While “spi_device” would be the bottom boundary of the driver, the
@@ -583,7 +583,7 @@ be allocated anywhere it’s convenient, including as part of
 other allocate-once driver data structures.  Zero-init these.</p></li>
 </ul>
 </div></blockquote>
-<p>If you like, spi_message_alloc() and spi_message_free() convenience
+<p>If you like, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spi_message_alloc()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spi_message_free()</span></code> convenience
 routines are available to allocate and zero-initialize an spi_message
 with several transfers.</p>
 </section>
@@ -592,8 +592,8 @@ with several transfers.</p>
 <p>An SPI controller will probably be registered on the platform_bus; write
 a driver to bind to the device, whichever bus is involved.</p>
 <p>The main task of this type of driver is to provide an “spi_controller”.
-Use spi_alloc_host() to allocate the host controller, and
-spi_controller_get_devdata() to get the driver-private data allocated for that
+Use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spi_alloc_host()</span></code> to allocate the host controller, and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spi_controller_get_devdata()</span></code> to get the driver-private data allocated for that
 device.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct spi_controller   *ctlr;
 struct CONTROLLER       *c;
@@ -640,13 +640,13 @@ that’s in progress for other SPI devices.</p>
 <p class="admonition-title">Note</p>
 <p>BUG ALERT:  for some reason the first version of
 many spi_controller drivers seems to get this wrong.
-When you code setup(), ASSUME that the controller
+When you code <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setup()</span></code>, ASSUME that the controller
 is actively processing transfers for another device.</p>
 </div>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">ctlr-&gt;cleanup(struct</span> <span class="pre">spi_device</span> <span class="pre">*spi)</span></code></dt><dd><p>Your controller driver may use spi_device.controller_state to hold
 state it dynamically associates with that device.  If you do that,
-be sure to provide the cleanup() method to free that state.</p>
+be sure to provide the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cleanup()</span></code> method to free that state.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">ctlr-&gt;prepare_transfer_hardware(struct</span> <span class="pre">spi_controller</span> <span class="pre">*ctlr)</span></code></dt><dd><p>This will be called by the queue mechanism to signal to the driver
 that a message is coming in soon, so the subsystem requests the
@@ -687,11 +687,11 @@ requirements.</p>
 <h3>Deprecated Methods<a class="headerlink" href="#deprecated-methods" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">ctrl-&gt;transfer(struct</span> <span class="pre">spi_device</span> <span class="pre">*spi,</span> <span class="pre">struct</span> <span class="pre">spi_message</span> <span class="pre">*message)</span></code></dt><dd><p>This must not sleep. Its responsibility is to arrange that the
-transfer happens and its complete() callback is issued. The two
+transfer happens and its <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">complete()</span></code> callback is issued. The two
 will normally happen later, after other transfers complete, and
 if the controller is idle it will need to be kickstarted. This
 method is not used on queued controllers and must be NULL if
-transfer_one_message() and (un)prepare_transfer_hardware() are
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">transfer_one_message()</span></code> and (un)<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prepare_transfer_hardware()</span></code> are
 implemented.</p>
 </dd>
 </dl>
@@ -705,14 +705,14 @@ providing pure process-context execution of methods. The message queue
 can also be elevated to realtime priority on high-priority SPI traffic.</p>
 <p>Unless the queueing mechanism in the SPI subsystem is selected, the bulk
 of the driver will be managing the I/O queue fed by the now deprecated
-function transfer().</p>
+function <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">transfer()</span></code>.</p>
 <p>That queue could be purely conceptual.  For example, a driver used only
 for low-frequency sensor access might be fine using synchronous PIO.</p>
 <p>But the queue will probably be very real, using message-&gt;queue, PIO,
 often DMA (especially if the root filesystem is in SPI flash), and
 execution contexts like IRQ handlers, tasklets, or workqueues (such
 as keventd).  Your driver can be as fancy, or as simple, as you need.
-Such a transfer() method would normally just add the message to a
+Such a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">transfer()</span></code> method would normally just add the message to a
 queue, and then start some asynchronous transfer engine (unless it’s
 already running).</p>
 </section>

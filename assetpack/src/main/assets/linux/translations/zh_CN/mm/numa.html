@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -224,13 +224,13 @@ Linux NUMA内存策略修改内核的默认本地分配行为。 [见
 其他附近的节点。</p>
 <p>一些内核分配不希望或不能容忍这种分配回退行为。相反，他们想确保他们从指定的节点获得内存，或者
 得到通知说该节点没有空闲内存。例如，当一个子系统分配每个CPU的内存资源时，通常是这种情况。</p>
-<p>一个典型的分配模式是使用内核的numa_node_id()或CPU_to_node()函数获得“当前CPU”所在节点的
+<p>一个典型的分配模式是使用内核的<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">numa_node_id()</span></code>或<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">CPU_to_node()</span></code>函数获得“当前CPU”所在节点的
 节点ID，然后只从返回的节点ID请求内存。当这样的分配失败时，请求的子系统可以恢复到它自己的回退
 路径。板块内核内存分配器就是这样的一个例子。或者，子系统可以选择在分配失败时禁用或不启用自己。
 内核分析子系统就是这样的一个例子。</p>
 <p>如果架构支持——不隐藏无内存节点，那么连接到无内存节点的CPU将总是产生回退路径的开销，或者一些
 子系统如果试图完全从无内存的节点分配内存，将无法初始化。为了透明地支持这种架构，内核子系统可
-以使用numa_mem_id()或cpu_to_mem()函数来定位调用或指定CPU的“本地内存节点”。同样，这是同
+以使用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">numa_mem_id()</span></code>或<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpu_to_mem()</span></code>函数来定位调用或指定CPU的“本地内存节点”。同样，这是同
 一个节点，默认的本地页分配将从这个节点开始尝试。</p>
 </section>
 

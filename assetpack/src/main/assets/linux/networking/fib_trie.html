@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -152,7 +152,7 @@
 <dl class="simple">
 <dt>leaf</dt><dd><p>An end node with data. This has a copy of the relevant key, along
 with ‘hlist’ with routing table entries sorted by prefix length.
-See struct leaf and struct leaf_info.</p>
+See <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">leaf</span></code> and <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">leaf_info</span></code>.</p>
 </dd>
 <dt>trie node or tnode</dt><dd><p>An internal node, holding an array of child (leaf or tnode) pointers,
 indexed through a subset of the key. See Level Compression.</p>
@@ -206,14 +206,14 @@ possible to allow verification and help up reviewing.</p>
 straightforward trie lookup.</p>
 </dd>
 <dt>fib_insert_node()</dt><dd><p>Inserts a new leaf node in the trie. This is bit more complicated than
-fib_find_node(). Inserting a new node means we might have to run the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fib_find_node()</span></code>. Inserting a new node means we might have to run the
 level compression algorithm on part of the trie.</p>
 </dd>
 <dt>trie_leaf_remove()</dt><dd><p>Looks up a key, deletes it and runs the level compression algorithm.</p>
 </dd>
 <dt>trie_rebalance()</dt><dd><p>The key function for the dynamic trie after any change in the trie
 it is run to optimize and reorganize. It will walk the trie upwards
-towards the root from a given tnode, doing a resize() at each step
+towards the root from a given tnode, doing a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">resize()</span></code> at each step
 to implement level compression.</p>
 </dd>
 <dt>resize()</dt><dd><p>Analyzes a tnode and optimizes the child array size by either inflating
@@ -221,15 +221,15 @@ or shrinking it repeatedly until it fulfills the criteria for optimal
 level compression. This part follows the original paper pretty closely
 and there may be some room for experimentation here.</p>
 </dd>
-<dt>inflate()</dt><dd><p>Doubles the size of the child array within a tnode. Used by resize().</p>
+<dt>inflate()</dt><dd><p>Doubles the size of the child array within a tnode. Used by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">resize()</span></code>.</p>
 </dd>
 <dt>halve()</dt><dd><p>Halves the size of the child array within a tnode - the inverse of
-inflate(). Used by resize();</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">inflate()</span></code>. Used by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">resize()</span></code>;</p>
 </dd>
 <dt>fn_trie_insert(), fn_trie_delete(), fn_trie_select_default()</dt><dd><p>The route manipulation functions. Should conform pretty closely to the
 corresponding functions in fib_hash.</p>
 </dd>
-<dt>fn_trie_flush()</dt><dd><p>This walks the full trie (using nextleaf()) and searches for empty
+<dt>fn_trie_flush()</dt><dd><p>This walks the full trie (using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nextleaf()</span></code>) and searches for empty
 leaves which have to be removed.</p>
 </dd>
 <dt>fn_trie_dump()</dt><dd><p>Dumps the routing table ordered by prefix length. This is somewhat
@@ -244,13 +244,13 @@ as one “zone”/hash per prefix length.</p>
 <p>fib_lock is used for an RW-lock in the same way that this is done in fib_hash.
 However, the functions are somewhat separated for other possible locking
 scenarios. It might conceivably be possible to run trie_rebalance via RCU
-to avoid read_lock in the fn_trie_lookup() function.</p>
+to avoid read_lock in the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fn_trie_lookup()</span></code> function.</p>
 </section>
 <section id="main-lookup-mechanism">
 <h2>Main lookup mechanism<a class="headerlink" href="#main-lookup-mechanism" title="Link to this heading">¶</a></h2>
-<p>fn_trie_lookup() is the main lookup function.</p>
-<p>The lookup is in its simplest form just like fib_find_node(). We descend the
-trie, key segment by key segment, until we find a leaf. check_leaf() does
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fn_trie_lookup()</span></code> is the main lookup function.</p>
+<p>The lookup is in its simplest form just like <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fib_find_node()</span></code>. We descend the
+trie, key segment by key segment, until we find a leaf. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">check_leaf()</span></code> does
 the fib_semantic_match in the leaf’s sorted prefix hlist.</p>
 <p>If we find a match, we are done.</p>
 <p>If we don’t find a match, we enter prefix matching mode. The prefix length,
@@ -269,7 +269,7 @@ are some optimizations available that can provide us with “shortcuts” to avo
 descending into dead ends. Look for “HL_OPTIMIZE” sections in the code.</p>
 <p>To alleviate any doubts about the correctness of the route selection process,
 a new netlink operation has been added. Look for NETLINK_FIB_LOOKUP, which
-gives userland access to fib_lookup().</p>
+gives userland access to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fib_lookup()</span></code>.</p>
 </section>
 </section>
 

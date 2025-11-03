@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -193,11 +193,11 @@ PCR内容附有测量日志时，认证通常会更有用。尽管测量日志�
 <section id="uefi">
 <h2>UEFI事件日志<a class="headerlink" href="#uefi" title="Link to this heading">¶</a></h2>
 <p>UEFI提供的事件日志有一些比较奇怪的特性。</p>
-<p>在调用ExitBootServices()之前，Linux EFI引导加载程序会将事件日志复制到由
-引导加载程序自定义的配置表中。不幸的是，通过ExitBootServices()生成的事件
+<p>在调用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ExitBootServices()</span></code>之前，Linux EFI引导加载程序会将事件日志复制到由
+引导加载程序自定义的配置表中。不幸的是，通过<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ExitBootServices()</span></code>生成的事件
 并不会出现在这个表里。</p>
 <p>固件提供了一个所谓的最终事件配置表排序来解决这个问题。事件会在第一次调用
-EFI_TCG2_PROTOCOL.GetEventLog()后被镜像到这个表中。</p>
+EFI_TCG2_PROTOCOL.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">GetEventLog()</span></code>后被镜像到这个表中。</p>
 <p>这引出了另一个问题：无法保证它不会在 Linux EFI stub 开始运行之前被调用。
 因此，在 stub 运行时，它需要计算并将最终事件表的大小保存到自定义配置表中，
 以便TPM驱动程序可以在稍后连接来自自定义配置表和最终事件表的两个事件日志时

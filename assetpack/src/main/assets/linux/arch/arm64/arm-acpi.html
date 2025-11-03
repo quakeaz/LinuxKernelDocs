@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -389,7 +389,7 @@ tables from section 18) to support specific functionality.</p>
 </section>
 <section id="acpi-detection">
 <h2>ACPI Detection<a class="headerlink" href="#acpi-detection" title="Link to this heading">¶</a></h2>
-<p>Drivers should determine their probe() type by checking for a null
+<p>Drivers should determine their <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> type by checking for a null
 value for ACPI_HANDLE, or checking .of_node, or other information in
 the device structure.  This is detailed further in the “Driver
 Recommendations” section.</p>
@@ -423,7 +423,7 @@ are always multiple ways to describe the same thing -- including device
 properties.  For example, device properties could use an ASL construct
 that looks like this: Name(KEY0, “value0”).  An ACPI device driver would
 then retrieve the value of the property by evaluating the KEY0 object.
-However, using Name() this way has multiple problems: (1) ACPI limits
+However, using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">Name()</span></code> this way has multiple problems: (1) ACPI limits
 names (“KEY0”) to four characters unlike DT; (2) there is no industry
 wide registry that maintains a list of names, minimizing re-use; (3)
 there is also no registry for the definition of property values (“value0”),
@@ -552,7 +552,7 @@ kernel, both of which we are trying to avoid.</p>
 <p>DO NOT remove any DT handling when adding ACPI support for a driver.  The
 same device may be used on many different systems.</p>
 <p>DO try to structure the driver so that it is data-driven.  That is, set up
-a struct containing internal per-device state based on defaults and whatever
+a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">containing</span></code> internal per-device state based on defaults and whatever
 else must be discovered by the driver probe function.  Then, have the rest
 of the driver operate off of the contents of that struct.  Doing so should
 allow most divergence between ACPI and DT functionality to be kept local to

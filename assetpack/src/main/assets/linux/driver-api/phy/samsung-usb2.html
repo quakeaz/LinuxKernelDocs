@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -236,7 +236,7 @@ phy. They carry out the common work that has to be done on all version
 of the PHY module. Depending on which SoC was chosen they execute SoC
 specific callbacks. The specific SoC version is selected by choosing
 the appropriate compatible string. In addition, this file contains
-struct of_device_id definitions for particular SoCs.</p>
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">of_device_id</span></code> definitions for particular SoCs.</p>
 </dd>
 </dl>
 </li>
@@ -253,7 +253,7 @@ structures that describe particular SoCs.</p>
 <h2>3. Supporting SoCs<a class="headerlink" href="#supporting-socs" title="Link to this heading">¶</a></h2>
 <p>To support a new SoC a new file should be added to the drivers/phy
 directory. Each SoC’s configuration is stored in an instance of the
-struct samsung_usb2_phy_config:</p>
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">samsung_usb2_phy_config</span></code>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct samsung_usb2_phy_config {
       const struct samsung_usb2_common_phy *phys;
       int (*rate_to_clk)(unsigned long, u32 *);
@@ -317,8 +317,8 @@ that should be written in the hardware register.</p>
 </pre></div>
 </div>
 <ul>
-<li><p><cite>int (*power_on)(struct samsung_usb2_phy_instance *);</cite>
-<cite>int (*power_off)(struct samsung_usb2_phy_instance *);</cite></p>
+<li><p><cite>int (*power_on)(<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">samsung_usb2_phy_instance</span></code> *);</cite>
+<cite>int (*power_off)(<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">samsung_usb2_phy_instance</span></code> *);</cite></p>
 <blockquote>
 <div><p>These two callbacks are used to power on and power off the phy
 by modifying appropriate registers.</p>
@@ -327,7 +327,7 @@ by modifying appropriate registers.</p>
 </ul>
 <p>Final change to the driver is adding appropriate compatible value to the
 phy-samsung-usb2.c file. In case of Exynos 4210 the following lines were
-added to the struct of_device_id samsung_usb2_phy_of_match[] array:</p>
+added to the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">of_device_id</span></code> samsung_usb2_phy_of_match[] array:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>#ifdef CONFIG_PHY_EXYNOS4210_USB2
       {
               .compatible = &quot;samsung,exynos4210-usb2-phy&quot;,

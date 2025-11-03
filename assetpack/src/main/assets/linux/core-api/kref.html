@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -90,6 +90,7 @@
 <li class="toctree-l3"><a class="reference internal" href="union_find.html">Union-Find in Linux</a></li>
 <li class="toctree-l3"><a class="reference internal" href="min_heap.html">Min Heap API</a></li>
 <li class="toctree-l3"><a class="reference internal" href="parser.html">Generic parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="list.html">Linked Lists in Linux</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#low-level-entry-and-exit">Low level entry and exit</a></li>
@@ -438,7 +439,7 @@ static void put_entry(struct my_data *entry)
 }
 </pre></div>
 </div>
-<p>Which is useful to remove the mutex lock around <a class="reference internal" href="#c.kref_put" title="kref_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">kref_put()</span></code></a> in put_entry(), but
+<p>Which is useful to remove the mutex lock around <a class="reference internal" href="#c.kref_put" title="kref_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">kref_put()</span></code></a> in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">put_entry()</span></code>, but
 it’s important that kref_get_unless_zero is enclosed in the same critical
 section that finds the entry in the lookup table,
 otherwise kref_get_unless_zero may reference already freed memory.
@@ -488,7 +489,7 @@ static void put_entry(struct my_data *entry)
 }
 </pre></div>
 </div>
-<p>But note that the struct kref member needs to remain in valid memory for a
+<p>But note that the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kref</span></code> member needs to remain in valid memory for a
 rcu grace period after release_entry_rcu was called. That can be accomplished
 by using kfree_rcu(entry, rhead) as done above, or by calling <a class="reference internal" href="kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a>
 before using kfree, but note that <a class="reference internal" href="kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a> may sleep for a
@@ -564,7 +565,7 @@ last reference to the object is released.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This variant of kref_lock() calls the <strong>release</strong> function with the <strong>mutex</strong>
+<p>This variant of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kref_lock()</span></code> calls the <strong>release</strong> function with the <strong>mutex</strong>
 held.  The <strong>release</strong> function will release the mutex.</p>
 </div>
 <dl class="c function">
@@ -585,7 +586,7 @@ last reference to the object is released.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This variant of kref_lock() calls the <strong>release</strong> function with the <strong>lock</strong>
+<p>This variant of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kref_lock()</span></code> calls the <strong>release</strong> function with the <strong>lock</strong>
 held.  The <strong>release</strong> function will release the lock.</p>
 </div>
 <dl class="c function">

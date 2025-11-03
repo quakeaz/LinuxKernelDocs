@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -156,9 +156,9 @@
 <p>The commands MEMBARRIER_CMD_PRIVATE_EXPEDITED and MEMBARRIER_CMD_GLOBAL_EXPEDITED
 require each architecture to have a full memory barrier after coming from
 user-space, before updating rq-&gt;curr.  This barrier is implied by the sequence
-rq_lock(); smp_mb__after_spinlock() in __schedule().  The barrier matches a full
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rq_lock()</span></code>; <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smp_mb__after_spinlock()</span></code> in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__schedule()</span></code>.  The barrier matches a full
 barrier in the proximity of the membarrier system call exit, cf.
-membarrier_{private,global}_expedited().</p>
+membarrier_{private,global}<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_expedited()</span></code>.</p>
 </section>
 <section id="memory-barriers-after-updating-rq-curr">
 <h3>Memory barriers after updating rq-&gt;curr<a class="headerlink" href="#memory-barriers-after-updating-rq-curr" title="Link to this heading">¶</a></h3>
@@ -169,16 +169,16 @@ architectures are as follows.</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>alpha, arc, arm, hexagon, mips rely on the full barrier implied by
-spin_unlock() in finish_lock_switch().</p></li>
-<li><p>arm64 relies on the full barrier implied by switch_to().</p></li>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_unlock()</span></code> in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">finish_lock_switch()</span></code>.</p></li>
+<li><p>arm64 relies on the full barrier implied by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">switch_to()</span></code>.</p></li>
 <li><p>powerpc, riscv, s390, sparc, x86 rely on the full barrier implied by
-switch_mm(), if mm is not NULL; they rely on the full barrier implied
-by mmdrop(), otherwise.  On powerpc and riscv, switch_mm() relies on
-membarrier_arch_switch_mm().</p></li>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">switch_mm()</span></code>, if mm is not NULL; they rely on the full barrier implied
+by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mmdrop()</span></code>, otherwise.  On powerpc and riscv, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">switch_mm()</span></code> relies on
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">membarrier_arch_switch_mm()</span></code>.</p></li>
 </ul>
 </div></blockquote>
 <p>The barrier matches a full barrier in the proximity of the membarrier system call
-entry, cf. membarrier_{private,global}_expedited().</p>
+entry, cf. membarrier_{private,global}<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_expedited()</span></code>.</p>
 </section>
 </section>
 </section>

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -312,7 +312,7 @@ spin_unlock(&amp;producer_lock);
 </div>
 <p>这将表明CPU必须在head索引使其对消费者可用之前写入新项目的内容，同时CPU必须在唤醒
 消费者之前写入修改后的head索引。</p>
-<p>请注意，wake_up()并不保证任何形式的屏障，除非确实唤醒了某些东西。因此我们不能依靠
+<p>请注意，<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wake_up()</span></code>并不保证任何形式的屏障，除非确实唤醒了某些东西。因此我们不能依靠
 它来进行排序。但是数组中始终有一个元素留空，因此生产者必须产生两个元素，然后才可
 能破坏消费者当前正在读取的元素。同时，消费者连续调用之间成对的解锁-加锁提供了索引
 读取（指示消费者已清空给定元素）和生产者对该相同元素的写入之间的必要顺序。</p>
@@ -343,10 +343,10 @@ spin_unlock(&amp;consumer_lock);
 </div>
 <p>这表明CPU在读取新元素之前确保索引是最新的，然后在写入新的尾指针之前应确保CPU已完
 成读取该元素，这将擦除该元素。</p>
-<p>请注意，使用READ_ONCE()和smp_load_acquire()来读取反向（head）索引。这可以防止编译
+<p>请注意，使用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">READ_ONCE()</span></code>和<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smp_load_acquire()</span></code>来读取反向（head）索引。这可以防止编译
 器丢弃并重新加载其缓存值。如果您能确定反向（head）索引将仅使用一次，则这不是必须
-的。smp_load_acquire()还可以强制CPU对后续的内存引用进行排序。类似地，两种算法都使
-用smp_store_release()来写入线程的索引。这记录了我们正在写入可以并发读取的内容的事
+的。<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smp_load_acquire()</span></code>还可以强制CPU对后续的内存引用进行排序。类似地，两种算法都使
+用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smp_store_release()</span></code>来写入线程的索引。这记录了我们正在写入可以并发读取的内容的事
 实，以防止编译器破坏存储，并强制对以前的访问进行排序。</p>
 </section>
 </section>

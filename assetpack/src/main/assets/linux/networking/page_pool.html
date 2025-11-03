@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -149,32 +149,32 @@
 <h1>Page Pool API<a class="headerlink" href="#page-pool-api" title="Link to this heading">¶</a></h1>
 <p>The page_pool allocator is optimized for recycling page or page fragment used
 by skb packet and xdp frame.</p>
-<p>Basic use involves replacing any <a class="reference internal" href="../core-api/mm-api.html#c.alloc_pages" title="alloc_pages"><code class="xref c c-func docutils literal notranslate"><span class="pre">alloc_pages()</span></code></a> calls with page_pool_alloc(),
+<p>Basic use involves replacing any <a class="reference internal" href="../core-api/mm-api.html#c.alloc_pages" title="alloc_pages"><code class="xref c c-func docutils literal notranslate"><span class="pre">alloc_pages()</span></code></a> calls with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">page_pool_alloc()</span></code>,
 which allocate memory with or without page splitting depending on the
 requested memory size.</p>
 <p>If the driver knows that it always requires full pages or its allocations are
 always smaller than half a page, it can use one of the more specific API
 calls:</p>
-<p>1. page_pool_alloc_pages(): allocate memory without page splitting when
+<p>1. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">page_pool_alloc_pages()</span></code>: allocate memory without page splitting when
 driver knows that the memory it need is always bigger than half of the page
-allocated from page pool. There is no cache line dirtying for ‘struct page’
+allocated from page pool. There is no cache line dirtying for ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code>’
 when a page is recycled back to the page pool.</p>
-<p>2. page_pool_alloc_frag(): allocate memory with page splitting when driver
+<p>2. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">page_pool_alloc_frag()</span></code>: allocate memory with page splitting when driver
 knows that the memory it need is always smaller than or equal to half of the
 page allocated from page pool. Page splitting enables memory saving and thus
 avoids TLB/cache miss for data access, but there also is some cost to
 implement page splitting, mainly some cache line dirtying/bouncing for
-‘struct page’ and atomic operation for page-&gt;pp_ref_count.</p>
+‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code>’ and atomic operation for page-&gt;pp_ref_count.</p>
 <p>The API keeps track of in-flight pages, in order to let API users know when
 it is safe to free a page_pool object, the API users must call
 <a class="reference internal" href="#c.page_pool_put_page" title="page_pool_put_page"><code class="xref c c-func docutils literal notranslate"><span class="pre">page_pool_put_page()</span></code></a> or <a class="reference internal" href="#c.page_pool_free_va" title="page_pool_free_va"><code class="xref c c-func docutils literal notranslate"><span class="pre">page_pool_free_va()</span></code></a> to free the page_pool object, or
 attach the page_pool object to a page_pool-aware object like skbs marked with
-skb_mark_for_recycle().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">skb_mark_for_recycle()</span></code>.</p>
 <p><a class="reference internal" href="#c.page_pool_put_page" title="page_pool_put_page"><code class="xref c c-func docutils literal notranslate"><span class="pre">page_pool_put_page()</span></code></a> may be called multiple times on the same page if a page
 is split into multiple fragments. For the last fragment, it will either
 recycle the page, or in case of page-&gt;_refcount &gt; 1, it will release the DMA
 mapping and in-flight state accounting.</p>
-<p>dma_sync_single_range_for_device() is only called for the last fragment when
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_sync_single_range_for_device()</span></code> is only called for the last fragment when
 page_pool is created with PP_FLAG_DMA_SYNC_DEV flag, so it depends on the
 last freed fragment to do the sync_for_device operation for all fragments in
 the same page when a page is split. The API user must setup pool-&gt;p.max_len
@@ -369,7 +369,7 @@ utilization and performance penalty.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This is just a thin wrapper around the page_pool_alloc() API, and
+<p>This is just a thin wrapper around the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">page_pool_alloc()</span></code> API, and
 it returns va of the allocated page or page fragment.</p>
 <p><strong>Return</strong></p>
 <p>the va for the allocated page or page fragment, otherwise return NULL.</p>
@@ -413,7 +413,7 @@ and avoid the extra cache line from page_pool to determine the direction.</p>
 the refcnt &gt; 1 this will unmap the page. If the page refcnt is 1
 the allocator owns the page and will try to recycle it in one of the pool
 caches. If PP_FLAG_DMA_SYNC_DEV is set, the page will be synced for_device
-using dma_sync_single_range_for_device().</p>
+using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_sync_single_range_for_device()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.page_pool_put_full_page">
@@ -470,7 +470,7 @@ as configured in <a class="reference internal" href="#c.page_pool_params" title=
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Free a va allocated from page_pool_allo_va().</p>
+<p>Free a va allocated from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">page_pool_allo_va()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.page_pool_get_dma_addr">

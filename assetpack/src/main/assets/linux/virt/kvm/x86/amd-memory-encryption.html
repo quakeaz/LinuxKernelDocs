@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -211,7 +211,7 @@ the ioctl returns 0 if SEV is enabled and <code class="docutils literal notransl
 (on some older versions of Linux, the ioctl tries to run normally even
 with a NULL argument, and therefore will likely return <code class="docutils literal notranslate"><span class="pre">EFAULT</span></code> instead
 of zero if SEV is enabled).  If non-NULL, the argument to
-KVM_MEMORY_ENCRYPT_OP must be a struct kvm_sev_cmd:</p>
+KVM_MEMORY_ENCRYPT_OP must be a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_sev_cmd</span></code>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct kvm_sev_cmd {
         __u32 id;
         __u64 data;
@@ -221,7 +221,7 @@ KVM_MEMORY_ENCRYPT_OP must be a struct kvm_sev_cmd:</p>
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">id</span></code> field contains the subcommand, and the <code class="docutils literal notranslate"><span class="pre">data</span></code> field points to
-another struct containing arguments specific to command.  The <code class="docutils literal notranslate"><span class="pre">sev_fd</span></code>
+another <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">containing</span></code> arguments specific to command.  The <code class="docutils literal notranslate"><span class="pre">sev_fd</span></code>
 should point to a file descriptor that is opened on the <code class="docutils literal notranslate"><span class="pre">/dev/sev</span></code>
 device, if needed (see individual commands).</p>
 <p>On output, <code class="docutils literal notranslate"><span class="pre">error</span></code> is zero on success, or an error code.  Error codes
@@ -235,7 +235,7 @@ context. In a typical workflow, this command should be the first command issued.
 <p>For this command to be accepted, either KVM_X86_SEV_VM or KVM_X86_SEV_ES_VM
 must have been passed to the KVM_CREATE_VM ioctl.  A virtual machine created
 with those machine types in turn cannot be run until KVM_SEV_INIT2 is invoked.</p>
-<p>Parameters: struct kvm_sev_init (in)</p>
+<p>Parameters: <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_sev_init</span></code> (in)</p>
 <p>Returns: 0 on success, -negative on error</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct kvm_sev_init {
         __u64 vmsa_features;  /* initial value of features field in VMSA */
@@ -273,7 +273,7 @@ might set the debug swap VMSA feature (bit 5) depending on the value of the
 <p>The KVM_SEV_LAUNCH_START command is used for creating the memory encryption
 context. To create the encryption context, user must provide a guest policy,
 the owner’s public Diffie-Hellman (PDH) key and session information.</p>
-<p>Parameters: struct  kvm_sev_launch_start (in/out)</p>
+<p>Parameters: <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>&#160; <span class="pre">kvm_sev_launch_start</span></code> (in/out)</p>
 <p>Returns: 0 on success, -negative on error</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct kvm_sev_launch_start {
         __u32 handle;           /* if zero then firmware creates a new handle */
@@ -297,7 +297,7 @@ the owner’s public Diffie-Hellman (PDH) key and session information.</p>
 calculates a measurement of the memory contents. The measurement is a signature
 of the memory contents that can be sent to the guest owner as an attestation
 that the memory was encrypted correctly by the firmware.</p>
-<p>Parameters (in): struct  kvm_sev_launch_update_data</p>
+<p>Parameters (in): <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>&#160; <span class="pre">kvm_sev_launch_update_data</span></code></p>
 <p>Returns: 0 on success, -negative on error</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct kvm_sev_launch_update {
         __u64 uaddr;    /* userspace address to be encrypted (must be 16-byte aligned) */
@@ -317,7 +317,7 @@ boot, the measurement can be verified by comparing it to what the guest owner
 expects.</p>
 <p>If len is zero on entry, the measurement blob length is written to len and
 uaddr is unused.</p>
-<p>Parameters (in): struct  kvm_sev_launch_measure</p>
+<p>Parameters (in): <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>&#160; <span class="pre">kvm_sev_launch_measure</span></code></p>
 <p>Returns: 0 on success, -negative on error</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct kvm_sev_launch_measure {
         __u64 uaddr;    /* where to copy the measurement */
@@ -337,7 +337,7 @@ issued to make the guest ready for the execution.</p>
 <h3>6. KVM_SEV_GUEST_STATUS<a class="headerlink" href="#kvm-sev-guest-status" title="Link to this heading">¶</a></h3>
 <p>The KVM_SEV_GUEST_STATUS command is used to retrieve status information about a
 SEV-enabled guest.</p>
-<p>Parameters (out): struct kvm_sev_guest_status</p>
+<p>Parameters (out): <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_sev_guest_status</span></code></p>
 <p>Returns: 0 on success, -negative on error</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct kvm_sev_guest_status {
         __u32 handle;   /* guest handle */
@@ -362,7 +362,7 @@ SEV_STATE_SENDING       /* guest is getting migrated out to another SEV machine 
 <h3>7. KVM_SEV_DBG_DECRYPT<a class="headerlink" href="#kvm-sev-dbg-decrypt" title="Link to this heading">¶</a></h3>
 <p>The KVM_SEV_DEBUG_DECRYPT command can be used by the hypervisor to request the
 firmware to decrypt the data at the given memory region.</p>
-<p>Parameters (in): struct kvm_sev_dbg</p>
+<p>Parameters (in): <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_sev_dbg</span></code></p>
 <p>Returns: 0 on success, -negative on error</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct kvm_sev_dbg {
         __u64 src_uaddr;        /* userspace address of data to decrypt */
@@ -377,7 +377,7 @@ firmware to decrypt the data at the given memory region.</p>
 <h3>8. KVM_SEV_DBG_ENCRYPT<a class="headerlink" href="#kvm-sev-dbg-encrypt" title="Link to this heading">¶</a></h3>
 <p>The KVM_SEV_DEBUG_ENCRYPT command can be used by the hypervisor to request the
 firmware to encrypt the data at the given memory region.</p>
-<p>Parameters (in): struct kvm_sev_dbg</p>
+<p>Parameters (in): <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_sev_dbg</span></code></p>
 <p>Returns: 0 on success, -negative on error</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct kvm_sev_dbg {
         __u64 src_uaddr;        /* userspace address of data to encrypt */
@@ -392,7 +392,7 @@ firmware to encrypt the data at the given memory region.</p>
 <h3>9. KVM_SEV_LAUNCH_SECRET<a class="headerlink" href="#kvm-sev-launch-secret" title="Link to this heading">¶</a></h3>
 <p>The KVM_SEV_LAUNCH_SECRET command can be used by the hypervisor to inject secret
 data after the measurement has been validated by the guest owner.</p>
-<p>Parameters (in): struct kvm_sev_launch_secret</p>
+<p>Parameters (in): <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_sev_launch_secret</span></code></p>
 <p>Returns: 0 on success, -negative on error</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct kvm_sev_launch_secret {
         __u64 hdr_uaddr;        /* userspace address containing the packet header */
@@ -415,7 +415,7 @@ commands and signed with the PEK. The digest returned by the command should matc
 used by the guest owner with the KVM_SEV_LAUNCH_MEASURE.</p>
 <p>If len is zero on entry, the measurement blob length is written to len and
 uaddr is unused.</p>
-<p>Parameters (in): struct kvm_sev_attestation</p>
+<p>Parameters (in): <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_sev_attestation</span></code></p>
 <p>Returns: 0 on success, -negative on error</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct kvm_sev_attestation_report {
         __u8 mnonce[16];        /* A random mnonce that will be placed in the report */
@@ -432,7 +432,7 @@ uaddr is unused.</p>
 outgoing guest encryption context.</p>
 <p>If session_len is zero on entry, the length of the guest session information is
 written to session_len and all other fields are not used.</p>
-<p>Parameters (in): struct kvm_sev_send_start</p>
+<p>Parameters (in): <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_sev_send_start</span></code></p>
 <p>Returns: 0 on success, -negative on error</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct kvm_sev_send_start {
         __u32 policy;                 /* guest policy */
@@ -460,7 +460,7 @@ KVM_SEV_SEND_START.</p>
 <p>If hdr_len or trans_len are zero on entry, the length of the packet header and
 transport region are written to hdr_len and trans_len respectively, and all
 other fields are not used.</p>
-<p>Parameters (in): struct kvm_sev_send_update_data</p>
+<p>Parameters (in): <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_sev_send_update_data</span></code></p>
 <p>Returns: 0 on success, -negative on error</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct kvm_sev_launch_send_update_data {
         __u64 hdr_uaddr;        /* userspace address containing the packet header */
@@ -494,7 +494,7 @@ migration can restart with a new target later.</p>
 context for an incoming SEV guest. To create the encryption context, the user must
 provide a guest policy, the platform public Diffie-Hellman (PDH) key and session
 information.</p>
-<p>Parameters: struct  kvm_sev_receive_start (in/out)</p>
+<p>Parameters: <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>&#160; <span class="pre">kvm_sev_receive_start</span></code> (in/out)</p>
 <p>Returns: 0 on success, -negative on error</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct kvm_sev_receive_start {
         __u32 handle;           /* if zero then firmware creates a new handle */
@@ -516,7 +516,7 @@ information.</p>
 <p>The KVM_SEV_RECEIVE_UPDATE_DATA command can be used by the hypervisor to copy
 the incoming buffers into the guest memory region with encryption context
 created during the KVM_SEV_RECEIVE_START.</p>
-<p>Parameters (in): struct kvm_sev_receive_update_data</p>
+<p>Parameters (in): <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_sev_receive_update_data</span></code></p>
 <p>Returns: 0 on success, -negative on error</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct kvm_sev_launch_receive_update_data {
         __u64 hdr_uaddr;        /* userspace address containing the packet header */
@@ -542,7 +542,7 @@ issued by the hypervisor to make the guest ready for execution.</p>
 <p>The KVM_SNP_LAUNCH_START command is used for creating the memory encryption
 context for the SEV-SNP guest. It must be called prior to issuing
 KVM_SEV_SNP_LAUNCH_UPDATE or KVM_SEV_SNP_LAUNCH_FINISH;</p>
-<p>Parameters (in): struct  kvm_sev_snp_launch_start</p>
+<p>Parameters (in): <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>&#160; <span class="pre">kvm_sev_snp_launch_start</span></code></p>
 <p>Returns: 0 on success, -negative on error</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct kvm_sev_snp_launch_start {
         __u64 policy;           /* Guest policy to use. */
@@ -577,7 +577,7 @@ processed, e.g. <code class="docutils literal notranslate"><span class="pre">len
 range plus 1, and <code class="docutils literal notranslate"><span class="pre">uaddr</span></code> is the last byte of the userspace-provided source
 buffer address plus 1. In the case where <code class="docutils literal notranslate"><span class="pre">type</span></code> is KVM_SEV_SNP_PAGE_TYPE_ZERO,
 <code class="docutils literal notranslate"><span class="pre">uaddr</span></code> will be ignored completely.</p>
-<p>Parameters (in): struct  kvm_sev_snp_launch_update</p>
+<p>Parameters (in): <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>&#160; <span class="pre">kvm_sev_snp_launch_update</span></code></p>
 <p>Returns: 0 on success, &lt; 0 on error, -EAGAIN if caller should retry</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct kvm_sev_snp_launch_update {
         __u64 gfn_start;        /* Guest page number to load/encrypt data into. */
@@ -607,7 +607,7 @@ used/measured.</p>
 <h3>20. KVM_SEV_SNP_LAUNCH_FINISH<a class="headerlink" href="#kvm-sev-snp-launch-finish" title="Link to this heading">¶</a></h3>
 <p>After completion of the SNP guest launch flow, the KVM_SEV_SNP_LAUNCH_FINISH
 command can be issued to make the guest ready for execution.</p>
-<p>Parameters (in): struct kvm_sev_snp_launch_finish</p>
+<p>Parameters (in): <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_sev_snp_launch_finish</span></code></p>
 <p>Returns: 0 on success, -negative on error</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct kvm_sev_snp_launch_finish {
         __u64 id_block_uaddr;

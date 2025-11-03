@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -86,6 +86,7 @@
 <li class="toctree-l3"><a class="reference internal" href="kprobes.html">Kernel Probes (Kprobes)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="kprobetrace.html">Kprobe-based Event Tracing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="fprobetrace.html">Fprobe-based Event Tracing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eprobetrace.html">Eprobe - Event-based Probe Tracing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="fprobe.html">Fprobe - Function entry/exit probe</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ring-buffer-design.html">Lockless Ring Buffer Design</a></li>
 </ul>
@@ -176,7 +177,7 @@ their kernel should make it all the way to dynamic ftrace support.</p>
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">¶</a></h2>
 <dl class="simple">
 <dt>Ftrace relies on these features being implemented:</dt><dd><ul class="simple">
-<li><p>STACKTRACE_SUPPORT - implement save_stack_trace()</p></li>
+<li><p>STACKTRACE_SUPPORT - implement <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">save_stack_trace()</span></code></p></li>
 <li><p>TRACE_IRQFLAGS_SUPPORT - implement include/asm/irqflags.h</p></li>
 </ul>
 </dd>
@@ -208,12 +209,12 @@ so return immediately.  If it isn’t, then call that function in the same way
 the mcount function normally calls __mcount_internal -- the first argument is
 the “frompc” while the second argument is the “selfpc” (adjusted to remove the
 size of the mcount call that is embedded in the function).</p>
-<p>For example, if the function foo() calls bar(), when the bar() function calls
-mcount(), the arguments mcount() will pass to the tracer are:</p>
+<p>For example, if the function <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">foo()</span></code> calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bar()</span></code>, when the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bar()</span></code> function calls
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mcount()</span></code>, the arguments <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mcount()</span></code> will pass to the tracer are:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>“frompc” - the address bar() will use to return to foo()</p></li>
-<li><p>“selfpc” - the address bar() (with mcount() size adjustment)</p></li>
+<li><p>“frompc” - the address <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bar()</span></code> will use to return to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">foo()</span></code></p></li>
+<li><p>“selfpc” - the address <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bar()</span></code> (with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mcount()</span></code> size adjustment)</p></li>
 </ul>
 </div></blockquote>
 <p>Also keep in mind that this mcount function will be called <em>a lot</em>, so
@@ -315,7 +316,7 @@ void ftrace_graph_caller(void)
 #endif
 </pre></div>
 </div>
-<p>For information on how to implement prepare_ftrace_return(), simply look at the
+<p>For information on how to implement <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prepare_ftrace_return()</span></code>, simply look at the
 x86 version (the frame pointer passing is optional; see the next section for
 more information).  The only architecture-specific piece in it is the setup of
 the fault recovery table (the asm(...) code).  The rest should be the same
@@ -349,10 +350,10 @@ match, then it will panic the kernel.  This is largely a sanity check for bad
 code generation with gcc.  If gcc for your port sanely updates the frame
 pointer under different optimization levels, then ignore this option.</p>
 <p>However, adding support for it isn’t terribly difficult.  In your assembly code
-that calls prepare_ftrace_return(), pass the frame pointer as the 3rd argument.
+that calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prepare_ftrace_return()</span></code>, pass the frame pointer as the 3rd argument.
 Then in the C version of that function, do what the x86 port does and pass it
-along to ftrace_push_return_trace() instead of a stub value of 0.</p>
-<p>Similarly, when you call ftrace_return_to_handler(), pass it the frame pointer.</p>
+along to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_push_return_trace()</span></code> instead of a stub value of 0.</p>
+<p>Similarly, when you call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_return_to_handler()</span></code>, pass it the frame pointer.</p>
 </section>
 <section id="have-syscall-tracepoints">
 <h2>HAVE_SYSCALL_TRACEPOINTS<a class="headerlink" href="#have-syscall-tracepoints" title="Link to this heading">¶</a></h2>
@@ -363,7 +364,7 @@ along to ftrace_push_return_trace() instead of a stub value of 0.</p>
 <li><p>Have a NR_syscalls variable in &lt;asm/unistd.h&gt; that provides the number
 of syscalls supported by the arch.</p></li>
 <li><p>Support the TIF_SYSCALL_TRACEPOINT thread flags.</p></li>
-<li><p>Put the trace_sys_enter() and trace_sys_exit() tracepoints calls from ptrace
+<li><p>Put the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">trace_sys_enter()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">trace_sys_exit()</span></code> tracepoints calls from ptrace
 in the ptrace syscalls tracing path.</p></li>
 <li><p>If the system call table on this arch is more complicated than a simple array
 of addresses of the system calls, implement an arch_syscall_addr to return
@@ -376,43 +377,40 @@ true if the function name corresponds with the symbol name.</p></li>
 </ul>
 </div></blockquote>
 </section>
-<section id="have-ftrace-mcount-record">
-<h2>HAVE_FTRACE_MCOUNT_RECORD<a class="headerlink" href="#have-ftrace-mcount-record" title="Link to this heading">¶</a></h2>
+<section id="have-dynamic-ftrace">
+<h2>HAVE_DYNAMIC_FTRACE<a class="headerlink" href="#have-dynamic-ftrace" title="Link to this heading">¶</a></h2>
 <p>See scripts/recordmcount.pl for more info.  Just fill in the arch-specific
 details for how to locate the addresses of mcount call sites via objdump.
 This option doesn’t make much sense without also implementing dynamic ftrace.</p>
-</section>
-<section id="have-dynamic-ftrace">
-<h2>HAVE_DYNAMIC_FTRACE<a class="headerlink" href="#have-dynamic-ftrace" title="Link to this heading">¶</a></h2>
-<p>You will first need HAVE_FTRACE_MCOUNT_RECORD and HAVE_FUNCTION_TRACER, so
-scroll your reader back up if you got over eager.</p>
+<p>You will first need HAVE_FUNCTION_TRACER, so scroll your reader back up if you
+got over eager.</p>
 <dl class="simple">
 <dt>Once those are out of the way, you will need to implement:</dt><dd><ul class="simple">
 <li><dl class="simple">
 <dt>asm/ftrace.h:</dt><dd><ul>
 <li><p>MCOUNT_ADDR</p></li>
-<li><p>ftrace_call_adjust()</p></li>
-<li><p>struct dyn_arch_ftrace{}</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_call_adjust()</span></code></p></li>
+<li><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dyn_arch_ftrace</span></code>{}</p></li>
 </ul>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
 <dt>asm code:</dt><dd><ul>
-<li><p>mcount() (new stub)</p></li>
-<li><p>ftrace_caller()</p></li>
-<li><p>ftrace_call()</p></li>
-<li><p>ftrace_stub()</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mcount()</span></code> (new stub)</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_caller()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_call()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_stub()</span></code></p></li>
 </ul>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
 <dt>C code:</dt><dd><ul>
-<li><p>ftrace_dyn_arch_init()</p></li>
-<li><p>ftrace_make_nop()</p></li>
-<li><p>ftrace_make_call()</p></li>
-<li><p>ftrace_update_ftrace_func()</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_dyn_arch_init()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_make_nop()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_make_call()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_update_ftrace_func()</span></code></p></li>
 </ul>
 </dd>
 </dl>
@@ -429,7 +427,7 @@ scroll your reader back up if you got over eager.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>extern void mcount(void);
 </pre></div>
 </div>
-<p>You will also need the helper function ftrace_call_adjust().  Most people
+<p>You will also need the helper function <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_call_adjust()</span></code>.  Most people
 will be able to stub it out like so:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>static inline unsigned long ftrace_call_adjust(unsigned long addr)
 {
@@ -447,13 +445,13 @@ place.  For now though, create an empty struct:</p>
 </pre></div>
 </div>
 <p>With the header out of the way, we can fill out the assembly code.  While we
-did already create a mcount() function earlier, dynamic ftrace only wants a
-stub function.  This is because the mcount() will only be used during boot
+did already create a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mcount()</span></code> function earlier, dynamic ftrace only wants a
+stub function.  This is because the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mcount()</span></code> will only be used during boot
 and then all references to it will be patched out never to return.  Instead,
-the guts of the old mcount() will be used to create a new ftrace_caller()
+the guts of the old <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mcount()</span></code> will be used to create a new <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_caller()</span></code>
 function.  Because the two are hard to merge, it will most likely be a lot
 easier to have two separate definitions split up by #ifdefs.  Same goes for
-the ftrace_stub() as that will now be inlined in ftrace_caller().</p>
+the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_stub()</span></code> as that will now be inlined in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_caller()</span></code>.</p>
 <p>Before we get confused anymore, let’s check out some pseudo code so you can
 implement your own stuff in assembly:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>void mcount(void)
@@ -480,8 +478,8 @@ ftrace_stub:
 </div>
 <p>This might look a little odd at first, but keep in mind that we will be runtime
 patching multiple things.  First, only functions that we actually want to trace
-will be patched to call ftrace_caller().  Second, since we only have one tracer
-active at a time, we will patch the ftrace_caller() function itself to call the
+will be patched to call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_caller()</span></code>.  Second, since we only have one tracer
+active at a time, we will patch the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_caller()</span></code> function itself to call the
 specific tracer in question.  That is the point of the ftrace_call label.</p>
 <p>With that in mind, let’s move on to the C code that will actually be doing the
 runtime patching.  You’ll need a little knowledge of your arch’s opcodes in
@@ -499,7 +497,7 @@ function below should be sufficient for most people:</p>
 functions.  The first is used to turn the mcount call site into a nop (which
 is what helps us retain runtime performance when not tracing).  The second is
 used to turn the mcount call site into a call to an arbitrary location (but
-typically that is ftracer_caller()).  See the general function definition in
+typically that is <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftracer_caller()</span></code>).  See the general function definition in
 linux/ftrace.h for the functions:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ftrace_make_nop()
 ftrace_make_call()
@@ -509,7 +507,7 @@ ftrace_make_call()
 by the scripts/recordmcount.pl during build time.</p>
 <p>The last function is used to do runtime patching of the active tracer.  This
 will be modifying the assembly code at the location of the ftrace_call symbol
-inside of the ftrace_caller() function.  So you should have sufficient padding
+inside of the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_caller()</span></code> function.  So you should have sufficient padding
 at that location to support the new function calls you’ll be inserting.  Some
 people will be using a “call” type instruction while others will be using a
 “branch” type instruction.  Specifically, the function is:</p>
@@ -525,17 +523,17 @@ Basically, you will need to:</p>
 <div><ul class="simple">
 <li><dl class="simple">
 <dt>update:</dt><dd><ul>
-<li><p>ftrace_caller()</p></li>
-<li><p>ftrace_graph_call()</p></li>
-<li><p>ftrace_graph_caller()</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_caller()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_graph_call()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_graph_caller()</span></code></p></li>
 </ul>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
 <dt>implement:</dt><dd><ul>
-<li><p>ftrace_enable_ftrace_graph_caller()</p></li>
-<li><p>ftrace_disable_ftrace_graph_caller()</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_enable_ftrace_graph_caller()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_disable_ftrace_graph_caller()</span></code></p></li>
 </ul>
 </dd>
 </dl>
@@ -547,12 +545,12 @@ Basically, you will need to:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>add a nop stub after the ftrace_call location named ftrace_graph_call;
-stub needs to be large enough to support a call to ftrace_graph_caller()</p></li>
-<li><p>update ftrace_graph_caller() to work with being called by the new
-ftrace_caller() since some semantics may have changed</p></li>
-<li><p>ftrace_enable_ftrace_graph_caller() will runtime patch the
-ftrace_graph_call location with a call to ftrace_graph_caller()</p></li>
-<li><p>ftrace_disable_ftrace_graph_caller() will runtime patch the
+stub needs to be large enough to support a call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_graph_caller()</span></code></p></li>
+<li><p>update <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_graph_caller()</span></code> to work with being called by the new
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_caller()</span></code> since some semantics may have changed</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_enable_ftrace_graph_caller()</span></code> will runtime patch the
+ftrace_graph_call location with a call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_graph_caller()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_disable_ftrace_graph_caller()</span></code> will runtime patch the
 ftrace_graph_call location with nops</p></li>
 </ul>
 </div></blockquote>

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -242,10 +242,10 @@ overhead to readers, for example:</p>
 </div>
 </div></blockquote>
 <p>Because the <a class="reference internal" href="../../../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a> on line 14 waits for all pre-existing
-readers, any instance of thread0() that loads a value of zero from
-<code class="docutils literal notranslate"><span class="pre">x</span></code> must complete before thread1() stores to <code class="docutils literal notranslate"><span class="pre">y</span></code>, so that
+readers, any instance of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">thread0()</span></code> that loads a value of zero from
+<code class="docutils literal notranslate"><span class="pre">x</span></code> must complete before <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">thread1()</span></code> stores to <code class="docutils literal notranslate"><span class="pre">y</span></code>, so that
 instance must also load a value of zero from <code class="docutils literal notranslate"><span class="pre">y</span></code>. Similarly, any
-instance of thread0() that loads a value of one from <code class="docutils literal notranslate"><span class="pre">y</span></code> must have
+instance of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">thread0()</span></code> that loads a value of one from <code class="docutils literal notranslate"><span class="pre">y</span></code> must have
 started after the <a class="reference internal" href="../../../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a> started, and must therefore also
 load a value of one from <code class="docutils literal notranslate"><span class="pre">x</span></code>. Therefore, the outcome:</p>
 <blockquote>
@@ -310,10 +310,10 @@ recovery from node failure, more or less as follows:</p>
 </pre></div>
 </div>
 </div></blockquote>
-<p>The RCU read-side critical section in do_something_dlm() works with
-the <a class="reference internal" href="../../../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a> in start_recovery() to guarantee that
-do_something() never runs concurrently with recovery(), but with
-little or no synchronization overhead in do_something_dlm().</p>
+<p>The RCU read-side critical section in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_something_dlm()</span></code> works with
+the <a class="reference internal" href="../../../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a> in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">start_recovery()</span></code> to guarantee that
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_something()</span></code> never runs concurrently with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recovery()</span></code>, but with
+little or no synchronization overhead in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_something_dlm()</span></code>.</p>
 <table class="docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><strong>Quick Quiz</strong>:</p></td>
@@ -323,8 +323,8 @@ little or no synchronization overhead in do_something_dlm().</p>
 <tr class="row-odd"><td><p><strong>Answer</strong>:</p></td>
 </tr>
 <tr class="row-even"><td><p>Without that extra grace period, memory reordering could result in
-do_something_dlm() executing do_something() concurrently with
-the last bits of recovery().</p></td>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_something_dlm()</span></code> executing <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_something()</span></code> concurrently with
+the last bits of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recovery()</span></code>.</p></td>
 </tr>
 </tbody>
 </table>
@@ -337,7 +337,7 @@ that waits, directly or indirectly, on completion of an invocation of
 <a class="reference external" href="https://lwn.net/Articles/573497/">quite a few use cases</a>, it would
 be good to be able to use RCU to coordinate read-side access to linked
 data structures. For this, the grace-period guarantee is not sufficient,
-as can be seen in function add_gp_buggy() below. We will look at the
+as can be seen in function <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">add_gp_buggy()</span></code> below. We will look at the
 reader’s code later, but in the meantime, just think of the reader as
 locklessly picking up the <code class="docutils literal notranslate"><span class="pre">gp</span></code> pointer, and, if the value loaded is
 non-<code class="docutils literal notranslate"><span class="pre">NULL</span></code>, locklessly accessing the <code class="docutils literal notranslate"><span class="pre">-&gt;a</span></code> and <code class="docutils literal notranslate"><span class="pre">-&gt;b</span></code> fields.</p>
@@ -443,7 +443,7 @@ cannot possibly cause any problems.</p></td>
 </table>
 <p>It is tempting to assume that the reader need not do anything special to
 control its accesses to the RCU-protected data, as shown in
-do_something_gp_buggy() below:</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_something_gp_buggy()</span></code> below:</p>
 <blockquote>
 <div><div class="highlight-none notranslate"><div class="highlight"><pre><span></span> 1 bool do_something_gp_buggy(void)
  2 {
@@ -484,7 +484,7 @@ the compiler were short of registers, it might choose to refetch from
 the current structure with a new one, the fetches of <code class="docutils literal notranslate"><span class="pre">gp-&gt;a</span></code> and
 <code class="docutils literal notranslate"><span class="pre">gp-&gt;b</span></code> might well come from two different structures, which could
 cause serious confusion. To prevent this (and much else besides),
-do_something_gp() uses <a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_dereference" title="rcu_dereference"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_dereference()</span></code></a> to fetch from <code class="docutils literal notranslate"><span class="pre">gp</span></code>:</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_something_gp()</span></code> uses <a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_dereference" title="rcu_dereference"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_dereference()</span></code></a> to fetch from <code class="docutils literal notranslate"><span class="pre">gp</span></code>:</p>
 <blockquote>
 <div><div class="highlight-none notranslate"><div class="highlight"><pre><span></span> 1 bool do_something_gp(void)
  2 {
@@ -525,7 +525,7 @@ the newly removed data element).</p></li>
 data element, so it can safely reclaim the data element, for example,
 by passing it to <a class="reference internal" href="../../../core-api/mm-api.html#c.kfree" title="kfree"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree()</span></code></a>.</p></li>
 </ol>
-<p>This process is implemented by remove_gp_synchronous():</p>
+<p>This process is implemented by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove_gp_synchronous()</span></code>:</p>
 <blockquote>
 <div><div class="highlight-none notranslate"><div class="highlight"><pre><span></span> 1 bool remove_gp_synchronous(void)
  2 {
@@ -548,7 +548,7 @@ by passing it to <a class="reference internal" href="../../../core-api/mm-api.ht
 </div></blockquote>
 <p>This function is straightforward, with line 13 waiting for a grace
 period before line 14 frees the old data element. This waiting ensures
-that readers will reach line 7 of do_something_gp() before the data
+that readers will reach line 7 of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_something_gp()</span></code> before the data
 element referenced by <code class="docutils literal notranslate"><span class="pre">p</span></code> is freed. The <a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_access_pointer" title="rcu_access_pointer"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_access_pointer()</span></code></a> on
 line 6 is similar to <a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_dereference" title="rcu_dereference"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_dereference()</span></code></a>, except that:</p>
 <ol class="arabic simple">
@@ -571,7 +571,7 @@ what destructive optimizations might the compiler make use of?</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Answer</strong>:</p></td>
 </tr>
-<tr class="row-even"><td><p>Let’s start with what happens to do_something_gp() if it fails to
+<tr class="row-even"><td><p>Let’s start with what happens to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_something_gp()</span></code> if it fails to
 use <a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_dereference" title="rcu_dereference"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_dereference()</span></code></a>. It could reuse a value formerly fetched
 from this same pointer. It could also fetch the pointer from <code class="docutils literal notranslate"><span class="pre">gp</span></code>
 in a byte-at-a-time manner, resulting in <em>load tearing</em>, in turn
@@ -581,7 +581,7 @@ guess, but by the time it gets around to checking the value, an
 update has changed the pointer to match the wrong guess. Too bad
 about any dereferences that returned pre-initialization garbage in
 the meantime!
-For remove_gp_synchronous(), as long as all modifications to
+For <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove_gp_synchronous()</span></code>, as long as all modifications to
 <code class="docutils literal notranslate"><span class="pre">gp</span></code> are carried out while holding <code class="docutils literal notranslate"><span class="pre">gp_lock</span></code>, the above
 optimizations are harmless. However, <code class="docutils literal notranslate"><span class="pre">sparse</span></code> will complain if you
 define <code class="docutils literal notranslate"><span class="pre">gp</span></code> with <code class="docutils literal notranslate"><span class="pre">__rcu</span></code> and then access it without using either
@@ -600,7 +600,7 @@ again without disrupting RCU readers.</p>
 explicit memory barrier for publication, but had nothing resembling
 <a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_dereference" title="rcu_dereference"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_dereference()</span></code></a> for subscription, nor did it have anything
 resembling the dependency-ordering barrier that was later subsumed
-into <a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_dereference" title="rcu_dereference"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_dereference()</span></code></a> and later still into READ_ONCE(). The
+into <a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_dereference" title="rcu_dereference"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_dereference()</span></code></a> and later still into <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">READ_ONCE()</span></code>. The
 need for these operations made itself known quite suddenly at a
 late-1990s meeting with the DEC Alpha architects, back in the days when
 DEC was still a free-standing company. It took the Alpha architects a
@@ -624,24 +624,24 @@ memory barrier between the time that the RCU read-side critical
 section ends and the time that <a class="reference internal" href="../../../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a> returns. Without
 this guarantee, a pre-existing RCU read-side critical section might
 hold a reference to the newly removed <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">foo</span></code> after the
-<a class="reference internal" href="../../../core-api/mm-api.html#c.kfree" title="kfree"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree()</span></code></a> on line 14 of remove_gp_synchronous().</p></li>
+<a class="reference internal" href="../../../core-api/mm-api.html#c.kfree" title="kfree"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree()</span></code></a> on line 14 of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove_gp_synchronous()</span></code>.</p></li>
 <li><p>Each CPU that has an RCU read-side critical section that ends after
 <a class="reference internal" href="../../../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a> returns is guaranteed to execute a full memory
 barrier between the time that <a class="reference internal" href="../../../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a> begins and the
 time that the RCU read-side critical section begins. Without this
 guarantee, a later RCU read-side critical section running after the
-<a class="reference internal" href="../../../core-api/mm-api.html#c.kfree" title="kfree"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree()</span></code></a> on line 14 of remove_gp_synchronous() might later run
-do_something_gp() and find the newly deleted <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">foo</span></code>.</p></li>
+<a class="reference internal" href="../../../core-api/mm-api.html#c.kfree" title="kfree"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree()</span></code></a> on line 14 of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove_gp_synchronous()</span></code> might later run
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_something_gp()</span></code> and find the newly deleted <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">foo</span></code>.</p></li>
 <li><p>If the task invoking <a class="reference internal" href="../../../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a> remains on a given CPU,
 then that CPU is guaranteed to execute a full memory barrier sometime
 during the execution of <a class="reference internal" href="../../../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a>. This guarantee ensures
-that the <a class="reference internal" href="../../../core-api/mm-api.html#c.kfree" title="kfree"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree()</span></code></a> on line 14 of remove_gp_synchronous() really
+that the <a class="reference internal" href="../../../core-api/mm-api.html#c.kfree" title="kfree"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree()</span></code></a> on line 14 of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove_gp_synchronous()</span></code> really
 does execute after the removal on line 11.</p></li>
 <li><p>If the task invoking <a class="reference internal" href="../../../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a> migrates among a group of
 CPUs during that invocation, then each of the CPUs in that group is
 guaranteed to execute a full memory barrier sometime during the
 execution of <a class="reference internal" href="../../../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a>. This guarantee also ensures that
-the <a class="reference internal" href="../../../core-api/mm-api.html#c.kfree" title="kfree"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree()</span></code></a> on line 14 of remove_gp_synchronous() really does
+the <a class="reference internal" href="../../../core-api/mm-api.html#c.kfree" title="kfree"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree()</span></code></a> on line 14 of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove_gp_synchronous()</span></code> really does
 execute after the removal on line 11, but also in the case where the
 thread executing the <a class="reference internal" href="../../../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a> migrates in the meantime.</p></li>
 </ol>
@@ -748,8 +748,8 @@ rearrangements make that impossible to determine?</p></td>
 <tr class="row-even"><td><p>In cases where <a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_read_lock" title="rcu_read_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_lock()</span></code></a> and <a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_read_unlock" title="rcu_read_unlock"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_unlock()</span></code></a> generate
 absolutely no code, RCU infers quiescent states only at special
 locations, for example, within the scheduler. Because calls to
-schedule() had better prevent calling-code accesses to shared
-variables from being rearranged across the call to schedule(), if
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">schedule()</span></code> had better prevent calling-code accesses to shared
+variables from being rearranged across the call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">schedule()</span></code>, if
 RCU detects the end of a given RCU read-side critical section, it
 will necessarily detect the end of all prior RCU read-side critical
 sections, no matter how aggressively the compiler scrambles the code.
@@ -858,7 +858,7 @@ threads:</p>
 </pre></div>
 </div>
 </div></blockquote>
-<p>After thread0() and thread1() execute concurrently, it is quite
+<p>After <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">thread0()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">thread1()</span></code> execute concurrently, it is quite
 possible to have</p>
 <blockquote>
 <div><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(r1 == 1 &amp;&amp; r2 == 0)
@@ -878,7 +878,7 @@ significant ordering constraints would slow down these fast-path APIs.</p>
 </tr>
 <tr class="row-odd"><td><p><strong>Answer</strong>:</p></td>
 </tr>
-<tr class="row-even"><td><p>No, the volatile casts in READ_ONCE() and WRITE_ONCE()
+<tr class="row-even"><td><p>No, the volatile casts in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">READ_ONCE()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">WRITE_ONCE()</span></code>
 prevent the compiler from reordering in this particular case.</p></td>
 </tr>
 </tbody>
@@ -912,11 +912,11 @@ example illustrates this:</p>
 </pre></div>
 </div>
 </div></blockquote>
-<p>If the thread0() function’s <a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_read_lock" title="rcu_read_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_lock()</span></code></a> excluded the
-thread1() function’s update, the WARN_ON() could never fire. But
+<p>If the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">thread0()</span></code> function’s <a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_read_lock" title="rcu_read_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_lock()</span></code></a> excluded the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">thread1()</span></code> function’s update, the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">WARN_ON()</span></code> could never fire. But
 the fact is that <a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_read_lock" title="rcu_read_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_lock()</span></code></a> does not exclude much of anything
-aside from subsequent grace periods, of which thread1() has none, so
-the WARN_ON() can and does fire.</p>
+aside from subsequent grace periods, of which <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">thread1()</span></code> has none, so
+the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">WARN_ON()</span></code> can and does fire.</p>
 </section>
 <section id="updaters-only-wait-for-old-readers">
 <h3>Updaters Only Wait For Old Readers<a class="headerlink" href="#updaters-only-wait-for-old-readers" title="Link to this heading">¶</a></h3>
@@ -1028,12 +1028,12 @@ period is known to end before the second grace period starts:</p>
 </pre></div>
 </div>
 </div></blockquote>
-<p>Here, if <code class="docutils literal notranslate"><span class="pre">(r1</span> <span class="pre">==</span> <span class="pre">1)</span></code>, then thread0()’s write to <code class="docutils literal notranslate"><span class="pre">b</span></code> must happen
-before the end of thread1()’s grace period. If in addition
-<code class="docutils literal notranslate"><span class="pre">(r4</span> <span class="pre">==</span> <span class="pre">1)</span></code>, then thread3()’s read from <code class="docutils literal notranslate"><span class="pre">b</span></code> must happen after
-the beginning of thread2()’s grace period. If it is also the case
-that <code class="docutils literal notranslate"><span class="pre">(r2</span> <span class="pre">==</span> <span class="pre">1)</span></code>, then the end of thread1()’s grace period must
-precede the beginning of thread2()’s grace period. This mean that
+<p>Here, if <code class="docutils literal notranslate"><span class="pre">(r1</span> <span class="pre">==</span> <span class="pre">1)</span></code>, then <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">thread0()</span></code>’s write to <code class="docutils literal notranslate"><span class="pre">b</span></code> must happen
+before the end of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">thread1()</span></code>’s grace period. If in addition
+<code class="docutils literal notranslate"><span class="pre">(r4</span> <span class="pre">==</span> <span class="pre">1)</span></code>, then <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">thread3()</span></code>’s read from <code class="docutils literal notranslate"><span class="pre">b</span></code> must happen after
+the beginning of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">thread2()</span></code>’s grace period. If it is also the case
+that <code class="docutils literal notranslate"><span class="pre">(r2</span> <span class="pre">==</span> <span class="pre">1)</span></code>, then the end of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">thread1()</span></code>’s grace period must
+precede the beginning of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">thread2()</span></code>’s grace period. This mean that
 the two RCU read-side critical sections cannot overlap, guaranteeing
 that <code class="docutils literal notranslate"><span class="pre">(r3</span> <span class="pre">==</span> <span class="pre">1)</span></code>. As a result, the outcome:</p>
 <blockquote>
@@ -1210,8 +1210,8 @@ exceptions, where RCU can provide:</p>
 </li>
 </ol>
 <p>This focus on read-mostly situations means that RCU must interoperate
-with other synchronization primitives. For example, the add_gp() and
-remove_gp_synchronous() examples discussed earlier use RCU to
+with other synchronization primitives. For example, the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">add_gp()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove_gp_synchronous()</span></code> examples discussed earlier use RCU to
 protect readers and locking to coordinate updaters. However, the need
 extends much farther, requiring that a variety of synchronization
 primitives be legal within RCU read-side critical sections, including
@@ -1399,19 +1399,19 @@ be used in place of <a class="reference internal" href="../../../core-api/kernel
 </div>
 </div></blockquote>
 <p>A definition of <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">foo</span></code> is finally needed, and appears on
-lines 1-5. The function remove_gp_cb() is passed to <a class="reference internal" href="../../../core-api/kernel-api.html#c.call_rcu" title="call_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">call_rcu()</span></code></a>
+lines 1-5. The function <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove_gp_cb()</span></code> is passed to <a class="reference internal" href="../../../core-api/kernel-api.html#c.call_rcu" title="call_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">call_rcu()</span></code></a>
 on line 25, and will be invoked after the end of a subsequent grace
-period. This gets the same effect as remove_gp_synchronous(), but
+period. This gets the same effect as <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove_gp_synchronous()</span></code>, but
 without forcing the updater to wait for a grace period to elapse. The
 <a class="reference internal" href="../../../core-api/kernel-api.html#c.call_rcu" title="call_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">call_rcu()</span></code></a> function may be used in a number of situations where
 neither <a class="reference internal" href="../../../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a> nor <a class="reference internal" href="../../../core-api/kernel-api.html#c.synchronize_rcu_expedited" title="synchronize_rcu_expedited"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu_expedited()</span></code></a> would
-be legal, including within preempt-disable code, local_bh_disable()
+be legal, including within preempt-disable code, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">local_bh_disable()</span></code>
 code, interrupt-disable code, and interrupt handlers. However, even
 <a class="reference internal" href="../../../core-api/kernel-api.html#c.call_rcu" title="call_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">call_rcu()</span></code></a> is illegal within NMI handlers and from idle and offline
-CPUs. The callback function (remove_gp_cb() in this case) will be
+CPUs. The callback function (<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove_gp_cb()</span></code> in this case) will be
 executed within softirq (software interrupt) environment within the
 Linux kernel, either within a real softirq handler or under the
-protection of local_bh_disable(). In both the Linux kernel and in
+protection of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">local_bh_disable()</span></code>. In both the Linux kernel and in
 userspace, it is bad practice to write an RCU callback function that
 takes too long. Long-running operations should be relegated to separate
 threads or (in the Linux kernel) workqueues.</p>
@@ -1434,7 +1434,7 @@ after <code class="docutils literal notranslate"><span class="pre">-&gt;gp_lock<
 </tr>
 </tbody>
 </table>
-<p>However, all that remove_gp_cb() is doing is invoking <a class="reference internal" href="../../../core-api/mm-api.html#c.kfree" title="kfree"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree()</span></code></a> on
+<p>However, all that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove_gp_cb()</span></code> is doing is invoking <a class="reference internal" href="../../../core-api/mm-api.html#c.kfree" title="kfree"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree()</span></code></a> on
 the data element. This is a common idiom, and is supported by
 <a class="reference internal" href="../../../core-api/kernel-api.html#c.kfree_rcu" title="kfree_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree_rcu()</span></code></a>, which allows “fire and forget” operation as shown
 below:</p>
@@ -1463,7 +1463,7 @@ below:</p>
 </pre></div>
 </div>
 </div></blockquote>
-<p>Note that remove_gp_faf() simply invokes <a class="reference internal" href="../../../core-api/kernel-api.html#c.kfree_rcu" title="kfree_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree_rcu()</span></code></a> and
+<p>Note that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove_gp_faf()</span></code> simply invokes <a class="reference internal" href="../../../core-api/kernel-api.html#c.kfree_rcu" title="kfree_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree_rcu()</span></code></a> and
 proceeds, without any need to pay any further attention to the
 subsequent grace period and <a class="reference internal" href="../../../core-api/mm-api.html#c.kfree" title="kfree"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree()</span></code></a>. It is permissible to invoke
 <a class="reference internal" href="../../../core-api/kernel-api.html#c.kfree_rcu" title="kfree_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree_rcu()</span></code></a> from the same environments as for <a class="reference internal" href="../../../core-api/kernel-api.html#c.call_rcu" title="call_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">call_rcu()</span></code></a>.
@@ -1545,7 +1545,7 @@ definition prevent later grace periods from ever completing. For a more
 involved example, consider a 64-CPU system built with
 <code class="docutils literal notranslate"><span class="pre">CONFIG_RCU_NOCB_CPU=y</span></code> and booted with <code class="docutils literal notranslate"><span class="pre">rcu_nocbs=1-63</span></code>, where
 CPUs 1 through 63 spin in tight loops that invoke <a class="reference internal" href="../../../core-api/kernel-api.html#c.call_rcu" title="call_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">call_rcu()</span></code></a>. Even
-if these tight loops also contain calls to cond_resched() (thus
+if these tight loops also contain calls to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cond_resched()</span></code> (thus
 allowing grace periods to complete), CPU 0 simply will not be able to
 invoke callbacks as fast as the other 63 CPUs can register them, at
 least not until the system runs out of memory. In both of these
@@ -1557,21 +1557,21 @@ callbacks.</p>
 periods:</p>
 <ol class="arabic simple">
 <li><p>If a grace period fails to complete within 100 milliseconds, RCU
-causes future invocations of cond_resched() on the holdout CPUs
+causes future invocations of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cond_resched()</span></code> on the holdout CPUs
 to provide an RCU quiescent state. RCU also causes those CPUs’
-need_resched() invocations to return <code class="docutils literal notranslate"><span class="pre">true</span></code>, but only after the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">need_resched()</span></code> invocations to return <code class="docutils literal notranslate"><span class="pre">true</span></code>, but only after the
 corresponding CPU’s next scheduling-clock.</p></li>
 <li><p>CPUs mentioned in the <code class="docutils literal notranslate"><span class="pre">nohz_full</span></code> kernel boot parameter can run
 indefinitely in the kernel without scheduling-clock interrupts, which
-defeats the above need_resched() strategem. RCU will therefore
-invoke resched_cpu() on any <code class="docutils literal notranslate"><span class="pre">nohz_full</span></code> CPUs still holding out
+defeats the above <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">need_resched()</span></code> strategem. RCU will therefore
+invoke <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">resched_cpu()</span></code> on any <code class="docutils literal notranslate"><span class="pre">nohz_full</span></code> CPUs still holding out
 after 109 milliseconds.</p></li>
 <li><p>In kernels built with <code class="docutils literal notranslate"><span class="pre">CONFIG_RCU_BOOST=y</span></code>, if a given task that
 has been preempted within an RCU read-side critical section is
 holding out for more than 500 milliseconds, RCU will resort to
 priority boosting.</p></li>
 <li><p>If a CPU is still holding out 10 seconds into the grace period, RCU
-will invoke resched_cpu() on it regardless of its <code class="docutils literal notranslate"><span class="pre">nohz_full</span></code>
+will invoke <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">resched_cpu()</span></code> on it regardless of its <code class="docutils literal notranslate"><span class="pre">nohz_full</span></code>
 state.</p></li>
 </ol>
 <p>The above values are defaults for systems running with <code class="docutils literal notranslate"><span class="pre">HZ=1000</span></code>. They
@@ -1675,7 +1675,7 @@ RCU callbacks in the <a class="reference internal" href="../../../core-api/kerne
 rates should not delay RCU read-side critical sections, although some
 small read-side delays can occur when using
 <a class="reference internal" href="../../../core-api/kernel-api.html#c.synchronize_rcu_expedited" title="synchronize_rcu_expedited"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu_expedited()</span></code></a>, courtesy of this function’s use of
-smp_call_function_single().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smp_call_function_single()</span></code>.</p>
 <p>Although all three of these corner cases were understood in the early
 1990s, a simple user-level test consisting of <code class="docutils literal notranslate"><span class="pre">close(open(path))</span></code> in a
 tight loop in the early 2000s suddenly provided a much deeper
@@ -1707,7 +1707,7 @@ Code shared between readers and updaters can use
 <a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_dereference_check" title="rcu_dereference_check"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_dereference_check()</span></code></a>, which also takes a lockdep expression,
 and emits a lockdep splat if neither <a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_read_lock" title="rcu_read_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_lock()</span></code></a> nor the
 indicated protection is in place. In addition,
-rcu_dereference_raw() is used in those (hopefully rare) cases
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_dereference_raw()</span></code> is used in those (hopefully rare) cases
 where the required protection cannot be easily described. Finally,
 <a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_read_lock_held" title="rcu_read_lock_held"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_lock_held()</span></code></a> is provided to allow a function to verify
 that it has been invoked within an RCU read-side critical section. I
@@ -1715,7 +1715,7 @@ was made aware of this set of requirements shortly after Thomas
 Gleixner audited a number of RCU uses.</p></li>
 <li><p>A given function might wish to check for RCU-related preconditions
 upon entry, before using any other RCU API. The
-rcu_lockdep_assert() does this job, asserting the expression in
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_lockdep_assert()</span></code> does this job, asserting the expression in
 kernels having lockdep enabled and doing nothing otherwise.</p></li>
 <li><p>It is also easy to forget to use <a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_assign_pointer" title="rcu_assign_pointer"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_assign_pointer()</span></code></a> and
 <a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_dereference" title="rcu_dereference"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_dereference()</span></code></a>, perhaps (incorrectly) substituting a simple
@@ -1733,7 +1733,7 @@ allocated on the stack must be initialized with
 <a class="reference internal" href="../../../core-api/kernel-api.html#c.init_rcu_head_on_stack" title="init_rcu_head_on_stack"><code class="xref c c-func docutils literal notranslate"><span class="pre">init_rcu_head_on_stack()</span></code></a> and cleaned up with
 <a class="reference internal" href="../../../core-api/kernel-api.html#c.destroy_rcu_head_on_stack" title="destroy_rcu_head_on_stack"><code class="xref c c-func docutils literal notranslate"><span class="pre">destroy_rcu_head_on_stack()</span></code></a>. Similarly, statically allocated
 non-stack <code class="docutils literal notranslate"><span class="pre">rcu_head</span></code> structures must be initialized with
-init_rcu_head() and cleaned up with destroy_rcu_head().
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init_rcu_head()</span></code> and cleaned up with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">destroy_rcu_head()</span></code>.
 Mathieu Desnoyers made me aware of this requirement, and also
 supplied the needed
 <a class="reference external" href="https://lore.kernel.org/r/20100319013024.GA28456&#64;Krystal">patch</a>.</p></li>
@@ -1749,9 +1749,9 @@ and systems running those workloads can be booted with
 <code class="docutils literal notranslate"><span class="pre">rcupdate.rcu_cpu_stall_suppress</span></code> to suppress the splats. This
 kernel parameter may also be set via <code class="docutils literal notranslate"><span class="pre">sysfs</span></code>. Furthermore, RCU CPU
 stall warnings are counter-productive during sysrq dumps and during
-panics. RCU therefore supplies the rcu_sysrq_start() and
-rcu_sysrq_end() API members to be called before and after long
-sysrq dumps. RCU also supplies the rcu_panic() notifier that is
+panics. RCU therefore supplies the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_sysrq_start()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_sysrq_end()</span></code> API members to be called before and after long
+sysrq dumps. RCU also supplies the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_panic()</span></code> notifier that is
 automatically invoked at the beginning of a panic to suppress further
 RCU CPU stall warnings.</p>
 <p>This requirement made itself known in the early 1990s, pretty much
@@ -1843,7 +1843,7 @@ complications</a>.</p>
 <section id="early-boot">
 <h3>Early Boot<a class="headerlink" href="#early-boot" title="Link to this heading">¶</a></h3>
 <p>The Linux kernel’s boot sequence is an interesting process, and RCU is
-used early, even before rcu_init() is invoked. In fact, a number of
+used early, even before <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_init()</span></code> is invoked. In fact, a number of
 RCU’s primitives can be used as soon as the initial task’s
 <code class="docutils literal notranslate"><span class="pre">task_struct</span></code> is available and the boot CPU’s per-CPU variables are
 set up. The read-side primitives (<a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_read_lock" title="rcu_read_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_lock()</span></code></a>,
@@ -1852,7 +1852,7 @@ set up. The read-side primitives (<a class="reference internal" href="../../../c
 <a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_assign_pointer" title="rcu_assign_pointer"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_assign_pointer()</span></code></a>.</p>
 <p>Although <a class="reference internal" href="../../../core-api/kernel-api.html#c.call_rcu" title="call_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">call_rcu()</span></code></a> may be invoked at any time during boot,
 callbacks are not guaranteed to be invoked until after all of RCU’s
-kthreads have been spawned, which occurs at early_initcall() time.
+kthreads have been spawned, which occurs at <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">early_initcall()</span></code> time.
 This delay in callback invocation is due to the fact that RCU does not
 invoke callbacks until it is fully initialized, and this full
 initialization cannot occur until after the scheduler has initialized
@@ -1874,7 +1874,7 @@ which means that a subsequent <a class="reference internal" href="../../../core-
 wait for something, as opposed to simply returning immediately.
 Unfortunately, <a class="reference internal" href="../../../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a> can’t do this until all of its
 kthreads are spawned, which doesn’t happen until some time during
-early_initcalls() time. But this is no excuse: RCU is nevertheless
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">early_initcalls()</span></code> time. But this is no excuse: RCU is nevertheless
 required to correctly handle synchronous grace periods during this time
 period. Once all of its kthreads are up and running, RCU starts running
 normally.</p>
@@ -1937,10 +1937,10 @@ algorithm</a>
 that meets this requirement.</p>
 <p>Furthermore, NMI handlers can be interrupted by what appear to RCU to be
 normal interrupts. One way that this can happen is for code that
-directly invokes ct_irq_enter() and ct_irq_exit() to be called
+directly invokes <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ct_irq_enter()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ct_irq_exit()</span></code> to be called
 from an NMI handler. This astonishing fact of life prompted the current
-code structure, which has ct_irq_enter() invoking
-ct_nmi_enter() and ct_irq_exit() invoking ct_nmi_exit().
+code structure, which has <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ct_irq_enter()</span></code> invoking
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ct_nmi_enter()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ct_irq_exit()</span></code> invoking <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ct_nmi_exit()</span></code>.
 And yes, I also learned of this requirement the hard way.</p>
 </section>
 <section id="loadable-modules">
@@ -2021,7 +2021,7 @@ be invoked from CPU-hotplug notifiers, including even synchronous
 grace-period operations such as (<a class="reference internal" href="../../../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a> and
 <a class="reference internal" href="../../../core-api/kernel-api.html#c.synchronize_rcu_expedited" title="synchronize_rcu_expedited"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu_expedited()</span></code></a>).  However, these synchronous operations
 do block and therefore cannot be invoked from notifiers that execute via
-stop_machine(), specifically those between the <code class="docutils literal notranslate"><span class="pre">CPUHP_AP_OFFLINE</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">stop_machine()</span></code>, specifically those between the <code class="docutils literal notranslate"><span class="pre">CPUHP_AP_OFFLINE</span></code>
 and <code class="docutils literal notranslate"><span class="pre">CPUHP_AP_ONLINE</span></code> states.</p>
 <p>In addition, all-callback-wait operations such as <a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_barrier" title="rcu_barrier"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_barrier()</span></code></a> may
 not be invoked from any CPU-hotplug notifier.  This restriction is due
@@ -2041,12 +2041,12 @@ offline CPUs.  However, as a debugging measure, the FQS loop does splat
 if offline CPUs block an RCU grace period for too long.</p>
 <p>An offline CPU’s quiescent state will be reported either:</p>
 <ol class="arabic simple">
-<li><p>As the CPU goes offline using RCU’s hotplug notifier (rcutree_report_cpu_dead()).</p></li>
-<li><p>When grace period initialization (rcu_gp_init()) detects a
+<li><p>As the CPU goes offline using RCU’s hotplug notifier (<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcutree_report_cpu_dead()</span></code>).</p></li>
+<li><p>When grace period initialization (<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_gp_init()</span></code>) detects a
 race either with CPU offlining or with a task unblocking on a leaf
 <code class="docutils literal notranslate"><span class="pre">rcu_node</span></code> structure whose CPUs are all offline.</p></li>
 </ol>
-<p>The CPU-online path (rcutree_report_cpu_starting()) should never need to report
+<p>The CPU-online path (<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcutree_report_cpu_starting()</span></code>) should never need to report
 a quiescent state for an offline CPU.  However, as a debugging measure,
 it does emit a warning if a quiescent state was not already reported
 for that CPU.</p>
@@ -2054,6 +2054,118 @@ for that CPU.</p>
 corresponding CPU’s leaf node lock is held. This avoids race conditions
 between RCU’s hotplug notifier hooks, the grace period initialization
 code, and the FQS loop, all of which refer to or modify this bookkeeping.</p>
+<p>Note that grace period initialization (<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_gp_init()</span></code>) must carefully sequence
+CPU hotplug scanning with grace period state changes. For example, the
+following race could occur in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_gp_init()</span></code> if <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_seq_start()</span></code> were to happen
+after the CPU hotplug scanning.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>CPU0 (rcu_gp_init)                   CPU1                          CPU2
+---------------------                ----                          ----
+// Hotplug scan first (WRONG ORDER)
+rcu_for_each_leaf_node(rnp) {
+    rnp-&gt;qsmaskinit = rnp-&gt;qsmaskinitnext;
+}
+                                     rcutree_report_cpu_starting()
+                                         rnp-&gt;qsmaskinitnext |= mask;
+                                     rcu_read_lock()
+                                     r0 = *X;
+                                                                   r1 = *X;
+                                                                   X = NULL;
+                                                                   cookie = get_state_synchronize_rcu();
+                                                                   // cookie = 8 (future GP)
+rcu_seq_start(&amp;rcu_state.gp_seq);
+// gp_seq = 5
+
+// CPU1 now invisible to this GP!
+rcu_for_each_node_breadth_first() {
+    rnp-&gt;qsmask = rnp-&gt;qsmaskinit;
+    // CPU1 not included!
+}
+
+// GP completes without CPU1
+rcu_seq_end(&amp;rcu_state.gp_seq);
+// gp_seq = 8
+                                                                   poll_state_synchronize_rcu(cookie);
+                                                                   // Returns true!
+                                                                   kfree(r1);
+                                     r2 = *r0; // USE-AFTER-FREE!
+</pre></div>
+</div>
+<p>By incrementing gp_seq first, CPU1’s RCU read-side critical section
+is guaranteed to not be missed by CPU2.</p>
+<p><strong>Concurrent Quiescent State Reporting for Offline CPUs</strong></p>
+<p>RCU must ensure that CPUs going offline report quiescent states to avoid
+blocking grace periods. This requires careful synchronization to handle
+race conditions</p>
+<p><strong>Race condition causing Offline CPU to hang GP</strong></p>
+<p>A race between CPU offlining and new GP initialization (gp_init) may occur
+because <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_report_qs_rnp()</span></code></cite> in <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcutree_report_cpu_dead()</span></code></cite> must temporarily
+release the <cite>rcu_node</cite> lock to wake the RCU grace-period kthread:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>CPU1 (going offline)                 CPU0 (GP kthread)
+--------------------                 -----------------
+rcutree_report_cpu_dead()
+  rcu_report_qs_rnp()
+    // Must release rnp-&gt;lock to wake GP kthread
+    raw_spin_unlock_irqrestore_rcu_node()
+                                     // Wakes up and starts new GP
+                                     rcu_gp_init()
+                                       // First loop:
+                                       copies qsmaskinitnext-&gt;qsmaskinit
+                                       // CPU1 still in qsmaskinitnext!
+
+                                       // Second loop:
+                                       rnp-&gt;qsmask = rnp-&gt;qsmaskinit
+                                       mask = rnp-&gt;qsmask &amp; ~rnp-&gt;qsmaskinitnext
+                                       // mask is 0! CPU1 still in both masks
+    // Reacquire lock (but too late)
+  rnp-&gt;qsmaskinitnext &amp;= ~mask       // Finally clears bit
+</pre></div>
+</div>
+<p>Without <cite>ofl_lock</cite>, the new grace period includes the offline CPU and waits
+forever for its quiescent state causing a GP hang.</p>
+<p><strong>A solution with ofl_lock</strong></p>
+<p>The <cite>ofl_lock</cite> (offline lock) prevents <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_gp_init()</span></code></cite> from running during
+the vulnerable window when <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_report_qs_rnp()</span></code></cite> has released <cite>rnp-&gt;lock</cite>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>CPU0 (rcu_gp_init)                   CPU1 (rcutree_report_cpu_dead)
+------------------                   ------------------------------
+rcu_for_each_leaf_node(rnp) {
+    arch_spin_lock(&amp;ofl_lock) -----&gt; arch_spin_lock(&amp;ofl_lock) [BLOCKED]
+
+    // Safe: CPU1 can&#39;t interfere
+    rnp-&gt;qsmaskinit = rnp-&gt;qsmaskinitnext
+
+    arch_spin_unlock(&amp;ofl_lock) ---&gt; // Now CPU1 can proceed
+}                                    // But snapshot already taken
+</pre></div>
+</div>
+<p><strong>Another race causing GP hangs in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_gpu_init()</span></code>: Reporting QS for Now-offline CPUs</strong></p>
+<p>After the first loop takes an atomic snapshot of online CPUs, as shown above,
+the second loop in <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_gp_init()</span></code></cite> detects CPUs that went offline between
+releasing <cite>ofl_lock</cite> and acquiring the per-node <cite>rnp-&gt;lock</cite>. This detection is
+crucial because:</p>
+<ol class="arabic simple">
+<li><p>The CPU might have gone offline after the snapshot but before the second loop</p></li>
+<li><p>The offline CPU cannot report its own QS if it’s already dead</p></li>
+<li><p>Without this detection, the grace period would wait forever for CPUs that
+are now offline.</p></li>
+</ol>
+<p>The second loop performs this detection safely:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>rcu_for_each_node_breadth_first(rnp) {
+    raw_spin_lock_irqsave_rcu_node(rnp, flags);
+    rnp-&gt;qsmask = rnp-&gt;qsmaskinit;  // Apply the snapshot
+
+    // Detect CPUs offline after snapshot
+    mask = rnp-&gt;qsmask &amp; ~rnp-&gt;qsmaskinitnext;
+
+    if (mask &amp;&amp; rcu_is_leaf_node(rnp))
+        rcu_report_qs_rnp(mask, ...)  // Report QS for offline CPUs
+}
+</pre></div>
+</div>
+<p>This approach ensures atomicity: quiescent state reporting for offline CPUs
+happens either in <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_gp_init()</span></code></cite> (second loop) or in <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcutree_report_cpu_dead()</span></code></cite>,
+never both and never neither. The <cite>rnp-&gt;lock</cite> held throughout the sequence
+prevents races - <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcutree_report_cpu_dead()</span></code></cite> also acquires this lock when
+clearing <cite>qsmaskinitnext</cite>, ensuring mutual exclusion.</p>
 </section>
 <section id="scheduler-and-rcu">
 <h3>Scheduler and RCU<a class="headerlink" href="#scheduler-and-rcu" title="Link to this heading">¶</a></h3>
@@ -2080,7 +2192,7 @@ to result in destructive recursion via interrupt handler’s use of RCU.</p>
 <section id="tracing-and-rcu">
 <h3>Tracing and RCU<a class="headerlink" href="#tracing-and-rcu" title="Link to this heading">¶</a></h3>
 <p>It is possible to use tracing on RCU code, but tracing itself uses RCU.
-For this reason, rcu_dereference_raw_check() is provided for use
+For this reason, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_dereference_raw_check()</span></code> is provided for use
 by tracing, which avoids the destructive recursion that could otherwise
 ensue. This API is also used by virtualization in some architectures,
 where RCU readers execute in environments in which tracing cannot be
@@ -2265,9 +2377,9 @@ no-joking guaranteed to never execute any RCU read-side critical
 sections, and RCU believes this CPU to be idle, no problem. This
 sort of thing is used by some architectures for light-weight
 exception handlers, which can then avoid the overhead of
-ct_irq_enter() and ct_irq_exit() at exception entry and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ct_irq_enter()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ct_irq_exit()</span></code> at exception entry and
 exit, respectively. Some go further and avoid the entireties of
-irq_enter() and irq_exit().
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irq_enter()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irq_exit()</span></code>.
 Just make very sure you are running some of your tests with
 <code class="docutils literal notranslate"><span class="pre">CONFIG_PROVE_RCU=y</span></code>, just in case one of your code paths was in
 fact joking about not doing RCU read-side critical sections.</p></li>
@@ -2292,7 +2404,7 @@ long, you get RCU CPU stall warnings.</p></li>
 <tr class="row-odd"><td><p><strong>Quick Quiz</strong>:</p></td>
 </tr>
 <tr class="row-even"><td><p>But what if my driver has a hardware interrupt handler that can run
-for many seconds? I cannot invoke schedule() from an hardware
+for many seconds? I cannot invoke <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">schedule()</span></code> from an hardware
 interrupt handler, after all!</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Answer</strong>:</p></td>
@@ -2408,7 +2520,7 @@ number of race conditions.</p>
 <p>RCU must avoid degrading real-time response for CPU-bound threads,
 whether executing in usermode (which is one use case for
 <code class="docutils literal notranslate"><span class="pre">CONFIG_NO_HZ_FULL=y</span></code>) or in the kernel. That said, CPU-bound loops in
-the kernel must execute cond_resched() at least once per few tens of
+the kernel must execute <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cond_resched()</span></code> at least once per few tens of
 milliseconds in order to avoid receiving an IPI from RCU.</p>
 <p>Finally, RCU’s status as a synchronization primitive means that any RCU
 failure can result in arbitrary memory corruption that can be extremely
@@ -2469,7 +2581,7 @@ context switch, which, in the RCU implementation of that time, prevented
 grace periods from ever ending. The result was an out-of-memory
 condition and a system hang.</p>
 <p>The solution was the creation of RCU-bh, which does
-local_bh_disable() across its read-side critical sections, and which
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">local_bh_disable()</span></code> across its read-side critical sections, and which
 uses the transition from one type of softirq processing to another as a
 quiescent state in addition to context switch, idle, user mode, and
 offline. This means that RCU-bh grace periods can complete even when
@@ -2498,8 +2610,8 @@ includes <a class="reference internal" href="../../../core-api/kernel-api.html#c
 old RCU-bh update-side APIs are now gone, replaced by <a class="reference internal" href="../../../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a>,
 <a class="reference internal" href="../../../core-api/kernel-api.html#c.synchronize_rcu_expedited" title="synchronize_rcu_expedited"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu_expedited()</span></code></a>, <a class="reference internal" href="../../../core-api/kernel-api.html#c.call_rcu" title="call_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">call_rcu()</span></code></a>, and <a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_barrier" title="rcu_barrier"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_barrier()</span></code></a>.  In addition,
 anything that disables bottom halves also marks an RCU-bh read-side
-critical section, including local_bh_disable() and local_bh_enable(),
-local_irq_save() and local_irq_restore(), and so on.</p>
+critical section, including <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">local_bh_disable()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">local_bh_enable()</span></code>,
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">local_irq_save()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">local_irq_restore()</span></code>, and so on.</p>
 </section>
 <section id="sched-flavor-historical">
 <h3>Sched Flavor (Historical)<a class="headerlink" href="#sched-flavor-historical" title="Link to this heading">¶</a></h3>
@@ -2531,14 +2643,14 @@ invocations.</p>
 <p>The <a class="reference external" href="https://lwn.net/Articles/609973/#RCU%20Per-Flavor%20API%20Table">RCU-sched
 API</a>
 includes <a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_read_lock_sched" title="rcu_read_lock_sched"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_lock_sched()</span></code></a>, <a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_read_unlock_sched" title="rcu_read_unlock_sched"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_unlock_sched()</span></code></a>,
-rcu_read_lock_sched_notrace(), rcu_read_unlock_sched_notrace(),
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_read_lock_sched_notrace()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_read_unlock_sched_notrace()</span></code>,
 <a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_dereference_sched" title="rcu_dereference_sched"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_dereference_sched()</span></code></a>, <a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_dereference_sched_check" title="rcu_dereference_sched_check"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_dereference_sched_check()</span></code></a>, and
-rcu_read_lock_sched_held().  However, the old RCU-sched update-side APIs
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_read_lock_sched_held()</span></code>.  However, the old RCU-sched update-side APIs
 are now gone, replaced by <a class="reference internal" href="../../../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a>, <a class="reference internal" href="../../../core-api/kernel-api.html#c.synchronize_rcu_expedited" title="synchronize_rcu_expedited"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu_expedited()</span></code></a>,
 <a class="reference internal" href="../../../core-api/kernel-api.html#c.call_rcu" title="call_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">call_rcu()</span></code></a>, and <a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_barrier" title="rcu_barrier"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_barrier()</span></code></a>.  In addition, anything that disables
 preemption also marks an RCU-sched read-side critical section,
-including preempt_disable() and preempt_enable(), local_irq_save()
-and local_irq_restore(), and so on.</p>
+including <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">preempt_disable()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">preempt_enable()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">local_irq_save()</span></code>
+and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">local_irq_restore()</span></code>, and so on.</p>
 </section>
 <section id="sleepable-rcu">
 <h3>Sleepable RCU<a class="headerlink" href="#sleepable-rcu" title="Link to this heading">¶</a></h3>
@@ -2640,7 +2752,7 @@ includes <a class="reference internal" href="../../../core-api/kernel-api.html#c
 <a class="reference internal" href="../../../core-api/kernel-api.html#c.srcu_dereference" title="srcu_dereference"><code class="xref c c-func docutils literal notranslate"><span class="pre">srcu_dereference()</span></code></a>, <a class="reference internal" href="../../../core-api/kernel-api.html#c.srcu_dereference_check" title="srcu_dereference_check"><code class="xref c c-func docutils literal notranslate"><span class="pre">srcu_dereference_check()</span></code></a>,
 <a class="reference internal" href="../../../core-api/kernel-api.html#c.synchronize_srcu" title="synchronize_srcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_srcu()</span></code></a>, <a class="reference internal" href="../../../core-api/kernel-api.html#c.synchronize_srcu_expedited" title="synchronize_srcu_expedited"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_srcu_expedited()</span></code></a>,
 <a class="reference internal" href="../../../core-api/kernel-api.html#c.call_srcu" title="call_srcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">call_srcu()</span></code></a>, <a class="reference internal" href="../../../core-api/kernel-api.html#c.srcu_barrier" title="srcu_barrier"><code class="xref c c-func docutils literal notranslate"><span class="pre">srcu_barrier()</span></code></a>, and <a class="reference internal" href="../../../core-api/kernel-api.html#c.srcu_read_lock_held" title="srcu_read_lock_held"><code class="xref c c-func docutils literal notranslate"><span class="pre">srcu_read_lock_held()</span></code></a>. It
-also includes DEFINE_SRCU(), DEFINE_STATIC_SRCU(), and
+also includes <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">DEFINE_SRCU()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">DEFINE_STATIC_SRCU()</span></code>, and
 <a class="reference internal" href="../../../core-api/kernel-api.html#c.init_srcu_struct" title="init_srcu_struct"><code class="xref c c-func docutils literal notranslate"><span class="pre">init_srcu_struct()</span></code></a> APIs for defining and initializing
 <code class="docutils literal notranslate"><span class="pre">srcu_struct</span></code> structures.</p>
 <p>More recently, the SRCU API has added polling interfaces:</p>
@@ -2682,7 +2794,7 @@ actually reached the trampoline itself.</p>
 <p>The solution, in the form of <a class="reference external" href="https://lwn.net/Articles/607117/">Tasks
 RCU</a>, is to have implicit read-side
 critical sections that are delimited by voluntary context switches, that
-is, calls to schedule(), cond_resched(), and
+is, calls to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">schedule()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cond_resched()</span></code>, and
 <a class="reference internal" href="../../../core-api/kernel-api.html#c.synchronize_rcu_tasks" title="synchronize_rcu_tasks"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu_tasks()</span></code></a>. In addition, transitions to and from
 userspace execution also delimit tasks-RCU read-side critical sections.
 Idle tasks are ignored by Tasks RCU, and Tasks Rude RCU may be used to
@@ -2691,9 +2803,9 @@ interact with them.</p>
 states.  After all, in preemptible kernels, a task executing code in a
 trampoline might be preempted.  In this case, the Tasks-RCU grace period
 clearly cannot end until that task resumes and its execution leaves that
-trampoline.  This means, among other things, that cond_resched() does
+trampoline.  This means, among other things, that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cond_resched()</span></code> does
 not provide a Tasks RCU quiescent state.  (Instead, use <a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_softirq_qs" title="rcu_softirq_qs"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_softirq_qs()</span></code></a>
-from softirq or rcu_tasks_classic_qs() otherwise.)</p>
+from softirq or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_tasks_classic_qs()</span></code> otherwise.)</p>
 <p>The tasks-RCU API is quite compact, consisting only of
 <a class="reference internal" href="../../../core-api/kernel-api.html#c.call_rcu_tasks" title="call_rcu_tasks"><code class="xref c c-func docutils literal notranslate"><span class="pre">call_rcu_tasks()</span></code></a>, <a class="reference internal" href="../../../core-api/kernel-api.html#c.synchronize_rcu_tasks" title="synchronize_rcu_tasks"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu_tasks()</span></code></a>, and
 <a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_barrier_tasks" title="rcu_barrier_tasks"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_barrier_tasks()</span></code></a>. In <code class="docutils literal notranslate"><span class="pre">CONFIG_PREEMPTION=n</span></code> kernels, trampolines
@@ -2731,7 +2843,7 @@ kernels with <code class="docutils literal notranslate"><span class="pre">CONFIG
 the expense of adding full memory barriers to the read-side primitives.</p>
 <p>The tasks-trace-RCU API is also reasonably compact,
 consisting of <a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_read_lock_trace" title="rcu_read_lock_trace"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_lock_trace()</span></code></a>, <a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_read_unlock_trace" title="rcu_read_unlock_trace"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_unlock_trace()</span></code></a>,
-rcu_read_lock_trace_held(), <a class="reference internal" href="../../../core-api/kernel-api.html#c.call_rcu_tasks_trace" title="call_rcu_tasks_trace"><code class="xref c c-func docutils literal notranslate"><span class="pre">call_rcu_tasks_trace()</span></code></a>,
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_read_lock_trace_held()</span></code>, <a class="reference internal" href="../../../core-api/kernel-api.html#c.call_rcu_tasks_trace" title="call_rcu_tasks_trace"><code class="xref c c-func docutils literal notranslate"><span class="pre">call_rcu_tasks_trace()</span></code></a>,
 <a class="reference internal" href="../../../core-api/kernel-api.html#c.synchronize_rcu_tasks_trace" title="synchronize_rcu_tasks_trace"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu_tasks_trace()</span></code></a>, and <a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_barrier_tasks_trace" title="rcu_barrier_tasks_trace"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_barrier_tasks_trace()</span></code></a>.</p>
 </section>
 </section>

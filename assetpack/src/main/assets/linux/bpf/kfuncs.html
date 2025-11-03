@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -397,7 +397,7 @@ KF_TRUSTED_ARGS kfuncs, and may have a non-zero offset.</p>
 <p>The definition of “valid” pointers is subject to change at any time, and has
 absolutely no ABI stability guarantees.</p>
 <p>As mentioned above, a nested pointer obtained from walking a trusted pointer is
-no longer trusted, with one exception. If a struct type has a field that is
+no longer trusted, with one exception. If a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">type</span></code> has a field that is
 guaranteed to be valid (trusted or rcu, as in KF_RCU description below) as long
 as its parent pointer is valid, the following macros can be used to express
 that to the verifier:</p>
@@ -513,7 +513,7 @@ BTF_IDs differ.</p>
 </pre></div>
 </div>
 <p>The verifier would allow a <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">bpf_cpumask</span> <span class="pre">*</span></code> to be passed to a kfunc
-taking a <code class="docutils literal notranslate"><span class="pre">cpumask_t</span> <span class="pre">*</span></code> (which is a typedef of <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpumask</span> <span class="pre">*</span></code>). For
+taking a <code class="docutils literal notranslate"><span class="pre">cpumask_t</span> <span class="pre">*</span></code> (which is a <code class="xref c c-type broken_xref docutils literal notranslate"><span class="pre">typedef</span> <span class="pre">of</span></code> <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpumask</span> <span class="pre">*</span></code>). For
 instance, both <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpumask</span> <span class="pre">*</span></code> and <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">bpf_cpmuask</span> <span class="pre">*</span></code> can be passed
 to <a class="reference internal" href="cpumasks.html#c.bpf_cpumask_test_cpu" title="bpf_cpumask_test_cpu"><code class="xref c c-func docutils literal notranslate"><span class="pre">bpf_cpumask_test_cpu()</span></code></a>.</p>
 <p>In some cases, this type-aliasing behavior is not desired. <code class="docutils literal notranslate"><span class="pre">struct</span>
@@ -718,7 +718,7 @@ it can acquire a reference on with <a class="reference internal" href="#c.bpf_ta
 <dl class="c function">
 <dt class="sig sig-object c" id="c.bpf_task_from_pid">
 <span class="pre">__bpf_kfunc</span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">task_struct</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">bpf_task_from_pid</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">s32</span></span><span class="w"> </span><span class="n"><span class="pre">pid</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.bpf_task_from_pid" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Find a struct task_struct from its pid by looking it up in the root pid namespace idr. If a task is returned, it must either be stored in a map, or released with <a class="reference internal" href="#c.bpf_task_release" title="bpf_task_release"><code class="xref c c-func docutils literal notranslate"><span class="pre">bpf_task_release()</span></code></a>.</p>
+<dd><p>Find a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">task_struct</span></code> from its pid by looking it up in the root pid namespace idr. If a task is returned, it must either be stored in a map, or released with <a class="reference internal" href="#c.bpf_task_release" title="bpf_task_release"><code class="xref c c-func docutils literal notranslate"><span class="pre">bpf_task_release()</span></code></a>.</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -852,7 +852,7 @@ the verifier. <a class="reference internal" href="#c.bpf_cgroup_ancestor" title=
 <section id="struct-cpumask-kfuncs">
 <h3>4.3 struct cpumask * kfuncs<a class="headerlink" href="#struct-cpumask-kfuncs" title="Link to this heading">¶</a></h3>
 <p>BPF provides a set of kfuncs that can be used to query, allocate, mutate, and
-destroy struct cpumask * objects. Please refer to <a class="reference internal" href="cpumasks.html#cpumasks-header-label"><span class="std std-ref">BPF cpumask kfuncs</span></a>
+destroy <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpumask</span></code> * objects. Please refer to <a class="reference internal" href="cpumasks.html#cpumasks-header-label"><span class="std std-ref">BPF cpumask kfuncs</span></a>
 for more details.</p>
 </section>
 </section>

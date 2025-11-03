@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -477,8 +477,8 @@ startup callback has to be invoked before the PERF driver startup
 callbacks during a CPU online operation. During a CPU offline operation
 the driver teardown callbacks have to be invoked before the core teardown
 callback. The statically allocated states are described by constants in
-the cpuhp_state enum which can be found in include/linux/cpuhotplug.h.</p>
-<p>Insert the state into the enum at the proper place so the ordering
+the cpuhp_state <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">which</span></code> can be found in include/linux/cpuhotplug.h.</p>
+<p>Insert the state into the <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">at</span></code> the proper place so the ordering
 requirements are fulfilled. The state constant has to be used for state
 setup and removal.</p>
 <p>Static allocation is also required when the state callbacks are not set
@@ -577,7 +577,7 @@ allocation the allocated state is freed.</p>
 </div></blockquote>
 <p>The state setup and the callback invocations are serialized against CPU
 hotplug operations. If the setup function has to be called from a CPU
-hotplug read locked region, then the _cpuslocked() variants have to be
+hotplug read locked region, then the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_cpuslocked()</span></code> variants have to be
 used. These functions cannot be used from within CPU hotplug callbacks.</p>
 <dl>
 <dt>The function return values:</dt><dd><table class="docutils align-default">
@@ -634,7 +634,7 @@ thread.</p>
 </div></blockquote>
 <p>The state removal and the callback invocations are serialized against CPU
 hotplug operations. If the remove function has to be called from a CPU
-hotplug read locked region, then the _cpuslocked() variants have to be
+hotplug read locked region, then the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_cpuslocked()</span></code> variants have to be
 used. These functions cannot be used from within CPU hotplug callbacks.</p>
 <p>If a multi-instance state is removed then the caller has to remove all
 instances first.</p>
@@ -654,7 +654,7 @@ number which was allocated in the dynamic range by <a class="reference internal"
 <p>The &#64;node argument is a pointer to an hlist_node which is embedded in the
 instance’s data structure. The pointer is handed to the multi-instance
 state callbacks and can be used by the callback to retrieve the instance
-via container_of().</p>
+via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">container_of()</span></code>.</p>
 <p>The functions differ in the way how the installed callbacks are treated:</p>
 <blockquote>
 <div><ul>
@@ -909,7 +909,7 @@ the online cpus which have already reached the <strong>state</strong>.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.cpuhp_setup_state_cpuslocked">
 <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cpuhp_setup_state_cpuslocked</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="n"><span class="pre">cpuhp_state</span></span><span class="w"> </span><span class="n"><span class="pre">state</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">name</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">startup</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">cpu</span></span><span class="p"><span class="pre">)</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">teardown</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">cpu</span></span><span class="p"><span class="pre">)</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.cpuhp_setup_state_cpuslocked" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Setup hotplug state callbacks with calling <strong>startup</strong> callback from a cpus_read_lock() held region</p>
+<dd><p>Setup hotplug state callbacks with calling <strong>startup</strong> callback from a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpus_read_lock()</span></code> held region</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -926,7 +926,7 @@ the online cpus which have already reached the <strong>state</strong>.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Same as <a class="reference internal" href="#c.cpuhp_setup_state" title="cpuhp_setup_state"><code class="xref c c-func docutils literal notranslate"><span class="pre">cpuhp_setup_state()</span></code></a> except that it must be invoked from within a
-cpus_read_lock() held region.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpus_read_lock()</span></code> held region.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.cpuhp_setup_state_nocalls">
@@ -953,7 +953,7 @@ invoked during installation. NOP if SMP=n or HOTPLUG_CPU=n.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.cpuhp_setup_state_nocalls_cpuslocked">
 <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cpuhp_setup_state_nocalls_cpuslocked</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="n"><span class="pre">cpuhp_state</span></span><span class="w"> </span><span class="n"><span class="pre">state</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">name</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">startup</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">cpu</span></span><span class="p"><span class="pre">)</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">teardown</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">cpu</span></span><span class="p"><span class="pre">)</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.cpuhp_setup_state_nocalls_cpuslocked" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Setup hotplug state callbacks without invoking the <strong>startup</strong> callback from a cpus_read_lock() held region callbacks</p>
+<dd><p>Setup hotplug state callbacks without invoking the <strong>startup</strong> callback from a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpus_read_lock()</span></code> held region callbacks</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -970,7 +970,7 @@ invoked during installation. NOP if SMP=n or HOTPLUG_CPU=n.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Same as <a class="reference internal" href="#c.cpuhp_setup_state_nocalls" title="cpuhp_setup_state_nocalls"><code class="xref c c-func docutils literal notranslate"><span class="pre">cpuhp_setup_state_nocalls()</span></code></a> except that it must be invoked from
-within a cpus_read_lock() held region.</p>
+within a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpus_read_lock()</span></code> held region.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.cpuhp_setup_state_multi">
@@ -1038,7 +1038,7 @@ HOTPLUG_CPU=n.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.cpuhp_state_add_instance_nocalls_cpuslocked">
 <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cpuhp_state_add_instance_nocalls_cpuslocked</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="n"><span class="pre">cpuhp_state</span></span><span class="w"> </span><span class="n"><span class="pre">state</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">hlist_node</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">node</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.cpuhp_state_add_instance_nocalls_cpuslocked" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Add an instance for a state without invoking the startup callback from a cpus_read_lock() held region.</p>
+<dd><p>Add an instance for a state without invoking the startup callback from a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpus_read_lock()</span></code> held region.</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -1051,7 +1051,7 @@ HOTPLUG_CPU=n.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Same as <a class="reference internal" href="#c.cpuhp_state_add_instance_nocalls" title="cpuhp_state_add_instance_nocalls"><code class="xref c c-func docutils literal notranslate"><span class="pre">cpuhp_state_add_instance_nocalls()</span></code></a> except that it must be
-invoked from within a cpus_read_lock() held region.</p>
+invoked from within a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpus_read_lock()</span></code> held region.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.cpuhp_remove_state">
@@ -1085,7 +1085,7 @@ the online cpus which have already reached the <strong>state</strong>.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.cpuhp_remove_state_nocalls_cpuslocked">
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cpuhp_remove_state_nocalls_cpuslocked</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="n"><span class="pre">cpuhp_state</span></span><span class="w"> </span><span class="n"><span class="pre">state</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.cpuhp_remove_state_nocalls_cpuslocked" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Remove hotplug state callbacks without invoking teardown from a cpus_read_lock() held region.</p>
+<dd><p>Remove hotplug state callbacks without invoking teardown from a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpus_read_lock()</span></code> held region.</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -1095,8 +1095,8 @@ the online cpus which have already reached the <strong>state</strong>.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Same as cpuhp_remove_state nocalls() except that it must be invoked
-from within a cpus_read_lock() held region.</p>
+<p>Same as cpuhp_remove_state <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nocalls()</span></code> except that it must be invoked
+from within a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpus_read_lock()</span></code> held region.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.cpuhp_remove_multi_state">

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -217,13 +217,13 @@ notification to users with UEVENT.</p>
 <h2>2. Global Charger-Manager Data related with suspend_again<a class="headerlink" href="#global-charger-manager-data-related-with-suspend-again" title="Link to this heading">¶</a></h2>
 <p>In order to setup Charger Manager with suspend-again feature
 (in-suspend monitoring), the user should provide charger_global_desc
-with setup_charger_manager(<cite>struct charger_global_desc *</cite>).
+with setup_charger_manager(<cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">charger_global_desc</span></code> *</cite>).
 This charger_global_desc data for in-suspend monitoring is global
 as the name suggests. Thus, the user needs to provide only once even
 if there are multiple batteries. If there are multiple batteries, the
 multiple instances of Charger Manager share the same charger_global_desc
 and it will manage in-suspend monitoring for all instances of Charger Manager.</p>
-<p>The user needs to provide all the three entries to <cite>struct charger_global_desc</cite>
+<p>The user needs to provide all the three entries to <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">charger_global_desc</span></code></cite>
 properly in order to activate in-suspend monitoring:</p>
 <dl class="simple">
 <dt><cite>char *rtc_name;</cite></dt><dd><p>The name of rtc (e.g., “rtc0”) used to wakeup the system from
@@ -254,7 +254,7 @@ function to know whether Charger Manager wants to suspend again or not.
 If there are no other devices or tasks that want to use suspend_again
 feature, the platform_suspend_ops may directly refer to cm_suspend_again
 for its suspend_again callback.</p>
-<p>The cm_suspend_again() returns true (meaning “I want to suspend again”)
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cm_suspend_again()</span></code> returns true (meaning “I want to suspend again”)
 if the system was woken up by Charger Manager and the polling
 (in-suspend monitoring) results in “normal”.</p>
 </section>
@@ -263,7 +263,7 @@ if the system was woken up by Charger Manager and the polling
 <p>For each battery charged independently from other batteries (if a series of
 batteries are charged by a single charger, they are counted as one independent
 battery), an instance of Charger Manager is attached to it. The following</p>
-<p>struct charger_desc elements:</p>
+<p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">charger_desc</span></code> elements:</p>
 <dl class="simple">
 <dt><cite>char *psy_name;</cite></dt><dd><p>The power-supply-class name of the battery. Default is
 “battery” if psy_name is NULL. Users can access the psy entries
@@ -336,7 +336,7 @@ Charger Manager, a charger device driver that triggers the event can call
 cm_notify_event(psy, type, msg) to notify the corresponding Charger Manager.
 In the function, psy is the charger driver’s power_supply pointer, which is
 associated with Charger-Manager. The parameter “type”
-is the same as irq’s type (enum cm_event_types). The event message “msg” is
+is the same as irq’s type (<code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">cm_event_types</span></code>). The event message “msg” is
 optional and is effective only if the event type is “UNDESCRIBED” or “OTHERS”.</p>
 </section>
 <section id="other-considerations">

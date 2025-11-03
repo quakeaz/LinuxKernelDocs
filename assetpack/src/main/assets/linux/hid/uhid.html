@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -163,7 +163,7 @@ This is /dev/uhid by default.</p>
 <p>If a new device is detected by your HID I/O Driver and you want to register this
 device with the HID subsystem, then you need to open /dev/uhid once for each
 device you want to register. All further communication is done by read()’ing or
-write()’ing “struct uhid_event” objects. Non-blocking operations are supported
+write()’ing “<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">uhid_event</span></code>” objects. Non-blocking operations are supported
 by setting O_NONBLOCK:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct uhid_event {
       __u32 type;
@@ -181,7 +181,7 @@ payloads are sent. You must not split a single event across multiple read()’s 
 multiple write()’s. A single event must always be sent as a whole. Furthermore,
 only a single event can be sent per read() or write(). Pending data is ignored.
 If you want to handle multiple events in a single syscall, then use vectored
-I/O with readv()/writev().
+I/O with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">readv()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">writev()</span></code>.
 The “type” field defines the payload. For each type, there is a
 payload-structure available in the union “u” (except for empty payloads). This
 payload contains management and/or device data.</p>
@@ -226,7 +226,7 @@ writes are always handled immediately in a non-blocking fashion. Future requests
 might make use of O_NONBLOCK, though.</p>
 <dl class="simple">
 <dt>UHID_CREATE2:</dt><dd><p>This creates the internal HID device. No I/O is possible until you send this
-event to the kernel. The payload is of type struct uhid_create2_req and
+event to the kernel. The payload is of type <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">uhid_create2_req</span></code> and
 contains information about your device. You can start I/O now.</p>
 </dd>
 <dt>UHID_DESTROY:</dt><dd><p>This destroys the internal HID device. No further I/O will be accepted. There
@@ -298,7 +298,7 @@ the counterpart of UHID_OPEN and you may as well ignore this event.</p>
 </dd>
 <dt>UHID_OUTPUT:</dt><dd><p>This is sent if the HID device driver wants to send raw data to the I/O
 device on the interrupt channel. You should read the payload and forward it to
-the device. The payload is of type “struct uhid_output_req”.
+the device. The payload is of type “<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">uhid_output_req</span></code>”.
 This may be received even though you haven’t received UHID_OPEN yet.</p>
 </dd>
 <dt>UHID_GET_REPORT:</dt><dd><p>This event is sent if the kernel driver wants to perform a GET_REPORT request

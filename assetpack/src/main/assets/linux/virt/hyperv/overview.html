@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -263,7 +263,7 @@ a shared page or remove an overlay page after the new kernel is
 using the page for a different purpose, corrupting the new kernel.
 Hyper-V does not provide a single “set everything” operation to
 guest VMs, so Linux code must individually revoke all sharing before
-doing kexec.   See hv_kexec_handler() and hv_crash_handler().  But
+doing kexec.   See <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hv_kexec_handler()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hv_crash_handler()</span></code>.  But
 the crash/panic path still has holes in cleanup because some shared
 pages are set using per-CPU synthetic registers and there’s no
 mechanism to revoke the shared pages for CPUs other than the CPU

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -235,28 +235,28 @@ the use of KEYCTL_KEYRING_CLEAR on the keyring ID.</p>
 </section>
 <section id="reading-dns-keys-from-userspace">
 <h2>Reading DNS Keys from Userspace<a class="headerlink" href="#reading-dns-keys-from-userspace" title="Link to this heading">¶</a></h2>
-<p>Keys of dns_resolver type can be read from userspace using keyctl_read() or
+<p>Keys of dns_resolver type can be read from userspace using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">keyctl_read()</span></code> or
 “keyctl read/print/pipe”.</p>
 </section>
 <section id="mechanism">
 <h2>Mechanism<a class="headerlink" href="#mechanism" title="Link to this heading">¶</a></h2>
 <p>The dns_resolver module registers a key type called “dns_resolver”.  Keys of
 this type are used to transport and cache DNS lookup results from userspace.</p>
-<p>When dns_query() is invoked, it calls request_key() to search the local
+<p>When <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dns_query()</span></code> is invoked, it calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">request_key()</span></code> to search the local
 keyrings for a cached DNS result.  If that fails to find one, it upcalls to
 userspace to get a new result.</p>
-<p>Upcalls to userspace are made through the request_key() upcall vector, and are
+<p>Upcalls to userspace are made through the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">request_key()</span></code> upcall vector, and are
 directed by means of configuration lines in /etc/request-key.conf that tell
 /sbin/request-key what program to run to instantiate the key.</p>
 <p>The upcall handler program is responsible for querying the DNS, processing the
-result into a form suitable for passing to the keyctl_instantiate_key()
-routine.  This then passes the data to dns_resolver_instantiate() which strips
+result into a form suitable for passing to the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">keyctl_instantiate_key()</span></code>
+routine.  This then passes the data to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dns_resolver_instantiate()</span></code> which strips
 off and processes any options included in the data, and then attaches the
 remainder of the string to the key as its payload.</p>
 <p>The upcall handler program should set the expiry time on the key to that of the
 lowest TTL of all the records it has extracted a result from.  This means that
 the key will be discarded and recreated when the data it holds has expired.</p>
-<p>dns_query() returns a copy of the value attached to the key, or an error if
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dns_query()</span></code> returns a copy of the value attached to the key, or an error if
 that is indicated instead.</p>
 <p>See &lt;<a class="reference external" href="file:Documentation/security/keys/request-key.rst">file:Documentation/security/keys/request-key.rst</a>&gt; for further
 information about request-key function.</p>

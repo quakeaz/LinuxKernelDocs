@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -282,7 +282,7 @@ it’s not already opened and performs the first-time tty initialization.</p>
 <p><strong>Description</strong></p>
 <p>Opens an already existing tty for in-kernel use. Compared to
 <a class="reference internal" href="#c.tty_kopen_exclusive" title="tty_kopen_exclusive"><code class="xref c c-func docutils literal notranslate"><span class="pre">tty_kopen_exclusive()</span></code></a> above it doesn’t ensure to be the only user.</p>
-<p>Locking: identical to tty_kopen() above.</p>
+<p>Locking: identical to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">tty_kopen()</span></code> above.</p>
 </div>
 </section>
 <hr class="docutils" />
@@ -361,7 +361,7 @@ reverse of <a class="reference internal" href="#c.tty_init_dev" title="tty_init_
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty</span></code></dt><dd><p>tty struct to free</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty</span></code></dt><dd><p>tty <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">to</span></code> free</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -641,7 +641,7 @@ each device.</p>
 </dl>
 <p><strong>Return</strong></p>
 <p>the tty, if found. If not found, return <code class="docutils literal notranslate"><span class="pre">NULL</span></code> or <a class="reference internal" href="../../core-api/kernel-api.html#c.ERR_PTR" title="ERR_PTR"><code class="xref c c-func docutils literal notranslate"><span class="pre">ERR_PTR()</span></code></a> if the
-driver lookup() method returns an error.</p>
+driver <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lookup()</span></code> method returns an error.</p>
 <p><strong>Description</strong></p>
 <p>Locking: tty_mutex must be held. If the tty is found, bump the tty kref.</p>
 </div>
@@ -721,7 +721,7 @@ by the time this is called.</p>
 an active device. The pty drivers require special handling because of this.</p>
 <dl class="simple">
 <dt>Locking:</dt><dd><p>The function is called under the tty_mutex, which protects us from the
-tty struct or driver itself going away.</p>
+tty <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">or</span></code> driver itself going away.</p>
 </dd>
 </dl>
 <p>On exit the tty device has the line discipline attached and a reference
@@ -833,7 +833,7 @@ no-op unless <code class="docutils literal notranslate"><span class="pre">TTY_PA
 <p>Called the last time each file handle is closed that references this tty.
 There may however be several such references.</p>
 <dl class="simple">
-<dt>Locking:</dt><dd><p>Takes BKL. See tty_release_dev().</p>
+<dt>Locking:</dt><dd><p>Takes BKL. See <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">tty_release_dev()</span></code>.</p>
 </dd>
 </dl>
 <p>Even releasing the tty structures is a tricky business. We have to be very

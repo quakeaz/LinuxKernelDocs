@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -533,13 +533,13 @@ filesystem to revalidate the result if it is that sort of filesystem.
 If that doesn’t get a good result, it calls “<code class="docutils literal notranslate"><span class="pre">lookup_slow()</span></code>” which
 takes <code class="docutils literal notranslate"><span class="pre">i_rwsem</span></code>, rechecks the cache, and then asks the filesystem
 to find a definitive answer.</p>
-<p>As the last step of walk_component(), step_into() will be called either
-directly from walk_component() or from handle_dots().  It calls
-handle_mounts(), to check and handle mount points, in which a new
+<p>As the last step of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">walk_component()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">step_into()</span></code> will be called either
+directly from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">walk_component()</span></code> or from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">handle_dots()</span></code>.  It calls
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">handle_mounts()</span></code>, to check and handle mount points, in which a new
 <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">path</span></code> is created containing a counted reference to the new dentry and
 a reference to the new <code class="docutils literal notranslate"><span class="pre">vfsmount</span></code> which is only counted if it is
 different from the previous <code class="docutils literal notranslate"><span class="pre">vfsmount</span></code>. Then if there is
-a symbolic link, step_into() calls pick_link() to deal with it,
+a symbolic link, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">step_into()</span></code> calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pick_link()</span></code> to deal with it,
 otherwise it installs the new <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">path</span></code> in the <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">nameidata</span></code>, and
 drops the unneeded references.</p>
 <p>This “hand-over-hand” sequencing of getting a reference to the new
@@ -554,8 +554,8 @@ analogue in the “RCU-walk” version.</p>
 <code class="docutils literal notranslate"><span class="pre">nd-&gt;last_type</span></code> to refer to the final component of the path.  It does
 not call <code class="docutils literal notranslate"><span class="pre">walk_component()</span></code> that last time.  Handling that final
 component remains for the caller to sort out. Those callers are
-path_lookupat(), path_parentat() and
-path_openat() each of which handles the differing requirements of
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">path_lookupat()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">path_parentat()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">path_openat()</span></code> each of which handles the differing requirements of
 different system calls.</p>
 <p><code class="docutils literal notranslate"><span class="pre">path_parentat()</span></code> is clearly the simplest - it just wraps a little bit
 of housekeeping around <code class="docutils literal notranslate"><span class="pre">link_path_walk()</span></code> and returns the parent
@@ -569,16 +569,16 @@ object is wanted such as by <code class="docutils literal notranslate"><span cla
 calls <code class="docutils literal notranslate"><span class="pre">walk_component()</span></code> on the final component through a call to
 <code class="docutils literal notranslate"><span class="pre">lookup_last()</span></code>.  <code class="docutils literal notranslate"><span class="pre">path_lookupat()</span></code> returns just the final dentry.
 It is worth noting that when flag <code class="docutils literal notranslate"><span class="pre">LOOKUP_MOUNTPOINT</span></code> is set,
-path_lookupat() will unset LOOKUP_JUMPED in nameidata so that in the
-subsequent path traversal d_weak_revalidate() won’t be called.
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">path_lookupat()</span></code> will unset LOOKUP_JUMPED in nameidata so that in the
+subsequent path traversal <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">d_weak_revalidate()</span></code> won’t be called.
 This is important when unmounting a filesystem that is inaccessible, such as
 one provided by a dead NFS server.</p>
 <p>Finally <code class="docutils literal notranslate"><span class="pre">path_openat()</span></code> is used for the <code class="docutils literal notranslate"><span class="pre">open()</span></code> system call; it
-contains, in support functions starting with “open_last_lookups()”, all the
+contains, in support functions starting with “<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">open_last_lookups()</span></code>”, all the
 complexity needed to handle the different subtleties of O_CREAT (with
 or without O_EXCL), final “<code class="docutils literal notranslate"><span class="pre">/</span></code>” characters, and trailing symbolic
 links.  We will revisit this in the final part of this series, which
-focuses on those symbolic links.  “open_last_lookups()” will sometimes, but
+focuses on those symbolic links.  “<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">open_last_lookups()</span></code>” will sometimes, but
 not always, take <code class="docutils literal notranslate"><span class="pre">i_rwsem</span></code>, depending on what it finds.</p>
 <p>Each of these, or the functions which call them, need to be alert to
 the possibility that the final component is not <code class="docutils literal notranslate"><span class="pre">LAST_NORM</span></code>.  If the
@@ -709,9 +709,9 @@ processed with the reliable, if slightly sluggish, REF-walk.  If
 RCU-walk finds it cannot stop gracefully, it simply gives up and
 restarts from the top with REF-walk.</p>
 <p>This pattern of “try RCU-walk, if that fails try REF-walk” can be
-clearly seen in functions like filename_lookup(),
-filename_parentat(),
-do_filp_open(), and do_file_open_root().  These four
+clearly seen in functions like <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">filename_lookup()</span></code>,
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">filename_parentat()</span></code>,
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_filp_open()</span></code>, and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_file_open_root()</span></code>.  These four
 correspond roughly to the three <code class="docutils literal notranslate"><span class="pre">path_*()</span></code> functions we met earlier,
 each of which calls <code class="docutils literal notranslate"><span class="pre">link_path_walk()</span></code>.  The <code class="docutils literal notranslate"><span class="pre">path_*()</span></code> functions are
 called using different mode flags until a mode is found which works.
@@ -1075,8 +1075,8 @@ all the data structures it references are safe to be accessed while
 holding no counted reference, only the RCU lock. A callback
 <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">delayed_called</span></code> will be passed to <code class="docutils literal notranslate"><span class="pre">-&gt;get_link()</span></code>:
 file systems can set their own put_link function and argument through
-set_delayed_call(). Later on, when VFS wants to put link, it will call
-do_delayed_call() to invoke that callback function with the argument.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_delayed_call()</span></code>. Later on, when VFS wants to put link, it will call
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_delayed_call()</span></code> to invoke that callback function with the argument.</p>
 <p>In order for the reference to each symlink to be dropped when the walk completes,
 whether in RCU-walk or REF-walk, the symlink stack needs to contain,
 along with the path remnants:</p>
@@ -1105,7 +1105,7 @@ symlink, or is restored from the stack, so that much of the loop
 doesn’t need to notice.  Getting this <code class="docutils literal notranslate"><span class="pre">name</span></code> variable on and off the
 stack is very straightforward; pushing and popping the references is
 a little more complex.</p>
-<p>When a symlink is found, walk_component() calls pick_link() via step_into()
+<p>When a symlink is found, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">walk_component()</span></code> calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pick_link()</span></code> via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">step_into()</span></code>
 which returns the link from the filesystem.
 Providing that operation is successful, the old path <code class="docutils literal notranslate"><span class="pre">name</span></code> is placed on the
 stack, and the new value is used as the <code class="docutils literal notranslate"><span class="pre">name</span></code> for a while.  When the end of
@@ -1134,9 +1134,9 @@ check if we have privilege to follow it.</p>
 <h4>Symlinks with no final component<a class="headerlink" href="#symlinks-with-no-final-component" title="Link to this heading">¶</a></h4>
 <p>A pair of special-case symlinks deserve a little further explanation.
 Both result in a new <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">path</span></code> (with mount and dentry) being set
-up in the <code class="docutils literal notranslate"><span class="pre">nameidata</span></code>, and result in pick_link() returning <code class="docutils literal notranslate"><span class="pre">NULL</span></code>.</p>
+up in the <code class="docutils literal notranslate"><span class="pre">nameidata</span></code>, and result in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pick_link()</span></code> returning <code class="docutils literal notranslate"><span class="pre">NULL</span></code>.</p>
 <p>The more obvious case is a symlink to “<code class="docutils literal notranslate"><span class="pre">/</span></code>”.  All symlinks starting
-with “<code class="docutils literal notranslate"><span class="pre">/</span></code>” are detected in pick_link() which resets the <code class="docutils literal notranslate"><span class="pre">nameidata</span></code>
+with “<code class="docutils literal notranslate"><span class="pre">/</span></code>” are detected in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pick_link()</span></code> which resets the <code class="docutils literal notranslate"><span class="pre">nameidata</span></code>
 to point to the effective filesystem root.  If the symlink only
 contains “<code class="docutils literal notranslate"><span class="pre">/</span></code>” then there is nothing more to do, no components at all,
 so <code class="docutils literal notranslate"><span class="pre">NULL</span></code> is returned to indicate that the symlink can be released and
@@ -1153,9 +1153,9 @@ target file, not just the name of it.  When you <code class="docutils literal no
 objects you get a name that might refer to the same file - unless it
 has been unlinked or mounted over.  When <code class="docutils literal notranslate"><span class="pre">walk_component()</span></code> follows
 one of these, the <code class="docutils literal notranslate"><span class="pre">-&gt;get_link()</span></code> method in “procfs” doesn’t return
-a string name, but instead calls nd_jump_link() which updates the
+a string name, but instead calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nd_jump_link()</span></code> which updates the
 <code class="docutils literal notranslate"><span class="pre">nameidata</span></code> in place to point to that target.  <code class="docutils literal notranslate"><span class="pre">-&gt;get_link()</span></code> then
-returns <code class="docutils literal notranslate"><span class="pre">NULL</span></code>.  Again there is no final component and pick_link()
+returns <code class="docutils literal notranslate"><span class="pre">NULL</span></code>.  Again there is no final component and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pick_link()</span></code>
 returns <code class="docutils literal notranslate"><span class="pre">NULL</span></code>.</p>
 </section>
 </section>
@@ -1172,32 +1172,32 @@ than just the last component of the original file name.  These callers
 potentially need to call <code class="docutils literal notranslate"><span class="pre">link_path_walk()</span></code> again and again on
 successive symlinks until one is found that doesn’t point to another
 symlink.</p>
-<p>This case is handled by relevant callers of link_path_walk(), such as
-path_lookupat(), path_openat() using a loop that calls link_path_walk(),
-and then handles the final component by calling open_last_lookups() or
-lookup_last(). If it is a symlink that needs to be followed,
-open_last_lookups() or lookup_last() will set things up properly and
+<p>This case is handled by relevant callers of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">link_path_walk()</span></code>, such as
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">path_lookupat()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">path_openat()</span></code> using a loop that calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">link_path_walk()</span></code>,
+and then handles the final component by calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">open_last_lookups()</span></code> or
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lookup_last()</span></code>. If it is a symlink that needs to be followed,
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">open_last_lookups()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lookup_last()</span></code> will set things up properly and
 return the path so that the loop repeats, calling
-link_path_walk() again.  This could loop as many as 40 times if the last
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">link_path_walk()</span></code> again.  This could loop as many as 40 times if the last
 component of each symlink is another symlink.</p>
 <p>Of the various functions that examine the final component,
-open_last_lookups() is the most interesting as it works in tandem
-with do_open() for opening a file.  Part of open_last_lookups() runs
-with <code class="docutils literal notranslate"><span class="pre">i_rwsem</span></code> held and this part is in a separate function: lookup_open().</p>
-<p>Explaining open_last_lookups() and do_open() completely is beyond the scope
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">open_last_lookups()</span></code> is the most interesting as it works in tandem
+with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_open()</span></code> for opening a file.  Part of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">open_last_lookups()</span></code> runs
+with <code class="docutils literal notranslate"><span class="pre">i_rwsem</span></code> held and this part is in a separate function: <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lookup_open()</span></code>.</p>
+<p>Explaining <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">open_last_lookups()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_open()</span></code> completely is beyond the scope
 of this article, but a few highlights should help those interested in exploring
 the code.</p>
 <ol class="arabic">
-<li><p>Rather than just finding the target file, do_open() is used after
-open_last_lookup() to open
+<li><p>Rather than just finding the target file, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_open()</span></code> is used after
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">open_last_lookup()</span></code> to open
 it.  If the file was found in the dcache, then <code class="docutils literal notranslate"><span class="pre">vfs_open()</span></code> is used for
 this.  If not, then <code class="docutils literal notranslate"><span class="pre">lookup_open()</span></code> will either call <code class="docutils literal notranslate"><span class="pre">atomic_open()</span></code> (if
 the filesystem provides it) to combine the final lookup with the open, or
 will perform the separate <code class="docutils literal notranslate"><span class="pre">i_op-&gt;lookup()</span></code> and <code class="docutils literal notranslate"><span class="pre">i_op-&gt;create()</span></code> steps
 directly.  In the later case the actual “open” of this newly found or
-created file will be performed by vfs_open(), just as if the name
+created file will be performed by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vfs_open()</span></code>, just as if the name
 were found in the dcache.</p></li>
-<li><p>vfs_open() can fail with <code class="docutils literal notranslate"><span class="pre">-EOPENSTALE</span></code> if the cached information
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vfs_open()</span></code> can fail with <code class="docutils literal notranslate"><span class="pre">-EOPENSTALE</span></code> if the cached information
 wasn’t quite current enough.  If it’s in RCU-walk <code class="docutils literal notranslate"><span class="pre">-ECHILD</span></code> will be returned
 otherwise <code class="docutils literal notranslate"><span class="pre">-ESTALE</span></code> is returned.  When <code class="docutils literal notranslate"><span class="pre">-ESTALE</span></code> is returned, the caller may
 retry with <code class="docutils literal notranslate"><span class="pre">LOOKUP_REVAL</span></code> flag set.</p></li>
@@ -1209,8 +1209,8 @@ echo hello &gt; /tmp/foo
 </div>
 <p>will create a file called <code class="docutils literal notranslate"><span class="pre">/tmp/bar</span></code>.  This is not permitted if
 <code class="docutils literal notranslate"><span class="pre">O_EXCL</span></code> is set but otherwise is handled for an O_CREAT open much
-like for a non-creating open: lookup_last() or open_last_lookup()
-returns a non <code class="docutils literal notranslate"><span class="pre">NULL</span></code> value, and link_path_walk() gets called and the
+like for a non-creating open: <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lookup_last()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">open_last_lookup()</span></code>
+returns a non <code class="docutils literal notranslate"><span class="pre">NULL</span></code> value, and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">link_path_walk()</span></code> gets called and the
 open process continues on the symlink that was found.</p>
 </li>
 </ol>

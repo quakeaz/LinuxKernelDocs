@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -258,6 +258,27 @@ builds are assumed to be mandatory; the others to be optional.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">--no-virtualenv</span></code></dt><dd><p>Use OS packaging for Sphinx instead of Python virtual environment.</p>
 </dd>
 </dl>
+</section>
+<section id="installing-sphinx-minimal-version">
+<h3>Installing Sphinx Minimal Version<a class="headerlink" href="#installing-sphinx-minimal-version" title="Link to this heading">¶</a></h3>
+<p>When changing Sphinx build system, it is important to ensure that
+the minimal version will still be supported. Nowadays, it is
+becoming harder to do that on modern distributions, as it is not
+possible to install with Python 3.13 and above.</p>
+<p>Testing with the lowest supported Python version as defined at
+<a class="reference internal" href="../process/changes.html"><span class="doc">Minimal requirements to compile the Kernel</span></a> can be done by creating
+a venv with it with, and install minimal requirements with:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>/usr/bin/python3.9 -m venv sphinx_min
+. sphinx_min/bin/activate
+pip install -r Documentation/sphinx/min_requirements.txt
+</pre></div>
+</div>
+<p>A more comprehensive test can be done by using:</p>
+<blockquote>
+<div><p>scripts/test_doc_build.py</p>
+</div></blockquote>
+<p>Such script create one Python venv per supported version,
+optionally building documentation for a range of Sphinx versions.</p>
 </section>
 </section>
 <section id="sphinx-build">

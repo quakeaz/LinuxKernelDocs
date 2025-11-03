@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -179,7 +179,7 @@ packet. Since these events are ignored by current single-touch (ST)
 applications, the MT protocol can be implemented on top of the ST protocol
 in an existing driver.</p>
 <p>Drivers for type A devices separate contact packets by calling
-input_mt_sync() at the end of each packet. This generates a SYN_MT_REPORT
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">input_mt_sync()</span></code> at the end of each packet. This generates a SYN_MT_REPORT
 event, which instructs the receiver to accept the data for the current
 contact and prepare to receive another.</p>
 <p>Drivers for type B devices separate contact packets by calling
@@ -187,7 +187,7 @@ contact and prepare to receive another.</p>
 This generates an ABS_MT_SLOT event, which instructs the receiver to
 prepare for updates of the given slot.</p>
 <p>All drivers mark the end of a multi-touch transfer by calling the usual
-input_sync() function. This instructs the receiver to act upon events
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">input_sync()</span></code> function. This instructs the receiver to act upon events
 accumulated since last EV_SYN/SYN_REPORT and prepare to receive a new set
 of events/packets.</p>
 <p>The main difference between the stateless type A protocol and the stateful

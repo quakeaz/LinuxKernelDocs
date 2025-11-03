@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -174,7 +174,7 @@ macros you need to interact with the device are defined in &lt;linux/userio.h&gt
 </section>
 <section id="command-structure">
 <h2><span class="section-number">8.3. </span>Command Structure<a class="headerlink" href="#command-structure" title="Link to this heading">¶</a></h2>
-<p>The struct used for sending commands to /dev/userio is as follows:</p>
+<p>The <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">used</span></code> for sending commands to /dev/userio is as follows:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct userio_cmd {
         __u8 type;
         __u8 data;
@@ -185,7 +185,7 @@ macros you need to interact with the device are defined in &lt;linux/userio.h&gt
 of the USERIO_CMD macros defined in &lt;linux/userio.h&gt;. <code class="docutils literal notranslate"><span class="pre">data</span></code> is the argument
 that goes along with the command. In the event that the command doesn’t have an
 argument, this field can be left untouched and will be ignored by the kernel.
-Each command should be sent by writing the struct directly to the character
+Each command should be sent by writing the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">directly</span></code> to the character
 device. In the event that the command you send is invalid, an error will be
 returned by the character device and a more descriptive error will be printed
 to the kernel log. Only one command can be sent at a time, any additional data

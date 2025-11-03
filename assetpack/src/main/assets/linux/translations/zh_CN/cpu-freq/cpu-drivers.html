@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -199,7 +199,7 @@ Chinese (Simplified)
 <section id="id2">
 <h3>1.1 初始化<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h3>
 <p>首先，在 __initcall level 7 (<a class="reference internal" href="../../../driver-api/basics.html#c.module_init" title="module_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">module_init()</span></code></a>)或更靠后的函数中检查这个内核是否
-运行在正确的CPU和正确的芯片组上。如果是，则使用cpufreq_register_driver()向
+运行在正确的CPU和正确的芯片组上。如果是，则使用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpufreq_register_driver()</span></code>向
 CPUfreq核心层注册一个cpufreq_driver结构体。</p>
 <p>结构体cpufreq_driver应该包含什么成员?</p>
 <blockquote>
@@ -224,7 +224,7 @@ CPUfreq核心层注册一个cpufreq_driver结构体。</p>
 <p>.resume - 一个指向per-policy恢复函数的指针，该函数在关中断且在调节器再一次启动前被
 调用。</p>
 <p>.ready - 一个指向per-policy准备函数的指针，该函数在策略完全初始化之后被调用。</p>
-<p>.attr - 一个指向NULL结尾的”struct freq_attr”列表的指针，该列表允许导出值到
+<p>.attr - 一个指向NULL结尾的”<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">freq_attr</span></code>”列表的指针，该列表允许导出值到
 sysfs。</p>
 <p>.boost_enabled - 如果设置，则启用提升(boost)频率。</p>
 <p>.set_boost - 一个指向per-policy函数的指针，该函数用来开启/关闭提升(boost)频率功能。</p>
@@ -233,7 +233,7 @@ sysfs。</p>
 <section id="per-cpu">
 <h3>1.2 Per-CPU 初始化<a class="headerlink" href="#per-cpu" title="Link to this heading">¶</a></h3>
 <p>每当一个新的CPU被注册到设备模型中，或者当cpufreq驱动注册自身之后，如果此CPU的cpufreq策
-略不存在，则会调用per-policy的初始化函数cpufreq_driver.init。请注意，.init()和.exit()例程
+略不存在，则会调用per-policy的初始化函数cpufreq_driver.init。请注意，.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init()</span></code>和.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">exit()</span></code>例程
 只为某个策略调用一次，而不是对该策略管理的每个CPU调用一次。它需要一个 <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpufreq_policy</span>
 <span class="pre">*policy</span></code> 作为参数。现在该怎么做呢？</p>
 <p>如果有必要，请在你的CPU上激活CPUfreq功能支持。</p>
@@ -285,8 +285,8 @@ cpufreq_driver.target/target_index</p></td>
 <section id="target-target-index-setpolicy-fast-switch">
 <h3>1.4 target 或 target_index 或 setpolicy 或 fast_switch?<a class="headerlink" href="#target-target-index-setpolicy-fast-switch" title="Link to this heading">¶</a></h3>
 <p>大多数cpufreq驱动甚至大多数CPU频率升降算法只允许将CPU频率设置为预定义的固定值。对于这些，你
-可以使用-&gt;target()，-&gt;target_index()或-&gt;fast_switch()回调。</p>
-<p>有些具有硬件调频能力的处理器可以自行依据某些限制来切换CPU频率。它们应使用-&gt;setpolicy()回调。</p>
+可以使用-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">target()</span></code>，-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">target_index()</span></code>或-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fast_switch()</span></code>回调。</p>
+<p>有些具有硬件调频能力的处理器可以自行依据某些限制来切换CPU频率。它们应使用-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setpolicy()</span></code>回调。</p>
 </section>
 <section id="target-target-index">
 <h3>1.5. target/target_index<a class="headerlink" href="#target-target-index" title="Link to this heading">¶</a></h3>
@@ -326,28 +326,28 @@ CPUFREQ_POLICY_PERFORMANCE时选择面向性能的设置，为CPUFREQ_POLICY_POW
 </section>
 <section id="get-intermediate-target-intermediate">
 <h3>1.8 get_intermediate 和 target_intermediate<a class="headerlink" href="#get-intermediate-target-intermediate" title="Link to this heading">¶</a></h3>
-<p>仅适用于未设置 target_index() 和 CPUFREQ_ASYNC_NOTIFICATION 的驱动。</p>
-<p>get_intermediate应该返回一个平台想要切换到的稳定的中间频率，target_intermediate()应该将CPU设置为
+<p>仅适用于未设置 <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">target_index()</span></code> 和 CPUFREQ_ASYNC_NOTIFICATION 的驱动。</p>
+<p>get_intermediate应该返回一个平台想要切换到的稳定的中间频率，<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">target_intermediate()</span></code>应该将CPU设置为
 该频率，然后再跳转到’index’对应的频率。cpufreq核心会负责发送通知，驱动不必在
-target_intermediate()或target_index()中处理它们。</p>
-<p>在驱动程序不想为某个目标频率切换到中间频率的情况下，它们可以让get_intermediate()返回’0’。
-在这种情况下，cpufreq核心将直接调用-&gt;target_index()。</p>
-<p>注意：-&gt;target_index()应该在发生失败的情况下将频率恢复到policy-&gt;restore_freq，
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">target_intermediate()</span></code>或<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">target_index()</span></code>中处理它们。</p>
+<p>在驱动程序不想为某个目标频率切换到中间频率的情况下，它们可以让<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_intermediate()</span></code>返回’0’。
+在这种情况下，cpufreq核心将直接调用-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">target_index()</span></code>。</p>
+<p>注意：-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">target_index()</span></code>应该在发生失败的情况下将频率恢复到policy-&gt;restore_freq，
 因为cpufreq核心会为此发送通知。</p>
 </section>
 </section>
 <section id="id5">
 <h2>2. 频率表辅助函数<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h2>
 <p>由于大多数支持cpufreq的处理器只允许被设置为几个特定的频率，因此，”频率表”和一些相关函数可能会辅助处理器驱动
-程序的一些工作。这样的”频率表”是一个由struct cpufreq_frequency_table的条目构成的数组，”driver_data”成员包
+程序的一些工作。这样的”频率表”是一个由<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpufreq_frequency_table</span></code>的条目构成的数组，”driver_data”成员包
 含驱动程序的专用值，”frequency”成员包含了相应的频率，此外还有标志成员。在表的最后，需要添加一个
 cpufreq_frequency_table条目，频率设置为CPUFREQ_TABLE_END。如果想跳过表中的一个条目，则将频率设置为
 CPUFREQ_ENTRY_INVALID。这些条目不需要按照任何特定的顺序排序，如果排序了，cpufreq核心执行DVFS会更快一点，
 因为搜索最佳匹配会更快。</p>
 <p>如果在policy-&gt;freq_table字段中包含一个有效的频率表指针，频率表就会被cpufreq核心自动验证。</p>
-<p>cpufreq_frequency_table_verify()保证至少有一个有效的频率在policy-&gt;min和policy-&gt;max范围内，并且所有其他
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpufreq_frequency_table_verify()</span></code>保证至少有一个有效的频率在policy-&gt;min和policy-&gt;max范围内，并且所有其他
 准则都被满足。这对-&gt;verify调用很有帮助。</p>
-<p>cpufreq_frequency_table_target()是对应于-&gt;target阶段的频率表辅助函数。只要把值传递给这个函数，这个函数就会返
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpufreq_frequency_table_target()</span></code>是对应于-&gt;target阶段的频率表辅助函数。只要把值传递给这个函数，这个函数就会返
 回包含CPU要设置的频率的频率表条目。</p>
 <p>以下宏可以作为cpufreq_frequency_table的迭代器。</p>
 <p>cpufreq_for_each_entry(pos, table) - 遍历频率表的所有条目。</p>
@@ -364,7 +364,7 @@ cpufreq_for_each_entry(pos, driver_freq_table) {
 </pre></div>
 </div>
 <p>如果你需要在driver_freq_table中处理pos的位置，不要做指针减法，因为它的代价相当高。作为替代，使用宏
-cpufreq_for_each_entry_idx() 和 cpufreq_for_each_valid_entry_idx() 。</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpufreq_for_each_entry_idx()</span></code> 和 <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpufreq_for_each_valid_entry_idx()</span></code> 。</p>
 </section>
 </section>
 

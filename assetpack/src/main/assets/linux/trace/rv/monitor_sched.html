@@ -13,7 +13,7 @@
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="HiSilicon PCIe Tune and Trace device" href="../hisi-ptt.html" />
+    <link rel="next" title="Real-time application monitors" href="monitor_rtapp.html" />
     <link rel="prev" title="Monitor wwnr" href="monitor_wwnr.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -186,26 +186,6 @@ To do so, simply add them after sched in the Makefile.</p>
 <p>The specifications included in sched are currently a work in progress, adapting the ones
 defined in by Daniel Bristot in [1].</p>
 <p>Currently we included the following:</p>
-<section id="monitor-tss">
-<h3>Monitor tss<a class="headerlink" href="#monitor-tss" title="Link to this heading">¶</a></h3>
-<p>The task switch while scheduling (tss) monitor ensures a task switch happens
-only in scheduling context, that is inside a call to <cite>__schedule</cite>:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>                   |
-                   |
-                   v
-                 +-----------------+
-                 |     thread      | &lt;+
-                 +-----------------+  |
-                   |                  |
-                   | schedule_entry   | schedule_exit
-                   v                  |
-  sched_switch                        |
-+---------------                      |
-|                       sched         |
-+--------------&gt;                     -+
-</pre></div>
-</div>
-</section>
 <section id="monitor-sco">
 <h3>Monitor sco<a class="headerlink" href="#monitor-sco" title="Link to this heading">¶</a></h3>
 <p>The scheduling context operations (sco) monitor ensures changes in a task state
@@ -289,27 +269,275 @@ does not enable preemption:</p>
 </pre></div>
 </div>
 </section>
-<section id="monitor-sncid">
-<h3>Monitor sncid<a class="headerlink" href="#monitor-sncid" title="Link to this heading">¶</a></h3>
-<p>The schedule not called with interrupt disabled (sncid) monitor ensures
-schedule is not called with interrupt disabled:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>                     |
-                     |
-                     v
-  schedule_entry   +--------------+
-  schedule_exit    |              |
-+----------------- |  can_sched   |
-|                  |              |
-+----------------&gt; |              | &lt;+
-                   +--------------+  |
-                     |               |
-                     | irq_disable   | irq_enable
-                     v               |
-                                     |
-                      cant_sched    -+
+<section id="monitor-sts">
+<h3>Monitor sts<a class="headerlink" href="#monitor-sts" title="Link to this heading">¶</a></h3>
+<p>The schedule implies task switch (sts) monitor ensures a task switch happens
+only in scheduling context and up to once, as well as scheduling occurs with
+interrupts enabled but no task switch can happen before interrupts are
+disabled. When the next task picked for execution is the same as the previously
+running one, no real task switch occurs but interrupts are disabled nonetheless:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>   irq_entry                      |
+    +----+                        |
+    v    |                        v
++------------+ irq_enable    #===================#   irq_disable
+|            | ------------&gt; H                   H   irq_entry
+| cant_sched | &lt;------------ H                   H   irq_enable
+|            | irq_disable   H     can_sched     H --------------+
++------------+               H                   H               |
+                             H                   H               |
+           +---------------&gt; H                   H &lt;-------------+
+           |                 #===================#
+           |                   |
+     schedule_exit             | schedule_entry
+           |                   v
+           |   +-------------------+     irq_enable
+           |   |    scheduling     | &lt;---------------+
+           |   +-------------------+                 |
+           |     |                                   |
+           |     | irq_disable                    +--------+  irq_entry
+           |     v                                |        | --------+
+           |   +-------------------+  irq_entry   | in_irq |         |
+           |   |                   | -----------&gt; |        | &lt;-------+
+           |   | disable_to_switch |              +--------+
+           |   |                   | --+
+           |   +-------------------+   |
+           |     |                     |
+           |     | sched_switch        |
+           |     v                     |
+           |   +-------------------+   |
+           |   |     switching     |   | irq_enable
+           |   +-------------------+   |
+           |     |                     |
+           |     | irq_enable          |
+           |     v                     |
+           |   +-------------------+   |
+           +-- |  enable_to_exit   | &lt;-+
+               +-------------------+
+                 ^               | irq_disable
+                 |               | irq_entry
+                 +---------------+ irq_enable
 </pre></div>
 </div>
 </section>
+</section>
+<section id="monitor-nrp">
+<h2>Monitor nrp<a class="headerlink" href="#monitor-nrp" title="Link to this heading">¶</a></h2>
+<p>The need resched preempts (nrp) monitor ensures preemption requires
+<code class="docutils literal notranslate"><span class="pre">need_resched</span></code>. Only kernel preemption is considered, since preemption
+while returning to userspace, for this monitor, is indistinguishable from
+<code class="docutils literal notranslate"><span class="pre">sched_switch_yield</span></code> (described in the sssw monitor).
+A kernel preemption is whenever <code class="docutils literal notranslate"><span class="pre">__schedule</span></code> is called with the preemption
+flag set to true (e.g. from preempt_enable or exiting from interrupts). This
+type of preemption occurs after the need for <code class="docutils literal notranslate"><span class="pre">rescheduling</span></code> has been set.
+This is not valid for the <em>lazy</em> variant of the flag, which causes only
+userspace preemption.
+A <code class="docutils literal notranslate"><span class="pre">schedule_entry_preempt</span></code> may involve a task switch or not, in the latter
+case, a task goes through the scheduler from a preemption context but it is
+picked as the next task to run. Since the scheduler runs, this clears the need
+to reschedule. The <code class="docutils literal notranslate"><span class="pre">any_thread_running</span></code> state does not imply the monitored
+task is not running as this monitor does not track the outcome of scheduling.</p>
+<p>In theory, a preemption can only occur after the <code class="docutils literal notranslate"><span class="pre">need_resched</span></code> flag is set. In
+practice, however, it is possible to see a preemption where the flag is not
+set. This can happen in one specific condition:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>need_resched
+                 preempt_schedule()
+                                         preempt_schedule_irq()
+                                                 __schedule()
+!need_resched
+                         __schedule()
+</pre></div>
+</div>
+<p>In the situation above, standard preemption starts (e.g. from preempt_enable
+when the flag is set), an interrupt occurs before scheduling and, on its exit
+path, it schedules, which clears the <code class="docutils literal notranslate"><span class="pre">need_resched</span></code> flag.
+When the preempted task runs again, the standard preemption started earlier
+resumes, although the flag is no longer set. The monitor considers this a
+<code class="docutils literal notranslate"><span class="pre">nested_preemption</span></code>, this allows another preemption without re-setting the
+flag. This condition relaxes the monitor constraints and may catch false
+negatives (i.e. no real <code class="docutils literal notranslate"><span class="pre">nested_preemptions</span></code>) but makes the monitor more
+robust and able to validate other scenarios.
+For simplicity, the monitor starts in <code class="docutils literal notranslate"><span class="pre">preempt_irq</span></code>, although no interrupt
+occurred, as the situation above is hard to pinpoint:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>  schedule_entry
+  irq_entry                 #===========================================#
++-------------------------- H                                           H
+|                           H                                           H
++-------------------------&gt; H             any_thread_running            H
+                            H                                           H
++-------------------------&gt; H                                           H
+|                           #===========================================#
+| schedule_entry              |                       ^
+| schedule_entry_preempt      | sched_need_resched    | schedule_entry
+|                             |                      schedule_entry_preempt
+|                             v                       |
+|                           +----------------------+  |
+|                      +--- |                      |  |
+|   sched_need_resched |    |     rescheduling     | -+
+|                      +--&gt; |                      |
+|                           +----------------------+
+|                             | irq_entry
+|                             v
+|                           +----------------------+
+|                           |                      | ---+
+|                      ---&gt; |                      |    | sched_need_resched
+|                           |      preempt_irq     |    | irq_entry
+|                           |                      | &lt;--+
+|                           |                      | &lt;--+
+|                           +----------------------+    |
+|                             | schedule_entry          | sched_need_resched
+|                             | schedule_entry_preempt  |
+|                             v                         |
+|                           +-----------------------+   |
++-------------------------- |    nested_preempt     | --+
+                            +-----------------------+
+                              ^ irq_entry         |
+                              +-------------------+
+</pre></div>
+</div>
+<p>Due to how the <code class="docutils literal notranslate"><span class="pre">need_resched</span></code> flag on the preemption count works on arm64,
+this monitor is unstable on that architecture, as it often records preemption
+when the flag is not set, even in presence of the workaround above.
+For the time being, the monitor is disabled by default on arm64.</p>
+</section>
+<section id="monitor-sssw">
+<h2>Monitor sssw<a class="headerlink" href="#monitor-sssw" title="Link to this heading">¶</a></h2>
+<p>The set state sleep and wakeup (sssw) monitor ensures <code class="docutils literal notranslate"><span class="pre">set_state</span></code> to
+sleepable leads to sleeping and sleeping tasks require wakeup. It includes the
+following types of switch:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">switch_suspend</span></code>:
+a task puts itself to sleep, this can happen only after explicitly setting
+the task to <code class="docutils literal notranslate"><span class="pre">sleepable</span></code>. After a task is suspended, it needs to be woken up
+(<code class="docutils literal notranslate"><span class="pre">waking</span></code> state) before being switched in again.
+Setting the task’s state to <code class="docutils literal notranslate"><span class="pre">sleepable</span></code> can be reverted before switching if it
+is woken up or set to <code class="docutils literal notranslate"><span class="pre">runnable</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">switch_blocking</span></code>:
+a special case of a <code class="docutils literal notranslate"><span class="pre">switch_suspend</span></code> where the task is waiting on a
+sleeping RT lock (<code class="docutils literal notranslate"><span class="pre">PREEMPT_RT</span></code> only), it is common to see wakeup and set
+state events racing with each other and this leads the model to perceive this
+type of switch when the task is not set to sleepable. This is a limitation of
+the model in SMP system and workarounds may slow down the system.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">switch_preempt</span></code>:
+a task switch as a result of kernel preemption (<code class="docutils literal notranslate"><span class="pre">schedule_entry_preempt</span></code> in
+the nrp model).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">switch_yield</span></code>:
+a task explicitly calls the scheduler or is preempted while returning to
+userspace. It can happen after a <code class="docutils literal notranslate"><span class="pre">yield</span></code> system call, from the idle task or
+if the <code class="docutils literal notranslate"><span class="pre">need_resched</span></code> flag is set. By definition, a task cannot yield while
+<code class="docutils literal notranslate"><span class="pre">sleepable</span></code> as that would be a suspension. A special case of a yield occurs
+when a task in <code class="docutils literal notranslate"><span class="pre">TASK_INTERRUPTIBLE</span></code> calls the scheduler while a signal is
+pending. The task doesn’t go through the usual blocking/waking and is set
+back to runnable, the resulting switch (if there) looks like a yield to the
+<code class="docutils literal notranslate"><span class="pre">signal_wakeup</span></code> state and is followed by the signal delivery. From this
+state, the monitor expects a signal even if it sees a wakeup event, although
+not necessary, to rule out false negatives.</p></li>
+</ul>
+<p>This monitor doesn’t include a running state, <code class="docutils literal notranslate"><span class="pre">sleepable</span></code> and <code class="docutils literal notranslate"><span class="pre">runnable</span></code>
+are only referring to the task’s desired state, which could be scheduled out
+(e.g. due to preemption). However, it does include the event
+<code class="docutils literal notranslate"><span class="pre">sched_switch_in</span></code> to represent when a task is allowed to become running. This
+can be triggered also by preemption, but cannot occur after the task got to
+<code class="docutils literal notranslate"><span class="pre">sleeping</span></code> before a <code class="docutils literal notranslate"><span class="pre">wakeup</span></code> occurs:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>  +--------------------------------------------------------------------------+
+  |                                                                          |
+  |                                                                          |
+  | switch_suspend           |                                               |
+  | switch_blocking          |                                               |
+  v                          v                                               |
++----------+              #==========================#   set_state_runnable  |
+|          |              H                          H   wakeup              |
+|          |              H                          H   switch_in           |
+|          |              H                          H   switch_yield        |
+| sleeping |              H                          H   switch_preempt      |
+|          |              H                          H   signal_deliver      |
+|          |  switch_     H                          H ------+               |
+|          |  _blocking   H         runnable         H       |               |
+|          | &lt;----------- H                          H &lt;-----+               |
++----------+              H                          H                       |
+  |   wakeup              H                          H                       |
+  +---------------------&gt; H                          H                       |
+                          H                          H                       |
+              +---------&gt; H                          H                       |
+              |           #==========================#                       |
+              |             |                ^                               |
+              |             |                | set_state_runnable            |
+              |             |                | wakeup                        |
+              |    set_state_sleepable       |      +------------------------+
+              |             v                |      |
+              |           +--------------------------+  set_state_sleepable
+              |           |                          |  switch_in
+              |           |                          |  switch_preempt
+  signal_deliver          |        sleepable         |  signal_deliver
+              |           |                          | ------+
+              |           |                          |       |
+              |           |                          | &lt;-----+
+              |           +--------------------------+
+              |             |                ^
+              |        switch_yield          | set_state_sleepable
+              |             v                |
+              |           +---------------+  |
+              +---------- | signal_wakeup | -+
+                          +---------------+
+                            ^           | switch_in
+                            |           | switch_preempt
+                            |           | switch_yield
+                            +-----------+ wakeup
+</pre></div>
+</div>
+</section>
+<section id="monitor-opid">
+<h2>Monitor opid<a class="headerlink" href="#monitor-opid" title="Link to this heading">¶</a></h2>
+<p>The operations with preemption and irq disabled (opid) monitor ensures
+operations like <code class="docutils literal notranslate"><span class="pre">wakeup</span></code> and <code class="docutils literal notranslate"><span class="pre">need_resched</span></code> occur with interrupts and
+preemption disabled or during interrupt context, in such case preemption may
+not be disabled explicitly.
+<code class="docutils literal notranslate"><span class="pre">need_resched</span></code> can be set by some RCU internals functions, in which case it
+doesn’t match a task wakeup and might occur with only interrupts disabled:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>               |                     sched_need_resched
+               |                     sched_waking
+               |                     irq_entry
+               |                   +--------------------+
+               v                   v                    |
+             +------------------------------------------------------+
++----------- |                     disabled                         | &lt;+
+|            +------------------------------------------------------+  |
+|              |                 ^                                     |
+|              |          preempt_disable      sched_need_resched      |
+|       preempt_enable           |           +--------------------+    |
+|              v                 |           v                    |    |
+|            +------------------------------------------------------+  |
+|            |                   irq_disabled                       |  |
+|            +------------------------------------------------------+  |
+|                              |             |        ^                |
+|     irq_entry            irq_entry         |        |                |
+|     sched_need_resched       v             |   irq_disable           |
+|     sched_waking +--------------+          |        |                |
+|           +----- |              |     irq_enable    |                |
+|           |      |    in_irq    |          |        |                |
+|           +----&gt; |              |          |        |                |
+|                  +--------------+          |        |          irq_disable
+|                     |                      |        |                |
+| irq_enable          | irq_enable           |        |                |
+|                     v                      v        |                |
+|            #======================================================#  |
+|            H                     enabled                          H  |
+|            #======================================================#  |
+|              |                   ^         ^ preempt_enable     |    |
+|       preempt_disable     preempt_enable   +--------------------+    |
+|              v                   |                                   |
+|            +------------------+  |                                   |
++----------&gt; | preempt_disabled | -+                                   |
+             +------------------+                                      |
+               |                                                       |
+               +-------------------------------------------------------+
+</pre></div>
+</div>
+<p>This monitor is designed to work on <code class="docutils literal notranslate"><span class="pre">PREEMPT_RT</span></code> kernels, the special case of
+events occurring in interrupt context is a shortcut to identify valid scenarios
+where the preemption tracepoints might not be visible, during interrupts
+preemption is always disabled. On non- <code class="docutils literal notranslate"><span class="pre">PREEMPT_RT</span></code> kernels, the interrupts
+might invoke a softirq to set <code class="docutils literal notranslate"><span class="pre">need_resched</span></code> and wake up a task. This is
+another special case that is currently not supported by the monitor.</p>
 </section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Link to this heading">¶</a></h2>

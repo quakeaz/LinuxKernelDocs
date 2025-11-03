@@ -14,7 +14,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Lockless Ring Buffer Design" href="ring-buffer-design.html" />
-    <link rel="prev" title="Fprobe-based Event Tracing" href="fprobetrace.html" />
+    <link rel="prev" title="Eprobe - Event-based Probe Tracing" href="eprobetrace.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -86,6 +86,7 @@
 <li class="toctree-l3"><a class="reference internal" href="kprobes.html">Kernel Probes (Kprobes)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="kprobetrace.html">Kprobe-based Event Tracing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="fprobetrace.html">Fprobe-based Event Tracing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eprobetrace.html">Eprobe - Event-based Probe Tracing</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Fprobe - Function entry/exit probe</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ring-buffer-design.html">Lockless Ring Buffer Design</a></li>
 </ul>
@@ -178,7 +179,7 @@ and/or <cite>exit_handler</cite> as below.</p>
 <a class="reference internal" href="#c.register_fprobe_syms" title="register_fprobe_syms"><code class="xref c c-func docutils literal notranslate"><span class="pre">register_fprobe_syms()</span></code></a>. These functions register the fprobe with different types
 of parameters.</p>
 <p>The <a class="reference internal" href="#c.register_fprobe" title="register_fprobe"><code class="xref c c-func docutils literal notranslate"><span class="pre">register_fprobe()</span></code></a> enables a fprobe by function-name filters.
-E.g. this enables &#64;fp on “func*()” function except “func2()”.:</p>
+E.g. this enables &#64;fp on “func*()” function except “<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">func2()</span></code>”.:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>register_fprobe(&amp;fp, &quot;func*&quot;, &quot;func2&quot;);
 </pre></div>
 </div>
@@ -217,7 +218,7 @@ after the <a class="reference internal" href="#c.register_fprobe" title="registe
 <code class="file docutils literal notranslate"><span class="pre">Documentation/trace/ftrace.rst</span></code>.</p>
 <p>Also, the <a class="reference internal" href="#c.unregister_fprobe" title="unregister_fprobe"><code class="xref c c-func docutils literal notranslate"><span class="pre">unregister_fprobe()</span></code></a> will guarantee that the both enter and exit
 handlers are no longer being called by functions after <a class="reference internal" href="#c.unregister_fprobe" title="unregister_fprobe"><code class="xref c c-func docutils literal notranslate"><span class="pre">unregister_fprobe()</span></code></a>
-returns as same as unregister_ftrace_function().</p>
+returns as same as <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unregister_ftrace_function()</span></code>.</p>
 </section>
 <section id="the-fprobe-entry-exit-handler">
 <h2>The fprobe entry/exit handler<a class="headerlink" href="#the-fprobe-entry-exit-handler" title="Link to this heading">¶</a></h2>
@@ -234,7 +235,7 @@ will be cancelled.</p>
 <dl class="simple">
 <dt>&#64;fp</dt><dd><p>This is the address of <cite>fprobe</cite> data structure related to this handler.
 You can embed the <cite>fprobe</cite> to your data structure and get it by
-container_of() macro from &#64;fp. The &#64;fp must not be NULL.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">container_of()</span></code> macro from &#64;fp. The &#64;fp must not be NULL.</p>
 </dd>
 <dt>&#64;entry_ip</dt><dd><p>This is the ftrace address of the traced function (both entry and exit).
 Note that this may not be the actual entry address of the function but
@@ -271,13 +272,13 @@ from the kprobes, this may cause an issue if user wants to run the same
 code from the fprobe and the kprobes.</p>
 <p>Kprobes has per-cpu ‘current_kprobe’ variable which protects the kprobe
 handler from recursion in all cases. On the other hand, fprobe uses
-only ftrace_test_recursion_trylock(). This allows interrupt context to
+only <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_test_recursion_trylock()</span></code>. This allows interrupt context to
 call another (or same) fprobe while the fprobe user handler is running.</p>
 <p>This is not a matter if the common callback code has its own recursion
 detection, or it can handle the recursion in the different contexts
 (normal/interrupt/NMI.)
 But if it relies on the ‘current_kprobe’ recursion lock, it has to check
-kprobe_running() and use kprobe_busy_*() APIs.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kprobe_running()</span></code> and use kprobe_busy_*() APIs.</p>
 <p>Fprobe has FPROBE_FL_KPROBE_SHARED flag to do this. If your common callback
 code will be shared with kprobes, please set FPROBE_FL_KPROBE_SHARED
 <em>before</em> registering the fprobe, like:</p>

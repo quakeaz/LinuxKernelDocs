@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -841,14 +841,14 @@ mm_count)，和文件系統 (<code class="docutils literal notranslate"><span cl
 <p>內核信息不必以英文句號結束。</p>
 <p>在小括號裏打印數字 (%d) 沒有任何價值，應該避免這樣做。</p>
 <p>&lt;linux/device.h&gt; 裏有一些驅動模型診斷宏，你應該使用它們，以確保信息對應於正確
-的設備和驅動，並且被標記了正確的消息級別。這些宏有：dev_err(), dev_warn(),
-dev_info() 等等。對於那些不和某個特定設備相關連的信息，&lt;linux/printk.h&gt; 定義
+的設備和驅動，並且被標記了正確的消息級別。這些宏有：<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_err()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_warn()</span></code>,
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_info()</span></code> 等等。對於那些不和某個特定設備相關連的信息，&lt;linux/printk.h&gt; 定義
 了 <a class="reference internal" href="../../../core-api/printk-basics.html#c.pr_notice" title="pr_notice"><code class="xref c c-func docutils literal notranslate"><span class="pre">pr_notice()</span></code></a>, <a class="reference internal" href="../../../core-api/printk-basics.html#c.pr_info" title="pr_info"><code class="xref c c-func docutils literal notranslate"><span class="pre">pr_info()</span></code></a>, <a class="reference internal" href="../../../core-api/printk-basics.html#c.pr_warn" title="pr_warn"><code class="xref c c-func docutils literal notranslate"><span class="pre">pr_warn()</span></code></a>, <a class="reference internal" href="../../../core-api/printk-basics.html#c.pr_err" title="pr_err"><code class="xref c c-func docutils literal notranslate"><span class="pre">pr_err()</span></code></a> 和其他。</p>
 <p>寫出好的調試信息可以是一個很大的挑戰；一旦你寫出後，這些信息在遠程除錯時能提
-供極大的幫助。然而打印調試信息的處理方式同打印非調試信息不同。其他 pr_XXX()
+供極大的幫助。然而打印調試信息的處理方式同打印非調試信息不同。其他 <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pr_XXX()</span></code>
 函數能無條件地打印，<a class="reference internal" href="../../../core-api/printk-basics.html#c.pr_debug" title="pr_debug"><code class="xref c c-func docutils literal notranslate"><span class="pre">pr_debug()</span></code></a> 卻不；默認情況下它不會被編譯，除非定義了 DEBUG
-或設定了 CONFIG_DYNAMIC_DEBUG。實際這同樣是爲了 dev_dbg()，一個相關約定是在一
-個已經開啓了 DEBUG 時，使用 VERBOSE_DEBUG 來添加 dev_vdbg()。</p>
+或設定了 CONFIG_DYNAMIC_DEBUG。實際這同樣是爲了 <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_dbg()</span></code>，一個相關約定是在一
+個已經開啓了 DEBUG 時，使用 VERBOSE_DEBUG 來添加 <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_vdbg()</span></code>。</p>
 <p>許多子系統擁有 Kconfig 調試選項來開啓對應 Makefile 裏面的 -DDEBUG；在其他
 情況下，特殊文件使用 #define DEBUG。當一條調試信息需要被無條件打印時，例如，
 如果已經包含一個調試相關的 #ifdef 條件，printk(KERN_DEBUG ...) 就可被使用。</p>
@@ -856,7 +856,7 @@ dev_info() 等等。對於那些不和某個特定設備相關連的信息，&lt
 <section id="id14">
 <h2>14) 分配內存<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h2>
 <p>內核提供了下面的一般用途的內存分配函數：
-<a class="reference internal" href="../../../core-api/mm-api.html#c.kmalloc" title="kmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmalloc()</span></code></a>, <a class="reference internal" href="../../../core-api/mm-api.html#c.kzalloc" title="kzalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kzalloc()</span></code></a>, <a class="reference internal" href="../../../core-api/mm-api.html#c.kmalloc_array" title="kmalloc_array"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmalloc_array()</span></code></a>, <a class="reference internal" href="../../../core-api/mm-api.html#c.kcalloc" title="kcalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kcalloc()</span></code></a>, vmalloc() 和 vzalloc()。
+<a class="reference internal" href="../../../core-api/mm-api.html#c.kmalloc" title="kmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmalloc()</span></code></a>, <a class="reference internal" href="../../../core-api/mm-api.html#c.kzalloc" title="kzalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kzalloc()</span></code></a>, <a class="reference internal" href="../../../core-api/mm-api.html#c.kmalloc_array" title="kmalloc_array"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmalloc_array()</span></code></a>, <a class="reference internal" href="../../../core-api/mm-api.html#c.kcalloc" title="kcalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kcalloc()</span></code></a>, <a class="reference internal" href="../../../core-api/mm-api.html#c.vmalloc" title="vmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">vmalloc()</span></code></a> 和 <a class="reference internal" href="../../../core-api/mm-api.html#c.vzalloc" title="vzalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">vzalloc()</span></code></a>。
 請參考 API 文檔以獲取有關它們的詳細信息：
 <a class="reference internal" href="../../zh_CN/core-api/memory-allocation.html"><span class="doc">内存分配指南</span></a> 。</p>
 <p>傳遞結構體大小的首選形式是這樣的：</p>
@@ -909,7 +909,7 @@ inline gcc 也可以自動使其內聯。而且其他用戶可能會要求移除
 碼整數。如果是一個判斷，那麼函數應該返回一個“成功”布爾值。
 </pre></div>
 </div>
-<p>比如， <code class="docutils literal notranslate"><span class="pre">add</span> <span class="pre">work</span></code> 是一個命令，所以 add_work() 在成功時返回 0，在失敗時返回
+<p>比如， <code class="docutils literal notranslate"><span class="pre">add</span> <span class="pre">work</span></code> 是一個命令，所以 <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">add_work()</span></code> 在成功時返回 0，在失敗時返回
 -EBUSY。類似的，因爲 <code class="docutils literal notranslate"><span class="pre">PCI</span> <span class="pre">device</span> <span class="pre">present</span></code> 是一個判斷，所以 <a class="reference internal" href="../../../driver-api/pci/pci.html#c.pci_dev_present" title="pci_dev_present"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_dev_present()</span></code></a>
 在成功找到一個匹配的設備時應該返回 1，如果找不到時應該返回 0。</p>
 <p>所有 EXPORTed 函數都必須遵守這個慣例，所有的公共函數也都應該如此。私有
@@ -945,7 +945,7 @@ inline gcc 也可以自動使其內聯。而且其他用戶可能會要求移除
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define sizeof_field(t, f) (sizeof(((t*)0)-&gt;f))</span>
 </pre></div>
 </div>
-<p>還有可以做嚴格的類型檢查的 min() 和 max() 宏，如果你需要可以使用它們。你可以
+<p>還有可以做嚴格的類型檢查的 <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">min()</span></code> 和 <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">max()</span></code> 宏，如果你需要可以使用它們。你可以
 自己看看那個頭文件裏還定義了什麼你可以拿來用的東西，如果有定義的話，你就不應
 在你的代碼裏自己重新定義。</p>
 </section>

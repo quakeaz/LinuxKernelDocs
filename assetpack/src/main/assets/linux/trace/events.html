@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -734,17 +734,17 @@ following:</p>
 <h3>7.1 Dyamically creating synthetic event definitions<a class="headerlink" href="#dyamically-creating-synthetic-event-definitions" title="Link to this heading">¶</a></h3>
 <p>There are a couple ways to create a new synthetic event from a kernel
 module or other kernel code.</p>
-<p>The first creates the event in one step, using synth_event_create().
+<p>The first creates the event in one step, using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_event_create()</span></code>.
 In this method, the name of the event to create and an array defining
-the fields is supplied to synth_event_create().  If successful, a
+the fields is supplied to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_event_create()</span></code>.  If successful, a
 synthetic event with that name and fields will exist following that
 call.  For example, to create a new “schedtest” synthetic event:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ret = synth_event_create(&quot;schedtest&quot;, sched_fields,
                          ARRAY_SIZE(sched_fields), THIS_MODULE);
 </pre></div>
 </div>
-<p>The sched_fields param in this example points to an array of struct
-synth_field_desc, each of which describes an event field by type and
+<p>The sched_fields param in this example points to an array of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">synth_field_desc</span></code>, each of which describes an event field by type and
 name:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>static struct synth_field_desc sched_fields[] = {
       { .type = &quot;pid_t&quot;,              .name = &quot;next_pid_field&quot; },
@@ -757,7 +757,7 @@ name:</p>
 };
 </pre></div>
 </div>
-<p>See synth_field_size() for available types.</p>
+<p>See <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_field_size()</span></code> for available types.</p>
 <p>If field_name contains [n], the field is considered to be a static array.</p>
 <p>If field_names contains[] (no subscript), the field is considered to
 be a dynamic array, which will only take as much space in the event as
@@ -768,7 +768,7 @@ in-kernel API described below can’t be used with dynamic arrays.  The
 other non-piecewise in-kernel APIs can, however, be used with dynamic
 arrays.</p>
 <p>If the event is created from within a module, a pointer to the module
-must be passed to synth_event_create().  This will ensure that the
+must be passed to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_event_create()</span></code>.  This will ensure that the
 trace buffer won’t contain unreadable events when the module is
 removed.</p>
 <p>At this point, the event object is ready to be used for generating new
@@ -777,15 +777,15 @@ events.</p>
 allows events to be created dynamically and without the need to create
 and populate an array of fields beforehand.</p>
 <p>To use this method, an empty or partially empty synthetic event should
-first be created using synth_event_gen_cmd_start() or
-synth_event_gen_cmd_array_start().  For synth_event_gen_cmd_start(),
+first be created using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_event_gen_cmd_start()</span></code> or
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_event_gen_cmd_array_start()</span></code>.  For <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_event_gen_cmd_start()</span></code>,
 the name of the event along with one or more pairs of args each pair
 representing a ‘type field_name;’ field specification should be
-supplied.  For synth_event_gen_cmd_array_start(), the name of the
-event along with an array of struct synth_field_desc should be
-supplied. Before calling synth_event_gen_cmd_start() or
-synth_event_gen_cmd_array_start(), the user should create and
-initialize a dynevent_cmd object using synth_event_cmd_init().</p>
+supplied.  For <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_event_gen_cmd_array_start()</span></code>, the name of the
+event along with an array of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">synth_field_desc</span></code> should be
+supplied. Before calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_event_gen_cmd_start()</span></code> or
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_event_gen_cmd_array_start()</span></code>, the user should create and
+initialize a dynevent_cmd object using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_event_cmd_init()</span></code>.</p>
 <p>For example, to create a new “schedtest” synthetic event with two
 fields:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct dynevent_cmd cmd;
@@ -802,7 +802,7 @@ ret = synth_event_gen_cmd_start(&amp;cmd, &quot;schedtest&quot;, THIS_MODULE,
                                 &quot;u64&quot;, &quot;ts_ns&quot;);
 </pre></div>
 </div>
-<p>Alternatively, using an array of struct synth_field_desc fields
+<p>Alternatively, using an array of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">synth_field_desc</span></code> fields
 containing the same information:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ret = synth_event_gen_cmd_array_start(&amp;cmd, &quot;schedtest&quot;, THIS_MODULE,
                                       fields, n_fields);
@@ -810,25 +810,25 @@ containing the same information:</p>
 </div>
 <p>Once the synthetic event object has been created, it can then be
 populated with more fields.  Fields are added one by one using
-synth_event_add_field(), supplying the dynevent_cmd object, a field
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_event_add_field()</span></code>, supplying the dynevent_cmd object, a field
 type, and a field name.  For example, to add a new int field named
 “intfield”, the following call should be made:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ret = synth_event_add_field(&amp;cmd, &quot;int&quot;, &quot;intfield&quot;);
 </pre></div>
 </div>
-<p>See synth_field_size() for available types. If field_name contains [n]
+<p>See <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_field_size()</span></code> for available types. If field_name contains [n]
 the field is considered to be an array.</p>
 <p>A group of fields can also be added all at once using an array of
-synth_field_desc with add_synth_fields().  For example, this would add
+synth_field_desc with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">add_synth_fields()</span></code>.  For example, this would add
 just the first four sched_fields:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ret = synth_event_add_fields(&amp;cmd, sched_fields, 4);
 </pre></div>
 </div>
 <p>If you already have a string of the form ‘type field_name’,
-synth_event_add_field_str() can be used to add it as-is; it will
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_event_add_field_str()</span></code> can be used to add it as-is; it will
 also automatically append a ‘;’ to the string.</p>
 <p>Once all the fields have been added, the event should be finalized and
-registered by calling the synth_event_gen_cmd_end() function:</p>
+registered by calling the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_event_gen_cmd_end()</span></code> function:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ret = synth_event_gen_cmd_end(&amp;cmd);
 </pre></div>
 </div>
@@ -838,21 +838,21 @@ events.</p>
 <section id="tracing-synthetic-events-from-in-kernel-code">
 <h3>7.2 Tracing synthetic events from in-kernel code<a class="headerlink" href="#tracing-synthetic-events-from-in-kernel-code" title="Link to this heading">¶</a></h3>
 <p>To trace a synthetic event, there are several options.  The first
-option is to trace the event in one call, using synth_event_trace()
-with a variable number of values, or synth_event_trace_array() with an
+option is to trace the event in one call, using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_event_trace()</span></code>
+with a variable number of values, or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_event_trace_array()</span></code> with an
 array of values to be set.  A second option can be used to avoid the
 need for a pre-formed array of values or list of arguments, via
-synth_event_trace_start() and synth_event_trace_end() along with
-synth_event_add_next_val() or synth_event_add_val() to add the values
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_event_trace_start()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_event_trace_end()</span></code> along with
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_event_add_next_val()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_event_add_val()</span></code> to add the values
 piecewise.</p>
 </section>
 <section id="tracing-a-synthetic-event-all-at-once">
 <h3>7.2.1 Tracing a synthetic event all at once<a class="headerlink" href="#tracing-a-synthetic-event-all-at-once" title="Link to this heading">¶</a></h3>
-<p>To trace a synthetic event all at once, the synth_event_trace() or
-synth_event_trace_array() functions can be used.</p>
-<p>The synth_event_trace() function is passed the trace_event_file
+<p>To trace a synthetic event all at once, the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_event_trace()</span></code> or
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_event_trace_array()</span></code> functions can be used.</p>
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_event_trace()</span></code> function is passed the trace_event_file
 representing the synthetic event (which can be retrieved using
-trace_get_event_file() using the synthetic event name, “synthetic” as
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">trace_get_event_file()</span></code> using the synthetic event name, “synthetic” as
 the system name, and the trace instance name (NULL if using the global
 trace array)), along with an variable number of u64 args, one for each
 synthetic event field, and the number of values being passed.</p>
@@ -871,10 +871,10 @@ above, code like the following could be used:</p>
 <p>All vals should be cast to u64, and string vals are just pointers to
 strings, cast to u64.  Strings will be copied into space reserved in
 the event for the string, using these pointers.</p>
-<p>Alternatively, the synth_event_trace_array() function can be used to
+<p>Alternatively, the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_event_trace_array()</span></code> function can be used to
 accomplish the same thing.  It is passed the trace_event_file
 representing the synthetic event (which can be retrieved using
-trace_get_event_file() using the synthetic event name, “synthetic” as
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">trace_get_event_file()</span></code> using the synthetic event name, “synthetic” as
 the system name, and the trace instance name (NULL if using the global
 trace array)), along with an array of u64, one for each synthetic
 event field.</p>
@@ -898,7 +898,7 @@ the same order as the synthetic event fields.</p>
 strings, cast to u64.  Strings will be copied into space reserved in
 the event for the string, using these pointers.</p>
 <p>In order to trace a synthetic event, a pointer to the trace event file
-is needed.  The trace_get_event_file() function can be used to get
+is needed.  The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">trace_get_event_file()</span></code> function can be used to get
 it - it will find the file in the given trace instance (in this case
 NULL since the top trace array is being used) while at the same time
 preventing the instance containing it from going away:</p>
@@ -908,7 +908,7 @@ preventing the instance containing it from going away:</p>
 </div>
 <p>Before tracing the event, it should be enabled in some way, otherwise
 the synthetic event won’t actually show up in the trace buffer.</p>
-<p>To enable a synthetic event from the kernel, trace_array_set_clr_event()
+<p>To enable a synthetic event from the kernel, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">trace_array_set_clr_event()</span></code>
 can be used (which is not specific to synthetic events, so does need
 the “synthetic” system name to be specified explicitly).</p>
 <p>To enable the event, pass ‘true’ to it:</p>
@@ -921,20 +921,20 @@ the “synthetic” system name to be specified explicitly).</p>
                           &quot;synthetic&quot;, &quot;schedtest&quot;, false);
 </pre></div>
 </div>
-<p>Finally, synth_event_trace_array() can be used to actually trace the
+<p>Finally, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_event_trace_array()</span></code> can be used to actually trace the
 event, which should be visible in the trace buffer afterwards:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ret = synth_event_trace_array(schedtest_event_file, vals,
                               ARRAY_SIZE(vals));
 </pre></div>
 </div>
 <p>To remove the synthetic event, the event should be disabled, and the
-trace instance should be ‘put’ back using trace_put_event_file():</p>
+trace instance should be ‘put’ back using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">trace_put_event_file()</span></code>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>trace_array_set_clr_event(schedtest_event_file-&gt;tr,
                           &quot;synthetic&quot;, &quot;schedtest&quot;, false);
 trace_put_event_file(schedtest_event_file);
 </pre></div>
 </div>
-<p>If those have been successful, synth_event_delete() can be called to
+<p>If those have been successful, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_event_delete()</span></code> can be called to
 remove the event:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ret = synth_event_delete(&quot;schedtest&quot;);
 </pre></div>
@@ -943,7 +943,7 @@ remove the event:</p>
 <section id="tracing-a-synthetic-event-piecewise">
 <h3>7.2.2 Tracing a synthetic event piecewise<a class="headerlink" href="#tracing-a-synthetic-event-piecewise" title="Link to this heading">¶</a></h3>
 <p>To trace a synthetic using the piecewise method described above, the
-synth_event_trace_start() function is used to ‘open’ the synthetic
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_event_trace_start()</span></code> function is used to ‘open’ the synthetic
 event trace:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct synth_event_trace_state trace_state;
 
@@ -952,7 +952,7 @@ ret = synth_event_trace_start(schedtest_event_file, &amp;trace_state);
 </div>
 <p>It’s passed the trace_event_file representing the synthetic event
 using the same methods as described above, along with a pointer to a
-struct synth_event_trace_state object, which will be zeroed before use and
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">synth_event_trace_state</span></code> object, which will be zeroed before use and
 used to maintain state between this and following calls.</p>
 <p>Once the event has been opened, which means space for it has been
 reserved in the trace buffer, the individual fields can be set.  There
@@ -961,8 +961,8 @@ the event, which requires no lookups, or by name, which does.  The
 tradeoff is flexibility in doing the assignments vs the cost of a
 lookup per field.</p>
 <p>To assign the values one after the other without lookups,
-synth_event_add_next_val() should be used.  Each call is passed the
-same synth_event_trace_state object used in the synth_event_trace_start(),
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_event_add_next_val()</span></code> should be used.  Each call is passed the
+same synth_event_trace_state object used in the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_event_trace_start()</span></code>,
 along with the value to set the next field in the event.  After each
 field is set, the ‘cursor’ points to the next field, which will be set
 by the subsequent call, continuing until all the fields have been set
@@ -990,9 +990,9 @@ ret = synth_event_add_next_val((u64)&quot;thneed_2.01&quot;, &amp;trace_state);
 ret = synth_event_add_next_val(395, &amp;trace_state);
 </pre></div>
 </div>
-<p>To assign the values in any order, synth_event_add_val() should be
+<p>To assign the values in any order, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_event_add_val()</span></code> should be
 used.  Each call is passed the same synth_event_trace_state object used in
-the synth_event_trace_start(), along with the field name of the field
+the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_event_trace_start()</span></code>, along with the field name of the field
 to set and the value to set it to.  The same sequence of calls as in
 the above examples using this method would be (without error-handling
 code):</p>
@@ -1007,31 +1007,31 @@ ret = synth_event_add_val(&quot;my_string_field&quot;, (u64)&quot;thneed_9&quot;
 ret = synth_event_add_val(&quot;my_int_field&quot;, 3999, &amp;trace_state);
 </pre></div>
 </div>
-<p>Note that synth_event_add_next_val() and synth_event_add_val() are
+<p>Note that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_event_add_next_val()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_event_add_val()</span></code> are
 incompatible if used within the same trace of an event - either one
 can be used but not both at the same time.</p>
 <p>Finally, the event won’t be actually traced until it’s ‘closed’,
-which is done using synth_event_trace_end(), which takes only the
-struct synth_event_trace_state object used in the previous calls:</p>
+which is done using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_event_trace_end()</span></code>, which takes only the
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">synth_event_trace_state</span></code> object used in the previous calls:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ret = synth_event_trace_end(&amp;trace_state);
 </pre></div>
 </div>
-<p>Note that synth_event_trace_end() must be called at the end regardless
+<p>Note that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synth_event_trace_end()</span></code> must be called at the end regardless
 of whether any of the add calls failed (say due to a bad field name
 being passed in).</p>
 </section>
 <section id="dyamically-creating-kprobe-and-kretprobe-event-definitions">
 <h3>7.3 Dyamically creating kprobe and kretprobe event definitions<a class="headerlink" href="#dyamically-creating-kprobe-and-kretprobe-event-definitions" title="Link to this heading">¶</a></h3>
 <p>To create a kprobe or kretprobe trace event from kernel code, the
-kprobe_event_gen_cmd_start() or kretprobe_event_gen_cmd_start()
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kprobe_event_gen_cmd_start()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kretprobe_event_gen_cmd_start()</span></code>
 functions can be used.</p>
 <p>To create a kprobe event, an empty or partially empty kprobe event
-should first be created using kprobe_event_gen_cmd_start().  The name
+should first be created using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kprobe_event_gen_cmd_start()</span></code>.  The name
 of the event and the probe location should be specified along with one
 or args each representing a probe field should be supplied to this
-function.  Before calling kprobe_event_gen_cmd_start(), the user
+function.  Before calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kprobe_event_gen_cmd_start()</span></code>, the user
 should create and initialize a dynevent_cmd object using
-kprobe_event_cmd_init().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kprobe_event_cmd_init()</span></code>.</p>
 <p>For example, to create a new “schedtest” kprobe event with two fields:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct dynevent_cmd cmd;
 char *buf;
@@ -1052,15 +1052,15 @@ ret = kprobe_event_gen_cmd_start(&amp;cmd, &quot;gen_kprobe_test&quot;, &quot;do
 </div>
 <p>Once the kprobe event object has been created, it can then be
 populated with more fields.  Fields can be added using
-kprobe_event_add_fields(), supplying the dynevent_cmd object along
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kprobe_event_add_fields()</span></code>, supplying the dynevent_cmd object along
 with a variable arg list of probe fields.  For example, to add a
 couple additional fields, the following call could be made:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ret = kprobe_event_add_fields(&amp;cmd, &quot;flags=%cx&quot;, &quot;mode=+4($stack)&quot;);
 </pre></div>
 </div>
 <p>Once all the fields have been added, the event should be finalized and
-registered by calling the kprobe_event_gen_cmd_end() or
-kretprobe_event_gen_cmd_end() functions, depending on whether a kprobe
+registered by calling the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kprobe_event_gen_cmd_end()</span></code> or
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kretprobe_event_gen_cmd_end()</span></code> functions, depending on whether a kprobe
 or kretprobe command was started:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ret = kprobe_event_gen_cmd_end(&amp;cmd);
 </pre></div>
@@ -1072,7 +1072,7 @@ or kretprobe command was started:</p>
 <p>At this point, the event object is ready to be used for tracing new
 events.</p>
 <p>Similarly, a kretprobe event can be created using
-kretprobe_event_gen_cmd_start() with a probe name and location and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kretprobe_event_gen_cmd_start()</span></code> with a probe name and location and
 additional params such as $retval:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ret = kretprobe_event_gen_cmd_start(&amp;cmd, &quot;gen_kretprobe_test&quot;,
                                     &quot;do_sys_open&quot;, &quot;$retval&quot;);
@@ -1106,10 +1106,10 @@ generated command strings can then be passed to the command-parsing
 and event creation code that already exists in the trace event
 subsystem for creating the corresponding trace events.</p>
 <p>In a nutshell, the way it works is that the higher-level interface
-code creates a struct dynevent_cmd object, then uses a couple
-functions, dynevent_arg_add() and dynevent_arg_pair_add() to build up
+code creates a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dynevent_cmd</span></code> object, then uses a couple
+functions, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dynevent_arg_add()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dynevent_arg_pair_add()</span></code> to build up
 a command string, which finally causes the command to be executed
-using the dynevent_create() function.  The details of the interface
+using the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dynevent_create()</span></code> function.  The details of the interface
 are described below.</p>
 <p>The first step in building a new command string is to create and
 initialize an instance of a dynevent_cmd.  Here, for instance, we
@@ -1129,13 +1129,13 @@ buffer and the length of the buffer (MAX_DYNEVENT_CMD_LEN can be used
 for this purpose - at 2k it’s generally too big to be comfortably put
 on the stack, so is dynamically allocated), a dynevent type id, which
 is meant to be used to check that further API calls are for the
-correct command type, and a pointer to an event-specific run_command()
+correct command type, and a pointer to an event-specific <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">run_command()</span></code>
 callback that will be called to actually execute the event-specific
 command function.</p>
 <p>Once that’s done, the command string can by built up by successive
 calls to argument-adding functions.</p>
-<p>To add a single argument, define and initialize a struct dynevent_arg
-or struct dynevent_arg_pair object.  Here’s an example of the simplest
+<p>To add a single argument, define and initialize a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dynevent_arg</span></code>
+or <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dynevent_arg_pair</span></code> object.  Here’s an example of the simplest
 possible arg addition, which is simply to append the given string as
 a whitespace-separated argument to the command:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct dynevent_arg arg;
@@ -1147,7 +1147,7 @@ arg.str = name;
 ret = dynevent_arg_add(cmd, &amp;arg);
 </pre></div>
 </div>
-<p>The arg object is first initialized using dynevent_arg_init() and in
+<p>The arg object is first initialized using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dynevent_arg_init()</span></code> and in
 this case the parameters are NULL or 0, which means there’s no
 optional sanity-checking function or separator appended to the end of
 the arg.</p>
@@ -1170,13 +1170,13 @@ function used to check the sanity of the args (for example, that
 neither part of the pair is NULL), along with a character to be used
 to add an operator between the pair (here none) and a separator to be
 appended onto the end of the arg pair (here ‘;’).</p>
-<p>There’s also a dynevent_str_add() function that can be used to simply
+<p>There’s also a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dynevent_str_add()</span></code> function that can be used to simply
 add a string as-is, with no spaces, delimiters, or arg check.</p>
-<p>Any number of dynevent_*_add() calls can be made to build up the string
+<p>Any number of dynevent_*<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_add()</span></code> calls can be made to build up the string
 (until its length surpasses cmd-&gt;maxlen).  When all the arguments have
 been added and the command string is complete, the only thing left to
 do is run the command, which happens by simply calling
-dynevent_create():</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dynevent_create()</span></code>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ret = dynevent_create(&amp;cmd);
 </pre></div>
 </div>

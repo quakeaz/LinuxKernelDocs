@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -222,7 +222,7 @@ by Linux.</p></li>
 <h2>2.  Enabling and disabling Guarded Control Stacks<a class="headerlink" href="#enabling-and-disabling-guarded-control-stacks" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>GCS is enabled and disabled for a thread via the PR_SET_SHADOW_STACK_STATUS
-prctl(), this takes a single flags argument specifying which GCS features
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prctl()</span></code>, this takes a single flags argument specifying which GCS features
 should be used.</p></li>
 <li><p>When set PR_SHADOW_STACK_ENABLE flag allocates a Guarded Control Stack
 and enables GCS for the thread, enabling the functionality controlled by
@@ -242,9 +242,9 @@ it.</p></li>
 <li><p>PR_SET_SHADOW_STACK_STATUS and PR_LOCK_SHADOW_STACK_STATUS affect only the
 thread that called them, any other running threads will be unaffected.</p></li>
 <li><p>New threads inherit the GCS configuration of the thread that created them.</p></li>
-<li><p>GCS is disabled on exec().</p></li>
+<li><p>GCS is disabled on <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">exec()</span></code>.</p></li>
 <li><p>The current GCS configuration for a thread may be read with the
-PR_GET_SHADOW_STACK_STATUS prctl(), this returns the same flags that
+PR_GET_SHADOW_STACK_STATUS <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prctl()</span></code>, this returns the same flags that
 are passed to PR_SET_SHADOW_STACK_STATUS.</p></li>
 <li><p>If GCS is disabled for a thread after having previously been enabled then
 the stack will remain allocated for the lifetime of the thread.  At present
@@ -252,7 +252,7 @@ any attempt to reenable GCS for the thread will be rejected, this may be
 revisited in future.</p></li>
 <li><p>It should be noted that since enabling GCS will result in GCS becoming
 active immediately it is not normally possible to return from the function
-that invoked the prctl() that enabled GCS.  It is expected that the normal
+that invoked the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prctl()</span></code> that enabled GCS.  It is expected that the normal
 usage will be that GCS is enabled very early in execution of a program.</p></li>
 </ul>
 </section>
@@ -270,17 +270,17 @@ the top 8 bytes of the stack will be initialised to 0 and GCSPR_EL0 will
 be set to point to the address of this 0 value, this can be used to
 detect the top of the stack.</p></li>
 <li><p>Additional Guarded Control Stacks can be allocated using the
-map_shadow_stack() system call.</p></li>
-<li><p>Stacks allocated using map_shadow_stack() can optionally have an end of
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">map_shadow_stack()</span></code> system call.</p></li>
+<li><p>Stacks allocated using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">map_shadow_stack()</span></code> can optionally have an end of
 stack marker and cap placed at the top of the stack.  If the flag
 SHADOW_STACK_SET_TOKEN is specified a cap will be placed on the stack,
 if SHADOW_STACK_SET_MARKER is not specified the cap will be the top 8
 bytes of the stack and if it is specified then the cap will be the next
 8 bytes.  While specifying just SHADOW_STACK_SET_MARKER by itself is
 valid since the marker is all bits 0 it has no observable effect.</p></li>
-<li><p>Stacks allocated using map_shadow_stack() must have a size which is a
+<li><p>Stacks allocated using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">map_shadow_stack()</span></code> must have a size which is a
 multiple of 8 bytes larger than 8 bytes and must be 8 bytes aligned.</p></li>
-<li><p>An address can be specified to map_shadow_stack(), if one is provided then
+<li><p>An address can be specified to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">map_shadow_stack()</span></code>, if one is provided then
 it must be aligned to a page boundary.</p></li>
 <li><p>When a thread is freed the Guarded Control Stack initially allocated for
 that thread will be freed.  Note carefully that if the stack has been

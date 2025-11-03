@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -208,7 +208,7 @@ For example, we can send an encrypted hello world record as follows:</p>
 <span class="n">send</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span><span class="w"> </span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="n">strlen</span><span class="p">(</span><span class="n">msg</span><span class="p">));</span>
 </pre></div>
 </div>
-<p>send() data is directly encrypted from the userspace buffer provided
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">send()</span></code> data is directly encrypted from the userspace buffer provided
 to the encrypted kernel send buffer if possible.</p>
 <p>The sendfile system call will send the file’s data over TLS records of maximum
 length (2^14).</p>
@@ -217,13 +217,13 @@ length (2^14).</p>
 <span class="n">sendfile</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">offset</span><span class="p">,</span><span class="w"> </span><span class="n">stat</span><span class="p">.</span><span class="n">st_size</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>TLS records are created and sent after each send() call, unless
+<p>TLS records are created and sent after each <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">send()</span></code> call, unless
 MSG_MORE is passed.  MSG_MORE will delay creation of a record until
 MSG_MORE is not passed, or the maximum record size is reached.</p>
 <p>The kernel will need to allocate a buffer for the encrypted data.
-This buffer is allocated at the time send() is called, such that
-either the entire send() call will return -ENOMEM (or block waiting
-for memory), or the encryption will always succeed.  If send() returns
+This buffer is allocated at the time <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">send()</span></code> is called, such that
+either the entire <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">send()</span></code> call will return -ENOMEM (or block waiting
+for memory), or the encryption will always succeed.  If <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">send()</span></code> returns
 -ENOMEM and some data was left on the socket buffer from a previous
 call using MSG_MORE, the MSG_MORE data is left on the socket buffer.</p>
 </section>
@@ -357,16 +357,16 @@ messages are not supported.</p>
 <p>There are certain condition-specific optimizations the TLS ULP can make,
 if requested. Those optimizations are either not universally beneficial
 or may impact correctness, hence they require an opt-in.
-All options are set per-socket using setsockopt(), and their
-state can be checked using getsockopt() and via socket diag (<code class="docutils literal notranslate"><span class="pre">ss</span></code>).</p>
+All options are set per-socket using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setsockopt()</span></code>, and their
+state can be checked using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">getsockopt()</span></code> and via socket diag (<code class="docutils literal notranslate"><span class="pre">ss</span></code>).</p>
 <section id="tls-tx-zerocopy-ro">
 <h4>TLS_TX_ZEROCOPY_RO<a class="headerlink" href="#tls-tx-zerocopy-ro" title="Link to this heading">¶</a></h4>
-<p>For device offload only. Allow sendfile() data to be transmitted directly
+<p>For device offload only. Allow <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sendfile()</span></code> data to be transmitted directly
 to the NIC without making an in-kernel copy. This allows true zero-copy
 behavior when device offload is enabled.</p>
 <p>The application must make sure that the data is not modified between being
 submitted and transmission completing. In other words this is mostly
-applicable if the data sent on a socket via sendfile() is read-only.</p>
+applicable if the data sent on a socket via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sendfile()</span></code> is read-only.</p>
 <p>Modifying the data may result in different versions of the data being used
 for the original TCP transmission and TCP retransmissions. To the receiver
 this will look like TLS records had been tampered with and will result

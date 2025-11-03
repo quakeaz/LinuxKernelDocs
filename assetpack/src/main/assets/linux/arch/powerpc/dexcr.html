@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -117,6 +117,7 @@
 <li class="toctree-l3"><a class="reference internal" href="elf_hwcaps.html">POWERPC ELF HWCAPs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="elfnote.html">ELF Note PowerPC Namespace</a></li>
 <li class="toctree-l3"><a class="reference internal" href="firmware-assisted-dump.html">Firmware-Assisted Dump</a></li>
+<li class="toctree-l3"><a class="reference internal" href="htm.html">HTM (Hardware Trace Macro)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="hvcs.html">HVCS IBM “Hypervisor Virtual Console Server” Installation Guide</a></li>
 <li class="toctree-l3"><a class="reference internal" href="imc.html">IMC (In-Memory Collection Counters)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="isa-versions.html">CPU to ISA Version Mapping</a></li>
@@ -295,7 +296,7 @@ the hypervisor is enforcing the aspect be set. To see the true DEXCR state
 software should read the appropriate SPRs directly.</p></li>
 <li><p>The aspect state when starting a process is copied from the parent’s state on
 <em class="manpage">fork(2)</em>. The state is reset to a fixed value on
-<em class="manpage">execve(2)</em>. The PR_PPC_SET_DEXCR prctl() can control both of these
+<em class="manpage">execve(2)</em>. The PR_PPC_SET_DEXCR <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prctl()</span></code> can control both of these
 values.</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">*_ONEXEC</span></code> controls do not change the current process’s DEXCR.</p></li>
 </ul>
@@ -334,7 +335,7 @@ hardware.</p></td>
 <code class="docutils literal notranslate"><span class="pre">PR_PPC_DEXCR_CTRL_SET</span> <span class="pre">|</span> <span class="pre">PR_PPC_DEXCR_CTRL_CLEAR</span></code>)</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">EPERM</span></code></p></td>
-<td><p>This aspect cannot be modified with prctl() (check for the
+<td><p>This aspect cannot be modified with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prctl()</span></code> (check for the
 PR_PPC_DEXCR_CTRL_EDITABLE flag with PR_PPC_GET_DEXCR).</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">EPERM</span></code></p></td>

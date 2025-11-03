@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -225,27 +225,30 @@
 </div></blockquote>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">driver</span></code></dt><dd><p>structure describing the driver</p>
-<p>This can be called by a parallel port device driver in order
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This can be called by a parallel port device driver in order
 to receive notifications about ports being found in the
 system, as well as ports no longer available.</p>
 <p>The <strong>driver</strong> structure is allocated by the caller and must not be
 deallocated until after calling <a class="reference internal" href="#c.parport_unregister_driver" title="parport_unregister_driver"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_unregister_driver()</span></code></a>.</p>
 <p>If using the non device model:
-The driver’s attach() function may block.  The port that
-attach() is given will be valid for the duration of the
+The driver’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">attach()</span></code> function may block.  The port that
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">attach()</span></code> is given will be valid for the duration of the
 callback, but if the driver wants to take a copy of the
 pointer it must call <a class="reference internal" href="#c.parport_get_port" title="parport_get_port"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_get_port()</span></code></a> to do so.  Calling
-parport_register_device() on that port will do this for you.</p>
-<p>The driver’s detach() function may block.  The port that
-detach() is given will be valid for the duration of the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">parport_register_device()</span></code> on that port will do this for you.</p>
+<p>The driver’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">detach()</span></code> function may block.  The port that
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">detach()</span></code> is given will be valid for the duration of the
 callback, but if the driver wants to take a copy of the
 pointer it must call <a class="reference internal" href="#c.parport_get_port" title="parport_get_port"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_get_port()</span></code></a> to do so.</p>
 <p>Returns 0 on success. The non device model will always succeeds.
 but the new device model can fail and will return the error code.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.module_parport_driver">
@@ -259,7 +262,7 @@ but the new device model can fail and will return the error code.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">__parport_driver</span></code></dt><dd><p>struct parport_driver to be used</p>
+<dt><code class="docutils literal notranslate"><span class="pre">__parport_driver</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">parport_driver</span></code> to be used</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -321,11 +324,15 @@ drivers to do so.  Afterwards it tries to reclaim the port using
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">parport</span> <span class="pre">*port</span></code></dt><dd><p>port to wait on</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">signed</span> <span class="pre">long</span> <span class="pre">timeout</span></code></dt><dd><p>time to wait (in jiffies)</p>
-<p>This function waits for up to <strong>timeout</strong> jiffies for an
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This function waits for up to <strong>timeout</strong> jiffies for an
 interrupt to occur on a parallel port.  If the port timeout is
 set to zero, it returns immediately.</p>
 <p>If an interrupt occurs before the timeout period elapses, this
@@ -333,8 +340,7 @@ function returns zero immediately.  If it times out, it returns
 one.  An error code less than zero indicates an error (most
 likely a pending signal), and the calling code should finish
 what it’s doing as soon as it can.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.parport_wait_peripheral">
@@ -344,13 +350,17 @@ what it’s doing as soon as it can.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">parport</span> <span class="pre">*port</span></code></dt><dd><p>port to watch</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">char</span> <span class="pre">mask</span></code></dt><dd><p>status lines to watch</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">char</span> <span class="pre">result</span></code></dt><dd><p>desired values of chosen status lines</p>
-<p>This function waits until the masked status lines have the
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This function waits until the masked status lines have the
 desired values, or until 35ms have elapsed (see IEEE 1284-1994
 page 24 to 25 for why this value in particular is hardcoded).
 The <strong>mask</strong> and <strong>result</strong> parameters are bitmasks, with the bits
@@ -361,12 +371,11 @@ of a fast response from the peripheral.  This fast polling
 time is configurable (using /proc), and defaults to 500usec.
 If the timeout for this port (see <a class="reference internal" href="#c.parport_set_timeout" title="parport_set_timeout"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_set_timeout()</span></code></a>) is
 zero, the fast polling time is 35ms, and this function does
-not call schedule().</p>
+not call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">schedule()</span></code>.</p>
 <p>If the timeout for this port is non-zero, after the fast
 polling fails it uses <a class="reference internal" href="#c.parport_wait_event" title="parport_wait_event"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_wait_event()</span></code></a> to wait for up to
 10ms, waking up if an interrupt occurs.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.parport_negotiate">
@@ -376,19 +385,22 @@ polling fails it uses <a class="reference internal" href="#c.parport_wait_event"
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">parport</span> <span class="pre">*port</span></code></dt><dd><p>port to use</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">mode</span></code></dt><dd><p>mode to negotiate to</p>
-<p>Use this to negotiate to a particular IEEE 1284 transfer mode.
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Use this to negotiate to a particular IEEE 1284 transfer mode.
 The <strong>mode</strong> parameter should be one of the constants in
 parport.h starting <code class="docutils literal notranslate"><span class="pre">IEEE1284_MODE_xxx</span></code>.</p>
 <p>The return value is 0 if the peripheral has accepted the
 negotiation to the mode specified, -1 if the peripheral is not
 IEEE 1284 compliant (or not present), or 1 if the peripheral
 has rejected the negotiation.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.parport_write">
@@ -398,13 +410,17 @@ has rejected the negotiation.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">parport</span> <span class="pre">*port</span></code></dt><dd><p>port to write to</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">void</span> <span class="pre">*buffer</span></code></dt><dd><p>data buffer (in kernel space)</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">len</span></code></dt><dd><p>number of bytes of data to transfer</p>
-<p>This will write up to <strong>len</strong> bytes of <strong>buffer</strong> to the port
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This will write up to <strong>len</strong> bytes of <strong>buffer</strong> to the port
 specified, using the IEEE 1284 transfer mode most recently
 negotiated to (using <a class="reference internal" href="#c.parport_negotiate" title="parport_negotiate"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_negotiate()</span></code></a>), as long as that
 mode supports forward transfers (host to peripheral).</p>
@@ -412,8 +428,7 @@ mode supports forward transfers (host to peripheral).</p>
 <strong>len</strong> bytes of <strong>buffer</strong> are valid.</p>
 <p>This function returns the number of bytes transferred (if zero
 or positive), or else an error code.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.parport_read">
@@ -423,13 +438,17 @@ or positive), or else an error code.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">parport</span> <span class="pre">*port</span></code></dt><dd><p>port to read from</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">*buffer</span></code></dt><dd><p>data buffer (in kernel space)</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">len</span></code></dt><dd><p>number of bytes of data to transfer</p>
-<p>This will read up to <strong>len</strong> bytes of <strong>buffer</strong> to the port
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This will read up to <strong>len</strong> bytes of <strong>buffer</strong> to the port
 specified, using the IEEE 1284 transfer mode most recently
 negotiated to (using <a class="reference internal" href="#c.parport_negotiate" title="parport_negotiate"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_negotiate()</span></code></a>), as long as that
 mode supports reverse transfers (peripheral to host).</p>
@@ -437,8 +456,7 @@ mode supports reverse transfers (peripheral to host).</p>
 <strong>len</strong> bytes of <strong>buffer</strong> are available to write to.</p>
 <p>This function returns the number of bytes transferred (if zero
 or positive), or else an error code.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.parport_set_timeout">
@@ -448,19 +466,22 @@ or positive), or else an error code.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pardevice</span> <span class="pre">*dev</span></code></dt><dd><p>device on a port</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">long</span> <span class="pre">inactivity</span></code></dt><dd><p>inactivity timeout (in jiffies)</p>
-<p>This sets the inactivity timeout for a particular device on a
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This sets the inactivity timeout for a particular device on a
 port.  This affects functions like <a class="reference internal" href="#c.parport_wait_peripheral" title="parport_wait_peripheral"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_wait_peripheral()</span></code></a>.
-The special value 0 means not to call schedule() while dealing
+The special value 0 means not to call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">schedule()</span></code> while dealing
 with this device.</p>
 <p>The return value is the previous inactivity timeout.</p>
 <p>Any callers of <a class="reference internal" href="#c.parport_wait_event" title="parport_wait_event"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_wait_event()</span></code></a> for this device are woken
 up.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.__parport_register_driver">
@@ -470,13 +491,17 @@ up.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">parport_driver</span> <span class="pre">*drv</span></code></dt><dd><p>structure describing the driver</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">module</span> <span class="pre">*owner</span></code></dt><dd><p>owner module of drv</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*mod_name</span></code></dt><dd><p>module name string</p>
-<p>This can be called by a parallel port device driver in order
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This can be called by a parallel port device driver in order
 to receive notifications about ports being found in the
 system, as well as ports no longer available.</p>
 <p>If devmodel is true then the new device model is used
@@ -484,19 +509,18 @@ for registration.</p>
 <p>The <strong>drv</strong> structure is allocated by the caller and must not be
 deallocated until after calling <a class="reference internal" href="#c.parport_unregister_driver" title="parport_unregister_driver"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_unregister_driver()</span></code></a>.</p>
 <p>If using the non device model:
-The driver’s attach() function may block.  The port that
-attach() is given will be valid for the duration of the
+The driver’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">attach()</span></code> function may block.  The port that
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">attach()</span></code> is given will be valid for the duration of the
 callback, but if the driver wants to take a copy of the
 pointer it must call <a class="reference internal" href="#c.parport_get_port" title="parport_get_port"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_get_port()</span></code></a> to do so.  Calling
-parport_register_device() on that port will do this for you.</p>
-<p>The driver’s detach() function may block.  The port that
-detach() is given will be valid for the duration of the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">parport_register_device()</span></code> on that port will do this for you.</p>
+<p>The driver’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">detach()</span></code> function may block.  The port that
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">detach()</span></code> is given will be valid for the duration of the
 callback, but if the driver wants to take a copy of the
 pointer it must call <a class="reference internal" href="#c.parport_get_port" title="parport_get_port"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_get_port()</span></code></a> to do so.</p>
 <p>Returns 0 on success. The non device model will always succeeds.
 but the new device model can fail and will return the error code.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.parport_unregister_driver">
@@ -506,19 +530,22 @@ but the new device model can fail and will return the error code.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">parport_driver</span> <span class="pre">*drv</span></code></dt><dd><p>structure describing the driver that was given to
 <a class="reference internal" href="#c.parport_register_driver" title="parport_register_driver"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_register_driver()</span></code></a></p>
-<p>This should be called by a parallel port device driver that
-has registered itself using <a class="reference internal" href="#c.parport_register_driver" title="parport_register_driver"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_register_driver()</span></code></a> when it
-is about to be unloaded.</p>
-<p>When it returns, the driver’s attach() routine will no longer
-be called, and for each port that attach() was called for, the
-detach() routine will have been called.</p>
-<p>All the driver’s attach() and detach() calls are guaranteed to have
-finished by the time this function returns.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This should be called by a parallel port device driver that
+has registered itself using <a class="reference internal" href="#c.parport_register_driver" title="parport_register_driver"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_register_driver()</span></code></a> when it
+is about to be unloaded.</p>
+<p>When it returns, the driver’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">attach()</span></code> routine will no longer
+be called, and for each port that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">attach()</span></code> was called for, the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">detach()</span></code> routine will have been called.</p>
+<p>All the driver’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">attach()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">detach()</span></code> calls are guaranteed to have
+finished by the time this function returns.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.parport_get_port">
@@ -528,12 +555,15 @@ finished by the time this function returns.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">parport</span> <span class="pre">*port</span></code></dt><dd><p>the port</p>
-<p>This ensures that a struct parport pointer remains valid
-until the matching <a class="reference internal" href="#c.parport_put_port" title="parport_put_port"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_put_port()</span></code></a> call.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This ensures that a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">parport</span></code> pointer remains valid
+until the matching <a class="reference internal" href="#c.parport_put_port" title="parport_put_port"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_put_port()</span></code></a> call.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.parport_put_port">
@@ -543,13 +573,16 @@ until the matching <a class="reference internal" href="#c.parport_put_port" titl
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">parport</span> <span class="pre">*port</span></code></dt><dd><p>the port</p>
-<p>This should be called once for each call to <a class="reference internal" href="#c.parport_get_port" title="parport_get_port"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_get_port()</span></code></a>,
-once the port is no longer needed. When the reference count reaches
-zero (port is no longer used), free_port is called.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This should be called once for each call to <a class="reference internal" href="#c.parport_get_port" title="parport_get_port"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_get_port()</span></code></a>,
+once the port is no longer needed. When the reference count reaches
+zero (port is no longer used), free_port is called.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.parport_register_port">
@@ -559,7 +592,7 @@ zero (port is no longer used), free_port is called.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">base</span></code></dt><dd><p>base I/O address</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">irq</span></code></dt><dd><p>IRQ line</p>
@@ -567,7 +600,11 @@ zero (port is no longer used), free_port is called.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">dma</span></code></dt><dd><p>DMA channel</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">parport_operations</span> <span class="pre">*ops</span></code></dt><dd><p>pointer to the port driver’s port operations structure</p>
-<p>When a parallel port (lowlevel) driver finds a port that
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>When a parallel port (lowlevel) driver finds a port that
 should be made available to parallel port device drivers, it
 should call <a class="reference internal" href="#c.parport_register_port" title="parport_register_port"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_register_port()</span></code></a>.  The <strong>base</strong>, <strong>irq</strong>, and
 <strong>dma</strong> parameters are for the convenience of port drivers, and
@@ -584,8 +621,7 @@ they are not told about the port at this time; that is done by
 deallocated before calling <a class="reference internal" href="#c.parport_remove_port" title="parport_remove_port"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_remove_port()</span></code></a>.</p>
 <p>If there is no memory to allocate a new parport structure,
 this function will return <code class="docutils literal notranslate"><span class="pre">NULL</span></code>.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.parport_announce_port">
@@ -595,16 +631,19 @@ this function will return <code class="docutils literal notranslate"><span class
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">parport</span> <span class="pre">*port</span></code></dt><dd><p>parallel port to announce</p>
-<p>After a port driver has registered a parallel port with
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>After a port driver has registered a parallel port with
 parport_register_port, and performed any necessary
 initialisation or adjustments, it should call
 <a class="reference internal" href="#c.parport_announce_port" title="parport_announce_port"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_announce_port()</span></code></a> in order to notify all device drivers
-that have called <a class="reference internal" href="#c.parport_register_driver" title="parport_register_driver"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_register_driver()</span></code></a>.  Their attach()
+that have called <a class="reference internal" href="#c.parport_register_driver" title="parport_register_driver"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_register_driver()</span></code></a>.  Their <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">attach()</span></code>
 functions will be called, with <strong>port</strong> as the parameter.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.parport_remove_port">
@@ -614,9 +653,13 @@ functions will be called, with <strong>port</strong> as the parameter.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">parport</span> <span class="pre">*port</span></code></dt><dd><p>parallel port to deregister</p>
-<p>When a parallel port driver is forcibly unloaded, or a
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>When a parallel port driver is forcibly unloaded, or a
 parallel port becomes inaccessible, the port driver must call
 this function in order to deal with device drivers that still
 want to use it.</p>
@@ -625,10 +668,9 @@ operations structure replaced with one containing ‘null’
 operations that return errors or just don’t do anything.</p>
 <p>Any drivers that have registered themselves using
 <a class="reference internal" href="#c.parport_register_driver" title="parport_register_driver"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_register_driver()</span></code></a> are notified that the port is no
-longer accessible by having their detach() routines called
+longer accessible by having their <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">detach()</span></code> routines called
 with <strong>port</strong> as the parameter.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.parport_register_dev_model">
@@ -638,18 +680,22 @@ with <strong>port</strong> as the parameter.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">parport</span> <span class="pre">*port</span></code></dt><dd><p>port to which the device is attached</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*name</span></code></dt><dd><p>a name to refer to the device</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">pardev_cb</span> <span class="pre">*par_dev_cb</span></code></dt><dd><p>struct containing callbacks</p>
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">pardev_cb</span> <span class="pre">*par_dev_cb</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">containing</span></code> callbacks</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">id</span></code></dt><dd><p>device number to be given to the device</p>
-<p>This function, called by parallel port device drivers,
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This function, called by parallel port device drivers,
 declares that a device is connected to a port, and tells the
 system all it needs to know.</p>
-<p>The struct pardev_cb contains pointer to callbacks. preemption
+<p>The <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pardev_cb</span></code> contains pointer to callbacks. preemption
 callback function, <strong>preempt</strong>, is called when this device driver
 has claimed access to the port but another device driver wants
 to use it.  It is given, <strong>private</strong>, as its parameter, and should
@@ -674,7 +720,7 @@ be explicitly invited to claim the port in this way, <strong>wakeup</strong> can
 be <code class="docutils literal notranslate"><span class="pre">NULL</span></code>.</p>
 <p>The interrupt handler, <strong>irq_func</strong>, is called when an interrupt
 arrives from the parallel port.  Note that if a device driver
-wants to use interrupts it should use parport_enable_irq(),
+wants to use interrupts it should use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">parport_enable_irq()</span></code>,
 and can also check the irq member of the parport structure
 representing the port.</p>
 <p>The parallel port (lowlevel) driver is the one that has called
@@ -693,8 +739,7 @@ Use it sparingly!  Normally, <strong>flags</strong> will be zero.</p>
 <p>This function returns a pointer to a structure that represents
 the device on the port, or <code class="docutils literal notranslate"><span class="pre">NULL</span></code> if there is not enough memory
 to allocate space for that structure.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.parport_unregister_device">
@@ -704,11 +749,14 @@ to allocate space for that structure.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pardevice</span> <span class="pre">*dev</span></code></dt><dd><p>pointer to structure representing device</p>
-<p>This undoes the effect of parport_register_device().</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This undoes the effect of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">parport_register_device()</span></code>.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.parport_find_number">
@@ -718,15 +766,18 @@ to allocate space for that structure.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">number</span></code></dt><dd><p>parallel port number</p>
-<p>This returns the parallel port with the specified number, or
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This returns the parallel port with the specified number, or
 <code class="docutils literal notranslate"><span class="pre">NULL</span></code> if there is none.</p>
 <p>There is an implicit <a class="reference internal" href="#c.parport_get_port" title="parport_get_port"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_get_port()</span></code></a> done already; to throw
 away the reference to the port that <a class="reference internal" href="#c.parport_find_number" title="parport_find_number"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_find_number()</span></code></a>
 gives you, use <a class="reference internal" href="#c.parport_put_port" title="parport_put_port"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_put_port()</span></code></a>.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.parport_find_base">
@@ -736,15 +787,18 @@ gives you, use <a class="reference internal" href="#c.parport_put_port" title="p
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">base</span></code></dt><dd><p>base I/O address</p>
-<p>This returns the parallel port with the specified base
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This returns the parallel port with the specified base
 address, or <code class="docutils literal notranslate"><span class="pre">NULL</span></code> if there is none.</p>
 <p>There is an implicit <a class="reference internal" href="#c.parport_get_port" title="parport_get_port"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_get_port()</span></code></a> done already; to throw
 away the reference to the port that <a class="reference internal" href="#c.parport_find_base" title="parport_find_base"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_find_base()</span></code></a>
 gives you, use <a class="reference internal" href="#c.parport_put_port" title="parport_put_port"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_put_port()</span></code></a>.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.parport_claim">
@@ -754,16 +808,19 @@ gives you, use <a class="reference internal" href="#c.parport_put_port" title="p
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pardevice</span> <span class="pre">*dev</span></code></dt><dd><p>pointer to structure representing a device on the port</p>
-<p>This function will not block and so can be used from interrupt
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This function will not block and so can be used from interrupt
 context.  If <a class="reference internal" href="#c.parport_claim" title="parport_claim"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_claim()</span></code></a> succeeds in claiming access to
 the port it returns zero and the port is available to use.  It
 may fail (returning non-zero) if the port is in use by another
 driver and that driver is not willing to relinquish control of
 the port.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.parport_claim_or_block">
@@ -773,14 +830,17 @@ the port.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pardevice</span> <span class="pre">*dev</span></code></dt><dd><p>pointer to structure representing a device on the port</p>
-<p>This behaves like <a class="reference internal" href="#c.parport_claim" title="parport_claim"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_claim()</span></code></a>, but will block if necessary
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This behaves like <a class="reference internal" href="#c.parport_claim" title="parport_claim"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_claim()</span></code></a>, but will block if necessary
 to wait for the port to be free.  A return value of 1
 indicates that it slept; 0 means that it succeeded without
 needing to sleep.  A negative error code indicates failure.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.parport_release">
@@ -790,13 +850,16 @@ needing to sleep.  A negative error code indicates failure.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pardevice</span> <span class="pre">*dev</span></code></dt><dd><p>pointer to structure representing parallel port device</p>
-<p>This function cannot fail, but it should not be called without
-the port claimed.  Similarly, if the port is already claimed
-you should not try claiming it again.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This function cannot fail, but it should not be called without
+the port claimed.  Similarly, if the port is already claimed
+you should not try claiming it again.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.parport_open">
@@ -806,18 +869,21 @@ you should not try claiming it again.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">devnum</span></code></dt><dd><p>canonical device number</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*name</span></code></dt><dd><p>name to associate with the device</p>
-<p>This function is similar to parport_register_device(), except
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This function is similar to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">parport_register_device()</span></code>, except
 that it locates a device by its number rather than by the port
 it is attached to.</p>
 <p>All parameters except for <strong>devnum</strong> are the same as for
-parport_register_device().  The return value is the same as
-for parport_register_device().</p>
-</dd>
-</dl>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">parport_register_device()</span></code>.  The return value is the same as
+for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">parport_register_device()</span></code>.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.parport_close">
@@ -827,12 +893,15 @@ for parport_register_device().</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pardevice</span> <span class="pre">*dev</span></code></dt><dd><p>device to close</p>
-<p>This is to <a class="reference internal" href="#c.parport_open" title="parport_open"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_open()</span></code></a> as <a class="reference internal" href="#c.parport_unregister_device" title="parport_unregister_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_unregister_device()</span></code></a> is to
-parport_register_device().</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This is to <a class="reference internal" href="#c.parport_open" title="parport_open"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_open()</span></code></a> as <a class="reference internal" href="#c.parport_unregister_device" title="parport_unregister_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">parport_unregister_device()</span></code></a> is to
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">parport_register_device()</span></code>.</p>
+</div></blockquote>
 </div>
 </section>
 <section id="x50-uart-driver">
@@ -840,7 +909,7 @@ parport_register_device().</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.serial8250_get_port">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">uart_8250_port</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">serial8250_get_port</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">line</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.serial8250_get_port" title="Link to this definition">¶</a><br /></dt>
-<dd><p>retrieve struct uart_8250_port</p>
+<dd><p>retrieve <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">uart_8250_port</span></code></p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -850,10 +919,10 @@ parport_register_device().</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This function retrieves struct uart_8250_port for the specific line.
+<p>This function retrieves <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">uart_8250_port</span></code> for the specific line.
 This struct <em>must</em> <em>not</em> be used to perform a 8250 or serial core operation
-which is not accessible otherwise. Its only purpose is to make the struct
-accessible to the runtime-pm callbacks for context suspend/restore.
+which is not accessible otherwise. Its only purpose is to make the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">accessible</span></code> to the runtime-pm callbacks for context suspend/restore.
 The lock assumption made here is none because runtime-pm suspend/resume
 callbacks should not be invoked if there is any operation performed on the
 port.</p>
@@ -866,11 +935,14 @@ port.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">line</span></code></dt><dd><p>serial line number</p>
-<p>Suspend one serial port.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Suspend one serial port.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.serial8250_resume_port">
@@ -880,11 +952,14 @@ port.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">line</span></code></dt><dd><p>serial line number</p>
-<p>Resume one serial port.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Resume one serial port.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.serial8250_register_8250_port">
@@ -894,16 +969,19 @@ port.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">uart_8250_port</span> <span class="pre">*up</span></code></dt><dd><p>serial port template</p>
-<p>Configure the serial port specified by the request. If the
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Configure the serial port specified by the request. If the
 port exists and is in use, it is hung up and unregistered
 first.</p>
 <p>The port is then probed and if necessary the IRQ is autodetected
 If this fails an error is returned.</p>
 <p>On success the port is ready to use and the line number is returned.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.serial8250_unregister_port">
@@ -913,12 +991,15 @@ If this fails an error is returned.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">line</span></code></dt><dd><p>serial line number</p>
-<p>Remove one serial port.  This may not be called from interrupt
-context.  We hand the port back to the our control.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Remove one serial port.  This may not be called from interrupt
+context.  We hand the port back to the our control.</p>
+</div></blockquote>
 </div>
 <p>See <a class="reference internal" href="serial/driver.html"><span class="doc">Low Level Serial API</span></a> for related APIs.</p>
 </section>
@@ -1011,8 +1092,8 @@ current PWM hardware state.</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This is a representation of a PWM waveform alternative to struct pwm_state
-below. It’s more expressive than struct pwm_state as it contains a
+<p>This is a representation of a PWM waveform alternative to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pwm_state</span></code>
+below. It’s more expressive than <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pwm_state</span></code> as it contains a
 duty_offset_ns and so can represent offsets other than zero (with .polarity =
 PWM_POLARITY_NORMAL) and period - duty_cycle (.polarity =
 PWM_POLARITY_INVERSED).</p>
@@ -1232,6 +1313,7 @@ inconsistent (<strong>scale</strong> == 0 or <strong>duty_cycle</strong> &gt; <s
 <p><strong>Definition</strong>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct pwm_chip {
     struct device dev;
+    struct cdev cdev;
     const struct pwm_ops *ops;
     struct module *owner;
     unsigned int id;
@@ -1252,6 +1334,8 @@ inconsistent (<strong>scale</strong> == 0 or <strong>duty_cycle</strong> &gt; <s
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">dev</span></code></dt><dd><p>device providing the PWMs</p>
 </dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cdev</span></code></dt><dd><p><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cdev</span></code> for this device</p>
+</dd>
 <dt><code class="docutils literal notranslate"><span class="pre">ops</span></code></dt><dd><p>callbacks for this PWM controller</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">owner</span></code></dt><dd><p>module providing this chip</p>
@@ -1262,7 +1346,7 @@ inconsistent (<strong>scale</strong> == 0 or <strong>duty_cycle</strong> &gt; <s
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">of_xlate</span></code></dt><dd><p>request a PWM device given a device tree PWM specifier</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">atomic</span></code></dt><dd><p>can the driver’s -&gt;apply() be called in atomic context</p>
+<dt><code class="docutils literal notranslate"><span class="pre">atomic</span></code></dt><dd><p>can the driver’s -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">apply()</span></code> be called in atomic context</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">uses_pwmchip_alloc</span></code></dt><dd><p>signals if pwmchip_allow was used to allocate this chip</p>
 </dd>
@@ -1565,7 +1649,7 @@ the bootloader config to the Linux one.</p>
 <p><strong>Description</strong></p>
 <p>Lookup is first attempted using DT. If the device was not instantiated from
 a device tree, a PWM chip and a relative index is looked up via a table
-supplied by board setup code (see pwm_add_table()).</p>
+supplied by board setup code (see <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pwm_add_table()</span></code>).</p>
 <p>Once a PWM chip has been found the specified PWM device will be requested
 and is ready to be used.</p>
 <p><strong>Return</strong></p>
@@ -1623,8 +1707,8 @@ error code on failure.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Returns the PWM device parsed from the firmware node. See of_pwm_get() and
-acpi_pwm_get() for a detailed description.</p>
+<p>Returns the PWM device parsed from the firmware node. See <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">of_pwm_get()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">acpi_pwm_get()</span></code> for a detailed description.</p>
 <p><strong>Return</strong></p>
 <p>A pointer to the requested PWM device or an <a class="reference internal" href="../core-api/kernel-api.html#c.ERR_PTR" title="ERR_PTR"><code class="xref c c-func docutils literal notranslate"><span class="pre">ERR_PTR()</span></code></a>-encoded
 error code on failure.</p>

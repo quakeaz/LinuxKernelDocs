@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -210,7 +210,7 @@ initialized at build time. The region arrays are initially sized to
 <code class="docutils literal notranslate"><span class="pre">INIT_MEMBLOCK_MEMORY_REGIONS</span></code> for “memory” and
 <code class="docutils literal notranslate"><span class="pre">INIT_MEMBLOCK_RESERVED_REGIONS</span></code> for “reserved”. The region array
 for “physmem” is initially sized to <code class="docutils literal notranslate"><span class="pre">INIT_PHYSMEM_REGIONS</span></code>.
-The memblock_allow_resize() enables automatic resizing of the region
+The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">memblock_allow_resize()</span></code> enables automatic resizing of the region
 arrays during addition of new regions. This feature should be used
 with care so that memory allocated for the region array will not
 overlap with areas that should be reserved, for example initrd.</p>
@@ -233,7 +233,7 @@ of the allocated memory.</p></li>
 memory ranges and the fallback methods. Consult the documentation
 of <a class="reference internal" href="#c.memblock_alloc_internal" title="memblock_alloc_internal"><code class="xref c c-func docutils literal notranslate"><span class="pre">memblock_alloc_internal()</span></code></a> and <a class="reference internal" href="#c.memblock_alloc_range_nid" title="memblock_alloc_range_nid"><code class="xref c c-func docutils literal notranslate"><span class="pre">memblock_alloc_range_nid()</span></code></a>
 functions for more elaborate description.</p>
-<p>As the system boot progresses, the architecture specific mem_init()
+<p>As the system boot progresses, the architecture specific <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mem_init()</span></code>
 function frees all the memory to the buddy page allocator.</p>
 <p>Unless an architecture enables <code class="docutils literal notranslate"><span class="pre">CONFIG_ARCH_KEEP_MEMBLOCK</span></code>, the
 memblock data structures (except “physmem”) will be discarded after the
@@ -274,11 +274,12 @@ via a driver, and never indicated in the firmware-provided memory map as
 system RAM. This corresponds to IORESOURCE_SYSRAM_DRIVER_MANAGED in the
 kernel resource tree.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">MEMBLOCK_RSRV_NOINIT</span></code></dt><dd><p>memory region for which struct pages are
-not initialized (only for reserved regions).</p>
+<dt><code class="docutils literal notranslate"><span class="pre">MEMBLOCK_RSRV_NOINIT</span></code></dt><dd><p>reserved memory region for which <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pages</span></code> are not
+fully initialized. Users of this flag are responsible to properly initialize
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pages</span></code> of this region</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">MEMBLOCK_RSRV_KERN</span></code></dt><dd><p>memory region that is reserved for kernel use,
-either explictitly with memblock_reserve_kern() or via memblock
+either explictitly with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">memblock_reserve_kern()</span></code> or via memblock
 allocation APIs. All memblock allocations set this flag.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">MEMBLOCK_KHO_SCRATCH</span></code></dt><dd><p>memory region that kexec can pass to the next
@@ -1063,7 +1064,7 @@ first region after the range is returned in <strong>*end_rgn</strong>.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Free boot memory block previously allocated by memblock_alloc_xx() API.
+<p>Free boot memory block previously allocated by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">memblock_alloc_xx()</span></code> API.
 The freeing memory will not be released to the buddy allocator.</p>
 </div>
 <dl class="c function">
@@ -1081,7 +1082,7 @@ The freeing memory will not be released to the buddy allocator.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Free boot memory block previously allocated by memblock_phys_alloc_xx() API.
+<p>Free boot memory block previously allocated by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">memblock_phys_alloc_xx()</span></code> API.
 The freeing memory will not be released to the buddy allocator.</p>
 </div>
 <dl class="c function">
@@ -1177,8 +1178,8 @@ The freeing memory will not be released to the buddy allocator.</p>
 <p><strong>Description</strong></p>
 <p>The memory regions marked with <code class="docutils literal notranslate"><span class="pre">MEMBLOCK_NOMAP</span></code> will not be added to the
 direct mapping of the physical memory. These regions will still be
-covered by the memory map. The struct page representing NOMAP memory
-frames in the memory map will be PageReserved()</p>
+covered by the memory map. The <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code> representing NOMAP memory
+frames in the memory map will be <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">PageReserved()</span></code></p>
 <p><strong>Note</strong></p>
 <p>if the memory being marked <code class="docutils literal notranslate"><span class="pre">MEMBLOCK_NOMAP</span></code> was allocated from
 memblock, the caller must inform kmemleak to ignore that memory</p>
@@ -1205,7 +1206,7 @@ memblock, the caller must inform kmemleak to ignore that memory</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.memblock_reserved_mark_noinit">
 <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="pre">__init_memblock</span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">memblock_reserved_mark_noinit</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">phys_addr_t</span></span><span class="w"> </span><span class="n"><span class="pre">base</span></span>, <span class="n"><span class="pre">phys_addr_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.memblock_reserved_mark_noinit" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Mark a reserved memory region with flag MEMBLOCK_RSRV_NOINIT which results in the struct pages not being initialized for this region.</p>
+<dd><p>Mark a reserved memory region with flag MEMBLOCK_RSRV_NOINIT</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -1217,8 +1218,13 @@ memblock, the caller must inform kmemleak to ignore that memory</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>struct pages will not be initialized for reserved memory regions marked with
-<code class="docutils literal notranslate"><span class="pre">MEMBLOCK_RSRV_NOINIT</span></code>.</p>
+<p>The <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pages</span></code> for the reserved regions marked <code class="docutils literal notranslate"><span class="pre">MEMBLOCK_RSRV_NOINIT</span></code> will
+not be fully initialized to allow the caller optimize their initialization.</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">CONFIG_DEFERRED_STRUCT_PAGE_INIT</span></code> is enabled, setting this flag
+completely bypasses the initialization of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pages</span></code> for such region.</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">CONFIG_DEFERRED_STRUCT_PAGE_INIT</span></code> is disabled, <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pages</span></code> in this
+region will be initialized with default values but won’t be marked as
+reserved.</p>
 <p><strong>Return</strong></p>
 <p>0 on success, -errno on failure.</p>
 </div>
@@ -1304,7 +1310,7 @@ in lockstep and returns each intersection.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.__next_mem_range_rev">
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="pre">__init_memblock</span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">__next_mem_range_rev</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">idx</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">nid</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.memblock_flags" title="memblock_flags"><span class="n"><span class="pre">memblock_flags</span></span></a><span class="w"> </span><span class="n"><span class="pre">flags</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.memblock_type" title="memblock_type"><span class="n"><span class="pre">memblock_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">type_a</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.memblock_type" title="memblock_type"><span class="n"><span class="pre">memblock_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">type_b</span></span>, <span class="n"><span class="pre">phys_addr_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">out_start</span></span>, <span class="n"><span class="pre">phys_addr_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">out_end</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">out_nid</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.__next_mem_range_rev" title="Link to this definition">¶</a><br /></dt>
-<dd><p>generic next function for for_each_*_range_rev()</p>
+<dd><p>generic next function for for_each_*<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_range_rev()</span></code></p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -1359,7 +1365,7 @@ Regions which cross the area boundaries are split as necessary.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.__next_mem_pfn_range_in_zone">
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="pre">__init_memblock</span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">__next_mem_pfn_range_in_zone</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">idx</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.__next_mem_pfn_range_in_zone" title="zone"><span class="n"><span class="pre">zone</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">zone</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">out_spfn</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">out_epfn</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.__next_mem_pfn_range_in_zone" title="Link to this definition">¶</a><br /></dt>
-<dd><p>iterator for for_each_*_range_in_zone()</p>
+<dd><p>iterator for for_each_*<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_range_in_zone()</span></code></p>
 </dd></dl>
 
 <div class="kernelindent docutils container">

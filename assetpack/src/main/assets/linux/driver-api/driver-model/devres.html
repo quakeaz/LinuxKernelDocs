@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -168,7 +168,7 @@ initialization failure don’t happen often enough to be noticeable.
 Init failure path is worse because it’s much less travelled while
 needs to handle multiple entry points.</p>
 <p>So, many low level drivers end up leaking resources on driver detach
-and having half broken failure path implementation in -&gt;probe() which
+and having half broken failure path implementation in -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> which
 would leak resources or even cause oops when failure occurs.  iomap
 adds more to this mix.  So do msi and msix.</p>
 </section>
@@ -182,8 +182,8 @@ release, the associated release function is invoked and then the
 devres entry is freed.</p>
 <p>Managed interface is created for resources commonly used by device
 drivers using devres.  For example, coherent DMA memory is acquired
-using dma_alloc_coherent().  The managed version is called
-dmam_alloc_coherent().  It is identical to dma_alloc_coherent() except
+using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_alloc_coherent()</span></code>.  The managed version is called
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dmam_alloc_coherent()</span></code>.  It is identical to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_alloc_coherent()</span></code> except
 for the DMA memory allocated using it is managed and will be
 automatically released on driver detach.  Implementation looks like
 the following:</p>
@@ -222,7 +222,7 @@ dmam_alloc_coherent(dev, size, dma_handle, gfp)
 }
 </pre></div>
 </div>
-<p>If a driver uses dmam_alloc_coherent(), the area is guaranteed to be
+<p>If a driver uses <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dmam_alloc_coherent()</span></code>, the area is guaranteed to be
 freed whether initialization fails half-way or the device gets
 detached.  If most resources are acquired using managed interface, a
 driver can have much simpler init and exit code.  Init path basically
@@ -361,16 +361,16 @@ certainly invest a bit more effort into libata core layer).</p>
 <a class="reference internal" href="../../core-api/kernel-api.html#c.devm_clk_bulk_get_all" title="devm_clk_bulk_get_all"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_clk_bulk_get_all()</span></code></a>
 <a class="reference internal" href="../../core-api/kernel-api.html#c.devm_clk_bulk_get_optional" title="devm_clk_bulk_get_optional"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_clk_bulk_get_optional()</span></code></a>
 <a class="reference internal" href="../../core-api/kernel-api.html#c.devm_get_clk_from_child" title="devm_get_clk_from_child"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_get_clk_from_child()</span></code></a>
-devm_clk_hw_register()
-devm_of_clk_add_hw_provider()
-devm_clk_hw_register_clkdev()</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_clk_hw_register()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_of_clk_add_hw_provider()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_clk_hw_register_clkdev()</span></code></p>
 </dd>
-<dt>DMA</dt><dd><p>dmaenginem_async_device_register()
-dmam_alloc_coherent()
+<dt>DMA</dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dmaenginem_async_device_register()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dmam_alloc_coherent()</span></code>
 <a class="reference internal" href="../infrastructure.html#c.dmam_alloc_attrs" title="dmam_alloc_attrs"><code class="xref c c-func docutils literal notranslate"><span class="pre">dmam_alloc_attrs()</span></code></a>
 <a class="reference internal" href="../infrastructure.html#c.dmam_free_coherent" title="dmam_free_coherent"><code class="xref c c-func docutils literal notranslate"><span class="pre">dmam_free_coherent()</span></code></a>
-<a class="reference internal" href="../../core-api/mm-api.html#c.dmam_pool_create" title="dmam_pool_create"><code class="xref c c-func docutils literal notranslate"><span class="pre">dmam_pool_create()</span></code></a>
-<a class="reference internal" href="../../core-api/mm-api.html#c.dmam_pool_destroy" title="dmam_pool_destroy"><code class="xref c c-func docutils literal notranslate"><span class="pre">dmam_pool_destroy()</span></code></a></p>
+<a class="reference internal" href="../../core-api/dma-api.html#c.dmam_pool_create" title="dmam_pool_create"><code class="xref c c-func docutils literal notranslate"><span class="pre">dmam_pool_create()</span></code></a>
+<a class="reference internal" href="../../core-api/dma-api.html#c.dmam_pool_destroy" title="dmam_pool_destroy"><code class="xref c c-func docutils literal notranslate"><span class="pre">dmam_pool_destroy()</span></code></a></p>
 </dd>
 <dt>DRM</dt><dd><p><a class="reference internal" href="../../gpu/drm-internals.html#c.devm_drm_dev_alloc" title="devm_drm_dev_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_drm_dev_alloc()</span></code></a></p>
 </dd>
@@ -382,172 +382,171 @@ dmam_alloc_coherent()
 <a class="reference internal" href="../gpio/index.html#c.devm_gpiod_get_optional" title="devm_gpiod_get_optional"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_gpiod_get_optional()</span></code></a>
 <a class="reference internal" href="../gpio/index.html#c.devm_gpiod_put" title="devm_gpiod_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_gpiod_put()</span></code></a>
 <a class="reference internal" href="../gpio/index.html#c.devm_gpiod_unhinge" title="devm_gpiod_unhinge"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_gpiod_unhinge()</span></code></a>
-devm_gpiochip_add_data()
-devm_gpio_request()
-devm_gpio_request_one()</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_gpiochip_add_data()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_gpio_request_one()</span></code></p>
 </dd>
 <dt>I2C</dt><dd><p><a class="reference internal" href="../i2c.html#c.devm_i2c_add_adapter" title="devm_i2c_add_adapter"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_i2c_add_adapter()</span></code></a>
 <a class="reference internal" href="../i2c.html#c.devm_i2c_new_dummy_device" title="devm_i2c_new_dummy_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_i2c_new_dummy_device()</span></code></a></p>
 </dd>
 <dt>IIO</dt><dd><p><a class="reference internal" href="../iio/core.html#c.devm_iio_device_alloc" title="devm_iio_device_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_iio_device_alloc()</span></code></a>
 <a class="reference internal" href="../iio/core.html#c.devm_iio_device_register" title="devm_iio_device_register"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_iio_device_register()</span></code></a>
-devm_iio_dmaengine_buffer_setup()
-devm_iio_kfifo_buffer_setup()
-devm_iio_kfifo_buffer_setup_ext()
-devm_iio_map_array_register()
-devm_iio_triggered_buffer_setup()
-devm_iio_triggered_buffer_setup_ext()
-devm_iio_trigger_alloc()
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_iio_dmaengine_buffer_setup()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_iio_kfifo_buffer_setup()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_iio_kfifo_buffer_setup_ext()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_iio_map_array_register()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_iio_triggered_buffer_setup()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_iio_triggered_buffer_setup_ext()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_iio_trigger_alloc()</span></code>
 <a class="reference internal" href="../iio/triggers.html#c.devm_iio_trigger_register" title="devm_iio_trigger_register"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_iio_trigger_register()</span></code></a>
-devm_iio_channel_get()
-devm_iio_channel_get_all()
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_iio_channel_get()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_iio_channel_get_all()</span></code>
 <a class="reference internal" href="../iio/hw-consumer.html#c.devm_iio_hw_consumer_alloc" title="devm_iio_hw_consumer_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_iio_hw_consumer_alloc()</span></code></a>
-devm_fwnode_iio_channel_get_by_name()</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_fwnode_iio_channel_get_by_name()</span></code></p>
 </dd>
 <dt>INPUT</dt><dd><p><a class="reference internal" href="../input.html#c.devm_input_allocate_device" title="devm_input_allocate_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_input_allocate_device()</span></code></a></p>
 </dd>
-<dt>IO region</dt><dd><p>devm_release_mem_region()
-devm_release_region()
+<dt>IO region</dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_release_mem_region()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_release_region()</span></code>
 <a class="reference internal" href="../../core-api/kernel-api.html#c.devm_release_resource" title="devm_release_resource"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_release_resource()</span></code></a>
-devm_request_mem_region()
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_request_mem_region()</span></code>
 <a class="reference internal" href="../../core-api/kernel-api.html#c.devm_request_free_mem_region" title="devm_request_free_mem_region"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_request_free_mem_region()</span></code></a>
-devm_request_region()
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_request_region()</span></code>
 <a class="reference internal" href="../../core-api/kernel-api.html#c.devm_request_resource" title="devm_request_resource"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_request_resource()</span></code></a></p>
 </dd>
-<dt>IOMAP</dt><dd><p>devm_ioport_map()
-devm_ioport_unmap()
-devm_ioremap()
-devm_ioremap_uc()
-devm_ioremap_wc()
-devm_ioremap_resource() : checks resource, requests memory region, ioremaps
-devm_ioremap_resource_wc()
-<a class="reference internal" href="../infrastructure.html#c.devm_platform_ioremap_resource" title="devm_platform_ioremap_resource"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_platform_ioremap_resource()</span></code></a> : calls devm_ioremap_resource() for platform device
+<dt>IOMAP</dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_ioport_map()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_ioport_unmap()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_ioremap()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_ioremap_uc()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_ioremap_wc()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_ioremap_resource()</span></code> : checks resource, requests memory region, ioremaps
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_ioremap_resource_wc()</span></code>
+<a class="reference internal" href="../infrastructure.html#c.devm_platform_ioremap_resource" title="devm_platform_ioremap_resource"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_platform_ioremap_resource()</span></code></a> : calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_ioremap_resource()</span></code> for platform device
 <a class="reference internal" href="../infrastructure.html#c.devm_platform_ioremap_resource_byname" title="devm_platform_ioremap_resource_byname"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_platform_ioremap_resource_byname()</span></code></a>
 <a class="reference internal" href="../infrastructure.html#c.devm_platform_get_and_ioremap_resource" title="devm_platform_get_and_ioremap_resource"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_platform_get_and_ioremap_resource()</span></code></a>
-devm_iounmap()</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_iounmap()</span></code></p>
 <p>Note: For the PCI devices the specific pcim_*() functions may be used, see below.</p>
 </dd>
-<dt>IRQ</dt><dd><p>devm_free_irq()
-devm_request_any_context_irq()
-devm_request_irq()
-devm_request_threaded_irq()
-devm_irq_alloc_descs()
-devm_irq_alloc_desc()
-devm_irq_alloc_desc_at()
-devm_irq_alloc_desc_from()
-devm_irq_alloc_descs_from()
-devm_irq_alloc_generic_chip()
-devm_irq_setup_generic_chip()
-devm_irq_domain_create_sim()</p>
+<dt>IRQ</dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_free_irq()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_request_any_context_irq()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_request_irq()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_request_threaded_irq()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_irq_alloc_descs()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_irq_alloc_desc()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_irq_alloc_desc_at()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_irq_alloc_desc_from()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_irq_alloc_descs_from()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_irq_alloc_generic_chip()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_irq_setup_generic_chip()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_irq_domain_create_sim()</span></code></p>
 </dd>
-<dt>LED</dt><dd><p>devm_led_classdev_register()
-devm_led_classdev_register_ext()
-devm_led_classdev_unregister()
-devm_led_trigger_register()
-devm_of_led_get()</p>
+<dt>LED</dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_led_classdev_register()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_led_classdev_register_ext()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_led_classdev_unregister()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_led_trigger_register()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_of_led_get()</span></code></p>
 </dd>
-<dt>MDIO</dt><dd><p>devm_mdiobus_alloc()
-devm_mdiobus_alloc_size()
-devm_mdiobus_register()
-devm_of_mdiobus_register()</p>
+<dt>MDIO</dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_mdiobus_alloc()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_mdiobus_alloc_size()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_mdiobus_register()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_of_mdiobus_register()</span></code></p>
 </dd>
 <dt>MEM</dt><dd><p><a class="reference internal" href="../basics.html#c.devm_free_pages" title="devm_free_pages"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_free_pages()</span></code></a>
 <a class="reference internal" href="../basics.html#c.devm_get_free_pages" title="devm_get_free_pages"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_get_free_pages()</span></code></a>
 <a class="reference internal" href="../basics.html#c.devm_kasprintf" title="devm_kasprintf"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_kasprintf()</span></code></a>
-devm_kcalloc()
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_kcalloc()</span></code>
 <a class="reference internal" href="../basics.html#c.devm_kfree" title="devm_kfree"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_kfree()</span></code></a>
 <a class="reference internal" href="../basics.html#c.devm_kmalloc" title="devm_kmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_kmalloc()</span></code></a>
-devm_kmalloc_array()
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_kmalloc_array()</span></code>
 <a class="reference internal" href="../basics.html#c.devm_kmemdup" title="devm_kmemdup"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_kmemdup()</span></code></a>
 <a class="reference internal" href="../basics.html#c.devm_krealloc" title="devm_krealloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_krealloc()</span></code></a>
-devm_krealloc_array()
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_krealloc_array()</span></code>
 <a class="reference internal" href="../basics.html#c.devm_kstrdup" title="devm_kstrdup"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_kstrdup()</span></code></a>
 <a class="reference internal" href="../basics.html#c.devm_kstrdup_const" title="devm_kstrdup_const"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_kstrdup_const()</span></code></a>
 <a class="reference internal" href="../basics.html#c.devm_kvasprintf" title="devm_kvasprintf"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_kvasprintf()</span></code></a>
-devm_kzalloc()</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_kzalloc()</span></code></p>
 </dd>
-<dt>MFD</dt><dd><p>devm_mfd_add_devices()</p>
+<dt>MFD</dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_mfd_add_devices()</span></code></p>
 </dd>
-<dt>MUX</dt><dd><p>devm_mux_chip_alloc()
-devm_mux_chip_register()
-devm_mux_control_get()
-devm_mux_state_get()</p>
+<dt>MUX</dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_mux_chip_alloc()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_mux_chip_register()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_mux_control_get()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_mux_state_get()</span></code></p>
 </dd>
-<dt>NET</dt><dd><p>devm_alloc_etherdev()
-devm_alloc_etherdev_mqs()
-devm_register_netdev()</p>
+<dt>NET</dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_alloc_etherdev()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_alloc_etherdev_mqs()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_register_netdev()</span></code></p>
 </dd>
 <dt>PER-CPU MEM</dt><dd><p><a class="reference internal" href="../infrastructure.html#c.devm_alloc_percpu" title="devm_alloc_percpu"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_alloc_percpu()</span></code></a>
 <a class="reference internal" href="../basics.html#c.devm_free_percpu" title="devm_free_percpu"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_free_percpu()</span></code></a></p>
 </dd>
-<dt>PCI</dt><dd><p>devm_pci_alloc_host_bridge()  : managed PCI host bridge allocation
+<dt>PCI</dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_pci_alloc_host_bridge()</span></code>  : managed PCI host bridge allocation
 <a class="reference internal" href="../pci/pci.html#c.devm_pci_remap_cfgspace" title="devm_pci_remap_cfgspace"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_pci_remap_cfgspace()</span></code></a>     : ioremap PCI configuration space
 <a class="reference internal" href="../pci/pci.html#c.devm_pci_remap_cfg_resource" title="devm_pci_remap_cfg_resource"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_pci_remap_cfg_resource()</span></code></a> : ioremap PCI configuration space resource</p>
 <p><a class="reference internal" href="../pci/pci.html#c.pcim_enable_device" title="pcim_enable_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">pcim_enable_device()</span></code></a>          : after success, the PCI device gets disabled automatically on driver detach
-<a class="reference internal" href="../pci/pci.html#c.pcim_iomap" title="pcim_iomap"><code class="xref c c-func docutils literal notranslate"><span class="pre">pcim_iomap()</span></code></a>                  : do iomap() on a single BAR
-<a class="reference internal" href="../pci/pci.html#c.pcim_iomap_regions" title="pcim_iomap_regions"><code class="xref c c-func docutils literal notranslate"><span class="pre">pcim_iomap_regions()</span></code></a>          : do request_region() and iomap() on multiple BARs
+<a class="reference internal" href="../pci/pci.html#c.pcim_iomap" title="pcim_iomap"><code class="xref c c-func docutils literal notranslate"><span class="pre">pcim_iomap()</span></code></a>                  : do <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">iomap()</span></code> on a single BAR
+<a class="reference internal" href="../pci/pci.html#c.pcim_iomap_regions" title="pcim_iomap_regions"><code class="xref c c-func docutils literal notranslate"><span class="pre">pcim_iomap_regions()</span></code></a>          : do <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">request_region()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">iomap()</span></code> on multiple BARs
 <a class="reference internal" href="../pci/pci.html#c.pcim_iomap_table" title="pcim_iomap_table"><code class="xref c c-func docutils literal notranslate"><span class="pre">pcim_iomap_table()</span></code></a>            : array of mapped addresses indexed by BAR
-<a class="reference internal" href="../pci/pci.html#c.pcim_iounmap" title="pcim_iounmap"><code class="xref c c-func docutils literal notranslate"><span class="pre">pcim_iounmap()</span></code></a>                : do iounmap() on a single BAR
+<a class="reference internal" href="../pci/pci.html#c.pcim_iounmap" title="pcim_iounmap"><code class="xref c c-func docutils literal notranslate"><span class="pre">pcim_iounmap()</span></code></a>                : do <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">iounmap()</span></code> on a single BAR
 <a class="reference internal" href="../pci/pci.html#c.pcim_pin_device" title="pcim_pin_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">pcim_pin_device()</span></code></a>             : keep PCI device enabled after release
 <a class="reference internal" href="../pci/pci.html#c.pcim_set_mwi" title="pcim_set_mwi"><code class="xref c c-func docutils literal notranslate"><span class="pre">pcim_set_mwi()</span></code></a>                : enable Memory-Write-Invalidate PCI transaction</p>
 </dd>
-<dt>PHY</dt><dd><p>devm_usb_get_phy()
-devm_usb_get_phy_by_node()
-devm_usb_get_phy_by_phandle()</p>
+<dt>PHY</dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_usb_get_phy()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_usb_get_phy_by_node()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_usb_get_phy_by_phandle()</span></code></p>
 </dd>
-<dt>PINCTRL</dt><dd><p>devm_pinctrl_get()
-devm_pinctrl_put()
-devm_pinctrl_get_select()
-devm_pinctrl_register()
-devm_pinctrl_register_and_init()
-devm_pinctrl_unregister()</p>
+<dt>PINCTRL</dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_pinctrl_get()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_pinctrl_put()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_pinctrl_get_select()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_pinctrl_register()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_pinctrl_register_and_init()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_pinctrl_unregister()</span></code></p>
 </dd>
-<dt>POWER</dt><dd><p>devm_reboot_mode_register()
-devm_reboot_mode_unregister()</p>
+<dt>POWER</dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_reboot_mode_register()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_reboot_mode_unregister()</span></code></p>
 </dd>
-<dt>PWM</dt><dd><p>devm_pwmchip_alloc()
-devm_pwmchip_add()
+<dt>PWM</dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_pwmchip_alloc()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_pwmchip_add()</span></code>
 <a class="reference internal" href="../miscellaneous.html#c.devm_pwm_get" title="devm_pwm_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_pwm_get()</span></code></a>
 <a class="reference internal" href="../miscellaneous.html#c.devm_fwnode_pwm_get" title="devm_fwnode_pwm_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_fwnode_pwm_get()</span></code></a></p>
 </dd>
-<dt>REGULATOR</dt><dd><p>devm_regulator_bulk_register_supply_alias()
-devm_regulator_bulk_get()
-devm_regulator_bulk_get_const()
-devm_regulator_bulk_get_enable()
-devm_regulator_bulk_put()
-devm_regulator_get()
-devm_regulator_get_enable()
-devm_regulator_get_enable_read_voltage()
-devm_regulator_get_enable_optional()
-devm_regulator_get_exclusive()
-devm_regulator_get_optional()
-devm_regulator_irq_helper()
-devm_regulator_put()
-devm_regulator_register()
-devm_regulator_register_notifier()
-devm_regulator_register_supply_alias()
-devm_regulator_unregister_notifier()</p>
+<dt>REGULATOR</dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_regulator_bulk_register_supply_alias()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_regulator_bulk_get()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_regulator_bulk_get_const()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_regulator_bulk_get_enable()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_regulator_bulk_put()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_regulator_get()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_regulator_get_enable()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_regulator_get_enable_read_voltage()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_regulator_get_enable_optional()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_regulator_get_exclusive()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_regulator_get_optional()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_regulator_irq_helper()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_regulator_put()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_regulator_register()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_regulator_register_notifier()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_regulator_register_supply_alias()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_regulator_unregister_notifier()</span></code></p>
 </dd>
-<dt>RESET</dt><dd><p>devm_reset_control_get()
+<dt>RESET</dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_reset_control_get()</span></code>
 <a class="reference internal" href="../reset.html#c.devm_reset_controller_register" title="devm_reset_controller_register"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_reset_controller_register()</span></code></a></p>
 </dd>
-<dt>RTC</dt><dd><p>devm_rtc_device_register()
-devm_rtc_allocate_device()
-devm_rtc_register_device()
-devm_rtc_nvmem_register()</p>
+<dt>RTC</dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_rtc_device_register()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_rtc_allocate_device()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_rtc_register_device()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_rtc_nvmem_register()</span></code></p>
 </dd>
-<dt>SERDEV</dt><dd><p>devm_serdev_device_open()</p>
+<dt>SERDEV</dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_serdev_device_open()</span></code></p>
 </dd>
-<dt>SLAVE DMA ENGINE</dt><dd><p>devm_acpi_dma_controller_register()</p>
+<dt>SLAVE DMA ENGINE</dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_acpi_dma_controller_register()</span></code></p>
 </dd>
-<dt>SPI</dt><dd><p>devm_spi_alloc_host()
-devm_spi_alloc_target()
+<dt>SPI</dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_spi_alloc_host()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_spi_alloc_target()</span></code>
 <a class="reference internal" href="../spi.html#c.devm_spi_optimize_message" title="devm_spi_optimize_message"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_spi_optimize_message()</span></code></a>
 <a class="reference internal" href="../spi.html#c.devm_spi_register_controller" title="devm_spi_register_controller"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_spi_register_controller()</span></code></a>
-devm_spi_register_host()
-devm_spi_register_target()</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_spi_register_host()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_spi_register_target()</span></code></p>
 </dd>
-<dt>WATCHDOG</dt><dd><p>devm_watchdog_register_device()</p>
+<dt>WATCHDOG</dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_watchdog_register_device()</span></code></p>
 </dd>
 </dl>
 </section>

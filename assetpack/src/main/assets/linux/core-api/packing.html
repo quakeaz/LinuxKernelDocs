@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -90,6 +90,7 @@
 <li class="toctree-l3"><a class="reference internal" href="union_find.html">Union-Find in Linux</a></li>
 <li class="toctree-l3"><a class="reference internal" href="min_heap.html">Min Heap API</a></li>
 <li class="toctree-l3"><a class="reference internal" href="parser.html">Generic parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="list.html">Linked Lists in Linux</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#low-level-entry-and-exit">Low level entry and exit</a></li>
@@ -180,8 +181,8 @@ English
 <h2>Problem statement<a class="headerlink" href="#problem-statement" title="Link to this heading">¶</a></h2>
 <p>When working with hardware, one has to choose between several approaches of
 interfacing with it.
-One can memory-map a pointer to a carefully crafted struct over the hardware
-device’s memory region, and access its fields as struct members (potentially
+One can memory-map a pointer to a carefully crafted <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">over</span></code> the hardware
+device’s memory region, and access its fields as <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">members</span></code> (potentially
 declared as bitfields). But writing code this way would make it less portable,
 due to potential endianness mismatches between the CPU and the hardware device.
 Additionally, one has to pay close attention when translating register
@@ -190,7 +191,7 @@ structs. Also, some hardware (typically networking equipment) tends to group
 its register fields in ways that violate any reasonable word boundaries
 (sometimes even 64 bit ones). This creates the inconvenience of having to
 define “high” and “low” portions of register fields within the struct.
-A more robust alternative to struct field definitions would be to extract the
+A more robust alternative to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">field</span></code> definitions would be to extract the
 required fields by shifting the appropriate number of bits. But this would
 still not protect from endianness mismatches, except if all memory accesses
 were performed byte-by-byte. Also the code can easily get cluttered, and the
@@ -380,9 +381,9 @@ describes.</p>
 <section id="packing">
 <h3>packing()<a class="headerlink" href="#packing" title="Link to this heading">¶</a></h3>
 <p>This API function is deprecated.</p>
-<p>The packing() function returns an int-encoded error code, which protects the
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">packing()</span></code> function returns an int-encoded error code, which protects the
 programmer against incorrect API use.  The errors are not expected to occur
-during runtime, therefore it is reasonable to wrap packing() into a custom
+during runtime, therefore it is reasonable to wrap <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">packing()</span></code> into a custom
 function which returns void and swallows those errors. Optionally it can
 dump stack or print the error description.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">my_packing</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="n">u64</span><span class="w"> </span><span class="o">*</span><span class="n">val</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">startbit</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">endbit</span><span class="p">,</span>
@@ -413,8 +414,8 @@ dump stack or print the error description.</p>
 </section>
 <section id="pack-and-unpack">
 <h3>pack() and unpack()<a class="headerlink" href="#pack-and-unpack" title="Link to this heading">¶</a></h3>
-<p>These are const-correct variants of packing(), and eliminate the last “enum
-packing_op op” argument.</p>
+<p>These are const-correct variants of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">packing()</span></code>, and eliminate the last “<code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span>
+<span class="pre">packing_op</span></code> op” argument.</p>
 <p>Calling pack(...) is equivalent, and preferred, to calling packing(..., PACK).</p>
 <p>Calling unpack(...) is equivalent, and preferred, to calling packing(..., UNPACK).</p>
 </section>
@@ -422,15 +423,15 @@ packing_op op” argument.</p>
 <h3>pack_fields() and unpack_fields()<a class="headerlink" href="#pack-fields-and-unpack-fields" title="Link to this heading">¶</a></h3>
 <p>The library exposes optimized functions for the scenario where there are many
 fields represented in a buffer, and it encourages consumer drivers to avoid
-repetitive calls to pack() and unpack() for each field, but instead use
-pack_fields() and unpack_fields(), which reduces the code footprint.</p>
+repetitive calls to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pack()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unpack()</span></code> for each field, but instead use
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pack_fields()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unpack_fields()</span></code>, which reduces the code footprint.</p>
 <p>These APIs use field definitions in arrays of <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">packed_field_u8</span></code> or
 <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">packed_field_u16</span></code>, allowing consumer drivers to minimize the size
 of these arrays according to their custom requirements.</p>
-<p>The pack_fields() and unpack_fields() API functions are actually macros which
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pack_fields()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unpack_fields()</span></code> API functions are actually macros which
 automatically select the appropriate function at compile time, based on the
 type of the fields array passed in.</p>
-<p>An additional benefit over pack() and unpack() is that sanity checks on the
+<p>An additional benefit over <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pack()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unpack()</span></code> is that sanity checks on the
 field definitions are handled at compile time with <code class="docutils literal notranslate"><span class="pre">BUILD_BUG_ON</span></code> rather
 than only when the offending code is executed. These functions return void and
 wrapping them to handle unexpected errors is not necessary.</p>
@@ -450,7 +451,7 @@ compiler to enforce that the correct size buffer is used.</p>
 
 <span class="cp">#define SIZE 13</span>
 
-<span class="n">typdef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">__packed</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">buf</span><span class="p">[</span><span class="n">SIZE</span><span class="p">];</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="n">packed_buf_t</span><span class="p">;</span>
+<span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">__packed</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">buf</span><span class="p">[</span><span class="n">SIZE</span><span class="p">];</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="n">packed_buf_t</span><span class="p">;</span>
 
 <span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">packed_field_u8</span><span class="w"> </span><span class="n">fields</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="n">PACKED_FIELD</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="mi">90</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">data</span><span class="p">,</span><span class="w"> </span><span class="n">field1</span><span class="p">),</span>

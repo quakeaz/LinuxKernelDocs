@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Atomic Block Writes &#8212; The Linux Kernel  documentation</title>
+    <title>2.10. Atomic Block Writes &#8212; The Linux Kernel  documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=a152c8ac" />
     <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
@@ -13,6 +13,8 @@
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="3. Global Structures" href="globals.html" />
+    <link rel="prev" title="2.9. Verity files" href="verity.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -31,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -63,10 +65,25 @@
 <li class="toctree-l1"><a class="reference internal" href="../../maintainer/index.html">Maintainer handbook</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../process/index.html">All development-process docs</a></li>
 </ul>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../core-api/index.html">Core API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../driver-api/index.html">Driver APIs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../subsystem-apis.html">Subsystems</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../subsystem-apis.html">Subsystems</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../subsystem-apis.html#core-subsystems">Core subsystems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../subsystem-apis.html#human-interfaces">Human interfaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../subsystem-apis.html#networking-interfaces">Networking interfaces</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../subsystem-apis.html#storage-interfaces">Storage interfaces</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Filesystems in the Linux kernel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../block/index.html">Block</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../cdrom/index.html">CD-ROM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../scsi/index.html">SCSI Subsystem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../target/index.html">TCM Virtual Device</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../nvme/index.html">NVMe Subsystem</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../subsystem-apis.html#other-subsystems">Other subsystems</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../locking/index.html">Locking</a></li>
 </ul>
 <ul>
@@ -130,9 +147,9 @@
 
 
 <section id="atomic-block-writes">
-<span id="atomic-writes"></span><h1>Atomic Block Writes<a class="headerlink" href="#atomic-block-writes" title="Link to this heading">¶</a></h1>
+<span id="atomic-writes"></span><h1><span class="section-number">2.10. </span>Atomic Block Writes<a class="headerlink" href="#atomic-block-writes" title="Link to this heading">¶</a></h1>
 <section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h2>
+<h2><span class="section-number">2.10.1. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h2>
 <p>Atomic (untorn) block writes ensure that either the entire write is committed
 to disk or none of it is. This prevents “torn writes” during power loss or
 system crashes. The ext4 filesystem supports atomic writes (only with Direct
@@ -153,7 +170,7 @@ based on the underlying device’s supported atomic write unit limits.</p></li>
 </ol>
 </section>
 <section id="requirements">
-<h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading">¶</a></h2>
+<h2><span class="section-number">2.10.2. </span>Requirements<a class="headerlink" href="#requirements" title="Link to this heading">¶</a></h2>
 <p>Basic requirements for atomic writes in ext4:</p>
 <blockquote>
 <div><ol class="arabic simple">
@@ -177,7 +194,7 @@ atomic writes on ext4 are only supported if underlying storage device supports
 it.</p>
 </section>
 <section id="multi-fsblock-implementation-details">
-<h2>Multi-fsblock Implementation Details<a class="headerlink" href="#multi-fsblock-implementation-details" title="Link to this heading">¶</a></h2>
+<h2><span class="section-number">2.10.3. </span>Multi-fsblock Implementation Details<a class="headerlink" href="#multi-fsblock-implementation-details" title="Link to this heading">¶</a></h2>
 <p>The bigalloc feature changes ext4 to allocate in units of multiple filesystem
 blocks, also known as clusters. With bigalloc each bit within block bitmap
 represents cluster (power of 2 number of blocks) rather than individual
@@ -198,7 +215,7 @@ device if the start of the partition/logical volume is itself aligned correctly.
 <li><p>For large unwritten extents, the extent gets split into two unwritten
 extents of appropriate requested size</p></li>
 <li><p>For mixed mapping regions (combinations of holes, unwritten extents, or
-mapped extents), ext4_map_blocks() is called in a loop with
+mapped extents), <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ext4_map_blocks()</span></code> is called in a loop with
 EXT4_GET_BLOCKS_ZERO flag to convert the region into a single contiguous
 mapped extent by writing zeroes to it and converting any unwritten extents to
 written, if found within the range.</p></li>
@@ -208,7 +225,7 @@ written, if found within the range.</p></li>
 unwritten, is not inherently problematic. However, writing to a mixed mapping
 region (i.e. one containing a combination of mapped and unwritten extents)
 must be avoided when performing atomic writes.</p>
-<p>The reason is that, atomic writes when issued via pwritev2() with the RWF_ATOMIC
+<p>The reason is that, atomic writes when issued via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pwritev2()</span></code> with the RWF_ATOMIC
 flag, requires that either all data is written or none at all. In the event of
 a system crash or unexpected power loss during the write operation, the affected
 region (when later read) must reflect either the complete old data or the
@@ -216,7 +233,7 @@ complete new data, but never a mix of both.</p>
 <p>To enforce this guarantee, we ensure that the write target is backed by
 a single, contiguous extent before any data is written. This is critical because
 ext4 defers the conversion of unwritten extents to written extents until the I/O
-completion path (typically in -&gt;end_io()). If a write is allowed to proceed over
+completion path (typically in -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">end_io()</span></code>). If a write is allowed to proceed over
 a mixed mapping region (with mapped and unwritten extents) and a failure occurs
 mid-write, the system could observe partially updated regions after reboot, i.e.
 new data over mapped areas, and stale (old) data over unwritten extents that
@@ -233,7 +250,7 @@ from any possible torn writes.
 Only after this step, the actual data write operation is performed by the iomap.</p>
 </section>
 <section id="handling-split-extents-across-leaf-blocks">
-<h2>Handling Split Extents Across Leaf Blocks<a class="headerlink" href="#handling-split-extents-across-leaf-blocks" title="Link to this heading">¶</a></h2>
+<h2><span class="section-number">2.10.4. </span>Handling Split Extents Across Leaf Blocks<a class="headerlink" href="#handling-split-extents-across-leaf-blocks" title="Link to this heading">¶</a></h2>
 <p>There can be a special edge case where we have logically and physically
 contiguous extents stored in separate leaf nodes of the on-disk extent tree.
 This occurs because on-disk extent tree merges only happens within the leaf
@@ -256,7 +273,7 @@ atomic writes are typically constrained to small sizes
 (e.g. [blocksize, clustersize]).</p>
 </section>
 <section id="handling-journal-transactions">
-<h2>Handling Journal transactions<a class="headerlink" href="#handling-journal-transactions" title="Link to this heading">¶</a></h2>
+<h2><span class="section-number">2.10.5. </span>Handling Journal transactions<a class="headerlink" href="#handling-journal-transactions" title="Link to this heading">¶</a></h2>
 <p>To support multi-fsblock atomic writes, we ensure enough journal credits are
 reserved during:</p>
 <blockquote>
@@ -271,13 +288,12 @@ only required to handle a split extent across leaf blocks.</p></li>
 </ol>
 </div></blockquote>
 </section>
-</section>
 <section id="how-to">
-<h1>How to<a class="headerlink" href="#how-to" title="Link to this heading">¶</a></h1>
+<h2><span class="section-number">2.10.6. </span>How to<a class="headerlink" href="#how-to" title="Link to this heading">¶</a></h2>
 <section id="creating-filesystems-with-atomic-write-support">
-<h2>Creating Filesystems with Atomic Write Support<a class="headerlink" href="#creating-filesystems-with-atomic-write-support" title="Link to this heading">¶</a></h2>
+<h3><span class="section-number">2.10.6.1. </span>Creating Filesystems with Atomic Write Support<a class="headerlink" href="#creating-filesystems-with-atomic-write-support" title="Link to this heading">¶</a></h3>
 <p>First check the atomic write units supported by block device.
-See <a class="reference internal" href="overview.html#atomic-write-bdev-support"><span class="std std-ref">Hardware Support</span></a> for more details.</p>
+See <a class="reference internal" href="#atomic-write-bdev-support"><span class="std std-ref">Hardware Support</span></a> for more details.</p>
 <p>For single-fsblock atomic writes with a larger block size
 (on systems with block size &lt; page size):</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create an ext4 filesystem with a 16KB block size</span>
@@ -294,7 +310,7 @@ mkfs.ext4<span class="w"> </span>-F<span class="w"> </span>-O<span class="w"> </
 and <code class="docutils literal notranslate"><span class="pre">-O</span> <span class="pre">bigalloc</span></code> enables the bigalloc feature.</p>
 </section>
 <section id="application-interface">
-<h2>Application Interface<a class="headerlink" href="#application-interface" title="Link to this heading">¶</a></h2>
+<h3><span class="section-number">2.10.6.2. </span>Application Interface<a class="headerlink" href="#application-interface" title="Link to this heading">¶</a></h3>
 <p>Applications can use the <code class="docutils literal notranslate"><span class="pre">pwritev2()</span></code> system call with the <code class="docutils literal notranslate"><span class="pre">RWF_ATOMIC</span></code> flag
 to perform atomic writes:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">pwritev2</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="n">iov</span><span class="p">,</span><span class="w"> </span><span class="n">iovcnt</span><span class="p">,</span><span class="w"> </span><span class="n">offset</span><span class="p">,</span><span class="w"> </span><span class="n">RWF_ATOMIC</span><span class="p">);</span>
@@ -319,7 +335,7 @@ writes are supported.</p>
 </section>
 </section>
 <section id="hardware-support">
-<span id="atomic-write-bdev-support"></span><h1>Hardware Support<a class="headerlink" href="#hardware-support" title="Link to this heading">¶</a></h1>
+<span id="atomic-write-bdev-support"></span><h2><span class="section-number">2.10.7. </span>Hardware Support<a class="headerlink" href="#hardware-support" title="Link to this heading">¶</a></h2>
 <p>The underlying storage device must support atomic write operations.
 Modern NVMe and SCSI devices often provide this capability.
 The Linux kernel exposes this information through sysfs:</p>
@@ -331,13 +347,14 @@ The Linux kernel exposes this information through sysfs:</p>
 atomic writes.</p>
 </section>
 <section id="see-also">
-<h1>See Also<a class="headerlink" href="#see-also" title="Link to this heading">¶</a></h1>
+<h2><span class="section-number">2.10.8. </span>See Also<a class="headerlink" href="#see-also" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p><a class="reference internal" href="bigalloc.html"><span class="doc">Bigalloc</span></a> - Documentation on the bigalloc feature</p></li>
 <li><p><a class="reference internal" href="allocators.html"><span class="doc">Block and Inode Allocation Policy</span></a> - Documentation on block allocation in ext4</p></li>
 <li><p>Support for atomic block writes in 6.13:
 <a class="reference external" href="https://lwn.net/Articles/1009298/">https://lwn.net/Articles/1009298/</a></p></li>
 </ul>
+</section>
 </section>
 
 

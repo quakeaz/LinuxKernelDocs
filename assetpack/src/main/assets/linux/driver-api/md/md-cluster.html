@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -463,7 +463,7 @@ the node adds the range to the suspend_list. Similarly, when the node
 performing resync finishes, it sends RESYNCING with an empty range to
 other nodes and other nodes remove the corresponding entry from the
 suspend_list.</p>
-<p>A helper function, -&gt;area_resyncing() can be used to check if a
+<p>A helper function, -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">area_resyncing()</span></code> can be used to check if a
 particular I/O range should be suspended or not.</p>
 </div></blockquote>
 </section>
@@ -519,7 +519,7 @@ process.</p>
 <h3>6.1 join(nodes) and leave()<a class="headerlink" href="#join-nodes-and-leave" title="Link to this heading">¶</a></h3>
 <blockquote>
 <div><p>These are called when an array is started with a clustered bitmap,
-and when the array is stopped.  join() ensures the cluster is
+and when the array is stopped.  <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">join()</span></code> ensures the cluster is
 available and initializes the various resources.
 Only the first ‘nodes’ nodes in the cluster can use the array.</p>
 </div></blockquote>
@@ -547,7 +547,7 @@ It does <em>not</em> send a RESYNCING message.</p>
 They update the resyncing range in the bitmap lock and also
 send a RESYNCING message.  resync_start reports the whole
 array as resyncing, resync_finish reports none of it.</p>
-<p>resync_finish() also sends a BITMAP_NEEDS_SYNC message which
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">resync_finish()</span></code> also sends a BITMAP_NEEDS_SYNC message which
 allows some other node to take over.</p>
 </div></blockquote>
 </section>
@@ -556,8 +556,8 @@ allows some other node to take over.</p>
 <blockquote>
 <div><p>metadata_update_start is used to get exclusive access to
 the metadata.  If a change is still needed once that access is
-gained, metadata_update_finish() will send a METADATA_UPDATE
-message to all other nodes, otherwise metadata_update_cancel()
+gained, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">metadata_update_finish()</span></code> will send a METADATA_UPDATE
+message to all other nodes, otherwise <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">metadata_update_cancel()</span></code>
 can be used to release the lock.</p>
 </div></blockquote>
 </section>
@@ -579,12 +579,12 @@ a node failure.</p>
 <h3>6.7 add_new_disk_start(), add_new_disk_finish(), new_disk_ack()<a class="headerlink" href="#add-new-disk-start-add-new-disk-finish-new-disk-ack" title="Link to this heading">¶</a></h3>
 <blockquote>
 <div><p>These are used to manage the new-disk protocol described above.
-When a new device is added, add_new_disk_start() is called before
-it is bound to the array and, if that succeeds, add_new_disk_finish()
+When a new device is added, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">add_new_disk_start()</span></code> is called before
+it is bound to the array and, if that succeeds, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">add_new_disk_finish()</span></code>
 is called the device is fully added.</p>
 <p>When a device is added in acknowledgement to a previous
 request, or when the device is declared “unavailable”,
-new_disk_ack() is called.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">new_disk_ack()</span></code> is called.</p>
 </div></blockquote>
 </section>
 <section id="remove-disk">

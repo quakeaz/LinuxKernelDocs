@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -166,7 +166,7 @@ requires CAP_PERFMON due to the event persisting, otherwise -EPERM is returned.<
 tools that can read trace_events (such as ftrace and perf). The registration
 process tells the kernel which address and bit to reflect if any tool has
 enabled the event and data should be written. The registration will give back
-a write index which describes the data when a write() or writev() is called
+a write index which describes the data when a write() or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">writev()</span></code> is called
 on the /sys/kernel/tracing/user_events_data file.</p>
 <p>The structures referenced in this document are contained within the
 /include/uapi/linux/user_events.h file in the source tree.</p>
@@ -178,7 +178,7 @@ filesystem and may be mounted at different paths than above.</em></p>
 <p>Registering within a user process is done via ioctl() out to the
 /sys/kernel/tracing/user_events_data file. The command to issue is
 DIAG_IOCSREG.</p>
-<p>This command takes a packed struct user_reg as an argument:</p>
+<p>This command takes a packed <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">user_reg</span></code> as an argument:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct user_reg {
       /* Input: Size of the user_reg structure being used */
       __u32 size;
@@ -203,9 +203,9 @@ DIAG_IOCSREG.</p>
 } __attribute__((__packed__));
 </pre></div>
 </div>
-<p>The struct user_reg requires all the above inputs to be set appropriately.</p>
+<p>The <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">user_reg</span></code> requires all the above inputs to be set appropriately.</p>
 <ul class="simple">
-<li><p>size: This must be set to sizeof(struct user_reg).</p></li>
+<li><p>size: This must be set to sizeof(<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">user_reg</span></code>).</p></li>
 <li><p>enable_bit: The bit to reflect the event status at the address specified by
 enable_addr.</p></li>
 <li><p>enable_size: The size of the value specified by enable_addr.
@@ -279,9 +279,9 @@ will have a unique id appended to it and the system name will be
 <p>Basic types are supported (__data_loc, u32, u64, int, char, char[20], etc).
 User programs are encouraged to use clearly sized types like u32.</p>
 <p><strong>NOTE:</strong> <em>Long is not supported since size can vary between user and kernel.</em></p>
-<p>The size is only valid for types that start with a struct prefix.
+<p>The size is only valid for types that start with a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">prefix</span></code>.
 This allows user programs to describe custom structs out to tools, if required.</p>
-<p>For example, a struct in C that looks like this:</p>
+<p>For example, a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">in</span></code> C that looks like this:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct mytype {
   char data[20];
 };
@@ -319,7 +319,7 @@ be disabled via ioctl() out to the /sys/kernel/tracing/user_events_data file.
 The command to issue is DIAG_IOCSUNREG. This is different than deleting, where
 deleting actually removes the event from the system. Unregistering simply tells
 the kernel your process is no longer interested in updates to the event.</p>
-<p>This command takes a packed struct user_unreg as an argument:</p>
+<p>This command takes a packed <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">user_unreg</span></code> as an argument:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct user_unreg {
       /* Input: Size of the user_unreg structure being used */
       __u32 size;
@@ -338,9 +338,9 @@ the kernel your process is no longer interested in updates to the event.</p>
 } __attribute__((__packed__));
 </pre></div>
 </div>
-<p>The struct user_unreg requires all the above inputs to be set appropriately.</p>
+<p>The <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">user_unreg</span></code> requires all the above inputs to be set appropriately.</p>
 <ul class="simple">
-<li><p>size: This must be set to sizeof(struct user_unreg).</p></li>
+<li><p>size: This must be set to sizeof(<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">user_unreg</span></code>).</p></li>
 <li><p>disable_bit: This must be set to the bit to disable (same bit that was
 previously registered via enable_bit).</p></li>
 <li><p>disable_addr: This must be set to the address to disable (same address that was
@@ -354,7 +354,7 @@ in each process if wanted.</p>
 <h2>Status<a class="headerlink" href="#status" title="Link to this heading">¶</a></h2>
 <p>When tools attach/record user based events the status of the event is updated
 in realtime. This allows user programs to only incur the cost of the write() or
-writev() calls when something is actively attached to the event.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">writev()</span></code> calls when something is actively attached to the event.</p>
 <p>The kernel will update the specified bit that was registered for the event as
 tools attach/detach from the event. User programs simply check if the bit is set
 to see if something is attached or not.</p>
@@ -397,9 +397,9 @@ int payload;
 </pre></div>
 </div>
 <p>User programs might have well known structs that they wish to use to emit out
-as payloads. In those cases writev() can be used, with the first vector being
+as payloads. In those cases <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">writev()</span></code> can be used, with the first vector being
 the index and the following vector(s) being the actual event payload.</p>
-<p>For example, if I have a struct like this:</p>
+<p>For example, if I have a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">like</span></code> this:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct payload {
       int src;
       int dst;

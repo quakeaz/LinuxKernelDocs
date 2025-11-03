@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -307,7 +307,7 @@ support can be found here: <a class="reference external" href="https://git.kerne
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">usage</span></code></dt><dd><p>This counter is used to tie an object to the rules matching
 it or to keep it alive while adding a new rule.  If this counter
-reaches zero, this struct must not be modified, but this counter can
+reaches zero, this <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">must</span></code> not be modified, but this counter can
 still be read from within an RCU read-side critical section.  When
 adding a new rule to an object with a usage counter of zero, we must
 wait until the pointer to this object is set to NULL (or recycled).</p>
@@ -319,16 +319,16 @@ from <strong>underobj</strong> to this object have been cleaned up.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">underobj</span></code></dt><dd><p>Used when cleaning up an object and to mark an object as
 tied to its underlying kernel structure.  This pointer is protected
-by <strong>lock</strong>.  Cf. landlock_release_inodes() and release_inode().</p>
+by <strong>lock</strong>.  Cf. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">landlock_release_inodes()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">release_inode()</span></code>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">{unnamed_union}</span></code></dt><dd><p>anonymous</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">rcu_free</span></code></dt><dd><p>Enables lockless use of <strong>usage</strong>, <strong>lock</strong> and
 <strong>underobj</strong> from within an RCU read-side critical section.
 <strong>rcu_free</strong> and <strong>underops</strong> are only used by
-landlock_put_object().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">landlock_put_object()</span></code>.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">underops</span></code></dt><dd><p>Enables landlock_put_object() to release the
+<dt><code class="docutils literal notranslate"><span class="pre">underops</span></code></dt><dd><p>Enables <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">landlock_put_object()</span></code> to release the
 underlying object (e.g. inode).</p>
 </dd>
 </dl>
@@ -361,10 +361,10 @@ it.</p>
 new object are protected by the underlying inode-&gt;i_lock.  However,
 atomically disassociating <strong>object</strong> from the inode is only protected
 by <strong>object-&gt;lock</strong>, from the time <strong>object</strong>’s usage refcount drops to
-zero to the time this pointer is nulled out (cf. release_inode() and
-hook_sb_delete()).  Indeed, such disassociation doesn’t require
+zero to the time this pointer is nulled out (cf. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">release_inode()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hook_sb_delete()</span></code>).  Indeed, such disassociation doesn’t require
 inode-&gt;i_lock thanks to the careful <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_access_pointer" title="rcu_access_pointer"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_access_pointer()</span></code></a> check
-performed by get_inode_object().</p>
+performed by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_inode_object()</span></code>.</p>
 </dd>
 </dl>
 </div>
@@ -431,13 +431,13 @@ operations on already opened files.</p>
 <p><strong>Members</strong></p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">inode_refs</span></code></dt><dd><p>Number of pending inodes (from this superblock) that
-are being released by release_inode().
-Cf. struct super_block-&gt;s_fsnotify_inode_refs .</p>
+are being released by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">release_inode()</span></code>.
+Cf. <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">super_block</span></code>-&gt;s_fsnotify_inode_refs .</p>
 </dd>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>Enable hook_sb_delete() to wait for concurrent calls to release_inode().</p>
+<p>Enable <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hook_sb_delete()</span></code> to wait for concurrent calls to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">release_inode()</span></code>.</p>
 </section>
 <section id="ruleset-and-domain">
 <h3>Ruleset and domain<a class="headerlink" href="#ruleset-and-domain" title="Link to this heading">¶</a></h3>
@@ -557,7 +557,7 @@ a raw value (e.g. a TCP port).</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">node</span></code></dt><dd><p>Node in the ruleset’s red-black tree.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">key</span></code></dt><dd><p>A union to identify either a kernel object (e.g. an inode) or
+<dt><code class="docutils literal notranslate"><span class="pre">key</span></code></dt><dd><p>A <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">to</span></code> identify either a kernel object (e.g. an inode) or
 a raw data value (e.g. a network socket port). This is used as a key
 for this ruleset element.  The pointer is set once and never
 modified.  It always points to an allocated object because each rule
@@ -616,7 +616,7 @@ domain vanishes.  This is needed for the ptrace protection.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">work_free</span></code></dt><dd><p>Enables to free a ruleset within a lockless
 section.  This is only used by
-landlock_put_ruleset_deferred() when <strong>usage</strong> reaches zero.
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">landlock_put_ruleset_deferred()</span></code> when <strong>usage</strong> reaches zero.
 The fields <strong>lock</strong>, <strong>usage</strong>, <strong>num_rules</strong>, <strong>num_layers</strong> and
 <strong>access_masks</strong> are then unused.</p>
 </dd>

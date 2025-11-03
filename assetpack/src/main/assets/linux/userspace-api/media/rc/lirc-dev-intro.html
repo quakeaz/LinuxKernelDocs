@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -154,8 +154,8 @@
 <p>LIRC stands for Linux Infrared Remote Control. The LIRC device interface is
 a bi-directional interface for transporting raw IR and decoded scancodes
 data between userspace and kernelspace. Fundamentally, it is just a chardev
-(/dev/lircX, for X = 0, 1, 2, ...), with a number of standard struct
-file_operations defined on it. With respect to transporting raw IR and
+(/dev/lircX, for X = 0, 1, 2, ...), with a number of standard <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">file_operations</span></code> defined on it. With respect to transporting raw IR and
 decoded scancodes to and fro, the essential fops are read, write and ioctl.</p>
 <p>It is also possible to attach a BPF program to a LIRC device for decoding
 raw IR into scancodes.</p>
@@ -191,7 +191,7 @@ on the following table.</p>
 <p>For transmitting (aka sending), create a <a class="reference internal" href="#c.lirc_scancode" title="lirc_scancode"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">lirc_scancode</span></code></a> with
 the desired scancode set in the <code class="docutils literal notranslate"><span class="pre">scancode</span></code> member, <a class="reference internal" href="#c.rc_proto" title="rc_proto"><code class="xref c c-type docutils literal notranslate"><span class="pre">rc_proto</span></code></a>
 set to the <a class="reference internal" href="rc-protos.html#remote-controllers-protocols"><span class="std std-ref">IR protocol</span></a>, and all other
-members set to 0. Write this struct to the lirc device.</p>
+members set to 0. Write this <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">to</span></code> the lirc device.</p>
 <p>For receiving, you read <a class="reference internal" href="#c.lirc_scancode" title="lirc_scancode"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">lirc_scancode</span></code></a> from the LIRC device.
 The <code class="docutils literal notranslate"><span class="pre">scancode</span></code> field is set to the received scancode and the
 <a class="reference internal" href="rc-protos.html#remote-controllers-protocols"><span class="std std-ref">IR protocol</span></a> is set in

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -165,9 +165,9 @@
 <section id="message-digest-algorithm-definitions">
 <h1>Message Digest Algorithm Definitions<a class="headerlink" href="#message-digest-algorithm-definitions" title="Link to this heading">¶</a></h1>
 <p>These data structures define modular message digest algorithm
-implementations, managed via crypto_register_ahash(),
-crypto_register_shash(), crypto_unregister_ahash() and
-crypto_unregister_shash().</p>
+implementations, managed via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">crypto_register_ahash()</span></code>,
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">crypto_register_shash()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">crypto_unregister_ahash()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">crypto_unregister_shash()</span></code>.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.ahash_alg">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ahash_alg</span></span></span><a class="headerlink" href="#c.ahash_alg" title="Link to this definition">¶</a><br /></dt>
@@ -260,7 +260,7 @@ optional key used by the hashing algorithm from upper layers into
 the driver. This function can store the key in the transformation
 context or can outright program it into the hardware. In the former
 case, one must be careful to program the key into the hardware at
-appropriate time and one must be careful that .setkey() can be
+appropriate time and one must be careful that .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setkey()</span></code> can be
 called multiple times during the existence of the transformation
 object. Not  all hashing algorithms do implement this function as it
 is only needed for keyed message digests. SHAx/MDx/CRCx do NOT
@@ -284,7 +284,7 @@ various changes set in <strong>init_tfm</strong>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">clone_tfm</span></code></dt><dd><p>Copy transform into new object, may allocate memory.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">halg</span></code></dt><dd><p>see struct hash_alg_common</p>
+<dt><code class="docutils literal notranslate"><span class="pre">halg</span></code></dt><dd><p>see <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hash_alg_common</span></code></p>
 </dd>
 </dl>
 </div>
@@ -361,9 +361,9 @@ shash_desc.__ctx</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">{unnamed_union}</span></code></dt><dd><p>anonymous</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">HASH_ALG_COMMON</span></code></dt><dd><p>see struct hash_alg_common</p>
+<dt><code class="docutils literal notranslate"><span class="pre">HASH_ALG_COMMON</span></code></dt><dd><p>see <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hash_alg_common</span></code></p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">halg</span></code></dt><dd><p>see struct hash_alg_common</p>
+<dt><code class="docutils literal notranslate"><span class="pre">halg</span></code></dt><dd><p>see <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hash_alg_common</span></code></p>
 </dd>
 </dl>
 </div>
@@ -392,14 +392,12 @@ ahash cipher</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Allocate a cipher handle for an ahash. The returned struct
-crypto_ahash is the cipher handle that is required for any subsequent
+<p>Allocate a cipher handle for an ahash. The returned <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">crypto_ahash</span></code> is the cipher handle that is required for any subsequent
 API invocation for that ahash.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>allocated cipher handle in case of success; IS_ERR() is true in case</dt><dd><p>of an error, <a class="reference internal" href="../core-api/kernel-api.html#c.PTR_ERR" title="PTR_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">PTR_ERR()</span></code></a> returns the error code.</p>
-</dd>
-</dl>
+<p>allocated cipher handle in case of success; <a class="reference internal" href="../core-api/kernel-api.html#c.IS_ERR" title="IS_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">IS_ERR()</span></code></a> is true in case
+of an error, <a class="reference internal" href="../core-api/kernel-api.html#c.PTR_ERR" title="PTR_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">PTR_ERR()</span></code></a> returns the error code.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.crypto_free_ahash">
@@ -789,10 +787,8 @@ message digest cipher</p>
 <span class="pre">crypto_shash</span></code> is the cipher handle that is required for any subsequent
 API invocation for that message digest.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>allocated cipher handle in case of success; IS_ERR() is true in case</dt><dd><p>of an error, <a class="reference internal" href="../core-api/kernel-api.html#c.PTR_ERR" title="PTR_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">PTR_ERR()</span></code></a> returns the error code.</p>
-</dd>
-</dl>
+<p>allocated cipher handle in case of success; <a class="reference internal" href="../core-api/kernel-api.html#c.IS_ERR" title="IS_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">IS_ERR()</span></code></a> is true in case
+of an error, <a class="reference internal" href="../core-api/kernel-api.html#c.PTR_ERR" title="PTR_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">PTR_ERR()</span></code></a> returns the error code.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.crypto_free_shash">
@@ -862,9 +858,9 @@ referenced with the cipher handle is returned.</p>
 returned for the hash referenced with the cipher handle. This size is
 required to calculate the memory requirements to allow the caller allocating
 sufficient memory for operational state.</p>
-<p>The operational state is defined with struct shash_desc where the size of
+<p>The operational state is defined with <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">shash_desc</span></code> where the size of
 that data structure is to be calculated as
-sizeof(struct shash_desc) + crypto_shash_descsize(alg)</p>
+sizeof(<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">shash_desc</span></code>) + crypto_shash_descsize(alg)</p>
 <p><strong>Return</strong></p>
 <p>size of the operational state</p>
 </div>
@@ -918,10 +914,8 @@ meaning as discussed for those separate three functions.</p>
 <p><strong>Context</strong></p>
 <p>Softirq or process context.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>0 if the message digest creation was successful; &lt; 0 if an error</dt><dd><p>occurred</p>
-</dd>
-</dl>
+<p>0 if the message digest creation was successful; &lt; 0 if an error
+occurred</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.crypto_shash_export">
@@ -988,10 +982,8 @@ previous operations is discarded.</p>
 <p><strong>Context</strong></p>
 <p>Softirq or process context.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>0 if the message digest initialization was successful; &lt; 0 if an</dt><dd><p>error occurred</p>
-</dd>
-</dl>
+<p>0 if the message digest initialization was successful; &lt; 0 if an
+error occurred</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.crypto_shash_finup">
@@ -1018,10 +1010,8 @@ meaning as discussed for those separate functions.</p>
 <p><strong>Context</strong></p>
 <p>Softirq or process context.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>0 if the message digest creation was successful; &lt; 0 if an error</dt><dd><p>occurred</p>
-</dd>
-</dl>
+<p>0 if the message digest creation was successful; &lt; 0 if an error
+occurred</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.crypto_shash_update">
@@ -1044,10 +1034,8 @@ meaning as discussed for those separate functions.</p>
 <p><strong>Context</strong></p>
 <p>Softirq or process context.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>0 if the message digest update was successful; &lt; 0 if an error</dt><dd><p>occurred</p>
-</dd>
-</dl>
+<p>0 if the message digest update was successful; &lt; 0 if an error
+occurred</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.crypto_shash_final">
@@ -1071,10 +1059,8 @@ large enough by using crypto_shash_digestsize.</p>
 <p><strong>Context</strong></p>
 <p>Softirq or process context.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>0 if the message digest creation was successful; &lt; 0 if an error</dt><dd><p>occurred</p>
-</dd>
-</dl>
+<p>0 if the message digest creation was successful; &lt; 0 if an error
+occurred</p>
 </div>
 </section>
 

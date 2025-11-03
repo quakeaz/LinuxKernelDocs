@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -210,8 +210,8 @@ of an extra clock chip).  The best operation clock speeds are:</p>
 <p>This will be a standard SCSI driver (I don’t know of a good document
 describing this, just copy from some other driver) with at least a
 detect and release entry.</p>
-<p>In the detect routine, you need to allocate a struct
-NCR_700_Host_Parameters sized memory area and clear it (so that the
+<p>In the detect routine, you need to allocate a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">NCR_700_Host_Parameters</span></code> sized memory area and clear it (so that the
 default values for everything are 0).  Then you must fill in the
 parameters that matter to you (see below), plumb the NCR_700_intr
 routine into the interrupt line and call NCR_700_detect with the host
@@ -225,9 +225,9 @@ interrupt.</p>
 <h3>Handling Interrupts<a class="headerlink" href="#handling-interrupts" title="Link to this heading">¶</a></h3>
 <p>In general, you should just plumb the card’s interrupt line in with</p>
 <p>request_irq(irq, NCR_700_intr, &lt;irq flags&gt;, &lt;driver name&gt;, host);</p>
-<p>where host is the return from the relevant NCR_700_detect() routine.</p>
+<p>where host is the return from the relevant <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">NCR_700_detect()</span></code> routine.</p>
 <p>You may also write your own interrupt handling routine which calls
-NCR_700_intr() directly.  However, you should only really do this if
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">NCR_700_intr()</span></code> directly.  However, you should only really do this if
 you have a card with more than one chip on it and you can read a
 register to tell which set of chips wants the interrupt.</p>
 </section>
@@ -242,7 +242,7 @@ bit architectures this is only 32 bits wide, so the registers must be
 mapped into the low 32 bits of memory.</p>
 </dd>
 <dt>pci_dev: (OPTIONAL)</dt><dd><p>Set to the PCI board device.  Leave NULL for a non-pci board.  This is
-used for the pci_alloc_consistent() and pci_map_*() functions.</p>
+used for the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_alloc_consistent()</span></code> and pci_map_*() functions.</p>
 </dd>
 <dt>dmode_extra: (OPTIONAL, 53c710 only)</dt><dd><p>Extra flags for the DMODE register.  These are used to control bus
 output pins on the 710.  The settings should be a combination of

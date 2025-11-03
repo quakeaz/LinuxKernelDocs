@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -183,7 +183,7 @@ something = tux[smp_processor_id()];
 require it otherwise.  Second, when a preempted task is finally rescheduled,
 the previous value of smp_processor_id may not equal the current.  You must
 protect these situations by disabling preemption around them.</p>
-<p>You can also use put_cpu() and get_cpu(), which will disable preemption.</p>
+<p>You can also use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">put_cpu()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_cpu()</span></code>, which will disable preemption.</p>
 </section>
 <section id="rule-2-cpu-state-must-be-protected">
 <h3>RULE #2: CPU state must be protected.<a class="headerlink" href="#rule-2-cpu-state-must-be-protected" title="Link to this heading">¶</a></h3>
@@ -226,7 +226,7 @@ preemption is not enabled.</p>
 any locks or interrupts are disabled, since preemption is implicitly disabled
 in those cases.</p>
 <p>But keep in mind that ‘irqs disabled’ is a fundamentally unsafe way of
-disabling preemption - any cond_resched() or cond_resched_lock() might trigger
+disabling preemption - any <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cond_resched()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cond_resched_lock()</span></code> might trigger
 a reschedule if the preempt count is 0. A simple <a class="reference internal" href="../core-api/printk-basics.html#c.printk" title="printk"><code class="xref c c-func docutils literal notranslate"><span class="pre">printk()</span></code></a> might trigger a
 reschedule. So use this implicit preemption-disabling property only if you
 know that the affected codepath does not do any of this. Best policy is to use

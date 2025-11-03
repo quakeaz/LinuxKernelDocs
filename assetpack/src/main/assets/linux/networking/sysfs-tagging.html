@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -171,19 +171,19 @@ will be differentiated from other sysfs mounts by having its
 <code class="docutils literal notranslate"><span class="pre">s_fs_info-&gt;ns[kobj_nstype]</span></code> set to the new namespace.  Note that
 through bind mounting and mounts propagation, a task can easily view
 the contents of other namespaces’ sysfs mounts.  Therefore, when a
-namespace exits, it will call kobj_ns_exit() to invalidate any
+namespace exits, it will call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kobj_ns_exit()</span></code> to invalidate any
 kernfs_node-&gt;ns pointers pointing to it.</p>
 <p>Users of this interface:</p>
 <ul class="simple">
 <li><p>define a type in the <code class="docutils literal notranslate"><span class="pre">kobj_ns_type</span></code> enumeration.</p></li>
-<li><p>call kobj_ns_type_register() with its <code class="docutils literal notranslate"><span class="pre">kobj_ns_type_operations</span></code> which has</p>
+<li><p>call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kobj_ns_type_register()</span></code> with its <code class="docutils literal notranslate"><span class="pre">kobj_ns_type_operations</span></code> which has</p>
 <ul>
-<li><p>current_ns() which returns current’s namespace</p></li>
-<li><p>netlink_ns() which returns a socket’s namespace</p></li>
-<li><p>initial_ns() which returns the initial namespace</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">current_ns()</span></code> which returns current’s namespace</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">netlink_ns()</span></code> which returns a socket’s namespace</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">initial_ns()</span></code> which returns the initial namespace</p></li>
 </ul>
 </li>
-<li><p>call kobj_ns_exit() when an individual tag is no longer valid</p></li>
+<li><p>call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kobj_ns_exit()</span></code> when an individual tag is no longer valid</p></li>
 </ul>
 </section>
 

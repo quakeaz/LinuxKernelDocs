@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -273,7 +273,7 @@ scheduler hot path. Hence care must be taken since any slow down will have
 significant impact on a lot of use cases and could hinder its usability in
 practice.</p>
 <p>The way this is handled is by dividing the utilization range into buckets
-(struct uclamp_bucket) which allows us to reduce the search space from every
+(<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">uclamp_bucket</span></code>) which allows us to reduce the search space from every
 task on the rq to only a subset of tasks on the top-most bucket.</p>
 <p>When a task is enqueued, the counter in the matching bucket is incremented,
 and on dequeue it is decremented. This makes keeping track of the effective
@@ -428,7 +428,7 @@ Just like other cgroup interfaces, you can use ‘max’ instead of 100.</p>
 <span id="uclamp-interfaces"></span><h2>3. Interfaces<a class="headerlink" href="#interfaces" title="Link to this heading">¶</a></h2>
 <section id="per-task-interface">
 <h3>3.1. Per task interface<a class="headerlink" href="#per-task-interface" title="Link to this heading">¶</a></h3>
-<p>sched_setattr() syscall was extended to accept two new fields:</p>
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sched_setattr()</span></code> syscall was extended to accept two new fields:</p>
 <ul class="simple">
 <li><p>sched_util_min: requests the minimum performance point the system should run
 at when this task is running. Or lower performance bound.</p></li>

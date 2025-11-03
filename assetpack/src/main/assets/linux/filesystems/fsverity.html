@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -232,7 +232,7 @@ verification</a>.  This approach should be used only with great care.</p></li>
 <section id="fs-ioc-enable-verity">
 <h3>FS_IOC_ENABLE_VERITY<a class="headerlink" href="#fs-ioc-enable-verity" title="Link to this heading">¶</a></h3>
 <p>The FS_IOC_ENABLE_VERITY ioctl enables fs-verity on a file.  It takes
-in a pointer to a struct fsverity_enable_arg, defined as
+in a pointer to a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fsverity_enable_arg</span></code>, defined as
 follows:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct fsverity_enable_arg {
         __u32 version;
@@ -308,8 +308,7 @@ regular file nor a directory.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ENOKEY</span></code>: the “.fs-verity” keyring doesn’t contain the certificate
 needed to verify the builtin signature</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ENOPKG</span></code>: fs-verity recognizes the hash algorithm, but it’s not
-available in the kernel’s crypto API as currently configured (e.g.
-for SHA-512, missing CONFIG_CRYPTO_SHA512).</p></li>
+available in the kernel as currently configured</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ENOTTY</span></code>: this type of filesystem does not implement fs-verity</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">EOPNOTSUPP</span></code>: the kernel was not configured with fs-verity
 support; or the filesystem superblock has not had the ‘verity’
@@ -446,7 +445,7 @@ FS_IOC_ENABLE_VERITY instead, since parameters must be provided.</p>
 </section>
 <section id="statx">
 <h3>statx<a class="headerlink" href="#statx" title="Link to this heading">¶</a></h3>
-<p>Since Linux v5.5, the statx() system call sets STATX_ATTR_VERITY if
+<p>Since Linux v5.5, the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">statx()</span></code> system call sets STATX_ATTR_VERITY if
 the file has fs-verity enabled.  This can perform better than
 FS_IOC_GETFLAGS and FS_IOC_MEASURE_VERITY because it doesn’t require
 opening the file, and opening verity files can be expensive.</p>
@@ -458,7 +457,7 @@ opening the file, and opening verity files can be expensive.</p>
 non-verity one, with the following exceptions:</p>
 <ul class="simple">
 <li><p>Verity files are readonly.  They cannot be opened for writing or
-truncate()d, even if the file mode bits allow it.  Attempts to do
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">truncate()</span></code>d, even if the file mode bits allow it.  Attempts to do
 one of these things will fail with EPERM.  However, changes to
 metadata such as owner, mode, timestamps, and xattrs are still
 allowed, since these are not measured by fs-verity.  Verity files
@@ -553,7 +552,7 @@ of thinking this feature solves more problems than it actually does.</p>
 <ol class="arabic simple">
 <li><p>At boot time, the kernel creates a keyring named “.fs-verity”.  The
 root user can add trusted X.509 certificates to this keyring using
-the add_key() system call.</p></li>
+the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">add_key()</span></code> system call.</p></li>
 <li><p><a class="reference internal" href="#fs-ioc-enable-verity">FS_IOC_ENABLE_VERITY</a> accepts a pointer to a PKCS#7 formatted
 detached signature in DER format of the file’s fs-verity digest.
 On success, the ioctl persists the signature alongside the Merkle
@@ -712,7 +711,7 @@ in separate btree items.</p>
 <h3>Verifying data<a class="headerlink" href="#verifying-data" title="Link to this heading">¶</a></h3>
 <p>fs-verity ensures that all reads of a verity file’s data are verified,
 regardless of which syscall is used to do the read (e.g. mmap(),
-read(), pread()) and regardless of whether it’s the first read or a
+read(), <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pread()</span></code>) and regardless of whether it’s the first read or a
 later read (unless the later read can return cached data that was
 already verified).  Below, we describe how filesystems implement this.</p>
 <section id="pagecache">
@@ -721,13 +720,13 @@ already verified).  Below, we describe how filesystems implement this.</p>
 <code class="docutils literal notranslate"><span class="pre">-&gt;readahead()</span></code> methods must be modified to verify folios before
 they are marked Uptodate.  Merely hooking <code class="docutils literal notranslate"><span class="pre">-&gt;read_iter()</span></code> would be
 insufficient, since <code class="docutils literal notranslate"><span class="pre">-&gt;read_iter()</span></code> is not used for memory maps.</p>
-<p>Therefore, fs/verity/ provides the function fsverity_verify_blocks()
+<p>Therefore, fs/verity/ provides the function <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fsverity_verify_blocks()</span></code>
 which verifies data that has been read into the pagecache of a verity
 inode.  The containing folio must still be locked and not Uptodate, so
 it’s not yet readable by userspace.  As needed to do the verification,
-fsverity_verify_blocks() will call back into the filesystem to read
-hash blocks via fsverity_operations::read_merkle_tree_page().</p>
-<p>fsverity_verify_blocks() returns false if verification failed; in this
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fsverity_verify_blocks()</span></code> will call back into the filesystem to read
+hash blocks via fsverity_operations::<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">read_merkle_tree_page()</span></code>.</p>
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fsverity_verify_blocks()</span></code> returns false if verification failed; in this
 case, the filesystem must not set the folio Uptodate.  Following this,
 as per the usual Linux pagecache behavior, attempts by userspace to
 read() from the part of the file containing the folio will fail with
@@ -735,7 +734,7 @@ EIO, and accesses to the folio within a memory map will raise SIGBUS.</p>
 <p>In principle, verifying a data block requires verifying the entire
 path in the Merkle tree from the data block to the root hash.
 However, for efficiency the filesystem may cache the hash blocks.
-Therefore, fsverity_verify_blocks() only ascends the tree reading hash
+Therefore, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fsverity_verify_blocks()</span></code> only ascends the tree reading hash
 blocks until an already-verified hash block is seen.  It then verifies
 the path to that block.</p>
 <p>This optimization, which is also used by dm-verity, results in
@@ -751,7 +750,7 @@ the pagecache, so the above subsection applies too.  However, they
 also usually read many data blocks from a file at once, grouped into a
 structure called a “bio”.  To make it easier for these types of
 filesystems to support fs-verity, fs/verity/ also provides a function
-fsverity_verify_bio() which verifies all data blocks in a bio.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fsverity_verify_bio()</span></code> which verifies all data blocks in a bio.</p>
 <p>ext4 and f2fs also support encryption.  If a verity file is also
 encrypted, the data must be decrypted before being verified.  To
 support this, these filesystems allocate a “post-read context” for
@@ -774,7 +773,7 @@ occurred are marked Uptodate, and the folios are unlocked.</p>
 <code class="docutils literal notranslate"><span class="pre">-&gt;readahead()</span></code> simply zeroes hole blocks and considers the
 corresponding data to be up-to-date; no bios are issued.  To prevent
 this case from bypassing fs-verity, filesystems use
-fsverity_verify_blocks() to verify hole blocks.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fsverity_verify_blocks()</span></code> to verify hole blocks.</p>
 <p>Filesystems also disable direct I/O on verity files, since otherwise
 direct I/O would bypass fs-verity.</p>
 </section>
@@ -931,7 +930,7 @@ properties are unwanted for fs-verity, so reusing the immutable
 bit isn’t appropriate.</p>
 </dd>
 <dt class="field-odd">Q<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Why does the API use ioctls instead of setxattr() and getxattr()?</p>
+<dd class="field-odd"><p>Why does the API use ioctls instead of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setxattr()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">getxattr()</span></code>?</p>
 </dd>
 <dt class="field-even">A<span class="colon">:</span></dt>
 <dd class="field-even"><p>Abusing the xattr interface for basically arbitrary syscalls is

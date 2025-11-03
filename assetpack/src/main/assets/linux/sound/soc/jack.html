@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -163,7 +163,7 @@ headphone outputs if no headphones are present).</p></li>
 </ul>
 </div></blockquote>
 <p>This is done by splitting the jacks up into three things working
-together: the jack itself represented by a struct snd_soc_jack, sets of
+together: the jack itself represented by a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_soc_jack</span></code>, sets of
 snd_soc_jack_pins representing DAPM endpoints to update and blocks of
 code providing jack reporting mechanisms.</p>
 <p>For example, a system may have a stereo headset jack with two reporting
@@ -176,7 +176,7 @@ headphone when the headphone jack status changes.</p>
 <p>This represents a physical jack on the system and is what is visible to
 user space.  The jack itself is completely passive, it is set up by the
 machine driver and updated by jack detection methods.</p>
-<p>Jacks are created by the machine driver calling snd_soc_jack_new().</p>
+<p>Jacks are created by the machine driver calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">snd_soc_jack_new()</span></code>.</p>
 </section>
 <section id="snd-soc-jack-pin">
 <h2>snd_soc_jack_pin<a class="headerlink" href="#snd-soc-jack-pin" title="Link to this heading">¶</a></h2>
@@ -196,7 +196,7 @@ specifying a subset of bits to update.  The jack detection code should
 be set up by the machine driver, taking configuration for the jack to
 update and the set of things to report when the jack is connected.</p>
 <p>Often this is done based on the status of a GPIO - a handler for this is
-provided by the snd_soc_jack_add_gpio() function.  Other methods are
+provided by the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">snd_soc_jack_add_gpio()</span></code> function.  Other methods are
 also available, for example integrated into CODECs.  One example of
 CODEC integrated jack detection can be see in the WM8350 driver.</p>
 <p>Each jack may have multiple reporting mechanisms, though it will need at

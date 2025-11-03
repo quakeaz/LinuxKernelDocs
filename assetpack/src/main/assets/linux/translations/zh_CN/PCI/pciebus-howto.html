@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -324,8 +324,8 @@ module_exit(aerdrv_service_exit);
 <p>为了避免这种情况，所有的服务驱动程序都不允许在其设备上切换中断模式。PCI Express端口
 总线驱动程序负责确定中断模式，这对服务驱动程序来说应该是透明的。服务驱动程序只需要知道
 分配给结构体pcie_device的字段irq的向量IRQ，当PCI Express端口总线驱动程序探测每
-个服务驱动程序时，它被传入。服务驱动应该使用（struct pcie_device*）dev-&gt;irq来调用
-request_irq/free_irq。此外，中断模式被存储在struct pcie_device的interrupt_mode
+个服务驱动程序时，它被传入。服务驱动应该使用（<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pcie_device</span></code>*）dev-&gt;irq来调用
+request_irq/free_irq。此外，中断模式被存储在<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pcie_device</span></code>的interrupt_mode
 字段中。</p>
 </section>
 <section id="pci-io">

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -279,7 +279,7 @@ interface as a loading facility:</p>
 <p>In order to help device drivers upload firmware using a fallback mechanism
 the firmware infrastructure creates a sysfs interface to enable userspace
 to load and indicate when firmware is ready. The sysfs directory is created
-via fw_create_instance(). This call creates a new <a class="reference internal" href="../infrastructure.html#c.device" title="device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span></code></a> named after
+via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fw_create_instance()</span></code>. This call creates a new <a class="reference internal" href="../infrastructure.html#c.device" title="device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span></code></a> named after
 the firmware requested, and establishes it in the device hierarchy by
 associating the device used to make the request as the device’s parent.
 The sysfs directory’s file attributes are defined and controlled through
@@ -314,7 +314,7 @@ succeeded.</p>
 <p>Will clean any previous partial load at once and make the firmware API
 return an error. When loading firmware the firmware_class grows a buffer
 for the firmware in PAGE_SIZE increments to hold the image as it comes in.</p>
-<p>firmware_data_read() and firmware_loading_show() are just provided for the
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">firmware_data_read()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">firmware_loading_show()</span></code> are just provided for the
 test_firmware driver for testing, they are not called in normal use or
 expected to be used regularly by userspace.</p>
 <section id="firmware-fallback-sysfs">
@@ -362,8 +362,8 @@ with CONFIG_FW_LOADER_USER_HELPER_FALLBACK.</p>
 fallback mechanism userspace can be informed of the addition of the device by
 relying on kobject uevents. The addition of the device into the device
 hierarchy means the fallback mechanism for firmware loading has been initiated.
-For details of implementation refer to fw_load_sysfs_fallback(), in particular
-on the use of dev_set_uevent_suppress() and <a class="reference internal" href="../basics.html#c.kobject_uevent" title="kobject_uevent"><code class="xref c c-func docutils literal notranslate"><span class="pre">kobject_uevent()</span></code></a>.</p>
+For details of implementation refer to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fw_load_sysfs_fallback()</span></code>, in particular
+on the use of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_set_uevent_suppress()</span></code> and <a class="reference internal" href="../basics.html#c.kobject_uevent" title="kobject_uevent"><code class="xref c c-func docutils literal notranslate"><span class="pre">kobject_uevent()</span></code></a>.</p>
 <p>The kernel’s kobject uevent mechanism is implemented in lib/kobject_uevent.c,
 it issues uevents to userspace. As a supplement to kobject uevents Linux
 distributions could also enable CONFIG_UEVENT_HELPER_PATH, which makes use of
@@ -382,7 +382,7 @@ as of v217 on August, 2014. This means most Linux distributions today are
 not using or taking advantage of the firmware fallback mechanism provided
 by kobject uevents. This is specially exacerbated due to the fact that most
 distributions today disable CONFIG_FW_LOADER_USER_HELPER_FALLBACK.</p>
-<p>Refer to do_firmware_uevent() for details of the kobject event variables
+<p>Refer to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_firmware_uevent()</span></code> for details of the kobject event variables
 setup. The variables currently passed to userspace with a “kobject add”
 event are:</p>
 <ul class="simple">
@@ -453,7 +453,7 @@ using an efi_embedded_fw_desc struct:</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.efi_embedded_fw_desc">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">efi_embedded_fw_desc</span></span></span><a class="headerlink" href="#c.efi_embedded_fw_desc" title="Link to this definition">¶</a><br /></dt>
-<dd><p>This struct is used by the EFI embedded-fw code to search for embedded firmwares.</p>
+<dd><p>This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> used by the EFI embedded-fw code to search for embedded firmwares.</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -502,8 +502,8 @@ always be overridden by placing a file under /lib/firmware.</p>
 <p>Note that:</p>
 <ol class="arabic simple">
 <li><p>The code scanning for EFI embedded-firmware runs near the end
-of start_kernel(), just before calling rest_init(). For normal drivers and
-subsystems using subsys_initcall() to register themselves this does not
+of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">start_kernel()</span></code>, just before calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rest_init()</span></code>. For normal drivers and
+subsystems using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">subsys_initcall()</span></code> to register themselves this does not
 matter. This means that code running earlier cannot use EFI
 embedded-firmware.</p></li>
 <li><p>At the moment the EFI embedded-fw code assumes that firmwares always start at
@@ -544,7 +544,7 @@ will extract the firmware for you. Inspect the firmware file in a
 hexeditor to make sure you got the dd parameters correct.</p></li>
 <li><p>Copy it to /lib/firmware under the expected name to test it.</p></li>
 <li><p>If the extracted firmware works, you can use the found info to fill an
-efi_embedded_fw_desc struct to describe it, run “sha256sum firmware”
+efi_embedded_fw_desc <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">to</span></code> describe it, run “sha256sum firmware”
 to get the sha256sum to put in the sha256 field.</p></li>
 </ol>
 </section>

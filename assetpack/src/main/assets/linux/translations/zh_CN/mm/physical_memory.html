@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -287,7 +287,7 @@ RAM平均分配在两个节点上的arm64机器上，使用 <code class="docutil
 档 <a class="reference internal" href="../../../admin-guide/mm/numa_memory_policy.html"><span class="doc">NUMA Memory Policy</span></a> 中所述。</p>
 <p>大多数NUMA（非统一内存访问）架构维护了一个指向节点结构的指针数组。这些实际
 的结构在启动过程中的早期被分配，这时特定于架构的代码解析了固件报告的物理内
-存映射。节点初始化的大部分工作是在由free_area_init()实现的启动过程之后
+存映射。节点初始化的大部分工作是在由<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">free_area_init()</span></code>实现的启动过程之后
 完成，该函数在后面的小节 <a class="reference internal" href="../../../mm/physical_memory.html#initialization"><span class="std std-ref">初始化</span></a> 中有详细描述。</p>
 <p>除了节点结构，内核还维护了一个名为 <code class="docutils literal notranslate"><span class="pre">node_states</span></code> 的 <code class="docutils literal notranslate"><span class="pre">nodemask_t</span></code>
 位掩码数组。这个数组中的每个位掩码代表一组特定属性的节点，这些属性由
@@ -320,7 +320,7 @@ node_states[N_CPU]
 <code class="docutils literal notranslate"><span class="pre">include/linux/nodemask.h</span></code>。</p>
 <p>除此之外，节点掩码（nodemasks）提供用于遍历节点的宏，即
 <code class="docutils literal notranslate"><span class="pre">for_each_node()</span></code> 和 <code class="docutils literal notranslate"><span class="pre">for_each_online_node()</span></code>。</p>
-<p>例如，要为每个在线节点调用函数 foo()，可以这样操作:</p>
+<p>例如，要为每个在线节点调用函数 <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">foo()</span></code>，可以这样操作:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>for_each_online_node(nid) {
               pg_data_t *pgdat = NODE_DATA(nid);
 
@@ -347,10 +347,10 @@ node_zonelists引用。</p>
 表示此节点中已填充区域的数量。</p>
 <p><code class="docutils literal notranslate"><span class="pre">node_mem_map</span></code>
 对于使用FLATMEM内存模型的UMA系统，0号节点的 <code class="docutils literal notranslate"><span class="pre">node_mem_map</span></code>
-表示每个物理帧的struct pages数组。</p>
+表示每个物理帧的<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pages</span></code>数组。</p>
 <p><code class="docutils literal notranslate"><span class="pre">node_page_ext</span></code>
 对于使用FLATMEM内存模型的UMA系统，0号节点的 <code class="docutils literal notranslate"><span class="pre">node_page_ext</span></code>
-是struct pages的扩展数组。只有在构建时开启了 <code class="docutils literal notranslate"><span class="pre">CONFIG_PAGE_EXTENSION</span></code>
+是<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pages</span></code>的扩展数组。只有在构建时开启了 <code class="docutils literal notranslate"><span class="pre">CONFIG_PAGE_EXTENSION</span></code>
 选项的内核中才可用。</p>
 <p><code class="docutils literal notranslate"><span class="pre">node_start_pfn</span></code>
 表示此节点中起始页面帧的页面帧号。</p>

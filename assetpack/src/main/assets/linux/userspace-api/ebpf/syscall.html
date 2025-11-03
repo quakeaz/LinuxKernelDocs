@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -171,8 +171,8 @@ for <a class="reference external" href="https://man7.org/linux/man-pages/man2/bp
 <h2>bpf() subcommand reference<a class="headerlink" href="#bpf-subcommand-reference" title="Link to this heading">¶</a></h2>
 <p>The operation to be performed by the <strong>bpf</strong>() system call is determined
 by the <em>cmd</em> argument. Each operation takes an accompanying argument,
-provided via <em>attr</em>, which is a pointer to a union of type <em>bpf_attr</em> (see
-below). The size argument is the size of the union pointed to by <em>attr</em>.</p>
+provided via <em>attr</em>, which is a pointer to a <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">of</span></code> type <em>bpf_attr</em> (see
+below). The size argument is the size of the <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">pointed</span></code> to by <em>attr</em>.</p>
 <dl>
 <dt>BPF_MAP_CREATE</dt><dd><dl>
 <dt>Description</dt><dd><p>Create a map and return a file descriptor that refers to the
@@ -448,10 +448,11 @@ error occurred (in which case, <em>errno</em> is set appropriately).</p>
 one of the following formats depending on the eBPF object type
 of <em>bpf_fd</em>:</p>
 <ul class="simple">
-<li><p><strong>struct bpf_prog_info</strong></p></li>
-<li><p><strong>struct bpf_map_info</strong></p></li>
-<li><p><strong>struct bpf_btf_info</strong></p></li>
-<li><p><strong>struct bpf_link_info</strong></p></li>
+<li><p><strong><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">bpf_prog_info</span></code></strong></p></li>
+<li><p><strong><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">bpf_map_info</span></code></strong></p></li>
+<li><p><strong><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">bpf_btf_info</span></code></strong></p></li>
+<li><p><strong><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">bpf_link_info</span></code></strong></p></li>
+<li><p><strong><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">bpf_token_info</span></code></strong></p></li>
 </ul>
 </dd>
 <dt>Return</dt><dd><p>Returns zero on success. On error, -1 is returned and <em>errno</em>
@@ -870,6 +871,17 @@ have to be granted in init user namespace, making <a class="reference internal" 
 syscall incompatible with user namespace, for the most part.</p>
 </dd>
 <dt>Return</dt><dd><p>A new file descriptor (a nonnegative integer), or -1 if an
+error occurred (in which case, <em>errno</em> is set appropriately).</p>
+</dd>
+</dl>
+</dd>
+<dt>BPF_PROG_STREAM_READ_BY_FD</dt><dd><dl class="simple">
+<dt>Description</dt><dd><p>Read data of a program’s BPF stream. The program is identified
+by <em>prog_fd</em>, and the stream is identified by the <em>stream_id</em>.
+The data is copied to a buffer pointed to by <em>stream_buf</em>, and
+filled less than or equal to <em>stream_buf_len</em> bytes.</p>
+</dd>
+<dt>Return</dt><dd><p>Number of bytes read from the stream on success, or -1 if an
 error occurred (in which case, <em>errno</em> is set appropriately).</p>
 </dd>
 </dl>

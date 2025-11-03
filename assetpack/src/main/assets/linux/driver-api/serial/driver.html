@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -228,9 +228,8 @@ console support.</p>
 </section>
 <section id="console-support">
 <h2>Console Support<a class="headerlink" href="#console-support" title="Link to this heading">¶</a></h2>
-<p>The serial core provides a few helper functions.  This includes identifying
-the correct port structure (via <a class="reference internal" href="#c.uart_get_console" title="uart_get_console"><code class="xref c c-func docutils literal notranslate"><span class="pre">uart_get_console()</span></code></a>) and decoding command line
-arguments (<a class="reference internal" href="#c.uart_parse_options" title="uart_parse_options"><code class="xref c c-func docutils literal notranslate"><span class="pre">uart_parse_options()</span></code></a>).</p>
+<p>The serial core provides a few helper functions.  This includes
+decoding command line arguments (<a class="reference internal" href="#c.uart_parse_options" title="uart_parse_options"><code class="xref c c-func docutils literal notranslate"><span class="pre">uart_parse_options()</span></code></a>).</p>
 <p>There is also a helper function (<a class="reference internal" href="#c.uart_console_write" title="uart_console_write"><code class="xref c c-func docutils literal notranslate"><span class="pre">uart_console_write()</span></code></a>) which performs a
 character by character write, translating newlines to CRLF sequences.
 Driver writers are recommended to use this function rather than implementing
@@ -303,17 +302,78 @@ commonly referred to as the port mutex.</p>
 </pre></div>
 </div>
 <p><strong>Members</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">tx_empty</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port)</span></code></p>
-<p>This function tests whether the transmitter fifo and shifter for the
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">set_mctrl</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port,</span> <span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">mctrl)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">get_mctrl</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">stop_tx</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">start_tx</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">throttle</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">unthrottle</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">send_xchar</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port,</span> <span class="pre">char</span> <span class="pre">ch)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">stop_rx</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">start_rx</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">enable_ms</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">break_ctl</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port,</span> <span class="pre">int</span> <span class="pre">ctl)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">startup</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">shutdown</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">flush_buffer</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">set_termios</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port,</span> <span class="pre">struct</span> <span class="pre">ktermios</span> <span class="pre">*new,</span>
+<span class="pre">struct</span> <span class="pre">ktermios</span> <span class="pre">*old)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">set_ldisc</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port,</span> <span class="pre">struct</span> <span class="pre">ktermios</span> <span class="pre">*termios)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">pm</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port,</span> <span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">state,</span>
+<span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">oldstate)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">release_port</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">request_port</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">config_port</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port,</span> <span class="pre">int</span> <span class="pre">type)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">verify_port</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port,</span>
+<span class="pre">struct</span> <span class="pre">serial_struct</span> <span class="pre">*serinfo)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ioctl</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port,</span> <span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">cmd,</span>
+<span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">arg)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">poll_init</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">poll_put_char</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port,</span> <span class="pre">unsigned</span> <span class="pre">char</span> <span class="pre">ch)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">poll_get_char</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port)</span></code></p>
+</dd>
+</dl>
+</div>
+<p><strong>Description</strong></p>
+<p>This structure describes all the operations that can be done on the
+physical hardware.</p>
+<blockquote>
+<div><p>This function tests whether the transmitter fifo and shifter for the
 <strong>port</strong> is empty. If it is empty, this function should return
 <code class="docutils literal notranslate"><span class="pre">TIOCSER_TEMT</span></code>, otherwise return 0. If the port does not support this
 operation, then it should return <code class="docutils literal notranslate"><span class="pre">TIOCSER_TEMT</span></code>.</p>
 <p>Locking: none.
 Interrupts: caller dependent.
 This call must not sleep</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">set_mctrl</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port,</span> <span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">mctrl)</span></code></p>
 <p>This function sets the modem control lines for <strong>port</strong> to the state
 described by <strong>mctrl</strong>. The relevant bits of <strong>mctrl</strong> are:</p>
 <blockquote>
@@ -331,8 +391,6 @@ inactive.</p>
 <p>Locking: <strong>port-&gt;lock</strong> taken.
 Interrupts: locally disabled.
 This call must not sleep</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">get_mctrl</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port)</span></code></p>
 <p>Returns the current state of modem control inputs of <strong>port</strong>. The state
 of the outputs should not be returned, since the core keeps track of
 their state. The state information should include:</p>
@@ -351,8 +409,6 @@ not available, the signal should not be indicated as active.</p>
 <p>Locking: <strong>port-&gt;lock</strong> taken.
 Interrupts: locally disabled.
 This call must not sleep</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">stop_tx</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port)</span></code></p>
 <p>Stop transmitting characters. This might be due to the CTS line
 becoming inactive or the tty layer indicating we want to stop
 transmission due to an <code class="docutils literal notranslate"><span class="pre">XOFF</span></code> character.</p>
@@ -360,84 +416,62 @@ transmission due to an <code class="docutils literal notranslate"><span class="p
 <p>Locking: <strong>port-&gt;lock</strong> taken.
 Interrupts: locally disabled.
 This call must not sleep</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">start_tx</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port)</span></code></p>
 <p>Start transmitting characters.</p>
 <p>Locking: <strong>port-&gt;lock</strong> taken.
 Interrupts: locally disabled.
 This call must not sleep</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">throttle</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port)</span></code></p>
 <p>Notify the serial driver that input buffers for the line discipline are
 close to full, and it should somehow signal that no more characters
 should be sent to the serial port.
 This will be called only if hardware assisted flow control is enabled.</p>
-<p>Locking: serialized with <strong>unthrottle()</strong> and termios modification by the
+<p>Locking: serialized with <strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unthrottle()</span></code></strong> and termios modification by the
 tty layer.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">unthrottle</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port)</span></code></p>
 <p>Notify the serial driver that characters can now be sent to the serial
 port without fear of overrunning the input buffers of the line
 disciplines.</p>
 <p>This will be called only if hardware assisted flow control is enabled.</p>
-<p>Locking: serialized with <strong>throttle()</strong> and termios modification by the
+<p>Locking: serialized with <strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">throttle()</span></code></strong> and termios modification by the
 tty layer.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">send_xchar</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port,</span> <span class="pre">char</span> <span class="pre">ch)</span></code></p>
 <p>Transmit a high priority character, even if the port is stopped. This
-is used to implement XON/XOFF flow control and tcflow(). If the serial
+is used to implement XON/XOFF flow control and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">tcflow()</span></code>. If the serial
 driver does not implement this function, the tty core will append the
-character to the circular buffer and then call start_tx() / stop_tx()
+character to the circular buffer and then call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">start_tx()</span></code> / <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">stop_tx()</span></code>
 to flush the data out.</p>
 <p>Do not transmit if <strong>ch</strong> == ‘0’ (<code class="docutils literal notranslate"><span class="pre">__DISABLED_CHAR</span></code>).</p>
 <p>Locking: none.
 Interrupts: caller dependent.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">stop_rx</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port)</span></code></p>
-<p>Stop receiving characters; the <strong>port</strong> is in the process of being closed.</p>
-<p>Locking: <strong>port-&gt;lock</strong> taken.
-Interrupts: locally disabled.
-This call must not sleep</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">start_rx</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port)</span></code></p>
 <p>Start receiving characters.</p>
 <p>Locking: <strong>port-&gt;lock</strong> taken.
 Interrupts: locally disabled.
 This call must not sleep</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">enable_ms</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port)</span></code></p>
-<p>Enable the modem status interrupts.</p>
-<p>This method may be called multiple times. Modem status interrupts
-should be disabled when the <strong>shutdown()</strong> method is called.</p>
+<p>Stop receiving characters; the <strong>port</strong> is in the process of being closed.</p>
 <p>Locking: <strong>port-&gt;lock</strong> taken.
 Interrupts: locally disabled.
 This call must not sleep</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">break_ctl</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port,</span> <span class="pre">int</span> <span class="pre">ctl)</span></code></p>
+<p>Enable the modem status interrupts.</p>
+<p>This method may be called multiple times. Modem status interrupts
+should be disabled when the <strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shutdown()</span></code></strong> method is called.</p>
+<p>Locking: <strong>port-&gt;lock</strong> taken.
+Interrupts: locally disabled.
+This call must not sleep</p>
 <p>Control the transmission of a break signal. If <strong>ctl</strong> is nonzero, the
 break signal should be transmitted. The signal should be terminated
 when another call is made with a zero <strong>ctl</strong>.</p>
 <p>Locking: caller holds tty_port-&gt;mutex</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">startup</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port)</span></code></p>
 <p>Grab any interrupt resources and initialise any low level driver state.
 Enable the port for reception. It should not activate RTS nor DTR;
-this will be done via a separate call to <strong>set_mctrl()</strong>.</p>
+this will be done via a separate call to <strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_mctrl()</span></code></strong>.</p>
 <p>This method will only be called when the port is initially opened.</p>
 <p>Locking: port_sem taken.
 Interrupts: globally disabled.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">shutdown</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port)</span></code></p>
 <p>Disable the <strong>port</strong>, disable any break condition that may be in effect,
 and free any interrupt resources. It should not disable RTS nor DTR;
-this will have already been done via a separate call to <strong>set_mctrl()</strong>.</p>
+this will have already been done via a separate call to <strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_mctrl()</span></code></strong>.</p>
 <p>Drivers must not access <strong>port-&gt;state</strong> once this call has completed.</p>
 <p>This method will only be called when there are no more users of this
 <strong>port</strong>.</p>
 <p>Locking: port_sem taken.
 Interrupts: caller dependent.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">flush_buffer</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port)</span></code></p>
 <p>Flush any write buffers, reset any DMA state and stop any ongoing DMA
 transfers.</p>
 <p>This will be called whenever the <strong>port-&gt;state-&gt;xmit</strong> circular buffer is
@@ -445,9 +479,6 @@ cleared.</p>
 <p>Locking: <strong>port-&gt;lock</strong> taken.
 Interrupts: locally disabled.
 This call must not sleep</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">set_termios</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port,</span> <span class="pre">struct</span> <span class="pre">ktermios</span> <span class="pre">*new,</span>
-<span class="pre">struct</span> <span class="pre">ktermios</span> <span class="pre">*old)</span></code></p>
 <p>Change the <strong>port</strong> parameters, including word length, parity, stop bits.
 Update <strong>port-&gt;read_status_mask</strong> and <strong>port-&gt;ignore_status_mask</strong> to
 indicate the types of events we are interested in receiving. Relevant
@@ -457,7 +488,7 @@ ktermios::c_cflag bits are:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">CSTOPB</span></code> - 2 stop bits</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">PARENB</span></code> - parity enable</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">PARODD</span></code> - odd parity (when <code class="docutils literal notranslate"><span class="pre">PARENB</span></code> is in force)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ADDRB</span></code> - address bit (changed through uart_port::rs485_config()).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ADDRB</span></code> - address bit (changed through uart_port::<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rs485_config()</span></code>).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">CREAD</span></code> - enable reception of characters (if not set, still receive
 characters from the port, but throw them away).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">CRTSCTS</span></code> - if set, enable CTS status change reporting.</p></li>
@@ -511,16 +542,11 @@ supports hardware “soft” flow control.</p>
 <p>Locking: caller holds tty_port-&gt;mutex
 Interrupts: caller dependent.
 This call must not sleep</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">set_ldisc</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port,</span> <span class="pre">struct</span> <span class="pre">ktermios</span> <span class="pre">*termios)</span></code></p>
 <p>Notifier for discipline change. See
 <a class="reference internal" href="../tty/tty_ldisc.html"><span class="doc">TTY Line Discipline</span></a>.</p>
 <p>Locking: caller holds tty_port-&gt;mutex</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">pm</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port,</span> <span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">state,</span>
-<span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">oldstate)</span></code></p>
 <p>Perform any power management related activities on the specified <strong>port</strong>.
-<strong>state</strong> indicates the new state (defined by enum uart_pm_state),
+<strong>state</strong> indicates the new state (defined by <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">uart_pm_state</span></code>),
 <strong>oldstate</strong> indicates the previous state.</p>
 <p>This function should not be used to grab any resources.</p>
 <p>This will be called when the <strong>port</strong> is initially opened and finally
@@ -528,27 +554,19 @@ closed, except when the <strong>port</strong> is also the system console. This w
 occur even if <code class="docutils literal notranslate"><span class="pre">CONFIG_PM</span></code> is not set.</p>
 <p>Locking: none.
 Interrupts: caller dependent.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port)</span></code></p>
 <p>Return a pointer to a string constant describing the specified <strong>port</strong>,
 or return <code class="docutils literal notranslate"><span class="pre">NULL</span></code>, in which case the string ‘unknown’ is substituted.</p>
 <p>Locking: none.
 Interrupts: caller dependent.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">release_port</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port)</span></code></p>
 <p>Release any memory and IO region resources currently in use by the
 <strong>port</strong>.</p>
 <p>Locking: none.
 Interrupts: caller dependent.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">request_port</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port)</span></code></p>
 <p>Request any memory and IO region resources required by the port. If any
 fail, no resources should be registered when this function returns, and
 it should return -<code class="docutils literal notranslate"><span class="pre">EBUSY</span></code> on failure.</p>
 <p>Locking: none.
 Interrupts: caller dependent.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">config_port</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port,</span> <span class="pre">int</span> <span class="pre">type)</span></code></p>
 <p>Perform any autoconfiguration steps required for the <strong>port</strong>. <strong>type</strong>
 contains a bit mask of the required configuration. <code class="docutils literal notranslate"><span class="pre">UART_CONFIG_TYPE</span></code>
 indicates that the port requires detection and identification.
@@ -560,48 +578,31 @@ This is not necessary on platforms where ports have interrupts
 internally hard wired (eg, system on a chip implementations).</p>
 <p>Locking: none.
 Interrupts: caller dependent.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">verify_port</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port,</span>
-<span class="pre">struct</span> <span class="pre">serial_struct</span> <span class="pre">*serinfo)</span></code></p>
 <p>Verify the new serial port information contained within <strong>serinfo</strong> is
 suitable for this port type.</p>
 <p>Locking: none.
 Interrupts: caller dependent.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">ioctl</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port,</span> <span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">cmd,</span>
-<span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">arg)</span></code></p>
 <p>Perform any port specific IOCTLs. IOCTL commands must be defined using
 the standard numbering system found in &lt;asm/ioctl.h&gt;.</p>
 <p>Locking: none.
 Interrupts: caller dependent.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">poll_init</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port)</span></code></p>
 <p>Called by kgdb to perform the minimal hardware initialization needed to
-support <strong>poll_put_char()</strong> and <strong>poll_get_char()</strong>. Unlike <strong>startup()</strong>, this
+support <strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">poll_put_char()</span></code></strong> and <strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">poll_get_char()</span></code></strong>. Unlike <strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">startup()</span></code></strong>, this
 should not request interrupts.</p>
 <p>Locking: <code class="docutils literal notranslate"><span class="pre">tty_mutex</span></code> and tty_port-&gt;mutex taken.
 Interrupts: n/a.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">poll_put_char</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port,</span> <span class="pre">unsigned</span> <span class="pre">char</span> <span class="pre">ch)</span></code></p>
 <p>Called by kgdb to write a single character <strong>ch</strong> directly to the serial
 <strong>port</strong>. It can and should block until there is space in the TX FIFO.</p>
 <p>Locking: none.
 Interrupts: caller dependent.
 This call must not sleep</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">poll_get_char</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">uart_port</span> <span class="pre">*port)</span></code></p>
 <p>Called by kgdb to read a single character directly from the serial
 port. If data is available, it should be returned; otherwise the
 function should return <code class="docutils literal notranslate"><span class="pre">NO_POLL_CHAR</span></code> immediately.</p>
 <p>Locking: none.
 Interrupts: caller dependent.
 This call must not sleep</p>
-</dd>
-</dl>
-</div>
-<p><strong>Description</strong></p>
-<p>This structure describes all the operations that can be done on the
-physical hardware.</p>
+</div></blockquote>
 </section>
 <section id="other-functions">
 <h2>Other functions<a class="headerlink" href="#other-functions" title="Link to this heading">¶</a></h2>
@@ -735,28 +736,6 @@ instead.</p>
 </dl>
 </div>
 <dl class="c function">
-<dt class="sig sig-object c" id="c.uart_get_console">
-<span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">uart_port</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">uart_get_console</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">uart_port</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ports</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">nr</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../tty/console.html#c.console" title="console"><span class="n"><span class="pre">console</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">co</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_get_console" title="Link to this definition">¶</a><br /></dt>
-<dd><p>get uart port for console</p>
-</dd></dl>
-
-<div class="kernelindent docutils container">
-<p><strong>Parameters</strong></p>
-<dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">uart_port</span> <span class="pre">*ports</span></code></dt><dd><p>ports to search in</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">nr</span></code></dt><dd><p>number of <strong>ports</strong></p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">console</span> <span class="pre">*co</span></code></dt><dd><p>console to search for</p>
-</dd>
-</dl>
-<p><strong>Return</strong></p>
-<p>uart_port for the console <strong>co</strong></p>
-<p><strong>Description</strong></p>
-<p>Check whether an invalid uart number has been specified (as <strong>co-&gt;index</strong>), and
-if so, search for the first available port that does have console support.</p>
-</div>
-<dl class="c function">
 <dt class="sig sig-object c" id="c.uart_parse_earlycon">
 <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uart_parse_earlycon</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="n"><span class="pre">uart_iotype</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">iotype</span></span>, <span class="n"><span class="pre">resource_size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">addr</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">options</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.uart_parse_earlycon" title="Link to this definition">¶</a><br /></dt>
 <dd><p>Parse earlycon options</p>
@@ -860,7 +839,7 @@ tty layer, and initialise the core driver per-port state.</p>
 <p>We have a proc file in /proc/tty/driver which is named after the normal
 driver.</p>
 <p><strong>drv-&gt;port</strong> should be <code class="docutils literal notranslate"><span class="pre">NULL</span></code>, and the per-port structures should be registered
-using uart_add_one_port() after this call has succeeded.</p>
+using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">uart_add_one_port()</span></code> after this call has succeeded.</p>
 <p>Locking: none, Interrupts: enabled</p>
 </div>
 <dl class="c function">
@@ -877,8 +856,8 @@ using uart_add_one_port() after this call has succeeded.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Remove all references to a driver from the core driver. The low level
-driver must have removed all its ports via the uart_remove_one_port() if it
-registered them with uart_add_one_port(). (I.e. <strong>drv-&gt;port</strong> is <code class="docutils literal notranslate"><span class="pre">NULL</span></code>.)</p>
+driver must have removed all its ports via the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">uart_remove_one_port()</span></code> if it
+registered them with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">uart_add_one_port()</span></code>. (I.e. <strong>drv-&gt;port</strong> is <code class="docutils literal notranslate"><span class="pre">NULL</span></code>.)</p>
 <p>Locking: none, Interrupts: enabled</p>
 </div>
 <dl class="c function">
@@ -983,7 +962,7 @@ handled some other way, <code class="docutils literal notranslate"><span class="
 </dl>
 <p><strong>Description</strong></p>
 <p>This helper transmits characters from the xmit buffer to the hardware using
-<strong>put_char()</strong>. It does so until <strong>count</strong> characters are sent and while <strong>tx_ready</strong>
+<strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">put_char()</span></code></strong>. It does so until <strong>count</strong> characters are sent and while <strong>tx_ready</strong>
 evaluates to true.</p>
 <dl class="simple">
 <dt>The expression in macro parameters shall be designed as follows:</dt><dd><ul class="simple">
@@ -991,7 +970,7 @@ evaluates to true.</p>
 be sent. This parameter can be <code class="docutils literal notranslate"><span class="pre">true</span></code>, which means the HW is always ready.</p></li>
 <li><p><strong>put_char:</strong> shall write <strong>ch</strong> to the device of <strong>port</strong>.</p></li>
 <li><p><strong>tx_done:</strong> when the write loop is done, this can perform arbitrary
-action before potential invocation of ops-&gt;stop_tx() happens. If the
+action before potential invocation of ops-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">stop_tx()</span></code> happens. If the
 driver does not need to do anything, use e.g. ({}).</p></li>
 </ul>
 </dd>

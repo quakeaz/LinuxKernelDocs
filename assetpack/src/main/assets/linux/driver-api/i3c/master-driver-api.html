@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -556,7 +556,7 @@ when it’s no longer needed.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Add an IBI slot back to its generic IBI pool. Should be called from the
-master driver struct_master_controller_ops-&gt;recycle_ibi() method.</p>
+master driver struct_master_controller_ops-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recycle_ibi()</span></code> method.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.i3c_master_register">
@@ -575,7 +575,7 @@ controller)</p>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">i3c_master_controller_ops</span> <span class="pre">*ops</span></code></dt><dd><p>the master controller operations</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">secondary</span></code></dt><dd><p>true if you are registering a secondary master. Will return
--ENOTSUPP if set to true since secondary masters are not yet
+-EOPNOTSUPP if set to true since secondary masters are not yet
 supported</p>
 </dd>
 </dl>
@@ -698,7 +698,7 @@ the I2C device limitations</p>
 <p><strong>Description</strong></p>
 <p>Each I2C device connected on the bus will have an i2c_dev_desc.
 This object is created by the core and later attached to the controller
-using <code class="xref c c-type docutils literal notranslate"><span class="pre">struct_i3c_master_controller-&gt;ops</span></code>-&gt;attach_i2c_dev().</p>
+using <code class="xref c c-type docutils literal notranslate"><span class="pre">struct_i3c_master_controller-&gt;ops</span></code>-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">attach_i2c_dev()</span></code>.</p>
 <p><code class="xref c c-type docutils literal notranslate"><span class="pre">struct_i2c_dev_desc</span></code> is the internal representation of an I2C device
 connected on an I3C bus. This object is also passed to all
 <code class="xref c c-type docutils literal notranslate"><span class="pre">struct_i3c_master_controller_ops</span></code> hooks.</p>
@@ -1086,7 +1086,7 @@ when they need to.</p>
     int (*do_daa)(struct i3c_master_controller *master);
     bool (*supports_ccc_cmd)(struct i3c_master_controller *master, const struct i3c_ccc_cmd *cmd);
     int (*send_ccc_cmd)(struct i3c_master_controller *master, struct i3c_ccc_cmd *cmd);
-    int (*priv_xfers)(struct i3c_dev_desc *dev,struct i3c_priv_xfer *xfers, int nxfers);
+    int (*priv_xfers)(struct i3c_dev_desc *dev, struct i3c_priv_xfer *xfers, int nxfers);
     int (*attach_i2c_dev)(struct i2c_dev_desc *dev);
     void (*detach_i2c_dev)(struct i2c_dev_desc *dev);
     int (*i2c_xfers)(struct i2c_dev_desc *dev, struct i2c_msg *xfers, int nxfers);
@@ -1104,7 +1104,7 @@ when they need to.</p>
 <p><strong>Members</strong></p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">bus_init</span></code></dt><dd><p>hook responsible for the I3C bus initialization. You should at
-least call master_set_info() from there and set the bus mode.
+least call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">master_set_info()</span></code> from there and set the bus mode.
 You can also put controller specific initialization in there.
 This method is mandatory.</p>
 </dd>
@@ -1176,12 +1176,12 @@ devices, so this method might return -<code class="docutils literal notranslate"
 more space for an extra IBI registration
 This method is optional.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">free_ibi</span></code></dt><dd><p>free an IBI previously requested with -&gt;request_ibi(). The IBI
+<dt><code class="docutils literal notranslate"><span class="pre">free_ibi</span></code></dt><dd><p>free an IBI previously requested with -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">request_ibi()</span></code>. The IBI
 should have been disabled with -&gt;<a class="reference internal" href="../../core-api/genericirq.html#c.disable_irq" title="disable_irq"><code class="xref c c-func docutils literal notranslate"><span class="pre">disable_irq()</span></code></a> prior to that
 This method is mandatory only if -&gt;request_ibi is not NULL.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">enable_ibi</span></code></dt><dd><p>enable the IBI. Only valid if -&gt;request_ibi() has been called
-prior to -&gt;enable_ibi(). The controller should first enable
+<dt><code class="docutils literal notranslate"><span class="pre">enable_ibi</span></code></dt><dd><p>enable the IBI. Only valid if -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">request_ibi()</span></code> has been called
+prior to -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">enable_ibi()</span></code>. The controller should first enable
 the IBI on the controller end (for example, unmask the hardware
 IRQ) and then send the ENEC CCC command (with the IBI flag set)
 to the I3C device.
@@ -1327,10 +1327,8 @@ at each iteration of the loop</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>the private data previously attached with i3c_dev_set_master_data()</dt><dd><p>or NULL if no data has been attached to the device.</p>
-</dd>
-</dl>
+<p>the private data previously attached with <a class="reference internal" href="#c.i3c_dev_set_master_data" title="i3c_dev_set_master_data"><code class="xref c c-func docutils literal notranslate"><span class="pre">i3c_dev_set_master_data()</span></code></a>
+or NULL if no data has been attached to the device.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.i3c_dev_set_master_data">
@@ -1363,10 +1361,8 @@ which can then be retrieved with <a class="reference internal" href="#c.i3c_dev_
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>the private data previously attached with i2c_dev_set_master_data()</dt><dd><p>or NULL if no data has been attached to the device.</p>
-</dd>
-</dl>
+<p>the private data previously attached with <a class="reference internal" href="#c.i2c_dev_set_master_data" title="i2c_dev_set_master_data"><code class="xref c c-func docutils literal notranslate"><span class="pre">i2c_dev_set_master_data()</span></code></a>
+or NULL if no data has been attached to the device.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.i2c_dev_set_master_data">
@@ -1384,7 +1380,7 @@ which can then be retrieved with <a class="reference internal" href="#c.i3c_dev_
 </dl>
 <p><strong>Description</strong></p>
 <p>This functions allows a master controller to attach per-device private data
-which can then be retrieved with i2c_device_get_master_data().</p>
+which can then be retrieved with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">i2c_device_get_master_data()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.i3c_dev_get_master">

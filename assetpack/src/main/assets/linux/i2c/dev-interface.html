@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -329,7 +329,7 @@ when you use the /dev interface to I2C:</p>
 <li><p>Your program opens /dev/i2c-N and calls ioctl() on it, as described in
 section “C example” above.</p></li>
 <li><p>These open() and ioctl() calls are handled by the i2c-dev kernel
-driver: see i2c-dev.c:i2cdev_open() and i2c-dev.c:i2cdev_ioctl(),
+driver: see i2c-dev.c:<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">i2cdev_open()</span></code> and i2c-dev.c:<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">i2cdev_ioctl()</span></code>,
 respectively. You can think of i2c-dev as a generic I2C chip driver
 that can be programmed from user-space.</p></li>
 <li><p>Some ioctl() calls are for administrative tasks and are handled by
@@ -338,7 +338,7 @@ device you want to access) and I2C_PEC (enable or disable SMBus error
 checking on future transactions.)</p></li>
 <li><p>Other ioctl() calls are converted to in-kernel function calls by
 i2c-dev. Examples include I2C_FUNCS, which queries the I2C adapter
-functionality using i2c.h:i2c_get_functionality(), and I2C_SMBUS, which
+functionality using i2c.h:<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">i2c_get_functionality()</span></code>, and I2C_SMBUS, which
 performs an SMBus transaction using i2c-core-smbus.c:<a class="reference internal" href="../driver-api/i2c.html#c.i2c_smbus_xfer" title="i2c_smbus_xfer"><code class="xref c c-func docutils literal notranslate"><span class="pre">i2c_smbus_xfer()</span></code></a>.</p>
 <p>The i2c-dev driver is responsible for checking all the parameters that
 come from user-space for validity. After this point, there is no
@@ -349,12 +349,12 @@ anything special to support access from user-space.</p>
 </li>
 <li><p>These i2c.h functions are wrappers to the actual implementation of
 your I2C bus driver. Each adapter must declare callback functions
-implementing these standard calls. i2c.h:i2c_get_functionality() calls
-i2c_adapter.algo-&gt;functionality(), while
+implementing these standard calls. i2c.h:<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">i2c_get_functionality()</span></code> calls
+i2c_adapter.algo-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">functionality()</span></code>, while
 i2c-core-smbus.c:<a class="reference internal" href="../driver-api/i2c.html#c.i2c_smbus_xfer" title="i2c_smbus_xfer"><code class="xref c c-func docutils literal notranslate"><span class="pre">i2c_smbus_xfer()</span></code></a> calls either
-adapter.algo-&gt;smbus_xfer() if it is implemented, or if not,
-i2c-core-smbus.c:i2c_smbus_xfer_emulated() which in turn calls
-i2c_adapter.algo-&gt;master_xfer().</p></li>
+adapter.algo-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smbus_xfer()</span></code> if it is implemented, or if not,
+i2c-core-smbus.c:<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">i2c_smbus_xfer_emulated()</span></code> which in turn calls
+i2c_adapter.algo-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">master_xfer()</span></code>.</p></li>
 </ol>
 <p>After your I2C bus driver has processed these requests, execution runs
 up the call chain, with almost no processing done, except by i2c-dev to

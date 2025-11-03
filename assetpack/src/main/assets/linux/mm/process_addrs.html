@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -396,7 +396,7 @@ flags.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref c c-member docutils literal notranslate"><span class="pre">vm_flags</span></code></p></td>
 <td><p>Read-only access to VMA flags describing
-attributes of the VMA, in union with
+attributes of the VMA, in <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">with</span></code>
 private writable
 <code class="xref c c-member docutils literal notranslate"><span class="pre">__vm_flags</span></code>.</p></td>
 <td><p>N/A</p></td>
@@ -589,7 +589,9 @@ ones.</p>
 <li><p><strong>Traversing</strong> page tables - Simply reading page tables in order to traverse
 them. This only requires that the VMA is kept stable, so a lock which
 establishes this suffices for traversal (there are also lockless variants
-which eliminate even this requirement, such as <code class="xref c c-func docutils literal notranslate"><span class="pre">gup_fast()</span></code>).</p></li>
+which eliminate even this requirement, such as <code class="xref c c-func docutils literal notranslate"><span class="pre">gup_fast()</span></code>). There is
+also a special case of page table traversal for non-VMA regions which we
+consider separately below.</p></li>
 <li><p><strong>Installing</strong> page table mappings - Whether creating a new mapping or
 modifying an existing one in such a way as to change its identity. This
 requires that the VMA is kept stable via an mmap or VMA lock (explicitly not
@@ -621,16 +623,14 @@ VMA lock or either of the reverse mapping locks.</p>
 ahead and perform these operations on page tables (though internally, kernel
 operations that perform writes also acquire internal page table locks to
 serialise - see the page table implementation detail section for more details).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We free empty PTE tables on zap under the RCU lock - this does not
+change the aforementioned locking requirements around zapping.</p>
+</div>
 <p>When <strong>installing</strong> page table entries, the mmap or VMA lock must be held to
 keep the VMA stable. We explore why this is in the page table locking details
 section below.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Page tables are normally only traversed in regions covered by VMAs.
-If you want to traverse page tables in areas that might not be
-covered by VMAs, heavier locking is required.
-See <code class="xref c c-func docutils literal notranslate"><span class="pre">walk_page_range_novma()</span></code> for details.</p>
-</div>
 <p><strong>Freeing</strong> page tables is an entirely internal memory management operation and
 has special requirements (see the page freeing section below for more details).</p>
 <div class="admonition warning">
@@ -642,6 +642,35 @@ the reverse mapping.</p>
 from the reverse mappings, but no other VMAs can be permitted to be
 accessible and span the specified range.</p>
 </div>
+</section>
+<section id="traversing-non-vma-page-tables">
+<h3>Traversing non-VMA page tables<a class="headerlink" href="#traversing-non-vma-page-tables" title="Link to this heading">¶</a></h3>
+<p>We’ve focused above on traversal of page tables belonging to VMAs. It is also
+possible to traverse page tables which are not represented by VMAs.</p>
+<p>Kernel page table mappings themselves are generally managed but whatever part of
+the kernel established them and the aforementioned locking rules do not apply -
+for instance vmalloc has its own set of locks which are utilised for
+establishing and tearing down page its page tables.</p>
+<p>However, for convenience we provide the <code class="xref c c-func docutils literal notranslate"><span class="pre">walk_kernel_page_table_range()</span></code>
+function which is synchronised via the mmap lock on the <code class="xref c c-macro docutils literal notranslate"><span class="pre">init_mm</span></code>
+kernel instantiation of the <code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">mm_struct</span></code> metadata object.</p>
+<p>If an operation requires exclusive access, a write lock is used, but if not, a
+read lock suffices - we assert only that at least a read lock has been acquired.</p>
+<p>Since, aside from vmalloc and memory hot plug, kernel page tables are not torn
+down all that often - this usually suffices, however any caller of this
+functionality must ensure that any additionally required locks are acquired in
+advance.</p>
+<p>We also permit a truly unusual case is the traversal of non-VMA ranges in
+<strong>userland</strong> ranges, as provided for by <code class="xref c c-func docutils literal notranslate"><span class="pre">walk_page_range_debug()</span></code>.</p>
+<p>This has only one user - the general page table dumping logic (implemented in
+<code class="xref c c-macro docutils literal notranslate"><span class="pre">mm/ptdump.c</span></code>) - which seeks to expose all mappings for debug purposes
+even if they are highly unusual (possibly architecture-specific) and are not
+backed by a VMA.</p>
+<p>We must take great care in this case, as the <code class="xref c c-func docutils literal notranslate"><span class="pre">munmap()</span></code> implementation
+detaches VMAs under an mmap write lock before tearing down page tables under a
+downgraded mmap read lock.</p>
+<p>This means such an operation could race with this, and thus an mmap <strong>write</strong>
+lock is required.</p>
 </section>
 <section id="lock-ordering">
 <h3>Lock ordering<a class="headerlink" href="#lock-ordering" title="Link to this heading">¶</a></h3>
@@ -743,6 +772,12 @@ locking rules for page tables at other levels.</p>
 </div>
 <section id="page-table-locking-details">
 <h3>Page table locking details<a class="headerlink" href="#page-table-locking-details" title="Link to this heading">¶</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This section explores page table locking requirements for page tables
+encompassed by a VMA. See the above section on non-VMA page table
+traversal for details on how we handle that case.</p>
+</div>
 <p>In addition to the locks described in the terminology section above, we have
 additional locks dedicated to page tables:</p>
 <ul class="simple">

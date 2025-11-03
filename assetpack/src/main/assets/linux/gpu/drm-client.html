@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -176,13 +176,13 @@
 releasing its resources using <a class="reference internal" href="#c.drm_client_release" title="drm_client_release"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_client_release()</span></code></a>.</p>
 <p>This callback is optional.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">restore</span></code></dt><dd><p>Called on drm_lastclose(). The first client instance in the list that
+<dt><code class="docutils literal notranslate"><span class="pre">restore</span></code></dt><dd><p>Called on <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_lastclose()</span></code>. The first client instance in the list that
 returns zero gets the privilege to restore and no more clients are
 called. This callback is not called after <strong>unregister</strong> has been called.</p>
 <p>Note that the core does not guarantee exclusion against concurrent
 <a class="reference internal" href="drm-internals.html#c.drm_open" title="drm_open"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_open()</span></code></a>. Clients need to ensure this themselves, for example by
-using drm_master_internal_acquire() and
-drm_master_internal_release().</p>
+using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_master_internal_acquire()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_master_internal_release()</span></code>.</p>
 <p>This callback is optional.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">hotplug</span></code></dt><dd><p>Called on <a class="reference internal" href="drm-kms-helpers.html#c.drm_kms_helper_hotplug_event" title="drm_kms_helper_hotplug_event"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_kms_helper_hotplug_event()</span></code></a>.
@@ -429,9 +429,7 @@ long-term mappings.</p>
 other vmap interfaces, you don’t need it for the client’s vunmap
 function. So you can modify it at will during blit and draw operations.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p>0 on success, or a negative errno code otherwise.</p>
-</div></blockquote>
+<p>0 on success, or a negative errno code otherwise.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_client_buffer_vunmap_local">
@@ -475,9 +473,7 @@ throughout its lifetime.</p>
 other vmap interfaces, you don’t need it for the client’s vunmap
 function. So you can modify it at will during blit and draw operations.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p>0 on success, or a negative errno code otherwise.</p>
-</div></blockquote>
+<p>0 on success, or a negative errno code otherwise.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_client_buffer_vunmap">
@@ -630,7 +626,7 @@ to match the rotation needed on its connector.</p>
 <p><strong>Description</strong></p>
 <p>Commit modeset configuration to crtcs without checking if there is a DRM
 master. The assumption is that the caller already holds an internal DRM
-master reference acquired with drm_master_internal_acquire().</p>
+master reference acquired with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_master_internal_acquire()</span></code>.</p>
 <p><strong>Return</strong></p>
 <p>Zero on success or negative error code on failure.</p>
 </div>

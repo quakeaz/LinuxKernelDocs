@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -325,7 +325,7 @@ efectivamente dando una operación <em class="manpage">fxyzzy(3)</em> gratis:</p
 - xyzzyat(fd, &quot;&quot;, ..., AT_EMPTY_PATH) es equivalente a fxyzzy(fd, ...)
 </pre></div>
 </div>
-<p>(Para más detalles sobre la explicación racional de las llamadas *at(),
+<p>(Para más detalles sobre la explicación racional de las llamadas *<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">at()</span></code>,
 revise el man page <em class="manpage">openat(2)</em>; para un ejemplo de AT_EMPTY_PATH,
 mire el man page <em class="manpage">fstatat(2)</em> manpage.)</p>
 <p>Si su nueva llamada de sistema <em class="manpage">xyzzy(2)</em> involucra un parámetro
@@ -475,7 +475,7 @@ necesita siempre que un argumento de la llamada a sistema es:</p>
 <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">iovec</span> <span class="pre">__user</span> <span class="pre">*</span></code>)</p></li>
 <li><p>un puntero a un type entero de tamaño entero variable (<code class="docutils literal notranslate"><span class="pre">time_t</span></code>,
 <code class="docutils literal notranslate"><span class="pre">off_t</span></code>, <code class="docutils literal notranslate"><span class="pre">long</span></code>, ...)</p></li>
-<li><p>un puntero a un struct conteniendo un type entero de tamaño variable.</p></li>
+<li><p>un puntero a un <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">conteniendo</span></code> un type entero de tamaño variable.</p></li>
 </ul>
 </div></blockquote>
 <p>La segunda situación que requiere una capa de compatibilidad es cuando uno
@@ -521,7 +521,7 @@ de 32-bit.</p>
 };
 </pre></div>
 </div>
-<p>en struct xyzzy_args, entonces struct compat_xyzzy_args debe tener:</p>
+<p>en <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">xyzzy_args</span></code>, entonces <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">compat_xyzzy_args</span></code> debe tener:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct compat_xyzzy_args {
   compat_uptr_t ptr;
   compat_long_t varying_val;
@@ -543,7 +543,7 @@ __SC_COMP(__NR_xyzzy, sys_xyzzy, compat_sys_xyzzy)
 <div><ul class="simple">
 <li><p>una <code class="docutils literal notranslate"><span class="pre">COMPAT_SYSCALL_DEFINEn(xyzzy,</span> <span class="pre">...)</span></code> para el punto de entrada de compat.</p></li>
 <li><p>el prototipo correspondiente en <code class="docutils literal notranslate"><span class="pre">include/linux/compat.h</span></code></p></li>
-<li><p>(en caso de ser necesario) un struct de mapeo de 32-bit en <code class="docutils literal notranslate"><span class="pre">include/linux/compat.h</span></code></p></li>
+<li><p>(en caso de ser necesario) un <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">de</span></code> mapeo de 32-bit en <code class="docutils literal notranslate"><span class="pre">include/linux/compat.h</span></code></p></li>
 <li><p>una instancia de <code class="docutils literal notranslate"><span class="pre">__SC_COMP</span></code> no <code class="docutils literal notranslate"><span class="pre">__SYSCALL</span></code> en <code class="docutils literal notranslate"><span class="pre">include/uapi/asm-generic/unistd.h</span></code></p></li>
 </ul>
 </div></blockquote>

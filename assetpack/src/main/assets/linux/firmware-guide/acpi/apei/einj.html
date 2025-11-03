@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -236,6 +236,15 @@ CONFIG_ACPI_APEI_EINJ
 <tr class="row-odd"><td><p>0x00000800</p></td>
 <td><p>Platform Uncorrectable fatal</p></td>
 </tr>
+<tr class="row-even"><td><p>V2_0x00000001</p></td>
+<td><p>EINJV2 Processor Error</p></td>
+</tr>
+<tr class="row-odd"><td><p>V2_0x00000002</p></td>
+<td><p>EINJV2 Memory Error</p></td>
+</tr>
+<tr class="row-even"><td><p>V2_0x00000004</p></td>
+<td><p>EINJV2 PCI Express Error</p></td>
+</tr>
 </tbody>
 </table>
 <p>The format of the file contents are as above, except present are only
@@ -262,6 +271,8 @@ SET_ERROR_TYPE_WITH_ADDRESS data structure:</p>
 <dt>Bit 1</dt><dd><p>Memory address and mask valid (param1 and param2).</p>
 </dd>
 <dt>Bit 2</dt><dd><p>PCIe (seg,bus,dev,fn) valid (see param4 below).</p>
+</dd>
+<dt>Bit 3</dt><dd><p>EINJv2 extension structure is valid</p>
 </dd>
 </dl>
 </div></blockquote>
@@ -292,6 +303,12 @@ error in some other context by a simple access to the CPU, memory
 location, or device that is the target of the error injection. Whether
 this actually works depends on what operations the BIOS actually
 includes in the trigger phase.</p>
+</li>
+<li><p>component_id0 .. component_idN, component_syndrome0 .. component_syndromeN</p>
+<p>These files are used to set the “Component Array” field
+of the EINJv2 Extension Structure. Each holds a 128-bit
+hex value. Writing just a newline to any of these files
+sets an invalid (all-ones) value.</p>
 </li>
 </ul>
 <p>CXL error types are supported from ACPI 6.5 onwards (given a CXL port
@@ -357,6 +374,27 @@ creativity in using this feature expands beyond our expectations).</p>
 # echo 0x12345000 &gt; param1            # Set memory address for injection
 # echo 0xfffffffffffff000 &gt; param2            # Mask - anywhere in this page
 # echo 0x8 &gt; error_type                       # Choose correctable memory error
+# echo 1 &gt; error_inject                       # Inject now
+</pre></div>
+</div>
+<p>An EINJv2 error injection example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># cd /sys/kernel/debug/apei/einj
+# cat available_error_type                    # See which errors can be injected
+0x00000002    Processor Uncorrectable non-fatal
+0x00000008    Memory Correctable
+0x00000010    Memory Uncorrectable non-fatal
+V2_0x00000001 EINJV2 Processor Error
+V2_0x00000002 EINJV2 Memory Error
+
+# echo 0x12345000 &gt; param1                    # Set memory address for injection
+# echo 0xfffffffffffff000 &gt; param2            # Range - anywhere in this page
+# echo 0x1 &gt; component_id0                    # First device ID
+# echo 0x4 &gt; component_syndrome0              # First error syndrome
+# echo 0x2 &gt; component_id1                    # Second device ID
+# echo 0x4 &gt; component_syndrome1              # Second error syndrome
+# echo &#39;&#39; &gt; component_id2                     # Mark id2 invalid to terminate list
+# echo V2_0x2 &gt; error_type                    # Choose EINJv2 memory error
+# echo 0xa &gt; flags                            # set flags to indicate EINJv2
 # echo 1 &gt; error_inject                       # Inject now
 </pre></div>
 </div>

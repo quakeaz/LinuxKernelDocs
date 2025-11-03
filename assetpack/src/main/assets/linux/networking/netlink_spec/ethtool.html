@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -146,153 +146,166 @@
 
 
 <section id="family-ethtool-netlink-specification">
-<h1><a class="toc-backref" href="#id117" role="doc-backlink">Family <code class="docutils literal notranslate"><span class="pre">ethtool</span></code> netlink specification</a><a class="headerlink" href="#family-ethtool-netlink-specification" title="Link to this heading">¶</a></h1>
+<h1><a class="toc-backref" href="#id119" role="doc-backlink">Family <code class="docutils literal notranslate"><span class="pre">ethtool</span></code> netlink specification</a><a class="headerlink" href="#family-ethtool-netlink-specification" title="Link to this heading">¶</a></h1>
 <nav class="contents" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#family-ethtool-netlink-specification" id="id117">Family <code class="docutils literal notranslate"><span class="pre">ethtool</span></code> netlink specification</a></p>
+<li><p><a class="reference internal" href="#family-ethtool-netlink-specification" id="id119">Family <code class="docutils literal notranslate"><span class="pre">ethtool</span></code> netlink specification</a></p>
 <ul>
-<li><p><a class="reference internal" href="#summary" id="id118">Summary</a></p></li>
-<li><p><a class="reference internal" href="#operations" id="id119">Operations</a></p>
+<li><p><a class="reference internal" href="#summary" id="id120">Summary</a></p></li>
+<li><p><a class="reference internal" href="#operations" id="id121">Operations</a></p>
 <ul>
-<li><p><a class="reference internal" href="#strset-get" id="id120">strset-get</a></p></li>
-<li><p><a class="reference internal" href="#linkinfo-get" id="id121">linkinfo-get</a></p></li>
-<li><p><a class="reference internal" href="#linkinfo-set" id="id122">linkinfo-set</a></p></li>
-<li><p><a class="reference internal" href="#linkinfo-ntf" id="id123">linkinfo-ntf</a></p></li>
-<li><p><a class="reference internal" href="#linkmodes-get" id="id124">linkmodes-get</a></p></li>
-<li><p><a class="reference internal" href="#linkmodes-set" id="id125">linkmodes-set</a></p></li>
-<li><p><a class="reference internal" href="#linkmodes-ntf" id="id126">linkmodes-ntf</a></p></li>
-<li><p><a class="reference internal" href="#linkstate-get" id="id127">linkstate-get</a></p></li>
-<li><p><a class="reference internal" href="#debug-get" id="id128">debug-get</a></p></li>
-<li><p><a class="reference internal" href="#debug-set" id="id129">debug-set</a></p></li>
-<li><p><a class="reference internal" href="#debug-ntf" id="id130">debug-ntf</a></p></li>
-<li><p><a class="reference internal" href="#wol-get" id="id131">wol-get</a></p></li>
-<li><p><a class="reference internal" href="#wol-set" id="id132">wol-set</a></p></li>
-<li><p><a class="reference internal" href="#wol-ntf" id="id133">wol-ntf</a></p></li>
-<li><p><a class="reference internal" href="#features-get" id="id134">features-get</a></p></li>
-<li><p><a class="reference internal" href="#features-set" id="id135">features-set</a></p></li>
-<li><p><a class="reference internal" href="#features-ntf" id="id136">features-ntf</a></p></li>
-<li><p><a class="reference internal" href="#privflags-get" id="id137">privflags-get</a></p></li>
-<li><p><a class="reference internal" href="#privflags-set" id="id138">privflags-set</a></p></li>
-<li><p><a class="reference internal" href="#privflags-ntf" id="id139">privflags-ntf</a></p></li>
-<li><p><a class="reference internal" href="#rings-get" id="id140">rings-get</a></p></li>
-<li><p><a class="reference internal" href="#rings-set" id="id141">rings-set</a></p></li>
-<li><p><a class="reference internal" href="#rings-ntf" id="id142">rings-ntf</a></p></li>
-<li><p><a class="reference internal" href="#channels-get" id="id143">channels-get</a></p></li>
-<li><p><a class="reference internal" href="#channels-set" id="id144">channels-set</a></p></li>
-<li><p><a class="reference internal" href="#channels-ntf" id="id145">channels-ntf</a></p></li>
-<li><p><a class="reference internal" href="#coalesce-get" id="id146">coalesce-get</a></p></li>
-<li><p><a class="reference internal" href="#coalesce-set" id="id147">coalesce-set</a></p></li>
-<li><p><a class="reference internal" href="#coalesce-ntf" id="id148">coalesce-ntf</a></p></li>
-<li><p><a class="reference internal" href="#pause-get" id="id149">pause-get</a></p></li>
-<li><p><a class="reference internal" href="#pause-set" id="id150">pause-set</a></p></li>
-<li><p><a class="reference internal" href="#pause-ntf" id="id151">pause-ntf</a></p></li>
-<li><p><a class="reference internal" href="#eee-get" id="id152">eee-get</a></p></li>
-<li><p><a class="reference internal" href="#eee-set" id="id153">eee-set</a></p></li>
-<li><p><a class="reference internal" href="#eee-ntf" id="id154">eee-ntf</a></p></li>
-<li><p><a class="reference internal" href="#tsinfo-get" id="id155">tsinfo-get</a></p></li>
-<li><p><a class="reference internal" href="#cable-test-act" id="id156">cable-test-act</a></p></li>
-<li><p><a class="reference internal" href="#cable-test-ntf" id="id157">cable-test-ntf</a></p></li>
-<li><p><a class="reference internal" href="#cable-test-tdr-act" id="id158">cable-test-tdr-act</a></p></li>
-<li><p><a class="reference internal" href="#cable-test-tdr-ntf" id="id159">cable-test-tdr-ntf</a></p></li>
-<li><p><a class="reference internal" href="#tunnel-info-get" id="id160">tunnel-info-get</a></p></li>
-<li><p><a class="reference internal" href="#fec-get" id="id161">fec-get</a></p></li>
-<li><p><a class="reference internal" href="#fec-set" id="id162">fec-set</a></p></li>
-<li><p><a class="reference internal" href="#fec-ntf" id="id163">fec-ntf</a></p></li>
-<li><p><a class="reference internal" href="#module-eeprom-get" id="id164">module-eeprom-get</a></p></li>
-<li><p><a class="reference internal" href="#stats-get" id="id165">stats-get</a></p></li>
-<li><p><a class="reference internal" href="#phc-vclocks-get" id="id166">phc-vclocks-get</a></p></li>
-<li><p><a class="reference internal" href="#module-get" id="id167">module-get</a></p></li>
-<li><p><a class="reference internal" href="#module-set" id="id168">module-set</a></p></li>
-<li><p><a class="reference internal" href="#module-ntf" id="id169">module-ntf</a></p></li>
-<li><p><a class="reference internal" href="#pse-get" id="id170">pse-get</a></p></li>
-<li><p><a class="reference internal" href="#pse-set" id="id171">pse-set</a></p></li>
-<li><p><a class="reference internal" href="#rss-get" id="id172">rss-get</a></p></li>
-<li><p><a class="reference internal" href="#plca-get-cfg" id="id173">plca-get-cfg</a></p></li>
-<li><p><a class="reference internal" href="#plca-set-cfg" id="id174">plca-set-cfg</a></p></li>
-<li><p><a class="reference internal" href="#plca-get-status" id="id175">plca-get-status</a></p></li>
-<li><p><a class="reference internal" href="#plca-ntf" id="id176">plca-ntf</a></p></li>
-<li><p><a class="reference internal" href="#mm-get" id="id177">mm-get</a></p></li>
-<li><p><a class="reference internal" href="#mm-set" id="id178">mm-set</a></p></li>
-<li><p><a class="reference internal" href="#mm-ntf" id="id179">mm-ntf</a></p></li>
-<li><p><a class="reference internal" href="#module-fw-flash-act" id="id180">module-fw-flash-act</a></p></li>
-<li><p><a class="reference internal" href="#module-fw-flash-ntf" id="id181">module-fw-flash-ntf</a></p></li>
-<li><p><a class="reference internal" href="#phy-get" id="id182">phy-get</a></p></li>
-<li><p><a class="reference internal" href="#phy-ntf" id="id183">phy-ntf</a></p></li>
-<li><p><a class="reference internal" href="#tsconfig-get" id="id184">tsconfig-get</a></p></li>
-<li><p><a class="reference internal" href="#tsconfig-set" id="id185">tsconfig-set</a></p></li>
+<li><p><a class="reference internal" href="#strset-get" id="id122">strset-get</a></p></li>
+<li><p><a class="reference internal" href="#linkinfo-get" id="id123">linkinfo-get</a></p></li>
+<li><p><a class="reference internal" href="#linkinfo-set" id="id124">linkinfo-set</a></p></li>
+<li><p><a class="reference internal" href="#linkinfo-ntf" id="id125">linkinfo-ntf</a></p></li>
+<li><p><a class="reference internal" href="#linkmodes-get" id="id126">linkmodes-get</a></p></li>
+<li><p><a class="reference internal" href="#linkmodes-set" id="id127">linkmodes-set</a></p></li>
+<li><p><a class="reference internal" href="#linkmodes-ntf" id="id128">linkmodes-ntf</a></p></li>
+<li><p><a class="reference internal" href="#linkstate-get" id="id129">linkstate-get</a></p></li>
+<li><p><a class="reference internal" href="#debug-get" id="id130">debug-get</a></p></li>
+<li><p><a class="reference internal" href="#debug-set" id="id131">debug-set</a></p></li>
+<li><p><a class="reference internal" href="#debug-ntf" id="id132">debug-ntf</a></p></li>
+<li><p><a class="reference internal" href="#wol-get" id="id133">wol-get</a></p></li>
+<li><p><a class="reference internal" href="#wol-set" id="id134">wol-set</a></p></li>
+<li><p><a class="reference internal" href="#wol-ntf" id="id135">wol-ntf</a></p></li>
+<li><p><a class="reference internal" href="#features-get" id="id136">features-get</a></p></li>
+<li><p><a class="reference internal" href="#features-set" id="id137">features-set</a></p></li>
+<li><p><a class="reference internal" href="#features-ntf" id="id138">features-ntf</a></p></li>
+<li><p><a class="reference internal" href="#privflags-get" id="id139">privflags-get</a></p></li>
+<li><p><a class="reference internal" href="#privflags-set" id="id140">privflags-set</a></p></li>
+<li><p><a class="reference internal" href="#privflags-ntf" id="id141">privflags-ntf</a></p></li>
+<li><p><a class="reference internal" href="#rings-get" id="id142">rings-get</a></p></li>
+<li><p><a class="reference internal" href="#rings-set" id="id143">rings-set</a></p></li>
+<li><p><a class="reference internal" href="#rings-ntf" id="id144">rings-ntf</a></p></li>
+<li><p><a class="reference internal" href="#channels-get" id="id145">channels-get</a></p></li>
+<li><p><a class="reference internal" href="#channels-set" id="id146">channels-set</a></p></li>
+<li><p><a class="reference internal" href="#channels-ntf" id="id147">channels-ntf</a></p></li>
+<li><p><a class="reference internal" href="#coalesce-get" id="id148">coalesce-get</a></p></li>
+<li><p><a class="reference internal" href="#coalesce-set" id="id149">coalesce-set</a></p></li>
+<li><p><a class="reference internal" href="#coalesce-ntf" id="id150">coalesce-ntf</a></p></li>
+<li><p><a class="reference internal" href="#pause-get" id="id151">pause-get</a></p></li>
+<li><p><a class="reference internal" href="#pause-set" id="id152">pause-set</a></p></li>
+<li><p><a class="reference internal" href="#pause-ntf" id="id153">pause-ntf</a></p></li>
+<li><p><a class="reference internal" href="#eee-get" id="id154">eee-get</a></p></li>
+<li><p><a class="reference internal" href="#eee-set" id="id155">eee-set</a></p></li>
+<li><p><a class="reference internal" href="#eee-ntf" id="id156">eee-ntf</a></p></li>
+<li><p><a class="reference internal" href="#tsinfo-get" id="id157">tsinfo-get</a></p></li>
+<li><p><a class="reference internal" href="#cable-test-act" id="id158">cable-test-act</a></p></li>
+<li><p><a class="reference internal" href="#cable-test-ntf" id="id159">cable-test-ntf</a></p></li>
+<li><p><a class="reference internal" href="#cable-test-tdr-act" id="id160">cable-test-tdr-act</a></p></li>
+<li><p><a class="reference internal" href="#cable-test-tdr-ntf" id="id161">cable-test-tdr-ntf</a></p></li>
+<li><p><a class="reference internal" href="#tunnel-info-get" id="id162">tunnel-info-get</a></p></li>
+<li><p><a class="reference internal" href="#fec-get" id="id163">fec-get</a></p></li>
+<li><p><a class="reference internal" href="#fec-set" id="id164">fec-set</a></p></li>
+<li><p><a class="reference internal" href="#fec-ntf" id="id165">fec-ntf</a></p></li>
+<li><p><a class="reference internal" href="#module-eeprom-get" id="id166">module-eeprom-get</a></p></li>
+<li><p><a class="reference internal" href="#stats-get" id="id167">stats-get</a></p></li>
+<li><p><a class="reference internal" href="#phc-vclocks-get" id="id168">phc-vclocks-get</a></p></li>
+<li><p><a class="reference internal" href="#module-get" id="id169">module-get</a></p></li>
+<li><p><a class="reference internal" href="#module-set" id="id170">module-set</a></p></li>
+<li><p><a class="reference internal" href="#module-ntf" id="id171">module-ntf</a></p></li>
+<li><p><a class="reference internal" href="#pse-get" id="id172">pse-get</a></p></li>
+<li><p><a class="reference internal" href="#pse-set" id="id173">pse-set</a></p></li>
+<li><p><a class="reference internal" href="#rss-get" id="id174">rss-get</a></p></li>
+<li><p><a class="reference internal" href="#plca-get-cfg" id="id175">plca-get-cfg</a></p></li>
+<li><p><a class="reference internal" href="#plca-set-cfg" id="id176">plca-set-cfg</a></p></li>
+<li><p><a class="reference internal" href="#plca-get-status" id="id177">plca-get-status</a></p></li>
+<li><p><a class="reference internal" href="#plca-ntf" id="id178">plca-ntf</a></p></li>
+<li><p><a class="reference internal" href="#mm-get" id="id179">mm-get</a></p></li>
+<li><p><a class="reference internal" href="#mm-set" id="id180">mm-set</a></p></li>
+<li><p><a class="reference internal" href="#mm-ntf" id="id181">mm-ntf</a></p></li>
+<li><p><a class="reference internal" href="#module-fw-flash-act" id="id182">module-fw-flash-act</a></p></li>
+<li><p><a class="reference internal" href="#module-fw-flash-ntf" id="id183">module-fw-flash-ntf</a></p></li>
+<li><p><a class="reference internal" href="#phy-get" id="id184">phy-get</a></p></li>
+<li><p><a class="reference internal" href="#phy-ntf" id="id185">phy-ntf</a></p></li>
+<li><p><a class="reference internal" href="#tsconfig-get" id="id186">tsconfig-get</a></p></li>
+<li><p><a class="reference internal" href="#tsconfig-set" id="id187">tsconfig-set</a></p></li>
+<li><p><a class="reference internal" href="#pse-ntf" id="id188">pse-ntf</a></p></li>
+<li><p><a class="reference internal" href="#rss-set" id="id189">rss-set</a></p></li>
+<li><p><a class="reference internal" href="#rss-ntf" id="id190">rss-ntf</a></p></li>
+<li><p><a class="reference internal" href="#rss-create-act" id="id191">rss-create-act</a></p></li>
+<li><p><a class="reference internal" href="#rss-create-ntf" id="id192">rss-create-ntf</a></p></li>
+<li><p><a class="reference internal" href="#rss-delete-act" id="id193">rss-delete-act</a></p></li>
+<li><p><a class="reference internal" href="#rss-delete-ntf" id="id194">rss-delete-ntf</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#definitions" id="id186">Definitions</a></p>
+<li><p><a class="reference internal" href="#multicast-groups" id="id195">Multicast groups</a></p></li>
+<li><p><a class="reference internal" href="#definitions" id="id196">Definitions</a></p>
 <ul>
-<li><p><a class="reference internal" href="#udp-tunnel-type" id="id187">udp-tunnel-type</a></p></li>
-<li><p><a class="reference internal" href="#stringset" id="id188">stringset</a></p></li>
-<li><p><a class="reference internal" href="#header-flags" id="id189">header-flags</a></p></li>
-<li><p><a class="reference internal" href="#module-fw-flash-status" id="id190">module-fw-flash-status</a></p></li>
-<li><p><a class="reference internal" href="#c33-pse-ext-state" id="id191">c33-pse-ext-state</a></p></li>
-<li><p><a class="reference internal" href="#phy-upstream-type" id="id192">phy-upstream-type</a></p></li>
-<li><p><a class="reference internal" href="#tcp-data-split" id="id193">tcp-data-split</a></p></li>
-<li><p><a class="reference internal" href="#hwtstamp-source" id="id194">hwtstamp-source</a></p></li>
+<li><p><a class="reference internal" href="#udp-tunnel-type" id="id197">udp-tunnel-type</a></p></li>
+<li><p><a class="reference internal" href="#stringset" id="id198">stringset</a></p></li>
+<li><p><a class="reference internal" href="#header-flags" id="id199">header-flags</a></p></li>
+<li><p><a class="reference internal" href="#module-fw-flash-status" id="id200">module-fw-flash-status</a></p></li>
+<li><p><a class="reference internal" href="#c33-pse-ext-state" id="id201">c33-pse-ext-state</a></p></li>
+<li><p><a class="reference internal" href="#phy-upstream-type" id="id202">phy-upstream-type</a></p></li>
+<li><p><a class="reference internal" href="#tcp-data-split" id="id203">tcp-data-split</a></p></li>
+<li><p><a class="reference internal" href="#hwtstamp-source" id="id204">hwtstamp-source</a></p></li>
+<li><p><a class="reference internal" href="#pse-event" id="id205">pse-event</a></p></li>
+<li><p><a class="reference internal" href="#input-xfrm" id="id206">input-xfrm</a></p></li>
+<li><p><a class="reference internal" href="#rxfh-fields" id="id207">rxfh-fields</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#attribute-sets" id="id195">Attribute sets</a></p>
+<li><p><a class="reference internal" href="#attribute-sets" id="id208">Attribute sets</a></p>
 <ul>
-<li><p><a class="reference internal" href="#header" id="id196">header</a></p></li>
-<li><p><a class="reference internal" href="#bitset-bit" id="id197">bitset-bit</a></p></li>
-<li><p><a class="reference internal" href="#bitset-bits" id="id198">bitset-bits</a></p></li>
-<li><p><a class="reference internal" href="#bitset" id="id199">bitset</a></p></li>
-<li><p><a class="reference internal" href="#string" id="id200">string</a></p></li>
-<li><p><a class="reference internal" href="#strings" id="id201">strings</a></p></li>
-<li><p><a class="reference internal" href="#ethtool-attribute-set-stringset" id="id202">stringset</a></p></li>
-<li><p><a class="reference internal" href="#stringsets" id="id203">stringsets</a></p></li>
-<li><p><a class="reference internal" href="#strset" id="id204">strset</a></p></li>
-<li><p><a class="reference internal" href="#privflags" id="id205">privflags</a></p></li>
-<li><p><a class="reference internal" href="#rings" id="id206">rings</a></p></li>
-<li><p><a class="reference internal" href="#mm-stat" id="id207">mm-stat</a></p></li>
-<li><p><a class="reference internal" href="#mm" id="id208">mm</a></p></li>
-<li><p><a class="reference internal" href="#linkinfo" id="id209">linkinfo</a></p></li>
-<li><p><a class="reference internal" href="#linkmodes" id="id210">linkmodes</a></p></li>
-<li><p><a class="reference internal" href="#linkstate" id="id211">linkstate</a></p></li>
-<li><p><a class="reference internal" href="#debug" id="id212">debug</a></p></li>
-<li><p><a class="reference internal" href="#wol" id="id213">wol</a></p></li>
-<li><p><a class="reference internal" href="#features" id="id214">features</a></p></li>
-<li><p><a class="reference internal" href="#channels" id="id215">channels</a></p></li>
-<li><p><a class="reference internal" href="#irq-moderation" id="id216">irq-moderation</a></p></li>
-<li><p><a class="reference internal" href="#profile" id="id217">profile</a></p></li>
-<li><p><a class="reference internal" href="#coalesce" id="id218">coalesce</a></p></li>
-<li><p><a class="reference internal" href="#pause-stat" id="id219">pause-stat</a></p></li>
-<li><p><a class="reference internal" href="#pause" id="id220">pause</a></p></li>
-<li><p><a class="reference internal" href="#eee" id="id221">eee</a></p></li>
-<li><p><a class="reference internal" href="#ts-stat" id="id222">ts-stat</a></p></li>
-<li><p><a class="reference internal" href="#ts-hwtstamp-provider" id="id223">ts-hwtstamp-provider</a></p></li>
-<li><p><a class="reference internal" href="#tsinfo" id="id224">tsinfo</a></p></li>
-<li><p><a class="reference internal" href="#cable-result" id="id225">cable-result</a></p></li>
-<li><p><a class="reference internal" href="#cable-fault-length" id="id226">cable-fault-length</a></p></li>
-<li><p><a class="reference internal" href="#cable-nest" id="id227">cable-nest</a></p></li>
-<li><p><a class="reference internal" href="#cable-test" id="id228">cable-test</a></p></li>
-<li><p><a class="reference internal" href="#ethtool-attribute-set-cable-test-ntf" id="id229">cable-test-ntf</a></p></li>
-<li><p><a class="reference internal" href="#cable-test-tdr-cfg" id="id230">cable-test-tdr-cfg</a></p></li>
-<li><p><a class="reference internal" href="#ethtool-attribute-set-cable-test-tdr-ntf" id="id231">cable-test-tdr-ntf</a></p></li>
-<li><p><a class="reference internal" href="#cable-test-tdr" id="id232">cable-test-tdr</a></p></li>
-<li><p><a class="reference internal" href="#tunnel-udp-entry" id="id233">tunnel-udp-entry</a></p></li>
-<li><p><a class="reference internal" href="#tunnel-udp-table" id="id234">tunnel-udp-table</a></p></li>
-<li><p><a class="reference internal" href="#tunnel-udp" id="id235">tunnel-udp</a></p></li>
-<li><p><a class="reference internal" href="#tunnel-info" id="id236">tunnel-info</a></p></li>
-<li><p><a class="reference internal" href="#fec-stat" id="id237">fec-stat</a></p></li>
-<li><p><a class="reference internal" href="#fec" id="id238">fec</a></p></li>
-<li><p><a class="reference internal" href="#module-eeprom" id="id239">module-eeprom</a></p></li>
-<li><p><a class="reference internal" href="#stats-grp" id="id240">stats-grp</a></p></li>
-<li><p><a class="reference internal" href="#stats-grp-hist" id="id241">stats-grp-hist</a></p></li>
-<li><p><a class="reference internal" href="#stats" id="id242">stats</a></p></li>
-<li><p><a class="reference internal" href="#phc-vclocks" id="id243">phc-vclocks</a></p></li>
-<li><p><a class="reference internal" href="#module" id="id244">module</a></p></li>
-<li><p><a class="reference internal" href="#c33-pse-pw-limit" id="id245">c33-pse-pw-limit</a></p></li>
-<li><p><a class="reference internal" href="#pse" id="id246">pse</a></p></li>
-<li><p><a class="reference internal" href="#rss" id="id247">rss</a></p></li>
-<li><p><a class="reference internal" href="#plca" id="id248">plca</a></p></li>
-<li><p><a class="reference internal" href="#module-fw-flash" id="id249">module-fw-flash</a></p></li>
-<li><p><a class="reference internal" href="#phy" id="id250">phy</a></p></li>
-<li><p><a class="reference internal" href="#tsconfig" id="id251">tsconfig</a></p></li>
+<li><p><a class="reference internal" href="#header" id="id209">header</a></p></li>
+<li><p><a class="reference internal" href="#bitset-bit" id="id210">bitset-bit</a></p></li>
+<li><p><a class="reference internal" href="#bitset-bits" id="id211">bitset-bits</a></p></li>
+<li><p><a class="reference internal" href="#bitset" id="id212">bitset</a></p></li>
+<li><p><a class="reference internal" href="#string" id="id213">string</a></p></li>
+<li><p><a class="reference internal" href="#strings" id="id214">strings</a></p></li>
+<li><p><a class="reference internal" href="#ethtool-attribute-set-stringset" id="id215">stringset</a></p></li>
+<li><p><a class="reference internal" href="#stringsets" id="id216">stringsets</a></p></li>
+<li><p><a class="reference internal" href="#strset" id="id217">strset</a></p></li>
+<li><p><a class="reference internal" href="#privflags" id="id218">privflags</a></p></li>
+<li><p><a class="reference internal" href="#rings" id="id219">rings</a></p></li>
+<li><p><a class="reference internal" href="#mm-stat" id="id220">mm-stat</a></p></li>
+<li><p><a class="reference internal" href="#mm" id="id221">mm</a></p></li>
+<li><p><a class="reference internal" href="#linkinfo" id="id222">linkinfo</a></p></li>
+<li><p><a class="reference internal" href="#linkmodes" id="id223">linkmodes</a></p></li>
+<li><p><a class="reference internal" href="#linkstate" id="id224">linkstate</a></p></li>
+<li><p><a class="reference internal" href="#debug" id="id225">debug</a></p></li>
+<li><p><a class="reference internal" href="#wol" id="id226">wol</a></p></li>
+<li><p><a class="reference internal" href="#features" id="id227">features</a></p></li>
+<li><p><a class="reference internal" href="#channels" id="id228">channels</a></p></li>
+<li><p><a class="reference internal" href="#irq-moderation" id="id229">irq-moderation</a></p></li>
+<li><p><a class="reference internal" href="#profile" id="id230">profile</a></p></li>
+<li><p><a class="reference internal" href="#coalesce" id="id231">coalesce</a></p></li>
+<li><p><a class="reference internal" href="#pause-stat" id="id232">pause-stat</a></p></li>
+<li><p><a class="reference internal" href="#pause" id="id233">pause</a></p></li>
+<li><p><a class="reference internal" href="#eee" id="id234">eee</a></p></li>
+<li><p><a class="reference internal" href="#ts-stat" id="id235">ts-stat</a></p></li>
+<li><p><a class="reference internal" href="#ts-hwtstamp-provider" id="id236">ts-hwtstamp-provider</a></p></li>
+<li><p><a class="reference internal" href="#tsinfo" id="id237">tsinfo</a></p></li>
+<li><p><a class="reference internal" href="#cable-result" id="id238">cable-result</a></p></li>
+<li><p><a class="reference internal" href="#cable-fault-length" id="id239">cable-fault-length</a></p></li>
+<li><p><a class="reference internal" href="#cable-nest" id="id240">cable-nest</a></p></li>
+<li><p><a class="reference internal" href="#cable-test" id="id241">cable-test</a></p></li>
+<li><p><a class="reference internal" href="#ethtool-attribute-set-cable-test-ntf" id="id242">cable-test-ntf</a></p></li>
+<li><p><a class="reference internal" href="#cable-test-tdr-cfg" id="id243">cable-test-tdr-cfg</a></p></li>
+<li><p><a class="reference internal" href="#ethtool-attribute-set-cable-test-tdr-ntf" id="id244">cable-test-tdr-ntf</a></p></li>
+<li><p><a class="reference internal" href="#cable-test-tdr" id="id245">cable-test-tdr</a></p></li>
+<li><p><a class="reference internal" href="#tunnel-udp-entry" id="id246">tunnel-udp-entry</a></p></li>
+<li><p><a class="reference internal" href="#tunnel-udp-table" id="id247">tunnel-udp-table</a></p></li>
+<li><p><a class="reference internal" href="#tunnel-udp" id="id248">tunnel-udp</a></p></li>
+<li><p><a class="reference internal" href="#tunnel-info" id="id249">tunnel-info</a></p></li>
+<li><p><a class="reference internal" href="#fec-stat" id="id250">fec-stat</a></p></li>
+<li><p><a class="reference internal" href="#fec" id="id251">fec</a></p></li>
+<li><p><a class="reference internal" href="#module-eeprom" id="id252">module-eeprom</a></p></li>
+<li><p><a class="reference internal" href="#stats-grp" id="id253">stats-grp</a></p></li>
+<li><p><a class="reference internal" href="#stats-grp-hist" id="id254">stats-grp-hist</a></p></li>
+<li><p><a class="reference internal" href="#stats" id="id255">stats</a></p></li>
+<li><p><a class="reference internal" href="#phc-vclocks" id="id256">phc-vclocks</a></p></li>
+<li><p><a class="reference internal" href="#module" id="id257">module</a></p></li>
+<li><p><a class="reference internal" href="#c33-pse-pw-limit" id="id258">c33-pse-pw-limit</a></p></li>
+<li><p><a class="reference internal" href="#pse" id="id259">pse</a></p></li>
+<li><p><a class="reference internal" href="#flow" id="id260">flow</a></p></li>
+<li><p><a class="reference internal" href="#rss" id="id261">rss</a></p></li>
+<li><p><a class="reference internal" href="#plca" id="id262">plca</a></p></li>
+<li><p><a class="reference internal" href="#module-fw-flash" id="id263">module-fw-flash</a></p></li>
+<li><p><a class="reference internal" href="#phy" id="id264">phy</a></p></li>
+<li><p><a class="reference internal" href="#tsconfig" id="id265">tsconfig</a></p></li>
+<li><p><a class="reference internal" href="#ethtool-attribute-set-pse-ntf" id="id266">pse-ntf</a></p></li>
 </ul>
 </li>
 </ul>
@@ -300,13 +313,13 @@
 </ul>
 </nav>
 <section id="summary">
-<h2><a class="toc-backref" href="#id118" role="doc-backlink">Summary</a><a class="headerlink" href="#summary" title="Link to this heading">¶</a></h2>
+<h2><a class="toc-backref" href="#id120" role="doc-backlink">Summary</a><a class="headerlink" href="#summary" title="Link to this heading">¶</a></h2>
 <p>Partial family for Ethtool Netlink.</p>
 </section>
 <section id="operations">
-<h2><a class="toc-backref" href="#id119" role="doc-backlink">Operations</a><a class="headerlink" href="#operations" title="Link to this heading">¶</a></h2>
+<h2><a class="toc-backref" href="#id121" role="doc-backlink">Operations</a><a class="headerlink" href="#operations" title="Link to this heading">¶</a></h2>
 <section id="strset-get">
-<span id="ethtool-operation-strset-get"></span><h3><a class="toc-backref" href="#id120" role="doc-backlink">strset-get</a><a class="headerlink" href="#strset-get" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-strset-get"></span><h3><a class="toc-backref" href="#id122" role="doc-backlink">strset-get</a><a class="headerlink" href="#strset-get" title="Link to this heading">¶</a></h3>
 <p>Get string set from the kernel.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -347,7 +360,7 @@
 </dl>
 </section>
 <section id="linkinfo-get">
-<span id="ethtool-operation-linkinfo-get"></span><h3><a class="toc-backref" href="#id121" role="doc-backlink">linkinfo-get</a><a class="headerlink" href="#linkinfo-get" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-linkinfo-get"></span><h3><a class="toc-backref" href="#id123" role="doc-backlink">linkinfo-get</a><a class="headerlink" href="#linkinfo-get" title="Link to this heading">¶</a></h3>
 <p>Get link info.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -388,7 +401,7 @@
 </dl>
 </section>
 <section id="linkinfo-set">
-<span id="ethtool-operation-linkinfo-set"></span><h3><a class="toc-backref" href="#id122" role="doc-backlink">linkinfo-set</a><a class="headerlink" href="#linkinfo-set" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-linkinfo-set"></span><h3><a class="toc-backref" href="#id124" role="doc-backlink">linkinfo-set</a><a class="headerlink" href="#linkinfo-set" title="Link to this heading">¶</a></h3>
 <p>Set link info.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -407,7 +420,7 @@
 </dl>
 </section>
 <section id="linkinfo-ntf">
-<span id="ethtool-operation-linkinfo-ntf"></span><h3><a class="toc-backref" href="#id123" role="doc-backlink">linkinfo-ntf</a><a class="headerlink" href="#linkinfo-ntf" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-linkinfo-ntf"></span><h3><a class="toc-backref" href="#id125" role="doc-backlink">linkinfo-ntf</a><a class="headerlink" href="#linkinfo-ntf" title="Link to this heading">¶</a></h3>
 <p>Notification for change in link info.</p>
 <dl class="field-list simple">
 <dt class="field-odd">notify<span class="colon">:</span></dt>
@@ -416,7 +429,7 @@
 </dl>
 </section>
 <section id="linkmodes-get">
-<span id="ethtool-operation-linkmodes-get"></span><h3><a class="toc-backref" href="#id124" role="doc-backlink">linkmodes-get</a><a class="headerlink" href="#linkmodes-get" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-linkmodes-get"></span><h3><a class="toc-backref" href="#id126" role="doc-backlink">linkmodes-get</a><a class="headerlink" href="#linkmodes-get" title="Link to this heading">¶</a></h3>
 <p>Get link modes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -457,7 +470,7 @@
 </dl>
 </section>
 <section id="linkmodes-set">
-<span id="ethtool-operation-linkmodes-set"></span><h3><a class="toc-backref" href="#id125" role="doc-backlink">linkmodes-set</a><a class="headerlink" href="#linkmodes-set" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-linkmodes-set"></span><h3><a class="toc-backref" href="#id127" role="doc-backlink">linkmodes-set</a><a class="headerlink" href="#linkmodes-set" title="Link to this heading">¶</a></h3>
 <p>Set link modes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -476,7 +489,7 @@
 </dl>
 </section>
 <section id="linkmodes-ntf">
-<span id="ethtool-operation-linkmodes-ntf"></span><h3><a class="toc-backref" href="#id126" role="doc-backlink">linkmodes-ntf</a><a class="headerlink" href="#linkmodes-ntf" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-linkmodes-ntf"></span><h3><a class="toc-backref" href="#id128" role="doc-backlink">linkmodes-ntf</a><a class="headerlink" href="#linkmodes-ntf" title="Link to this heading">¶</a></h3>
 <p>Notification for change in link modes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">notify<span class="colon">:</span></dt>
@@ -485,7 +498,7 @@
 </dl>
 </section>
 <section id="linkstate-get">
-<span id="ethtool-operation-linkstate-get"></span><h3><a class="toc-backref" href="#id127" role="doc-backlink">linkstate-get</a><a class="headerlink" href="#linkstate-get" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-linkstate-get"></span><h3><a class="toc-backref" href="#id129" role="doc-backlink">linkstate-get</a><a class="headerlink" href="#linkstate-get" title="Link to this heading">¶</a></h3>
 <p>Get link state.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -526,7 +539,7 @@
 </dl>
 </section>
 <section id="debug-get">
-<span id="ethtool-operation-debug-get"></span><h3><a class="toc-backref" href="#id128" role="doc-backlink">debug-get</a><a class="headerlink" href="#debug-get" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-debug-get"></span><h3><a class="toc-backref" href="#id130" role="doc-backlink">debug-get</a><a class="headerlink" href="#debug-get" title="Link to this heading">¶</a></h3>
 <p>Get debug message mask.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -567,7 +580,7 @@
 </dl>
 </section>
 <section id="debug-set">
-<span id="ethtool-operation-debug-set"></span><h3><a class="toc-backref" href="#id129" role="doc-backlink">debug-set</a><a class="headerlink" href="#debug-set" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-debug-set"></span><h3><a class="toc-backref" href="#id131" role="doc-backlink">debug-set</a><a class="headerlink" href="#debug-set" title="Link to this heading">¶</a></h3>
 <p>Set debug message mask.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -586,7 +599,7 @@
 </dl>
 </section>
 <section id="debug-ntf">
-<span id="ethtool-operation-debug-ntf"></span><h3><a class="toc-backref" href="#id130" role="doc-backlink">debug-ntf</a><a class="headerlink" href="#debug-ntf" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-debug-ntf"></span><h3><a class="toc-backref" href="#id132" role="doc-backlink">debug-ntf</a><a class="headerlink" href="#debug-ntf" title="Link to this heading">¶</a></h3>
 <p>Notification for change in debug message mask.</p>
 <dl class="field-list simple">
 <dt class="field-odd">notify<span class="colon">:</span></dt>
@@ -595,7 +608,7 @@
 </dl>
 </section>
 <section id="wol-get">
-<span id="ethtool-operation-wol-get"></span><h3><a class="toc-backref" href="#id131" role="doc-backlink">wol-get</a><a class="headerlink" href="#wol-get" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-wol-get"></span><h3><a class="toc-backref" href="#id133" role="doc-backlink">wol-get</a><a class="headerlink" href="#wol-get" title="Link to this heading">¶</a></h3>
 <p>Get WOL params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -636,7 +649,7 @@
 </dl>
 </section>
 <section id="wol-set">
-<span id="ethtool-operation-wol-set"></span><h3><a class="toc-backref" href="#id132" role="doc-backlink">wol-set</a><a class="headerlink" href="#wol-set" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-wol-set"></span><h3><a class="toc-backref" href="#id134" role="doc-backlink">wol-set</a><a class="headerlink" href="#wol-set" title="Link to this heading">¶</a></h3>
 <p>Set WOL params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -655,7 +668,7 @@
 </dl>
 </section>
 <section id="wol-ntf">
-<span id="ethtool-operation-wol-ntf"></span><h3><a class="toc-backref" href="#id133" role="doc-backlink">wol-ntf</a><a class="headerlink" href="#wol-ntf" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-wol-ntf"></span><h3><a class="toc-backref" href="#id135" role="doc-backlink">wol-ntf</a><a class="headerlink" href="#wol-ntf" title="Link to this heading">¶</a></h3>
 <p>Notification for change in WOL params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">notify<span class="colon">:</span></dt>
@@ -664,7 +677,7 @@
 </dl>
 </section>
 <section id="features-get">
-<span id="ethtool-operation-features-get"></span><h3><a class="toc-backref" href="#id134" role="doc-backlink">features-get</a><a class="headerlink" href="#features-get" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-features-get"></span><h3><a class="toc-backref" href="#id136" role="doc-backlink">features-get</a><a class="headerlink" href="#features-get" title="Link to this heading">¶</a></h3>
 <p>Get features.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -705,7 +718,7 @@
 </dl>
 </section>
 <section id="features-set">
-<span id="ethtool-operation-features-set"></span><h3><a class="toc-backref" href="#id135" role="doc-backlink">features-set</a><a class="headerlink" href="#features-set" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-features-set"></span><h3><a class="toc-backref" href="#id137" role="doc-backlink">features-set</a><a class="headerlink" href="#features-set" title="Link to this heading">¶</a></h3>
 <p>Set features.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -730,7 +743,7 @@
 </dl>
 </section>
 <section id="features-ntf">
-<span id="ethtool-operation-features-ntf"></span><h3><a class="toc-backref" href="#id136" role="doc-backlink">features-ntf</a><a class="headerlink" href="#features-ntf" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-features-ntf"></span><h3><a class="toc-backref" href="#id138" role="doc-backlink">features-ntf</a><a class="headerlink" href="#features-ntf" title="Link to this heading">¶</a></h3>
 <p>Notification for change in features.</p>
 <dl class="field-list simple">
 <dt class="field-odd">notify<span class="colon">:</span></dt>
@@ -739,7 +752,7 @@
 </dl>
 </section>
 <section id="privflags-get">
-<span id="ethtool-operation-privflags-get"></span><h3><a class="toc-backref" href="#id137" role="doc-backlink">privflags-get</a><a class="headerlink" href="#privflags-get" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-privflags-get"></span><h3><a class="toc-backref" href="#id139" role="doc-backlink">privflags-get</a><a class="headerlink" href="#privflags-get" title="Link to this heading">¶</a></h3>
 <p>Get device private flags.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -780,7 +793,7 @@
 </dl>
 </section>
 <section id="privflags-set">
-<span id="ethtool-operation-privflags-set"></span><h3><a class="toc-backref" href="#id138" role="doc-backlink">privflags-set</a><a class="headerlink" href="#privflags-set" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-privflags-set"></span><h3><a class="toc-backref" href="#id140" role="doc-backlink">privflags-set</a><a class="headerlink" href="#privflags-set" title="Link to this heading">¶</a></h3>
 <p>Set device private flags.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -799,7 +812,7 @@
 </dl>
 </section>
 <section id="privflags-ntf">
-<span id="ethtool-operation-privflags-ntf"></span><h3><a class="toc-backref" href="#id139" role="doc-backlink">privflags-ntf</a><a class="headerlink" href="#privflags-ntf" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-privflags-ntf"></span><h3><a class="toc-backref" href="#id141" role="doc-backlink">privflags-ntf</a><a class="headerlink" href="#privflags-ntf" title="Link to this heading">¶</a></h3>
 <p>Notification for change in device private flags.</p>
 <dl class="field-list simple">
 <dt class="field-odd">notify<span class="colon">:</span></dt>
@@ -808,7 +821,7 @@
 </dl>
 </section>
 <section id="rings-get">
-<span id="ethtool-operation-rings-get"></span><h3><a class="toc-backref" href="#id140" role="doc-backlink">rings-get</a><a class="headerlink" href="#rings-get" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-rings-get"></span><h3><a class="toc-backref" href="#id142" role="doc-backlink">rings-get</a><a class="headerlink" href="#rings-get" title="Link to this heading">¶</a></h3>
 <p>Get ring params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -849,7 +862,7 @@
 </dl>
 </section>
 <section id="rings-set">
-<span id="ethtool-operation-rings-set"></span><h3><a class="toc-backref" href="#id141" role="doc-backlink">rings-set</a><a class="headerlink" href="#rings-set" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-rings-set"></span><h3><a class="toc-backref" href="#id143" role="doc-backlink">rings-set</a><a class="headerlink" href="#rings-set" title="Link to this heading">¶</a></h3>
 <p>Set ring params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -868,7 +881,7 @@
 </dl>
 </section>
 <section id="rings-ntf">
-<span id="ethtool-operation-rings-ntf"></span><h3><a class="toc-backref" href="#id142" role="doc-backlink">rings-ntf</a><a class="headerlink" href="#rings-ntf" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-rings-ntf"></span><h3><a class="toc-backref" href="#id144" role="doc-backlink">rings-ntf</a><a class="headerlink" href="#rings-ntf" title="Link to this heading">¶</a></h3>
 <p>Notification for change in ring params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">notify<span class="colon">:</span></dt>
@@ -877,7 +890,7 @@
 </dl>
 </section>
 <section id="channels-get">
-<span id="ethtool-operation-channels-get"></span><h3><a class="toc-backref" href="#id143" role="doc-backlink">channels-get</a><a class="headerlink" href="#channels-get" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-channels-get"></span><h3><a class="toc-backref" href="#id145" role="doc-backlink">channels-get</a><a class="headerlink" href="#channels-get" title="Link to this heading">¶</a></h3>
 <p>Get channel params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -918,7 +931,7 @@
 </dl>
 </section>
 <section id="channels-set">
-<span id="ethtool-operation-channels-set"></span><h3><a class="toc-backref" href="#id144" role="doc-backlink">channels-set</a><a class="headerlink" href="#channels-set" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-channels-set"></span><h3><a class="toc-backref" href="#id146" role="doc-backlink">channels-set</a><a class="headerlink" href="#channels-set" title="Link to this heading">¶</a></h3>
 <p>Set channel params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -937,7 +950,7 @@
 </dl>
 </section>
 <section id="channels-ntf">
-<span id="ethtool-operation-channels-ntf"></span><h3><a class="toc-backref" href="#id145" role="doc-backlink">channels-ntf</a><a class="headerlink" href="#channels-ntf" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-channels-ntf"></span><h3><a class="toc-backref" href="#id147" role="doc-backlink">channels-ntf</a><a class="headerlink" href="#channels-ntf" title="Link to this heading">¶</a></h3>
 <p>Notification for change in channel params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">notify<span class="colon">:</span></dt>
@@ -946,7 +959,7 @@
 </dl>
 </section>
 <section id="coalesce-get">
-<span id="ethtool-operation-coalesce-get"></span><h3><a class="toc-backref" href="#id146" role="doc-backlink">coalesce-get</a><a class="headerlink" href="#coalesce-get" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-coalesce-get"></span><h3><a class="toc-backref" href="#id148" role="doc-backlink">coalesce-get</a><a class="headerlink" href="#coalesce-get" title="Link to this heading">¶</a></h3>
 <p>Get coalesce params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -987,7 +1000,7 @@
 </dl>
 </section>
 <section id="coalesce-set">
-<span id="ethtool-operation-coalesce-set"></span><h3><a class="toc-backref" href="#id147" role="doc-backlink">coalesce-set</a><a class="headerlink" href="#coalesce-set" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-coalesce-set"></span><h3><a class="toc-backref" href="#id149" role="doc-backlink">coalesce-set</a><a class="headerlink" href="#coalesce-set" title="Link to this heading">¶</a></h3>
 <p>Set coalesce params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -1006,7 +1019,7 @@
 </dl>
 </section>
 <section id="coalesce-ntf">
-<span id="ethtool-operation-coalesce-ntf"></span><h3><a class="toc-backref" href="#id148" role="doc-backlink">coalesce-ntf</a><a class="headerlink" href="#coalesce-ntf" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-coalesce-ntf"></span><h3><a class="toc-backref" href="#id150" role="doc-backlink">coalesce-ntf</a><a class="headerlink" href="#coalesce-ntf" title="Link to this heading">¶</a></h3>
 <p>Notification for change in coalesce params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">notify<span class="colon">:</span></dt>
@@ -1015,7 +1028,7 @@
 </dl>
 </section>
 <section id="pause-get">
-<span id="ethtool-operation-pause-get"></span><h3><a class="toc-backref" href="#id149" role="doc-backlink">pause-get</a><a class="headerlink" href="#pause-get" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-pause-get"></span><h3><a class="toc-backref" href="#id151" role="doc-backlink">pause-get</a><a class="headerlink" href="#pause-get" title="Link to this heading">¶</a></h3>
 <p>Get pause params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -1056,7 +1069,7 @@
 </dl>
 </section>
 <section id="pause-set">
-<span id="ethtool-operation-pause-set"></span><h3><a class="toc-backref" href="#id150" role="doc-backlink">pause-set</a><a class="headerlink" href="#pause-set" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-pause-set"></span><h3><a class="toc-backref" href="#id152" role="doc-backlink">pause-set</a><a class="headerlink" href="#pause-set" title="Link to this heading">¶</a></h3>
 <p>Set pause params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -1075,7 +1088,7 @@
 </dl>
 </section>
 <section id="pause-ntf">
-<span id="ethtool-operation-pause-ntf"></span><h3><a class="toc-backref" href="#id151" role="doc-backlink">pause-ntf</a><a class="headerlink" href="#pause-ntf" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-pause-ntf"></span><h3><a class="toc-backref" href="#id153" role="doc-backlink">pause-ntf</a><a class="headerlink" href="#pause-ntf" title="Link to this heading">¶</a></h3>
 <p>Notification for change in pause params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">notify<span class="colon">:</span></dt>
@@ -1084,7 +1097,7 @@
 </dl>
 </section>
 <section id="eee-get">
-<span id="ethtool-operation-eee-get"></span><h3><a class="toc-backref" href="#id152" role="doc-backlink">eee-get</a><a class="headerlink" href="#eee-get" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-eee-get"></span><h3><a class="toc-backref" href="#id154" role="doc-backlink">eee-get</a><a class="headerlink" href="#eee-get" title="Link to this heading">¶</a></h3>
 <p>Get eee params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -1125,7 +1138,7 @@
 </dl>
 </section>
 <section id="eee-set">
-<span id="ethtool-operation-eee-set"></span><h3><a class="toc-backref" href="#id153" role="doc-backlink">eee-set</a><a class="headerlink" href="#eee-set" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-eee-set"></span><h3><a class="toc-backref" href="#id155" role="doc-backlink">eee-set</a><a class="headerlink" href="#eee-set" title="Link to this heading">¶</a></h3>
 <p>Set eee params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -1144,7 +1157,7 @@
 </dl>
 </section>
 <section id="eee-ntf">
-<span id="ethtool-operation-eee-ntf"></span><h3><a class="toc-backref" href="#id154" role="doc-backlink">eee-ntf</a><a class="headerlink" href="#eee-ntf" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-eee-ntf"></span><h3><a class="toc-backref" href="#id156" role="doc-backlink">eee-ntf</a><a class="headerlink" href="#eee-ntf" title="Link to this heading">¶</a></h3>
 <p>Notification for change in eee params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">notify<span class="colon">:</span></dt>
@@ -1153,7 +1166,7 @@
 </dl>
 </section>
 <section id="tsinfo-get">
-<span id="ethtool-operation-tsinfo-get"></span><h3><a class="toc-backref" href="#id155" role="doc-backlink">tsinfo-get</a><a class="headerlink" href="#tsinfo-get" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-tsinfo-get"></span><h3><a class="toc-backref" href="#id157" role="doc-backlink">tsinfo-get</a><a class="headerlink" href="#tsinfo-get" title="Link to this heading">¶</a></h3>
 <p>Get tsinfo params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -1194,7 +1207,7 @@
 </dl>
 </section>
 <section id="cable-test-act">
-<span id="ethtool-operation-cable-test-act"></span><h3><a class="toc-backref" href="#id156" role="doc-backlink">cable-test-act</a><a class="headerlink" href="#cable-test-act" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-cable-test-act"></span><h3><a class="toc-backref" href="#id158" role="doc-backlink">cable-test-act</a><a class="headerlink" href="#cable-test-act" title="Link to this heading">¶</a></h3>
 <p>Cable test.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -1213,7 +1226,7 @@
 </dl>
 </section>
 <section id="cable-test-ntf">
-<span id="ethtool-operation-cable-test-ntf"></span><h3><a class="toc-backref" href="#id157" role="doc-backlink">cable-test-ntf</a><a class="headerlink" href="#cable-test-ntf" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-cable-test-ntf"></span><h3><a class="toc-backref" href="#id159" role="doc-backlink">cable-test-ntf</a><a class="headerlink" href="#cable-test-ntf" title="Link to this heading">¶</a></h3>
 <p>Cable test notification.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -1225,7 +1238,7 @@
 </dl>
 </section>
 <section id="cable-test-tdr-act">
-<span id="ethtool-operation-cable-test-tdr-act"></span><h3><a class="toc-backref" href="#id158" role="doc-backlink">cable-test-tdr-act</a><a class="headerlink" href="#cable-test-tdr-act" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-cable-test-tdr-act"></span><h3><a class="toc-backref" href="#id160" role="doc-backlink">cable-test-tdr-act</a><a class="headerlink" href="#cable-test-tdr-act" title="Link to this heading">¶</a></h3>
 <p>Cable test TDR.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -1244,7 +1257,7 @@
 </dl>
 </section>
 <section id="cable-test-tdr-ntf">
-<span id="ethtool-operation-cable-test-tdr-ntf"></span><h3><a class="toc-backref" href="#id159" role="doc-backlink">cable-test-tdr-ntf</a><a class="headerlink" href="#cable-test-tdr-ntf" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-cable-test-tdr-ntf"></span><h3><a class="toc-backref" href="#id161" role="doc-backlink">cable-test-tdr-ntf</a><a class="headerlink" href="#cable-test-tdr-ntf" title="Link to this heading">¶</a></h3>
 <p>Cable test TDR notification.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -1256,7 +1269,7 @@
 </dl>
 </section>
 <section id="tunnel-info-get">
-<span id="ethtool-operation-tunnel-info-get"></span><h3><a class="toc-backref" href="#id160" role="doc-backlink">tunnel-info-get</a><a class="headerlink" href="#tunnel-info-get" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-tunnel-info-get"></span><h3><a class="toc-backref" href="#id162" role="doc-backlink">tunnel-info-get</a><a class="headerlink" href="#tunnel-info-get" title="Link to this heading">¶</a></h3>
 <p>Get tsinfo params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -1297,7 +1310,7 @@
 </dl>
 </section>
 <section id="fec-get">
-<span id="ethtool-operation-fec-get"></span><h3><a class="toc-backref" href="#id161" role="doc-backlink">fec-get</a><a class="headerlink" href="#fec-get" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-fec-get"></span><h3><a class="toc-backref" href="#id163" role="doc-backlink">fec-get</a><a class="headerlink" href="#fec-get" title="Link to this heading">¶</a></h3>
 <p>Get FEC params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -1338,7 +1351,7 @@
 </dl>
 </section>
 <section id="fec-set">
-<span id="ethtool-operation-fec-set"></span><h3><a class="toc-backref" href="#id162" role="doc-backlink">fec-set</a><a class="headerlink" href="#fec-set" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-fec-set"></span><h3><a class="toc-backref" href="#id164" role="doc-backlink">fec-set</a><a class="headerlink" href="#fec-set" title="Link to this heading">¶</a></h3>
 <p>Set FEC params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -1357,7 +1370,7 @@
 </dl>
 </section>
 <section id="fec-ntf">
-<span id="ethtool-operation-fec-ntf"></span><h3><a class="toc-backref" href="#id163" role="doc-backlink">fec-ntf</a><a class="headerlink" href="#fec-ntf" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-fec-ntf"></span><h3><a class="toc-backref" href="#id165" role="doc-backlink">fec-ntf</a><a class="headerlink" href="#fec-ntf" title="Link to this heading">¶</a></h3>
 <p>Notification for change in FEC params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">notify<span class="colon">:</span></dt>
@@ -1366,7 +1379,7 @@
 </dl>
 </section>
 <section id="module-eeprom-get">
-<span id="ethtool-operation-module-eeprom-get"></span><h3><a class="toc-backref" href="#id164" role="doc-backlink">module-eeprom-get</a><a class="headerlink" href="#module-eeprom-get" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-module-eeprom-get"></span><h3><a class="toc-backref" href="#id166" role="doc-backlink">module-eeprom-get</a><a class="headerlink" href="#module-eeprom-get" title="Link to this heading">¶</a></h3>
 <p>Get module EEPROM params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -1376,13 +1389,13 @@
 <dd class="field-even"><dl class="simple">
 <dt><strong>request</strong></dt><dd><dl class="field-list simple">
 <dt class="field-odd">attributes<span class="colon">:</span></dt>
-<dd class="field-odd"><p>[<code class="docutils literal notranslate"><span class="pre">header</span></code>]</p>
+<dd class="field-odd"><p>[<code class="docutils literal notranslate"><span class="pre">header</span></code>, <code class="docutils literal notranslate"><span class="pre">offset</span></code>, <code class="docutils literal notranslate"><span class="pre">length</span></code>, <code class="docutils literal notranslate"><span class="pre">page</span></code>, <code class="docutils literal notranslate"><span class="pre">bank</span></code>, <code class="docutils literal notranslate"><span class="pre">i2c-address</span></code>]</p>
 </dd>
 </dl>
 </dd>
 <dt><strong>reply</strong></dt><dd><dl class="field-list simple">
 <dt class="field-odd">attributes<span class="colon">:</span></dt>
-<dd class="field-odd"><p>[<code class="docutils literal notranslate"><span class="pre">header</span></code>, <code class="docutils literal notranslate"><span class="pre">offset</span></code>, <code class="docutils literal notranslate"><span class="pre">length</span></code>, <code class="docutils literal notranslate"><span class="pre">page</span></code>, <code class="docutils literal notranslate"><span class="pre">bank</span></code>, <code class="docutils literal notranslate"><span class="pre">i2c-address</span></code>, <code class="docutils literal notranslate"><span class="pre">data</span></code>]</p>
+<dd class="field-odd"><p>[<code class="docutils literal notranslate"><span class="pre">header</span></code>, <code class="docutils literal notranslate"><span class="pre">data</span></code>]</p>
 </dd>
 </dl>
 </dd>
@@ -1392,13 +1405,13 @@
 <dd class="field-odd"><dl class="simple">
 <dt><strong>request</strong></dt><dd><dl class="field-list simple">
 <dt class="field-odd">attributes<span class="colon">:</span></dt>
-<dd class="field-odd"><p>[<code class="docutils literal notranslate"><span class="pre">header</span></code>]</p>
+<dd class="field-odd"><p>[<code class="docutils literal notranslate"><span class="pre">header</span></code>, <code class="docutils literal notranslate"><span class="pre">offset</span></code>, <code class="docutils literal notranslate"><span class="pre">length</span></code>, <code class="docutils literal notranslate"><span class="pre">page</span></code>, <code class="docutils literal notranslate"><span class="pre">bank</span></code>, <code class="docutils literal notranslate"><span class="pre">i2c-address</span></code>]</p>
 </dd>
 </dl>
 </dd>
 <dt><strong>reply</strong></dt><dd><dl class="field-list simple">
 <dt class="field-odd">attributes<span class="colon">:</span></dt>
-<dd class="field-odd"><p>[<code class="docutils literal notranslate"><span class="pre">header</span></code>, <code class="docutils literal notranslate"><span class="pre">offset</span></code>, <code class="docutils literal notranslate"><span class="pre">length</span></code>, <code class="docutils literal notranslate"><span class="pre">page</span></code>, <code class="docutils literal notranslate"><span class="pre">bank</span></code>, <code class="docutils literal notranslate"><span class="pre">i2c-address</span></code>, <code class="docutils literal notranslate"><span class="pre">data</span></code>]</p>
+<dd class="field-odd"><p>[<code class="docutils literal notranslate"><span class="pre">header</span></code>, <code class="docutils literal notranslate"><span class="pre">data</span></code>]</p>
 </dd>
 </dl>
 </dd>
@@ -1407,7 +1420,7 @@
 </dl>
 </section>
 <section id="stats-get">
-<span id="ethtool-operation-stats-get"></span><h3><a class="toc-backref" href="#id165" role="doc-backlink">stats-get</a><a class="headerlink" href="#stats-get" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-stats-get"></span><h3><a class="toc-backref" href="#id167" role="doc-backlink">stats-get</a><a class="headerlink" href="#stats-get" title="Link to this heading">¶</a></h3>
 <p>Get statistics.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -1448,7 +1461,7 @@
 </dl>
 </section>
 <section id="phc-vclocks-get">
-<span id="ethtool-operation-phc-vclocks-get"></span><h3><a class="toc-backref" href="#id166" role="doc-backlink">phc-vclocks-get</a><a class="headerlink" href="#phc-vclocks-get" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-phc-vclocks-get"></span><h3><a class="toc-backref" href="#id168" role="doc-backlink">phc-vclocks-get</a><a class="headerlink" href="#phc-vclocks-get" title="Link to this heading">¶</a></h3>
 <p>Get PHC VCLOCKs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -1489,7 +1502,7 @@
 </dl>
 </section>
 <section id="module-get">
-<span id="ethtool-operation-module-get"></span><h3><a class="toc-backref" href="#id167" role="doc-backlink">module-get</a><a class="headerlink" href="#module-get" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-module-get"></span><h3><a class="toc-backref" href="#id169" role="doc-backlink">module-get</a><a class="headerlink" href="#module-get" title="Link to this heading">¶</a></h3>
 <p>Get module params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -1530,7 +1543,7 @@
 </dl>
 </section>
 <section id="module-set">
-<span id="ethtool-operation-module-set"></span><h3><a class="toc-backref" href="#id168" role="doc-backlink">module-set</a><a class="headerlink" href="#module-set" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-module-set"></span><h3><a class="toc-backref" href="#id170" role="doc-backlink">module-set</a><a class="headerlink" href="#module-set" title="Link to this heading">¶</a></h3>
 <p>Set module params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -1549,7 +1562,7 @@
 </dl>
 </section>
 <section id="module-ntf">
-<span id="ethtool-operation-module-ntf"></span><h3><a class="toc-backref" href="#id169" role="doc-backlink">module-ntf</a><a class="headerlink" href="#module-ntf" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-module-ntf"></span><h3><a class="toc-backref" href="#id171" role="doc-backlink">module-ntf</a><a class="headerlink" href="#module-ntf" title="Link to this heading">¶</a></h3>
 <p>Notification for change in module params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">notify<span class="colon">:</span></dt>
@@ -1558,7 +1571,7 @@
 </dl>
 </section>
 <section id="pse-get">
-<span id="ethtool-operation-pse-get"></span><h3><a class="toc-backref" href="#id170" role="doc-backlink">pse-get</a><a class="headerlink" href="#pse-get" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-pse-get"></span><h3><a class="toc-backref" href="#id172" role="doc-backlink">pse-get</a><a class="headerlink" href="#pse-get" title="Link to this heading">¶</a></h3>
 <p>Get Power Sourcing Equipment params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -1574,7 +1587,7 @@
 </dd>
 <dt><strong>reply</strong></dt><dd><dl class="field-list simple">
 <dt class="field-odd">attributes<span class="colon">:</span></dt>
-<dd class="field-odd"><p>[<code class="docutils literal notranslate"><span class="pre">header</span></code>, <code class="docutils literal notranslate"><span class="pre">podl-pse-admin-state</span></code>, <code class="docutils literal notranslate"><span class="pre">podl-pse-admin-control</span></code>, <code class="docutils literal notranslate"><span class="pre">podl-pse-pw-d-status</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-admin-state</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-admin-control</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-pw-d-status</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-pw-class</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-actual-pw</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-ext-state</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-ext-substate</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-avail-pw-limit</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-pw-limit-ranges</span></code>]</p>
+<dd class="field-odd"><p>[<code class="docutils literal notranslate"><span class="pre">header</span></code>, <code class="docutils literal notranslate"><span class="pre">podl-pse-admin-state</span></code>, <code class="docutils literal notranslate"><span class="pre">podl-pse-admin-control</span></code>, <code class="docutils literal notranslate"><span class="pre">podl-pse-pw-d-status</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-admin-state</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-admin-control</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-pw-d-status</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-pw-class</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-actual-pw</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-ext-state</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-ext-substate</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-avail-pw-limit</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-pw-limit-ranges</span></code>, <code class="docutils literal notranslate"><span class="pre">pse-pw-d-id</span></code>, <code class="docutils literal notranslate"><span class="pre">pse-prio-max</span></code>, <code class="docutils literal notranslate"><span class="pre">pse-prio</span></code>]</p>
 </dd>
 </dl>
 </dd>
@@ -1590,7 +1603,7 @@
 </dd>
 <dt><strong>reply</strong></dt><dd><dl class="field-list simple">
 <dt class="field-odd">attributes<span class="colon">:</span></dt>
-<dd class="field-odd"><p>[<code class="docutils literal notranslate"><span class="pre">header</span></code>, <code class="docutils literal notranslate"><span class="pre">podl-pse-admin-state</span></code>, <code class="docutils literal notranslate"><span class="pre">podl-pse-admin-control</span></code>, <code class="docutils literal notranslate"><span class="pre">podl-pse-pw-d-status</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-admin-state</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-admin-control</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-pw-d-status</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-pw-class</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-actual-pw</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-ext-state</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-ext-substate</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-avail-pw-limit</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-pw-limit-ranges</span></code>]</p>
+<dd class="field-odd"><p>[<code class="docutils literal notranslate"><span class="pre">header</span></code>, <code class="docutils literal notranslate"><span class="pre">podl-pse-admin-state</span></code>, <code class="docutils literal notranslate"><span class="pre">podl-pse-admin-control</span></code>, <code class="docutils literal notranslate"><span class="pre">podl-pse-pw-d-status</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-admin-state</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-admin-control</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-pw-d-status</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-pw-class</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-actual-pw</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-ext-state</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-ext-substate</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-avail-pw-limit</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-pw-limit-ranges</span></code>, <code class="docutils literal notranslate"><span class="pre">pse-pw-d-id</span></code>, <code class="docutils literal notranslate"><span class="pre">pse-prio-max</span></code>, <code class="docutils literal notranslate"><span class="pre">pse-prio</span></code>]</p>
 </dd>
 </dl>
 </dd>
@@ -1599,7 +1612,7 @@
 </dl>
 </section>
 <section id="pse-set">
-<span id="ethtool-operation-pse-set"></span><h3><a class="toc-backref" href="#id171" role="doc-backlink">pse-set</a><a class="headerlink" href="#pse-set" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-pse-set"></span><h3><a class="toc-backref" href="#id173" role="doc-backlink">pse-set</a><a class="headerlink" href="#pse-set" title="Link to this heading">¶</a></h3>
 <p>Set Power Sourcing Equipment params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -1609,7 +1622,7 @@
 <dd class="field-even"><dl class="simple">
 <dt><strong>request</strong></dt><dd><dl class="field-list simple">
 <dt class="field-odd">attributes<span class="colon">:</span></dt>
-<dd class="field-odd"><p>[<code class="docutils literal notranslate"><span class="pre">header</span></code>, <code class="docutils literal notranslate"><span class="pre">podl-pse-admin-control</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-admin-control</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-avail-pw-limit</span></code>]</p>
+<dd class="field-odd"><p>[<code class="docutils literal notranslate"><span class="pre">header</span></code>, <code class="docutils literal notranslate"><span class="pre">podl-pse-admin-control</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-admin-control</span></code>, <code class="docutils literal notranslate"><span class="pre">c33-pse-avail-pw-limit</span></code>, <code class="docutils literal notranslate"><span class="pre">pse-prio</span></code>]</p>
 </dd>
 </dl>
 </dd>
@@ -1618,7 +1631,7 @@
 </dl>
 </section>
 <section id="rss-get">
-<span id="ethtool-operation-rss-get"></span><h3><a class="toc-backref" href="#id172" role="doc-backlink">rss-get</a><a class="headerlink" href="#rss-get" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-rss-get"></span><h3><a class="toc-backref" href="#id174" role="doc-backlink">rss-get</a><a class="headerlink" href="#rss-get" title="Link to this heading">¶</a></h3>
 <p>Get RSS params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -1634,7 +1647,7 @@
 </dd>
 <dt><strong>reply</strong></dt><dd><dl class="field-list simple">
 <dt class="field-odd">attributes<span class="colon">:</span></dt>
-<dd class="field-odd"><p>[<code class="docutils literal notranslate"><span class="pre">header</span></code>, <code class="docutils literal notranslate"><span class="pre">context</span></code>, <code class="docutils literal notranslate"><span class="pre">hfunc</span></code>, <code class="docutils literal notranslate"><span class="pre">indir</span></code>, <code class="docutils literal notranslate"><span class="pre">hkey</span></code>, <code class="docutils literal notranslate"><span class="pre">input-xfrm</span></code>]</p>
+<dd class="field-odd"><p>[<code class="docutils literal notranslate"><span class="pre">header</span></code>, <code class="docutils literal notranslate"><span class="pre">context</span></code>, <code class="docutils literal notranslate"><span class="pre">hfunc</span></code>, <code class="docutils literal notranslate"><span class="pre">indir</span></code>, <code class="docutils literal notranslate"><span class="pre">hkey</span></code>, <code class="docutils literal notranslate"><span class="pre">input-xfrm</span></code>, <code class="docutils literal notranslate"><span class="pre">flow-hash</span></code>]</p>
 </dd>
 </dl>
 </dd>
@@ -1650,7 +1663,7 @@
 </dd>
 <dt><strong>reply</strong></dt><dd><dl class="field-list simple">
 <dt class="field-odd">attributes<span class="colon">:</span></dt>
-<dd class="field-odd"><p>[<code class="docutils literal notranslate"><span class="pre">header</span></code>, <code class="docutils literal notranslate"><span class="pre">context</span></code>, <code class="docutils literal notranslate"><span class="pre">hfunc</span></code>, <code class="docutils literal notranslate"><span class="pre">indir</span></code>, <code class="docutils literal notranslate"><span class="pre">hkey</span></code>, <code class="docutils literal notranslate"><span class="pre">input-xfrm</span></code>]</p>
+<dd class="field-odd"><p>[<code class="docutils literal notranslate"><span class="pre">header</span></code>, <code class="docutils literal notranslate"><span class="pre">context</span></code>, <code class="docutils literal notranslate"><span class="pre">hfunc</span></code>, <code class="docutils literal notranslate"><span class="pre">indir</span></code>, <code class="docutils literal notranslate"><span class="pre">hkey</span></code>, <code class="docutils literal notranslate"><span class="pre">input-xfrm</span></code>, <code class="docutils literal notranslate"><span class="pre">flow-hash</span></code>]</p>
 </dd>
 </dl>
 </dd>
@@ -1659,7 +1672,7 @@
 </dl>
 </section>
 <section id="plca-get-cfg">
-<span id="ethtool-operation-plca-get-cfg"></span><h3><a class="toc-backref" href="#id173" role="doc-backlink">plca-get-cfg</a><a class="headerlink" href="#plca-get-cfg" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-plca-get-cfg"></span><h3><a class="toc-backref" href="#id175" role="doc-backlink">plca-get-cfg</a><a class="headerlink" href="#plca-get-cfg" title="Link to this heading">¶</a></h3>
 <p>Get PLCA params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -1700,7 +1713,7 @@
 </dl>
 </section>
 <section id="plca-set-cfg">
-<span id="ethtool-operation-plca-set-cfg"></span><h3><a class="toc-backref" href="#id174" role="doc-backlink">plca-set-cfg</a><a class="headerlink" href="#plca-set-cfg" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-plca-set-cfg"></span><h3><a class="toc-backref" href="#id176" role="doc-backlink">plca-set-cfg</a><a class="headerlink" href="#plca-set-cfg" title="Link to this heading">¶</a></h3>
 <p>Set PLCA params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -1719,7 +1732,7 @@
 </dl>
 </section>
 <section id="plca-get-status">
-<span id="ethtool-operation-plca-get-status"></span><h3><a class="toc-backref" href="#id175" role="doc-backlink">plca-get-status</a><a class="headerlink" href="#plca-get-status" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-plca-get-status"></span><h3><a class="toc-backref" href="#id177" role="doc-backlink">plca-get-status</a><a class="headerlink" href="#plca-get-status" title="Link to this heading">¶</a></h3>
 <p>Get PLCA status params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -1760,7 +1773,7 @@
 </dl>
 </section>
 <section id="plca-ntf">
-<span id="ethtool-operation-plca-ntf"></span><h3><a class="toc-backref" href="#id176" role="doc-backlink">plca-ntf</a><a class="headerlink" href="#plca-ntf" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-plca-ntf"></span><h3><a class="toc-backref" href="#id178" role="doc-backlink">plca-ntf</a><a class="headerlink" href="#plca-ntf" title="Link to this heading">¶</a></h3>
 <p>Notification for change in PLCA params.</p>
 <dl class="field-list simple">
 <dt class="field-odd">notify<span class="colon">:</span></dt>
@@ -1769,7 +1782,7 @@
 </dl>
 </section>
 <section id="mm-get">
-<span id="ethtool-operation-mm-get"></span><h3><a class="toc-backref" href="#id177" role="doc-backlink">mm-get</a><a class="headerlink" href="#mm-get" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-mm-get"></span><h3><a class="toc-backref" href="#id179" role="doc-backlink">mm-get</a><a class="headerlink" href="#mm-get" title="Link to this heading">¶</a></h3>
 <p>Get MAC Merge configuration and state</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -1810,7 +1823,7 @@
 </dl>
 </section>
 <section id="mm-set">
-<span id="ethtool-operation-mm-set"></span><h3><a class="toc-backref" href="#id178" role="doc-backlink">mm-set</a><a class="headerlink" href="#mm-set" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-mm-set"></span><h3><a class="toc-backref" href="#id180" role="doc-backlink">mm-set</a><a class="headerlink" href="#mm-set" title="Link to this heading">¶</a></h3>
 <p>Set MAC Merge configuration</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -1829,7 +1842,7 @@
 </dl>
 </section>
 <section id="mm-ntf">
-<span id="ethtool-operation-mm-ntf"></span><h3><a class="toc-backref" href="#id179" role="doc-backlink">mm-ntf</a><a class="headerlink" href="#mm-ntf" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-mm-ntf"></span><h3><a class="toc-backref" href="#id181" role="doc-backlink">mm-ntf</a><a class="headerlink" href="#mm-ntf" title="Link to this heading">¶</a></h3>
 <p>Notification for change in MAC Merge configuration.</p>
 <dl class="field-list simple">
 <dt class="field-odd">notify<span class="colon">:</span></dt>
@@ -1838,7 +1851,7 @@
 </dl>
 </section>
 <section id="module-fw-flash-act">
-<span id="ethtool-operation-module-fw-flash-act"></span><h3><a class="toc-backref" href="#id180" role="doc-backlink">module-fw-flash-act</a><a class="headerlink" href="#module-fw-flash-act" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-module-fw-flash-act"></span><h3><a class="toc-backref" href="#id182" role="doc-backlink">module-fw-flash-act</a><a class="headerlink" href="#module-fw-flash-act" title="Link to this heading">¶</a></h3>
 <p>Flash transceiver module firmware.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -1857,7 +1870,7 @@
 </dl>
 </section>
 <section id="module-fw-flash-ntf">
-<span id="ethtool-operation-module-fw-flash-ntf"></span><h3><a class="toc-backref" href="#id181" role="doc-backlink">module-fw-flash-ntf</a><a class="headerlink" href="#module-fw-flash-ntf" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-module-fw-flash-ntf"></span><h3><a class="toc-backref" href="#id183" role="doc-backlink">module-fw-flash-ntf</a><a class="headerlink" href="#module-fw-flash-ntf" title="Link to this heading">¶</a></h3>
 <p>Notification for firmware flashing progress and status.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -1869,7 +1882,7 @@
 </dl>
 </section>
 <section id="phy-get">
-<span id="ethtool-operation-phy-get"></span><h3><a class="toc-backref" href="#id182" role="doc-backlink">phy-get</a><a class="headerlink" href="#phy-get" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-phy-get"></span><h3><a class="toc-backref" href="#id184" role="doc-backlink">phy-get</a><a class="headerlink" href="#phy-get" title="Link to this heading">¶</a></h3>
 <p>Get PHY devices attached to an interface</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -1910,7 +1923,7 @@
 </dl>
 </section>
 <section id="phy-ntf">
-<span id="ethtool-operation-phy-ntf"></span><h3><a class="toc-backref" href="#id183" role="doc-backlink">phy-ntf</a><a class="headerlink" href="#phy-ntf" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-phy-ntf"></span><h3><a class="toc-backref" href="#id185" role="doc-backlink">phy-ntf</a><a class="headerlink" href="#phy-ntf" title="Link to this heading">¶</a></h3>
 <p>Notification for change in PHY devices.</p>
 <dl class="field-list simple">
 <dt class="field-odd">notify<span class="colon">:</span></dt>
@@ -1919,7 +1932,7 @@
 </dl>
 </section>
 <section id="tsconfig-get">
-<span id="ethtool-operation-tsconfig-get"></span><h3><a class="toc-backref" href="#id184" role="doc-backlink">tsconfig-get</a><a class="headerlink" href="#tsconfig-get" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-tsconfig-get"></span><h3><a class="toc-backref" href="#id186" role="doc-backlink">tsconfig-get</a><a class="headerlink" href="#tsconfig-get" title="Link to this heading">¶</a></h3>
 <p>Get hwtstamp config.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -1960,7 +1973,7 @@
 </dl>
 </section>
 <section id="tsconfig-set">
-<span id="ethtool-operation-tsconfig-set"></span><h3><a class="toc-backref" href="#id185" role="doc-backlink">tsconfig-set</a><a class="headerlink" href="#tsconfig-set" title="Link to this heading">¶</a></h3>
+<span id="ethtool-operation-tsconfig-set"></span><h3><a class="toc-backref" href="#id187" role="doc-backlink">tsconfig-set</a><a class="headerlink" href="#tsconfig-set" title="Link to this heading">¶</a></h3>
 <p>Set hwtstamp config.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -1984,11 +1997,124 @@
 </dd>
 </dl>
 </section>
+<section id="pse-ntf">
+<span id="ethtool-operation-pse-ntf"></span><h3><a class="toc-backref" href="#id188" role="doc-backlink">pse-ntf</a><a class="headerlink" href="#pse-ntf" title="Link to this heading">¶</a></h3>
+<p>Notification for PSE events.</p>
+<dl class="field-list simple">
+<dt class="field-odd">attribute-set<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-attribute-set-pse-ntf"><span class="std std-ref">pse-ntf</span></a></p>
+</dd>
+<dt class="field-even">event<span class="colon">:</span></dt>
+<dd class="field-even"><p>{‘attributes’: [‘header’, ‘events’]}</p>
+</dd>
+</dl>
+</section>
+<section id="rss-set">
+<span id="ethtool-operation-rss-set"></span><h3><a class="toc-backref" href="#id189" role="doc-backlink">rss-set</a><a class="headerlink" href="#rss-set" title="Link to this heading">¶</a></h3>
+<p>Set RSS params.</p>
+<dl class="field-list simple">
+<dt class="field-odd">attribute-set<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-attribute-set-rss"><span class="std std-ref">rss</span></a></p>
+</dd>
+<dt class="field-even">do<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>request</strong></dt><dd><dl class="field-list simple">
+<dt class="field-odd">attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><p>[<code class="docutils literal notranslate"><span class="pre">header</span></code>, <code class="docutils literal notranslate"><span class="pre">context</span></code>, <code class="docutils literal notranslate"><span class="pre">hfunc</span></code>, <code class="docutils literal notranslate"><span class="pre">indir</span></code>, <code class="docutils literal notranslate"><span class="pre">hkey</span></code>, <code class="docutils literal notranslate"><span class="pre">input-xfrm</span></code>, <code class="docutils literal notranslate"><span class="pre">flow-hash</span></code>]</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+<section id="rss-ntf">
+<span id="ethtool-operation-rss-ntf"></span><h3><a class="toc-backref" href="#id190" role="doc-backlink">rss-ntf</a><a class="headerlink" href="#rss-ntf" title="Link to this heading">¶</a></h3>
+<p>Notification for change in RSS configuration.
+For additional contexts only modifications use this notification,
+creation and deletion have dedicated messages.</p>
+<dl class="field-list simple">
+<dt class="field-odd">notify<span class="colon">:</span></dt>
+<dd class="field-odd"><p>rss-get</p>
+</dd>
+</dl>
+</section>
+<section id="rss-create-act">
+<span id="ethtool-operation-rss-create-act"></span><h3><a class="toc-backref" href="#id191" role="doc-backlink">rss-create-act</a><a class="headerlink" href="#rss-create-act" title="Link to this heading">¶</a></h3>
+<p>Create an RSS context.</p>
+<dl class="field-list simple">
+<dt class="field-odd">attribute-set<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-attribute-set-rss"><span class="std std-ref">rss</span></a></p>
+</dd>
+<dt class="field-even">do<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>request</strong></dt><dd><dl class="field-list simple">
+<dt class="field-odd">attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><p>[<code class="docutils literal notranslate"><span class="pre">header</span></code>, <code class="docutils literal notranslate"><span class="pre">context</span></code>, <code class="docutils literal notranslate"><span class="pre">hfunc</span></code>, <code class="docutils literal notranslate"><span class="pre">indir</span></code>, <code class="docutils literal notranslate"><span class="pre">hkey</span></code>, <code class="docutils literal notranslate"><span class="pre">input-xfrm</span></code>]</p>
+</dd>
+</dl>
+</dd>
+<dt><strong>reply</strong></dt><dd><dl class="field-list simple">
+<dt class="field-odd">attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><p>[<code class="docutils literal notranslate"><span class="pre">header</span></code>, <code class="docutils literal notranslate"><span class="pre">context</span></code>, <code class="docutils literal notranslate"><span class="pre">hfunc</span></code>, <code class="docutils literal notranslate"><span class="pre">indir</span></code>, <code class="docutils literal notranslate"><span class="pre">hkey</span></code>, <code class="docutils literal notranslate"><span class="pre">input-xfrm</span></code>]</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+<section id="rss-create-ntf">
+<span id="ethtool-operation-rss-create-ntf"></span><h3><a class="toc-backref" href="#id192" role="doc-backlink">rss-create-ntf</a><a class="headerlink" href="#rss-create-ntf" title="Link to this heading">¶</a></h3>
+<p>Notification for creation of an additional RSS context.</p>
+<dl class="field-list simple">
+<dt class="field-odd">notify<span class="colon">:</span></dt>
+<dd class="field-odd"><p>rss-create-act</p>
+</dd>
+</dl>
+</section>
+<section id="rss-delete-act">
+<span id="ethtool-operation-rss-delete-act"></span><h3><a class="toc-backref" href="#id193" role="doc-backlink">rss-delete-act</a><a class="headerlink" href="#rss-delete-act" title="Link to this heading">¶</a></h3>
+<p>Delete an RSS context.</p>
+<dl class="field-list simple">
+<dt class="field-odd">attribute-set<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-attribute-set-rss"><span class="std std-ref">rss</span></a></p>
+</dd>
+<dt class="field-even">do<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>request</strong></dt><dd><dl class="field-list simple">
+<dt class="field-odd">attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><p>[<code class="docutils literal notranslate"><span class="pre">header</span></code>, <code class="docutils literal notranslate"><span class="pre">context</span></code>]</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+<section id="rss-delete-ntf">
+<span id="ethtool-operation-rss-delete-ntf"></span><h3><a class="toc-backref" href="#id194" role="doc-backlink">rss-delete-ntf</a><a class="headerlink" href="#rss-delete-ntf" title="Link to this heading">¶</a></h3>
+<p>Notification for deletion of an additional RSS context.</p>
+<dl class="field-list simple">
+<dt class="field-odd">attribute-set<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-attribute-set-rss"><span class="std std-ref">rss</span></a></p>
+</dd>
+<dt class="field-even">event<span class="colon">:</span></dt>
+<dd class="field-even"><p>{‘attributes’: [‘header’, ‘context’]}</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="multicast-groups">
+<h2><a class="toc-backref" href="#id195" role="doc-backlink">Multicast groups</a><a class="headerlink" href="#multicast-groups" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>monitor</p></li>
+</ul>
 </section>
 <section id="definitions">
-<h2><a class="toc-backref" href="#id186" role="doc-backlink">Definitions</a><a class="headerlink" href="#definitions" title="Link to this heading">¶</a></h2>
+<h2><a class="toc-backref" href="#id196" role="doc-backlink">Definitions</a><a class="headerlink" href="#definitions" title="Link to this heading">¶</a></h2>
 <section id="udp-tunnel-type">
-<span id="ethtool-definition-udp-tunnel-type"></span><h3><a class="toc-backref" href="#id187" role="doc-backlink">udp-tunnel-type</a><a class="headerlink" href="#udp-tunnel-type" title="Link to this heading">¶</a></h3>
+<span id="ethtool-definition-udp-tunnel-type"></span><h3><a class="toc-backref" href="#id197" role="doc-backlink">udp-tunnel-type</a><a class="headerlink" href="#udp-tunnel-type" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">enum-name<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
@@ -2009,7 +2135,7 @@
 </dl>
 </section>
 <section id="stringset">
-<span id="ethtool-definition-stringset"></span><h3><a class="toc-backref" href="#id188" role="doc-backlink">stringset</a><a class="headerlink" href="#stringset" title="Link to this heading">¶</a></h3>
+<span id="ethtool-definition-stringset"></span><h3><a class="toc-backref" href="#id198" role="doc-backlink">stringset</a><a class="headerlink" href="#stringset" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>enum</p>
@@ -2022,7 +2148,7 @@
 </dl>
 </section>
 <section id="header-flags">
-<span id="ethtool-definition-header-flags"></span><h3><a class="toc-backref" href="#id189" role="doc-backlink">header-flags</a><a class="headerlink" href="#header-flags" title="Link to this heading">¶</a></h3>
+<span id="ethtool-definition-header-flags"></span><h3><a class="toc-backref" href="#id199" role="doc-backlink">header-flags</a><a class="headerlink" href="#header-flags" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>flags</p>
@@ -2049,7 +2175,7 @@
 </dl>
 </section>
 <section id="module-fw-flash-status">
-<span id="ethtool-definition-module-fw-flash-status"></span><h3><a class="toc-backref" href="#id190" role="doc-backlink">module-fw-flash-status</a><a class="headerlink" href="#module-fw-flash-status" title="Link to this heading">¶</a></h3>
+<span id="ethtool-definition-module-fw-flash-status"></span><h3><a class="toc-backref" href="#id200" role="doc-backlink">module-fw-flash-status</a><a class="headerlink" href="#module-fw-flash-status" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>enum</p>
@@ -2079,10 +2205,10 @@
 </dl>
 </section>
 <section id="c33-pse-ext-state">
-<span id="ethtool-definition-c33-pse-ext-state"></span><h3><a class="toc-backref" href="#id191" role="doc-backlink">c33-pse-ext-state</a><a class="headerlink" href="#c33-pse-ext-state" title="Link to this heading">¶</a></h3>
+<span id="ethtool-definition-c33-pse-ext-state"></span><h3><a class="toc-backref" href="#id201" role="doc-backlink">c33-pse-ext-state</a><a class="headerlink" href="#c33-pse-ext-state" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">doc<span class="colon">:</span></dt>
-<dd class="field-odd"><p>groups of PSE extended states functions. IEEE 802.3-2022 33.2.4.4 Variables</p>
+<dd class="field-odd"><p>“groups of PSE extended states functions. IEEE 802.3-2022 33.2.4.4 Variables”</p>
 </dd>
 <dt class="field-even">type<span class="colon">:</span></dt>
 <dd class="field-even"><p>enum</p>
@@ -2127,7 +2253,7 @@
 </dl>
 </section>
 <section id="phy-upstream-type">
-<span id="ethtool-definition-phy-upstream-type"></span><h3><a class="toc-backref" href="#id192" role="doc-backlink">phy-upstream-type</a><a class="headerlink" href="#phy-upstream-type" title="Link to this heading">¶</a></h3>
+<span id="ethtool-definition-phy-upstream-type"></span><h3><a class="toc-backref" href="#id202" role="doc-backlink">phy-upstream-type</a><a class="headerlink" href="#phy-upstream-type" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">enum-name<span class="colon">:</span></dt>
 <dd class="field-odd"><p>phy-upstream</p>
@@ -2150,7 +2276,7 @@
 </dl>
 </section>
 <section id="tcp-data-split">
-<span id="ethtool-definition-tcp-data-split"></span><h3><a class="toc-backref" href="#id193" role="doc-backlink">tcp-data-split</a><a class="headerlink" href="#tcp-data-split" title="Link to this heading">¶</a></h3>
+<span id="ethtool-definition-tcp-data-split"></span><h3><a class="toc-backref" href="#id203" role="doc-backlink">tcp-data-split</a><a class="headerlink" href="#tcp-data-split" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>enum</p>
@@ -2165,7 +2291,7 @@
 </dl>
 </section>
 <section id="hwtstamp-source">
-<span id="ethtool-definition-hwtstamp-source"></span><h3><a class="toc-backref" href="#id194" role="doc-backlink">hwtstamp-source</a><a class="headerlink" href="#hwtstamp-source" title="Link to this heading">¶</a></h3>
+<span id="ethtool-definition-hwtstamp-source"></span><h3><a class="toc-backref" href="#id204" role="doc-backlink">hwtstamp-source</a><a class="headerlink" href="#hwtstamp-source" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">doc<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Source of the hardware timestamp</p>
@@ -2191,11 +2317,121 @@
 </dd>
 </dl>
 </section>
+<section id="pse-event">
+<span id="ethtool-definition-pse-event"></span><h3><a class="toc-backref" href="#id205" role="doc-backlink">pse-event</a><a class="headerlink" href="#pse-event" title="Link to this heading">¶</a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">doc<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PSE event list for the PSE controller</p>
+</dd>
+<dt class="field-even">type<span class="colon">:</span></dt>
+<dd class="field-even"><p>flags</p>
+</dd>
+<dt class="field-odd">name-prefix<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ethtool-</p>
+</dd>
+<dt class="field-even">entries<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">pse-event-over-current<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PSE output current is too high</p>
+</dd>
+<dt class="field-even">pse-event-over-temp<span class="colon">:</span></dt>
+<dd class="field-even"><p>PSE in over temperature state</p>
+</dd>
+<dt class="field-odd">c33-pse-event-detection<span class="colon">:</span></dt>
+<dd class="field-odd"><p>detection process occur on the PSE. IEEE 802.3-2022 33.2.5 and 145.2.6 PSE detection of PDs. IEEE 802.3-202 30.9.1.1.5 aPSEPowerDetectionStatus</p>
+</dd>
+<dt class="field-even">c33-pse-event-classification<span class="colon">:</span></dt>
+<dd class="field-even"><p>classification process occur on the PSE. IEEE 802.3-2022 33.2.6 and 145.2.8 classification of PDs mutual identification. IEEE 802.3-2022 30.9.1.1.8 aPSEPowerClassification.</p>
+</dd>
+<dt class="field-odd">c33-pse-event-disconnection<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PD has been disconnected on the PSE. IEEE 802.3-2022 33.3.8 and 145.3.9 PD Maintain Power Signature. IEEE 802.3-2022 33.5.1.2.9 MPS Absent. IEEE 802.3-2022 30.9.1.1.20 aPSEMPSAbsentCounter.</p>
+</dd>
+<dt class="field-even">pse-event-over-budget<span class="colon">:</span></dt>
+<dd class="field-even"><p>PSE turned off due to over budget situation</p>
+</dd>
+<dt class="field-odd">pse-event-sw-pw-control-error<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PSE faced an error managing the power control from software</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+<section id="input-xfrm">
+<span id="ethtool-definition-input-xfrm"></span><h3><a class="toc-backref" href="#id206" role="doc-backlink">input-xfrm</a><a class="headerlink" href="#input-xfrm" title="Link to this heading">¶</a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">doc<span class="colon">:</span></dt>
+<dd class="field-odd"><p>RSS hash function transformations.</p>
+</dd>
+<dt class="field-even">type<span class="colon">:</span></dt>
+<dd class="field-even"><p>flags</p>
+</dd>
+<dt class="field-odd">enum-name<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">name-prefix<span class="colon">:</span></dt>
+<dd class="field-even"><p>rxh-xfrm-</p>
+</dd>
+<dt class="field-odd">header<span class="colon">:</span></dt>
+<dd class="field-odd"><p>linux/ethtool.h</p>
+</dd>
+<dt class="field-even">entries<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">sym-xor<span class="colon">:</span></dt>
+<dd class="field-odd"><p>XOR the corresponding source and destination fields of each specified protocol. Both copies of the XOR’ed fields are fed into the RSS and RXHASH calculation. Note that this XORing reduces the input set entropy and could be exploited to reduce the RSS queue spread.</p>
+</dd>
+<dt class="field-even">sym-or-xor<span class="colon">:</span></dt>
+<dd class="field-even"><p>Similar to SYM_XOR, except that one copy of the XOR’ed fields is replaced by an OR of the same fields.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+<section id="rxfh-fields">
+<span id="ethtool-definition-rxfh-fields"></span><h3><a class="toc-backref" href="#id207" role="doc-backlink">rxfh-fields</a><a class="headerlink" href="#rxfh-fields" title="Link to this heading">¶</a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">name-prefix<span class="colon">:</span></dt>
+<dd class="field-odd"><p>rxh-</p>
+</dd>
+<dt class="field-even">enum-name<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">header<span class="colon">:</span></dt>
+<dd class="field-odd"><p>linux/ethtool.h</p>
+</dd>
+<dt class="field-even">type<span class="colon">:</span></dt>
+<dd class="field-even"><p>flags</p>
+</dd>
+<dt class="field-odd">entries<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="field-list simple">
+<dt class="field-odd">l2da<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">vlan<span class="colon">:</span></dt>
+<dd class="field-even"><p></p></dd>
+<dt class="field-odd">l3-proto<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">ip-src<span class="colon">:</span></dt>
+<dd class="field-even"><p></p></dd>
+<dt class="field-odd">ip-dst<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">l4-b-0-1<span class="colon">:</span></dt>
+<dd class="field-even"><p>src port in case of TCP/UDP/SCTP</p>
+</dd>
+<dt class="field-odd">l4-b-2-3<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dst port in case of TCP/UDP/SCTP</p>
+</dd>
+<dt class="field-even">gtp-teid<span class="colon">:</span></dt>
+<dd class="field-even"><p></p></dd>
+<dt class="field-odd">discard<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</dd>
+</dl>
+</section>
 </section>
 <section id="attribute-sets">
-<h2><a class="toc-backref" href="#id195" role="doc-backlink">Attribute sets</a><a class="headerlink" href="#attribute-sets" title="Link to this heading">¶</a></h2>
+<h2><a class="toc-backref" href="#id208" role="doc-backlink">Attribute sets</a><a class="headerlink" href="#attribute-sets" title="Link to this heading">¶</a></h2>
 <section id="header">
-<span id="ethtool-attribute-set-header"></span><h3><a class="toc-backref" href="#id196" role="doc-backlink">header</a><a class="headerlink" href="#header" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-header"></span><h3><a class="toc-backref" href="#id209" role="doc-backlink">header</a><a class="headerlink" href="#header" title="Link to this heading">¶</a></h3>
 <section id="unspec-unused">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#unspec-unused" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -2223,7 +2459,7 @@
 </section>
 </section>
 <section id="bitset-bit">
-<span id="ethtool-attribute-set-bitset-bit"></span><h3><a class="toc-backref" href="#id197" role="doc-backlink">bitset-bit</a><a class="headerlink" href="#bitset-bit" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-bitset-bit"></span><h3><a class="toc-backref" href="#id210" role="doc-backlink">bitset-bit</a><a class="headerlink" href="#bitset-bit" title="Link to this heading">¶</a></h3>
 <section id="id1">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -2243,7 +2479,7 @@
 </section>
 </section>
 <section id="bitset-bits">
-<span id="ethtool-attribute-set-bitset-bits"></span><h3><a class="toc-backref" href="#id198" role="doc-backlink">bitset-bits</a><a class="headerlink" href="#bitset-bits" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-bitset-bits"></span><h3><a class="toc-backref" href="#id211" role="doc-backlink">bitset-bits</a><a class="headerlink" href="#bitset-bits" title="Link to this heading">¶</a></h3>
 <section id="id2">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -2265,7 +2501,7 @@
 </section>
 </section>
 <section id="bitset">
-<span id="ethtool-attribute-set-bitset"></span><h3><a class="toc-backref" href="#id199" role="doc-backlink">bitset</a><a class="headerlink" href="#bitset" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-bitset"></span><h3><a class="toc-backref" href="#id212" role="doc-backlink">bitset</a><a class="headerlink" href="#bitset" title="Link to this heading">¶</a></h3>
 <section id="id3">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -2296,7 +2532,7 @@
 </section>
 </section>
 <section id="string">
-<span id="ethtool-attribute-set-string"></span><h3><a class="toc-backref" href="#id200" role="doc-backlink">string</a><a class="headerlink" href="#string" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-string"></span><h3><a class="toc-backref" href="#id213" role="doc-backlink">string</a><a class="headerlink" href="#string" title="Link to this heading">¶</a></h3>
 <section id="id4">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -2313,7 +2549,7 @@
 </section>
 </section>
 <section id="strings">
-<span id="ethtool-attribute-set-strings"></span><h3><a class="toc-backref" href="#id201" role="doc-backlink">strings</a><a class="headerlink" href="#strings" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-strings"></span><h3><a class="toc-backref" href="#id214" role="doc-backlink">strings</a><a class="headerlink" href="#strings" title="Link to this heading">¶</a></h3>
 <section id="id6">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -2343,7 +2579,7 @@
 </section>
 </section>
 <section id="ethtool-attribute-set-stringset">
-<span id="id8"></span><h3><a class="toc-backref" href="#id202" role="doc-backlink">stringset</a><a class="headerlink" href="#ethtool-attribute-set-stringset" title="Link to this heading">¶</a></h3>
+<span id="id8"></span><h3><a class="toc-backref" href="#id215" role="doc-backlink">stringset</a><a class="headerlink" href="#ethtool-attribute-set-stringset" title="Link to this heading">¶</a></h3>
 <section id="id9">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -2371,7 +2607,7 @@
 </section>
 </section>
 <section id="stringsets">
-<span id="ethtool-attribute-set-stringsets"></span><h3><a class="toc-backref" href="#id203" role="doc-backlink">stringsets</a><a class="headerlink" href="#stringsets" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-stringsets"></span><h3><a class="toc-backref" href="#id216" role="doc-backlink">stringsets</a><a class="headerlink" href="#stringsets" title="Link to this heading">¶</a></h3>
 <section id="id10">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -2393,7 +2629,7 @@
 </section>
 </section>
 <section id="strset">
-<span id="ethtool-attribute-set-strset"></span><h3><a class="toc-backref" href="#id204" role="doc-backlink">strset</a><a class="headerlink" href="#strset" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-strset"></span><h3><a class="toc-backref" href="#id217" role="doc-backlink">strset</a><a class="headerlink" href="#strset" title="Link to this heading">¶</a></h3>
 <section id="id11">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -2423,7 +2659,7 @@
 </section>
 </section>
 <section id="privflags">
-<span id="ethtool-attribute-set-privflags"></span><h3><a class="toc-backref" href="#id205" role="doc-backlink">privflags</a><a class="headerlink" href="#privflags" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-privflags"></span><h3><a class="toc-backref" href="#id218" role="doc-backlink">privflags</a><a class="headerlink" href="#privflags" title="Link to this heading">¶</a></h3>
 <section id="id12">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -2450,7 +2686,7 @@
 </section>
 </section>
 <section id="rings">
-<span id="ethtool-attribute-set-rings"></span><h3><a class="toc-backref" href="#id206" role="doc-backlink">rings</a><a class="headerlink" href="#rings" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-rings"></span><h3><a class="toc-backref" href="#id219" role="doc-backlink">rings</a><a class="headerlink" href="#rings" title="Link to this heading">¶</a></h3>
 <section id="id14">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -2525,7 +2761,7 @@
 </section>
 </section>
 <section id="mm-stat">
-<span id="ethtool-attribute-set-mm-stat"></span><h3><a class="toc-backref" href="#id207" role="doc-backlink">mm-stat</a><a class="headerlink" href="#mm-stat" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-mm-stat"></span><h3><a class="toc-backref" href="#id220" role="doc-backlink">mm-stat</a><a class="headerlink" href="#mm-stat" title="Link to this heading">¶</a></h3>
 <section id="id16">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -2587,7 +2823,7 @@
 </section>
 </section>
 <section id="mm">
-<span id="ethtool-attribute-set-mm"></span><h3><a class="toc-backref" href="#id208" role="doc-backlink">mm</a><a class="headerlink" href="#mm" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-mm"></span><h3><a class="toc-backref" href="#id221" role="doc-backlink">mm</a><a class="headerlink" href="#mm" title="Link to this heading">¶</a></h3>
 <section id="id17">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -2641,7 +2877,7 @@
 </section>
 </section>
 <section id="linkinfo">
-<span id="ethtool-attribute-set-linkinfo"></span><h3><a class="toc-backref" href="#id209" role="doc-backlink">linkinfo</a><a class="headerlink" href="#linkinfo" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-linkinfo"></span><h3><a class="toc-backref" href="#id222" role="doc-backlink">linkinfo</a><a class="headerlink" href="#linkinfo" title="Link to this heading">¶</a></h3>
 <section id="id19">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -2675,7 +2911,7 @@
 </section>
 </section>
 <section id="linkmodes">
-<span id="ethtool-attribute-set-linkmodes"></span><h3><a class="toc-backref" href="#id210" role="doc-backlink">linkmodes</a><a class="headerlink" href="#linkmodes" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-linkmodes"></span><h3><a class="toc-backref" href="#id223" role="doc-backlink">linkmodes</a><a class="headerlink" href="#linkmodes" title="Link to this heading">¶</a></h3>
 <section id="id21">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id21" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -2731,7 +2967,7 @@
 </section>
 </section>
 <section id="linkstate">
-<span id="ethtool-attribute-set-linkstate"></span><h3><a class="toc-backref" href="#id211" role="doc-backlink">linkstate</a><a class="headerlink" href="#linkstate" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-linkstate"></span><h3><a class="toc-backref" href="#id224" role="doc-backlink">linkstate</a><a class="headerlink" href="#linkstate" title="Link to this heading">¶</a></h3>
 <section id="id23">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id23" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -2768,7 +3004,7 @@
 </section>
 </section>
 <section id="debug">
-<span id="ethtool-attribute-set-debug"></span><h3><a class="toc-backref" href="#id212" role="doc-backlink">debug</a><a class="headerlink" href="#debug" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-debug"></span><h3><a class="toc-backref" href="#id225" role="doc-backlink">debug</a><a class="headerlink" href="#debug" title="Link to this heading">¶</a></h3>
 <section id="id25">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id25" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -2795,7 +3031,7 @@
 </section>
 </section>
 <section id="wol">
-<span id="ethtool-attribute-set-wol"></span><h3><a class="toc-backref" href="#id213" role="doc-backlink">wol</a><a class="headerlink" href="#wol" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-wol"></span><h3><a class="toc-backref" href="#id226" role="doc-backlink">wol</a><a class="headerlink" href="#wol" title="Link to this heading">¶</a></h3>
 <section id="id27">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id27" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -2825,7 +3061,7 @@
 </section>
 </section>
 <section id="features">
-<span id="ethtool-attribute-set-features"></span><h3><a class="toc-backref" href="#id214" role="doc-backlink">features</a><a class="headerlink" href="#features" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-features"></span><h3><a class="toc-backref" href="#id227" role="doc-backlink">features</a><a class="headerlink" href="#features" title="Link to this heading">¶</a></h3>
 <section id="id29">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id29" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -2876,7 +3112,7 @@
 </section>
 </section>
 <section id="channels">
-<span id="ethtool-attribute-set-channels"></span><h3><a class="toc-backref" href="#id215" role="doc-backlink">channels</a><a class="headerlink" href="#channels" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-channels"></span><h3><a class="toc-backref" href="#id228" role="doc-backlink">channels</a><a class="headerlink" href="#channels" title="Link to this heading">¶</a></h3>
 <section id="id31">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id31" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -2919,7 +3155,7 @@
 </section>
 </section>
 <section id="irq-moderation">
-<span id="ethtool-attribute-set-irq-moderation"></span><h3><a class="toc-backref" href="#id216" role="doc-backlink">irq-moderation</a><a class="headerlink" href="#irq-moderation" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-irq-moderation"></span><h3><a class="toc-backref" href="#id229" role="doc-backlink">irq-moderation</a><a class="headerlink" href="#irq-moderation" title="Link to this heading">¶</a></h3>
 <section id="id35">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id35" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -2939,7 +3175,7 @@
 </section>
 </section>
 <section id="profile">
-<span id="ethtool-attribute-set-profile"></span><h3><a class="toc-backref" href="#id217" role="doc-backlink">profile</a><a class="headerlink" href="#profile" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-profile"></span><h3><a class="toc-backref" href="#id230" role="doc-backlink">profile</a><a class="headerlink" href="#profile" title="Link to this heading">¶</a></h3>
 <section id="id36">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id36" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -2961,7 +3197,7 @@
 </section>
 </section>
 <section id="coalesce">
-<span id="ethtool-attribute-set-coalesce"></span><h3><a class="toc-backref" href="#id218" role="doc-backlink">coalesce</a><a class="headerlink" href="#coalesce" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-coalesce"></span><h3><a class="toc-backref" href="#id231" role="doc-backlink">coalesce</a><a class="headerlink" href="#coalesce" title="Link to this heading">¶</a></h3>
 <section id="id37">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id37" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -3077,7 +3313,7 @@
 </section>
 </section>
 <section id="pause-stat">
-<span id="ethtool-attribute-set-pause-stat"></span><h3><a class="toc-backref" href="#id219" role="doc-backlink">pause-stat</a><a class="headerlink" href="#pause-stat" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-pause-stat"></span><h3><a class="toc-backref" href="#id232" role="doc-backlink">pause-stat</a><a class="headerlink" href="#pause-stat" title="Link to this heading">¶</a></h3>
 <section id="id39">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id39" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -3097,7 +3333,7 @@
 </section>
 </section>
 <section id="pause">
-<span id="ethtool-attribute-set-pause"></span><h3><a class="toc-backref" href="#id220" role="doc-backlink">pause</a><a class="headerlink" href="#pause" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-pause"></span><h3><a class="toc-backref" href="#id233" role="doc-backlink">pause</a><a class="headerlink" href="#pause" title="Link to this heading">¶</a></h3>
 <section id="id41">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id41" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -3136,7 +3372,7 @@
 </section>
 </section>
 <section id="eee">
-<span id="ethtool-attribute-set-eee"></span><h3><a class="toc-backref" href="#id221" role="doc-backlink">eee</a><a class="headerlink" href="#eee" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-eee"></span><h3><a class="toc-backref" href="#id234" role="doc-backlink">eee</a><a class="headerlink" href="#eee" title="Link to this heading">¶</a></h3>
 <section id="id45">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id45" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -3183,7 +3419,7 @@
 </section>
 </section>
 <section id="ts-stat">
-<span id="ethtool-attribute-set-ts-stat"></span><h3><a class="toc-backref" href="#id222" role="doc-backlink">ts-stat</a><a class="headerlink" href="#ts-stat" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-ts-stat"></span><h3><a class="toc-backref" href="#id235" role="doc-backlink">ts-stat</a><a class="headerlink" href="#ts-stat" title="Link to this heading">¶</a></h3>
 <section id="id47">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id47" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -3206,7 +3442,7 @@
 </section>
 </section>
 <section id="ts-hwtstamp-provider">
-<span id="ethtool-attribute-set-ts-hwtstamp-provider"></span><h3><a class="toc-backref" href="#id223" role="doc-backlink">ts-hwtstamp-provider</a><a class="headerlink" href="#ts-hwtstamp-provider" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-ts-hwtstamp-provider"></span><h3><a class="toc-backref" href="#id236" role="doc-backlink">ts-hwtstamp-provider</a><a class="headerlink" href="#ts-hwtstamp-provider" title="Link to this heading">¶</a></h3>
 <section id="id48">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id48" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -3223,7 +3459,7 @@
 </section>
 </section>
 <section id="tsinfo">
-<span id="ethtool-attribute-set-tsinfo"></span><h3><a class="toc-backref" href="#id224" role="doc-backlink">tsinfo</a><a class="headerlink" href="#tsinfo" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-tsinfo"></span><h3><a class="toc-backref" href="#id237" role="doc-backlink">tsinfo</a><a class="headerlink" href="#tsinfo" title="Link to this heading">¶</a></h3>
 <section id="id50">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id50" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -3296,7 +3532,7 @@
 </section>
 </section>
 <section id="cable-result">
-<span id="ethtool-attribute-set-cable-result"></span><h3><a class="toc-backref" href="#id225" role="doc-backlink">cable-result</a><a class="headerlink" href="#cable-result" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-cable-result"></span><h3><a class="toc-backref" href="#id238" role="doc-backlink">cable-result</a><a class="headerlink" href="#cable-result" title="Link to this heading">¶</a></h3>
 <section id="id53">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id53" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -3331,7 +3567,7 @@
 </section>
 </section>
 <section id="cable-fault-length">
-<span id="ethtool-attribute-set-cable-fault-length"></span><h3><a class="toc-backref" href="#id226" role="doc-backlink">cable-fault-length</a><a class="headerlink" href="#cable-fault-length" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-cable-fault-length"></span><h3><a class="toc-backref" href="#id239" role="doc-backlink">cable-fault-length</a><a class="headerlink" href="#cable-fault-length" title="Link to this heading">¶</a></h3>
 <section id="id54">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id54" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -3351,7 +3587,7 @@
 </section>
 </section>
 <section id="cable-nest">
-<span id="ethtool-attribute-set-cable-nest"></span><h3><a class="toc-backref" href="#id227" role="doc-backlink">cable-nest</a><a class="headerlink" href="#cable-nest" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-cable-nest"></span><h3><a class="toc-backref" href="#id240" role="doc-backlink">cable-nest</a><a class="headerlink" href="#cable-nest" title="Link to this heading">¶</a></h3>
 <section id="id57">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id57" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -3378,7 +3614,7 @@
 </section>
 </section>
 <section id="cable-test">
-<span id="ethtool-attribute-set-cable-test"></span><h3><a class="toc-backref" href="#id228" role="doc-backlink">cable-test</a><a class="headerlink" href="#cable-test" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-cable-test"></span><h3><a class="toc-backref" href="#id241" role="doc-backlink">cable-test</a><a class="headerlink" href="#cable-test" title="Link to this heading">¶</a></h3>
 <section id="id58">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id58" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -3397,7 +3633,7 @@
 </section>
 </section>
 <section id="ethtool-attribute-set-cable-test-ntf">
-<span id="id60"></span><h3><a class="toc-backref" href="#id229" role="doc-backlink">cable-test-ntf</a><a class="headerlink" href="#ethtool-attribute-set-cable-test-ntf" title="Link to this heading">¶</a></h3>
+<span id="id60"></span><h3><a class="toc-backref" href="#id242" role="doc-backlink">cable-test-ntf</a><a class="headerlink" href="#ethtool-attribute-set-cable-test-ntf" title="Link to this heading">¶</a></h3>
 <section id="id61">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id61" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -3432,7 +3668,7 @@
 </section>
 </section>
 <section id="cable-test-tdr-cfg">
-<span id="ethtool-attribute-set-cable-test-tdr-cfg"></span><h3><a class="toc-backref" href="#id230" role="doc-backlink">cable-test-tdr-cfg</a><a class="headerlink" href="#cable-test-tdr-cfg" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-cable-test-tdr-cfg"></span><h3><a class="toc-backref" href="#id243" role="doc-backlink">cable-test-tdr-cfg</a><a class="headerlink" href="#cable-test-tdr-cfg" title="Link to this heading">¶</a></h3>
 <section id="id63">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id63" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -3455,7 +3691,7 @@
 </section>
 </section>
 <section id="ethtool-attribute-set-cable-test-tdr-ntf">
-<span id="id65"></span><h3><a class="toc-backref" href="#id231" role="doc-backlink">cable-test-tdr-ntf</a><a class="headerlink" href="#ethtool-attribute-set-cable-test-tdr-ntf" title="Link to this heading">¶</a></h3>
+<span id="id65"></span><h3><a class="toc-backref" href="#id244" role="doc-backlink">cable-test-tdr-ntf</a><a class="headerlink" href="#ethtool-attribute-set-cable-test-tdr-ntf" title="Link to this heading">¶</a></h3>
 <section id="id66">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id66" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -3485,7 +3721,7 @@
 </section>
 </section>
 <section id="cable-test-tdr">
-<span id="ethtool-attribute-set-cable-test-tdr"></span><h3><a class="toc-backref" href="#id232" role="doc-backlink">cable-test-tdr</a><a class="headerlink" href="#cable-test-tdr" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-cable-test-tdr"></span><h3><a class="toc-backref" href="#id245" role="doc-backlink">cable-test-tdr</a><a class="headerlink" href="#cable-test-tdr" title="Link to this heading">¶</a></h3>
 <section id="id70">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id70" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -3512,7 +3748,7 @@
 </section>
 </section>
 <section id="tunnel-udp-entry">
-<span id="ethtool-attribute-set-tunnel-udp-entry"></span><h3><a class="toc-backref" href="#id233" role="doc-backlink">tunnel-udp-entry</a><a class="headerlink" href="#tunnel-udp-entry" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-tunnel-udp-entry"></span><h3><a class="toc-backref" href="#id246" role="doc-backlink">tunnel-udp-entry</a><a class="headerlink" href="#tunnel-udp-entry" title="Link to this heading">¶</a></h3>
 <section id="id72">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id72" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -3539,7 +3775,7 @@
 </section>
 </section>
 <section id="tunnel-udp-table">
-<span id="ethtool-attribute-set-tunnel-udp-table"></span><h3><a class="toc-backref" href="#id234" role="doc-backlink">tunnel-udp-table</a><a class="headerlink" href="#tunnel-udp-table" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-tunnel-udp-table"></span><h3><a class="toc-backref" href="#id247" role="doc-backlink">tunnel-udp-table</a><a class="headerlink" href="#tunnel-udp-table" title="Link to this heading">¶</a></h3>
 <section id="id73">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id73" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -3572,7 +3808,7 @@
 </section>
 </section>
 <section id="tunnel-udp">
-<span id="ethtool-attribute-set-tunnel-udp"></span><h3><a class="toc-backref" href="#id235" role="doc-backlink">tunnel-udp</a><a class="headerlink" href="#tunnel-udp" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-tunnel-udp"></span><h3><a class="toc-backref" href="#id248" role="doc-backlink">tunnel-udp</a><a class="headerlink" href="#tunnel-udp" title="Link to this heading">¶</a></h3>
 <section id="id75">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id75" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -3591,7 +3827,7 @@
 </section>
 </section>
 <section id="tunnel-info">
-<span id="ethtool-attribute-set-tunnel-info"></span><h3><a class="toc-backref" href="#id236" role="doc-backlink">tunnel-info</a><a class="headerlink" href="#tunnel-info" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-tunnel-info"></span><h3><a class="toc-backref" href="#id249" role="doc-backlink">tunnel-info</a><a class="headerlink" href="#tunnel-info" title="Link to this heading">¶</a></h3>
 <section id="id76">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id76" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -3618,7 +3854,7 @@
 </section>
 </section>
 <section id="fec-stat">
-<span id="ethtool-attribute-set-fec-stat"></span><h3><a class="toc-backref" href="#id237" role="doc-backlink">fec-stat</a><a class="headerlink" href="#fec-stat" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-fec-stat"></span><h3><a class="toc-backref" href="#id250" role="doc-backlink">fec-stat</a><a class="headerlink" href="#fec-stat" title="Link to this heading">¶</a></h3>
 <section id="id78">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id78" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -3656,7 +3892,7 @@
 </section>
 </section>
 <section id="fec">
-<span id="ethtool-attribute-set-fec"></span><h3><a class="toc-backref" href="#id238" role="doc-backlink">fec</a><a class="headerlink" href="#fec" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-fec"></span><h3><a class="toc-backref" href="#id251" role="doc-backlink">fec</a><a class="headerlink" href="#fec" title="Link to this heading">¶</a></h3>
 <section id="id80">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id80" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -3697,7 +3933,7 @@
 </section>
 </section>
 <section id="module-eeprom">
-<span id="ethtool-attribute-set-module-eeprom"></span><h3><a class="toc-backref" href="#id239" role="doc-backlink">module-eeprom</a><a class="headerlink" href="#module-eeprom" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-module-eeprom"></span><h3><a class="toc-backref" href="#id252" role="doc-backlink">module-eeprom</a><a class="headerlink" href="#module-eeprom" title="Link to this heading">¶</a></h3>
 <section id="id84">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id84" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -3734,7 +3970,7 @@
 </section>
 </section>
 <section id="stats-grp">
-<span id="ethtool-attribute-set-stats-grp"></span><h3><a class="toc-backref" href="#id240" role="doc-backlink">stats-grp</a><a class="headerlink" href="#stats-grp" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-stats-grp"></span><h3><a class="toc-backref" href="#id253" role="doc-backlink">stats-grp</a><a class="headerlink" href="#stats-grp" title="Link to this heading">¶</a></h3>
 <section id="id86">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id86" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -3787,7 +4023,7 @@
 </section>
 </section>
 <section id="stats-grp-hist">
-<span id="ethtool-attribute-set-stats-grp-hist"></span><h3><a class="toc-backref" href="#id241" role="doc-backlink">stats-grp-hist</a><a class="headerlink" href="#stats-grp-hist" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-stats-grp-hist"></span><h3><a class="toc-backref" href="#id254" role="doc-backlink">stats-grp-hist</a><a class="headerlink" href="#stats-grp-hist" title="Link to this heading">¶</a></h3>
 <section id="hist-bkt-low">
 <h4>hist-bkt-low<a class="headerlink" href="#hist-bkt-low" title="Link to this heading">¶</a></h4>
 </section>
@@ -3799,7 +4035,7 @@
 </section>
 </section>
 <section id="stats">
-<span id="ethtool-attribute-set-stats"></span><h3><a class="toc-backref" href="#id242" role="doc-backlink">stats</a><a class="headerlink" href="#stats" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-stats"></span><h3><a class="toc-backref" href="#id255" role="doc-backlink">stats</a><a class="headerlink" href="#stats" title="Link to this heading">¶</a></h3>
 <section id="id89">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id89" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -3840,7 +4076,7 @@
 </section>
 </section>
 <section id="phc-vclocks">
-<span id="ethtool-attribute-set-phc-vclocks"></span><h3><a class="toc-backref" href="#id243" role="doc-backlink">phc-vclocks</a><a class="headerlink" href="#phc-vclocks" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-phc-vclocks"></span><h3><a class="toc-backref" href="#id256" role="doc-backlink">phc-vclocks</a><a class="headerlink" href="#phc-vclocks" title="Link to this heading">¶</a></h3>
 <section id="id93">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id93" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -3870,7 +4106,7 @@
 </section>
 </section>
 <section id="module">
-<span id="ethtool-attribute-set-module"></span><h3><a class="toc-backref" href="#id244" role="doc-backlink">module</a><a class="headerlink" href="#module" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-module"></span><h3><a class="toc-backref" href="#id257" role="doc-backlink">module</a><a class="headerlink" href="#module" title="Link to this heading">¶</a></h3>
 <section id="id95">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id95" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -3895,7 +4131,7 @@
 </section>
 </section>
 <section id="c33-pse-pw-limit">
-<span id="ethtool-attribute-set-c33-pse-pw-limit"></span><h3><a class="toc-backref" href="#id245" role="doc-backlink">c33-pse-pw-limit</a><a class="headerlink" href="#c33-pse-pw-limit" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-c33-pse-pw-limit"></span><h3><a class="toc-backref" href="#id258" role="doc-backlink">c33-pse-pw-limit</a><a class="headerlink" href="#c33-pse-pw-limit" title="Link to this heading">¶</a></h3>
 <section id="id97">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id97" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -3912,7 +4148,7 @@
 </section>
 </section>
 <section id="pse">
-<span id="ethtool-attribute-set-pse"></span><h3><a class="toc-backref" href="#id246" role="doc-backlink">pse</a><a class="headerlink" href="#pse" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-pse"></span><h3><a class="toc-backref" href="#id259" role="doc-backlink">pse</a><a class="headerlink" href="#pse" title="Link to this heading">¶</a></h3>
 <section id="id98">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id98" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -4034,9 +4270,252 @@
 </dd>
 </dl>
 </section>
+<section id="pse-pw-d-id-u32">
+<h4>pse-pw-d-id (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#pse-pw-d-id-u32" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">name-prefix<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ethtool-a-</p>
+</dd>
+</dl>
+</section>
+<section id="pse-prio-max-u32">
+<h4>pse-prio-max (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#pse-prio-max-u32" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">name-prefix<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ethtool-a-</p>
+</dd>
+</dl>
+</section>
+<section id="pse-prio-u32">
+<h4>pse-prio (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#pse-prio-u32" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">name-prefix<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ethtool-a-</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="flow">
+<span id="ethtool-attribute-set-flow"></span><h3><a class="toc-backref" href="#id260" role="doc-backlink">flow</a><a class="headerlink" href="#flow" title="Link to this heading">¶</a></h3>
+<section id="ether-uint">
+<h4>ether (<code class="docutils literal notranslate"><span class="pre">uint</span></code>)<a class="headerlink" href="#ether-uint" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">enum<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-definition-rxfh-fields"><span class="std std-ref">rxfh-fields</span></a></p>
+</dd>
+</dl>
+</section>
+<section id="ip4-uint">
+<h4>ip4 (<code class="docutils literal notranslate"><span class="pre">uint</span></code>)<a class="headerlink" href="#ip4-uint" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">enum<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-definition-rxfh-fields"><span class="std std-ref">rxfh-fields</span></a></p>
+</dd>
+</dl>
+</section>
+<section id="ip6-uint">
+<h4>ip6 (<code class="docutils literal notranslate"><span class="pre">uint</span></code>)<a class="headerlink" href="#ip6-uint" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">enum<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-definition-rxfh-fields"><span class="std std-ref">rxfh-fields</span></a></p>
+</dd>
+</dl>
+</section>
+<section id="tcp4-uint">
+<h4>tcp4 (<code class="docutils literal notranslate"><span class="pre">uint</span></code>)<a class="headerlink" href="#tcp4-uint" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">enum<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-definition-rxfh-fields"><span class="std std-ref">rxfh-fields</span></a></p>
+</dd>
+</dl>
+</section>
+<section id="tcp6-uint">
+<h4>tcp6 (<code class="docutils literal notranslate"><span class="pre">uint</span></code>)<a class="headerlink" href="#tcp6-uint" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">enum<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-definition-rxfh-fields"><span class="std std-ref">rxfh-fields</span></a></p>
+</dd>
+</dl>
+</section>
+<section id="udp4-uint">
+<h4>udp4 (<code class="docutils literal notranslate"><span class="pre">uint</span></code>)<a class="headerlink" href="#udp4-uint" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">enum<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-definition-rxfh-fields"><span class="std std-ref">rxfh-fields</span></a></p>
+</dd>
+</dl>
+</section>
+<section id="udp6-uint">
+<h4>udp6 (<code class="docutils literal notranslate"><span class="pre">uint</span></code>)<a class="headerlink" href="#udp6-uint" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">enum<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-definition-rxfh-fields"><span class="std std-ref">rxfh-fields</span></a></p>
+</dd>
+</dl>
+</section>
+<section id="sctp4-uint">
+<h4>sctp4 (<code class="docutils literal notranslate"><span class="pre">uint</span></code>)<a class="headerlink" href="#sctp4-uint" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">enum<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-definition-rxfh-fields"><span class="std std-ref">rxfh-fields</span></a></p>
+</dd>
+</dl>
+</section>
+<section id="sctp6-uint">
+<h4>sctp6 (<code class="docutils literal notranslate"><span class="pre">uint</span></code>)<a class="headerlink" href="#sctp6-uint" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">enum<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-definition-rxfh-fields"><span class="std std-ref">rxfh-fields</span></a></p>
+</dd>
+</dl>
+</section>
+<section id="ah4-uint">
+<h4>ah4 (<code class="docutils literal notranslate"><span class="pre">uint</span></code>)<a class="headerlink" href="#ah4-uint" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">enum<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-definition-rxfh-fields"><span class="std std-ref">rxfh-fields</span></a></p>
+</dd>
+</dl>
+</section>
+<section id="ah6-uint">
+<h4>ah6 (<code class="docutils literal notranslate"><span class="pre">uint</span></code>)<a class="headerlink" href="#ah6-uint" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">enum<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-definition-rxfh-fields"><span class="std std-ref">rxfh-fields</span></a></p>
+</dd>
+</dl>
+</section>
+<section id="esp4-uint">
+<h4>esp4 (<code class="docutils literal notranslate"><span class="pre">uint</span></code>)<a class="headerlink" href="#esp4-uint" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">enum<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-definition-rxfh-fields"><span class="std std-ref">rxfh-fields</span></a></p>
+</dd>
+</dl>
+</section>
+<section id="esp6-uint">
+<h4>esp6 (<code class="docutils literal notranslate"><span class="pre">uint</span></code>)<a class="headerlink" href="#esp6-uint" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">enum<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-definition-rxfh-fields"><span class="std std-ref">rxfh-fields</span></a></p>
+</dd>
+</dl>
+</section>
+<section id="ah-esp4-uint">
+<h4>ah-esp4 (<code class="docutils literal notranslate"><span class="pre">uint</span></code>)<a class="headerlink" href="#ah-esp4-uint" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">enum<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-definition-rxfh-fields"><span class="std std-ref">rxfh-fields</span></a></p>
+</dd>
+</dl>
+</section>
+<section id="ah-esp6-uint">
+<h4>ah-esp6 (<code class="docutils literal notranslate"><span class="pre">uint</span></code>)<a class="headerlink" href="#ah-esp6-uint" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">enum<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-definition-rxfh-fields"><span class="std std-ref">rxfh-fields</span></a></p>
+</dd>
+</dl>
+</section>
+<section id="gtpu4-uint">
+<h4>gtpu4 (<code class="docutils literal notranslate"><span class="pre">uint</span></code>)<a class="headerlink" href="#gtpu4-uint" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">enum<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-definition-rxfh-fields"><span class="std std-ref">rxfh-fields</span></a></p>
+</dd>
+</dl>
+</section>
+<section id="gtpu6-uint">
+<h4>gtpu6 (<code class="docutils literal notranslate"><span class="pre">uint</span></code>)<a class="headerlink" href="#gtpu6-uint" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">enum<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-definition-rxfh-fields"><span class="std std-ref">rxfh-fields</span></a></p>
+</dd>
+</dl>
+</section>
+<section id="gtpc4-uint">
+<h4>gtpc4 (<code class="docutils literal notranslate"><span class="pre">uint</span></code>)<a class="headerlink" href="#gtpc4-uint" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">enum<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-definition-rxfh-fields"><span class="std std-ref">rxfh-fields</span></a></p>
+</dd>
+</dl>
+</section>
+<section id="gtpc6-uint">
+<h4>gtpc6 (<code class="docutils literal notranslate"><span class="pre">uint</span></code>)<a class="headerlink" href="#gtpc6-uint" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">enum<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-definition-rxfh-fields"><span class="std std-ref">rxfh-fields</span></a></p>
+</dd>
+</dl>
+</section>
+<section id="gtpc-teid4-uint">
+<h4>gtpc-teid4 (<code class="docutils literal notranslate"><span class="pre">uint</span></code>)<a class="headerlink" href="#gtpc-teid4-uint" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">enum<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-definition-rxfh-fields"><span class="std std-ref">rxfh-fields</span></a></p>
+</dd>
+</dl>
+</section>
+<section id="gtpc-teid6-uint">
+<h4>gtpc-teid6 (<code class="docutils literal notranslate"><span class="pre">uint</span></code>)<a class="headerlink" href="#gtpc-teid6-uint" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">enum<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-definition-rxfh-fields"><span class="std std-ref">rxfh-fields</span></a></p>
+</dd>
+</dl>
+</section>
+<section id="gtpu-eh4-uint">
+<h4>gtpu-eh4 (<code class="docutils literal notranslate"><span class="pre">uint</span></code>)<a class="headerlink" href="#gtpu-eh4-uint" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">enum<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-definition-rxfh-fields"><span class="std std-ref">rxfh-fields</span></a></p>
+</dd>
+</dl>
+</section>
+<section id="gtpu-eh6-uint">
+<h4>gtpu-eh6 (<code class="docutils literal notranslate"><span class="pre">uint</span></code>)<a class="headerlink" href="#gtpu-eh6-uint" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">enum<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-definition-rxfh-fields"><span class="std std-ref">rxfh-fields</span></a></p>
+</dd>
+</dl>
+</section>
+<section id="gtpu-ul4-uint">
+<h4>gtpu-ul4 (<code class="docutils literal notranslate"><span class="pre">uint</span></code>)<a class="headerlink" href="#gtpu-ul4-uint" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">enum<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-definition-rxfh-fields"><span class="std std-ref">rxfh-fields</span></a></p>
+</dd>
+</dl>
+</section>
+<section id="gtpu-ul6-uint">
+<h4>gtpu-ul6 (<code class="docutils literal notranslate"><span class="pre">uint</span></code>)<a class="headerlink" href="#gtpu-ul6-uint" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">enum<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-definition-rxfh-fields"><span class="std std-ref">rxfh-fields</span></a></p>
+</dd>
+</dl>
+</section>
+<section id="gtpu-dl4-uint">
+<h4>gtpu-dl4 (<code class="docutils literal notranslate"><span class="pre">uint</span></code>)<a class="headerlink" href="#gtpu-dl4-uint" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">enum<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-definition-rxfh-fields"><span class="std std-ref">rxfh-fields</span></a></p>
+</dd>
+</dl>
+</section>
+<section id="gtpu-dl6-uint">
+<h4>gtpu-dl6 (<code class="docutils literal notranslate"><span class="pre">uint</span></code>)<a class="headerlink" href="#gtpu-dl6-uint" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">enum<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-definition-rxfh-fields"><span class="std std-ref">rxfh-fields</span></a></p>
+</dd>
+</dl>
+</section>
 </section>
 <section id="rss">
-<span id="ethtool-attribute-set-rss"></span><h3><a class="toc-backref" href="#id247" role="doc-backlink">rss</a><a class="headerlink" href="#rss" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-rss"></span><h3><a class="toc-backref" href="#id261" role="doc-backlink">rss</a><a class="headerlink" href="#rss" title="Link to this heading">¶</a></h3>
 <section id="id100">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id100" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -4072,13 +4551,26 @@
 </section>
 <section id="input-xfrm-u32">
 <h4>input-xfrm (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#input-xfrm-u32" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">enum<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-definition-input-xfrm"><span class="std std-ref">input-xfrm</span></a></p>
+</dd>
+</dl>
 </section>
 <section id="start-context-u32">
 <h4>start-context (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#start-context-u32" title="Link to this heading">¶</a></h4>
 </section>
+<section id="flow-hash-nest">
+<h4>flow-hash (<code class="docutils literal notranslate"><span class="pre">nest</span></code>)<a class="headerlink" href="#flow-hash-nest" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">nested-attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-attribute-set-flow"><span class="std std-ref">flow</span></a></p>
+</dd>
+</dl>
+</section>
 </section>
 <section id="plca">
-<span id="ethtool-attribute-set-plca"></span><h3><a class="toc-backref" href="#id248" role="doc-backlink">plca</a><a class="headerlink" href="#plca" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-plca"></span><h3><a class="toc-backref" href="#id262" role="doc-backlink">plca</a><a class="headerlink" href="#plca" title="Link to this heading">¶</a></h3>
 <section id="id102">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id102" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -4121,7 +4613,7 @@
 </section>
 </section>
 <section id="module-fw-flash">
-<span id="ethtool-attribute-set-module-fw-flash"></span><h3><a class="toc-backref" href="#id249" role="doc-backlink">module-fw-flash</a><a class="headerlink" href="#module-fw-flash" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-module-fw-flash"></span><h3><a class="toc-backref" href="#id263" role="doc-backlink">module-fw-flash</a><a class="headerlink" href="#module-fw-flash" title="Link to this heading">¶</a></h3>
 <section id="id106">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id106" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -4163,7 +4655,7 @@
 </section>
 </section>
 <section id="phy">
-<span id="ethtool-attribute-set-phy"></span><h3><a class="toc-backref" href="#id250" role="doc-backlink">phy</a><a class="headerlink" href="#phy" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-phy"></span><h3><a class="toc-backref" href="#id264" role="doc-backlink">phy</a><a class="headerlink" href="#phy" title="Link to this heading">¶</a></h3>
 <section id="id108">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id108" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -4208,7 +4700,7 @@
 </section>
 </section>
 <section id="tsconfig">
-<span id="ethtool-attribute-set-tsconfig"></span><h3><a class="toc-backref" href="#id251" role="doc-backlink">tsconfig</a><a class="headerlink" href="#tsconfig" title="Link to this heading">¶</a></h3>
+<span id="ethtool-attribute-set-tsconfig"></span><h3><a class="toc-backref" href="#id265" role="doc-backlink">tsconfig</a><a class="headerlink" href="#tsconfig" title="Link to this heading">¶</a></h3>
 <section id="id112">
 <h4>unspec (<code class="docutils literal notranslate"><span class="pre">unused</span></code>)<a class="headerlink" href="#id112" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -4254,6 +4746,28 @@
 <dl class="field-list simple">
 <dt class="field-odd">nested-attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#ethtool-attribute-set-bitset"><span class="std std-ref">bitset</span></a></p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="ethtool-attribute-set-pse-ntf">
+<span id="id117"></span><h3><a class="toc-backref" href="#id266" role="doc-backlink">pse-ntf</a><a class="headerlink" href="#ethtool-attribute-set-pse-ntf" title="Link to this heading">¶</a></h3>
+<section id="id118">
+<h4>header (<code class="docutils literal notranslate"><span class="pre">nest</span></code>)<a class="headerlink" href="#id118" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">nested-attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-attribute-set-header"><span class="std std-ref">header</span></a></p>
+</dd>
+</dl>
+</section>
+<section id="events-uint">
+<h4>events (<code class="docutils literal notranslate"><span class="pre">uint</span></code>)<a class="headerlink" href="#events-uint" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">enum<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethtool-definition-pse-event"><span class="std std-ref">pse-event</span></a></p>
+</dd>
+<dt class="field-even">doc<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of events reported by the PSE controller</p>
 </dd>
 </dl>
 </section>

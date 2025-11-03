@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -225,11 +225,11 @@ panels are still in-flux and not really fully sorted out yet.</p>
 <div class="kernelindent docutils container">
 <p><strong>Definition</strong>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct drm_mode_config_funcs {
-    struct drm_framebuffer *(*fb_create)(struct drm_device *dev,struct drm_file *file_priv, const struct drm_mode_fb_cmd2 *mode_cmd);
-    const struct drm_format_info *(*get_format_info)(const struct drm_mode_fb_cmd2 *mode_cmd);
+    struct drm_framebuffer *(*fb_create)(struct drm_device *dev, struct drm_file *file_priv, const struct drm_format_info *info, const struct drm_mode_fb_cmd2 *mode_cmd);
+    const struct drm_format_info *(*get_format_info)(u32 pixel_format, u64 modifier);
     enum drm_mode_status (*mode_valid)(struct drm_device *dev, const struct drm_display_mode *mode);
     int (*atomic_check)(struct drm_device *dev, struct drm_atomic_state *state);
-    int (*atomic_commit)(struct drm_device *dev,struct drm_atomic_state *state, bool nonblock);
+    int (*atomic_commit)(struct drm_device *dev, struct drm_atomic_state *state, bool nonblock);
     struct drm_atomic_state *(*atomic_state_alloc)(struct drm_device *dev);
     void (*atomic_state_clear)(struct drm_atomic_state *state);
     void (*atomic_state_free)(struct drm_atomic_state *state);
@@ -273,7 +273,7 @@ NULL if none is found.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">mode_valid</span></code></dt><dd><p>Device specific validation of display modes. Can be used to reject
 modes that can never be supported. Only device wide constraints can
 be checked here. crtc/encoder/bridge/connector specific constraints
-should be checked in the .mode_valid() hook for each specific object.</p>
+should be checked in the .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mode_valid()</span></code> hook for each specific object.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">atomic_check</span></code></dt><dd><p>This is the only hook to validate an atomic modeset update. This
 function must reject any modeset and state changes which the hardware
@@ -856,12 +856,12 @@ Protected Content.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">quirk_addfb_prefer_xbgr_30bpp</span></code></dt><dd><p>Special hack for legacy ADDFB to keep nouveau userspace happy. Should
 only ever be set by the nouveau kernel driver.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">quirk_addfb_prefer_host_byte_order</span></code></dt><dd><p>When set to true drm_mode_addfb() will pick host byte order
-pixel_format when calling drm_mode_addfb2().  This is how
-drm_mode_addfb() should have worked from day one.  It
+<dt><code class="docutils literal notranslate"><span class="pre">quirk_addfb_prefer_host_byte_order</span></code></dt><dd><p>When set to true <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_mode_addfb()</span></code> will pick host byte order
+pixel_format when calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_mode_addfb2()</span></code>.  This is how
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_mode_addfb()</span></code> should have worked from day one.  It
 didn’t though, so we ended up with quirks in both kernel
 and userspace drivers to deal with the broken behavior.
-Simply fixing drm_mode_addfb() unconditionally would break
+Simply fixing <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_mode_addfb()</span></code> unconditionally would break
 these drivers, so add a quirk bit here to allow drivers
 opt-in.</p>
 </dd>
@@ -1329,7 +1329,7 @@ structure of <a class="reference internal" href="#c.drm_private_state" title="dr
 iterated using <a class="reference internal" href="#c.for_each_oldnew_private_obj_in_state" title="for_each_oldnew_private_obj_in_state"><code class="xref c c-func docutils literal notranslate"><span class="pre">for_each_oldnew_private_obj_in_state()</span></code></a>,
 <a class="reference internal" href="#c.for_each_new_private_obj_in_state" title="for_each_new_private_obj_in_state"><code class="xref c c-func docutils literal notranslate"><span class="pre">for_each_new_private_obj_in_state()</span></code></a> and <a class="reference internal" href="#c.for_each_old_private_obj_in_state" title="for_each_old_private_obj_in_state"><code class="xref c c-func docutils literal notranslate"><span class="pre">for_each_old_private_obj_in_state()</span></code></a>.
 Drivers are recommended to wrap these for each type of driver private state
-object they have, filtering on <a class="reference internal" href="#c.drm_private_obj" title="drm_private_obj"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_private_obj.funcs</span></code></a> using for_each_if(), at
+object they have, filtering on <a class="reference internal" href="#c.drm_private_obj" title="drm_private_obj"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_private_obj.funcs</span></code></a> using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">for_each_if()</span></code>, at
 least if they want to iterate over all objects of a given type.</p>
 <p>An earlier way to handle driver private state was by subclassing struct
 <a class="reference internal" href="#c.drm_atomic_state" title="drm_atomic_state"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_atomic_state</span></code></a>. But since that encourages non-standard ways to implement
@@ -1464,7 +1464,7 @@ initialized or allocation failed.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">atomic_print_state</span></code></dt><dd><p>If driver subclasses <a class="reference internal" href="#c.drm_private_state" title="drm_private_state"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_private_state</span></code></a>, it should implement
 this optional hook for printing additional driver specific state.</p>
-<p>Do not call this directly, use drm_atomic_private_obj_print_state()
+<p>Do not call this directly, use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_atomic_private_obj_print_state()</span></code>
 instead.</p>
 </dd>
 </dl>
@@ -1474,7 +1474,7 @@ instead.</p>
 private objects. The structure itself is used as a vtable to identify the
 associated private object type. Each private object type that needs to be
 added to the atomic states is expected to have an implementation of these
-hooks and pass a pointer to its drm_private_state_funcs struct to
+hooks and pass a pointer to its drm_private_state_funcs <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">to</span></code>
 <a class="reference internal" href="#c.drm_atomic_get_private_obj_state" title="drm_atomic_get_private_obj_state"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_atomic_get_private_obj_state()</span></code></a>.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.drm_private_obj">
@@ -1695,6 +1695,9 @@ these.</p>
 <p>States are added to an atomic update by calling <a class="reference internal" href="#c.drm_atomic_get_crtc_state" title="drm_atomic_get_crtc_state"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_atomic_get_crtc_state()</span></code></a>,
 <a class="reference internal" href="#c.drm_atomic_get_plane_state" title="drm_atomic_get_plane_state"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_atomic_get_plane_state()</span></code></a>, <a class="reference internal" href="#c.drm_atomic_get_connector_state" title="drm_atomic_get_connector_state"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_atomic_get_connector_state()</span></code></a>, or for
 private state structures, <a class="reference internal" href="#c.drm_atomic_get_private_obj_state" title="drm_atomic_get_private_obj_state"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_atomic_get_private_obj_state()</span></code></a>.</p>
+<p><strong>NOTE</strong></p>
+<p><a class="reference internal" href="#c.drm_atomic_state" title="drm_atomic_state"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_atomic_state</span></code></a> first started as a single collection of
+entities state pointers (drm_plane_state, drm_crtc_state, etc.).</p>
 <p>At atomic_check time, you could get the state about to be committed
 from drm_atomic_state, and the one currently running from the
 entities state pointer (drm_crtc.state, for example). After the call
@@ -1719,9 +1722,6 @@ drm_atomic_state as a parameter to those operations. Similarly, the
 transition isn’t complete yet, and one might still find atomic
 operations taking a drm_atomic_state pointer, or a component state
 pointer. The former is the preferred form.</p>
-<p><strong>NOTE</strong></p>
-<p><a class="reference internal" href="#c.drm_atomic_state" title="drm_atomic_state"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_atomic_state</span></code></a> first started as a single collection of
-entities state pointers (drm_plane_state, drm_crtc_state, etc.).</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_crtc_commit_get">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_crtc_commit" title="drm_crtc_commit"><span class="n"><span class="pre">drm_crtc_commit</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">drm_crtc_commit_get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_crtc_commit" title="drm_crtc_commit"><span class="n"><span class="pre">drm_crtc_commit</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">commit</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_crtc_commit_get" title="Link to this definition">¶</a><br /></dt>
@@ -2421,7 +2421,7 @@ In these cases, use this function instead of just checking active.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">format</span></code></dt><dd><p>format used on this bus (one of the MEDIA_BUS_FMT_* format)</p>
 <p>This field should not be directly modified by drivers
-(drm_atomic_bridge_chain_select_bus_fmts() takes care of the bus
+(<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_atomic_bridge_chain_select_bus_fmts()</span></code> takes care of the bus
 format negotiation).</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">flags</span></code></dt><dd><p>DRM_BUS_* flags used on this bus</p>
@@ -2656,7 +2656,7 @@ entire atomic sequence must be restarted. All other errors are fatal.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_private_state</span> <span class="pre">*state</span></code></dt><dd><p>initial private object state</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">drm_private_state_funcs</span> <span class="pre">*funcs</span></code></dt><dd><p>pointer to the struct of function pointers that identify the object
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">drm_private_state_funcs</span> <span class="pre">*funcs</span></code></dt><dd><p>pointer to the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">of</span></code> function pointers that identify the object
 type</p>
 </dd>
 </dl>
@@ -3522,18 +3522,18 @@ describing what has changed in a commit. See also:
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct drm_crtc_funcs {
     void (*reset)(struct drm_crtc *crtc);
     int (*cursor_set)(struct drm_crtc *crtc, struct drm_file *file_priv, uint32_t handle, uint32_t width, uint32_t height);
-    int (*cursor_set2)(struct drm_crtc *crtc, struct drm_file *file_priv,uint32_t handle, uint32_t width, uint32_t height, int32_t hot_x, int32_t hot_y);
+    int (*cursor_set2)(struct drm_crtc *crtc, struct drm_file *file_priv, uint32_t handle, uint32_t width, uint32_t height, int32_t hot_x, int32_t hot_y);
     int (*cursor_move)(struct drm_crtc *crtc, int x, int y);
-    int (*gamma_set)(struct drm_crtc *crtc, u16 *r, u16 *g, u16 *b,uint32_t size, struct drm_modeset_acquire_ctx *ctx);
+    int (*gamma_set)(struct drm_crtc *crtc, u16 *r, u16 *g, u16 *b, uint32_t size, struct drm_modeset_acquire_ctx *ctx);
     void (*destroy)(struct drm_crtc *crtc);
     int (*set_config)(struct drm_mode_set *set, struct drm_modeset_acquire_ctx *ctx);
-    int (*page_flip)(struct drm_crtc *crtc,struct drm_framebuffer *fb,struct drm_pending_vblank_event *event,uint32_t flags, struct drm_modeset_acquire_ctx *ctx);
-    int (*page_flip_target)(struct drm_crtc *crtc,struct drm_framebuffer *fb,struct drm_pending_vblank_event *event,uint32_t flags, uint32_t target, struct drm_modeset_acquire_ctx *ctx);
+    int (*page_flip)(struct drm_crtc *crtc, struct drm_framebuffer *fb, struct drm_pending_vblank_event *event, uint32_t flags, struct drm_modeset_acquire_ctx *ctx);
+    int (*page_flip_target)(struct drm_crtc *crtc, struct drm_framebuffer *fb, struct drm_pending_vblank_event *event, uint32_t flags, uint32_t target, struct drm_modeset_acquire_ctx *ctx);
     int (*set_property)(struct drm_crtc *crtc, struct drm_property *property, uint64_t val);
     struct drm_crtc_state *(*atomic_duplicate_state)(struct drm_crtc *crtc);
     void (*atomic_destroy_state)(struct drm_crtc *crtc, struct drm_crtc_state *state);
-    int (*atomic_set_property)(struct drm_crtc *crtc,struct drm_crtc_state *state,struct drm_property *property, uint64_t val);
-    int (*atomic_get_property)(struct drm_crtc *crtc,const struct drm_crtc_state *state,struct drm_property *property, uint64_t *val);
+    int (*atomic_set_property)(struct drm_crtc *crtc, struct drm_crtc_state *state, struct drm_property *property, uint64_t val);
+    int (*atomic_get_property)(struct drm_crtc *crtc, const struct drm_crtc_state *state, struct drm_property *property, uint64_t *val);
     int (*late_register)(struct drm_crtc *crtc);
     void (*early_unregister)(struct drm_crtc *crtc);
     int (*set_crc_source)(struct drm_crtc *crtc, const char *source);
@@ -3543,7 +3543,7 @@ describing what has changed in a commit. See also:
     u32 (*get_vblank_counter)(struct drm_crtc *crtc);
     int (*enable_vblank)(struct drm_crtc *crtc);
     void (*disable_vblank)(struct drm_crtc *crtc);
-    bool (*get_vblank_timestamp)(struct drm_crtc *crtc,int *max_error,ktime_t *vblank_time, bool in_vblank_irq);
+    bool (*get_vblank_timestamp)(struct drm_crtc *crtc, int *max_error, ktime_t *vblank_time, bool in_vblank_irq);
 };
 </pre></div>
 </div>
@@ -3594,7 +3594,7 @@ universal plane support and register a proper cursor plane using
 <p>Atomic drivers who want to support gamma tables should implement the
 atomic color management support, enabled by calling
 <a class="reference internal" href="#c.drm_crtc_enable_color_mgmt" title="drm_crtc_enable_color_mgmt"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_crtc_enable_color_mgmt()</span></code></a>, which then supports the legacy gamma
-interface through the drm_atomic_helper_legacy_gamma_set()
+interface through the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_atomic_helper_legacy_gamma_set()</span></code>
 compatibility implementation.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">destroy</span></code></dt><dd><p>Clean up CRTC resources. This is only called at driver unload time
@@ -3703,7 +3703,7 @@ truly hardware/vendor specific state. Instead it is preferred to
 standardize atomic extension and decode the properties used to expose
 such an extension in the core.</p>
 <p>Do not call this function directly, use
-drm_atomic_crtc_set_property() instead.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_atomic_crtc_set_property()</span></code> instead.</p>
 <p>This callback is optional if the driver does not support any
 driver-private atomic properties.</p>
 <p>NOTE:</p>
@@ -3721,13 +3721,13 @@ validation must be done in the various atomic_check callbacks.</p>
 implemented by the driver (which should never happen, the core only
 asks for properties attached to this CRTC). No other validation is
 allowed by the driver. The core already checks that the property
-value is within the range (integer, valid enum value, ...) the driver
+value is within the range (integer, valid <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">value</span></code>, ...) the driver
 set when registering the property.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">atomic_get_property</span></code></dt><dd><p>Reads out the decoded driver-private property. This is used to
 implement the GETCRTC IOCTL.</p>
 <p>Do not call this function directly, use
-drm_atomic_crtc_get_property() instead.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_atomic_crtc_get_property()</span></code> instead.</p>
 <p>This callback is optional if the driver does not support any
 driver-private atomic properties.</p>
 <p>RETURNS:</p>
@@ -3791,7 +3791,7 @@ source from the list.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">atomic_print_state</span></code></dt><dd><p>If driver subclasses <a class="reference internal" href="#c.drm_crtc_state" title="drm_crtc_state"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_crtc_state</span></code></a>, it should implement
 this optional hook for printing additional driver specific state.</p>
-<p>Do not call this directly, use drm_atomic_crtc_print_state()
+<p>Do not call this directly, use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_atomic_crtc_print_state()</span></code>
 instead.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">get_vblank_counter</span></code></dt><dd><p>Driver callback for fetching a raw hardware vblank counter for the
@@ -3819,7 +3819,7 @@ be enabled.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">disable_vblank</span></code></dt><dd><p>Disable vblank interrupts for the CRTC. It’s meant to be used by
 new drivers as the replacement of <a class="reference internal" href="drm-internals.html#c.drm_driver" title="drm_driver"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_driver.disable_vblank</span></code></a> hook.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">get_vblank_timestamp</span></code></dt><dd><p>Called by drm_get_last_vbltimestamp(). Should return a precise
+<dt><code class="docutils literal notranslate"><span class="pre">get_vblank_timestamp</span></code></dt><dd><p>Called by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_get_last_vbltimestamp()</span></code>. Should return a precise
 timestamp when the most recent vblank interval ended or will end.</p>
 <p>Specifically, the timestamp in <strong>vblank_time</strong> should correspond as
 closely as possible to the time when the first video scanline of
@@ -4094,7 +4094,7 @@ also used internally. Atomic drivers instead use <a class="reference internal" h
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">dev</span></code></dt><dd><p>DRM device</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt><dd><p>the type of the struct which contains struct <a class="reference internal" href="#c.drm_crtc" title="drm_crtc"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_crtc</span></code></a></p>
+<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt><dd><p>the type of the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">which</span></code> contains struct <a class="reference internal" href="#c.drm_crtc" title="drm_crtc"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_crtc</span></code></a></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">member</span></code></dt><dd><p>the name of the <a class="reference internal" href="#c.drm_crtc" title="drm_crtc"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_crtc</span></code></a> within <strong>type</strong>.</p>
 </dd>
@@ -4111,7 +4111,7 @@ also used internally. Atomic drivers instead use <a class="reference internal" h
 </dl>
 <p><strong>Description</strong></p>
 <p>Allocates and initializes a new crtc object. Cleanup is automatically
-handled through registering drmm_crtc_cleanup() with <a class="reference internal" href="drm-internals.html#c.drmm_add_action" title="drmm_add_action"><code class="xref c c-func docutils literal notranslate"><span class="pre">drmm_add_action()</span></code></a>.</p>
+handled through registering <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drmm_crtc_cleanup()</span></code> with <a class="reference internal" href="drm-internals.html#c.drmm_add_action" title="drmm_add_action"><code class="xref c c-func docutils literal notranslate"><span class="pre">drmm_add_action()</span></code></a>.</p>
 <p>The <strong>drm_crtc_funcs.destroy</strong> hook must be NULL.</p>
 <p><strong>Return</strong></p>
 <p>Pointer to new crtc, or ERR_PTR on failure.</p>
@@ -4262,7 +4262,7 @@ planes). For really simple hardware which has only 1 plane look at
 <a class="reference internal" href="drm-kms-helpers.html#c.drm_simple_display_pipe_init" title="drm_simple_display_pipe_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_simple_display_pipe_init()</span></code></a> instead.
 The <a class="reference internal" href="#c.drm_crtc_funcs" title="drm_crtc_funcs"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_crtc_funcs.destroy</span></code></a> hook should call <a class="reference internal" href="#c.drm_crtc_cleanup" title="drm_crtc_cleanup"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_crtc_cleanup()</span></code></a> and <a class="reference internal" href="../core-api/mm-api.html#c.kfree" title="kfree"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree()</span></code></a>
 the crtc structure. The crtc structure should not be allocated with
-devm_kzalloc().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_kzalloc()</span></code>.</p>
 <p>The <strong>primary</strong> and <strong>cursor</strong> planes are only relevant for legacy uAPI, see
 <a class="reference internal" href="#c.drm_crtc" title="drm_crtc"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_crtc.primary</span></code></a> and <a class="reference internal" href="#c.drm_crtc" title="drm_crtc"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_crtc.cursor</span></code></a>.</p>
 <p><strong>Note</strong></p>
@@ -4304,7 +4304,7 @@ for backwards compatibility with drivers which do not yet support universal
 planes). For really simple hardware which has only 1 plane look at
 <a class="reference internal" href="drm-kms-helpers.html#c.drm_simple_display_pipe_init" title="drm_simple_display_pipe_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_simple_display_pipe_init()</span></code></a> instead.</p>
 <p>Cleanup is automatically handled through registering
-drmm_crtc_cleanup() with <a class="reference internal" href="drm-internals.html#c.drmm_add_action" title="drmm_add_action"><code class="xref c c-func docutils literal notranslate"><span class="pre">drmm_add_action()</span></code></a>. The crtc structure should
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drmm_crtc_cleanup()</span></code> with <a class="reference internal" href="drm-internals.html#c.drmm_add_action" title="drmm_add_action"><code class="xref c c-func docutils literal notranslate"><span class="pre">drmm_add_action()</span></code></a>. The crtc structure should
 be allocated with <a class="reference internal" href="drm-internals.html#c.drmm_kzalloc" title="drmm_kzalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">drmm_kzalloc()</span></code></a>.</p>
 <p>The <strong>drm_crtc_funcs.destroy</strong> hook must be NULL.</p>
 <p>The <strong>primary</strong> and <strong>cursor</strong> planes are only relevant for legacy uAPI, see
@@ -4513,8 +4513,8 @@ fixed gamma table size.</p>
 <p>Create and attach plane specific COLOR_ENCODING and COLOR_RANGE
 properties to <strong>plane</strong>. The supported encodings and ranges should
 be provided in supported_encodings and supported_ranges bitmasks.
-Each bit set in the bitmask indicates that its number as enum
-value is supported.</p>
+Each bit set in the bitmask indicates that its number as <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span>
+<span class="pre">value</span></code> is supported.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_color_lut_check">
@@ -4535,6 +4535,156 @@ value is supported.</p>
 satisfies hardware requirements.  Drivers pass a bitmask indicating which of
 the tests in <a class="reference internal" href="#c.drm_color_lut_tests" title="drm_color_lut_tests"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_color_lut_tests</span></code></a> should be performed.</p>
 <p>Returns 0 on success, -EINVAL on failure.</p>
+</div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.drm_crtc_load_gamma_888">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_crtc_load_gamma_888</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_crtc" title="drm_crtc"><span class="n"><span class="pre">drm_crtc</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">crtc</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">drm_color_lut</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">lut</span></span>, <span class="n"><span class="pre">drm_crtc_set_lut_func</span></span><span class="w"> </span><span class="n"><span class="pre">set_gamma</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_crtc_load_gamma_888" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Programs gamma ramp for RGB888-like formats</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_crtc</span> <span class="pre">*crtc</span></code></dt><dd><p>The displaying CRTC</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">drm_color_lut</span> <span class="pre">*lut</span></code></dt><dd><p>The gamma ramp to program</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">drm_crtc_set_lut_func</span> <span class="pre">set_gamma</span></code></dt><dd><p>Callback for programming the hardware gamma LUT</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>Programs the gamma ramp specified in <strong>lut</strong> to hardware. The input gamma
+ramp must have 256 entries per color component.</p>
+</div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.drm_crtc_load_gamma_565_from_888">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_crtc_load_gamma_565_from_888</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_crtc" title="drm_crtc"><span class="n"><span class="pre">drm_crtc</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">crtc</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">drm_color_lut</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">lut</span></span>, <span class="n"><span class="pre">drm_crtc_set_lut_func</span></span><span class="w"> </span><span class="n"><span class="pre">set_gamma</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_crtc_load_gamma_565_from_888" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Programs gamma ramp for RGB565-like formats</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_crtc</span> <span class="pre">*crtc</span></code></dt><dd><p>The displaying CRTC</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">drm_color_lut</span> <span class="pre">*lut</span></code></dt><dd><p>The gamma ramp to program</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">drm_crtc_set_lut_func</span> <span class="pre">set_gamma</span></code></dt><dd><p>Callback for programming the hardware gamma LUT</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>Programs the gamma ramp specified in <strong>lut</strong> to hardware. The input gamma
+ramp must have 256 entries per color component. The helper interpolates
+the individual color components to reduce the number of entries to 5/6/5.</p>
+</div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.drm_crtc_load_gamma_555_from_888">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_crtc_load_gamma_555_from_888</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_crtc" title="drm_crtc"><span class="n"><span class="pre">drm_crtc</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">crtc</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">drm_color_lut</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">lut</span></span>, <span class="n"><span class="pre">drm_crtc_set_lut_func</span></span><span class="w"> </span><span class="n"><span class="pre">set_gamma</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_crtc_load_gamma_555_from_888" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Programs gamma ramp for RGB555-like formats</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_crtc</span> <span class="pre">*crtc</span></code></dt><dd><p>The displaying CRTC</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">drm_color_lut</span> <span class="pre">*lut</span></code></dt><dd><p>The gamma ramp to program</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">drm_crtc_set_lut_func</span> <span class="pre">set_gamma</span></code></dt><dd><p>Callback for programming the hardware gamma LUT</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>Programs the gamma ramp specified in <strong>lut</strong> to hardware. The input gamma
+ramp must have 256 entries per color component. The helper interpolates
+the individual color components to reduce the number of entries to 5/5/5.</p>
+</div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.drm_crtc_fill_gamma_888">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_crtc_fill_gamma_888</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_crtc" title="drm_crtc"><span class="n"><span class="pre">drm_crtc</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">crtc</span></span>, <span class="n"><span class="pre">drm_crtc_set_lut_func</span></span><span class="w"> </span><span class="n"><span class="pre">set_gamma</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_crtc_fill_gamma_888" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Programs a default gamma ramp for RGB888-like formats</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_crtc</span> <span class="pre">*crtc</span></code></dt><dd><p>The displaying CRTC</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">drm_crtc_set_lut_func</span> <span class="pre">set_gamma</span></code></dt><dd><p>Callback for programming the hardware gamma LUT</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>Programs a default gamma ramp to hardware.</p>
+</div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.drm_crtc_fill_gamma_565">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_crtc_fill_gamma_565</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_crtc" title="drm_crtc"><span class="n"><span class="pre">drm_crtc</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">crtc</span></span>, <span class="n"><span class="pre">drm_crtc_set_lut_func</span></span><span class="w"> </span><span class="n"><span class="pre">set_gamma</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_crtc_fill_gamma_565" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Programs a default gamma ramp for RGB565-like formats</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_crtc</span> <span class="pre">*crtc</span></code></dt><dd><p>The displaying CRTC</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">drm_crtc_set_lut_func</span> <span class="pre">set_gamma</span></code></dt><dd><p>Callback for programming the hardware gamma LUT</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>Programs a default gamma ramp to hardware.</p>
+</div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.drm_crtc_fill_gamma_555">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_crtc_fill_gamma_555</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_crtc" title="drm_crtc"><span class="n"><span class="pre">drm_crtc</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">crtc</span></span>, <span class="n"><span class="pre">drm_crtc_set_lut_func</span></span><span class="w"> </span><span class="n"><span class="pre">set_gamma</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_crtc_fill_gamma_555" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Programs a default gamma ramp for RGB555-like formats</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_crtc</span> <span class="pre">*crtc</span></code></dt><dd><p>The displaying CRTC</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">drm_crtc_set_lut_func</span> <span class="pre">set_gamma</span></code></dt><dd><p>Callback for programming the hardware gamma LUT</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>Programs a default gamma ramp to hardware.</p>
+</div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.drm_crtc_load_palette_8">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_crtc_load_palette_8</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_crtc" title="drm_crtc"><span class="n"><span class="pre">drm_crtc</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">crtc</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">drm_color_lut</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">lut</span></span>, <span class="n"><span class="pre">drm_crtc_set_lut_func</span></span><span class="w"> </span><span class="n"><span class="pre">set_palette</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_crtc_load_palette_8" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Programs palette for C8-like formats</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_crtc</span> <span class="pre">*crtc</span></code></dt><dd><p>The displaying CRTC</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">drm_color_lut</span> <span class="pre">*lut</span></code></dt><dd><p>The palette to program</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">drm_crtc_set_lut_func</span> <span class="pre">set_palette</span></code></dt><dd><p>Callback for programming the hardware palette</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>Programs the palette specified in <strong>lut</strong> to hardware. The input palette
+must have 256 entries per color component.</p>
+</div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.drm_crtc_fill_palette_8">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_crtc_fill_palette_8</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_crtc" title="drm_crtc"><span class="n"><span class="pre">drm_crtc</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">crtc</span></span>, <span class="n"><span class="pre">drm_crtc_set_lut_func</span></span><span class="w"> </span><span class="n"><span class="pre">set_palette</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_crtc_fill_palette_8" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Programs a default palette for C8-like formats</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_crtc</span> <span class="pre">*crtc</span></code></dt><dd><p>The displaying CRTC</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">drm_crtc_set_lut_func</span> <span class="pre">set_palette</span></code></dt><dd><p>Callback for programming the hardware gamma LUT</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>Programs a default palette to hardware.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_color_lut_extract">
@@ -4636,8 +4786,8 @@ recommended, and it’s better to have a normal free-standing <a class="referenc
 <p><strong>Definition</strong>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct drm_framebuffer_funcs {
     void (*destroy)(struct drm_framebuffer *framebuffer);
-    int (*create_handle)(struct drm_framebuffer *fb,struct drm_file *file_priv, unsigned int *handle);
-    int (*dirty)(struct drm_framebuffer *framebuffer,struct drm_file *file_priv, unsigned flags,unsigned color, struct drm_clip_rect *clips, unsigned num_clips);
+    int (*create_handle)(struct drm_framebuffer *fb, struct drm_file *file_priv, unsigned int *handle);
+    int (*dirty)(struct drm_framebuffer *framebuffer, struct drm_file *file_priv, unsigned flags, unsigned color, struct drm_clip_rect *clips, unsigned num_clips);
 };
 </pre></div>
 </div>
@@ -4667,7 +4817,7 @@ handle.</p>
 framebuffer has changed and should be flushed to the display
 hardware. This can also be used internally, e.g. by the fbdev
 emulation, though that’s not the case currently.</p>
-<p>See documentation in drm_mode.h for the struct drm_mode_fb_dirty_cmd
+<p>See documentation in drm_mode.h for the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_mode_fb_dirty_cmd</span></code>
 for more information as all the semantics and arguments have a one to
 one mapping on this function.</p>
 <p>Atomic drivers should use <a class="reference internal" href="#c.drm_atomic_helper_dirtyfb" title="drm_atomic_helper_dirtyfb"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_atomic_helper_dirtyfb()</span></code></a> to implement
@@ -4940,7 +5090,7 @@ i.e. the object may not be destroyed through this call (since it’ll lead to a
 locking inversion).</p>
 <p><strong>NOTE</strong></p>
 <p>This function is deprecated. For driver-private framebuffers it is not
-recommended to embed a framebuffer struct info fbdev struct, instead, a
+recommended to embed a framebuffer <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">info</span></code> fbdev struct, instead, a
 framebuffer pointer is preferred and <a class="reference internal" href="#c.drm_framebuffer_put" title="drm_framebuffer_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_framebuffer_put()</span></code></a> should be called
 when the framebuffer is to be cleaned up.</p>
 </div>
@@ -5359,7 +5509,7 @@ it returns little endian byte order or host byte order framebuffer formats.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Computes a DRM 4CC pixel format code for the given color mode using
-drm_driver_color_mode(). The color mode is in the format used and the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_driver_color_mode()</span></code>. The color mode is in the format used and the
 kernel command line. It specifies the number of bits per pixel
 and color depth in a single value.</p>
 <p>Useful in fbdev emulation code, since that deals in those values. The
@@ -5389,7 +5539,7 @@ NULL if the format is unsupported.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_get_format_info">
-<span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_format_info" title="drm_format_info"><span class="n"><span class="pre">drm_format_info</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">drm_get_format_info</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="drm-internals.html#c.drm_device" title="drm_device"><span class="n"><span class="pre">drm_device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="drm-uapi.html#c.drm_mode_fb_cmd2" title="drm_mode_fb_cmd2"><span class="n"><span class="pre">drm_mode_fb_cmd2</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">mode_cmd</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_get_format_info" title="Link to this definition">¶</a><br /></dt>
+<span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_format_info" title="drm_format_info"><span class="n"><span class="pre">drm_format_info</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">drm_get_format_info</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="drm-internals.html#c.drm_device" title="drm_device"><span class="n"><span class="pre">drm_device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">u32</span></span><span class="w"> </span><span class="n"><span class="pre">pixel_format</span></span>, <span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="n"><span class="pre">modifier</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_get_format_info" title="Link to this definition">¶</a><br /></dt>
 <dd><p>query information for a given framebuffer configuration</p>
 </dd></dl>
 
@@ -5398,7 +5548,9 @@ NULL if the format is unsupported.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_device</span> <span class="pre">*dev</span></code></dt><dd><p>DRM device</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">drm_mode_fb_cmd2</span> <span class="pre">*mode_cmd</span></code></dt><dd><p>metadata from the userspace fb creation request</p>
+<dt><code class="docutils literal notranslate"><span class="pre">u32</span> <span class="pre">pixel_format</span></code></dt><dd><p>pixel format (DRM_FORMAT_*)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">u64</span> <span class="pre">modifier</span></code></dt><dd><p>modifier</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
@@ -5692,15 +5844,15 @@ raw coordinates provided by userspace. Drivers should use
 <div class="kernelindent docutils container">
 <p><strong>Definition</strong>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct drm_plane_funcs {
-    int (*update_plane)(struct drm_plane *plane,struct drm_crtc *crtc, struct drm_framebuffer *fb,int crtc_x, int crtc_y,unsigned int crtc_w, unsigned int crtc_h,uint32_t src_x, uint32_t src_y,uint32_t src_w, uint32_t src_h, struct drm_modeset_acquire_ctx *ctx);
+    int (*update_plane)(struct drm_plane *plane, struct drm_crtc *crtc, struct drm_framebuffer *fb, int crtc_x, int crtc_y, unsigned int crtc_w, unsigned int crtc_h, uint32_t src_x, uint32_t src_y, uint32_t src_w, uint32_t src_h, struct drm_modeset_acquire_ctx *ctx);
     int (*disable_plane)(struct drm_plane *plane, struct drm_modeset_acquire_ctx *ctx);
     void (*destroy)(struct drm_plane *plane);
     void (*reset)(struct drm_plane *plane);
     int (*set_property)(struct drm_plane *plane, struct drm_property *property, uint64_t val);
     struct drm_plane_state *(*atomic_duplicate_state)(struct drm_plane *plane);
     void (*atomic_destroy_state)(struct drm_plane *plane, struct drm_plane_state *state);
-    int (*atomic_set_property)(struct drm_plane *plane,struct drm_plane_state *state,struct drm_property *property, uint64_t val);
-    int (*atomic_get_property)(struct drm_plane *plane,const struct drm_plane_state *state,struct drm_property *property, uint64_t *val);
+    int (*atomic_set_property)(struct drm_plane *plane, struct drm_plane_state *state, struct drm_property *property, uint64_t val);
+    int (*atomic_get_property)(struct drm_plane *plane, const struct drm_plane_state *state, struct drm_property *property, uint64_t *val);
     int (*late_register)(struct drm_plane *plane);
     void (*early_unregister)(struct drm_plane *plane);
     void (*atomic_print_state)(struct drm_printer *p, const struct drm_plane_state *state);
@@ -5791,7 +5943,7 @@ truly hardware/vendor specific state. Instead it is preferred to
 standardize atomic extension and decode the properties used to expose
 such an extension in the core.</p>
 <p>Do not call this function directly, use
-drm_atomic_plane_set_property() instead.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_atomic_plane_set_property()</span></code> instead.</p>
 <p>This callback is optional if the driver does not support any
 driver-private atomic properties.</p>
 <p>NOTE:</p>
@@ -5809,13 +5961,13 @@ validation must be done in the various atomic_check callbacks.</p>
 implemented by the driver (which shouldn’t ever happen, the core only
 asks for properties attached to this plane). No other validation is
 allowed by the driver. The core already checks that the property
-value is within the range (integer, valid enum value, ...) the driver
+value is within the range (integer, valid <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">value</span></code>, ...) the driver
 set when registering the property.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">atomic_get_property</span></code></dt><dd><p>Reads out the decoded driver-private property. This is used to
 implement the GETPLANE IOCTL.</p>
 <p>Do not call this function directly, use
-drm_atomic_plane_get_property() instead.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_atomic_plane_get_property()</span></code> instead.</p>
 <p>This callback is optional if the driver does not support any
 driver-private atomic properties.</p>
 <p>RETURNS:</p>
@@ -5839,7 +5991,7 @@ before data structures are torndown.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">atomic_print_state</span></code></dt><dd><p>If driver subclasses <a class="reference internal" href="#c.drm_plane_state" title="drm_plane_state"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_plane_state</span></code></a>, it should implement
 this optional hook for printing additional driver specific state.</p>
-<p>Do not call this directly, use drm_atomic_plane_print_state()
+<p>Do not call this directly, use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_atomic_plane_print_state()</span></code>
 instead.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">format_mod_supported</span></code></dt><dd><p>This optional hook is used for the DRM to determine if the given
@@ -5901,7 +6053,7 @@ wish to receive a universal plane list containing all plane types. See also
 <p>In addition to setting each plane’s type, drivers need to setup the
 <a class="reference internal" href="#c.drm_crtc" title="drm_crtc"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_crtc.primary</span></code></a> and optionally <a class="reference internal" href="#c.drm_crtc" title="drm_crtc"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_crtc.cursor</span></code></a> pointers for legacy
 IOCTLs. See <a class="reference internal" href="#c.drm_crtc_init_with_planes" title="drm_crtc_init_with_planes"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_crtc_init_with_planes()</span></code></a>.</p>
-<p>WARNING: The values of this enum is UABI since they’re exposed in the “type”
+<p>WARNING: The values of this <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">is</span></code> UABI since they’re exposed in the “type”
 property.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.drm_plane">
@@ -6016,16 +6168,16 @@ commit operations as implemented in the atomic helpers, see
 <dt><code class="docutils literal notranslate"><span class="pre">rotation_property</span></code></dt><dd><p>Optional rotation property for this plane. See
 <a class="reference internal" href="#c.drm_plane_create_rotation_property" title="drm_plane_create_rotation_property"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_plane_create_rotation_property()</span></code></a>.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">blend_mode_property</span></code></dt><dd><p>Optional “pixel blend mode” enum property for this plane.
+<dt><code class="docutils literal notranslate"><span class="pre">blend_mode_property</span></code></dt><dd><p>Optional “pixel blend mode” <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">property</span></code> for this plane.
 Blend mode property represents the alpha blending equation selection,
 describing how the pixels from the current plane are composited with
 the background.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">color_encoding_property</span></code></dt><dd><p>Optional “COLOR_ENCODING” enum property for specifying
+<dt><code class="docutils literal notranslate"><span class="pre">color_encoding_property</span></code></dt><dd><p>Optional “COLOR_ENCODING” <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">property</span></code> for specifying
 color encoding for non RGB formats.
 See <a class="reference internal" href="#c.drm_plane_create_color_properties" title="drm_plane_create_color_properties"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_plane_create_color_properties()</span></code></a>.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">color_range_property</span></code></dt><dd><p>Optional “COLOR_RANGE” enum property for specifying
+<dt><code class="docutils literal notranslate"><span class="pre">color_range_property</span></code></dt><dd><p>Optional “COLOR_RANGE” <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">property</span></code> for specifying
 color range for non RGB formats.
 See <a class="reference internal" href="#c.drm_plane_create_color_properties" title="drm_plane_create_color_properties"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_plane_create_color_properties()</span></code></a>.</p>
 </dd>
@@ -6060,7 +6212,7 @@ Management Properties</a> for details on that.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">dev</span></code></dt><dd><p>DRM device</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt><dd><p>the type of the struct which contains struct <a class="reference internal" href="#c.drm_plane" title="drm_plane"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_plane</span></code></a></p>
+<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt><dd><p>the type of the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">which</span></code> contains struct <a class="reference internal" href="#c.drm_plane" title="drm_plane"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_plane</span></code></a></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">member</span></code></dt><dd><p>the name of the <a class="reference internal" href="#c.drm_plane" title="drm_plane"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_plane</span></code></a> within <strong>type</strong></p>
 </dd>
@@ -6072,7 +6224,7 @@ Management Properties</a> for details on that.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">format_count</span></code></dt><dd><p>number of elements in <strong>formats</strong></p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">format_modifiers</span></code></dt><dd><p>array of struct drm_format modifiers terminated by
+<dt><code class="docutils literal notranslate"><span class="pre">format_modifiers</span></code></dt><dd><p>array of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_format</span></code> modifiers terminated by
 DRM_FORMAT_MOD_INVALID</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">plane_type</span></code></dt><dd><p>type of plane (overlay, primary, cursor)</p>
@@ -6106,7 +6258,7 @@ automatically handled through registering <a class="reference internal" href="#c
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">dev</span></code></dt><dd><p>DRM device</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt><dd><p>the type of the struct which contains struct <a class="reference internal" href="#c.drm_plane" title="drm_plane"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_plane</span></code></a></p>
+<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt><dd><p>the type of the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">which</span></code> contains struct <a class="reference internal" href="#c.drm_plane" title="drm_plane"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_plane</span></code></a></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">member</span></code></dt><dd><p>the name of the <a class="reference internal" href="#c.drm_plane" title="drm_plane"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_plane</span></code></a> within <strong>type</strong></p>
 </dd>
@@ -6118,7 +6270,7 @@ automatically handled through registering <a class="reference internal" href="#c
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">format_count</span></code></dt><dd><p>number of elements in <strong>formats</strong></p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">format_modifiers</span></code></dt><dd><p>array of struct drm_format modifiers terminated by
+<dt><code class="docutils literal notranslate"><span class="pre">format_modifiers</span></code></dt><dd><p>array of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_format</span></code> modifiers terminated by
 DRM_FORMAT_MOD_INVALID</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">plane_type</span></code></dt><dd><p>type of plane (overlay, primary, cursor)</p>
@@ -6271,7 +6423,7 @@ universal plane aware. See also <a class="reference internal" href="#c.drm_plane
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">format_count</span></code></dt><dd><p>number of elements in <strong>formats</strong></p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">uint64_t</span> <span class="pre">*format_modifiers</span></code></dt><dd><p>array of struct drm_format modifiers terminated by
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">uint64_t</span> <span class="pre">*format_modifiers</span></code></dt><dd><p>array of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_format</span></code> modifiers terminated by
 DRM_FORMAT_MOD_INVALID</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">enum</span> <span class="pre">drm_plane_type</span> <span class="pre">type</span></code></dt><dd><p>type of plane (overlay, primary, cursor)</p>
@@ -6284,13 +6436,13 @@ DRM_FORMAT_MOD_INVALID</p>
 <p><strong>Description</strong></p>
 <p>Initializes a plane object of type <strong>type</strong>. The <a class="reference internal" href="#c.drm_plane_funcs" title="drm_plane_funcs"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_plane_funcs.destroy</span></code></a> hook
 should call <a class="reference internal" href="#c.drm_plane_cleanup" title="drm_plane_cleanup"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_plane_cleanup()</span></code></a> and <a class="reference internal" href="../core-api/mm-api.html#c.kfree" title="kfree"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree()</span></code></a> the plane structure. The plane
-structure should not be allocated with devm_kzalloc().</p>
-<p>Drivers that only support the DRM_FORMAT_MOD_LINEAR modifier support may set
-<strong>format_modifiers</strong> to NULL. The plane will advertise the linear modifier.</p>
+structure should not be allocated with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_kzalloc()</span></code>.</p>
 <p><strong>Note</strong></p>
 <p>consider using <a class="reference internal" href="#c.drmm_universal_plane_alloc" title="drmm_universal_plane_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">drmm_universal_plane_alloc()</span></code></a> instead of
 <a class="reference internal" href="#c.drm_universal_plane_init" title="drm_universal_plane_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_universal_plane_init()</span></code></a> to let the DRM managed resource infrastructure
 take care of cleanup and deallocation.</p>
+<p>Drivers that only support the DRM_FORMAT_MOD_LINEAR modifier support may set
+<strong>format_modifiers</strong> to NULL. The plane will advertise the linear modifier.</p>
 <p><strong>Return</strong></p>
 <p>Zero on success, error code on failure.</p>
 </div>
@@ -6633,7 +6785,7 @@ cursor/topmost planes), drivers shall adjust the min/max values and assign
 those planes immutable zpos properties with lower or higher values (for more
 information, see <a class="reference internal" href="#c.drm_plane_create_zpos_immutable_property" title="drm_plane_create_zpos_immutable_property"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_plane_create_zpos_immutable_property()</span></code></a> function). In such
 case drivers shall also assign proper initial zpos values for all planes in
-its plane_reset() callback, so the planes will be always sorted properly.</p>
+its <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">plane_reset()</span></code> callback, so the planes will be always sorted properly.</p>
 <p>See also <a class="reference internal" href="#c.drm_atomic_normalize_zpos" title="drm_atomic_normalize_zpos"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_atomic_normalize_zpos()</span></code></a>.</p>
 <p>The property exposed to userspace is called “zpos”.</p>
 <p><strong>Return</strong></p>
@@ -6931,6 +7083,7 @@ hardware to make the scanout buffer visible.</p>
     unsigned int height;
     unsigned int pitch[DRM_FORMAT_MAX_PLANES];
     void (*set_pixel)(struct drm_scanout_buffer *sb, unsigned int x, unsigned int y, u32 color);
+    void *private;
 };
 </pre></div>
 </div>
@@ -6945,9 +7098,9 @@ screen.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">pages</span></code></dt><dd><p>Optional, if the scanout buffer is not mapped, set this field
 to the array of pages of the scanout buffer. The panic code will use
-kmap_local_page_try_from_panic() to map one page at a time to write
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kmap_local_page_try_from_panic()</span></code> to map one page at a time to write
 all the pixels. This array shouldn’t be allocated from the
-get_scanoutbuffer() callback.
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_scanoutbuffer()</span></code> callback.
 The scanout buffer should be in linear format.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">width</span></code></dt><dd><p>Width of the scanout buffer, in pixels.</p>
@@ -6959,6 +7112,9 @@ The scanout buffer should be in linear format.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">set_pixel</span></code></dt><dd><p>Optional function, to set a pixel color on the
 framebuffer. It allows to handle special tiling format inside the
 driver. It takes precedence over the <strong>map</strong> and <strong>pages</strong> fields.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">private</span></code></dt><dd><p>private pointer that you can use in the callbacks
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_pixel()</span></code></p>
 </dd>
 </dl>
 </div>
@@ -6979,7 +7135,7 @@ panic screen, and display it.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">dev</span></code></dt><dd><p><a class="reference internal" href="drm-internals.html#c.drm_device" title="drm_device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_device</span></code></a></p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">flags</span></code></dt><dd><p>unsigned long irq flags you need to pass to the unlock() counterpart</p>
+<dt><code class="docutils literal notranslate"><span class="pre">flags</span></code></dt><dd><p>unsigned long irq flags you need to pass to the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unlock()</span></code> counterpart</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -7034,7 +7190,7 @@ and <a class="reference internal" href="#c.drm_panic_unlock" title="drm_panic_un
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">dev</span></code></dt><dd><p><a class="reference internal" href="drm-internals.html#c.drm_device" title="drm_device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_device</span></code></a></p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">flags</span></code></dt><dd><p>unsigned long irq flags you need to pass to the unlock() counterpart</p>
+<dt><code class="docutils literal notranslate"><span class="pre">flags</span></code></dt><dd><p>unsigned long irq flags you need to pass to the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unlock()</span></code> counterpart</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -7182,7 +7338,7 @@ during panic printing.</p></li>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This enum is used to filter out modes not supported by the driver/hardware
+<p>This <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">is</span></code> used to filter out modes not supported by the driver/hardware
 combination.</p>
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.DRM_MODE_RES_MM">
@@ -7437,7 +7593,7 @@ user-mode’s list in drm_mode_getconnector ioctl. The purpose of
 this only lies in the ioctl function, and is not to be used
 outside the function.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">head</span></code></dt><dd><p>struct list_head for mode lists.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">head</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">list_head</span></code> for mode lists.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">name</span></code></dt><dd><p>Human-readable name of the mode, filled out with <a class="reference internal" href="#c.drm_mode_set_name" title="drm_mode_set_name"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_mode_set_name()</span></code></a>.</p>
 </dd>
@@ -8353,7 +8509,7 @@ there’s not connector with <strong>connector_status_connected</strong>.</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This enum is used to track the connector status. There are no separate
+<p>This <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">is</span></code> used to track the connector status. There are no separate
 #defines for the uapi!</p>
 <dl class="c enum">
 <dt class="sig sig-object c" id="c.drm_connector_registration_state">
@@ -8396,7 +8552,7 @@ CRTCs may never be assigned to an unregistered connector.</p></li>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This enum is used to track the status of initializing a connector and
+<p>This <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">is</span></code> used to track the status of initializing a connector and
 registering it with userspace, so that DRM can prevent bogus modesets on
 connectors that no longer exist.</p>
 <dl class="c enum">
@@ -8443,9 +8599,9 @@ or 625-line mode, with no pedestal or color encoding.</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This enum is used to indicate the TV output mode used on an analog TV
+<p>This <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">is</span></code> used to indicate the TV output mode used on an analog TV
 connector.</p>
-<p>WARNING: The values of this enum is uABI since they’re exposed in the
+<p>WARNING: The values of this <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">is</span></code> uABI since they’re exposed in the
 “TV mode” connector property.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.drm_scrambling">
@@ -8581,7 +8737,7 @@ failure</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This enum is used as the connector’s link status property value.
+<p>This <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">is</span></code> used as the connector’s link status property value.
 It is set to the values defined in uapi.</p>
 <dl class="c enum">
 <dt class="sig sig-object c" id="c.drm_panel_orientation">
@@ -8614,7 +8770,7 @@ top side of the device’s casing.</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This enum is used to track the (LCD) panel orientation. There are no
+<p>This <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">is</span></code> used to track the (LCD) panel orientation. There are no
 separate #defines for the uapi!</p>
 <dl class="c enum">
 <dt class="sig sig-object c" id="c.drm_hdmi_broadcast_rgb">
@@ -8659,7 +8815,7 @@ EDID’s detailed monitor range</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This struct is used to store a frequency range supported by panel
+<p>This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> used to store a frequency range supported by panel
 as parsed from EDID’s detailed monitor range descriptor block.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.drm_luminance_range_info">
@@ -8684,7 +8840,7 @@ as parsed from EDID’s detailed monitor range descriptor block.</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This struct is used to store a luminance range supported by panel
+<p>This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> used to store a luminance range supported by panel
 as calculated using data from EDID’s static hdr metadata.</p>
 <dl class="c enum">
 <dt class="sig sig-object c" id="c.drm_privacy_screen_status">
@@ -8706,9 +8862,9 @@ as calculated using data from EDID’s static hdr metadata.</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This enum is used to track and control the state of the integrated privacy
+<p>This <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">is</span></code> used to track and control the state of the integrated privacy
 screen present on some display panels, via the “privacy-screen sw-state”
-and “privacy-screen hw-state” properties. Note the _LOCKED enum values
+and “privacy-screen hw-state” properties. Note the _LOCKED <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">values</span></code>
 are only valid for the “privacy-screen hw-state” property.</p>
 <dl class="c enum">
 <dt class="sig sig-object c" id="c.drm_colorspace">
@@ -8776,7 +8932,7 @@ line version.</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This enum is a consolidated colorimetry list supported by HDMI and
+<p>This <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">is</span></code> a consolidated colorimetry list supported by HDMI and
 DP protocol standard. The respective connectors will register
 a property with the subset of this list (supported by that
 respective protocol). Userspace will set the colorspace through
@@ -8822,10 +8978,10 @@ HDMI definitions come from the CTA-861-H spec</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This enum defines signal polarities and clock edge information for signals on
+<p>This <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">defines</span></code> signal polarities and clock edge information for signals on
 a bus as bitmask flags.</p>
 <p>The clock edge information is conveyed by two sets of symbols,
-DRM_BUS_FLAGS_*_DRIVE_* and DRM_BUS_FLAGS_*_SAMPLE_*. When this enum is
+DRM_BUS_FLAGS_*_DRIVE_* and DRM_BUS_FLAGS_*_SAMPLE_*. When this <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">is</span></code>
 used to describe a bus from the point of view of the transmitter, the
 *_DRIVE_* flags should be used. When used from the point of view of the
 receiver, the *_SAMPLE_* flags should be used. The *_DRIVE_* and
@@ -8867,6 +9023,7 @@ and sample edges.</p>
     u8 edid_hdmi_ycbcr444_dc_modes;
     u8 cea_rev;
     struct drm_hdmi_info hdmi;
+    struct hdr_sink_metadata hdr_sink_metadata;
     bool non_desktop;
     struct drm_monitor_range_info monitor_range;
     struct drm_luminance_range_info luminance_range;
@@ -8939,6 +9096,8 @@ modes in YCbCr 4:4:4. Even more stuff redundant with <strong>bus_formats</strong
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">hdmi</span></code></dt><dd><p>advance features of a HDMI sink.</p>
 </dd>
+<dt><code class="docutils literal notranslate"><span class="pre">hdr_sink_metadata</span></code></dt><dd><p>HDR Metadata Information read from sink</p>
+</dd>
 <dt><code class="docutils literal notranslate"><span class="pre">non_desktop</span></code></dt><dd><p>Non desktop display (HMD).</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">monitor_range</span></code></dt><dd><p>Frequency range supported by monitor range descriptor</p>
@@ -8958,7 +9117,9 @@ monitor’s default value is used instead.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">vics_len</span></code></dt><dd><p>Number of elements in vics. Internal to EDID parsing.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">quirks</span></code></dt><dd><p>EDID based quirks. Internal to EDID parsing.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">quirks</span></code></dt><dd><p>EDID based quirks. DRM core and drivers can query the
+<strong>drm_edid_quirk</strong> quirks using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_edid_has_quirk()</span></code>, the rest of
+the quirks also tracked here are internal to EDID parsing.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">source_physical_address</span></code></dt><dd><p>Source Physical Address from HDMI
 Vendor-Specific Data Block, for CEC usage.</p>
@@ -9192,6 +9353,31 @@ Properties</span></a></p>
 </dl>
 </div>
 <dl class="c struct">
+<dt class="sig sig-object c" id="c.drm_connector_cec_funcs">
+<span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_connector_cec_funcs</span></span></span><a class="headerlink" href="#c.drm_connector_cec_funcs" title="Link to this definition">¶</a><br /></dt>
+<dd><p>drm_hdmi_connector control functions</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Definition</strong>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct drm_connector_cec_funcs {
+    void (*phys_addr_invalidate)(struct drm_connector *connector);
+    void (*phys_addr_set)(struct drm_connector *connector, u16 addr);
+};
+</pre></div>
+</div>
+<p><strong>Members</strong></p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">phys_addr_invalidate</span></code></dt><dd><p>mark CEC physical address as invalid</p>
+<p>The callback to mark CEC physical address as invalid, abstracting
+the operation.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">phys_addr_set</span></code></dt><dd><p>set CEC physical address</p>
+<p>The callback to set CEC physical address, abstracting the operation.</p>
+</dd>
+</dl>
+</div>
+<dl class="c struct">
 <dt class="sig sig-object c" id="c.drm_connector_hdmi_funcs">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_connector_hdmi_funcs</span></span></span><a class="headerlink" href="#c.drm_connector_hdmi_funcs" title="Link to this definition">¶</a><br /></dt>
 <dd><p>drm_hdmi_connector control functions</p>
@@ -9200,9 +9386,9 @@ Properties</span></a></p>
 <div class="kernelindent docutils container">
 <p><strong>Definition</strong>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct drm_connector_hdmi_funcs {
-    enum drm_mode_status(*tmds_char_rate_valid)(const struct drm_connector *connector,const struct drm_display_mode *mode, unsigned long long tmds_rate);
+    enum drm_mode_status (*tmds_char_rate_valid)(const struct drm_connector *connector, const struct drm_display_mode *mode, unsigned long long tmds_rate);
     int (*clear_infoframe)(struct drm_connector *connector, enum hdmi_infoframe_type type);
-    int (*write_infoframe)(struct drm_connector *connector,enum hdmi_infoframe_type type, const u8 *buffer, size_t len);
+    int (*write_infoframe)(struct drm_connector *connector, enum hdmi_infoframe_type type, const u8 *buffer, size_t len);
     const struct drm_edid *(*read_edid)(struct drm_connector *connector);
 };
 </pre></div>
@@ -9265,8 +9451,8 @@ Valid EDID on success, NULL in case of failure.</p>
     void (*destroy)(struct drm_connector *connector);
     struct drm_connector_state *(*atomic_duplicate_state)(struct drm_connector *connector);
     void (*atomic_destroy_state)(struct drm_connector *connector, struct drm_connector_state *state);
-    int (*atomic_set_property)(struct drm_connector *connector,struct drm_connector_state *state,struct drm_property *property, uint64_t val);
-    int (*atomic_get_property)(struct drm_connector *connector,const struct drm_connector_state *state,struct drm_property *property, uint64_t *val);
+    int (*atomic_set_property)(struct drm_connector *connector, struct drm_connector_state *state, struct drm_property *property, uint64_t val);
+    int (*atomic_get_property)(struct drm_connector *connector, const struct drm_connector_state *state, struct drm_property *property, uint64_t *val);
     void (*atomic_print_state)(struct drm_printer *p, const struct drm_connector_state *state);
     void (*oob_hotplug_event)(struct drm_connector *connector, enum drm_connector_status status);
     void (*debugfs_init)(struct drm_connector *connector, struct dentry *root);
@@ -9357,7 +9543,7 @@ should be unregistered in the early_unregister callback.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">early_unregister</span></code></dt><dd><p>This optional hook should be used to unregister the additional
 userspace interfaces attached to the connector from
-late_register(). It is called from <a class="reference internal" href="#c.drm_connector_unregister" title="drm_connector_unregister"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_connector_unregister()</span></code></a>,
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">late_register()</span></code>. It is called from <a class="reference internal" href="#c.drm_connector_unregister" title="drm_connector_unregister"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_connector_unregister()</span></code></a>,
 early in the driver unload sequence to disable userspace access
 before data structures are torndown.</p>
 <p>This is called while holding <a class="reference internal" href="#c.drm_connector" title="drm_connector"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_connector.mutex</span></code></a>.</p>
@@ -9402,7 +9588,7 @@ truly hardware/vendor specific state. Instead it is preferred to
 standardize atomic extension and decode the properties used to expose
 such an extension in the core.</p>
 <p>Do not call this function directly, use
-drm_atomic_connector_set_property() instead.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_atomic_connector_set_property()</span></code> instead.</p>
 <p>This callback is optional if the driver does not support any
 driver-private atomic properties.</p>
 <p>NOTE:</p>
@@ -9420,13 +9606,13 @@ validation must be done in the various atomic_check callbacks.</p>
 implemented by the driver (which shouldn’t ever happen, the core only
 asks for properties attached to this connector). No other validation
 is allowed by the driver. The core already checks that the property
-value is within the range (integer, valid enum value, ...) the driver
+value is within the range (integer, valid <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">value</span></code>, ...) the driver
 set when registering the property.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">atomic_get_property</span></code></dt><dd><p>Reads out the decoded driver-private property. This is used to
 implement the GETCONNECTOR IOCTL.</p>
 <p>Do not call this function directly, use
-drm_atomic_connector_get_property() instead.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_atomic_connector_get_property()</span></code> instead.</p>
 <p>This callback is optional if the driver does not support any
 driver-private atomic properties.</p>
 <p>RETURNS:</p>
@@ -9436,7 +9622,7 @@ properties attached to this connector).</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">atomic_print_state</span></code></dt><dd><p>If driver subclasses <a class="reference internal" href="#c.drm_connector_state" title="drm_connector_state"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_connector_state</span></code></a>, it should implement
 this optional hook for printing additional driver specific state.</p>
-<p>Do not call this directly, use drm_atomic_connector_print_state()
+<p>Do not call this directly, use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_atomic_connector_print_state()</span></code>
 instead.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">oob_hotplug_event</span></code></dt><dd><p>This will get called when a hotplug-event for a drm-connector
@@ -9568,10 +9754,10 @@ automatically unregistered during <a class="reference internal" href="#c.drm_con
 from this connector. This is assigned by the framework when
 requested by the ASoC code.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">plugged_cb_dev</span></code></dt><dd><p>The data for <strong>plugged_cb()</strong>. It is being provided by the ASoC.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">plugged_cb_dev</span></code></dt><dd><p>The data for <strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">plugged_cb()</span></code></strong>. It is being provided by the ASoC.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">last_state</span></code></dt><dd><p>Last plugged state recored by the framework. It is used to correctly
-report the state to <strong>plugged_cb()</strong>.</p>
+report the state to <strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">plugged_cb()</span></code></strong>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">dai_port</span></code></dt><dd><p>The port in DT that is used for the Codec DAI.</p>
 </dd>
@@ -9580,6 +9766,31 @@ report the state to <strong>plugged_cb()</strong>.</p>
 <p><strong>Description</strong></p>
 <p>HDMI drivers usually incorporate a HDMI Codec. This structure expresses the
 generic HDMI Codec as used by the DRM HDMI Codec framework.</p>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.drm_connector_cec">
+<span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_connector_cec</span></span></span><a class="headerlink" href="#c.drm_connector_cec" title="Link to this definition">¶</a><br /></dt>
+<dd><p>DRM Connector CEC-related structure</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Definition</strong>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct drm_connector_cec {
+    struct mutex mutex;
+    const struct drm_connector_cec_funcs *funcs;
+    void *data;
+};
+</pre></div>
+</div>
+<p><strong>Members</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">mutex</span></code></dt><dd><p>protects all fields in this structure.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">funcs</span></code></dt><dd><p>CEC Control Functions</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">data</span></code></dt><dd><p>CEC implementation-specific data</p>
+</dd>
+</dl>
+</div>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.drm_connector">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_connector</span></span></span><a class="headerlink" href="#c.drm_connector" title="Link to this definition">¶</a><br /></dt>
@@ -9658,9 +9869,9 @@ generic HDMI Codec as used by the DRM HDMI Codec framework.</p>
     uint8_t tile_h_loc, tile_v_loc;
     uint16_t tile_h_size, tile_v_size;
     struct llist_node free_node;
-    struct hdr_sink_metadata hdr_sink_metadata;
     struct drm_connector_hdmi hdmi;
     struct drm_connector_hdmi_audio hdmi_audio;
+    struct drm_connector_cec cec;
 };
 </pre></div>
 </div>
@@ -9675,7 +9886,7 @@ generic HDMI Codec as used by the DRM HDMI Codec framework.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">fwnode</span></code></dt><dd><p>associated fwnode supplied by platform firmware</p>
 <p>Drivers can set this to associate a fwnode with a connector, drivers
 are expected to get a reference on the fwnode when setting this.
-<a class="reference internal" href="#c.drm_connector_cleanup" title="drm_connector_cleanup"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_connector_cleanup()</span></code></a> will call fwnode_handle_put() on this.</p>
+<a class="reference internal" href="#c.drm_connector_cleanup" title="drm_connector_cleanup"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_connector_cleanup()</span></code></a> will call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fwnode_handle_put()</span></code> on this.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">head</span></code></dt><dd><p>List of all connectors on a <strong>dev</strong>, linked from
 <a class="reference internal" href="#c.drm_mode_config" title="drm_mode_config"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_mode_config.connector_list</span></code></a>. Protected by
@@ -9683,7 +9894,7 @@ are expected to get a reference on the fwnode when setting this.
 <a class="reference internal" href="#c.drm_connector_list_iter" title="drm_connector_list_iter"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_connector_list_iter</span></code></a> to walk this list.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">global_connector_list_entry</span></code></dt><dd><p>Connector entry in the global connector-list, used by
-drm_connector_find_by_fwnode().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_connector_find_by_fwnode()</span></code>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">base</span></code></dt><dd><p>base KMS object</p>
 </dd>
@@ -9720,7 +9931,7 @@ handling YCBCR 420 outputs.</p>
 (registered) with userspace, or unregistered?</p>
 <p>Protected by <strong>mutex</strong>.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">modes</span></code></dt><dd><p>Modes available on this connector (from fill_modes() + user).
+<dt><code class="docutils literal notranslate"><span class="pre">modes</span></code></dt><dd><p>Modes available on this connector (from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fill_modes()</span></code> + user).
 Protected by <a class="reference internal" href="#c.drm_mode_config" title="drm_mode_config"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_mode_config.mutex</span></code></a>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">status</span></code></dt><dd><p>One of the drm_connector_status enums (connected, not, or unknown).
@@ -9900,11 +10111,11 @@ the tiling and virtualize both <a class="reference internal" href="#c.drm_crtc" 
 connector from any context, in conjunction with
 <a class="reference internal" href="#c.drm_mode_config" title="drm_mode_config"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_mode_config.connector_free_work</span></code></a>.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">hdr_sink_metadata</span></code></dt><dd><p>HDR Metadata Information read from sink</p>
-</dd>
 <dt><code class="docutils literal notranslate"><span class="pre">hdmi</span></code></dt><dd><p>HDMI-related variable and properties.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">hdmi_audio</span></code></dt><dd><p>HDMI codec properties and non-DRM state.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cec</span></code></dt><dd><p>CEC-related data.</p>
 </dd>
 </dl>
 </div>
@@ -10115,7 +10326,7 @@ your own reference first using <a class="reference internal" href="#c.drm_connec
 subclassed as part of driver connector objects.</p>
 <p>At driver unload time the driver’s <a class="reference internal" href="#c.drm_connector_funcs" title="drm_connector_funcs"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_connector_funcs.destroy</span></code></a> hook
 should call <a class="reference internal" href="#c.drm_connector_cleanup" title="drm_connector_cleanup"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_connector_cleanup()</span></code></a> and free the connector structure.
-The connector structure should not be allocated with devm_kzalloc().</p>
+The connector structure should not be allocated with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_kzalloc()</span></code>.</p>
 <p><strong>Note</strong></p>
 <p>consider using <a class="reference internal" href="#c.drmm_connector_init" title="drmm_connector_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">drmm_connector_init()</span></code></a> instead of
 <a class="reference internal" href="#c.drm_connector_init" title="drm_connector_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_connector_init()</span></code></a> to let the DRM managed resource infrastructure
@@ -10146,7 +10357,7 @@ take care of cleanup and deallocation.</p>
 <p><strong>Description</strong></p>
 <p>Initialises a preallocated dynamic connector. Connectors should be
 subclassed as part of driver connector objects. The connector
-structure should not be allocated with devm_kzalloc().</p>
+structure should not be allocated with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_kzalloc()</span></code>.</p>
 <p>Drivers should call this for dynamic connectors which can be hotplugged
 after <a class="reference internal" href="drm-internals.html#c.drm_dev_register" title="drm_dev_register"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_dev_register()</span></code></a> has been called already, e.g. DP MST connectors.
 For all other - static - connectors, drivers should call one of the
@@ -10185,7 +10396,7 @@ driver’s <a class="reference internal" href="#c.drm_connector_funcs" title="dr
 subclassed as part of driver connector objects.</p>
 <p>At driver unload time the driver’s <a class="reference internal" href="#c.drm_connector_funcs" title="drm_connector_funcs"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_connector_funcs.destroy</span></code></a> hook
 should call <a class="reference internal" href="#c.drm_connector_cleanup" title="drm_connector_cleanup"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_connector_cleanup()</span></code></a> and free the connector structure.
-The connector structure should not be allocated with devm_kzalloc().</p>
+The connector structure should not be allocated with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_kzalloc()</span></code>.</p>
 <p>Ensures that the ddc field of the connector is correctly set.</p>
 <p><strong>Note</strong></p>
 <p>consider using <a class="reference internal" href="#c.drmm_connector_init" title="drmm_connector_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">drmm_connector_init()</span></code></a> instead of
@@ -10318,6 +10529,36 @@ possible_clones and possible_crtcs bitmasks.</p>
 </dl>
 <p><strong>Return</strong></p>
 <p>True if <strong>encoder</strong> is one of the possible encoders for <strong>connector</strong>.</p>
+</div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.drm_connector_cec_phys_addr_invalidate">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_connector_cec_phys_addr_invalidate</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_connector" title="drm_connector"><span class="n"><span class="pre">drm_connector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">connector</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_connector_cec_phys_addr_invalidate" title="Link to this definition">¶</a><br /></dt>
+<dd><p>invalidate CEC physical address</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_connector</span> <span class="pre">*connector</span></code></dt><dd><p>connector undergoing CEC operation</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>Invalidated CEC physical address set for this DRM connector.</p>
+</div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.drm_connector_cec_phys_addr_set">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_connector_cec_phys_addr_set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_connector" title="drm_connector"><span class="n"><span class="pre">drm_connector</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">connector</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_connector_cec_phys_addr_set" title="Link to this definition">¶</a><br /></dt>
+<dd><p>propagate CEC physical address</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_connector</span> <span class="pre">*connector</span></code></dt><dd><p>connector undergoing CEC operation</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>Propagate CEC physical address from the display_info to this DRM connector.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_connector_cleanup">
@@ -10483,7 +10724,7 @@ list.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">enum</span> <span class="pre">subpixel_order</span> <span class="pre">order</span></code></dt><dd><p>enum of subpixel_order</p>
+<dt><code class="docutils literal notranslate"><span class="pre">enum</span> <span class="pre">subpixel_order</span> <span class="pre">order</span></code></dt><dd><p><code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">of</span></code> subpixel_order</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -10518,7 +10759,7 @@ a full list of available formats.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_get_tv_mode_from_name">
 <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_get_tv_mode_from_name</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">name</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_get_tv_mode_from_name" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Translates a TV mode name into its enum value</p>
+<dd><p>Translates a TV mode name into its <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">value</span></code></p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -10532,7 +10773,7 @@ a full list of available formats.</p>
 <p><strong>Description</strong></p>
 <p>Translates <strong>name</strong> into an <a class="reference internal" href="#c.drm_connector_tv_mode" title="drm_connector_tv_mode"><code class="xref c c-enum docutils literal notranslate"><span class="pre">enum</span> <span class="pre">drm_connector_tv_mode</span></code></a>.</p>
 <p><strong>Return</strong></p>
-<p>the enum value on success, a negative errno otherwise.</p>
+<p>the <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">value</span></code> on success, a negative errno otherwise.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_mode_create_dvi_i_properties">
@@ -10884,13 +11125,13 @@ or DisplayPort MST connectors.</p>
 may set this link status property to “BAD”. The caller then needs to send a
 hotplug uevent for userspace to re-check the valid modes through
 GET_CONNECTOR_IOCTL and retry modeset.</p>
-<p>The reason for adding this property is to handle link training failures, but
-it is not limited to DP or link training. For example, if we implement
-asynchronous setcrtc, this property can be used to report any failures in that.</p>
 <p><strong>Note</strong></p>
 <p>Drivers cannot rely on userspace to support this property and
 issue a modeset. As such, they may choose to handle issues (like
 re-training a link) without userspace’s intervention.</p>
+<p>The reason for adding this property is to handle link training failures, but
+it is not limited to DP or link training. For example, if we implement
+asynchronous setcrtc, this property can be used to report any failures in that.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_connector_attach_max_bpc_property">
@@ -11072,7 +11313,7 @@ specific (e.g. DMI based) quirks overriding the passed in panel_orientation.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Drm drivers should call this function before <a class="reference internal" href="drm-internals.html#c.drm_dev_register" title="drm_dev_register"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_dev_register()</span></code></a>.
-Orientation is obtained from panel’s .get_orientation() callback.</p>
+Orientation is obtained from panel’s .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_orientation()</span></code> callback.</p>
 <p><strong>Return</strong></p>
 <p>Zero on success, negative errno on failure.</p>
 </div>
@@ -11167,7 +11408,7 @@ driver / device. An example of this is some USB Type-C setups where the hardware
 muxes the DisplayPort data and aux-lines but does not pass the altmode HPD
 status bit to the GPU’s DP HPD pin.</p>
 <p>This function can be used to report these out-of-band events after obtaining
-a drm_connector reference through calling drm_connector_find_by_fwnode().</p>
+a drm_connector reference through calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_connector_find_by_fwnode()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_mode_put_tile_group">
@@ -11359,7 +11600,7 @@ created on the connector’s timeline.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">connector</span></code></dt><dd><p>Back-pointer to the writeback connector associated with the job</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">prepared</span></code></dt><dd><p>Set when the job has been prepared with drm_writeback_prepare_job()</p>
+<dt><code class="docutils literal notranslate"><span class="pre">prepared</span></code></dt><dd><p>Set when the job has been prepared with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_writeback_prepare_job()</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">cleanup_work</span></code></dt><dd><p>Used to allow drm_writeback_signal_completion to defer dropping the
 framebuffer reference to a workqueue</p>
@@ -11367,7 +11608,7 @@ framebuffer reference to a workqueue</p>
 <dt><code class="docutils literal notranslate"><span class="pre">list_entry</span></code></dt><dd><p>List item for the writeback connector’s <strong>job_queue</strong></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">fb</span></code></dt><dd><p>Framebuffer to be written to by the writeback connector. Do not set
-directly, use drm_writeback_set_fb()</p>
+directly, use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_writeback_set_fb()</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">out_fence</span></code></dt><dd><p>Fence which will signal once the writeback has completed</p>
 </dd>
@@ -11712,7 +11953,7 @@ appropriate for a given connector or set of connectors.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">dev</span></code></dt><dd><p>drm device</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt><dd><p>the type of the struct which contains struct <a class="reference internal" href="#c.drm_encoder" title="drm_encoder"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_encoder</span></code></a></p>
+<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt><dd><p>the type of the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">which</span></code> contains struct <a class="reference internal" href="#c.drm_encoder" title="drm_encoder"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_encoder</span></code></a></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">member</span></code></dt><dd><p>the name of the <a class="reference internal" href="#c.drm_encoder" title="drm_encoder"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_encoder</span></code></a> within <strong>type</strong></p>
 </dd>
@@ -11900,7 +12141,7 @@ encoder’s possible_clones field.</p>
 driver encoder objects. At driver unload time the driver’s
 <a class="reference internal" href="#c.drm_encoder_funcs" title="drm_encoder_funcs"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_encoder_funcs.destroy</span></code></a> hook should call <a class="reference internal" href="#c.drm_encoder_cleanup" title="drm_encoder_cleanup"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_encoder_cleanup()</span></code></a> and <a class="reference internal" href="../core-api/mm-api.html#c.kfree" title="kfree"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree()</span></code></a>
 the encoder structure. The encoder structure should not be allocated with
-devm_kzalloc().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_kzalloc()</span></code>.</p>
 <p><strong>Note</strong></p>
 <p>consider using <a class="reference internal" href="#c.drmm_encoder_alloc" title="drmm_encoder_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">drmm_encoder_alloc()</span></code></a> or <a class="reference internal" href="#c.drmm_encoder_init" title="drmm_encoder_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">drmm_encoder_init()</span></code></a>
 instead of <a class="reference internal" href="#c.drm_encoder_init" title="drm_encoder_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_encoder_init()</span></code></a> to let the DRM managed resource
@@ -12089,7 +12330,7 @@ part of an atomic update</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_modeset_lock_assert_held">
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_modeset_lock_assert_held</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_modeset_lock" title="drm_modeset_lock"><span class="n"><span class="pre">drm_modeset_lock</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">lock</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_modeset_lock_assert_held" title="Link to this definition">¶</a><br /></dt>
-<dd><p>equivalent to lockdep_assert_held()</p>
+<dd><p>equivalent to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lockdep_assert_held()</span></code></p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -12412,7 +12653,7 @@ addition to the one mentioned above:</p>
 property on the object it attaches to.</p></li>
 <li><p>Its content must be decoded by the core and provided in the object’s
 associated state structure. That includes anything drivers might want
-to precompute, like struct drm_clip_rect for planes.</p></li>
+to precompute, like <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_clip_rect</span></code> for planes.</p></li>
 <li><p>Its initial state must match the behavior prior to the property
 introduction. This might be a fixed value matching what the hardware
 does, or it may be inherited from the state the firmware left the
@@ -12461,13 +12702,13 @@ IOCTL and in the get/set property IOCTL.</p>
 </div>
 <p><strong>Members</strong></p>
 <dl>
-<dt><code class="docutils literal notranslate"><span class="pre">value</span></code></dt><dd><p>numeric property value for this enum entry</p>
+<dt><code class="docutils literal notranslate"><span class="pre">value</span></code></dt><dd><p>numeric property value for this <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">entry</span></code></p>
 <p>If the property has the type <code class="xref c c-type docutils literal notranslate"><span class="pre">DRM_MODE_PROP_BITMASK</span></code>, <strong>value</strong> stores a
-bitshift, not a bitmask. In other words, the enum entry is enabled
-if the bit number <strong>value</strong> is set in the property’s value. This enum
-entry has the bitmask <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">&lt;&lt;</span> <span class="pre">value</span></code>.</p>
+bitshift, not a bitmask. In other words, the <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">entry</span></code> is enabled
+if the bit number <strong>value</strong> is set in the property’s value. This <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span>
+<span class="pre">entry</span></code> has the bitmask <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">&lt;&lt;</span> <span class="pre">value</span></code>.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">head</span></code></dt><dd><p>list of enum values, linked to <a class="reference internal" href="#c.drm_property" title="drm_property"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_property.enum_list</span></code></a></p>
+<dt><code class="docutils literal notranslate"><span class="pre">head</span></code></dt><dd><p>list of <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">values</span></code>, linked to <a class="reference internal" href="#c.drm_property" title="drm_property"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_property.enum_list</span></code></a></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">name</span></code></dt><dd><p>symbolic name for the enum</p>
 </dd>
@@ -12576,7 +12817,7 @@ interpretation of these limits is dependent upon the type per <strong>flags</str
 <dt><code class="docutils literal notranslate"><span class="pre">dev</span></code></dt><dd><p>DRM device</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">enum_list</span></code></dt><dd><p>List of <code class="xref c c-type docutils literal notranslate"><span class="pre">drm_prop_enum_list</span></code> structures with the symbolic names for
-enum and bitmask values.</p>
+<code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">and</span></code> bitmask values.</p>
 </dd>
 </dl>
 </div>
@@ -13308,8 +13549,8 @@ associated hardware.</p>
 structure from userspace. This is received as blob and stored in
 <a class="reference internal" href="#c.drm_connector_state" title="drm_connector_state"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_connector_state.hdr_output_metadata</span></code></a>. It parses EDID and saves the
 sink metadata in <a class="reference internal" href="drm-kms-helpers.html#c.hdr_sink_metadata" title="hdr_sink_metadata"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hdr_sink_metadata</span></code></a>, as
-<a class="reference internal" href="#c.drm_connector" title="drm_connector"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_connector.hdr_sink_metadata</span></code></a>.  Driver uses
-drm_hdmi_infoframe_set_hdr_metadata() helper to set the HDR metadata,
+<a class="reference internal" href="#c.drm_connector" title="drm_connector"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_connector.display_info</span></code></a>.hdr_sink_metadata.  Driver uses
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_hdmi_infoframe_set_hdr_metadata()</span></code> helper to set the HDR metadata,
 <a class="reference internal" href="drm-kms-helpers.html#c.hdmi_drm_infoframe_pack" title="hdmi_drm_infoframe_pack"><code class="xref c c-func docutils literal notranslate"><span class="pre">hdmi_drm_infoframe_pack()</span></code></a> to pack the infoframe as per spec, in case of
 HDMI encoder.</p>
 </dd>
@@ -13528,7 +13769,7 @@ settings accordingly.</p>
 <p>The meaning of each content type is defined in CTA-861-G table 15.</p>
 <p>Drivers can set up this property by calling
 <a class="reference internal" href="#c.drm_connector_attach_content_type_property" title="drm_connector_attach_content_type_property"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_connector_attach_content_type_property()</span></code></a>. Decoding to
-infoframe values is done through drm_hdmi_avi_infoframe_content_type().</p>
+infoframe values is done through <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_hdmi_avi_infoframe_content_type()</span></code>.</p>
 </dd>
 </dl>
 </section>
@@ -13667,8 +13908,8 @@ cursor.</p>
 </dl>
 </dd>
 <dt>IN_FORMATS:</dt><dd><p>Blob property which contains the set of buffer format and modifier
-pairs supported by this plane. The blob is a struct
-drm_format_modifier_blob. Without this property the plane doesn’t
+pairs supported by this plane. The blob is a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">drm_format_modifier_blob</span></code>. Without this property the plane doesn’t
 support buffers with modifiers. Userspace cannot change this property.</p>
 <p>Note that userspace can check the <a class="reference internal" href="drm-uapi.html#c.DRM_CAP_ADDFB2_MODIFIERS" title="DRM_CAP_ADDFB2_MODIFIERS"><code class="xref c c-type docutils literal notranslate"><span class="pre">DRM_CAP_ADDFB2_MODIFIERS</span></code></a> driver
 capability for general modifier support. If this flag is set then every
@@ -13678,8 +13919,8 @@ various bugs in this area with inconsistencies between the capability
 flag and per-plane properties.</p>
 </dd>
 <dt>IN_FORMATS_ASYNC:</dt><dd><p>Blob property which contains the set of buffer format and modifier
-pairs supported by this plane for asynchronous flips. The blob is a struct
-drm_format_modifier_blob. Userspace cannot change this property. This is an
+pairs supported by this plane for asynchronous flips. The blob is a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">drm_format_modifier_blob</span></code>. Userspace cannot change this property. This is an
 optional property and if not present then user should expect a failure in
 atomic ioctl when the modifier/format is not supported by that plane under
 asynchronous flip.</p>
@@ -13750,7 +13991,7 @@ not update the screen.</p>
 <p>Note that the source rectangle must fully lie within the bounds of the
 <a class="reference internal" href="#c.drm_framebuffer" title="drm_framebuffer"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_framebuffer</span></code></a>. The destination rectangle can lie outside of the visible
 area of the current mode of the CRTC. It must be appropriately clipped by the
-driver, which can be done by calling drm_plane_helper_check_update(). Drivers
+driver, which can be done by calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_plane_helper_check_update()</span></code>. Drivers
 are also allowed to round the subpixel sampling positions appropriately, but
 only to the next full pixel. No pixel outside of the source rectangle may
 ever be sampled, which is important when applying more sophisticated
@@ -13987,13 +14228,13 @@ ramp with “GAMMA_LUT” or, if that is unavailable, “DEGAMMA_LUT”.</p>
 <a class="reference internal" href="#c.drm_plane" title="drm_plane"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_plane</span></code></a> specific COLOR_ENCODING and COLOR_RANGE properties. They
 are set up by calling <a class="reference internal" href="#c.drm_plane_create_color_properties" title="drm_plane_create_color_properties"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_plane_create_color_properties()</span></code></a>.</p>
 <dl class="simple">
-<dt>“COLOR_ENCODING”:</dt><dd><p>Optional plane enum property to support different non RGB
+<dt>“COLOR_ENCODING”:</dt><dd><p>Optional plane <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">property</span></code> to support different non RGB
 color encodings. The driver can provide a subset of standard
-enum values supported by the DRM plane.</p>
+<code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">values</span></code> supported by the DRM plane.</p>
 </dd>
-<dt>“COLOR_RANGE”:</dt><dd><p>Optional plane enum property to support different non RGB
+<dt>“COLOR_RANGE”:</dt><dd><p>Optional plane <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">property</span></code> to support different non RGB
 color parameter ranges. The driver can provide a subset of
-standard enum values supported by the DRM plane.</p>
+standard <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">values</span></code> supported by the DRM plane.</p>
 </dd>
 </dl>
 </section>
@@ -15507,6 +15748,12 @@ interrupt. For example when the page flip interrupt happens when the page
 flip gets armed, but not when it actually executes within the next vblank
 period. This helper function implements exactly the required vblank arming
 behaviour.</p>
+<p><strong>NOTE</strong></p>
+<p>Drivers using this to send out the <a class="reference internal" href="#c.drm_crtc_state" title="drm_crtc_state"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_crtc_state.event</span></code></a> as part of an
+atomic commit must ensure that the next vblank happens at exactly the same
+time as the atomic commit is committed to the hardware. This function itself
+does <strong>not</strong> protect against the next vblank interrupt racing with either this
+function call or the atomic commit operation. A possible sequence could be:</p>
 <ol class="arabic simple">
 <li><p>Driver commits new hardware state into vblank-synchronized registers.</p></li>
 <li><p>A vblank happens, committing the hardware state. Also the corresponding
@@ -15526,12 +15773,6 @@ handler by calling <a class="reference internal" href="#c.drm_crtc_send_vblank_e
 possible race with the hardware committing the atomic update.</p>
 <p>Caller must hold a vblank reference for the event <strong>e</strong> acquired by a
 <a class="reference internal" href="#c.drm_crtc_vblank_get" title="drm_crtc_vblank_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_crtc_vblank_get()</span></code></a>, which will be dropped when the next vblank arrives.</p>
-<p><strong>NOTE</strong></p>
-<p>Drivers using this to send out the <a class="reference internal" href="#c.drm_crtc_state" title="drm_crtc_state"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_crtc_state.event</span></code></a> as part of an
-atomic commit must ensure that the next vblank happens at exactly the same
-time as the atomic commit is committed to the hardware. This function itself
-does <strong>not</strong> protect against the next vblank interrupt racing with either this
-function call or the atomic commit operation. A possible sequence could be:</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_crtc_send_vblank_event">
@@ -15687,7 +15928,7 @@ display configuration.</p>
 when a specific connector is active the maximum can be set
 to zero. And when that specific connector isn’t active the
 maximum can again be set to the appropriate non-zero value.</p>
-<p>If used, must be called before drm_vblank_on().</p>
+<p>If used, must be called before <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_vblank_on()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_crtc_vblank_on_config">

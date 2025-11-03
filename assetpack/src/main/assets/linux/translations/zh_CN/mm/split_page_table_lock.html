@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -231,25 +231,25 @@ PMD表使用分页锁。对高层表的访问由mm-&gt;page_table_lock保护。<
 </section>
 <section id="id1">
 <h2>架构对分页表锁的支持<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
-<p>没有必要特别启用PTE分页表锁：所有需要的东西都由pagetable_pte_ctor()
-和pagetable_pte_dtor()完成，它们必须在PTE表分配/释放时被调用。</p>
+<p>没有必要特别启用PTE分页表锁：所有需要的东西都由<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pagetable_pte_ctor()</span></code>
+和<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pagetable_pte_dtor()</span></code>完成，它们必须在PTE表分配/释放时被调用。</p>
 <p>确保架构不使用slab分配器来分配页表：slab使用page-&gt;slab_cache来分配其页
 面。这个区域与page-&gt;ptl共享存储。</p>
 <p>PMD分页锁只有在你有两个以上的页表级别时才有意义。</p>
-<p>启用PMD分页锁需要在PMD表分配时调用pagetable_pmd_ctor()，在释放时调
-用pagetable_pmd_dtor()。</p>
-<p>分配通常发生在pmd_alloc_one()中，释放发生在pmd_free()和pmd_free_tlb()
-中，但要确保覆盖所有的PMD表分配/释放路径：即X86_PAE在pgd_alloc()中预先
+<p>启用PMD分页锁需要在PMD表分配时调用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pagetable_pmd_ctor()</span></code>，在释放时调
+用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pagetable_pmd_dtor()</span></code>。</p>
+<p>分配通常发生在<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pmd_alloc_one()</span></code>中，释放发生在<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pmd_free()</span></code>和<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pmd_free_tlb()</span></code>
+中，但要确保覆盖所有的PMD表分配/释放路径：即X86_PAE在<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pgd_alloc()</span></code>中预先
 分配一些PMD。</p>
 <p>一切就绪后，你可以设置CONFIG_ARCH_ENABLE_SPLIT_PMD_PTLOCK。</p>
-<p>注意：pagetable_pte_ctor()和pagetable_pmd_ctor()可能失败--必
+<p>注意：<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pagetable_pte_ctor()</span></code>和<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pagetable_pmd_ctor()</span></code>可能失败--必
 须正确处理。</p>
 </section>
 <section id="page-ptl">
 <h2>page-&gt;ptl<a class="headerlink" href="#page-ptl" title="Link to this heading">¶</a></h2>
-<p>page-&gt;ptl用于访问分割页表锁，其中’page’是包含该表的页面struct page。它
+<p>page-&gt;ptl用于访问分割页表锁，其中’page’是包含该表的页面<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code>。它
 与page-&gt;private（以及union中的其他几个字段）共享存储。</p>
-<p>为了避免增加struct page的大小并获得最佳性能，我们使用了一个技巧:</p>
+<p>为了避免增加<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code>的大小并获得最佳性能，我们使用了一个技巧:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>如果spinlock_t适合于long，我们使用page-&gt;ptr作为spinlock，这样我们
@@ -259,8 +259,8 @@ PMD表使用分页锁。对高层表的访问由mm-&gt;page_table_lock保护。<
 情况下使用分页锁，但由于间接访问而多花了一个缓存行。</p></li>
 </ul>
 </div></blockquote>
-<p>PTE表的spinlock_t分配在pagetable_pte_ctor()中，PMD表的spinlock_t
-分配在pagetable_pmd_ctor()中。</p>
+<p>PTE表的spinlock_t分配在<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pagetable_pte_ctor()</span></code>中，PMD表的spinlock_t
+分配在<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pagetable_pmd_ctor()</span></code>中。</p>
 <p>请不要直接访问page-&gt;ptl - -使用适当的辅助函数。</p>
 </section>
 </section>

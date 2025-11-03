@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -163,9 +163,9 @@ identifier, the appropriate callback will be called.</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>socket();</p></li>
-<li><p>bind();</p></li>
-<li><p>send();</p></li>
-<li><p>recv();</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code>;</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">send()</span></code>;</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recv()</span></code>;</p></li>
 </ul>
 </div></blockquote>
 <p>But if kernelspace wants to use the full power of such connections, the
@@ -188,7 +188,7 @@ struct cb_id
 connector.h header for in-kernel usage.  <cite>void (*callback) (void *)</cite> is a
 callback function which will be called when a message with above idx.val
 is received by the connector core.  The argument for that function must
-be dereferenced to <cite>struct cn_msg *</cite>:</p>
+be dereferenced to <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cn_msg</span></code> *</cite>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct cn_msg
 {
       struct cb_id            id;
@@ -343,8 +343,8 @@ uses the connector to request notification and to send messages.</p>
 <h2>Reliability<a class="headerlink" href="#reliability" title="Link to this heading">¶</a></h2>
 <p>Netlink itself is not a reliable protocol.  That means that messages can
 be lost due to memory pressure or process’ receiving queue overflowed,
-so caller is warned that it must be prepared.  That is why the struct
-cn_msg [main connector’s message header] contains u32 seq and u32 ack
+so caller is warned that it must be prepared.  That is why the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">cn_msg</span></code> [main connector’s message header] contains u32 seq and u32 ack
 fields.</p>
 </section>
 <section id="userspace-usage">
@@ -376,7 +376,7 @@ if (bind(s, (struct sockaddr *)&amp;l_local, sizeof(struct sockaddr_nl)) == -1) 
 option.  To drop a multicast subscription, one should call the above socket
 option with the NETLINK_DROP_MEMBERSHIP parameter which is defined as 0.</p>
 <p>2.6.14 netlink code only allows to select a group which is less or equal to
-the maximum group number, which is used at netlink_kernel_create() time.
+the maximum group number, which is used at <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">netlink_kernel_create()</span></code> time.
 In case of connector it is CN_NETLINK_USERS + 0xf, so if you want to use
 group number 12345, you must increment CN_NETLINK_USERS to that number.
 Additional 0xf numbers are allocated to be used by non-in-kernel users.</p>

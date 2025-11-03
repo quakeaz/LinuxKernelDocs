@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -156,7 +156,7 @@ Author: Rafael J. Wysocki &lt;<a class="reference external" href="mailto:rafael&
 <p>Device interrupt request lines (IRQs) are generally disabled during system
 suspend after the “late” phase of suspending devices (that is, after all of the
 -&gt;prepare, -&gt;suspend and -&gt;suspend_late callbacks have been executed for all
-devices).  That is done by suspend_device_irqs().</p>
+devices).  That is done by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">suspend_device_irqs()</span></code>.</p>
 <p>The rationale for doing so is that after the “late” phase of device suspend
 there is no legitimate reason why any interrupts from suspended devices should
 trigger and if any devices have not been suspended properly yet, it is better to
@@ -166,11 +166,11 @@ not prepared for interrupts triggering after their devices had been suspended.
 In some cases they would attempt to access, for example, memory address spaces
 of suspended devices and cause unpredictable behavior to ensue as a result.
 Unfortunately, such problems are very difficult to debug and the introduction
-of suspend_device_irqs(), along with the “noirq” phase of device suspend and
+of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">suspend_device_irqs()</span></code>, along with the “noirq” phase of device suspend and
 resume, was the only practical way to mitigate them.</p>
 <p>Device IRQs are re-enabled during system resume, right before the “early” phase
 of resuming devices (that is, before starting to execute -&gt;resume_early
-callbacks for devices).  The function doing that is resume_device_irqs().</p>
+callbacks for devices).  The function doing that is <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">resume_device_irqs()</span></code>.</p>
 </section>
 <section id="the-irqf-no-suspend-flag">
 <h2>The IRQF_NO_SUSPEND Flag<a class="headerlink" href="#the-irqf-no-suspend-flag" title="Link to this heading">¶</a></h2>
@@ -180,14 +180,14 @@ devices as well as during the time when nonboot CPUs are taken offline and
 brought back online.  That applies to timer interrupts in the first place,
 but also to IPIs and to some other special-purpose interrupts.</p>
 <p>The IRQF_NO_SUSPEND flag is used to indicate that to the IRQ subsystem when
-requesting a special-purpose interrupt.  It causes suspend_device_irqs() to
+requesting a special-purpose interrupt.  It causes <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">suspend_device_irqs()</span></code> to
 leave the corresponding IRQ enabled so as to allow the interrupt to work as
 expected during the suspend-resume cycle, but does not guarantee that the
 interrupt will wake the system from a suspended state -- for such cases it is
-necessary to use enable_irq_wake().</p>
+necessary to use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">enable_irq_wake()</span></code>.</p>
 <p>Note that the IRQF_NO_SUSPEND flag affects the entire IRQ and not just one
 user of it.  Thus, if the IRQ is shared, all of the interrupt handlers installed
-for it will be executed as usual after suspend_device_irqs(), even if the
+for it will be executed as usual after <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">suspend_device_irqs()</span></code>, even if the
 IRQF_NO_SUSPEND flag was not passed to <a class="reference internal" href="../core-api/genericirq.html#c.request_irq" title="request_irq"><code class="xref c c-func docutils literal notranslate"><span class="pre">request_irq()</span></code></a> (or equivalent) by some of
 the IRQ’s users.  For this reason, using IRQF_NO_SUSPEND and IRQF_SHARED at the
 same time should be avoided.</p>
@@ -207,22 +207,22 @@ controller needs to be enabled to receive signals from the line in question.
 After wakeup, it generally is better to disable that input to prevent the
 dedicated controller from triggering interrupts unnecessarily.</p>
 <p>The IRQ subsystem provides two helper functions to be used by device drivers for
-those purposes.  Namely, enable_irq_wake() turns on the platform’s logic for
-handling the given IRQ as a system wakeup interrupt line and disable_irq_wake()
+those purposes.  Namely, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">enable_irq_wake()</span></code> turns on the platform’s logic for
+handling the given IRQ as a system wakeup interrupt line and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">disable_irq_wake()</span></code>
 turns that logic off.</p>
-<p>Calling enable_irq_wake() causes suspend_device_irqs() to treat the given IRQ
+<p>Calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">enable_irq_wake()</span></code> causes <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">suspend_device_irqs()</span></code> to treat the given IRQ
 in a special way.  Namely, the IRQ remains enabled, but on the first interrupt
 it will be disabled, marked as pending and “suspended” so that it will be
-re-enabled by resume_device_irqs() during the subsequent system resume.  Also
+re-enabled by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">resume_device_irqs()</span></code> during the subsequent system resume.  Also
 the PM core is notified about the event which causes the system suspend in
 progress to be aborted (that doesn’t have to happen immediately, but at one
 of the points where the suspend thread looks for pending wakeup events).</p>
 <p>This way every interrupt from a wakeup interrupt source will either cause the
 system suspend currently in progress to be aborted or wake up the system if
-already suspended.  However, after suspend_device_irqs() interrupt handlers are
+already suspended.  However, after <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">suspend_device_irqs()</span></code> interrupt handlers are
 not executed for system wakeup IRQs.  They are only executed for IRQF_NO_SUSPEND
 IRQs at that time, but those IRQs should not be configured for system wakeup
-using enable_irq_wake().</p>
+using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">enable_irq_wake()</span></code>.</p>
 </section>
 <section id="interrupts-and-suspend-to-idle">
 <h2>Interrupts and Suspend-to-Idle<a class="headerlink" href="#interrupts-and-suspend-to-idle" title="Link to this heading">¶</a></h2>
@@ -240,21 +240,21 @@ any special interrupt handling logic for it to work.</p>
 </section>
 <section id="irqf-no-suspend-and-enable-irq-wake">
 <h2>IRQF_NO_SUSPEND and enable_irq_wake()<a class="headerlink" href="#irqf-no-suspend-and-enable-irq-wake" title="Link to this heading">¶</a></h2>
-<p>There are very few valid reasons to use both enable_irq_wake() and the
+<p>There are very few valid reasons to use both <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">enable_irq_wake()</span></code> and the
 IRQF_NO_SUSPEND flag on the same IRQ, and it is never valid to use both for the
 same device.</p>
 <p>First of all, if the IRQ is not shared, the rules for handling IRQF_NO_SUSPEND
-interrupts (interrupt handlers are invoked after suspend_device_irqs()) are
+interrupts (interrupt handlers are invoked after <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">suspend_device_irqs()</span></code>) are
 directly at odds with the rules for handling system wakeup interrupts (interrupt
-handlers are not invoked after suspend_device_irqs()).</p>
-<p>Second, both enable_irq_wake() and IRQF_NO_SUSPEND apply to entire IRQs and not
+handlers are not invoked after <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">suspend_device_irqs()</span></code>).</p>
+<p>Second, both <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">enable_irq_wake()</span></code> and IRQF_NO_SUSPEND apply to entire IRQs and not
 to individual interrupt handlers, so sharing an IRQ between a system wakeup
 interrupt source and an IRQF_NO_SUSPEND interrupt source does not generally
 make sense.</p>
 <p>In rare cases an IRQ can be shared between a wakeup device driver and an
 IRQF_NO_SUSPEND user. In order for this to be safe, the wakeup device driver
 must be able to discern spurious IRQs from genuine wakeup events (signalling
-the latter to the core with pm_system_wakeup()), must use enable_irq_wake() to
+the latter to the core with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_system_wakeup()</span></code>), must use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">enable_irq_wake()</span></code> to
 ensure that the IRQ will function as a wakeup source, and must request the IRQ
 with IRQF_COND_SUSPEND to tell the core that it meets these requirements. If
 these requirements are not met, it is not valid to use IRQF_COND_SUSPEND.</p>

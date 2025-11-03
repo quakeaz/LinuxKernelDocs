@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -90,6 +90,7 @@
 <li class="toctree-l3"><a class="reference internal" href="union_find.html">Union-Find in Linux</a></li>
 <li class="toctree-l3"><a class="reference internal" href="min_heap.html">Min Heap API</a></li>
 <li class="toctree-l3"><a class="reference internal" href="parser.html">Generic parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="list.html">Linked Lists in Linux</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#low-level-entry-and-exit">Low level entry and exit</a></li>
@@ -225,7 +226,7 @@ information on the nature and implementation of Red Black Trees,  see:</p>
 <p>The Linux rbtree implementation is optimized for speed, and thus has one
 less layer of indirection (and better cache locality) than more traditional
 tree implementations.  Instead of using pointers to separate rb_node and data
-structures, each instance of struct rb_node is embedded in the data structure
+structures, each instance of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rb_node</span></code> is embedded in the data structure
 it organizes.  And instead of using a comparison callback function pointer,
 users are expected to write their own tree search and insert functions
 which call the provided rbtree functions.  Locking is also left up to the
@@ -233,20 +234,20 @@ user of the rbtree code.</p>
 </section>
 <section id="creating-a-new-rbtree">
 <h2>Creating a new rbtree<a class="headerlink" href="#creating-a-new-rbtree" title="Link to this heading">¶</a></h2>
-<p>Data nodes in an rbtree tree are structures containing a struct rb_node member:</p>
+<p>Data nodes in an rbtree tree are structures containing a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rb_node</span></code> member:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct mytype {
       struct rb_node node;
       char *keystring;
 };
 </pre></div>
 </div>
-<p>When dealing with a pointer to the embedded struct rb_node, the containing data
-structure may be accessed with the standard container_of() macro.  In addition,
+<p>When dealing with a pointer to the embedded <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rb_node</span></code>, the containing data
+structure may be accessed with the standard <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">container_of()</span></code> macro.  In addition,
 individual members may be accessed directly via rb_entry(node, type, member).</p>
 <p>At the root of each rbtree is an rb_root structure, which is initialized to be
 empty via:</p>
 <blockquote>
-<div><p>struct rb_root mytree = RB_ROOT;</p>
+<div><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rb_root</span></code> mytree = RB_ROOT;</p>
 </div></blockquote>
 </section>
 <section id="searching-for-a-value-in-an-rbtree">
@@ -345,13 +346,13 @@ struct rb_node *rb_next(struct rb_node *node);
 struct rb_node *rb_prev(struct rb_node *node);
 </pre></div>
 </div>
-<p>To start iterating, call rb_first() or rb_last() with a pointer to the root
+<p>To start iterating, call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rb_first()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rb_last()</span></code> with a pointer to the root
 of the tree, which will return a pointer to the node structure contained in
 the first or last element in the tree.  To continue, fetch the next or previous
-node by calling rb_next() or rb_prev() on the current node.  This will return
+node by calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rb_next()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rb_prev()</span></code> on the current node.  This will return
 NULL when there are no more nodes left.</p>
-<p>The iterator functions return a pointer to the embedded struct rb_node, from
-which the containing data structure may be accessed with the container_of()
+<p>The iterator functions return a pointer to the embedded <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rb_node</span></code>, from
+which the containing data structure may be accessed with the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">container_of()</span></code>
 macro, and individual members may be accessed directly via
 rb_entry(node, type, member).</p>
 <p>Example:</p>
@@ -365,8 +366,8 @@ for (node = rb_first(&amp;mytree); node; node = rb_next(node))
 <h2>Cached rbtrees<a class="headerlink" href="#cached-rbtrees" title="Link to this heading">¶</a></h2>
 <p>Computing the leftmost (smallest) node is quite a common task for binary
 search trees, such as for traversals or users relying on a the particular
-order for their own logic. To this end, users can use ‘struct rb_root_cached’
-to optimize O(logN) rb_first() calls to a simple pointer fetch avoiding
+order for their own logic. To this end, users can use ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rb_root_cached</span></code>’
+to optimize O(logN) <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rb_first()</span></code> calls to a simple pointer fetch avoiding
 potentially expensive tree iterations. This is done at negligible runtime
 overhead for maintenance; albeit larger memory footprint.</p>
 <p>Similar to the rb_root structure, cached rbtrees are initialized to be
@@ -410,15 +411,15 @@ there and do not include &lt;linux/rbtree_augmented.h&gt; from header files
 either so as to minimize chances of your users accidentally relying on
 such implementation details.</p>
 <p>On insertion, the user must update the augmented information on the path
-leading to the inserted node, then call rb_link_node() as usual and
-rb_augment_inserted() instead of the usual rb_insert_color() call.
-If rb_augment_inserted() rebalances the rbtree, it will callback into
+leading to the inserted node, then call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rb_link_node()</span></code> as usual and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rb_augment_inserted()</span></code> instead of the usual <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rb_insert_color()</span></code> call.
+If <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rb_augment_inserted()</span></code> rebalances the rbtree, it will callback into
 a user provided function to update the augmented information on the
 affected subtrees.</p>
-<p>When erasing a node, the user must call rb_erase_augmented() instead of
-rb_erase(). rb_erase_augmented() calls back into user provided functions
+<p>When erasing a node, the user must call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rb_erase_augmented()</span></code> instead of
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rb_erase()</span></code>. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rb_erase_augmented()</span></code> calls back into user provided functions
 to updated the augmented information on affected subtrees.</p>
-<p>In both cases, the callbacks are provided through struct rb_augment_callbacks.
+<p>In both cases, the callbacks are provided through <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rb_augment_callbacks</span></code>.
 3 callbacks must be defined:</p>
 <ul class="simple">
 <li><p>A propagation callback, which updates the augmented value for a given
@@ -430,9 +431,9 @@ to a newly assigned subtree root.</p></li>
 subtree to a newly assigned subtree root AND recomputes the augmented
 information for the former subtree root.</p></li>
 </ul>
-<p>The compiled code for rb_erase_augmented() may inline the propagation and
+<p>The compiled code for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rb_erase_augmented()</span></code> may inline the propagation and
 copy callbacks, which results in a large function, so each augmented rbtree
-user should have a single rb_erase_augmented() call site in order to limit
+user should have a single <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rb_erase_augmented()</span></code> call site in order to limit
 compiled code size.</p>
 <section id="sample-usage">
 <h3>Sample usage<a class="headerlink" href="#sample-usage" title="Link to this heading">¶</a></h3>

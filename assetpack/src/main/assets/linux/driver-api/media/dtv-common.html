@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -294,7 +294,7 @@ Deprecated. Used only on av7110.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">device</span></code></dt><dd><p>pointer to <a class="reference internal" href="../infrastructure.html#c.device" title="device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span></code></a></p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">module</span></code></dt><dd><p>pointer to struct module</p>
+<dt><code class="docutils literal notranslate"><span class="pre">module</span></code></dt><dd><p>pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">module</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">mfe_shared</span></code></dt><dd><p>indicates mutually exclusive frontends.
 1 = legacy exclusion behavior: blocking any open() call
@@ -358,7 +358,7 @@ tuner.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">ref</span></code></dt><dd><p>reference count for this device</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">fops</span></code></dt><dd><p>pointer to struct file_operations</p>
+<dt><code class="docutils literal notranslate"><span class="pre">fops</span></code></dt><dd><p>pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file_operations</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">adapter</span></code></dt><dd><p>pointer to the adapter that holds this device node</p>
 </dd>
@@ -404,7 +404,7 @@ store the MC device node interface</p>
 <p><strong>Description</strong></p>
 <p>This structure is used by the DVB core (frontend, CA, net, demux) in
 order to create the device nodes. Usually, driver should not initialize
-this struct diretly.</p>
+this <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">diretly</span></code>.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.dvbdevfops_node">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dvbdevfops_node</span></span></span><a class="headerlink" href="#c.dvbdevfops_node" title="Link to this definition">¶</a><br /></dt>
@@ -533,7 +533,7 @@ outputs via the Media Controller.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This does not free memory. dvb_free_device() will do that when
+<p>This does not free memory. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dvb_free_device()</span></code> will do that when
 reference counter is empty</p>
 </div>
 <dl class="c function">
@@ -652,7 +652,7 @@ OK and decrement negative use count.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Checks if a DVB devnode and struct dvbdev.kernel_ioctl is still valid.
+<p>Checks if a DVB devnode and <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dvbdev</span></code>.kernel_ioctl is still valid.
 If so, calls <a class="reference internal" href="#c.dvb_usercopy" title="dvb_usercopy"><code class="xref c c-func docutils literal notranslate"><span class="pre">dvb_usercopy()</span></code></a>.</p>
 </div>
 <dl class="c function">
@@ -711,10 +711,8 @@ macro, with does an ugly hack, using I2C low level functions. Such
 usage is deprecated and will be removed soon. Instead, use this routine.</p>
 </div>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p>On success, return an <a class="reference internal" href="../i2c.html#c.i2c_client" title="i2c_client"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i2c_client</span></code></a>, pointing to the bound
+<p>On success, return an <a class="reference internal" href="../i2c.html#c.i2c_client" title="i2c_client"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i2c_client</span></code></a>, pointing to the bound
 I2C device. <code class="docutils literal notranslate"><span class="pre">NULL</span></code> otherwise.</p>
-</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.dvb_module_release">
@@ -1013,7 +1011,7 @@ was filled</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>This variant assumes that the buffer is a memory at the userspace. So,
-it will internally call copy_to_user().</p>
+it will internally call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">copy_to_user()</span></code>.</p>
 <p><strong>Return</strong></p>
 <p>number of bytes transferred or -EFAULT</p>
 </div>
@@ -1095,7 +1093,7 @@ it will internally call copy_to_user().</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>This variant assumes that the buffer is a memory at the userspace. So,
-it will internally call copy_from_user().</p>
+it will internally call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">copy_from_user()</span></code>.</p>
 <p><strong>Return</strong></p>
 <p>number of bytes transferred or -EFAULT</p>
 </div>
@@ -1246,7 +1244,6 @@ they should use <a class="reference internal" href="#c.dvb_vb2_is_streaming" tit
 </dl>
 </div>
 <p><strong>Note</strong></p>
-<p><strong>Description</strong></p>
 <p>Callers should not touch at the state machine directly. This
 is handled inside dvb_vb2.c.</p>
 <dl class="c struct">
@@ -1419,7 +1416,7 @@ file operation handler.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Implements poll syscall() logic.</p>
+<p>Implements poll <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">syscall()</span></code> logic.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.dvb_vb2_stream_on">

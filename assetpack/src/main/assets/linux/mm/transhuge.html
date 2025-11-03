@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -208,7 +208,7 @@ hugepage aware.</p>
 <p>If you’re not walking pagetables but you run into a physical hugepage
 that you can’t handle natively in your code, you can split it by
 calling split_huge_page(page). This is what the Linux VM does before
-it tries to swapout the hugepage for example. split_huge_page() can fail
+it tries to swapout the hugepage for example. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">split_huge_page()</span></code> can fail
 if the page is pinned and you must handle this correctly.</p>
 <p>Example to make mremap.c transparent hugepage aware with a one liner
 change:</p>
@@ -228,15 +228,15 @@ change:</p>
 <section id="locking-in-hugepage-aware-code">
 <h2>Locking in hugepage aware code<a class="headerlink" href="#locking-in-hugepage-aware-code" title="Link to this heading">¶</a></h2>
 <p>We want as much code as possible hugepage aware, as calling
-split_huge_page() or split_huge_pmd() has a cost.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">split_huge_page()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">split_huge_pmd()</span></code> has a cost.</p>
 <p>To make pagetable walks huge pmd aware, all you need to do is to call
-pmd_trans_huge() on the pmd returned by pmd_offset. You must hold the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pmd_trans_huge()</span></code> on the pmd returned by pmd_offset. You must hold the
 mmap_lock in read (or write) mode to be sure a huge pmd cannot be
 created from under you by khugepaged (khugepaged collapse_huge_page
 takes the mmap_lock in write mode in addition to the anon_vma lock). If
 pmd_trans_huge returns false, you just fallback in the old code
 paths. If instead pmd_trans_huge returns true, you have to take the
-page table lock (pmd_lock()) and re-run pmd_trans_huge. Taking the
+page table lock (<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pmd_lock()</span></code>) and re-run pmd_trans_huge. Taking the
 page table lock will prevent the huge pmd being converted into a
 regular pmd from under you (split_huge_pmd can run in parallel to the
 pagetable walk). If the second pmd_trans_huge returns false, you
@@ -250,8 +250,8 @@ hugepage natively. Once finished, you can drop the page table lock.</p>
 pages:</p>
 <blockquote>
 <div><ul>
-<li><p>get_page()/put_page() and GUP operate on the folio-&gt;_refcount.</p></li>
-<li><p>-&gt;_refcount in tail pages is always zero: get_page_unless_zero() never
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_page()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">put_page()</span></code> and GUP operate on the folio-&gt;_refcount.</p></li>
+<li><p>-&gt;_refcount in tail pages is always zero: <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_page_unless_zero()</span></code> never
 succeeds on tail pages.</p></li>
 <li><p>map/unmap of a PMD entry for the whole THP increment/decrement
 folio-&gt;_entire_mapcount and folio-&gt;_large_mapcount.</p>
@@ -278,26 +278,26 @@ of pages mapped by PTE.</p>
 page to the tail pages before clearing all PG_head/tail bits from the page
 structures. It can be done easily for refcounts taken by page table
 entries, but we don’t have enough information on how to distribute any
-additional pins (i.e. from get_user_pages). split_huge_page() fails any
+additional pins (i.e. from get_user_pages). <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">split_huge_page()</span></code> fails any
 requests to split pinned huge pages: it expects page count to be equal to
 the sum of mapcount of all sub-pages plus one (split_huge_page caller must
 have a reference to the head page).</p>
 <p>split_huge_page uses migration entries to stabilize page-&gt;_refcount and
 page-&gt;_mapcount of anonymous pages. File pages just get unmapped.</p>
 <p>We are safe against physical memory scanners too: the only legitimate way
-a scanner can get a reference to a page is get_page_unless_zero().</p>
+a scanner can get a reference to a page is <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_page_unless_zero()</span></code>.</p>
 <p>All tail pages have zero -&gt;_refcount until <a class="reference internal" href="../driver-api/basics.html#c.atomic_add" title="atomic_add"><code class="xref c c-func docutils literal notranslate"><span class="pre">atomic_add()</span></code></a>. This prevents the
 scanner from getting a reference to the tail page up to that point. After the
 <a class="reference internal" href="../driver-api/basics.html#c.atomic_add" title="atomic_add"><code class="xref c c-func docutils literal notranslate"><span class="pre">atomic_add()</span></code></a> we don’t care about the -&gt;_refcount value. We already know how
 many references should be uncharged from the head page.</p>
-<p>For head page get_page_unless_zero() will succeed and we don’t mind. It’s
+<p>For head page <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_page_unless_zero()</span></code> will succeed and we don’t mind. It’s
 clear where references should go after split: it will stay on the head page.</p>
-<p>Note that split_huge_pmd() doesn’t have any limitations on refcounting:
+<p>Note that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">split_huge_pmd()</span></code> doesn’t have any limitations on refcounting:
 pmd can be split at any point and never fails.</p>
 </section>
 <section id="partial-unmap-and-deferred-split-folio-anon-thp-only">
 <h2>Partial unmap and deferred_split_folio() (anon THP only)<a class="headerlink" href="#partial-unmap-and-deferred-split-folio-anon-thp-only" title="Link to this heading">¶</a></h2>
-<p>Unmapping part of THP (with munmap() or other way) is not going to free
+<p>Unmapping part of THP (with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">munmap()</span></code> or other way) is not going to free
 memory immediately. Instead, we detect that a subpage of THP is not in use
 in folio_remove_rmap_*() and queue the THP for splitting if memory pressure
 comes. Splitting will free up unused subpages.</p>
@@ -305,7 +305,7 @@ comes. Splitting will free up unused subpages.</p>
 the place where we can detect partial unmap. It also might be
 counterproductive since in many cases partial unmap happens during exit(2) if
 a THP crosses a VMA boundary.</p>
-<p>The function deferred_split_folio() is used to queue a folio for splitting.
+<p>The function <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">deferred_split_folio()</span></code> is used to queue a folio for splitting.
 The splitting itself will happen when we get memory pressure via shrinker
 interface.</p>
 <p>With CONFIG_PAGE_MAPCOUNT, we reliably detect partial mappings based on

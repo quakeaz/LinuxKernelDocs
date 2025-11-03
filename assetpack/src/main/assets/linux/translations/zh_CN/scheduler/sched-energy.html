@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -232,7 +232,7 @@ CPU的“算力”代表了它在最高频率下运行时能完成的工作量�
 算力最大的CPU而言的。算力值被归一化为1024以内，并且可与由实体负载跟踪
 （PELT）机制算出的利用率信号做对比。由于有算力值和利用率值，EAS能够估计一个
 任务/CPU有多大/有多忙，并在评估性能与能量时将其考虑在内。CPU算力由特定体系
-结构实现的arch_scale_cpu_capacity()回调函数提供。</p>
+结构实现的<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">arch_scale_cpu_capacity()</span></code>回调函数提供。</p>
 <p>EAS使用的其余平台信息是直接从能量模型（EM）框架中读取的。一个平台的EM是一张
 表，表中每项代表系统中一个“性能域”的功率成本。（若要了解更多关于性能域的细节，
 见Documentation/power/energy-model.rst）</p>
@@ -270,13 +270,13 @@ RDs:   |----rd1----|-----rd2-----|
 <section id="id5">
 <h2>4. 能量感知任务放置<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h2>
 <p>EAS覆盖了CFS的任务唤醒平衡代码。在唤醒平衡时，它使用平台的EM和PELT信号来选择节能
-的目标CPU。当EAS被启用时，select_task_rq_fair()调用find_energy_efficient_cpu()
+的目标CPU。当EAS被启用时，<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">select_task_rq_fair()</span></code>调用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">find_energy_efficient_cpu()</span></code>
 来做任务放置决定。这个函数寻找在每个性能域中寻找具有最高剩余算力（CPU算力 - CPU
 利用率）的CPU，因为它能让我们保持最低的频率。然后，该函数检查将任务放在新CPU相较
 依然放在之前活动的prev_cpu是否可以节省能量。</p>
-<p>如果唤醒的任务被迁移，find_energy_efficient_cpu()使用compute_energy()来估算
-系统将消耗多少能量。compute_energy()检查各CPU当前的利用率情况，并尝试调整来
-“模拟”任务迁移。EM框架提供了API em_pd_energy()计算每个性能域在给定的利用率条件
+<p>如果唤醒的任务被迁移，<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">find_energy_efficient_cpu()</span></code>使用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">compute_energy()</span></code>来估算
+系统将消耗多少能量。<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">compute_energy()</span></code>检查各CPU当前的利用率情况，并尝试调整来
+“模拟”任务迁移。EM框架提供了API <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">em_pd_energy()</span></code>计算每个性能域在给定的利用率条件
 下的预期能量消耗。</p>
 <p>下面详细介绍一个优化能量消耗的任务放置决策的例子。</p>
 <dl>
@@ -306,7 +306,7 @@ prev_cpu = 0（上一次运行在CPU0）。</p>
  Current OPP: =====       Other OPP: - - -     util_avg (100 each): ##
 </pre></div>
 </div>
-<p>find_energy_efficient_cpu()将首先在两个性能域中寻找具有最大剩余算力的CPU。
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">find_energy_efficient_cpu()</span></code>将首先在两个性能域中寻找具有最大剩余算力的CPU。
 在这个例子中是CPU1和CPU3。然后，它将估算，当P被放在它们中的任意一个时，系统的
 能耗，并检查这样做是否会比把P放在CPU0上节省一些能量。EAS假定OPPs遵循利用率
 （这与CPUFreq监管器schedutil的行为一致。关于这个问题的更多细节，见第6节）。</p>
@@ -464,7 +464,7 @@ SD_ASYM_CPUCAPACITY_FULL标志位是否在创建调度域时已设置来检查�
 <section id="id9">
 <h3>6.5 刻度不变性使用率信号<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h3>
 <p>为了对不同的CPU和所有的性能状态做出准确的预测，EAS需要频率不变的和CPU不变的
-PELT信号。这些信号可以通过每个体系结构定义的arch_scale{cpu,freq}_capacity()
+PELT信号。这些信号可以通过每个体系结构定义的arch_scale{cpu,freq}<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_capacity()</span></code>
 回调函数获取。</p>
 <p>不支持在没有实现这两个回调函数的平台上使用EAS。</p>
 </section>

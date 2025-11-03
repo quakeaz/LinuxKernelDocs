@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -273,7 +273,7 @@ IRQ.</p></li>
 </ol>
 </li>
 <li><p>For idle “swapper” tasks, since they don’t ever exit the kernel, they
-instead have a klp_update_patch_state() call in the idle loop which
+instead have a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">klp_update_patch_state()</span></code> call in the idle loop which
 allows them to be patched before the CPU enters the idle state.</p>
 <p>(Note there’s not yet such an approach for kthreads.)</p>
 </li>
@@ -332,7 +332,7 @@ few options:</p>
 for non-DWARF unwinders, also making sure there’s a way for the stack
 tracing code to detect interrupts on the stack.</p></li>
 <li><p>Alternatively, ensure that every kthread has a call to
-klp_update_patch_state() in a safe location.  Kthreads are typically
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">klp_update_patch_state()</span></code> in a safe location.  Kthreads are typically
 in an infinite loop which does some action repeatedly.  The safe
 location to switch the kthread’s patch state would be at a designated
 point in the loop where there are no locks taken and all data
@@ -450,7 +450,7 @@ are applied. The relevant entries are created under
 operation fails.</p>
 <p>Second, livepatch enters into a transition state where tasks are converging
 to the patched state. If an original function is patched for the first
-time, a function specific struct klp_ops is created and an universal
+time, a function specific <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">klp_ops</span></code> is created and an universal
 ftrace handler is registered<a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>. This stage is indicated by a value of ‘1’
 in /sys/kernel/livepatch/&lt;name&gt;/transition. For more information about
 this process, see the “Consistency model” section.</p>
@@ -461,7 +461,7 @@ to ‘0’.</p>
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
 <p>Note that functions might be patched multiple times. The ftrace handler
 is registered only once for a given function. Further patches just add
-an entry to the list (see field <cite>func_stack</cite>) of the struct klp_ops.
+an entry to the list (see field <cite>func_stack</cite>) of the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">klp_ops</span></code>.
 The right implementation is selected by the ftrace handler, see
 the “Consistency model” section.</p>
 <p>That said, it is highly recommended to use cumulative livepatches
@@ -476,8 +476,8 @@ functions might be patched two times only during the transition period.</p>
 has the .replace flag set.</p>
 <p>Once the new patch is enabled and the ‘transition’ finishes then
 all the functions (<a class="reference internal" href="api.html#c.klp_func" title="klp_func"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">klp_func</span></code></a>) associated with the replaced
-patches are removed from the corresponding struct klp_ops. Also
-the ftrace handler is unregistered and the struct klp_ops is
+patches are removed from the corresponding <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">klp_ops</span></code>. Also
+the ftrace handler is unregistered and the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">klp_ops</span></code> is
 freed when the related function is not modified by the new patch
 and func_stack list becomes empty.</p>
 <p>See <a class="reference internal" href="cumulative-patches.html"><span class="doc">Atomic Replace &amp; Cumulative Patches</span></a> for more details.</p>
@@ -494,8 +494,8 @@ For more information about this process, see the “Consistency model”
 section.</p>
 <p>Second, once all tasks have been unpatched, the ‘transition’ value changes
 to ‘0’. All the functions (<a class="reference internal" href="api.html#c.klp_func" title="klp_func"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">klp_func</span></code></a>) associated with the to-be-disabled
-patch are removed from the corresponding struct klp_ops. The ftrace handler
-is unregistered and the struct klp_ops is freed when the func_stack list
+patch are removed from the corresponding <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">klp_ops</span></code>. The ftrace handler
+is unregistered and the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">klp_ops</span></code> is freed when the func_stack list
 becomes empty.</p>
 <p>Third, the sysfs interface is destroyed.</p>
 </section>

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -161,10 +161,10 @@ mkdir -p /sys/kernel/config/target/$TCM_NEW_MOD
 <blockquote>
 <div><ol class="arabic simple">
 <li><p>Generate new API callers for drivers/target/target_core_fabric_configs.c logic
--&gt;make_tpg(), -&gt;drop_tpg(), -&gt;make_wwn(), -&gt;drop_wwn().  These are created
+-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">make_tpg()</span></code>, -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drop_tpg()</span></code>, -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">make_wwn()</span></code>, -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drop_wwn()</span></code>.  These are created
 into $TCM_NEW_MOD/$TCM_NEW_MOD_configfs.c</p></li>
 <li><p>Generate basic infrastructure for loading/unloading LKMs and TCM/ConfigFS fabric module
-using a skeleton struct target_core_fabric_ops API template.</p></li>
+using a skeleton <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">target_core_fabric_ops</span></code> API template.</p></li>
 <li><p>Based on user defined T10 Proto_Ident for the new fabric module being built,
 the TransportID / Initiator and Target WWPN related handlers for
 SPC-3 persistent reservation are automatically generated in $TCM_NEW_MOD/$TCM_NEW_MOD_fabric.c
@@ -292,8 +292,8 @@ configfs               20644  2 target_core_mod
 <blockquote>
 <div><ol class="arabic simple">
 <li><p>Add more T10 proto_idents</p></li>
-<li><p>Make tcm_mod_dump_fabric_ops() smarter and generate function pointer
-defs directly from include/target/target_core_fabric_ops.h:struct target_core_fabric_ops
+<li><p>Make <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">tcm_mod_dump_fabric_ops()</span></code> smarter and generate function pointer
+defs directly from include/target/target_core_fabric_ops.h:<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">target_core_fabric_ops</span></code>
 structure members.</p></li>
 </ol>
 </div></blockquote>

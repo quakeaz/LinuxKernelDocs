@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -209,7 +209,7 @@ enum pm_request {
 </div>
 <p>这样会使 PM_SUSPEND 和 PM_RESUME 成为位方式(bitwise)整数（使用”__force”
 是因为 sparse 会抱怨改变位方式的类型转换，但是这里我们确实需要强制进行转
-换）。而且因为所有枚举值都使用了相同的类型，这里的”enum pm_request”也将
+换）。而且因为所有枚举值都使用了相同的类型，这里的”<code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">pm_request</span></code>”也将
 会使用那个类型做为底层实现。</p>
 <p>而且使用 gcc 编译的时候，所有的 __bitwise/__force 都会消失，最后在 gcc
 看来它们只不过是普通的整数。</p>

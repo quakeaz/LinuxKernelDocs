@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -188,7 +188,7 @@ directory in the kernfs_node object associated with the directory. In
 the past this kobject pointer has been used by sysfs to do reference
 counting directly on the kobject whenever the file is opened or closed.
 With the current sysfs implementation the kobject reference count is
-only modified directly by the function sysfs_schedule_callback().</p>
+only modified directly by the function <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sysfs_schedule_callback()</span></code>.</p>
 </section>
 <section id="attributes">
 <h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
@@ -289,12 +289,12 @@ show and store methods of the attribute owners:</p>
 };
 </pre></div>
 </div>
-<p>[ Subsystems should have already defined a struct kobj_type as a
+<p>[ Subsystems should have already defined a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kobj_type</span></code> as a
 descriptor for this type, which is where the sysfs_ops pointer is
 stored. See the kobject documentation for more information. ]</p>
 <p>When a file is read or written, sysfs calls the appropriate method
-for the type. The method then translates the generic struct kobject
-and struct attribute pointers to the appropriate pointer types, and
+for the type. The method then translates the generic <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kobject</span></code>
+and <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">attribute</span></code> pointers to the appropriate pointer types, and
 calls the associated methods.</p>
 <p>To illustrate:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>#define to_dev_attr(_attr) container_of(_attr, struct device_attribute, attr)
@@ -319,7 +319,7 @@ static ssize_t dev_attr_show(struct kobject *kobj, struct attribute *attr,
 </section>
 <section id="reading-writing-attribute-data">
 <h2>Reading/Writing Attribute Data<a class="headerlink" href="#reading-writing-attribute-data" title="Link to this heading">¶</a></h2>
-<p>To read or write attributes, show() or store() methods must be
+<p>To read or write attributes, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">show()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">store()</span></code> methods must be
 specified when declaring the attribute. The method types should be as
 simple as those defined for device attributes:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ssize_t (*show)(struct device *dev, struct device_attribute *attr, char *buf);
@@ -333,16 +333,16 @@ method. sysfs will call the method exactly once for each read or
 write. This forces the following behavior on the method
 implementations:</p>
 <ul>
-<li><p>On read(2), the show() method should fill the entire buffer.
+<li><p>On read(2), the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">show()</span></code> method should fill the entire buffer.
 Recall that an attribute should only be exporting one value, or an
 array of similar values, so this shouldn’t be that expensive.</p>
 <p>This allows userspace to do partial reads and forward seeks
 arbitrarily over the entire file at will. If userspace seeks back to
-zero or does a pread(2) with an offset of ‘0’ the show() method will
+zero or does a pread(2) with an offset of ‘0’ the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">show()</span></code> method will
 be called again, rearmed, to fill the buffer.</p>
 </li>
 <li><p>On write(2), sysfs expects the entire buffer to be passed during the
-first write. sysfs then passes the entire buffer to the store() method.
+first write. sysfs then passes the entire buffer to the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">store()</span></code> method.
 A terminating null is added after the data on stores. This makes
 functions like <a class="reference internal" href="../core-api/kernel-api.html#c.sysfs_streq" title="sysfs_streq"><code class="xref c c-func docutils literal notranslate"><span class="pre">sysfs_streq()</span></code></a> safe to use.</p>
 <p>When writing sysfs files, userspace processes should first read the
@@ -354,17 +354,17 @@ buffer when reading and writing values.</p>
 </ul>
 <p>Other notes:</p>
 <ul class="simple">
-<li><p>Writing causes the show() method to be rearmed regardless of current
+<li><p>Writing causes the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">show()</span></code> method to be rearmed regardless of current
 file position.</p></li>
 <li><p>The buffer will always be PAGE_SIZE bytes in length. On x86, this
 is 4096.</p></li>
-<li><p>show() methods should return the number of bytes printed into the
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">show()</span></code> methods should return the number of bytes printed into the
 buffer.</p></li>
-<li><p>show() should only use <a class="reference internal" href="api-summary.html#c.sysfs_emit" title="sysfs_emit"><code class="xref c c-func docutils literal notranslate"><span class="pre">sysfs_emit()</span></code></a> or <a class="reference internal" href="api-summary.html#c.sysfs_emit_at" title="sysfs_emit_at"><code class="xref c c-func docutils literal notranslate"><span class="pre">sysfs_emit_at()</span></code></a> when formatting
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">show()</span></code> should only use <a class="reference internal" href="api-summary.html#c.sysfs_emit" title="sysfs_emit"><code class="xref c c-func docutils literal notranslate"><span class="pre">sysfs_emit()</span></code></a> or <a class="reference internal" href="api-summary.html#c.sysfs_emit_at" title="sysfs_emit_at"><code class="xref c c-func docutils literal notranslate"><span class="pre">sysfs_emit_at()</span></code></a> when formatting
 the value to be returned to user space.</p></li>
-<li><p>store() should return the number of bytes used from the buffer. If the
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">store()</span></code> should return the number of bytes used from the buffer. If the
 entire buffer has been used, just return the count argument.</p></li>
-<li><p>show() or store() can always return errors. If a bad value comes
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">show()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">store()</span></code> can always return errors. If a bad value comes
 through, be sure to return an error.</p></li>
 <li><p>The object passed to the methods will be pinned in memory via sysfs
 reference counting its embedded object. However, the physical

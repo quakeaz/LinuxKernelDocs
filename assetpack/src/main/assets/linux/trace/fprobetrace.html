@@ -13,7 +13,7 @@
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Fprobe - Function entry/exit probe" href="fprobe.html" />
+    <link rel="next" title="Eprobe - Event-based Probe Tracing" href="eprobetrace.html" />
     <link rel="prev" title="Kprobe-based Event Tracing" href="kprobetrace.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -86,6 +86,7 @@
 <li class="toctree-l3"><a class="reference internal" href="kprobes.html">Kernel Probes (Kprobes)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="kprobetrace.html">Kprobe-based Event Tracing</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Fprobe-based Event Tracing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eprobetrace.html">Eprobe - Event-based Probe Tracing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="fprobe.html">Fprobe - Function entry/exit probe</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ring-buffer-design.html">Lockless Ring Buffer Design</a></li>
 </ul>
@@ -268,7 +269,7 @@ type is automatically picked from the BTF. If the function returns <code class="
 </div>
 <p>The field access operators, <code class="docutils literal notranslate"><span class="pre">-&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">.</span></code> can be combined for accessing deeper
 members and other structure members pointed by the member. e.g. <code class="docutils literal notranslate"><span class="pre">foo-&gt;bar.baz-&gt;qux</span></code>
-If there is non-name union member, you can directly access it as the C code does.
+If there is non-name <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">member</span></code>, you can directly access it as the C code does.
 For example:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct {
        union {
@@ -362,7 +363,7 @@ traceprobe event, you can trace that field as below.</p>
 <p id="fprobetrace-exit-args-sample">The return probe allows us to access the results of some functions, which returns
 the error code and its results are passed via function parameter, such as an
 structure-initialization function.</p>
-<p>For example, vfs_open() will link the file structure to the inode and update
+<p>For example, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vfs_open()</span></code> will link the file structure to the inode and update
 mode. You can trace that changes with return probe.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span># echo &#39;f vfs_open mode=file-&gt;f_mode:x32 inode=file-&gt;f_inode:x64&#39; &gt;&gt; dynamic_events
 # echo &#39;f vfs_open%%return mode=file-&gt;f_mode:x32 inode=file-&gt;f_inode:x64&#39; &gt;&gt; dynamic_events
@@ -376,7 +377,7 @@ mode. You can trace that changes with return probe.</p>
             cat-143     [007] ...1.  1945.728263: vfs_open__exit: (do_open+0x274/0x3d0 &lt;- vfs_open) mode=0xa800d inode=0xffff888004ada8d8
 </pre></div>
 </div>
-<p>You can see the <cite>file::f_mode</cite> and <cite>file::f_inode</cite> are updated in <cite>vfs_open()</cite>.</p>
+<p>You can see the <cite>file::f_mode</cite> and <cite>file::f_inode</cite> are updated in <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vfs_open()</span></code></cite>.</p>
 </section>
 </section>
 

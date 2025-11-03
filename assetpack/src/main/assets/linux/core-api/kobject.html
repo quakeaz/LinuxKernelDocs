@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -90,6 +90,7 @@
 <li class="toctree-l3"><a class="reference internal" href="union_find.html">Union-Find in Linux</a></li>
 <li class="toctree-l3"><a class="reference internal" href="min_heap.html">Min Heap API</a></li>
 <li class="toctree-l3"><a class="reference internal" href="parser.html">Generic parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="list.html">Linked Lists in Linux</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#low-level-entry-and-exit">Low level entry and exit</a></li>
@@ -195,7 +196,7 @@ adding detail as we go. To that end, here are some quick definitions of
 some terms we will be working with.</p>
 <blockquote>
 <div><ul>
-<li><p>A kobject is an object of type struct kobject.  Kobjects have a name
+<li><p>A kobject is an object of type <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kobject</span></code>.  Kobjects have a name
 and a reference count.  A kobject also has a parent pointer (allowing
 objects to be arranged into hierarchies), a specific type, and,
 usually, a representation in the sysfs virtual filesystem.</p>
@@ -245,12 +246,12 @@ defines the memory region associated with a uio device:</p>
 };
 </pre></div>
 </div>
-<p>If you have a struct uio_map structure, finding its embedded kobject is
+<p>If you have a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">uio_map</span></code> structure, finding its embedded kobject is
 just a matter of using the kobj member.  Code that works with kobjects will
-often have the opposite problem, however: given a struct kobject pointer,
+often have the opposite problem, however: given a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kobject</span></code> pointer,
 what is the pointer to the containing structure?  You must avoid tricks
 (such as assuming that the kobject is at the beginning of the structure)
-and, instead, use the container_of() macro, found in <code class="docutils literal notranslate"><span class="pre">&lt;linux/kernel.h&gt;</span></code>:</p>
+and, instead, use the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">container_of()</span></code> macro, found in <code class="docutils literal notranslate"><span class="pre">&lt;linux/kernel.h&gt;</span></code>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>container_of(ptr, type, member)
 </pre></div>
 </div>
@@ -262,9 +263,9 @@ and, instead, use the container_of() macro, found in <code class="docutils liter
 <li><p><code class="docutils literal notranslate"><span class="pre">member</span></code> is the name of the structure field to which <code class="docutils literal notranslate"><span class="pre">pointer</span></code> points.</p></li>
 </ul>
 </div></blockquote>
-<p>The return value from container_of() is a pointer to the corresponding
-container type. So, for example, a pointer <code class="docutils literal notranslate"><span class="pre">kp</span></code> to a struct kobject
-embedded <strong>within</strong> a struct uio_map could be converted to a pointer to the
+<p>The return value from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">container_of()</span></code> is a pointer to the corresponding
+container type. So, for example, a pointer <code class="docutils literal notranslate"><span class="pre">kp</span></code> to a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kobject</span></code>
+embedded <strong>within</strong> a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">uio_map</span></code> could be converted to a pointer to the
 <strong>containing</strong> uio_map structure with:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct uio_map *u_map = container_of(kp, struct uio_map, kobj);
 </pre></div>
@@ -280,7 +281,7 @@ earlier <code class="docutils literal notranslate"><span class="pre">drivers/uio
 #define to_map(map) container_of(map, struct uio_map, kobj)
 </pre></div>
 </div>
-<p>where the macro argument “map” is a pointer to the struct kobject in
+<p>where the macro argument “map” is a pointer to the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kobject</span></code> in
 question.  That macro is subsequently invoked with:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct uio_map *map = to_map(kobj);
 </pre></div>
@@ -319,7 +320,7 @@ and serialization.</p>
 is being removed.  If your code needs to call this function, it is
 incorrect and needs to be fixed.</p>
 <p>To properly access the name of the kobject, use the function
-kobject_name():</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kobject_name()</span></code>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>const char *kobject_name(const struct kobject * kobj);
 </pre></div>
 </div>
@@ -370,8 +371,8 @@ the stack, but instead, always allocated dynamically.  Future versions of
 the kernel will contain a run-time check for kobjects that are created
 statically and will warn the developer of this improper usage.</p>
 <p>If all that you want to use a kobject for is to provide a reference counter
-for your structure, please use the struct kref instead; a kobject would be
-overkill.  For more information on how to use struct kref, please see the
+for your structure, please use the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kref</span></code> instead; a kobject would be
+overkill.  For more information on how to use <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kref</span></code>, please see the
 file <a class="reference internal" href="kref.html"><span class="doc">Adding reference counters (krefs) to kernel objects</span></a> in the Linux kernel source tree.</p>
 </section>
 <section id="creating-simple-kobjects">
@@ -418,7 +419,7 @@ kobjects goes away.</p>
 <a class="reference internal" href="mm-api.html#c.kfree" title="kfree"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree()</span></code></a> to free it directly. The only safe way is to use <a class="reference internal" href="../driver-api/basics.html#c.kobject_put" title="kobject_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">kobject_put()</span></code></a>. It
 is good practice to always use <a class="reference internal" href="../driver-api/basics.html#c.kobject_put" title="kobject_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">kobject_put()</span></code></a> after <a class="reference internal" href="../driver-api/basics.html#c.kobject_init" title="kobject_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">kobject_init()</span></code></a> to avoid
 errors creeping in.</p>
-<p>This notification is done through a kobject’s release() method. Usually
+<p>This notification is done through a kobject’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">release()</span></code> method. Usually
 such a method has a form like:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>void my_object_release(struct kobject *kobj)
 {
@@ -430,21 +431,21 @@ such a method has a form like:</p>
 </pre></div>
 </div>
 <p>One important point cannot be overstated: every kobject must have a
-release() method, and the kobject must persist (in a consistent state)
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">release()</span></code> method, and the kobject must persist (in a consistent state)
 until that method is called. If these constraints are not met, the code is
 flawed. Note that the kernel will warn you if you forget to provide a
-release() method.  Do not try to get rid of this warning by providing an
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">release()</span></code> method.  Do not try to get rid of this warning by providing an
 “empty” release function.</p>
 <p>If all your cleanup function needs to do is call <a class="reference internal" href="mm-api.html#c.kfree" title="kfree"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree()</span></code></a>, then you must
-create a wrapper function which uses container_of() to upcast to the correct
+create a wrapper function which uses <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">container_of()</span></code> to upcast to the correct
 type (as shown in the example above) and then calls <a class="reference internal" href="mm-api.html#c.kfree" title="kfree"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree()</span></code></a> on the overall
 structure.</p>
 <p>Note, the name of the kobject is available in the release function, but it
 must NOT be changed within this callback.  Otherwise there will be a memory
 leak in the kobject core, which makes people unhappy.</p>
-<p>Interestingly, the release() method is not stored in the kobject itself;
-instead, it is associated with the ktype. So let us introduce struct
-kobj_type:</p>
+<p>Interestingly, the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">release()</span></code> method is not stored in the kobject itself;
+instead, it is associated with the ktype. So let us introduce <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">kobj_type</span></code>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct kobj_type {
         void (*release)(struct kobject *kobj);
         const struct sysfs_ops *sysfs_ops;
@@ -459,8 +460,8 @@ kobj_type:</p>
 correctly, of containing object). Every kobject needs to have an associated
 kobj_type structure; a pointer to that structure must be specified when you
 call <a class="reference internal" href="../driver-api/basics.html#c.kobject_init" title="kobject_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">kobject_init()</span></code></a> or <a class="reference internal" href="../driver-api/basics.html#c.kobject_init_and_add" title="kobject_init_and_add"><code class="xref c c-func docutils literal notranslate"><span class="pre">kobject_init_and_add()</span></code></a>.</p>
-<p>The release field in struct kobj_type is, of course, a pointer to the
-release() method for this type of kobject. The other two fields (sysfs_ops
+<p>The release field in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kobj_type</span></code> is, of course, a pointer to the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">release()</span></code> method for this type of kobject. The other two fields (sysfs_ops
 and default_groups) control how objects of this type are represented in
 sysfs; they are beyond the scope of this document.</p>
 <p>The default_groups pointer is a list of default attributes that will be
@@ -510,7 +511,7 @@ after <a class="reference internal" href="../driver-api/basics.html#c.kset_unreg
 <p>An example of using a kset can be seen in the
 <code class="docutils literal notranslate"><span class="pre">samples/kobject/kset-example.c</span></code> file in the kernel tree.</p>
 <p>If a kset wishes to control the uevent operations of the kobjects
-associated with it, it can use the struct kset_uevent_ops to handle it:</p>
+associated with it, it can use the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kset_uevent_ops</span></code> to handle it:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct kset_uevent_ops {
         int (* const filter)(struct kobject *kobj);
         const char *(* const name)(struct kobject *kobj);

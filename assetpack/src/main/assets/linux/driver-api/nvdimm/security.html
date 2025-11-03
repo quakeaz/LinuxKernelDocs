@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -220,7 +220,7 @@
 specification [1], security DSMs are introduced. The spec added the following
 security DSMs: “get security state”, “set passphrase”, “disable passphrase”,
 “unlock unit”, “freeze lock”, “secure erase”, and “overwrite”. A security_ops
-data structure has been added to struct dimm in order to support the security
+data structure has been added to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dimm</span></code> in order to support the security
 operations and generic APIs are exposed to allow vendor neutral operations.</p>
 </section>
 <section id="sysfs-interface">
@@ -251,7 +251,7 @@ The DIMM id would be provided along with the key payload (passphrase) to
 the kernel.</p>
 <p>The security keys are managed on the basis of a single key per DIMM. The
 key “passphrase” is expected to be 32bytes long. This is similar to the ATA
-security specification [2]. A key is initially acquired via the request_key()
+security specification [2]. A key is initially acquired via the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">request_key()</span></code>
 kernel API call during nvdimm unlock. It is up to the user to make sure that
 all the keys are in the kernel user keyring for unlock.</p>
 <p>A nvdimm encrypted-key of format enc32 has the description format of:

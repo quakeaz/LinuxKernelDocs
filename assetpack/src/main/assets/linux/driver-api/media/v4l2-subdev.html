@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -221,16 +221,16 @@ controllers.</p>
 <p>Usually these are I2C devices, but not necessarily. In order to provide the
 driver with a consistent interface to these sub-devices the
 <a class="reference internal" href="#c.v4l2_subdev" title="v4l2_subdev"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subdev</span></code></a> struct (v4l2-subdev.h) was created.</p>
-<p>Each sub-device driver must have a <a class="reference internal" href="#c.v4l2_subdev" title="v4l2_subdev"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subdev</span></code></a> struct. This struct
-can be stand-alone for simple sub-devices or it might be embedded in a larger
+<p>Each sub-device driver must have a <a class="reference internal" href="#c.v4l2_subdev" title="v4l2_subdev"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subdev</span></code></a> struct. This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">can</span></code> be stand-alone for simple sub-devices or it might be embedded in a larger
 struct if more state information needs to be stored. Usually there is a
 low-level device struct (e.g. <code class="docutils literal notranslate"><span class="pre">i2c_client</span></code>) that contains the device data as
 setup by the kernel. It is recommended to store that pointer in the private
 data of <a class="reference internal" href="#c.v4l2_subdev" title="v4l2_subdev"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subdev</span></code></a> using <a class="reference internal" href="#c.v4l2_set_subdevdata" title="v4l2_set_subdevdata"><code class="xref c c-func docutils literal notranslate"><span class="pre">v4l2_set_subdevdata()</span></code></a>. That makes
 it easy to go from a <a class="reference internal" href="#c.v4l2_subdev" title="v4l2_subdev"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subdev</span></code></a> to the actual low-level bus-specific
 device data.</p>
-<p>You also need a way to go from the low-level struct to <a class="reference internal" href="#c.v4l2_subdev" title="v4l2_subdev"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subdev</span></code></a>.
-For the common i2c_client struct the i2c_set_clientdata() call is used to store
+<p>You also need a way to go from the low-level <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">to</span></code> <a class="reference internal" href="#c.v4l2_subdev" title="v4l2_subdev"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subdev</span></code></a>.
+For the common i2c_client <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">the</span></code> <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">i2c_set_clientdata()</span></code> call is used to store
 a <a class="reference internal" href="#c.v4l2_subdev" title="v4l2_subdev"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subdev</span></code></a> pointer, for other buses you may have to use other
 methods.</p>
 <p>Bridges might also need to store per-subdev private data, such as a pointer to
@@ -244,10 +244,10 @@ Helper functions exist for sub-devices on an I2C bus that do most of this
 tricky work for you.</p>
 <p>Each <a class="reference internal" href="#c.v4l2_subdev" title="v4l2_subdev"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subdev</span></code></a> contains function pointers that sub-device drivers
 can implement (or leave <code class="docutils literal notranslate"><span class="pre">NULL</span></code> if it is not applicable). Since sub-devices can
-do so many different things and you do not want to end up with a huge ops struct
-of which only a handful of ops are commonly implemented, the function pointers
+do so many different things and you do not want to end up with a huge ops <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">of</span></code> which only a handful of ops are commonly implemented, the function pointers
 are sorted according to category and each category has its own ops struct.</p>
-<p>The top-level ops struct contains pointers to the category ops structs, which
+<p>The top-level ops <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">contains</span></code> pointers to the category ops structs, which
 may be NULL if the subdev driver does not support anything from that category.</p>
 <p>It looks like this:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">v4l2_subdev_core_ops</span><span class="w"> </span><span class="p">{</span>
@@ -286,7 +286,7 @@ depending on the sub-device. E.g. a video device is unlikely to support the
 audio ops and vice versa.</p>
 <p>This setup limits the number of function pointers while still making it easy
 to add new ops and categories.</p>
-<p>A sub-device driver initializes the <a class="reference internal" href="#c.v4l2_subdev" title="v4l2_subdev"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subdev</span></code></a> struct using:</p>
+<p>A sub-device driver initializes the <a class="reference internal" href="#c.v4l2_subdev" title="v4l2_subdev"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subdev</span></code></a> <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">using</span></code>:</p>
 <blockquote>
 <div><p><a class="reference internal" href="#c.v4l2_subdev_init" title="v4l2_subdev_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">v4l2_subdev_init</span></code></a>
 (<a class="reference internal" href="#c.v4l2_subdev" title="v4l2_subdev"><code class="xref c c-type docutils literal notranslate"><span class="pre">sd</span></code></a>, &amp;<a class="reference internal" href="#c.v4l2_subdev_ops" title="v4l2_subdev_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">ops</span></code></a>).</p>
@@ -295,7 +295,7 @@ to add new ops and categories.</p>
 unique name and set the module owner. This is done for you if you use the
 i2c helper functions.</p>
 <p>If integration with the media framework is needed, you must initialize the
-<a class="reference internal" href="mc-core.html#c.media_entity" title="media_entity"><code class="xref c c-type docutils literal notranslate"><span class="pre">media_entity</span></code></a> struct embedded in the <a class="reference internal" href="#c.v4l2_subdev" title="v4l2_subdev"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subdev</span></code></a> struct
+<a class="reference internal" href="mc-core.html#c.media_entity" title="media_entity"><code class="xref c c-type docutils literal notranslate"><span class="pre">media_entity</span></code></a> <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">embedded</span></code> in the <a class="reference internal" href="#c.v4l2_subdev" title="v4l2_subdev"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subdev</span></code></a> struct
 (entity field) by calling <a class="reference internal" href="mc-core.html#c.media_entity_pads_init" title="media_entity_pads_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">media_entity_pads_init()</span></code></a>, if the entity has
 pads:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">media_pad</span><span class="w"> </span><span class="o">*</span><span class="n">pads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">my_sd</span><span class="o">-&gt;</span><span class="n">pads</span><span class="p">;</span>
@@ -446,7 +446,7 @@ the async sub-device, using <a class="reference internal" href="v4l2-async.html#
 <h3><span class="section-number">2.7.1.7. </span>Asynchronous sub-device notifier callbacks<a class="headerlink" href="#asynchronous-sub-device-notifier-callbacks" title="Link to this heading">¶</a></h3>
 <p>The V4L2 core will then use these connection descriptors to match asynchronously
 registered subdevices to them. If a match is detected the <code class="docutils literal notranslate"><span class="pre">.bound()</span></code> notifier
-callback is called. After all connections have been bound the .complete()
+callback is called. After all connections have been bound the .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">complete()</span></code>
 callback is called. When a connection is removed from the system the
 <code class="docutils literal notranslate"><span class="pre">.unbind()</span></code> method is called. All three callbacks are optional.</p>
 <p>Drivers can store any type of custom data in their driver-specific
@@ -458,7 +458,7 @@ notifier callback. The framework will call it right before freeing the
 </section>
 <section id="calling-subdev-operations">
 <h2><span class="section-number">2.7.2. </span>Calling subdev operations<a class="headerlink" href="#calling-subdev-operations" title="Link to this heading">¶</a></h2>
-<p>The advantage of using <a class="reference internal" href="#c.v4l2_subdev" title="v4l2_subdev"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subdev</span></code></a> is that it is a generic struct and
+<p>The advantage of using <a class="reference internal" href="#c.v4l2_subdev" title="v4l2_subdev"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subdev</span></code></a> is that it is a generic <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">and</span></code>
 does not contain any knowledge about the underlying hardware. So a driver might
 contain several subdevs that use an I2C bus, but also a subdev that is
 controlled through GPIO pins. This distinction is only relevant when setting
@@ -603,10 +603,10 @@ the errno variable is set to <code class="docutils literal notranslate"><span cl
 <p>Since these drivers are so common, special helper functions are available to
 ease the use of these drivers (<code class="docutils literal notranslate"><span class="pre">v4l2-common.h</span></code>).</p>
 <p>The recommended method of adding <a class="reference internal" href="#c.v4l2_subdev" title="v4l2_subdev"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subdev</span></code></a> support to an I2C driver
-is to embed the <a class="reference internal" href="#c.v4l2_subdev" title="v4l2_subdev"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subdev</span></code></a> struct into the state struct that is
+is to embed the <a class="reference internal" href="#c.v4l2_subdev" title="v4l2_subdev"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subdev</span></code></a> <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">into</span></code> the state <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">that</span></code> is
 created for each I2C device instance. Very simple devices have no state
-struct and in that case you can just create a <a class="reference internal" href="#c.v4l2_subdev" title="v4l2_subdev"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subdev</span></code></a> directly.</p>
-<p>A typical state struct would look like this (where ‘chipname’ is replaced by
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">and</span></code> in that case you can just create a <a class="reference internal" href="#c.v4l2_subdev" title="v4l2_subdev"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subdev</span></code></a> directly.</p>
+<p>A typical state <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">would</span></code> look like this (where ‘chipname’ is replaced by
 the name of the chip):</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">chipname_state</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">v4l2_subdev</span><span class="w"> </span><span class="n">sd</span><span class="p">;</span>
@@ -614,7 +614,7 @@ the name of the chip):</p>
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>Initialize the <a class="reference internal" href="#c.v4l2_subdev" title="v4l2_subdev"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subdev</span></code></a> struct as follows:</p>
+<p>Initialize the <a class="reference internal" href="#c.v4l2_subdev" title="v4l2_subdev"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subdev</span></code></a> <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">as</span></code> follows:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">v4l2_i2c_subdev_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">state</span><span class="o">-&gt;</span><span class="n">sd</span><span class="p">,</span><span class="w"> </span><span class="n">client</span><span class="p">,</span><span class="w"> </span><span class="n">subdev_ops</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -628,7 +628,7 @@ pointer to a chipname_state struct:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Use this to go from the <a class="reference internal" href="#c.v4l2_subdev" title="v4l2_subdev"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subdev</span></code></a> struct to the <code class="docutils literal notranslate"><span class="pre">i2c_client</span></code>
+<p>Use this to go from the <a class="reference internal" href="#c.v4l2_subdev" title="v4l2_subdev"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subdev</span></code></a> <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">to</span></code> the <code class="docutils literal notranslate"><span class="pre">i2c_client</span></code>
 struct:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">i2c_client</span><span class="w"> </span><span class="o">*</span><span class="n">client</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v4l2_get_subdevdata</span><span class="p">(</span><span class="n">sd</span><span class="p">);</span>
 </pre></div>
@@ -670,8 +670,8 @@ later date. It differs between i2c drivers and as such can be confusing.
 To see which chip variants are supported you can look in the i2c driver code
 for the i2c_device_id table. This lists all the possibilities.</p>
 <p>There are one more helper function:</p>
-<p><a class="reference internal" href="v4l2-common.html#c.v4l2_i2c_new_subdev_board" title="v4l2_i2c_new_subdev_board"><code class="xref c c-func docutils literal notranslate"><span class="pre">v4l2_i2c_new_subdev_board()</span></code></a> uses an <a class="reference internal" href="../i2c.html#c.i2c_board_info" title="i2c_board_info"><code class="xref c c-type docutils literal notranslate"><span class="pre">i2c_board_info</span></code></a> struct
-which is passed to the i2c driver and replaces the irq, platform_data and addr
+<p><a class="reference internal" href="v4l2-common.html#c.v4l2_i2c_new_subdev_board" title="v4l2_i2c_new_subdev_board"><code class="xref c c-func docutils literal notranslate"><span class="pre">v4l2_i2c_new_subdev_board()</span></code></a> uses an <a class="reference internal" href="../i2c.html#c.i2c_board_info" title="i2c_board_info"><code class="xref c c-type docutils literal notranslate"><span class="pre">i2c_board_info</span></code></a> <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">which</span></code> is passed to the i2c driver and replaces the irq, platform_data and addr
 arguments.</p>
 <p>If the subdev supports the s_config core ops, then that op is called with
 the irq and platform_data arguments after the subdev was setup.</p>
@@ -864,7 +864,7 @@ Otherwise, ACTIVE HIGH is assumed.</p>
 </div>
 <p><strong>Members</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">log_status</span></code></dt><dd><p>callback for VIDIOC_LOG_STATUS() ioctl handler code.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">log_status</span></code></dt><dd><p>callback for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">VIDIOC_LOG_STATUS()</span></code> ioctl handler code.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">s_io_pin_config</span></code></dt><dd><p>configure one or more chip I/O pins for chips that
 multiplex different internal signal pads out to IO pins.  This function
@@ -895,9 +895,9 @@ used to provide support for private ioctls used on the driver.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">compat_ioctl32</span></code></dt><dd><p>called when a 32 bits application uses a 64 bits Kernel,
 in order to fix data passed from/to userspace.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">g_register</span></code></dt><dd><p>callback for VIDIOC_DBG_G_REGISTER() ioctl handler code.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">g_register</span></code></dt><dd><p>callback for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">VIDIOC_DBG_G_REGISTER()</span></code> ioctl handler code.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">s_register</span></code></dt><dd><p>callback for VIDIOC_DBG_S_REGISTER() ioctl handler code.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">s_register</span></code></dt><dd><p>callback for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">VIDIOC_DBG_S_REGISTER()</span></code> ioctl handler code.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">s_power</span></code></dt><dd><p>puts subdevice in power saving mode (on == 0) or normal operation
 mode (on == 1). DEPRECATED. See
@@ -950,23 +950,23 @@ drivers should explicitly call it when a tuner ops should
 operate on radio mode, before being able to handle it.
 Used on devices that have both AM/FM radio receiver and TV.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">s_frequency</span></code></dt><dd><p>callback for VIDIOC_S_FREQUENCY() ioctl handler code.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">s_frequency</span></code></dt><dd><p>callback for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">VIDIOC_S_FREQUENCY()</span></code> ioctl handler code.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">g_frequency</span></code></dt><dd><p>callback for VIDIOC_G_FREQUENCY() ioctl handler code.
+<dt><code class="docutils literal notranslate"><span class="pre">g_frequency</span></code></dt><dd><p>callback for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">VIDIOC_G_FREQUENCY()</span></code> ioctl handler code.
 freq-&gt;type must be filled in. Normally done by <a class="reference internal" href="v4l2-common.html#c.video_ioctl2" title="video_ioctl2"><code class="xref c c-func docutils literal notranslate"><span class="pre">video_ioctl2()</span></code></a>
 or the bridge driver.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">enum_freq_bands</span></code></dt><dd><p>callback for VIDIOC_ENUM_FREQ_BANDS() ioctl handler code.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">enum_freq_bands</span></code></dt><dd><p>callback for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">VIDIOC_ENUM_FREQ_BANDS()</span></code> ioctl handler code.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">g_tuner</span></code></dt><dd><p>callback for VIDIOC_G_TUNER() ioctl handler code.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">g_tuner</span></code></dt><dd><p>callback for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">VIDIOC_G_TUNER()</span></code> ioctl handler code.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">s_tuner</span></code></dt><dd><p>callback for VIDIOC_S_TUNER() ioctl handler code. <strong>vt-&gt;type</strong> must be
+<dt><code class="docutils literal notranslate"><span class="pre">s_tuner</span></code></dt><dd><p>callback for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">VIDIOC_S_TUNER()</span></code> ioctl handler code. <strong>vt-&gt;type</strong> must be
 filled in. Normally done by video_ioctl2 or the
 bridge driver.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">g_modulator</span></code></dt><dd><p>callback for VIDIOC_G_MODULATOR() ioctl handler code.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">g_modulator</span></code></dt><dd><p>callback for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">VIDIOC_G_MODULATOR()</span></code> ioctl handler code.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">s_modulator</span></code></dt><dd><p>callback for VIDIOC_S_MODULATOR() ioctl handler code.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">s_modulator</span></code></dt><dd><p>callback for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">VIDIOC_S_MODULATOR()</span></code> ioctl handler code.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">s_type_addr</span></code></dt><dd><p>sets tuner type and its I2C addr.</p>
 </dd>
@@ -1164,7 +1164,7 @@ for backwards compatibility.</p>
 <p><strong>Constants</strong></p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">V4L2_SUBDEV_PRE_STREAMON_FL_MANUAL_LP</span></code></dt><dd><p>Set the transmitter to either LP-11
-or LP-111 mode before call to s_stream().</p>
+or LP-111 mode before call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">s_stream()</span></code>.</p>
 </dd>
 </dl>
 </div>
@@ -1188,7 +1188,6 @@ or LP-111 mode before call to s_stream().</p>
     int (*g_tvnorms_output)(struct v4l2_subdev *sd, v4l2_std_id *std);
     int (*g_input_status)(struct v4l2_subdev *sd, u32 *status);
     int (*s_stream)(struct v4l2_subdev *sd, int enable);
-    int (*g_pixelaspect)(struct v4l2_subdev *sd, struct v4l2_fract *aspect);
     int (*s_rx_buffer)(struct v4l2_subdev *sd, void *buf, unsigned int *size);
     int (*pre_streamon)(struct v4l2_subdev *sd, u32 flags);
     int (*post_streamoff)(struct v4l2_subdev *sd);
@@ -1196,7 +1195,7 @@ or LP-111 mode before call to s_stream().</p>
 </pre></div>
 </div>
 <p><strong>Members</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">s_routing</span></code></dt><dd><p>see s_routing in audio_ops, except this version is for video
 devices.</p>
 </dd>
@@ -1205,9 +1204,9 @@ clocks in Hz. An extra flags field allows device specific configuration
 regarding clock frequency dividers, etc. If not used, then set flags
 to 0. If the frequency is not supported, then -EINVAL is returned.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">g_std</span></code></dt><dd><p>callback for VIDIOC_G_STD() ioctl handler code.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">g_std</span></code></dt><dd><p>callback for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">VIDIOC_G_STD()</span></code> ioctl handler code.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">s_std</span></code></dt><dd><p>callback for VIDIOC_S_STD() ioctl handler code.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">s_std</span></code></dt><dd><p>callback for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">VIDIOC_S_STD()</span></code> ioctl handler code.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">s_std_output</span></code></dt><dd><p>set v4l2_std_id for video OUTPUT devices. This is ignored by
 video input devices.</p>
@@ -1215,7 +1214,7 @@ video input devices.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">g_std_output</span></code></dt><dd><p>get current standard for video OUTPUT devices. This is ignored
 by video input devices.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">querystd</span></code></dt><dd><p>callback for VIDIOC_QUERYSTD() ioctl handler code.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">querystd</span></code></dt><dd><p>callback for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">VIDIOC_QUERYSTD()</span></code> ioctl handler code.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">g_tvnorms</span></code></dt><dd><p>get <code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_std_id</span></code> with all standards supported by the video
 CAPTURE device. This is ignored by video output devices.</p>
@@ -1232,16 +1231,6 @@ streaming start, while the error code is still returned by the driver.
 The caller shall track the subdev state, and shall not start or stop an
 already started or stopped subdev. Also see call_s_stream wrapper in
 v4l2-subdev.c.</p>
-<p>This callback is DEPRECATED. New drivers should instead implement
-<a class="reference internal" href="#c.v4l2_subdev_pad_ops" title="v4l2_subdev_pad_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subdev_pad_ops.enable_streams</span></code></a> and
-<a class="reference internal" href="#c.v4l2_subdev_pad_ops" title="v4l2_subdev_pad_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subdev_pad_ops.disable_streams</span></code></a> operations, and use
-v4l2_subdev_s_stream_helper for the <a class="reference internal" href="#c.v4l2_subdev_video_ops" title="v4l2_subdev_video_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subdev_video_ops.s_stream</span></code></a>
-operation to support legacy users.</p>
-<p>Drivers should also not call the .s_stream() subdev operation directly,
-but use the <a class="reference internal" href="#c.v4l2_subdev_enable_streams" title="v4l2_subdev_enable_streams"><code class="xref c c-func docutils literal notranslate"><span class="pre">v4l2_subdev_enable_streams()</span></code></a> and
-<a class="reference internal" href="#c.v4l2_subdev_disable_streams" title="v4l2_subdev_disable_streams"><code class="xref c c-func docutils literal notranslate"><span class="pre">v4l2_subdev_disable_streams()</span></code></a> helpers.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">g_pixelaspect</span></code></dt><dd><p>callback to return the pixelaspect ratio.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">s_rx_buffer</span></code></dt><dd><p>set a host allocated memory buffer for the subdev. The subdev
 can adjust <strong>size</strong> to a lower value and must not write more data to the
@@ -1251,16 +1240,27 @@ buffer starting at <strong>data</strong> than the original value of <strong>size
 initialising the bus. Current usage is to set a CSI-2 transmitter to
 LP-11 or LP-111 mode before streaming. See <a class="reference internal" href="#c.v4l2_subdev_pre_streamon_flags" title="v4l2_subdev_pre_streamon_flags"><code class="xref c c-type docutils literal notranslate"><span class="pre">enum</span>
 <span class="pre">v4l2_subdev_pre_streamon_flags</span></code></a>.</p>
-<p>pre_streamon shall return error if it cannot perform the operation as
-indicated by the flags argument. In particular, -EACCES indicates lack
-of support for the operation. The caller shall call post_streamoff for
-each successful call of pre_streamon.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">post_streamoff</span></code></dt><dd><p>Called after streaming is stopped, but if and only if
 pre_streamon was called earlier.</p>
 </dd>
 </dl>
 </div>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This callback is DEPRECATED. New drivers should instead implement
+<a class="reference internal" href="#c.v4l2_subdev_pad_ops" title="v4l2_subdev_pad_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subdev_pad_ops.enable_streams</span></code></a> and
+<a class="reference internal" href="#c.v4l2_subdev_pad_ops" title="v4l2_subdev_pad_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subdev_pad_ops.disable_streams</span></code></a> operations, and use
+v4l2_subdev_s_stream_helper for the <a class="reference internal" href="#c.v4l2_subdev_video_ops" title="v4l2_subdev_video_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_subdev_video_ops.s_stream</span></code></a>
+operation to support legacy users.</p>
+<p>Drivers should also not call the .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">s_stream()</span></code> subdev operation directly,
+but use the <a class="reference internal" href="#c.v4l2_subdev_enable_streams" title="v4l2_subdev_enable_streams"><code class="xref c c-func docutils literal notranslate"><span class="pre">v4l2_subdev_enable_streams()</span></code></a> and
+<a class="reference internal" href="#c.v4l2_subdev_disable_streams" title="v4l2_subdev_disable_streams"><code class="xref c c-func docutils literal notranslate"><span class="pre">v4l2_subdev_disable_streams()</span></code></a> helpers.</p>
+<p>pre_streamon shall return error if it cannot perform the operation as
+indicated by the flags argument. In particular, -EACCES indicates lack
+of support for the operation. The caller shall call post_streamoff for
+each successful call of pre_streamon.</p>
+</div></blockquote>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.v4l2_subdev_vbi_ops">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">v4l2_subdev_vbi_ops</span></span></span><a class="headerlink" href="#c.v4l2_subdev_vbi_ops" title="Link to this definition">¶</a><br /></dt>
@@ -1286,7 +1286,7 @@ pre_streamon was called earlier.</p>
 this ioctl. Field p of the <a class="reference internal" href="#c.v4l2_decode_vbi_line" title="v4l2_decode_vbi_line"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_decode_vbi_line</span></code></a> is set to the
 start of the VBI data that was generated by the decoder. The driver
 then parses the sliced VBI data and sets the other fields in the
-struct accordingly. The pointer p is updated to point to the start of
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">accordingly</span></code>. The pointer p is updated to point to the start of
 the payload which can be copied verbatim into the data field of the
 <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_sliced_vbi_data</span></code>. If no valid VBI data was found, then the
 type field is set to 0 on return.</p>
@@ -1304,7 +1304,7 @@ returned. Note that you must fill in the ‘id’ member and the ‘field’
 member (to determine whether CC data from the first or second field
 should be obtained).</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">g_sliced_vbi_cap</span></code></dt><dd><p>callback for VIDIOC_G_SLICED_VBI_CAP() ioctl handler
+<dt><code class="docutils literal notranslate"><span class="pre">g_sliced_vbi_cap</span></code></dt><dd><p>callback for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">VIDIOC_G_SLICED_VBI_CAP()</span></code> ioctl handler
 code.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">s_raw_fmt</span></code></dt><dd><p>setup the video encoder/decoder for raw VBI.</p>
@@ -1351,7 +1351,7 @@ turned on.</p>
 <div class="kernelindent docutils container">
 <p><strong>Constants</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">V4L2_SUBDEV_IR_MODE_PULSE_WIDTH</span></code></dt><dd><p>IR uses struct ir_raw_event records</p>
+<dt><code class="docutils literal notranslate"><span class="pre">V4L2_SUBDEV_IR_MODE_PULSE_WIDTH</span></code></dt><dd><p>IR uses <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ir_raw_event</span></code> records</p>
 </dd>
 </dl>
 </div>
@@ -1640,15 +1640,15 @@ of the main argument is set to <code class="docutils literal notranslate"><span 
 <div class="kernelindent docutils container">
 <p><strong>Definition</strong>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct v4l2_subdev_pad_ops {
-    int (*enum_mbus_code)(struct v4l2_subdev *sd,struct v4l2_subdev_state *state, struct v4l2_subdev_mbus_code_enum *code);
-    int (*enum_frame_size)(struct v4l2_subdev *sd,struct v4l2_subdev_state *state, struct v4l2_subdev_frame_size_enum *fse);
-    int (*enum_frame_interval)(struct v4l2_subdev *sd,struct v4l2_subdev_state *state, struct v4l2_subdev_frame_interval_enum *fie);
-    int (*get_fmt)(struct v4l2_subdev *sd,struct v4l2_subdev_state *state, struct v4l2_subdev_format *format);
-    int (*set_fmt)(struct v4l2_subdev *sd,struct v4l2_subdev_state *state, struct v4l2_subdev_format *format);
-    int (*get_selection)(struct v4l2_subdev *sd,struct v4l2_subdev_state *state, struct v4l2_subdev_selection *sel);
-    int (*set_selection)(struct v4l2_subdev *sd,struct v4l2_subdev_state *state, struct v4l2_subdev_selection *sel);
-    int (*get_frame_interval)(struct v4l2_subdev *sd,struct v4l2_subdev_state *state, struct v4l2_subdev_frame_interval *interval);
-    int (*set_frame_interval)(struct v4l2_subdev *sd,struct v4l2_subdev_state *state, struct v4l2_subdev_frame_interval *interval);
+    int (*enum_mbus_code)(struct v4l2_subdev *sd, struct v4l2_subdev_state *state, struct v4l2_subdev_mbus_code_enum *code);
+    int (*enum_frame_size)(struct v4l2_subdev *sd, struct v4l2_subdev_state *state, struct v4l2_subdev_frame_size_enum *fse);
+    int (*enum_frame_interval)(struct v4l2_subdev *sd, struct v4l2_subdev_state *state, struct v4l2_subdev_frame_interval_enum *fie);
+    int (*get_fmt)(struct v4l2_subdev *sd, struct v4l2_subdev_state *state, struct v4l2_subdev_format *format);
+    int (*set_fmt)(struct v4l2_subdev *sd, struct v4l2_subdev_state *state, struct v4l2_subdev_format *format);
+    int (*get_selection)(struct v4l2_subdev *sd, struct v4l2_subdev_state *state, struct v4l2_subdev_selection *sel);
+    int (*set_selection)(struct v4l2_subdev *sd, struct v4l2_subdev_state *state, struct v4l2_subdev_selection *sel);
+    int (*get_frame_interval)(struct v4l2_subdev *sd, struct v4l2_subdev_state *state, struct v4l2_subdev_frame_interval *interval);
+    int (*set_frame_interval)(struct v4l2_subdev *sd, struct v4l2_subdev_state *state, struct v4l2_subdev_frame_interval *interval);
     int (*get_edid)(struct v4l2_subdev *sd, struct v4l2_edid *edid);
     int (*set_edid)(struct v4l2_subdev *sd, struct v4l2_edid *edid);
     int (*s_dv_timings)(struct v4l2_subdev *sd, unsigned int pad, struct v4l2_dv_timings *timings);
@@ -1657,45 +1657,45 @@ of the main argument is set to <code class="docutils literal notranslate"><span 
     int (*dv_timings_cap)(struct v4l2_subdev *sd, struct v4l2_dv_timings_cap *cap);
     int (*enum_dv_timings)(struct v4l2_subdev *sd, struct v4l2_enum_dv_timings *timings);
 #ifdef CONFIG_MEDIA_CONTROLLER;
-    int (*link_validate)(struct v4l2_subdev *sd, struct media_link *link,struct v4l2_subdev_format *source_fmt, struct v4l2_subdev_format *sink_fmt);
+    int (*link_validate)(struct v4l2_subdev *sd, struct media_link *link, struct v4l2_subdev_format *source_fmt, struct v4l2_subdev_format *sink_fmt);
 #endif ;
     int (*get_frame_desc)(struct v4l2_subdev *sd, unsigned int pad, struct v4l2_mbus_frame_desc *fd);
     int (*set_frame_desc)(struct v4l2_subdev *sd, unsigned int pad, struct v4l2_mbus_frame_desc *fd);
     int (*get_mbus_config)(struct v4l2_subdev *sd, unsigned int pad, struct v4l2_mbus_config *config);
-    int (*set_routing)(struct v4l2_subdev *sd,struct v4l2_subdev_state *state,enum v4l2_subdev_format_whence which, struct v4l2_subdev_krouting *route);
-    int (*enable_streams)(struct v4l2_subdev *sd,struct v4l2_subdev_state *state, u32 pad, u64 streams_mask);
-    int (*disable_streams)(struct v4l2_subdev *sd,struct v4l2_subdev_state *state, u32 pad, u64 streams_mask);
+    int (*set_routing)(struct v4l2_subdev *sd, struct v4l2_subdev_state *state, enum v4l2_subdev_format_whence which, struct v4l2_subdev_krouting *route);
+    int (*enable_streams)(struct v4l2_subdev *sd, struct v4l2_subdev_state *state, u32 pad, u64 streams_mask);
+    int (*disable_streams)(struct v4l2_subdev *sd, struct v4l2_subdev_state *state, u32 pad, u64 streams_mask);
 };
 </pre></div>
 </div>
 <p><strong>Members</strong></p>
-<dl>
-<dt><code class="docutils literal notranslate"><span class="pre">enum_mbus_code</span></code></dt><dd><p>callback for VIDIOC_SUBDEV_ENUM_MBUS_CODE() ioctl handler
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">enum_mbus_code</span></code></dt><dd><p>callback for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">VIDIOC_SUBDEV_ENUM_MBUS_CODE()</span></code> ioctl handler
 code.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">enum_frame_size</span></code></dt><dd><p>callback for VIDIOC_SUBDEV_ENUM_FRAME_SIZE() ioctl handler
+<dt><code class="docutils literal notranslate"><span class="pre">enum_frame_size</span></code></dt><dd><p>callback for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">VIDIOC_SUBDEV_ENUM_FRAME_SIZE()</span></code> ioctl handler
 code.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">enum_frame_interval</span></code></dt><dd><p>callback for VIDIOC_SUBDEV_ENUM_FRAME_INTERVAL() ioctl
+<dt><code class="docutils literal notranslate"><span class="pre">enum_frame_interval</span></code></dt><dd><p>callback for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">VIDIOC_SUBDEV_ENUM_FRAME_INTERVAL()</span></code> ioctl
 handler code.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">get_fmt</span></code></dt><dd><p>callback for VIDIOC_SUBDEV_G_FMT() ioctl handler code.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">get_fmt</span></code></dt><dd><p>callback for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">VIDIOC_SUBDEV_G_FMT()</span></code> ioctl handler code.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">set_fmt</span></code></dt><dd><p>callback for VIDIOC_SUBDEV_S_FMT() ioctl handler code.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">set_fmt</span></code></dt><dd><p>callback for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">VIDIOC_SUBDEV_S_FMT()</span></code> ioctl handler code.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">get_selection</span></code></dt><dd><p>callback for VIDIOC_SUBDEV_G_SELECTION() ioctl handler code.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">get_selection</span></code></dt><dd><p>callback for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">VIDIOC_SUBDEV_G_SELECTION()</span></code> ioctl handler code.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">set_selection</span></code></dt><dd><p>callback for VIDIOC_SUBDEV_S_SELECTION() ioctl handler code.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">set_selection</span></code></dt><dd><p>callback for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">VIDIOC_SUBDEV_S_SELECTION()</span></code> ioctl handler code.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">get_frame_interval</span></code></dt><dd><p>callback for VIDIOC_SUBDEV_G_FRAME_INTERVAL()
+<dt><code class="docutils literal notranslate"><span class="pre">get_frame_interval</span></code></dt><dd><p>callback for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">VIDIOC_SUBDEV_G_FRAME_INTERVAL()</span></code>
 ioctl handler code.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">set_frame_interval</span></code></dt><dd><p>callback for VIDIOC_SUBDEV_S_FRAME_INTERVAL()
+<dt><code class="docutils literal notranslate"><span class="pre">set_frame_interval</span></code></dt><dd><p>callback for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">VIDIOC_SUBDEV_S_FRAME_INTERVAL()</span></code>
 ioctl handler code.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">get_edid</span></code></dt><dd><p>callback for VIDIOC_SUBDEV_G_EDID() ioctl handler code.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">get_edid</span></code></dt><dd><p>callback for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">VIDIOC_SUBDEV_G_EDID()</span></code> ioctl handler code.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">set_edid</span></code></dt><dd><p>callback for VIDIOC_SUBDEV_S_EDID() ioctl handler code.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">set_edid</span></code></dt><dd><p>callback for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">VIDIOC_SUBDEV_S_EDID()</span></code> ioctl handler code.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">s_dv_timings</span></code></dt><dd><p>Set custom dv timings in the sub device. This is used
 when sub device is capable of setting detailed timing information
@@ -1703,12 +1703,12 @@ in the hardware to generate/detect the video signal.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">g_dv_timings</span></code></dt><dd><p>Get custom dv timings in the sub device.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">query_dv_timings</span></code></dt><dd><p>callback for VIDIOC_QUERY_DV_TIMINGS() ioctl handler code.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">query_dv_timings</span></code></dt><dd><p>callback for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">VIDIOC_QUERY_DV_TIMINGS()</span></code> ioctl handler code.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">dv_timings_cap</span></code></dt><dd><p>callback for VIDIOC_SUBDEV_DV_TIMINGS_CAP() ioctl handler
+<dt><code class="docutils literal notranslate"><span class="pre">dv_timings_cap</span></code></dt><dd><p>callback for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">VIDIOC_SUBDEV_DV_TIMINGS_CAP()</span></code> ioctl handler
 code.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">enum_dv_timings</span></code></dt><dd><p>callback for VIDIOC_SUBDEV_ENUM_DV_TIMINGS() ioctl handler
+<dt><code class="docutils literal notranslate"><span class="pre">enum_dv_timings</span></code></dt><dd><p>callback for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">VIDIOC_SUBDEV_ENUM_DV_TIMINGS()</span></code> ioctl handler
 code.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">link_validate</span></code></dt><dd><p>used by the media controller code to check if the links
@@ -1743,21 +1743,24 @@ source pad. Subdevs that implement this operation must use the active
 state management provided by the subdev core (enabled through a call to
 <a class="reference internal" href="#c.v4l2_subdev_init_finalize" title="v4l2_subdev_init_finalize"><code class="xref c c-func docutils literal notranslate"><span class="pre">v4l2_subdev_init_finalize()</span></code></a> at initialization time). Do not call
 directly, use <a class="reference internal" href="#c.v4l2_subdev_enable_streams" title="v4l2_subdev_enable_streams"><code class="xref c c-func docutils literal notranslate"><span class="pre">v4l2_subdev_enable_streams()</span></code></a> instead.</p>
-<p>Drivers that support only a single stream without setting the
-V4L2_SUBDEV_CAP_STREAMS sub-device capability flag can ignore the mask
-argument.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">disable_streams</span></code></dt><dd><p>Disable the streams defined in streams_mask on the given
 source pad. Subdevs that implement this operation must use the active
 state management provided by the subdev core (enabled through a call to
 <a class="reference internal" href="#c.v4l2_subdev_init_finalize" title="v4l2_subdev_init_finalize"><code class="xref c c-func docutils literal notranslate"><span class="pre">v4l2_subdev_init_finalize()</span></code></a> at initialization time). Do not call
 directly, use <a class="reference internal" href="#c.v4l2_subdev_disable_streams" title="v4l2_subdev_disable_streams"><code class="xref c c-func docutils literal notranslate"><span class="pre">v4l2_subdev_disable_streams()</span></code></a> instead.</p>
-<p>Drivers that support only a single stream without setting the
-V4L2_SUBDEV_CAP_STREAMS sub-device capability flag can ignore the mask
-argument.</p>
 </dd>
 </dl>
 </div>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Drivers that support only a single stream without setting the
+V4L2_SUBDEV_CAP_STREAMS sub-device capability flag can ignore the mask
+argument.</p>
+<p>Drivers that support only a single stream without setting the
+V4L2_SUBDEV_CAP_STREAMS sub-device capability flag can ignore the mask
+argument.</p>
+</div></blockquote>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.v4l2_subdev_ops">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">v4l2_subdev_ops</span></span></span><a class="headerlink" href="#c.v4l2_subdev_ops" title="Link to this definition">¶</a><br /></dt>
@@ -1986,7 +1989,7 @@ and <a class="reference internal" href="#c.v4l2_subdev_disable_streams" title="v
 fallback cases.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">s_stream_enabled</span></code></dt><dd><p>Tracks whether streaming has been enabled with s_stream.
-This is only for call_s_stream() internal use.</p>
+This is only for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">call_s_stream()</span></code> internal use.</p>
 </dd>
 </dl>
 </div>
@@ -2278,7 +2281,7 @@ and pad1.</p>
 <p>This function finalizes the initialization of the subdev, including
 allocation of the active state for the subdev.</p>
 <p>This function must be called by the subdev drivers that use the centralized
-active state, after the subdev struct has been initialized and
+active state, after the subdev <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">has</span></code> been initialized and
 <a class="reference internal" href="mc-core.html#c.media_entity_pads_init" title="media_entity_pads_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">media_entity_pads_init()</span></code></a> has been called, but before registering the
 subdev.</p>
 <p>The user must call <a class="reference internal" href="#c.v4l2_subdev_cleanup" title="v4l2_subdev_cleanup"><code class="xref c c-func docutils literal notranslate"><span class="pre">v4l2_subdev_cleanup()</span></code></a> when the subdev is being removed.</p>
@@ -2666,8 +2669,8 @@ once.</p>
 contains an already enabled stream, this function returns -EALREADY without
 performing any operation.</p>
 <p>Per-stream enable is only available for subdevs that implement the
-.enable_streams() and .disable_streams() operations. For other subdevs, this
-function implements a best-effort compatibility by calling the .s_stream()
+.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">enable_streams()</span></code> and .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">disable_streams()</span></code> operations. For other subdevs, this
+function implements a best-effort compatibility by calling the .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">s_stream()</span></code>
 operation, limited to subdevs that have a single source pad.</p>
 <p>Drivers that are not stream-aware shall set <strong>streams_mask</strong> to BIT_ULL(0).</p>
 <p><strong>Return</strong></p>
@@ -2675,7 +2678,7 @@ operation, limited to subdevs that have a single source pad.</p>
 <li><p>0: Success</p></li>
 <li><p>-EALREADY: One of the streams in streams_mask is already enabled</p></li>
 <li><p>-EINVAL: The pad index is invalid, or doesn’t correspond to a source pad</p></li>
-<li><p>-EOPNOTSUPP: Falling back to the legacy .s_stream() operation is
+<li><p>-EOPNOTSUPP: Falling back to the legacy .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">s_stream()</span></code> operation is
 impossible because the subdev has multiple source pads</p></li>
 </ul>
 </div>
@@ -2704,8 +2707,8 @@ once.</p>
 contains a disabled stream, this function returns -EALREADY without
 performing any operation.</p>
 <p>Per-stream disable is only available for subdevs that implement the
-.enable_streams() and .disable_streams() operations. For other subdevs, this
-function implements a best-effort compatibility by calling the .s_stream()
+.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">enable_streams()</span></code> and .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">disable_streams()</span></code> operations. For other subdevs, this
+function implements a best-effort compatibility by calling the .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">s_stream()</span></code>
 operation, limited to subdevs that have a single source pad.</p>
 <p>Drivers that are not stream-aware shall set <strong>streams_mask</strong> to BIT_ULL(0).</p>
 <p><strong>Return</strong></p>
@@ -2713,7 +2716,7 @@ operation, limited to subdevs that have a single source pad.</p>
 <li><p>0: Success</p></li>
 <li><p>-EALREADY: One of the streams in streams_mask is not enabled</p></li>
 <li><p>-EINVAL: The pad index is invalid, or doesn’t correspond to a source pad</p></li>
-<li><p>-EOPNOTSUPP: Falling back to the legacy .s_stream() operation is
+<li><p>-EOPNOTSUPP: Falling back to the legacy .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">s_stream()</span></code> operation is
 impossible because the subdev has multiple source pads</p></li>
 </ul>
 </div>
@@ -2827,7 +2830,7 @@ if the states share the same lock, the lock is released only once.</p>
 <p><strong>Description</strong></p>
 <p>Returns the active state for the subdevice, or NULL if the subdev does not
 support active state. If the state is not NULL, calls
-lockdep_assert_not_held() to issue a warning if the state is locked.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lockdep_assert_not_held()</span></code> to issue a warning if the state is locked.</p>
 <p>This function is to be used e.g. when getting the active state for the sole
 purpose of passing it forward, without accessing the state fields.</p>
 </div>
@@ -2845,7 +2848,7 @@ purpose of passing it forward, without accessing the state fields.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Returns the active state for the subdevice, or NULL if the subdev does not
-support active state. If the state is not NULL, calls lockdep_assert_held()
+support active state. If the state is not NULL, calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lockdep_assert_held()</span></code>
 to issue a warning if the state is not locked.</p>
 <p>This function is to be used when the caller knows that the active state is
 already locked.</p>
@@ -3024,9 +3027,9 @@ will be <code class="docutils literal notranslate"><span class="pre">V4L2_DEVICE
 </dl>
 <p><strong>Description</strong></p>
 <p><a class="reference internal" href="#c.v4l2_subdev_is_streaming" title="v4l2_subdev_is_streaming"><code class="xref c c-func docutils literal notranslate"><span class="pre">v4l2_subdev_is_streaming()</span></code></a> tells if the subdevice is currently streaming.
-“Streaming” here means whether .s_stream() or .enable_streams() has been
+“Streaming” here means whether .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">s_stream()</span></code> or .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">enable_streams()</span></code> has been
 successfully called, and the streaming has not yet been disabled.</p>
-<p>If the subdevice implements .enable_streams() this function must be called
+<p>If the subdevice implements .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">enable_streams()</span></code> this function must be called
 while holding the active state lock.</p>
 </div>
 </section>

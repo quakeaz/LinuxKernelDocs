@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -178,8 +178,8 @@ and disable any striping in the CXL.mem topology.</p>
 (Linux term for the top of the CXL decode topology). From there, PCIe topology
 dictates which endpoints can participate in which Host Bridge decode regimes.
 Each PCIe Switch in the path between the root and an endpoint introduces a point
-at which the interleave can be split. For example platform firmware may say at a
-given range only decodes to 1 one Host Bridge, but that Host Bridge may in turn
+at which the interleave can be split. For example, platform firmware may say a
+given range only decodes to one Host Bridge, but that Host Bridge may in turn
 interleave cycles across multiple Root Ports. An intervening Switch between a
 port and an endpoint may interleave cycles across multiple Downstream Switch
 Ports, etc.</p>
@@ -334,16 +334,16 @@ its descendants. So “root” claims non-PCIe enumerable platform decode ranges
 decodes them to “ports”, “ports” decode to “endpoints”, and “endpoints”
 represent the decode from SPA (System Physical Address) to DPA (Device Physical
 Address).</p>
-<p>Continuing the RAID analogy, disks have both topology metadata and on device
+<p>Continuing the RAID analogy, disks have both topology metadata and on-device
 metadata that determine RAID set assembly. CXL Port topology and CXL Port link
 status is metadata for CXL.mem set assembly. The CXL Port topology is enumerated
 by the arrival of a CXL.mem device. I.e. unless and until the PCIe core attaches
 the cxl_pci driver to a CXL Memory Expander there is no role for CXL Port
 objects. Conversely for hot-unplug / removal scenarios, there is no need for
 the Linux PCI core to tear down switch-level CXL resources because the endpoint
--&gt;remove() event cleans up the port data that was established to support that
+-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove()</span></code> event cleans up the port data that was established to support that
 Memory Expander.</p>
-<p>The port metadata and potential decode schemes that a give memory device may
+<p>The port metadata and potential decode schemes that a given memory device may
 participate can be determined via a command like:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span># cxl list -BDMu -d root -m mem3
 {
@@ -395,8 +395,8 @@ participate can be determined via a command like:</p>
 <p>...which queries the CXL topology to ask “given CXL Memory Expander with a kernel
 device name of ‘mem3’ which platform level decode ranges may this device
 participate”. A given expander can participate in multiple CXL.mem interleave
-sets simultaneously depending on how many decoder resource it has. In this
-example mem3 can participate in one or more of a PMEM interleave that spans to
+sets simultaneously depending on how many decoder resources it has. In this
+example mem3 can participate in one or more of a PMEM interleave that spans two
 Host Bridges, a PMEM interleave that targets a single Host Bridge, a Volatile
 memory interleave that spans 2 Host Bridges, and a Volatile memory interleave
 that only targets a single Host Bridge.</p>
@@ -493,11 +493,9 @@ cxl_pci is focused around CXL memory devices.</p>
 <p><strong>Context</strong></p>
 <p>Any context. Expects mbox_mutex to be held.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>-ETIMEDOUT if timeout occurred waiting for completion. 0 on success.</dt><dd><p>Caller should check the return code in <strong>mbox_cmd</strong> to make sure it
+<p>-ETIMEDOUT if timeout occurred waiting for completion. 0 on success.
+Caller should check the return code in <strong>mbox_cmd</strong> to make sure it
 succeeded.</p>
-</dd>
-</dl>
 <p><strong>Description</strong></p>
 <p>This is a generic form of the CXL mailbox send command thus only using the
 registers defined by the mailbox capability ID - CXL 2.0 8.2.8.4. Memory
@@ -609,7 +607,7 @@ current boot.</p>
     u32 max_errors;
     unsigned long enabled_cmds[BITS_TO_LONGS(CXL_POISON_ENABLED_MAX)];
     struct cxl_mbox_poison_out *list_out;
-    struct mutex lock;
+    struct mutex mutex;
 };
 </pre></div>
 </div>
@@ -621,7 +619,7 @@ current boot.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">list_out</span></code></dt><dd><p>The poison list payload returned by device</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">lock</span></code></dt><dd><p>Protect reads of the poison list</p>
+<dt><code class="docutils literal notranslate"><span class="pre">mutex</span></code></dt><dd><p>Protect reads of the poison list</p>
 </dd>
 </dl>
 </div>
@@ -875,8 +873,8 @@ Currently only memory devices are represented.</p>
 <p>CXL 8.1.12.1 PCI Header - Class Code Register Memory Device defines
 common memory device functionality like the presence of a mailbox and
 the functionality related to that like Identify Memory Device and Get
-Partition Info
-See CXL 3.0 8.2.9.8.2 Capacity Configuration and Label Storage for
+Partition Info</p>
+<p>See CXL 3.0 8.2.9.8.2 Capacity Configuration and Label Storage for
 details on capacity parameters.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.cxl_mem_command">
@@ -901,15 +899,17 @@ details on capacity parameters.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">opcode</span></code></dt><dd><p>The actual bits used for the mailbox protocol</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">flags</span></code></dt><dd><p>Set of flags effecting driver behavior.</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">CXL_CMD_FLAG_FORCE_ENABLE</span></code>: In cases of error, commands with this flag
-will be enabled by the driver regardless of what hardware may have
-advertised.</p></li>
-</ul>
 </dd>
 </dl>
 </div>
 <p><strong>Description</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CXL_CMD_FLAG_FORCE_ENABLE</span></code>: In cases of error, commands with this flag
+will be enabled by the driver regardless of what hardware may have
+advertised.</p></li>
+</ul>
+</div></blockquote>
 <p>The cxl_mem_command is the driver’s internal representation of commands that
 are supported by the driver. Some of these commands may not be supported by
 the hardware. The driver will use <strong>info</strong> to validate the fields passed in by
@@ -941,9 +941,9 @@ the user then submit the <strong>opcode</strong> to the hardware.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">target_count</span></code></dt><dd><p>for switch decoders, max downstream port targets</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">interleave_mask</span></code></dt><dd><p>interleave granularity capability, see check_interleave_cap()</p>
+<dt><code class="docutils literal notranslate"><span class="pre">interleave_mask</span></code></dt><dd><p>interleave granularity capability, see <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">check_interleave_cap()</span></code></p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">iw_cap_mask</span></code></dt><dd><p>bitmask of supported interleave ways, see check_interleave_cap()</p>
+<dt><code class="docutils literal notranslate"><span class="pre">iw_cap_mask</span></code></dt><dd><p>bitmask of supported interleave ways, see <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">check_interleave_cap()</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">port</span></code></dt><dd><p>mapped cxl_port, see <a class="reference internal" href="#c.devm_cxl_setup_hdm" title="devm_cxl_setup_hdm"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_cxl_setup_hdm()</span></code></a></p>
 </dd>
@@ -1092,7 +1092,7 @@ between the subsystem drivers cxl_acpi, cxl_pci, and core drivers
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">max_size</span></code></dt><dd><p>maximum mapping size to perform register search</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">reg_type</span></code></dt><dd><p>see enum cxl_regloc_type</p>
+<dt><code class="docutils literal notranslate"><span class="pre">reg_type</span></code></dt><dd><p>see <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">cxl_regloc_type</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">{unnamed_union}</span></code></dt><dd><p>anonymous</p>
 </dd>
@@ -1225,6 +1225,7 @@ interleave-width, and the target list are mutable.</p>
 <p><strong>Definition</strong>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct cxl_root_decoder {
     struct resource *res;
+    resource_size_t cache_size;
     atomic_t region_id;
     cxl_hpa_to_spa_fn hpa_to_spa;
     void *platform_data;
@@ -1237,6 +1238,8 @@ interleave-width, and the target list are mutable.</p>
 <p><strong>Members</strong></p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">res</span></code></dt><dd><p>host / parent resource for region allocations</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cache_size</span></code></dt><dd><p>extended linear cache size if exists, otherwise zero.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">region_id</span></code></dt><dd><p>region id for next region provisioning event</p>
 </dd>
@@ -1293,7 +1296,7 @@ interleave-width, and the target list are mutable.</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>State transitions are protected by the cxl_region_rwsem</p>
+<p>State transitions are protected by cxl_rwsem.region</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.cxl_region">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cxl_region</span></span></span><a class="headerlink" href="#c.cxl_region" title="Link to this definition">¶</a><br /></dt>
@@ -1312,7 +1315,7 @@ interleave-width, and the target list are mutable.</p>
     unsigned long flags;
     struct cxl_region_params params;
     struct access_coordinate coord[ACCESS_COORDINATE_MAX];
-    struct notifier_block memory_notifier;
+    struct notifier_block node_notifier;
     struct notifier_block adist_notifier;
 };
 </pre></div>
@@ -1337,7 +1340,7 @@ interleave-width, and the target list are mutable.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">coord</span></code></dt><dd><p>QoS access coordinates for the region</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">memory_notifier</span></code></dt><dd><p>notifier for setting the access coordinates to node</p>
+<dt><code class="docutils literal notranslate"><span class="pre">node_notifier</span></code></dt><dd><p>notifier for setting the access coordinates to node</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">adist_notifier</span></code></dt><dd><p>notifier for calculating the abstract distance of node</p>
 </dd>
@@ -1651,16 +1654,16 @@ Protection” for more details.</p>
 <p>A ‘skip’ always covers the last allocated DPA in a previous partition
 to the start of the current partition to allocate.  Allocations never
 start in the middle of a partition, and allocations are always
-de-allocated in reverse order (see cxl_dpa_free(), or natural devm
+de-allocated in reverse order (see <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cxl_dpa_free()</span></code>, or natural devm
 unwind order from forced in-order allocation).</p>
 <p>If <strong>cxlds-&gt;nr_partitions</strong> was guaranteed to be &lt;= 2 then the ‘skip’
 would always be contained to a single partition. Given
 <strong>cxlds-&gt;nr_partitions</strong> may be &gt; 2 it results in cases where the ‘skip’
 might span “tail capacity of partition[0], all of partition[1], ...,
 all of partition[N-1]” to support allocating from partition[N]. That
-in turn interacts with the partition ‘struct resource’ boundaries
+in turn interacts with the partition ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">resource</span></code>’ boundaries
 within <strong>cxlds-&gt;dpa_res</strong> whereby ‘skip’ requests need to be divided by
-partition. I.e. this is a quirk of using a ‘struct resource’ tree to
+partition. I.e. this is a quirk of using a ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">resource</span></code>’ tree to
 detect range conflicts while also tracking partition boundaries in
 <strong>cxlds-&gt;dpa_res</strong>.</p>
 </div>
@@ -1710,7 +1713,7 @@ detect range conflicts while also tracking partition boundaries in
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cxl_endpoint_decoder</span> <span class="pre">*cxled</span></code></dt><dd><p>endpoint decoder to start on</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">xarray</span> <span class="pre">*usp_xa</span></code></dt><dd><p>(output) the xarray that collects all the bandwidth coordinates
-indexed by the upstream device with data of ‘struct cxl_perf_ctx’.</p>
+indexed by the upstream device with data of ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cxl_perf_ctx</span></code>’.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">*gp_is_root</span></code></dt><dd><p>(output) bool of whether the grandparent is cxl root.</p>
 </dd>
@@ -1737,17 +1740,15 @@ device is directly connected to a RP, then no SSLBIS is involved.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cxl_region</span> <span class="pre">*cxlr</span></code></dt><dd><p>The region being operated on</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">xarray</span> <span class="pre">*input_xa</span></code></dt><dd><p>xarray indexed by upstream device of a switch with data of ‘struct
-cxl_perf_ctx’</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">xarray</span> <span class="pre">*input_xa</span></code></dt><dd><p>xarray indexed by upstream device of a switch with data of ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">cxl_perf_ctx</span></code>’</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">*gp_is_root</span></code></dt><dd><p>(output) bool of whether the grandparent is cxl root.</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>a xarray of resulting cxl_perf_ctx per parent switch or root port</dt><dd><p>or ERR_PTR(-errno)</p>
-</dd>
-</dl>
+<p>a xarray of resulting cxl_perf_ctx per parent switch or root port
+or ERR_PTR(-errno)</p>
 <p><strong>Description</strong></p>
 <p>Iterate through the xarray. Take the minimum of the downstream calculated
 bandwidth, the upstream link bandwidth, and the SSLBIS of the upstream
@@ -1994,7 +1995,7 @@ Host Bridges / Root Ports.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cxl_decoder</span> <span class="pre">*cxld</span></code></dt><dd><p>The cxl decoder allocated by cxl_&lt;type&gt;_decoder_alloc()</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cxl_decoder</span> <span class="pre">*cxld</span></code></dt><dd><p>The cxl decoder allocated by cxl_&lt;type&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_decoder_alloc()</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">*target_map</span></code></dt><dd><p>A list of downstream ports that this decoder can direct memory
 traffic to. These numbers should correspond with the port number
@@ -2010,10 +2011,8 @@ ports get hot added (technically possible, though unlikely).</p>
 <p>Process context. Expects the device lock of the port that owns the
 <strong>cxld</strong> to be held.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Negative error code if the decoder wasn’t properly configured; else</dt><dd><p>returns 0.</p>
-</dd>
-</dl>
+<p>Negative error code if the decoder wasn’t properly configured; else
+returns 0.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.cxl_decoder_add">
@@ -2024,7 +2023,7 @@ ports get hot added (technically possible, though unlikely).</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cxl_decoder</span> <span class="pre">*cxld</span></code></dt><dd><p>The cxl decoder allocated by cxl_&lt;type&gt;_decoder_alloc()</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cxl_decoder</span> <span class="pre">*cxld</span></code></dt><dd><p>The cxl decoder allocated by cxl_&lt;type&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_decoder_alloc()</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">*target_map</span></code></dt><dd><p>A list of downstream ports that this decoder can direct memory
 traffic to. These numbers should correspond with the port number
@@ -2337,7 +2336,7 @@ by <strong>type</strong>.</p>
 <p>Core implementation of the CXL 2.0 Type-3 Memory Device Mailbox. The
 implementation is used by the cxl_pci driver to initialize the device
 and implement the cxl_mem.h IOCTL UAPI. It also implements the
-backend of the cxl_pmem_ctl() transport for LIBNVDIMM.</p>
+backend of the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cxl_pmem_ctl()</span></code> transport for LIBNVDIMM.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.cxl_internal_send_cmd">
 <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cxl_internal_send_cmd</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">cxl_mailbox</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">cxl_mbox</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">cxl_mbox_cmd</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">mbox_cmd</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.cxl_internal_send_cmd" title="Link to this definition">¶</a><br /></dt>
@@ -2355,8 +2354,7 @@ backend of the cxl_pmem_ctl() transport for LIBNVDIMM.</p>
 <p><strong>Context</strong></p>
 <p>Any context.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>%&gt;=0      - Number of bytes returned in <strong>out</strong>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">-E2BIG</span></code>   - Payload is too large for hardware.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">-EBUSY</span></code>   - Couldn’t acquire exclusive mailbox access.</p></li>
@@ -2364,7 +2362,6 @@ backend of the cxl_pmem_ctl() transport for LIBNVDIMM.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">-ENXIO</span></code>   - Command completed, but device reported an error.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">-EIO</span></code>     - Unexpected output size.</p></li>
 </ul>
-</div></blockquote>
 <p><strong>Description</strong></p>
 <p>Mailbox commands may execute successfully yet the device itself reported an
 error. While this distinction can be useful for commands from userspace, the
@@ -2385,12 +2382,10 @@ kernel will only be able to use results when both are successful.</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>true      - payload_in passes check for <strong>opcode</strong>.</p></li>
 <li><p>false     - payload_in contains invalid or unsupported values.</p></li>
 </ul>
-</div></blockquote>
 <p><strong>Description</strong></p>
 <p>The driver may inspect payload contents before sending a mailbox
 command from user space to the device. The intent is to reject
@@ -2417,8 +2412,7 @@ command will succeed, nor that it is appropriate.</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>        - <strong>out_cmd</strong> is ready to send.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">-ENOTTY</span></code>  - Invalid command specified.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">-EINVAL</span></code>  - Reserved fields or invalid values were used.</p></li>
@@ -2426,7 +2420,6 @@ command will succeed, nor that it is appropriate.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">-EPERM</span></code>   - Attempted to use a protected command.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">-EBUSY</span></code>   - Kernel has claimed exclusive access to this opcode</p></li>
 </ul>
-</div></blockquote>
 <p><strong>Description</strong></p>
 <p>The result of this command is a fully validated command in <strong>mbox_cmd</strong> that is
 safe to send to the hardware.</p>
@@ -2453,8 +2446,7 @@ safe to send to the hardware.</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">0</span></code>        - Mailbox transaction succeeded. This implies the mailbox</dt><dd><p>protocol completed successfully not that the operation itself
 was successful.</p>
@@ -2466,11 +2458,10 @@ was successful.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">-EINTR</span></code>   - Mailbox acquisition interrupted.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">-EXXX</span></code>    - Transaction level failures.</p></li>
 </ul>
-</div></blockquote>
 <p><strong>Description</strong></p>
 <p>Dispatches a mailbox command on behalf of a userspace request.
 The output payload is copied to userspace.</p>
-<p>See cxl_send_cmd().</p>
+<p>See <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cxl_send_cmd()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.cxl_walk_cel">
@@ -2692,10 +2683,8 @@ calculation:</p>
 </div></blockquote>
 <p>...where <strong>position</strong> is inferred from switch and root decoder target lists.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>position &gt;= 0 on success</dt><dd><p>-ENXIO on failure</p>
-</dd>
-</dl>
+<p>position &gt;= 0 on success
+-ENXIO on failure</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.devm_cxl_add_region">
@@ -2708,7 +2697,7 @@ calculation:</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cxl_root_decoder</span> <span class="pre">*cxlrd</span></code></dt><dd><p>root decoder</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">id</span></code></dt><dd><p>memregion id to create, or memregion_free() on failure</p>
+<dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">id</span></code></dt><dd><p>memregion id to create, or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">memregion_free()</span></code> on failure</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">enum</span> <span class="pre">cxl_partition_mode</span> <span class="pre">mode</span></code></dt><dd><p>mode for the endpoint decoders of this region</p>
 </dd>
@@ -2767,18 +2756,10 @@ command and check for failure.</p>
 </pre></div>
 </div>
 <p><strong>Members</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">id</span></code></dt><dd><p>ID number for the command.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">flags</span></code></dt><dd><p>Flags that specify command behavior.</p>
-<p>CXL_MEM_COMMAND_FLAG_USER_ENABLED</p>
-<p>The given command id is supported by the driver and is supported by
-a related opcode on the device.</p>
-<p>CXL_MEM_COMMAND_FLAG_EXCLUSIVE</p>
-<p>Requests with the given command id will terminate with EBUSY as the
-kernel actively owns management of the given resource. For example,
-the label-storage-area can not be written while the kernel is
-actively managing that space.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">size_in</span></code></dt><dd><p>Expected input size, or ~0 if variable length.</p>
 </dd>
@@ -2787,6 +2768,16 @@ actively managing that space.</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
+<blockquote>
+<div><p>CXL_MEM_COMMAND_FLAG_USER_ENABLED</p>
+<p>The given command id is supported by the driver and is supported by
+a related opcode on the device.</p>
+<p>CXL_MEM_COMMAND_FLAG_EXCLUSIVE</p>
+<p>Requests with the given command id will terminate with EBUSY as the
+kernel actively owns management of the given resource. For example,
+the label-storage-area can not be written while the kernel is
+actively managing that space.</p>
+</div></blockquote>
 <p>Represents a single command that is supported by both the driver and the
 hardware. This is returned as part of an array from the query ioctl. The
 following would be a command that takes a variable length input and returns 0

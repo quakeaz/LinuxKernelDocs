@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -184,7 +184,7 @@ networking core and should not be referenced in drivers.</p></li>
 <h2>Part II: Controlling enabled features<a class="headerlink" href="#part-ii-controlling-enabled-features" title="Link to this heading">¶</a></h2>
 <p>When current feature set (netdev-&gt;features) is to be changed, new set
 is calculated and filtered by calling ndo_fix_features callback
-and netdev_fix_features(). If the resulting set differs from current
+and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">netdev_fix_features()</span></code>. If the resulting set differs from current
 set, it is passed to ndo_set_features callback and (if the callback
 returns success) replaces value stored in netdev-&gt;features.
 NETDEV_FEAT_CHANGE notification is issued after that whenever current
@@ -213,7 +213,7 @@ driver except by means of ndo_fix_features callback.</p>
 </div></blockquote>
 <p>All dependencies between features should be resolved here. The resulting
 set can be reduced further by networking core imposed limitations (as coded
-in netdev_fix_features()). For this reason it is safer to disable a feature
+in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">netdev_fix_features()</span></code>). For this reason it is safer to disable a feature
 when its dependencies are not met instead of forcing the dependency on.</p>
 <p>This callback should not modify hardware nor driver state (should be
 stateless).  It can be called multiple times between successive
@@ -275,7 +275,7 @@ ndo_start_xmit can handle skbs with frags in high memory.</p>
 </ul>
 </div></blockquote>
 <p>Those features say that ndo_start_xmit can handle fragmented skbs:
-NETIF_F_SG --- paged skbs (skb_shinfo()-&gt;frags), NETIF_F_FRAGLIST ---
+NETIF_F_SG --- paged skbs (<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">skb_shinfo()</span></code>-&gt;frags), NETIF_F_FRAGLIST ---
 chained skbs (skb-&gt;next/prev list).</p>
 <blockquote>
 <div><ul class="simple">

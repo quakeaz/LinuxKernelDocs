@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -189,7 +189,7 @@ is complete.</p></li>
 <h3>Creating a Cache<a class="headerlink" href="#creating-a-cache" title="Link to this heading">¶</a></h3>
 <ul>
 <li><p>A cache needs a datum to store.  This is in the form of a
-structure definition that must contain a struct cache_head
+structure definition that must contain a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cache_head</span></code>
 as an element, usually the first.
 It will also contain a key and some content.
 Each cache element is reference counted and contains
@@ -241,7 +241,7 @@ with sunrpc_cache_update.</p>
 </dl>
 </div></blockquote>
 </li>
-<li><p>A cache needs to be registered using cache_register().  This
+<li><p>A cache needs to be registered using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cache_register()</span></code>.  This
 includes it on a list of caches that will be regularly
 cleaned to discard old data.</p></li>
 </ul>
@@ -258,9 +258,9 @@ if the data is valid, and may initiate an up-call to get fresh data.
 cache_check will return -ENOENT in the entry is negative or if an up
 call is needed but not possible, -EAGAIN if an upcall is pending,
 or 0 if the data is valid;</p>
-<p>cache_check can be passed a “struct cache_req*”.  This structure is
+<p>cache_check can be passed a “<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cache_req</span></code>*”.  This structure is
 typically embedded in the actual request and can be used to create a
-deferred copy of the request (struct cache_deferred_req).  This is
+deferred copy of the request (<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cache_deferred_req</span></code>).  This is
 done when the found cache item is not uptodate, but the is reason to
 believe that userspace might provide information soon.  When the cache
 item does become valid, the deferred copy of the request will be

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -239,7 +239,7 @@ printed synchronously, most likely with interrupt disabled, often to a serial
 console. Excessive logging can seriously affect system performance.</p></li>
 <li><p>Use devres functions whenever possible to allocate resources. For rationale
 and supported functions, please see <a class="reference internal" href="../driver-api/driver-model/devres.html"><span class="doc">Devres - Managed Device Resource</span></a>.
-If a function is not supported by devres, consider using devm_add_action().</p></li>
+If a function is not supported by devres, consider using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_add_action()</span></code>.</p></li>
 <li><p>If the driver has a detect function, make sure it is silent. Debug messages
 and messages printed after a successful detection are acceptable, but it
 must not print messages such as “Chip XXX not found/supported”.</p>
@@ -263,9 +263,9 @@ writing to it might cause a bad misconfiguration.</p>
 <li><p>Make sure there are no race conditions in the probe function. Specifically,
 completely initialize your chip and your driver first, then register with
 the hwmon subsystem.</p></li>
-<li><p>Use devm_hwmon_device_register_with_info() or, if your driver needs a remove
-function, hwmon_device_register_with_info() to register your driver with the
-hwmon subsystem. Try using devm_add_action() instead of a remove function if
+<li><p>Use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_hwmon_device_register_with_info()</span></code> or, if your driver needs a remove
+function, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hwmon_device_register_with_info()</span></code> to register your driver with the
+hwmon subsystem. Try using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_add_action()</span></code> instead of a remove function if
 possible. Do not use any of the deprecated registration functions.</p></li>
 <li><p>Your driver should be buildable as module. If not, please be prepared to
 explain why it has to be built into the kernel.</p></li>

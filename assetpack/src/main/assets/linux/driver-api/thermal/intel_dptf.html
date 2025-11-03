@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -373,6 +373,14 @@ hardware controls.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">temperature_target</span></code> (RW)</dt><dd><p>Update a new temperature target in milli degree celsius for hardware to
 use for the temperature control.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">thermal_tolerance</span></code> (RW)</dt><dd><p>This attribute ranges from 0 to 7, where 0 represents
+the most aggressive control to avoid any temperature overshoots, and
+7 represents a more graceful approach, favoring performance even at
+the expense of temperature overshoots.
+Note: This level may not scale linearly. For example, a value of 3 does
+not necessarily imply a 50% improvement in performance compared to a
+value of 0.</p>
 </dd>
 </dl>
 <p>Given that this is platform temperature control, it is expected that a

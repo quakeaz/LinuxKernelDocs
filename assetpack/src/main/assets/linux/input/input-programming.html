@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -335,9 +335,9 @@ containing several interfaces can be inhibited on a per-interface basis and e.g.
 inhibiting one interface shouldn’t affect the device’s capability of being a
 wakeup source.</p>
 <p>If a device is to be considered a wakeup source while inhibited, special care
-must be taken when programming its suspend(), as it might need to call device’s
+must be taken when programming its <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">suspend()</span></code>, as it might need to call device’s
 open(). Depending on what close() means for the device in question, not
-opening() it before going to sleep might make it impossible to provide any
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">opening()</span></code> it before going to sleep might make it impossible to provide any
 wakeup events. The device is going to sleep anyway.</p>
 </section>
 <section id="basic-event-types">
@@ -424,7 +424,7 @@ mappings.</p>
 </section>
 <section id="dev-getkeycode-and-dev-setkeycode">
 <h2><span class="section-number">1.9. </span>dev-&gt;getkeycode() and dev-&gt;setkeycode()<a class="headerlink" href="#dev-getkeycode-and-dev-setkeycode" title="Link to this heading">¶</a></h2>
-<p>getkeycode() and setkeycode() callbacks allow drivers to override default
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">getkeycode()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setkeycode()</span></code> callbacks allow drivers to override default
 keycode/keycodesize/keycodemax mapping mechanism provided by input core
 and implement sparse keycode maps.</p>
 </section>
@@ -465,7 +465,7 @@ isn’t a rule), and thus must not sleep, and must not take too long to finish.<
 </section>
 <section id="polled-input-devices">
 <h2><span class="section-number">1.12. </span>Polled input devices<a class="headerlink" href="#polled-input-devices" title="Link to this heading">¶</a></h2>
-<p>Input polling is set up by passing an input device struct and a callback to
+<p>Input polling is set up by passing an input device <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">and</span></code> a callback to
 the function:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int input_setup_polling(struct input_dev *dev,
     void (*poll_fn)(struct input_dev *dev))

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -261,22 +261,22 @@ mailing list at <a class="reference external" href="https://www.zytor.com/mailma
 <p>The kernel has currently 3 ways to mount the root filesystem:</p>
 <ol class="loweralpha">
 <li><p>all required device and filesystem drivers compiled into the kernel, no
-initrd.  init/main.c:init() will call prepare_namespace() to mount the
+initrd.  init/main.c:<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init()</span></code> will call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prepare_namespace()</span></code> to mount the
 final root filesystem, based on the root= option and optional init= to run
-some other init binary than listed at the end of init/main.c:init().</p></li>
+some other init binary than listed at the end of init/main.c:<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init()</span></code>.</p></li>
 <li><p>some device and filesystem drivers built as modules and stored in an
 initrd.  The initrd must contain a binary ‘/linuxrc’ which is supposed to
 load these driver modules.  It is also possible to mount the final root
 filesystem via linuxrc and use the pivot_root syscall.  The initrd is
-mounted and executed via prepare_namespace().</p></li>
-<li><p>using initramfs.  The call to prepare_namespace() must be skipped.
+mounted and executed via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prepare_namespace()</span></code>.</p></li>
+<li><p>using initramfs.  The call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prepare_namespace()</span></code> must be skipped.
 This means that a binary must do all the work.  Said binary can be stored
 into initramfs either via modifying usr/gen_init_cpio.c or via the new
 initrd format, an cpio archive.  It must be called “/init”.  This binary
-is responsible to do all the things prepare_namespace() would do.</p>
+is responsible to do all the things <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prepare_namespace()</span></code> would do.</p>
 <p>To maintain backwards compatibility, the /init binary will only run if it
 comes via an initramfs cpio archive.  If this is not the case,
-init/main.c:init() will run prepare_namespace() to mount the final root
+init/main.c:<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init()</span></code> will run <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prepare_namespace()</span></code> to mount the final root
 and exec one of the predefined init binaries.</p>
 </li>
 </ol>

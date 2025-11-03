@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -169,7 +169,7 @@ device of each type (for switch port 0).</p>
 <section id="creating-mad-agents">
 <h2>Creating MAD agents<a class="headerlink" href="#creating-mad-agents" title="Link to this heading">¶</a></h2>
 <blockquote>
-<div><p>A MAD agent can be created by filling in a struct ib_user_mad_reg_req
+<div><p>A MAD agent can be created by filling in a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ib_user_mad_reg_req</span></code>
 and then calling the IB_USER_MAD_REGISTER_AGENT ioctl on a file
 descriptor for the appropriate device file.  If the registration
 request succeeds, a 32-bit id will be returned in the structure.
@@ -199,7 +199,7 @@ pkey_index (see below).</p>
 <blockquote>
 <div><p>MADs are received using read().  The receive side now supports
 RMPP. The buffer passed to read() must be at least one
-struct ib_user_mad + 256 bytes. For example:</p>
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ib_user_mad</span></code> + 256 bytes. For example:</p>
 <p>If the buffer passed is not large enough to hold the received
 MAD (RMPP), the errno is set to ENOSPC and the length of the
 buffer needed is set in mad.length.</p>
@@ -229,7 +229,7 @@ if (ret &lt; 0) {
 }
 </pre></div>
 </div>
-<p>In addition to the actual MAD contents, the other struct ib_user_mad
+<p>In addition to the actual MAD contents, the other <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ib_user_mad</span></code>
 fields will be filled in with information on the received MAD.  For
 example, the remote LID will be in mad.lid.</p>
 <p>If a send times out, a receive will be generated with mad.status set
@@ -277,13 +277,13 @@ the kernel and will be overwritten before a MAD is sent.</p>
 <blockquote>
 <div><p>The old ib_umad interface did not allow setting the P_Key index for
 MADs that are sent and did not provide a way for obtaining the P_Key
-index of received MADs.  A new layout for struct ib_user_mad_hdr
+index of received MADs.  A new layout for <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ib_user_mad_hdr</span></code>
 with a pkey_index member has been defined; however, to preserve binary
 compatibility with older applications, this new layout will not be used
 unless one of IB_USER_MAD_ENABLE_PKEY or IB_USER_MAD_REGISTER_AGENT2 ioctl’s
 are called before a file descriptor is used for anything else.</p>
 <p>In September 2008, the IB_USER_MAD_ABI_VERSION will be incremented
-to 6, the new layout of struct ib_user_mad_hdr will be used by
+to 6, the new layout of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ib_user_mad_hdr</span></code> will be used by
 default, and the IB_USER_MAD_ENABLE_PKEY ioctl will be removed.</p>
 </div></blockquote>
 </section>

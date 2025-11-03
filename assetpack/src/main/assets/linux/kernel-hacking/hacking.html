@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -228,7 +228,7 @@ handler is never re-entered: if the same interrupt arrives, it is queued
 (or dropped). Because it disables interrupts, this handler has to be
 fast: frequently it simply acknowledges the interrupt, marks a ‘software
 interrupt’ for execution and exits.</p>
-<p>You can tell you are in a hardware interrupt, because in_hardirq() returns
+<p>You can tell you are in a hardware interrupt, because <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">in_hardirq()</span></code> returns
 true.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -446,7 +446,7 @@ Run, don’t walk.</p>
 1 for double page, 2 for four pages etc.) and the same memory priority
 flag word as above.</p>
 <p>If you are allocating more than a page worth of bytes you can use
-<code class="xref c c-func docutils literal notranslate"><span class="pre">vmalloc()</span></code>. It’ll allocate virtual memory in the kernel
+<a class="reference internal" href="../core-api/mm-api.html#c.vmalloc" title="vmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">vmalloc()</span></code></a>. It’ll allocate virtual memory in the kernel
 map. This block is not contiguous in physical memory, but the MMU makes
 it look like it is for you (so it’ll only look contiguous to the CPUs,
 not to external device drivers). If you really need large physically
@@ -515,7 +515,7 @@ continuous. You return it again with <code class="xref c c-func docutils literal
 are done.</p>
 <p>If you know you cannot be preempted by another task (ie. you are in
 interrupt context, or have preemption disabled) you can use
-smp_processor_id().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smp_processor_id()</span></code>.</p>
 </section>
 <section id="init-exit-initdata">
 <h3><code class="docutils literal notranslate"><span class="pre">__init</span></code>/<code class="docutils literal notranslate"><span class="pre">__exit</span></code>/<code class="docutils literal notranslate"><span class="pre">__initdata</span></code><a class="headerlink" href="#init-exit-initdata" title="Link to this heading">¶</a></h3>
@@ -658,20 +658,20 @@ exported by <code class="xref c c-func docutils literal notranslate"><span class
 modules with a <code class="xref c c-func docutils literal notranslate"><span class="pre">MODULE_LICENSE()</span></code> that specifies a GPLv2
 compatible license. It implies that the function is considered an
 internal implementation issue, and not really an interface. Some
-maintainers and developers may however require EXPORT_SYMBOL_GPL()
+maintainers and developers may however require <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">EXPORT_SYMBOL_GPL()</span></code>
 when adding any new APIs or functionality.</p>
 </section>
 <section id="export-symbol-ns">
 <h3><code class="xref c c-func docutils literal notranslate"><span class="pre">EXPORT_SYMBOL_NS()</span></code><a class="headerlink" href="#export-symbol-ns" title="Link to this heading">¶</a></h3>
 <p>Defined in <code class="docutils literal notranslate"><span class="pre">include/linux/export.h</span></code></p>
-<p>This is the variant of <cite>EXPORT_SYMBOL()</cite> that allows specifying a symbol
+<p>This is the variant of <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">EXPORT_SYMBOL()</span></code></cite> that allows specifying a symbol
 namespace. Symbol Namespaces are documented in
 <a class="reference internal" href="../core-api/symbol-namespaces.html"><span class="doc">Symbol Namespaces</span></a></p>
 </section>
 <section id="export-symbol-ns-gpl">
 <h3><code class="xref c c-func docutils literal notranslate"><span class="pre">EXPORT_SYMBOL_NS_GPL()</span></code><a class="headerlink" href="#export-symbol-ns-gpl" title="Link to this heading">¶</a></h3>
 <p>Defined in <code class="docutils literal notranslate"><span class="pre">include/linux/export.h</span></code></p>
-<p>This is the variant of <cite>EXPORT_SYMBOL_GPL()</cite> that allows specifying a symbol
+<p>This is the variant of <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">EXPORT_SYMBOL_GPL()</span></code></cite> that allows specifying a symbol
 namespace. Symbol Namespaces are documented in
 <a class="reference internal" href="../core-api/symbol-namespaces.html"><span class="doc">Symbol Namespaces</span></a></p>
 </section>
@@ -683,7 +683,7 @@ namespace. Symbol Namespaces are documented in
 <p>There used to be three sets of linked-list routines in the kernel
 headers, but this one is the winner. If you don’t have some particular
 pressing need for a single list, it’s a good choice.</p>
-<p>In particular, <a class="reference internal" href="../core-api/kernel-api.html#c.list_for_each_entry" title="list_for_each_entry"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_for_each_entry()</span></code></a> is useful.</p>
+<p>In particular, <a class="reference internal" href="../core-api/list.html#c.list_for_each_entry" title="list_for_each_entry"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_for_each_entry()</span></code></a> is useful.</p>
 </section>
 <section id="return-conventions">
 <h3>Return Conventions<a class="headerlink" href="#return-conventions" title="Link to this heading">¶</a></h3>
@@ -741,7 +741,7 @@ page, the man page is only a short summary of the stuff in info).</p>
 <li><p>Non-Constant initializers</p></li>
 <li><p>Assembler Instructions (not outside arch/ and include/asm/)</p></li>
 <li><p>Function names as strings (__func__).</p></li>
-<li><p>__builtin_constant_p()</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__builtin_constant_p()</span></code></p></li>
 </ul>
 <p>Be wary when using long long in the kernel, the code gcc generates for
 it is horrible and worse: division and multiplication does not work on

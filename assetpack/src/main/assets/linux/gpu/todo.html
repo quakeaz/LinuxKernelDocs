@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -209,7 +209,7 @@ do by directly using the new atomic helper driver callbacks.</p>
 </section>
 <section id="clean-up-the-clipped-coordination-confusion-around-planes">
 <h2>Clean up the clipped coordination confusion around planes<a class="headerlink" href="#clean-up-the-clipped-coordination-confusion-around-planes" title="Link to this heading">¶</a></h2>
-<p>We have a helper to get this right with drm_plane_helper_check_update(), but
+<p>We have a helper to get this right with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_plane_helper_check_update()</span></code>, but
 it’s not consistently used. This should be fixed, preferably in the atomic
 helpers (and drivers then moved over to clipped coordinates). Probably the
 helper should also be moved from drm_plane_helper.c to the atomic helpers, to
@@ -344,8 +344,8 @@ are better.</p>
 <section id="convert-drivers-to-use-simple-modeset-suspend-resume">
 <h2>Convert drivers to use simple modeset suspend/resume<a class="headerlink" href="#convert-drivers-to-use-simple-modeset-suspend-resume" title="Link to this heading">¶</a></h2>
 <p>Most drivers (except i915 and nouveau) that use
-drm_atomic_helper_suspend/resume() can probably be converted to use
-drm_mode_config_helper_suspend/resume(). Also there’s still open-coded version
+drm_atomic_helper_suspend/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">resume()</span></code> can probably be converted to use
+drm_mode_config_helper_suspend/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">resume()</span></code>. Also there’s still open-coded version
 of the atomic suspend/resume code in older atomic modeset drivers.</p>
 <p>Contact: Maintainer of the driver you plan to convert</p>
 <p>Level: Intermediate</p>
@@ -363,17 +363,17 @@ raw pointers.</p>
 <h2>Benchmark and optimize blitting and format-conversion function<a class="headerlink" href="#benchmark-and-optimize-blitting-and-format-conversion-function" title="Link to this heading">¶</a></h2>
 <p>Drawing to display memory quickly is crucial for many applications’
 performance.</p>
-<p>On at least x86-64, sys_imageblit() is significantly slower than
-cfb_imageblit(), even though both use the same blitting algorithm and
-the latter is written for I/O memory. It turns out that cfb_imageblit()
+<p>On at least x86-64, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sys_imageblit()</span></code> is significantly slower than
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cfb_imageblit()</span></code>, even though both use the same blitting algorithm and
+the latter is written for I/O memory. It turns out that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cfb_imageblit()</span></code>
 uses movl instructions, while sys_imageblit apparently does not. This
 seems to be a problem with gcc’s optimizer. DRM’s format-conversion
 helpers might be subject to similar issues.</p>
-<p>Benchmark and optimize fbdev’s sys_() helpers and DRM’s format-conversion
+<p>Benchmark and optimize fbdev’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sys_()</span></code> helpers and DRM’s format-conversion
 helpers. In cases that can be further optimized, maybe implement a different
 algorithm. For micro-optimizations, use movl/movq instructions explicitly.
-That might possibly require architecture-specific helpers (e.g., storel()
-storeq()).</p>
+That might possibly require architecture-specific helpers (e.g., <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">storel()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">storeq()</span></code>).</p>
 <p>Contact: Thomas Zimmermann &lt;<a class="reference external" href="mailto:tzimmermann&#37;&#52;&#48;suse&#46;de">tzimmermann<span>&#64;</span>suse<span>&#46;</span>de</a>&gt;</p>
 <p>Level: Intermediate</p>
 </section>
@@ -384,7 +384,7 @@ Various hold-ups:</p>
 <ul class="simple">
 <li><p>Need to switch over to the generic dirty tracking code using
 drm_atomic_helper_dirtyfb first (e.g. qxl).</p></li>
-<li><p>Need to switch to drm_fbdev_generic_setup(), otherwise a lot of the custom fb
+<li><p>Need to switch to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_fbdev_generic_setup()</span></code>, otherwise a lot of the custom fb
 setup code can’t be deleted.</p></li>
 <li><p>Need to switch to <a class="reference internal" href="drm-kms-helpers.html#c.drm_gem_fb_create" title="drm_gem_fb_create"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gem_fb_create()</span></code></a>, as now <a class="reference internal" href="drm-kms-helpers.html#c.drm_gem_fb_create" title="drm_gem_fb_create"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gem_fb_create()</span></code></a> checks for
 valid formats for atomic drivers.</p></li>
@@ -399,7 +399,7 @@ drm_gem_fb_create/_with_dirty/_with_funcs as needed.</p></li>
 <h2>Generic fbdev defio support<a class="headerlink" href="#generic-fbdev-defio-support" title="Link to this heading">¶</a></h2>
 <p>The defio support code in the fbdev core has some very specific requirements,
 which means drivers need to have a special framebuffer for fbdev. The main
-issue is that it uses some fields in struct page itself, which breaks shmem
+issue is that it uses some fields in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code> itself, which breaks shmem
 gem objects (and other things). To support defio, affected drivers require
 the use of a shadow buffer, which may add CPU and memory overhead.</p>
 <p>Possible solution would be to write our own defio mmap code in the drm fbdev
@@ -414,10 +414,10 @@ default page prots to write-protected with something like this:</p>
 </li>
 <li><p>Set the mkwrite and fsync callbacks with similar implementions to the core
 fbdev defio stuff. These should all work on plain ptes, they don’t actually
-require a struct page.  uff. These should all work on plain ptes, they don’t
-actually require a struct page.</p></li>
+require a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code>.  uff. These should all work on plain ptes, they don’t
+actually require a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code>.</p></li>
 <li><p>Track the dirty pages in a separate structure (bitfield with one bit per page
-should work) to avoid clobbering struct page.</p></li>
+should work) to avoid clobbering <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code>.</p></li>
 </ul>
 <p>Might be good to also have some igt testcases for this.</p>
 <p>Contact: Simona Vetter, Noralf Tronnes</p>
@@ -512,7 +512,7 @@ drivers to initialize the fields to the correct values.</p>
 <h2>Request memory regions in all fbdev drivers<a class="headerlink" href="#request-memory-regions-in-all-fbdev-drivers" title="Link to this heading">¶</a></h2>
 <p>Old/ancient fbdev drivers do not request their memory properly.
 Go through these drivers and add code to request the memory regions
-that the driver uses. This requires adding calls to request_mem_region(),
+that the driver uses. This requires adding calls to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">request_mem_region()</span></code>,
 <a class="reference internal" href="../driver-api/pci/pci.html#c.pci_request_region" title="pci_request_region"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_request_region()</span></code></a> or similar functions. Use helpers for managed cleanup
 where possible. Problematic areas include hardware that has exclusive ranges
 like VGA. VGA16fb does not request the range as it is expected.
@@ -536,16 +536,16 @@ all drivers might be able to drop CONFIG_FB_DEVICE.</p>
 <p>As of <a class="reference external" href="https://git.kernel.org/torvalds/c/d2aacaf07395">commit d2aacaf07395</a> (“drm/panel: Check for already prepared/enabled in
 drm_panel”), we have a check in the drm_panel core to make sure nobody
 double-calls prepare/enable/disable/unprepare. Eventually that should probably
-be turned into a WARN_ON() or somehow made louder.</p>
+be turned into a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">WARN_ON()</span></code> or somehow made louder.</p>
 <p>At the moment, we expect that we may still encounter the warnings in the
 drm_panel core when using panel-simple and panel-edp. Since those panel
 drivers are used with a lot of different DRM modeset drivers they still
 make an extra effort to disable/unprepare the panel themsevles at shutdown
 time. Specifically we could still encounter those warnings if the panel
-driver gets shutdown() _before_ the DRM modeset driver and the DRM modeset
-driver properly calls <a class="reference internal" href="drm-kms-helpers.html#c.drm_atomic_helper_shutdown" title="drm_atomic_helper_shutdown"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_atomic_helper_shutdown()</span></code></a> in its own shutdown()
+driver gets <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shutdown()</span></code> _before_ the DRM modeset driver and the DRM modeset
+driver properly calls <a class="reference internal" href="drm-kms-helpers.html#c.drm_atomic_helper_shutdown" title="drm_atomic_helper_shutdown"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_atomic_helper_shutdown()</span></code></a> in its own <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shutdown()</span></code>
 callback. Warnings could be avoided in such a case by using something like
-device links to ensure that the panel gets shutdown() after the DRM modeset
+device links to ensure that the panel gets <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shutdown()</span></code> after the DRM modeset
 driver.</p>
 <p>Once all DRM modeset drivers are known to shutdown properly, the extra
 calls to disable/unprepare in remove/shutdown in panel-simple and panel-edp
@@ -555,17 +555,32 @@ should be removed and this TODO item marked complete.</p>
 </section>
 <section id="transition-away-from-using-mipi-dsi-write-seq">
 <h2>Transition away from using mipi_dsi_*_write_seq()<a class="headerlink" href="#transition-away-from-using-mipi-dsi-write-seq" title="Link to this heading">¶</a></h2>
-<p>The macros <a class="reference internal" href="drm-kms-helpers.html#c.mipi_dsi_generic_write_seq" title="mipi_dsi_generic_write_seq"><code class="xref c c-func docutils literal notranslate"><span class="pre">mipi_dsi_generic_write_seq()</span></code></a> and mipi_dsi_dcs_write_seq() are
+<p>The macros <a class="reference internal" href="drm-kms-helpers.html#c.mipi_dsi_generic_write_seq" title="mipi_dsi_generic_write_seq"><code class="xref c c-func docutils literal notranslate"><span class="pre">mipi_dsi_generic_write_seq()</span></code></a> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mipi_dsi_dcs_write_seq()</span></code> are
 non-intuitive because, if there are errors, they return out of the <em>caller’s</em>
 function. We should move all callers to use <a class="reference internal" href="drm-kms-helpers.html#c.mipi_dsi_generic_write_seq_multi" title="mipi_dsi_generic_write_seq_multi"><code class="xref c c-func docutils literal notranslate"><span class="pre">mipi_dsi_generic_write_seq_multi()</span></code></a>
 and <a class="reference internal" href="drm-kms-helpers.html#c.mipi_dsi_dcs_write_seq_multi" title="mipi_dsi_dcs_write_seq_multi"><code class="xref c c-func docutils literal notranslate"><span class="pre">mipi_dsi_dcs_write_seq_multi()</span></code></a> macros instead.</p>
 <p>Once all callers are transitioned, the macros and the functions that they call,
 <a class="reference internal" href="drm-kms-helpers.html#c.mipi_dsi_generic_write_chatty" title="mipi_dsi_generic_write_chatty"><code class="xref c c-func docutils literal notranslate"><span class="pre">mipi_dsi_generic_write_chatty()</span></code></a> and <a class="reference internal" href="drm-kms-helpers.html#c.mipi_dsi_dcs_write_buffer_chatty" title="mipi_dsi_dcs_write_buffer_chatty"><code class="xref c c-func docutils literal notranslate"><span class="pre">mipi_dsi_dcs_write_buffer_chatty()</span></code></a>, can
-probably be removed. Alternatively, if people feel like the _multi() variants
-are overkill for some use cases, we could keep the mipi_dsi_*_write_seq()
+probably be removed. Alternatively, if people feel like the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_multi()</span></code> variants
+are overkill for some use cases, we could keep the mipi_dsi_*<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_write_seq()</span></code>
 variants but change them not to return out of the caller.</p>
 <p>Contact: Douglas Anderson &lt;<a class="reference external" href="mailto:dianders&#37;&#52;&#48;chromium&#46;org">dianders<span>&#64;</span>chromium<span>&#46;</span>org</a>&gt;</p>
 <p>Level: Starter</p>
+</section>
+<section id="remove-devm-drm-put-bridge">
+<h2>Remove devm_drm_put_bridge()<a class="headerlink" href="#remove-devm-drm-put-bridge" title="Link to this heading">¶</a></h2>
+<p>Due to how the panel bridge handles the drm_bridge object lifetime, special
+care must be taken to dispose of the drm_bridge object when the
+panel_bridge is removed. This is currently managed using
+<a class="reference internal" href="drm-kms-helpers.html#c.devm_drm_put_bridge" title="devm_drm_put_bridge"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_drm_put_bridge()</span></code></a>, but that is an unsafe, temporary workaround. To fix
+that, the DRM panel lifetime needs to be reworked. After the rework is
+done, remove <a class="reference internal" href="drm-kms-helpers.html#c.devm_drm_put_bridge" title="devm_drm_put_bridge"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_drm_put_bridge()</span></code></a> and the TODO in
+<a class="reference internal" href="drm-kms-helpers.html#c.drm_panel_bridge_remove" title="drm_panel_bridge_remove"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_panel_bridge_remove()</span></code></a>.</p>
+<dl class="simple">
+<dt>Contact: Maxime Ripard &lt;<a class="reference external" href="mailto:mripard&#37;&#52;&#48;kernel&#46;org">mripard<span>&#64;</span>kernel<span>&#46;</span>org</a>&gt;,</dt><dd><p>Luca Ceresoli &lt;<a class="reference external" href="mailto:luca&#46;ceresoli&#37;&#52;&#48;bootlin&#46;com">luca<span>&#46;</span>ceresoli<span>&#64;</span>bootlin<span>&#46;</span>com</a>&gt;</p>
+</dd>
+</dl>
+<p>Level: Intermediate</p>
 <section id="core-refactorings">
 <h3>Core refactorings<a class="headerlink" href="#core-refactorings" title="Link to this heading">¶</a></h3>
 </section>
@@ -616,7 +631,7 @@ split their setup code into init and register anymore.</p></li>
 <li><p>We probably want to have some support for debugfs files on crtc/connectors and
 maybe other kms objects directly in core. There’s even drm_print support in
 the funcs for these objects to dump kms state, so it’s all there. And then the
--&gt;show() functions should obviously give you a pointer to the right object.</p></li>
+-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">show()</span></code> functions should obviously give you a pointer to the right object.</p></li>
 <li><p>The drm_driver-&gt;debugfs_init hooks we have is just an artifact of the old
 midlayered load sequence. DRM debugfs should work more like sysfs, where you
 can create properties/files for an object anytime you want, and the core
@@ -753,14 +768,14 @@ for fbdev.</p>
 (ACPI) video, vendor specific and others. As well as direct/native (PWM)
 register programming by the KMS driver.</p>
 <p>To deal with this backlight drivers used on x86/ACPI call
-acpi_video_get_backlight_type() which has heuristics (+quirks) to select
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">acpi_video_get_backlight_type()</span></code> which has heuristics (+quirks) to select
 which backlight interface to use; and backlight drivers which do not match
 the returned type will not register themselves, so that only one backlight
 device gets registered (in a single GPU setup, see below).</p>
 <p>At the moment this more or less assumes that there will only
 be 1 (internal) panel on a system.</p>
 <p>On systems with 2 panels this may be a problem, depending on
-what interface acpi_video_get_backlight_type() selects:</p>
+what interface <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">acpi_video_get_backlight_type()</span></code> selects:</p>
 <ol class="arabic simple">
 <li><p>native: in this case the KMS driver is expected to know which backlight
 device belongs to which output so everything should just work.</p></li>
@@ -772,10 +787,10 @@ Things will break on systems with multiple panels where the 2 panels need
 a different type of control. E.g. one panel needs ACPI video backlight control,
 where as the other is using native backlight control. Currently in this case
 only one of the 2 required backlight devices will get registered, based on
-the acpi_video_get_backlight_type() return value.</p>
+the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">acpi_video_get_backlight_type()</span></code> return value.</p>
 <p>If this (theoretical) case ever shows up, then supporting this will need some
 work. A possible solution here would be to pass a device and connector-name
-to acpi_video_get_backlight_type() so that it can deal with this.</p>
+to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">acpi_video_get_backlight_type()</span></code> so that it can deal with this.</p>
 <p>Note in a way we already have a case where userspace sees 2 panels,
 in dual GPU laptop setups with a mux. On those systems we may see
 either 2 native backlight devices; or 2 native backlight devices.</p>

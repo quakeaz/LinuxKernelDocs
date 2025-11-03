@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -149,7 +149,7 @@
 <h1>RxRPC Network Protocol<a class="headerlink" href="#rxrpc-network-protocol" title="Link to this heading">¶</a></h1>
 <p>The RxRPC protocol driver provides a reliable two-phase transport on top of UDP
 that can be used to perform RxRPC remote operations.  This is done over sockets
-of AF_RXRPC family, using sendmsg() and recvmsg() with control data to send and
+of AF_RXRPC family, using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sendmsg()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recvmsg()</span></code> with control data to send and
 receive data, aborts and errors.</p>
 <p>Contents of this document:</p>
 <blockquote>
@@ -299,7 +299,7 @@ that could reuse it.</p></li>
 time [tunable] after the last connection using it discarded, in case a new
 connection is made that could use it.</p></li>
 <li><p>A client-side connection is only shared between calls if they have
-the same key struct describing their security (and assuming the calls
+the same key <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">describing</span></code> their security (and assuming the calls
 would otherwise share the connection).  Non-secured calls would also be
 able to share connections with each other.</p></li>
 <li><p>A server-side connection is shared if the client says it is.</p></li>
@@ -308,7 +308,7 @@ replying.</p></li>
 <li><p>SO_KEEPALIVE automatically pings the other side to keep the connection
 alive [TODO].</p></li>
 <li><p>If an ICMP error is received, all calls affected by that error will be
-aborted with an appropriate network error passed through recvmsg().</p></li>
+aborted with an appropriate network error passed through <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recvmsg()</span></code>.</p></li>
 </ol>
 </div></blockquote>
 <p>Interaction with the user of the RxRPC socket:</p>
@@ -321,13 +321,13 @@ followed by the reply being received with one or more recvmsgs.</p></li>
 <li><p>The first sendmsg for a request to be sent from a client contains a tag to
 be used in all other sendmsgs or recvmsgs associated with that call.  The
 tag is carried in the control data.</p></li>
-<li><p>connect() is used to supply a default destination address for a client
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">connect()</span></code> is used to supply a default destination address for a client
 socket.  This may be overridden by supplying an alternate address to the
-first sendmsg() of a call (struct msghdr::msg_name).</p></li>
-<li><p>If connect() is called on an unbound client, a random local port will
+first <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sendmsg()</span></code> of a call (<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">msghdr</span></code>::msg_name).</p></li>
+<li><p>If <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">connect()</span></code> is called on an unbound client, a random local port will
 bound before the operation takes place.</p></li>
 <li><p>A server socket may also be used to make client calls.  To do this, the
-first sendmsg() of the call must specify the target address.  The server’s
+first <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sendmsg()</span></code> of the call must specify the target address.  The server’s
 transport endpoint is used to send the packets.</p></li>
 <li><p>Once the application has received the last message associated with a call,
 the tag is guaranteed not to be seen again, and so it can be used to pin
@@ -348,7 +348,7 @@ Any messages waiting in the receive queue for that call will be discarded.</p></
 <li><p>Aborts, busy notifications and challenge packets are delivered by recvmsg,
 and control data messages will be set to indicate the context.  Receiving
 an abort or a busy message terminates the kernel’s use of that call’s tag.</p></li>
-<li><p>The control data part of the msghdr struct is used for a number of things:</p>
+<li><p>The control data part of the msghdr <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> used for a number of things:</p>
 <ol class="arabic simple">
 <li><p>The tag of the intended or affected call.</p></li>
 <li><p>Sending or receiving errors, aborts and busy notifications.</p></li>
@@ -378,7 +378,7 @@ nominated by a socket option.</p></li>
 making progress at accepting packets within a reasonable time such that we
 manage to queue up all the data for transmission.  This requires the
 client to accept at least one packet per 2*RTT time period.</p>
-<p>If this isn’t set, sendmsg() will return immediately, either returning
+<p>If this isn’t set, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sendmsg()</span></code> will return immediately, either returning
 EINTR/ERESTARTSYS if nothing was consumed or returning the amount of data
 consumed.</p>
 </li>
@@ -413,7 +413,7 @@ flagged.</p></li>
 </section>
 <section id="control-messages">
 <h2>Control Messages<a class="headerlink" href="#control-messages" title="Link to this heading">¶</a></h2>
-<p>AF_RXRPC makes use of control messages in sendmsg() and recvmsg() to multiplex
+<p>AF_RXRPC makes use of control messages in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sendmsg()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recvmsg()</span></code> to multiplex
 calls, to invoke certain actions and to report certain conditions.  These are:</p>
 <blockquote>
 <div><blockquote>
@@ -490,7 +490,7 @@ calls, to invoke certain actions and to report certain conditions.  These are:</
 <p>This is used to indicate the application’s call ID.  It’s an unsigned long
 that the app specifies in the client by attaching it to the first data
 message or in the server by passing it in association with an RXRPC_ACCEPT
-message.  recvmsg() passes it in conjunction with all messages except
+message.  <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recvmsg()</span></code> passes it in conjunction with all messages except
 those of the RXRPC_NEW_CALL message.</p>
 </li>
 <li><p>RXRPC_ABORT</p>
@@ -544,7 +544,7 @@ connection.  The connection is discarded once the call has terminated.</p>
 <li><p>RXRPC_UPGRADE_SERVICE</p>
 <p>This is used to make a client call to probe if the specified service ID
 may be upgraded by the server.  The caller must check msg_name returned to
-recvmsg() for the service ID actually in use.  The operation probed must
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recvmsg()</span></code> for the service ID actually in use.  The operation probed must
 be one that takes the same arguments in both services.</p>
 <p>Once this has been used to establish the upgrade capability (or lack
 thereof) of the server, the service ID returned should be used for all
@@ -557,7 +557,7 @@ going to be transmitted by a call (whether in a client request or a
 service response).  If given, it allows the kernel to encrypt from the
 userspace buffer directly to the packet buffers, rather than copying into
 the buffer and then encrypting in place.  This may only be given with the
-first sendmsg() providing data for a call.  EMSGSIZE will be generated if
+first <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sendmsg()</span></code> providing data for a call.  EMSGSIZE will be generated if
 the amount of data actually given is different.</p>
 <p>This takes a parameter of __s64 type that indicates how much will be
 transmitted.  This may not be less than zero.</p>
@@ -576,7 +576,7 @@ RXRPC_SUPPORTED_CMSG socket option (see below).</p>
 <div><ol class="arabic">
 <li><p>RXRPC_SECURITY_KEY</p>
 <p>This is used to specify the description of the key to be used.  The key is
-extracted from the calling process’s keyrings with request_key() and
+extracted from the calling process’s keyrings with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">request_key()</span></code> and
 should be of “rxrpc” type.</p>
 <p>The optval pointer points to the description string, and optlen indicates
 how long the string is, without the NUL terminator.</p>
@@ -631,7 +631,7 @@ found at:</p>
 <blockquote>
 <div><p><a class="reference external" href="http://people.redhat.com/~dhowells/rxrpc/klog.c">http://people.redhat.com/~dhowells/rxrpc/klog.c</a></p>
 </div></blockquote>
-<p>The payload provided to add_key() on the client should be of the following
+<p>The payload provided to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">add_key()</span></code> on the client should be of the following
 form:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct rxrpc_key_sec2_v1 {
         uint16_t        security_index; /* 2 */
@@ -695,7 +695,7 @@ per-RxRPC virtual connection.</p>
 setsockopt(client, SOL_RXRPC, RXRPC_SECURITY_KEY, key, strlen(key));
 </pre></div>
 </div>
-<p>This issues a request_key() to get the key representing the security
+<p>This issues a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">request_key()</span></code> to get the key representing the security
 context.  The minimum security level can be set:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>unsigned int sec = RXRPC_SECURITY_ENCRYPT;
 setsockopt(client, SOL_RXRPC, RXRPC_MIN_SECURITY_LEVEL,
@@ -718,7 +718,7 @@ connect(client, &amp;srx, sizeof(srx));
 </div>
 </li>
 <li><p>The request data should then be posted to the server socket using a series
-of sendmsg() calls, each with the following control message attached:</p>
+of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sendmsg()</span></code> calls, each with the following control message attached:</p>
 <blockquote>
 <div><table class="docutils align-default">
 <tbody>
@@ -731,13 +731,13 @@ of sendmsg() calls, each with the following control message attached:</p>
 <p>MSG_MORE should be set in msghdr::msg_flags on all but the last part of
 the request.  Multiple requests may be made simultaneously.</p>
 <p>An RXRPC_TX_LENGTH control message can also be specified on the first
-sendmsg() call.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sendmsg()</span></code> call.</p>
 <p>If a call is intended to go to a destination other than the default
-specified through connect(), then msghdr::msg_name should be set on the
+specified through <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">connect()</span></code>, then msghdr::msg_name should be set on the
 first request message of that call.</p>
 </li>
-<li><p>The reply data will then be posted to the server socket for recvmsg() to
-pick up.  MSG_MORE will be flagged by recvmsg() if there’s more reply data
+<li><p>The reply data will then be posted to the server socket for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recvmsg()</span></code> to
+pick up.  MSG_MORE will be flagged by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recvmsg()</span></code> if there’s more reply data
 for a particular call to be read.  MSG_EOR will be set on the terminal
 read for a call.</p>
 <p>All data will be delivered with the following control message attached:</p>
@@ -752,9 +752,9 @@ call.</p>
 </div></blockquote>
 <p>A client may ask for a service ID it knows and ask that this be upgraded to a
 better service if one is available by supplying RXRPC_UPGRADE_SERVICE on the
-first sendmsg() of a call.  The client should then check srx_service in the
-msg_name filled in by recvmsg() when collecting the result.  srx_service will
-hold the same value as given to sendmsg() if the upgrade request was ignored by
+first <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sendmsg()</span></code> of a call.  The client should then check srx_service in the
+msg_name filled in by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recvmsg()</span></code> when collecting the result.  srx_service will
+hold the same value as given to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sendmsg()</span></code> if the upgrade request was ignored by
 the service - otherwise it will be altered to indicate the service ID the
 server upgraded to.  Note that the upgraded service ID is chosen by the server.
 The caller has to wait until it sees the service ID in the reply before sending
@@ -800,7 +800,7 @@ bind(server, &amp;srx, sizeof(srx));
 </pre></div>
 </div>
 <p>More than one service ID may be bound to a socket, provided the transport
-parameters are the same.  The limit is currently two.  To do this, bind()
+parameters are the same.  The limit is currently two.  To do this, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code>
 should be called twice.</p>
 </li>
 <li><p>If service upgrading is required, first two service IDs must have been
@@ -812,7 +812,7 @@ setsockopt(server, SOL_RXRPC, RXRPC_UPGRADEABLE_SERVICE,
 </div>
 <p>This will automatically upgrade connections on service from_ID to service
 to_ID if they request it.  This will be reflected in msg_name obtained
-through recvmsg() when the request data is delivered to userspace.</p>
+through <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recvmsg()</span></code> when the request data is delivered to userspace.</p>
 </li>
 <li><p>The server is then set to listen out for incoming calls:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>listen(server, 100);
@@ -820,18 +820,18 @@ through recvmsg() when the request data is delivered to userspace.</p>
 </div>
 </li>
 <li><p>The kernel notifies the server of pending incoming connections by sending
-it a message for each.  This is received with recvmsg() on the server
+it a message for each.  This is received with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recvmsg()</span></code> on the server
 socket.  It has no data, and has a single dataless control message
 attached:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>RXRPC_NEW_CALL
 </pre></div>
 </div>
-<p>The address that can be passed back by recvmsg() at this point should be
+<p>The address that can be passed back by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recvmsg()</span></code> at this point should be
 ignored since the call for which the message was posted may have gone by
 the time it is accepted - in which case the first call still on the queue
 will be accepted.</p>
 </li>
-<li><p>The server then accepts the new call by issuing a sendmsg() with two
+<li><p>The server then accepts the new call by issuing a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sendmsg()</span></code> with two
 pieces of control data and no actual data:</p>
 <blockquote>
 <div><table class="docutils align-default">
@@ -847,9 +847,9 @@ pieces of control data and no actual data:</p>
 </div></blockquote>
 </li>
 <li><p>The first request data packet will then be posted to the server socket for
-recvmsg() to pick up.  At that point, the RxRPC address for the call can
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recvmsg()</span></code> to pick up.  At that point, the RxRPC address for the call can
 be read from the address fields in the msghdr struct.</p>
-<p>Subsequent request data will be posted to the server socket for recvmsg()
+<p>Subsequent request data will be posted to the server socket for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recvmsg()</span></code>
 to collect as it arrives.  All but the last piece of the request data will
 be delivered with MSG_MORE flagged.</p>
 <p>All data will be delivered with the following control message attached:</p>
@@ -864,7 +864,7 @@ be delivered with MSG_MORE flagged.</p>
 </div></blockquote>
 </li>
 <li><p>The reply data should then be posted to the server socket using a series
-of sendmsg() calls, each with the following control messages attached:</p>
+of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sendmsg()</span></code> calls, each with the following control messages attached:</p>
 <blockquote>
 <div><table class="docutils align-default">
 <tbody>
@@ -880,7 +880,7 @@ for a particular call.</p>
 </ol>
 </div></blockquote>
 <ol class="arabic" start="10">
-<li><p>The final ACK from the client will be posted for retrieval by recvmsg()
+<li><p>The final ACK from the client will be posted for retrieval by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recvmsg()</span></code>
 when it is received.  It will take the form of a dataless message with two
 control messages attached:</p>
 <blockquote>
@@ -899,7 +899,7 @@ control messages attached:</p>
 this call.</p>
 </li>
 <li><p>Up to the point the final packet of reply data is sent, the call can be
-aborted by calling sendmsg() with a dataless message with the following
+aborted by calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sendmsg()</span></code> with a dataless message with the following
 control messages attached:</p>
 <blockquote>
 <div><table class="docutils align-default">
@@ -918,7 +918,7 @@ this is issued.</p>
 </li>
 </ol>
 <p>Note that all the communications for a particular service take place through
-the one server socket, using control messages on sendmsg() and recvmsg() to
+the one server socket, using control messages on <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sendmsg()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recvmsg()</span></code> to
 determine the call affected.</p>
 </section>
 <section id="af-rxrpc-kernel-interface">
@@ -930,13 +930,13 @@ such as the AFS filesystem.  This permits such a utility to:</p>
 <li><p>Use different keys directly on individual client calls on one socket
 rather than having to open a whole slew of sockets, one for each key it
 might want to use.</p></li>
-<li><p>Avoid having RxRPC call request_key() at the point of issue of a call or
+<li><p>Avoid having RxRPC call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">request_key()</span></code> at the point of issue of a call or
 opening of a socket.  Instead the utility is responsible for requesting a
 key at the appropriate point.  AFS, for instance, would do this during VFS
-operations such as open() or unlink().  The key is then handed through
+operations such as open() or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unlink()</span></code>.  The key is then handed through
 when the call is initiated.</p></li>
 <li><p>Request the use of something other than GFP_KERNEL to allocate memory.</p></li>
-<li><p>Avoid the overhead of using the recvmsg() call.  RxRPC messages can be
+<li><p>Avoid the overhead of using the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recvmsg()</span></code> call.  RxRPC messages can be
 intercepted before they get put into the socket Rx queue and the socket
 buffers manipulated directly.</p></li>
 </ol>
@@ -969,7 +969,7 @@ non-NULL).</p>
 <p>If a key is supplied then this will be used to secure the call instead of
 the key bound to the socket with the RXRPC_SECURITY_KEY sockopt.  Calls
 secured in this way will still share connections if at all possible.</p>
-<p>The user_call_ID is equivalent to that supplied to sendmsg() in the
+<p>The user_call_ID is equivalent to that supplied to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sendmsg()</span></code> in the
 control data buffer.  It is entirely feasible to use this to point to a
 kernel data structure.</p>
 <p>tx_total_len is the amount of data the caller is intending to transmit
@@ -1125,15 +1125,15 @@ to the call and the socket buffer containing the message.</p>
 </tbody>
 </table>
 </div></blockquote>
-<p>The remote abort message can be probed with rxrpc_kernel_get_abort_code().
-The two error messages can be probed with rxrpc_kernel_get_error_number().
-A new call can be accepted with rxrpc_kernel_accept_call().</p>
+<p>The remote abort message can be probed with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rxrpc_kernel_get_abort_code()</span></code>.
+The two error messages can be probed with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rxrpc_kernel_get_error_number()</span></code>.
+A new call can be accepted with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rxrpc_kernel_accept_call()</span></code>.</p>
 <p>Data messages can have their contents extracted with the usual bunch of
 socket buffer manipulation functions.  A data message can be determined to
-be the last one in a sequence with rxrpc_kernel_is_data_last().  When a
-data message has been used up, rxrpc_kernel_data_consumed() should be
+be the last one in a sequence with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rxrpc_kernel_is_data_last()</span></code>.  When a
+data message has been used up, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rxrpc_kernel_data_consumed()</span></code> should be
 called on it.</p>
-<p>Messages should be handled to rxrpc_kernel_free_skb() to dispose of.  It
+<p>Messages should be handled to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rxrpc_kernel_free_skb()</span></code> to dispose of.  It
 is possible to get extra refs on all types of message for later freeing,
 but this may pin the state of a call until the message is finally freed.</p>
 </li>
@@ -1923,10 +1923,10 @@ the encryption keys for a kernel service.</p>
 <p><strong>Description</strong></p>
 <p>Set the flag on an rxrpc socket to say that the caller wants to manage the
 RESPONSE packet and the user-defined data it may contain.  Setting this
-means that recvmsg() will return messages with RXRPC_CHALLENGED in the
+means that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recvmsg()</span></code> will return messages with RXRPC_CHALLENGED in the
 control message buffer containing information about the challenge.</p>
 <p>The user should respond to the challenge by passing RXRPC_RESPOND or
-RXRPC_RESPOND_ABORT control messages with sendmsg() to the same call.
+RXRPC_RESPOND_ABORT control messages with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sendmsg()</span></code> to the same call.
 Supplementary control messages, such as RXRPC_RESP_RXGK_APPDATA, may be
 included to indicate the parts the user wants to supply.</p>
 <p>The server will be passed the response data with a RXRPC_RESPONDED control

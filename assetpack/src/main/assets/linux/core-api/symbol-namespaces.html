@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -167,7 +167,7 @@ English
 <h1>Symbol Namespaces<a class="headerlink" href="#symbol-namespaces" title="Link to this heading">¶</a></h1>
 <p>The following document describes how to use Symbol Namespaces to structure the
 export surface of in-kernel symbols exported through the family of
-EXPORT_SYMBOL() macros.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">EXPORT_SYMBOL()</span></code> macros.</p>
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h2>
 <p>Symbol Namespaces have been introduced as a means to structure the export
@@ -188,10 +188,10 @@ changing the way EXPORT_SYMBOL and friends are instrumented to create ksymtab
 entries.</p>
 <section id="using-the-export-symbol-macros">
 <h3>Using the EXPORT_SYMBOL macros<a class="headerlink" href="#using-the-export-symbol-macros" title="Link to this heading">¶</a></h3>
-<p>In addition to the macros EXPORT_SYMBOL() and EXPORT_SYMBOL_GPL(), that allow
+<p>In addition to the macros <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">EXPORT_SYMBOL()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">EXPORT_SYMBOL_GPL()</span></code>, that allow
 exporting of kernel symbols to the kernel symbol table, variants of these are
-available to export symbols into a certain namespace: EXPORT_SYMBOL_NS() and
-EXPORT_SYMBOL_NS_GPL(). They take one additional argument: the namespace as a
+available to export symbols into a certain namespace: <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">EXPORT_SYMBOL_NS()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">EXPORT_SYMBOL_NS_GPL()</span></code>. They take one additional argument: the namespace as a
 string constant. Note that this string must not contain whitespaces.
 E.g. to export the symbol <code class="docutils literal notranslate"><span class="pre">usb_stor_suspend</span></code> into the
 namespace <code class="docutils literal notranslate"><span class="pre">USB_STORAGE</span></code>, use:</p>
@@ -208,8 +208,8 @@ time, respectively.</p>
 <h3>Using the DEFAULT_SYMBOL_NAMESPACE define<a class="headerlink" href="#using-the-default-symbol-namespace-define" title="Link to this heading">¶</a></h3>
 <p>Defining namespaces for all symbols of a subsystem can be very verbose and may
 become hard to maintain. Therefore a default define (DEFAULT_SYMBOL_NAMESPACE)
-is been provided, that, if set, will become the default for all EXPORT_SYMBOL()
-and EXPORT_SYMBOL_GPL() macro expansions that do not specify a namespace.</p>
+is been provided, that, if set, will become the default for all <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">EXPORT_SYMBOL()</span></code>
+and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">EXPORT_SYMBOL_GPL()</span></code> macro expansions that do not specify a namespace.</p>
 <p>There are multiple ways of specifying this define and it depends on the
 subsystem and the maintainer’s preference, which one to use. The first option
 is to define the default namespace in the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> of the subsystem. E.g. to
@@ -218,8 +218,8 @@ line like this to drivers/usb/common/Makefile:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ccflags-y += -DDEFAULT_SYMBOL_NAMESPACE=&#39;&quot;USB_COMMON&quot;&#39;
 </pre></div>
 </div>
-<p>That will affect all EXPORT_SYMBOL() and EXPORT_SYMBOL_GPL() statements. A
-symbol exported with EXPORT_SYMBOL_NS() while this definition is present, will
+<p>That will affect all <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">EXPORT_SYMBOL()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">EXPORT_SYMBOL_GPL()</span></code> statements. A
+symbol exported with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">EXPORT_SYMBOL_NS()</span></code> while this definition is present, will
 still be exported into the namespace that is passed as the namespace argument
 as this argument has preference over a default symbol namespace.</p>
 <p>A second option to define the default namespace is directly in the compilation
@@ -230,17 +230,18 @@ unit as preprocessor statement. The above example would then read:</p>
 <p>within the corresponding compilation unit before the #include for
 &lt;linux/export.h&gt;. Typically it’s placed before the first #include statement.</p>
 </section>
-<section id="using-the-export-symbol-gpl-for-modules-macro">
-<h3>Using the EXPORT_SYMBOL_GPL_FOR_MODULES() macro<a class="headerlink" href="#using-the-export-symbol-gpl-for-modules-macro" title="Link to this heading">¶</a></h3>
+<section id="using-the-export-symbol-for-modules-macro">
+<h3>Using the EXPORT_SYMBOL_FOR_MODULES() macro<a class="headerlink" href="#using-the-export-symbol-for-modules-macro" title="Link to this heading">¶</a></h3>
 <p>Symbols exported using this macro are put into a module namespace. This
-namespace cannot be imported.</p>
+namespace cannot be imported. These exports are GPL-only as they are only
+intended for in-tree modules.</p>
 <p>The macro takes a comma separated list of module names, allowing only those
 modules to access this symbol. Simple tail-globs are supported.</p>
 <p>For example:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>EXPORT_SYMBOL_GPL_FOR_MODULES(preempt_notifier_inc, &quot;kvm,kvm-*&quot;)
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>EXPORT_SYMBOL_FOR_MODULES(preempt_notifier_inc, &quot;kvm,kvm-*&quot;)
 </pre></div>
 </div>
-<p>will limit usage of this symbol to modules whoes name matches the given
+<p>will limit usage of this symbol to modules whose name matches the given
 patterns.</p>
 </section>
 </section>
@@ -264,8 +265,8 @@ import_ns:      USB_STORAGE
 [...]
 </pre></div>
 </div>
-<p>It is advisable to add the MODULE_IMPORT_NS() statement close to other module
-metadata definitions like MODULE_AUTHOR() or MODULE_LICENSE().</p>
+<p>It is advisable to add the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">MODULE_IMPORT_NS()</span></code> statement close to other module
+metadata definitions like <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">MODULE_AUTHOR()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">MODULE_LICENSE()</span></code>.</p>
 </section>
 <section id="loading-modules-that-use-namespaced-symbols">
 <h2>Loading Modules that use namespaced Symbols<a class="headerlink" href="#loading-modules-that-use-namespaced-symbols" title="Link to this heading">¶</a></h2>
@@ -283,7 +284,7 @@ enable loading regardless, but will emit a warning.</p>
 <p>Missing namespaces imports can easily be detected at build time. In fact,
 modpost will emit a warning if a module uses a symbol from a namespace
 without importing it.
-MODULE_IMPORT_NS() statements will usually be added at a definite location
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">MODULE_IMPORT_NS()</span></code> statements will usually be added at a definite location
 (along with other module meta data). To make the life of module authors (and
 subsystem maintainers) easier, a script and make target is available to fixup
 missing imports. Fixing missing imports can be done with:</p>

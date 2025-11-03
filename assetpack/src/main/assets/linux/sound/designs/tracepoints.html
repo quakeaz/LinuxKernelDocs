@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -173,18 +173,18 @@ Before starting the data transmission, applications need to configure PCM
 substream. In this procedure, PCM hardware parameters are decided by
 interaction between applications and ALSA PCM core. Once decided, runtime of
 the PCM substream keeps the parameters.</p>
-<p>The parameters are described in struct snd_pcm_hw_params. This
+<p>The parameters are described in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_pcm_hw_params</span></code>. This
 structure includes several types of parameters. Applications set preferable
 value to these parameters, then execute ioctl(2) with SNDRV_PCM_IOCTL_HW_REFINE
 or SNDRV_PCM_IOCTL_HW_PARAMS. The former is used just for refining available
 set of parameters. The latter is used for an actual decision of the parameters.</p>
-<p>The struct snd_pcm_hw_params structure has below members:</p>
+<p>The <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_pcm_hw_params</span></code> structure has below members:</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">flags</span></code></dt><dd><p>Configurable. ALSA PCM core and some drivers handle this flag to select
 convenient parameters or change their behaviour.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">masks</span></code></dt><dd><p>Configurable. This type of parameter is described in
-struct snd_mask and represent mask values. As of PCM protocol
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_mask</span></code> and represent mask values. As of PCM protocol
 v2.0.13, three types are defined.</p>
 <ul class="simple">
 <li><p>SNDRV_PCM_HW_PARAM_ACCESS</p></li>
@@ -193,7 +193,7 @@ v2.0.13, three types are defined.</p>
 </ul>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">intervals</span></code></dt><dd><p>Configurable. This type of parameter is described in
-struct snd_interval and represent values with a range. As of
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_interval</span></code> and represent values with a range. As of
 PCM protocol v2.0.13, twelve types are defined.</p>
 <ul class="simple">
 <li><p>SNDRV_PCM_HW_PARAM_SAMPLE_BITS</p></li>
@@ -217,7 +217,7 @@ SNDRV_PCM_IOCTL_HW_PARAMS, this mask is ignored and all of parameters
 are going to be changed.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">cmask</span></code></dt><dd><p>Read-only. After returning from ioctl(2), buffer in user space for
-struct snd_pcm_hw_params includes result of each operation.
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_pcm_hw_params</span></code> includes result of each operation.
 This mask represents which mask/interval parameter is actually changed.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">info</span></code></dt><dd><p>Read-only. This represents hardware/driver capabilities as bit flags
@@ -250,27 +250,27 @@ value to this parameter but some drivers intentionally set zero with
 a care of hardware design or data transmission protocol.</p>
 </dd>
 </dl>
-<p>ALSA PCM core handles buffer of struct snd_pcm_hw_params when
+<p>ALSA PCM core handles buffer of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_pcm_hw_params</span></code> when
 applications execute ioctl(2) with SNDRV_PCM_HW_REFINE or SNDRV_PCM_HW_PARAMS.
 Parameters in the buffer are changed according to
-struct snd_pcm_hardware and rules of constraints in the runtime. The
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_pcm_hardware</span></code> and rules of constraints in the runtime. The
 structure describes capabilities of handled hardware. The rules describes
 dependencies on which a parameter is decided according to several parameters.
 A rule has a callback function, and drivers can register arbitrary functions
 to compute the target parameter. ALSA PCM core registers some rules to the
 runtime as a default.</p>
 <p>Each driver can join in the interaction as long as it prepared for two stuffs
-in a callback of struct snd_pcm_ops.open.</p>
+in a callback of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_pcm_ops</span></code>.open.</p>
 <ol class="arabic simple">
 <li><p>In the callback, drivers are expected to change a member of
-struct snd_pcm_hardware type in the runtime, according to
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_pcm_hardware</span></code> type in the runtime, according to
 capacities of corresponding hardware.</p></li>
 <li><p>In the same callback, drivers are also expected to register additional rules
 of constraints into the runtime when several parameters have dependencies
 due to hardware design.</p></li>
 </ol>
 <p>The driver can refers to result of the interaction in a callback of
-struct snd_pcm_ops.hw_params, however it should not change the
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_pcm_ops</span></code>.hw_params, however it should not change the
 content.</p>
 <p>Tracepoints in this category are designed to trace changes of the
 mask/interval parameters. When ALSA PCM core changes them, <code class="docutils literal notranslate"><span class="pre">hw_mask_param</span></code> or
@@ -294,7 +294,7 @@ fields are different according to type of the parameter. For parameters of mask
 type, the fields represent hexadecimal dump of content of the parameter. For
 parameters of interval type, the fields represent values of each member of
 <code class="docutils literal notranslate"><span class="pre">empty</span></code>, <code class="docutils literal notranslate"><span class="pre">integer</span></code>, <code class="docutils literal notranslate"><span class="pre">openmin</span></code>, <code class="docutils literal notranslate"><span class="pre">min</span></code>, <code class="docutils literal notranslate"><span class="pre">max</span></code>, <code class="docutils literal notranslate"><span class="pre">openmax</span></code> in
-struct snd_interval in this order.</p>
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_interval</span></code> in this order.</p>
 </section>
 </section>
 <section id="tracepoints-in-drivers">

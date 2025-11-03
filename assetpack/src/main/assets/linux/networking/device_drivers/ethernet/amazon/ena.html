@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -211,6 +211,15 @@ driver.</p></td>
 <tr class="row-even"><td><p>ena_pci_id_tbl.h</p></td>
 <td><p>Supported device IDs.</p></td>
 </tr>
+<tr class="row-odd"><td><p>ena_phc.[ch]</p></td>
+<td><p>PTP hardware clock infrastructure (see <a class="reference internal" href="#phc">PHC</a> for more info)</p></td>
+</tr>
+<tr class="row-even"><td><p>ena_devlink.[ch]</p></td>
+<td><p>devlink files.</p></td>
+</tr>
+<tr class="row-odd"><td><p>ena_debugfs.[ch]</p></td>
+<td><p>debugfs files.</p></td>
+</tr>
 </tbody>
 </table>
 </section>
@@ -367,6 +376,113 @@ descriptor it was received on would be recycled. When a packet smaller
 than RX copybreak bytes is received, it is copied into a new memory
 buffer and the RX descriptor is returned to HW.</p>
 </section>
+<section id="ptp-hardware-clock-phc">
+<span id="phc"></span><h2>PTP Hardware Clock (PHC)<a class="headerlink" href="#ptp-hardware-clock-phc" title="Link to this heading">¶</a></h2>
+<p>ENA Linux driver supports PTP hardware clock providing timestamp reference to achieve nanosecond resolution.</p>
+<p><strong>PHC support</strong></p>
+<p>PHC depends on the PTP module, which needs to be either loaded as a module or compiled into the kernel.</p>
+<p>Verify if the PTP module is present:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>grep<span class="w"> </span>-w<span class="w"> </span><span class="s1">&#39;^CONFIG_PTP_1588_CLOCK=[ym]&#39;</span><span class="w"> </span>/boot/config-<span class="sb">`</span>uname<span class="w"> </span>-r<span class="sb">`</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>If no output is provided, the ENA driver cannot be loaded with PHC support.</p></li>
+</ul>
+<p><strong>PHC activation</strong></p>
+<p>The feature is turned off by default, in order to turn the feature on, the ENA driver
+can be loaded in the following way:</p>
+<ul class="simple">
+<li><p>devlink:</p></li>
+</ul>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>devlink<span class="w"> </span>dev<span class="w"> </span>param<span class="w"> </span><span class="nb">set</span><span class="w"> </span>pci/&lt;domain:bus:slot.function&gt;<span class="w"> </span>name<span class="w"> </span>enable_phc<span class="w"> </span>value<span class="w"> </span><span class="nb">true</span><span class="w"> </span>cmode<span class="w"> </span>driverinit
+sudo<span class="w"> </span>devlink<span class="w"> </span>dev<span class="w"> </span>reload<span class="w"> </span>pci/&lt;domain:bus:slot.function&gt;
+<span class="c1"># for example:</span>
+sudo<span class="w"> </span>devlink<span class="w"> </span>dev<span class="w"> </span>param<span class="w"> </span><span class="nb">set</span><span class="w"> </span>pci/0000:00:06.0<span class="w"> </span>name<span class="w"> </span>enable_phc<span class="w"> </span>value<span class="w"> </span><span class="nb">true</span><span class="w"> </span>cmode<span class="w"> </span>driverinit
+sudo<span class="w"> </span>devlink<span class="w"> </span>dev<span class="w"> </span>reload<span class="w"> </span>pci/0000:00:06.0
+</pre></div>
+</div>
+<p>All available PTP clock sources can be tracked here:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span>/sys/class/ptp
+</pre></div>
+</div>
+<p>PHC support and capabilities can be verified using ethtool:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>ethtool<span class="w"> </span>-T<span class="w"> </span>&lt;interface&gt;
+</pre></div>
+</div>
+<p><strong>PHC timestamp</strong></p>
+<p>To retrieve PHC timestamp, use <a class="reference external" href="https://docs.kernel.org/driver-api/ptp.html#ptp-hardware-clock-user-space-api">ptp-userspace-api</a>, usage example using <a class="reference external" href="https://elixir.bootlin.com/linux/latest/source/tools/testing/selftests/ptp/testptp.c">testptp</a>:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>testptp<span class="w"> </span>-d<span class="w"> </span>/dev/ptp<span class="k">$(</span>ethtool<span class="w"> </span>-T<span class="w"> </span>&lt;interface&gt;<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;/PTP Hardware Clock:/ {print $NF}&#39;</span><span class="k">)</span><span class="w"> </span>-k<span class="w"> </span><span class="m">1</span>
+</pre></div>
+</div>
+<p>PHC get time requests should be within reasonable bounds,
+avoid excessive utilization to ensure optimal performance and efficiency.
+The ENA device restricts the frequency of PHC get time requests to a maximum
+of 125 requests per second. If this limit is surpassed, the get time request
+will fail, leading to an increment in the phc_err_ts statistic.</p>
+<p><strong>PHC statistics</strong></p>
+<p>PHC can be monitored using debugfs (if mounted):</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>cat<span class="w"> </span>/sys/kernel/debug/&lt;domain:bus:slot.function&gt;/phc_stats
+
+<span class="c1"># for example:</span>
+sudo<span class="w"> </span>cat<span class="w"> </span>/sys/kernel/debug/0000:00:06.0/phc_stats
+</pre></div>
+</div>
+<p>PHC errors must remain below 1% of all PHC requests to maintain the desired level of accuracy and reliability</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><strong>phc_cnt</strong></p></td>
+<td><div class="line-block">
+<div class="line">Number of successful retrieved timestamps (below expire timeout).</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>phc_exp</strong></p></td>
+<td><div class="line-block">
+<div class="line">Number of expired retrieved timestamps (above expire timeout).</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>phc_skp</strong></p></td>
+<td><div class="line-block">
+<div class="line">Number of skipped get time attempts (during block period).</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>phc_err_dv</strong></p></td>
+<td><div class="line-block">
+<div class="line">Number of failed get time attempts due to device errors (entering into block state).</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>phc_err_ts</strong></p></td>
+<td><div class="line-block">
+<div class="line">Number of failed get time attempts due to timestamp errors (entering into block state),</div>
+<div class="line">This occurs if driver exceeded the request limit or device received an invalid timestamp.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p>PHC timeouts:</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><strong>expire</strong></p></td>
+<td><div class="line-block">
+<div class="line">Max time for a valid timestamp retrieval, passing this threshold will fail</div>
+<div class="line">the get time request and block new requests until block timeout.</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>block</strong></p></td>
+<td><div class="line-block">
+<div class="line">Blocking period starts once get time request expires or fails,</div>
+<div class="line">all get time requests during block period will be skipped.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="statistics">
 <h2>Statistics<a class="headerlink" href="#statistics" title="Link to this heading">¶</a></h2>
 <p>The user can obtain ENA device and driver statistics using <cite>ethtool</cite>.
@@ -410,6 +526,15 @@ SKB.</p></li>
 <li><p>The user can provide a hash key, hash function, and configure the
 indirection table through <cite>ethtool(8)</cite>.</p></li>
 </ul>
+</section>
+<section id="devlink-support">
+<h2>DEVLINK SUPPORT<a class="headerlink" href="#devlink-support" title="Link to this heading">¶</a></h2>
+<p><a class="reference external" href="https://www.kernel.org/doc/html/latest/networking/devlink/index.html">devlink</a> supports reloading the driver and initiating re-negotiation with the ENA device</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>devlink<span class="w"> </span>dev<span class="w"> </span>reload<span class="w"> </span>pci/&lt;domain:bus:slot.function&gt;
+<span class="c1"># for example:</span>
+sudo<span class="w"> </span>devlink<span class="w"> </span>dev<span class="w"> </span>reload<span class="w"> </span>pci/0000:00:06.0
+</pre></div>
+</div>
 </section>
 <section id="data-path">
 <h2>DATA PATH<a class="headerlink" href="#data-path" title="Link to this heading">¶</a></h2>

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -377,7 +377,7 @@ rtmutex_lock(&amp;rcu-&gt;rt_mutex)
 <section id="function-references-in-changelogs">
 <h3><span class="section-number">4.2.4. </span>Function references in changelogs<a class="headerlink" href="#function-references-in-changelogs" title="Link to this heading">¶</a></h3>
 <p>When a function is mentioned in the changelog, either the text body or the
-subject line, please use the format ‘function_name()’. Omitting the
+subject line, please use the format ‘<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">function_name()</span></code>’. Omitting the
 brackets after the function name can be ambiguous:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Subject: subsys/component: Make reservation_count static
 
@@ -720,7 +720,7 @@ void func(struct foo *foo)
 }
 </pre></div>
 </div>
-<p>In PROVE_LOCKING kernels, lockdep_assert_held() emits a warning
+<p>In PROVE_LOCKING kernels, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lockdep_assert_held()</span></code> emits a warning
 if the caller doesn’t hold the lock.  Comments can’t do that.</p>
 </div></blockquote>
 </section>
@@ -820,7 +820,7 @@ an enum.</p>
 </section>
 <section id="struct-declarations-and-initializers">
 <h3><span class="section-number">4.3.7. </span>Struct declarations and initializers<a class="headerlink" href="#struct-declarations-and-initializers" title="Link to this heading">¶</a></h3>
-<p>Struct declarations should align the struct member names in a tabular
+<p>Struct declarations should align the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">member</span></code> names in a tabular
 fashion:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct bar_order {
         unsigned int    guest_id;
@@ -829,8 +829,8 @@ fashion:</p>
 };
 </pre></div>
 </div>
-<p>Please avoid documenting struct members within the declaration, because
-this often results in strangely formatted comments and the struct members
+<p>Please avoid documenting <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">members</span></code> within the declaration, because
+this often results in strangely formatted comments and the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">members</span></code>
 become obfuscated:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct bar_order {
         unsigned int    guest_id; /* Unique guest id */
@@ -841,7 +841,7 @@ become obfuscated:</p>
 </pre></div>
 </div>
 <p>Instead, please consider using the kernel-doc format in a comment preceding
-the struct declaration, which is easier to read and has the added advantage
+the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">declaration</span></code>, which is easier to read and has the added advantage
 of including the information in the kernel documentation, for example, as
 follows:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>/**
@@ -863,7 +863,7 @@ struct bar_order {
 };
 </pre></div>
 </div>
-<p>Static struct initializers must use C99 initializers and should also be
+<p>Static <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">initializers</span></code> must use C99 initializers and should also be
 aligned in a tabular fashion:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>static struct foo statfoo = {
         .a              = 0,

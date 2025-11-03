@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -259,16 +259,16 @@ implementations; in most cases the <a class="reference internal" href="../networ
 structure can be used to hold state from session to session.  There is
 also a special value which can be returned by the <a class="reference internal" href="../networking/ieee802154.html#c.start" title="start"><code class="xref c c-func docutils literal notranslate"><span class="pre">start()</span></code></a> function
 called SEQ_START_TOKEN; it can be used if you wish to instruct your
-show() function (described below) to print a header at the top of the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">show()</span></code> function (described below) to print a header at the top of the
 output. SEQ_START_TOKEN should only be used if the offset is zero,
 however.  SEQ_START_TOKEN has no special meaning to the core seq_file
 code.  It is provided as a convenience for a <a class="reference internal" href="../networking/ieee802154.html#c.start" title="start"><code class="xref c c-func docutils literal notranslate"><span class="pre">start()</span></code></a> function to
-communicate with the next() and show() functions.</p>
-<p>The next function to implement is called, amazingly, next(); its job is to
+communicate with the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">next()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">show()</span></code> functions.</p>
+<p>The next function to implement is called, amazingly, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">next()</span></code>; its job is to
 move the iterator forward to the next position in the sequence.  The
 example module can simply increment the position by one; more useful
 modules will do what is needed to step through some data structure. The
-next() function returns a new iterator, or NULL if the sequence is
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">next()</span></code> function returns a new iterator, or NULL if the sequence is
 complete. Here’s the example version:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>static void *ct_seq_next(struct seq_file *s, void *v, loff_t *pos)
 {
@@ -278,26 +278,26 @@ complete. Here’s the example version:</p>
 }
 </pre></div>
 </div>
-<p>The next() function should set <code class="docutils literal notranslate"><span class="pre">*pos</span></code> to a value that <a class="reference internal" href="../networking/ieee802154.html#c.start" title="start"><code class="xref c c-func docutils literal notranslate"><span class="pre">start()</span></code></a> can use
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">next()</span></code> function should set <code class="docutils literal notranslate"><span class="pre">*pos</span></code> to a value that <a class="reference internal" href="../networking/ieee802154.html#c.start" title="start"><code class="xref c c-func docutils literal notranslate"><span class="pre">start()</span></code></a> can use
 to find the new location in the sequence.  When the iterator is being
 stored in the private data area, rather than being reinitialized on each
 <a class="reference internal" href="../networking/ieee802154.html#c.start" title="start"><code class="xref c c-func docutils literal notranslate"><span class="pre">start()</span></code></a>, it might seem sufficient to simply set <code class="docutils literal notranslate"><span class="pre">*pos</span></code> to any non-zero
 value (zero always tells <a class="reference internal" href="../networking/ieee802154.html#c.start" title="start"><code class="xref c c-func docutils literal notranslate"><span class="pre">start()</span></code></a> to restart the sequence).  This is not
 sufficient due to historical problems.</p>
-<p>Historically, many next() functions have <em>not</em> updated <code class="docutils literal notranslate"><span class="pre">*pos</span></code> at
+<p>Historically, many <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">next()</span></code> functions have <em>not</em> updated <code class="docutils literal notranslate"><span class="pre">*pos</span></code> at
 end-of-file.  If the value is then used by <a class="reference internal" href="../networking/ieee802154.html#c.start" title="start"><code class="xref c c-func docutils literal notranslate"><span class="pre">start()</span></code></a> to initialise the
 iterator, this can result in corner cases where the last entry in the
 sequence is reported twice in the file.  In order to discourage this bug
 from being resurrected, the core seq_file code now produces a warning if
-a next() function does not change the value of <code class="docutils literal notranslate"><span class="pre">*pos</span></code>.  Consequently a
-next() function <em>must</em> change the value of <code class="docutils literal notranslate"><span class="pre">*pos</span></code>, and of course must
+a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">next()</span></code> function does not change the value of <code class="docutils literal notranslate"><span class="pre">*pos</span></code>.  Consequently a
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">next()</span></code> function <em>must</em> change the value of <code class="docutils literal notranslate"><span class="pre">*pos</span></code>, and of course must
 set it to a non-zero value.</p>
 <p>The <a class="reference internal" href="../networking/ieee802154.html#c.stop" title="stop"><code class="xref c c-func docutils literal notranslate"><span class="pre">stop()</span></code></a> function closes a session; its job, of course, is to clean
 up. If dynamic memory is allocated for the iterator, <a class="reference internal" href="../networking/ieee802154.html#c.stop" title="stop"><code class="xref c c-func docutils literal notranslate"><span class="pre">stop()</span></code></a> is the
 place to free it; if a lock was taken by <a class="reference internal" href="../networking/ieee802154.html#c.start" title="start"><code class="xref c c-func docutils literal notranslate"><span class="pre">start()</span></code></a>, <a class="reference internal" href="../networking/ieee802154.html#c.stop" title="stop"><code class="xref c c-func docutils literal notranslate"><span class="pre">stop()</span></code></a> must release
-that lock.  The value that <code class="docutils literal notranslate"><span class="pre">*pos</span></code> was set to by the last next() call
+that lock.  The value that <code class="docutils literal notranslate"><span class="pre">*pos</span></code> was set to by the last <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">next()</span></code> call
 before <a class="reference internal" href="../networking/ieee802154.html#c.stop" title="stop"><code class="xref c c-func docutils literal notranslate"><span class="pre">stop()</span></code></a> is remembered, and used for the first <a class="reference internal" href="../networking/ieee802154.html#c.start" title="start"><code class="xref c c-func docutils literal notranslate"><span class="pre">start()</span></code></a> call of
-the next session unless lseek() has been called on the file; in that
+the next session unless <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lseek()</span></code> has been called on the file; in that
 case next <a class="reference internal" href="../networking/ieee802154.html#c.start" title="start"><code class="xref c c-func docutils literal notranslate"><span class="pre">start()</span></code></a> will be asked to start at position zero:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>static void ct_seq_stop(struct seq_file *s, void *v)
 {
@@ -305,8 +305,8 @@ case next <a class="reference internal" href="../networking/ieee802154.html#c.st
 }
 </pre></div>
 </div>
-<p>Finally, the show() function should format the object currently pointed to
-by the iterator for output.  The example module’s show() function is:</p>
+<p>Finally, the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">show()</span></code> function should format the object currently pointed to
+by the iterator for output.  The example module’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">show()</span></code> function is:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>static int ct_seq_show(struct seq_file *s, void *v)
 {
         loff_t *spos = v;
@@ -315,12 +315,12 @@ by the iterator for output.  The example module’s show() function is:</p>
 }
 </pre></div>
 </div>
-<p>If all is well, the show() function should return zero.  A negative error
+<p>If all is well, the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">show()</span></code> function should return zero.  A negative error
 code in the usual manner indicates that something went wrong; it will be
 passed back to user space.  This function can also return SEQ_SKIP, which
-causes the current item to be skipped; if the show() function has already
+causes the current item to be skipped; if the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">show()</span></code> function has already
 generated output before returning SEQ_SKIP, that output will be dropped.</p>
-<p>We will look at seq_printf() in a moment. But first, the definition of the
+<p>We will look at <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">seq_printf()</span></code> in a moment. But first, the definition of the
 seq_file iterator is finished by creating a seq_operations structure with
 the four functions we have just defined:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>static const struct seq_operations ct_seq_ops = {
@@ -343,10 +343,10 @@ iterator function. However, the seq_file code (by design) will not sleep
 between the calls to <a class="reference internal" href="../networking/ieee802154.html#c.start" title="start"><code class="xref c c-func docutils literal notranslate"><span class="pre">start()</span></code></a> and <a class="reference internal" href="../networking/ieee802154.html#c.stop" title="stop"><code class="xref c c-func docutils literal notranslate"><span class="pre">stop()</span></code></a>, so holding a lock during that time
 is a reasonable thing to do. The seq_file code will also avoid taking any
 other locks while the iterator is active.</p>
-<p>The iterator value returned by <a class="reference internal" href="../networking/ieee802154.html#c.start" title="start"><code class="xref c c-func docutils literal notranslate"><span class="pre">start()</span></code></a> or next() is guaranteed to be
-passed to a subsequent next() or <a class="reference internal" href="../networking/ieee802154.html#c.stop" title="stop"><code class="xref c c-func docutils literal notranslate"><span class="pre">stop()</span></code></a> call.  This allows resources
+<p>The iterator value returned by <a class="reference internal" href="../networking/ieee802154.html#c.start" title="start"><code class="xref c c-func docutils literal notranslate"><span class="pre">start()</span></code></a> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">next()</span></code> is guaranteed to be
+passed to a subsequent <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">next()</span></code> or <a class="reference internal" href="../networking/ieee802154.html#c.stop" title="stop"><code class="xref c c-func docutils literal notranslate"><span class="pre">stop()</span></code></a> call.  This allows resources
 such as locks that were taken to be reliably released.  There is <em>no</em>
-guarantee that the iterator will be passed to show(), though in practice
+guarantee that the iterator will be passed to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">show()</span></code>, though in practice
 it often will be.</p>
 </section>
 <section id="formatted-output">
@@ -355,7 +355,7 @@ it often will be.</p>
 iterator and getting it into the user’s buffer. But, for that to work, that
 output must be passed to the seq_file code. Some utility functions have
 been defined which make this task easy.</p>
-<p>Most code will simply use seq_printf(), which works pretty much like
+<p>Most code will simply use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">seq_printf()</span></code>, which works pretty much like
 <a class="reference internal" href="../core-api/printk-basics.html#c.printk" title="printk"><code class="xref c c-func docutils literal notranslate"><span class="pre">printk()</span></code></a>, but which requires the seq_file pointer as an argument.</p>
 <p>For straight character output, the following functions may be used:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>seq_putc(struct seq_file *m, char c);
@@ -364,7 +364,7 @@ seq_escape(struct seq_file *m, const char *s, const char *esc);
 </pre></div>
 </div>
 <p>The first two output a single character and a string, just like one would
-expect. seq_escape() is like seq_puts(), except that any character in s
+expect. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">seq_escape()</span></code> is like <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">seq_puts()</span></code>, except that any character in s
 which is in the string esc will be represented in octal form in the output.</p>
 <p>There are also a pair of functions for printing filenames:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int seq_path(struct seq_file *m, const struct path *path,
@@ -376,8 +376,8 @@ int seq_path_root(struct seq_file *m, const struct path *path,
 <p>Here, path indicates the file of interest, and esc is a set of characters
 which should be escaped in the output.  A call to <a class="reference internal" href="api-summary.html#c.seq_path" title="seq_path"><code class="xref c c-func docutils literal notranslate"><span class="pre">seq_path()</span></code></a> will output
 the path relative to the current process’s filesystem root.  If a different
-root is desired, it can be used with seq_path_root().  If it turns out that
-path cannot be reached from root, seq_path_root() returns SEQ_SKIP.</p>
+root is desired, it can be used with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">seq_path_root()</span></code>.  If it turns out that
+path cannot be reached from root, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">seq_path_root()</span></code> returns SEQ_SKIP.</p>
 <p>A function producing complicated output may want to check:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>bool seq_has_overflowed(struct seq_file *m);
 </pre></div>
@@ -405,12 +405,12 @@ line, as in the example module:</p>
 </div>
 <p>Here, the call to <a class="reference internal" href="api-summary.html#c.seq_open" title="seq_open"><code class="xref c c-func docutils literal notranslate"><span class="pre">seq_open()</span></code></a> takes the seq_operations structure we created
 before, and gets set up to iterate through the virtual file.</p>
-<p>On a successful open, <a class="reference internal" href="api-summary.html#c.seq_open" title="seq_open"><code class="xref c c-func docutils literal notranslate"><span class="pre">seq_open()</span></code></a> stores the struct seq_file pointer in
+<p>On a successful open, <a class="reference internal" href="api-summary.html#c.seq_open" title="seq_open"><code class="xref c c-func docutils literal notranslate"><span class="pre">seq_open()</span></code></a> stores the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">seq_file</span></code> pointer in
 file-&gt;private_data. If you have an application where the same iterator can
 be used for more than one file, you can store an arbitrary pointer in the
 private field of the seq_file structure; that value can then be retrieved
 by the iterator functions.</p>
-<p>There is also a wrapper function to <a class="reference internal" href="api-summary.html#c.seq_open" title="seq_open"><code class="xref c c-func docutils literal notranslate"><span class="pre">seq_open()</span></code></a> called seq_open_private(). It
+<p>There is also a wrapper function to <a class="reference internal" href="api-summary.html#c.seq_open" title="seq_open"><code class="xref c c-func docutils literal notranslate"><span class="pre">seq_open()</span></code></a> called <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">seq_open_private()</span></code>. It
 kmallocs a zero filled block of memory and stores a pointer to it in the
 private field of the seq_file structure, returning 0 on success. The
 block size is specified in a third parameter to the function, e.g.:</p>
@@ -421,7 +421,7 @@ block size is specified in a third parameter to the function, e.g.:</p>
 }
 </pre></div>
 </div>
-<p>There is also a variant function, __seq_open_private(), which is functionally
+<p>There is also a variant function, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__seq_open_private()</span></code>, which is functionally
 identical except that, if successful, it returns the pointer to the allocated
 memory block, allowing further initialisation e.g.:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>static int ct_open(struct inode *inode, struct file *file)
@@ -440,9 +440,9 @@ memory block, allowing further initialisation e.g.:</p>
 }
 </pre></div>
 </div>
-<p>A corresponding close function, seq_release_private() is available which
+<p>A corresponding close function, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">seq_release_private()</span></code> is available which
 frees the memory allocated in the corresponding open.</p>
-<p>The other operations of interest - read(), llseek(), and release() - are
+<p>The other operations of interest - read(), <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">llseek()</span></code>, and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">release()</span></code> - are
 all implemented by the seq_file code itself. So a virtual file’s
 file_operations structure will look like:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>static const struct file_operations ct_file_ops = {
@@ -454,7 +454,7 @@ file_operations structure will look like:</p>
 };
 </pre></div>
 </div>
-<p>There is also a seq_release_private() which passes the contents of the
+<p>There is also a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">seq_release_private()</span></code> which passes the contents of the
 seq_file private field to <a class="reference internal" href="../core-api/mm-api.html#c.kfree" title="kfree"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree()</span></code></a> before releasing the structure.</p>
 <p>The final step is the creation of the /proc file itself. In the example
 code, that is done in the initialization code in the usual way:</p>
@@ -484,13 +484,13 @@ struct list_head *seq_list_next(void *v, struct list_head *head,
 </pre></div>
 </div>
 <p>These helpers will interpret pos as a position within the list and iterate
-accordingly.  Your <a class="reference internal" href="../networking/ieee802154.html#c.start" title="start"><code class="xref c c-func docutils literal notranslate"><span class="pre">start()</span></code></a> and next() functions need only invoke the
+accordingly.  Your <a class="reference internal" href="../networking/ieee802154.html#c.start" title="start"><code class="xref c c-func docutils literal notranslate"><span class="pre">start()</span></code></a> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">next()</span></code> functions need only invoke the
 <code class="docutils literal notranslate"><span class="pre">seq_list_*</span></code> helpers with a pointer to the appropriate list_head structure.</p>
 </section>
 <section id="the-extra-simple-version">
 <h2>The extra-simple version<a class="headerlink" href="#the-extra-simple-version" title="Link to this heading">¶</a></h2>
 <p>For extremely simple virtual files, there is an even easier interface.  A
-module can define only the show() function, which should create all the
+module can define only the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">show()</span></code> function, which should create all the
 output that the virtual file will contain. The file’s open() method then
 calls:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int single_open(struct file *file,
@@ -498,10 +498,10 @@ calls:</p>
                 void *data);
 </pre></div>
 </div>
-<p>When output time comes, the show() function will be called once. The data
-value given to single_open() can be found in the private field of the
-seq_file structure. When using single_open(), the programmer should use
-single_release() instead of <a class="reference internal" href="api-summary.html#c.seq_release" title="seq_release"><code class="xref c c-func docutils literal notranslate"><span class="pre">seq_release()</span></code></a> in the file_operations structure
+<p>When output time comes, the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">show()</span></code> function will be called once. The data
+value given to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">single_open()</span></code> can be found in the private field of the
+seq_file structure. When using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">single_open()</span></code>, the programmer should use
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">single_release()</span></code> instead of <a class="reference internal" href="api-summary.html#c.seq_release" title="seq_release"><code class="xref c c-func docutils literal notranslate"><span class="pre">seq_release()</span></code></a> in the file_operations structure
 to avoid a memory leak.</p>
 </section>
 </section>

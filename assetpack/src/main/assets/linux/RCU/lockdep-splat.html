@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -218,8 +218,8 @@ Call Trace:
 section, but the “other info” list above shows that this is not the
 case.  Instead, we hold three locks, one of which might be RCU related.
 And maybe that lock really does protect this reference.  If so, the fix
-is to inform RCU, perhaps by changing __cfq_exit_single_io_context() to
-take the struct request_queue “q” from cfq_exit_queue() as an argument,
+is to inform RCU, perhaps by changing <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__cfq_exit_single_io_context()</span></code> to
+take the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">request_queue</span></code> “q” from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cfq_exit_queue()</span></code> as an argument,
 which would permit us to invoke rcu_dereference_protected as follows:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>if (rcu_dereference_protected(ioc-&gt;ioc_data,
                               lockdep_is_held(&amp;q-&gt;queue_lock)) == cic) {

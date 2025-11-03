@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -215,7 +215,7 @@
 <section id="video-device-s-internal-representation">
 <h1><span class="section-number">2.4. </span>Video device’ s internal representation<a class="headerlink" href="#video-device-s-internal-representation" title="Link to this heading">¶</a></h1>
 <p>The actual device nodes in the <code class="docutils literal notranslate"><span class="pre">/dev</span></code> directory are created using the
-<a class="reference internal" href="#c.video_device" title="video_device"><code class="xref c c-type docutils literal notranslate"><span class="pre">video_device</span></code></a> struct (<code class="docutils literal notranslate"><span class="pre">v4l2-dev.h</span></code>). This struct can either be
+<a class="reference internal" href="#c.video_device" title="video_device"><code class="xref c c-type docutils literal notranslate"><span class="pre">video_device</span></code></a> struct (<code class="docutils literal notranslate"><span class="pre">v4l2-dev.h</span></code>). This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">can</span></code> either be
 allocated dynamically or embedded in a larger struct.</p>
 <p>To allocate it dynamically use <a class="reference internal" href="#c.video_device_alloc" title="video_device_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">video_device_alloc()</span></code></a>:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">video_device</span><span class="w"> </span><span class="o">*</span><span class="n">vdev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">video_device_alloc</span><span class="p">();</span>
@@ -238,7 +238,7 @@ of the video device exits.</p>
 <p>The default <a class="reference internal" href="#c.video_device_release" title="video_device_release"><code class="xref c c-func docutils literal notranslate"><span class="pre">video_device_release()</span></code></a> callback currently
 just calls <code class="docutils literal notranslate"><span class="pre">kfree</span></code> to free the allocated memory.</p>
 <p>There is also a <a class="reference internal" href="#c.video_device_release_empty" title="video_device_release_empty"><code class="xref c c-func docutils literal notranslate"><span class="pre">video_device_release_empty()</span></code></a> function that does
-nothing (is empty) and should be used if the struct is embedded and there
+nothing (is empty) and should be used if the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> embedded and there
 is nothing to do when it is released.</p>
 <p>You should also set these fields of <a class="reference internal" href="#c.video_device" title="video_device"><code class="xref c c-type docutils literal notranslate"><span class="pre">video_device</span></code></a>:</p>
 <ul>
@@ -306,11 +306,11 @@ calling this function before <a class="reference internal" href="#c.video_regist
 <p>This tends to be needed if based on external factors (e.g. which card is
 being used) you want to turns off certain features in <a class="reference internal" href="v4l2-common.html#c.v4l2_ioctl_ops" title="v4l2_ioctl_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_ioctl_ops</span></code></a>
 without having to make a new struct.</p>
-<p>The <a class="reference internal" href="#c.v4l2_file_operations" title="v4l2_file_operations"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_file_operations</span></code></a> struct is a subset of file_operations.
+<p>The <a class="reference internal" href="#c.v4l2_file_operations" title="v4l2_file_operations"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_file_operations</span></code></a> <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> a subset of file_operations.
 The main difference is that the inode argument is omitted since it is never
 used.</p>
 <p>If integration with the media framework is needed, you must initialize the
-<a class="reference internal" href="mc-core.html#c.media_entity" title="media_entity"><code class="xref c c-type docutils literal notranslate"><span class="pre">media_entity</span></code></a> struct embedded in the <a class="reference internal" href="#c.video_device" title="video_device"><code class="xref c c-type docutils literal notranslate"><span class="pre">video_device</span></code></a> struct
+<a class="reference internal" href="mc-core.html#c.media_entity" title="media_entity"><code class="xref c c-type docutils literal notranslate"><span class="pre">media_entity</span></code></a> <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">embedded</span></code> in the <a class="reference internal" href="#c.video_device" title="video_device"><code class="xref c c-type docutils literal notranslate"><span class="pre">video_device</span></code></a> struct
 (entity field) by calling <a class="reference internal" href="mc-core.html#c.media_entity_pads_init" title="media_entity_pads_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">media_entity_pads_init()</span></code></a>:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">media_pad</span><span class="w"> </span><span class="o">*</span><span class="n">pad</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">my_vdev</span><span class="o">-&gt;</span><span class="n">pad</span><span class="p">;</span>
 <span class="kt">int</span><span class="w"> </span><span class="n">err</span><span class="p">;</span>
@@ -520,7 +520,7 @@ it has been initialized:</p>
 <ul class="simple">
 <li><p>file and <a class="reference internal" href="#c.video_device" title="video_device"><code class="xref c c-type docutils literal notranslate"><span class="pre">video_device</span></code></a> private data</p></li>
 </ul>
-<p>You can set/get driver private data in the video_device struct using:</p>
+<p>You can set/get driver private data in the video_device <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">using</span></code>:</p>
 <blockquote>
 <div><p><a class="reference internal" href="#c.video_get_drvdata" title="video_get_drvdata"><code class="xref c c-func docutils literal notranslate"><span class="pre">video_get_drvdata</span></code></a>
 (<a class="reference internal" href="#c.video_device" title="video_device"><code class="xref c c-type docutils literal notranslate"><span class="pre">vdev</span></code></a>);</p>
@@ -541,7 +541,7 @@ with <a class="reference internal" href="#c.video_devdata" title="video_devdata"
 <div><p><a class="reference internal" href="#c.video_drvdata" title="video_drvdata"><code class="xref c c-func docutils literal notranslate"><span class="pre">video_drvdata</span></code></a>
 (<a class="reference internal" href="../../filesystems/api-summary.html#c.file" title="file"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file</span></code></a> *file);</p>
 </div></blockquote>
-<p>You can go from a <a class="reference internal" href="#c.video_device" title="video_device"><code class="xref c c-type docutils literal notranslate"><span class="pre">video_device</span></code></a> struct to the v4l2_device struct using:</p>
+<p>You can go from a <a class="reference internal" href="#c.video_device" title="video_device"><code class="xref c c-type docutils literal notranslate"><span class="pre">video_device</span></code></a> <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">to</span></code> the v4l2_device <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">using</span></code>:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">v4l2_device</span><span class="w"> </span><span class="o">*</span><span class="n">v4l2_dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vdev</span><span class="o">-&gt;</span><span class="n">v4l2_dev</span><span class="p">;</span>
 </pre></div>
 </div>
@@ -800,7 +800,7 @@ by enum <code class="xref c c-type docutils literal notranslate"><span class="pr
 </div>
 <p><strong>Members</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">owner</span></code></dt><dd><p>pointer to struct module</p>
+<dt><code class="docutils literal notranslate"><span class="pre">owner</span></code></dt><dd><p>pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">module</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">read</span></code></dt><dd><p>operations needed to implement the read() syscall</p>
 </dd>
@@ -820,14 +820,14 @@ the userspace uses 32 bits.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">open</span></code></dt><dd><p>operations needed to implement the open() syscall</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">release</span></code></dt><dd><p>operations needed to implement the release() syscall</p>
+<dt><code class="docutils literal notranslate"><span class="pre">release</span></code></dt><dd><p>operations needed to implement the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">release()</span></code> syscall</p>
 </dd>
 </dl>
 </div>
 <p><strong>Description</strong></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Those operations are used to implemente the fs struct file_operations
+<p>Those operations are used to implemente the fs <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file_operations</span></code>
 at the V4L2 drivers. The V4L2 core overrides the fs ops with some
 extra logic needed by the subsystem.</p>
 </div>
@@ -923,7 +923,7 @@ Contains a set of <a class="reference internal" href="#c.v4l2_video_device_flags
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">tvnorms</span></code></dt><dd><p>Supported tv norms</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">release</span></code></dt><dd><p>video device release() callback</p>
+<dt><code class="docutils literal notranslate"><span class="pre">release</span></code></dt><dd><p>video device <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">release()</span></code> callback</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">ioctl_ops</span></code></dt><dd><p>pointer to <a class="reference internal" href="v4l2-common.html#c.v4l2_ioctl_ops" title="v4l2_ioctl_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_ioctl_ops</span></code></a> with ioctl callbacks</p>
 </dd>
@@ -950,7 +950,7 @@ Contains a set of <a class="reference internal" href="#c.v4l2_video_device_flags
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">__entity</span></code></dt><dd><p>pointer to <a class="reference internal" href="mc-core.html#c.media_entity" title="media_entity"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">media_entity</span></code></a></p>
+<dt><code class="docutils literal notranslate"><span class="pre">__entity</span></code></dt><dd><p>pointer to <a class="reference internal" href="mc-core.html#c.media_entity" title="media_entity"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">media_entity</span></code></a>, may be NULL</p>
 </dd>
 </dl>
 </div>
@@ -1030,7 +1030,7 @@ Drivers should use <a class="reference internal" href="#c.video_register_device"
 documentation for more details.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>if video_register_device fails, the release() callback of
+<p>if video_register_device fails, the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">release()</span></code> callback of
 <a class="reference internal" href="#c.video_device" title="video_device"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">video_device</span></code></a> structure is <em>not</em> called, so the caller
 is responsible for freeing any data. Usually that means that
 you <a class="reference internal" href="#c.video_device_release" title="video_device_release"><code class="xref c c-func docutils literal notranslate"><span class="pre">video_device_release()</span></code></a> should be called on failure.</p>
@@ -1060,7 +1060,7 @@ warning is issued if the desired device node number was already in use.</p>
 documentation for more details.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>if video_register_device fails, the release() callback of
+<p>if video_register_device fails, the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">release()</span></code> callback of
 <a class="reference internal" href="#c.video_device" title="video_device"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">video_device</span></code></a> structure is <em>not</em> called, so the caller
 is responsible for freeing any data. Usually that means that
 you <a class="reference internal" href="#c.video_device_release" title="video_device_release"><code class="xref c c-func docutils literal notranslate"><span class="pre">video_device_release()</span></code></a> should be called on failure.</p>
@@ -1109,12 +1109,12 @@ you <a class="reference internal" href="#c.video_device_release" title="video_de
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Can also be used for video_device-&gt;release().</p>
+<p>Can also be used for video_device-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">release()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.video_device_release_empty">
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">video_device_release_empty</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.video_device" title="video_device"><span class="n"><span class="pre">video_device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">vdev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.video_device_release_empty" title="Link to this definition">¶</a><br /></dt>
-<dd><p>helper function to implement the video_device-&gt;release() callback.</p>
+<dd><p>helper function to implement the video_device-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">release()</span></code> callback.</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -1151,7 +1151,7 @@ disable ioctls based on the specific card that is actually found.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This must be called before video_register_device.
-See also the comments for determine_valid_ioctls().</p>
+See also the comments for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">determine_valid_ioctls()</span></code>.</p>
 </div>
 </div>
 <dl class="c function">

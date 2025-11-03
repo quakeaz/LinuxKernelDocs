@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -203,7 +203,7 @@ EXCEPTIONS_FILE with describes what elements will be either ignored or
 be pointed to a non-default reference.</p>
 <p>The output is written at the (OUT_FILE).</p>
 <p>It is capable of identifying defines, functions, structs, typedefs,
-enums and enum symbols and create cross-references for all of them.
+enums and <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">symbols</span></code> and create cross-references for all of them.
 It is also capable of distinguish #define used for specifying a Linux
 ioctl.</p>
 <p>The EXCEPTIONS_FILE contain two types of statements: <strong>ignore</strong> or <strong>replace</strong>.</p>
@@ -220,7 +220,7 @@ replacement rule, it will use <strong>new_value</strong>.</p>
 <p><strong>ioctl</strong></p>
 <blockquote>
 <div><p>The ignore or replace statement will apply to ioctl definitions like:</p>
-<p>#define        VIDIOC_DBG_S_REGISTER    _IOW(‘V’, 79, struct v4l2_dbg_register)</p>
+<p>#define        VIDIOC_DBG_S_REGISTER    _IOW(‘V’, 79, <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_dbg_register</span></code>)</p>
 </div></blockquote>
 <p><strong>define</strong></p>
 <blockquote>
@@ -229,21 +229,21 @@ at C_FILE.</p>
 </div></blockquote>
 <p><strong>typedef</strong></p>
 <blockquote>
-<div><p>The ignore or replace statement will apply to typedef statements at C_FILE.</p>
+<div><p>The ignore or replace statement will apply to <code class="xref c c-type broken_xref docutils literal notranslate"><span class="pre">typedef</span> <span class="pre">statements</span></code> at C_FILE.</p>
 </div></blockquote>
 <p><strong>struct</strong></p>
 <blockquote>
-<div><p>The ignore or replace statement will apply to the name of struct statements
+<div><p>The ignore or replace statement will apply to the name of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">statements</span></code>
 at C_FILE.</p>
 </div></blockquote>
 <p><strong>enum</strong></p>
 <blockquote>
-<div><p>The ignore or replace statement will apply to the name of enum statements
+<div><p>The ignore or replace statement will apply to the name of <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">statements</span></code>
 at C_FILE.</p>
 </div></blockquote>
 <p><strong>symbol</strong></p>
 <blockquote>
-<div><p>The ignore or replace statement will apply to the name of enum value
+<div><p>The ignore or replace statement will apply to the name of <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">value</span></code>
 at C_FILE.</p>
 <p>For replace statements, <strong>new_value</strong> will automatically use :c:type:
 references for <strong>typedef</strong>, <strong>enum</strong> and <strong>struct</strong> types. It will use :ref:
@@ -256,14 +256,14 @@ also be explicitly defined at the replace statement.</p>
 <p>ignore define _VIDEODEV2_H</p>
 <p>Ignore a #define _VIDEODEV2_H at the C_FILE.</p>
 <p>ignore symbol PRIVATE</p>
-<p>On a struct like:</p>
-<p>enum foo { BAR1, BAR2, PRIVATE };</p>
+<p>On a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">like</span></code>:</p>
+<p><code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">foo</span></code> { BAR1, BAR2, PRIVATE };</p>
 <p>It won’t generate cross-references for <strong>PRIVATE</strong>.</p>
 <p>replace symbol BAR1 :c:type:`foo`
 replace symbol BAR2 :c:type:`foo`</p>
-<p>On a struct like:</p>
-<p>enum foo { BAR1, BAR2, PRIVATE };</p>
-<p>It will make the BAR1 and BAR2 enum symbols to cross reference the foo
+<p>On a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">like</span></code>:</p>
+<p><code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">foo</span></code> { BAR1, BAR2, PRIVATE };</p>
+<p>It will make the BAR1 and BAR2 <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">symbols</span></code> to cross reference the foo
 symbol at the C domain.</p>
 </section>
 <section id="bugs">

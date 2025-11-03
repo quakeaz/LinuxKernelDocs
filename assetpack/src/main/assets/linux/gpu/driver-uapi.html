@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -204,12 +204,12 @@ of uAPI which has embedded the <a class="reference internal" href="#c.i915_user_
 </div>
 <p><strong>Description</strong></p>
 <p>Many interfaces need to grow over time. In most cases we can simply
-extend the struct and have userspace pass in more data. Another option,
+extend the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">and</span></code> have userspace pass in more data. Another option,
 as demonstrated by Vulkan’s approach to providing extensions for forward
 and backward compatibility, is to use a list of optional structs to
 provide those extra details.</p>
 <p>The key advantage to using an extension chain is that it allows us to
-redefine the interface more easily than an ever growing struct of
+redefine the interface more easily than an ever growing <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">of</span></code>
 increasing complexity, and for large parts of that interface to be
 entirely optional. The downside is more pointer chasing; chasing across
 the __user boundary with pointers encapsulated inside u64.</p>
@@ -269,7 +269,7 @@ programmable media workloads, but do not support the 3D pipeline.</p>
 </div>
 <p><strong>Description</strong></p>
 <p>Different engines serve different roles, and there may be more than one
-engine serving each role.  This enum provides a classification of the role
+engine serving each role.  This <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">provides</span></code> a classification of the role
 of the engine, which may be used when requesting operations to be performed
 on a certain subset of engines, or for providing information about that
 group.</p>
@@ -386,7 +386,7 @@ when the object can only exist in system memory, WC otherwise.</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This struct is passed as argument to the <cite>DRM_IOCTL_I915_GEM_MMAP_OFFSET</cite> ioctl,
+<p>This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> passed as argument to the <cite>DRM_IOCTL_I915_GEM_MMAP_OFFSET</cite> ioctl,
 and is used to retrieve the fake offset to mmap an object specified by <code class="xref c c-type docutils literal notranslate"><span class="pre">handle</span></code>.</p>
 <p>The legacy way of using <cite>DRM_IOCTL_I915_GEM_MMAP</cite> is removed on gen12+.
 <cite>DRM_IOCTL_I915_GEM_MMAP_GTT</cite> is an older supported alias to this struct, but will behave
@@ -943,8 +943,8 @@ buffers, replacing the existing way of using identifiers like <cite>I915_EXEC_BL
 inside the flags field of <cite><a class="reference internal" href="#c.drm_i915_gem_execbuffer2" title="drm_i915_gem_execbuffer2"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_i915_gem_execbuffer2</span></code></a></cite>.</p>
 <p>To use it created GEM contexts need to be configured with a list of engines
 the user is intending to submit to. This is accomplished using the
-<cite>I915_CONTEXT_PARAM_ENGINES</cite> parameter and <cite>struct
-i915_context_param_engines</cite>.</p>
+<cite>I915_CONTEXT_PARAM_ENGINES</cite> parameter and <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">i915_context_param_engines</span></code></cite>.</p>
 <p>For such contexts the <cite>I915_EXEC_RING_MASK</cite> field becomes an index into the
 configured map.</p>
 <p>Example of creating such context and submitting against it:</p>
@@ -2059,13 +2059,13 @@ ioctl</p></li>
 virtual address in the GPU’s VA space there is no guarantee that the actual
 mappings are created in the GPU’s MMU. If the given memory is swapped out
 at the time the bind operation is executed the kernel will stash the mapping
-details into it’s internal alloctor and create the actual MMU mappings once
+details into it’s internal allocator and create the actual MMU mappings once
 the memory is swapped back in. While this is transparent for userspace, it is
 guaranteed that all the backing memory is swapped back in and all the memory
 mappings, as requested by userspace previously, are actually mapped once the
 DRM_NOUVEAU_EXEC ioctl is called to submit an exec job.</p>
 <p>A VM_BIND job can be executed either synchronously or asynchronously. If
-exectued asynchronously, userspace may provide a list of syncobjs this job
+executed asynchronously, userspace may provide a list of syncobjs this job
 will wait for and/or a list of syncobj the kernel will signal once the
 VM_BIND job finished execution. If executed synchronously the ioctl will
 block until the bind job is finished. For synchronous jobs the kernel will
@@ -2077,7 +2077,7 @@ the option to synchronize them with syncobjs.</p>
 <p>Since VM_BIND jobs update the GPU’s VA space on job submit, EXEC jobs do have
 an up to date view of the VA space. However, the actual mappings might still
 be pending. Hence, EXEC jobs require to have the particular fences - of
-the corresponding VM_BIND jobs they depent on - attached to them.</p>
+the corresponding VM_BIND jobs they depend on - attached to them.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.drm_nouveau_sync">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_nouveau_sync</span></span></span><a class="headerlink" href="#c.drm_nouveau_sync" title="Link to this definition">¶</a><br /></dt>
@@ -2351,7 +2351,7 @@ at the end of the drm_panthor_ioctl_id enum.</p></li>
 
 <p>File offset for all MMIO regions being exposed to userspace. Don’t use
 this value directly, use DRM_PANTHOR_USER_&lt;name&gt;_OFFSET values instead.
-pgoffset passed to mmap2() is an unsigned long, which forces us to use a
+pgoffset passed to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mmap2()</span></code> is an unsigned long, which forces us to use a
 different offset on 32-bit and 64-bit systems.</p>
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.DRM_PANTHOR_USER_FLUSH_ID_MMIO_OFFSET">
@@ -2366,7 +2366,7 @@ read-only register, so let’s expose this page through a static mmap offset
 and allow direct mapping of this MMIO region so we can avoid the
 user &lt;-&gt; kernel round-trip.</p>
 <p id="ioctl-ids"><strong>IOCTL IDs</strong></p>
-<p>enum drm_panthor_ioctl_id - IOCTL IDs</p>
+<p><code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">drm_panthor_ioctl_id</span></code> - IOCTL IDs</p>
 <p>Place new ioctls at the end, don’t re-order, don’t replace or remove entries.</p>
 <p>These IDs are not meant to be used directly. Use the DRM_IOCTL_PANTHOR_xxx
 definitions instead.</p>
@@ -2531,6 +2531,7 @@ DRM_PANTHOR_SYNC_OP_HANDLE_TYPE_TIMELINE_SYNCOBJ.</p>
     __u32 coherency_features;
     __u32 texture_features[4];
     __u32 as_present;
+    __u32 pad0;
     __u64 shader_present;
     __u64 l2_present;
     __u64 tiler_present;
@@ -2569,6 +2570,8 @@ simultaneously on a barrier.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">texture_features</span></code></dt><dd><p>Texture features.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">as_present</span></code></dt><dd><p>Bitmask encoding the number of address-space exposed by the MMU.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">pad0</span></code></dt><dd><p>MBZ.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">shader_present</span></code></dt><dd><p>Bitmask encoding the shader cores exposed by the GPU.</p>
 </dd>
@@ -3363,6 +3366,34 @@ is the first element in the list.</p>
 </dd>
 </dl>
 </div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.drm_panthor_set_user_mmio_offset">
+<span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_panthor_set_user_mmio_offset</span></span></span><a class="headerlink" href="#c.drm_panthor_set_user_mmio_offset" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Arguments passed to DRM_IOCTL_PANTHOR_SET_USER_MMIO_OFFSET</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Definition</strong>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct drm_panthor_set_user_mmio_offset {
+    __u64 offset;
+};
+</pre></div>
+</div>
+<p><strong>Members</strong></p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">offset</span></code></dt><dd><p>User MMIO offset to use.</p>
+<p>Must be either DRM_PANTHOR_USER_MMIO_OFFSET_32BIT or
+DRM_PANTHOR_USER_MMIO_OFFSET_64BIT.</p>
+<p>Use DRM_PANTHOR_USER_MMIO_OFFSET (which selects OFFSET_32BIT or
+OFFSET_64BIT based on the size of an unsigned long) unless you
+have a very good reason to overrule this decision.</p>
+</dd>
+</dl>
+</div>
+<p><strong>Description</strong></p>
+<p>This ioctl is only really useful if you want to support userspace
+CPU emulation environments where the size of an unsigned long differs
+between the host and the guest architectures.</p>
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.DRM_IOCTL_PANTHOR">
 <span class="sig-name descname"><span class="n"><span class="pre">DRM_IOCTL_PANTHOR</span></span></span><a class="headerlink" href="#c.DRM_IOCTL_PANTHOR" title="Link to this definition">¶</a><br /></dt>
@@ -3452,12 +3483,12 @@ entries and usage.</p>
 <p>Before detailing the IOCTLs and its structs, it is important to highlight
 that every IOCTL in Xe is extensible.</p>
 <p>Many interfaces need to grow over time. In most cases we can simply
-extend the struct and have userspace pass in more data. Another option,
+extend the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">and</span></code> have userspace pass in more data. Another option,
 as demonstrated by Vulkan’s approach to providing extensions for forward
 and backward compatibility, is to use a list of optional structs to
 provide those extra details.</p>
 <p>The key advantage to using an extension chain is that it allows us to
-redefine the interface more easily than an ever growing struct of
+redefine the interface more easily than an ever growing <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">of</span></code>
 increasing complexity, and for large parts of that interface to be
 entirely optional. The downside is more pointer chasing; chasing across
 the __user boundary with pointers encapsulated inside u64.</p>
@@ -3541,7 +3572,7 @@ of uAPI which has embedded the <a class="reference internal" href="#c.drm_xe_use
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>A generic struct that allows any of the Xe’s IOCTL to be extended
+<p>A generic <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">that</span></code> allows any of the Xe’s IOCTL to be extended
 with a set_property operation.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.drm_xe_engine_class_instance">
@@ -4182,7 +4213,7 @@ is not reported in the bitmask.</p>
 <p><strong>Description</strong></p>
 <p>The user selects the type of data to query among DRM_XE_DEVICE_QUERY_*
 and sets the value in the query member. This determines the type of
-the structure provided by the driver in data, among struct drm_xe_query_*.</p>
+the structure provided by the driver in data, among <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_xe_query_</span></code>*.</p>
 <dl class="simple">
 <dt>The <strong>query</strong> can be:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">DRM_XE_DEVICE_QUERY_ENGINES</span></code></p></li>
@@ -4395,6 +4426,12 @@ instruction.</p></li>
 </ul>
 </dd>
 </dl>
+<p><strong>Note</strong></p>
+<p>The mmap size can be at most 4K, due to HW limitations. As a result
+this interface is only supported on CPU architectures that support 4K page
+size. The mmap_offset ioctl will detect this and gracefully return an
+error, where userspace is expected to have a different fallback method for
+triggering a barrier.</p>
 <p>Roughly the usage would be as follows:</p>
 <div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">drm_xe_gem_mmap_offset</span><span class="w"> </span><span class="n">mmo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="p">.</span><span class="n">handle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="c1">// must be set to 0</span>
@@ -4406,12 +4443,6 @@ instruction.</p></li>
 <span class="n">map</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xdeadbeaf</span><span class="p">;</span><span class="w"> </span><span class="c1">// issue barrier</span>
 </pre></div>
 </div>
-<p><strong>Note</strong></p>
-<p>The mmap size can be at most 4K, due to HW limitations. As a result
-this interface is only supported on CPU architectures that support 4K page
-size. The mmap_offset ioctl will detect this and gracefully return an
-error, where userspace is expected to have a different fallback method for
-triggering a barrier.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.drm_xe_vm_create">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_xe_vm_create</span></span></span><a class="headerlink" href="#c.drm_xe_vm_create" title="Link to this definition">¶</a><br /></dt>
@@ -4454,9 +4485,9 @@ xe3 platform.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">DRM_XE_VM_CREATE_FLAG_LR_MODE</span></code> - An LR, or Long Running VM accepts
 exec submissions to its exec_queues that don’t have an upper time
 limit on the job execution time. But exec submissions to these
-don’t allow any of the flags DRM_XE_SYNC_FLAG_SYNCOBJ,
-DRM_XE_SYNC_FLAG_TIMELINE_SYNCOBJ, DRM_XE_SYNC_FLAG_DMA_BUF,
-used as out-syncobjs, that is, together with DRM_XE_SYNC_FLAG_SIGNAL.
+don’t allow any of the sync types DRM_XE_SYNC_TYPE_SYNCOBJ,
+DRM_XE_SYNC_TYPE_TIMELINE_SYNCOBJ, used as out-syncobjs, that is,
+together with sync flag DRM_XE_SYNC_FLAG_SIGNAL.
 LR VMs can be created in recoverable page-fault mode using
 DRM_XE_VM_CREATE_FLAG_FAULT_MODE, if the device supports it.
 If that flag is omitted, the UMD can not rely on the slightly
@@ -4941,7 +4972,7 @@ mapped when the user fence is signalled. Must be qword
 aligned.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">timeline_value</span></code></dt><dd><p>Input for the timeline sync object. Needs to be
-different than 0 when used with <code class="docutils literal notranslate"><span class="pre">DRM_XE_SYNC_FLAG_TIMELINE_SYNCOBJ</span></code>.</p>
+different than 0 when used with <code class="docutils literal notranslate"><span class="pre">DRM_XE_SYNC_TYPE_TIMELINE_SYNCOBJ</span></code>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">reserved</span></code></dt><dd><p>Reserved</p>
 </dd>
@@ -5088,7 +5119,7 @@ by using the example provided for <strong>drm_xe_sync</strong>.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">timeout</span></code></dt><dd><p>how long to wait before bailing, value in nanoseconds.
 Without DRM_XE_UFENCE_WAIT_FLAG_ABSTIME flag set (relative timeout)
 it contains timeout expressed in nanoseconds to wait (fence will
-expire at now() + timeout).
+expire at <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">now()</span></code> + timeout).
 When DRM_XE_UFENCE_WAIT_FLAG_ABSTIME flat is set (absolute timeout) wait
 will end at timeout (uses system MONOTONIC_CLOCK).
 Passing negative timeout leads to neverending wait.</p>
@@ -5238,6 +5269,8 @@ sub-types of OAG. For OAR/OAC, use OAG.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">DRM_XE_OA_UNIT_TYPE_OAM</span></code></dt><dd><p>OAM OA unit</p>
 </dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DRM_XE_OA_UNIT_TYPE_OAM_SAG</span></code></dt><dd><p>OAM_SAG OA unit</p>
+</dd>
 </dl>
 </div>
 <dl class="c struct">
@@ -5257,6 +5290,7 @@ sub-types of OAG. For OAR/OAC, use OAG.</p>
 #define DRM_XE_OA_CAPS_SYNCS            (1 &lt;&lt; 1);
 #define DRM_XE_OA_CAPS_OA_BUFFER_SIZE   (1 &lt;&lt; 2);
 #define DRM_XE_OA_CAPS_WAIT_NUM_REPORTS (1 &lt;&lt; 3);
+#define DRM_XE_OA_CAPS_OAM              (1 &lt;&lt; 4);
     __u64 oa_timestamp_freq;
     __u64 reserved[4];
     __u64 num_engines;
@@ -5765,7 +5799,7 @@ seconds, rather than hardcoding a particular firmware’s rate.</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This struct may be queried by drm_asahi_get_params.</p>
+<p>This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">may</span></code> be queried by drm_asahi_get_params.</p>
 <dl class="c enum">
 <dt class="sig sig-object c" id="c.drm_asahi_feature">
 <span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_asahi_feature</span></span></span><a class="headerlink" href="#c.drm_asahi_feature" title="Link to this definition">¶</a><br /></dt>
@@ -6342,7 +6376,7 @@ commands to set attachments must pass NONE here.</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This struct is core to the command buffer definition and therefore is not
+<p>This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> core to the command buffer definition and therefore is not
 extensible.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.drm_asahi_submit">
@@ -6432,7 +6466,7 @@ about the accessed memory regions. It is optional to specify, which is
 fortunate as it cannot be specified precisely with bindless access anyway.
 But where possible, it’s probably a good idea for userspace to include these
 hints, forwarded to the firmware.</p>
-<p>This struct is implicitly sized and therefore is not extensible.</p>
+<p>This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> implicitly sized and therefore is not extensible.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.drm_asahi_zls_buffer">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_asahi_zls_buffer</span></span></span><a class="headerlink" href="#c.drm_asahi_zls_buffer" title="Link to this definition">¶</a><br /></dt>
@@ -6470,7 +6504,7 @@ There are three hardware registers for each field respectively for loads,
 stores, and partial renders. In practice, it makes sense to set all to the
 same values, except in exceptional cases not yet implemented in userspace, so
 we do not duplicate here for simplicity/efficiency.</p>
-<p>This struct is embedded in other structs and therefore is not extensible.</p>
+<p>This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> embedded in other structs and therefore is not extensible.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.drm_asahi_timestamp">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_asahi_timestamp</span></span></span><a class="headerlink" href="#c.drm_asahi_timestamp" title="Link to this definition">¶</a><br /></dt>
@@ -6500,7 +6534,7 @@ drm_asahi_gem_bind_object::object_handle.</p>
 granularities, but it needs to be mapped specially via
 DRM_IOCTL_ASAHI_GEM_BIND_OBJECT. This structure therefore describes where to
 write as a handle-offset pair, rather than a GPU address like normal.</p>
-<p>This struct is embedded in other structs and therefore is not extensible.</p>
+<p>This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> embedded in other structs and therefore is not extensible.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.drm_asahi_timestamps">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_asahi_timestamps</span></span></span><a class="headerlink" href="#c.drm_asahi_timestamps" title="Link to this definition">¶</a><br /></dt>
@@ -6527,7 +6561,7 @@ write as a handle-offset pair, rather than a GPU address like normal.</p>
 <p>Each operation that can be timestamped, can be timestamped at the start and
 end. Therefore, drm_asahi_timestamp structs always come in pairs, bundled
 together into drm_asahi_timestamps.</p>
-<p>This struct is embedded in other structs and therefore is not extensible.</p>
+<p>This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> embedded in other structs and therefore is not extensible.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.drm_asahi_helper_program">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_asahi_helper_program</span></span></span><a class="headerlink" href="#c.drm_asahi_helper_program" title="Link to this definition">¶</a><br /></dt>
@@ -6565,7 +6599,7 @@ functionality. Its most important role is dynamically allocating
 scratch/stack memory for individual subgroups, by partitioning a static
 allocation shared for the whole device. It is supplied by userspace via
 drm_asahi_helper_program and internally dispatched by the hardware as needed.</p>
-<p>This struct is embedded in other structs and therefore is not extensible.</p>
+<p>This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> embedded in other structs and therefore is not extensible.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.drm_asahi_bg_eot">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_asahi_bg_eot</span></span></span><a class="headerlink" href="#c.drm_asahi_bg_eot" title="Link to this definition">¶</a><br /></dt>
@@ -6601,7 +6635,7 @@ memory, these programs are necessary to implement API-level render targets.
 The fragment-like background program is responsible for loading either the
 clear colour or the existing render target contents, while the compute-like
 end-of-tile program stores the tilebuffer contents to memory.</p>
-<p>This struct is embedded in other structs and therefore is not extensible.</p>
+<p>This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> embedded in other structs and therefore is not extensible.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.drm_asahi_cmd_render">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_asahi_cmd_render</span></span></span><a class="headerlink" href="#c.drm_asahi_cmd_render" title="Link to this definition">¶</a><br /></dt>

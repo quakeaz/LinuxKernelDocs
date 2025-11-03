@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -275,7 +275,7 @@ sysfs导出，以便用户空间在启动时进行完整的认证。这里的明
 <p>认证的第一步是使用 <a class="reference external" href="https://trustedcomputinggroup.org/resource/tcg-ek-credential-profile-for-tpm-family-2-0/">TCG EK Credential Profile</a> 模板进行主密钥的创建，该
 模板允许将生成的主密钥与证书中的主密钥进行比较（公钥必须匹配）。需要注意
 的是，生成EK主密钥需要EK层级密码，但EC主密钥的预生成版本应位于81010002，
-并且可以无需密钥授权对其执行TPM2_ReadPublic()操作。接下来，证书本身必须
+并且可以无需密钥授权对其执行<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">TPM2_ReadPublic()</span></code>操作。接下来，证书本身必须
 经过验证，以确保其可以追溯到制造商根证书（该根证书应公开在制造商网站上）。
 完成此步骤后将在TPM内部生成一个认证密钥（AK），并使用TPM2_MakeCredential、
 AK的名称和EK公钥加密一个秘密。然后TPM执行TPM2_ActivateCredential，只有在
@@ -285,7 +285,7 @@ TPM、EK和AK之间的绑定关系成立时，才能恢复秘密。现在，生�
 <p>这个过程是通常基于隐私CA认证过程的简化缩写。假设此时认证由TPM所有者进行，
 所有者只能访问所有者层次。所有者创建一个外部公/私钥对（假设是椭圆曲线），
 并使用内部包装过程将私钥进行封装以便导入，该私钥被其父级由EC派生的存储主密
-钥保护。TPM2_Import()操作使用一个以EK主密钥为盐值的参数解密HMAC会话（这也不
+钥保护。<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">TPM2_Import()</span></code>操作使用一个以EK主密钥为盐值的参数解密HMAC会话（这也不
 需要EK密钥授权），意味着内部封装密钥是加密参数，因此除非TPM拥有认证的EK，否
 则无法执行导入操作。如果该命令成功执行并且HMAC在返回时通过验证，我们就知道
 我们有一个只为认证TPM加载的私钥副本。现在该密钥已加载到TPM中，并且存储主密
@@ -293,7 +293,7 @@ TPM、EK和AK之间的绑定关系成立时，才能恢复秘密。现在，生�
 <p>现在根据 <a class="reference external" href="https://trustedcomputinggroup.org/resource/tcg-tpm-v2-0-provisioning-guidance/">TCG TPM v2.0 Provisioning Guidance</a> 中的存储配置生成空EC主密钥；
 该密钥的名称（即公钥区域的哈希值）被计算出来并与内核在/sys/class/tpm/tpm0/null_name
 中提供的空种子名称进行比较。如果名称不匹配，TPM就被认为是受损的。如果名称匹配，
-用户执行TPM2_Certify()，使用空主密钥作为对象句柄，使用加载的私钥作为签名句柄，
+用户执行<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">TPM2_Certify()</span></code>，使用空主密钥作为对象句柄，使用加载的私钥作为签名句柄，
 并提供随机的合格数据。返回的certifyInfo的签名将与加载的私钥的公钥部分进行验证，
 并检查合格数据以防止重放。如果所有测试都通过，用户就可以确信TPM的完整性和隐私
 性在整个内核启动过程中得到了保护。</p>

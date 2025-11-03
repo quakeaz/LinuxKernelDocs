@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -350,11 +350,11 @@ unpredictable behavior.</p>
 switch interrupt mode on its device. The PCI Express Port Bus driver
 is responsible for determining the interrupt mode and this should be
 transparent to service drivers. Service drivers need to know only
-the vector IRQ assigned to the field irq of struct pcie_device, which
+the vector IRQ assigned to the field irq of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pcie_device</span></code>, which
 is passed in when the PCI Express Port Bus driver probes each service
-driver. Service drivers should use (struct pcie_device*)dev-&gt;irq to
+driver. Service drivers should use (<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pcie_device</span></code>*)dev-&gt;irq to
 call request_irq/free_irq. In addition, the interrupt mode is stored
-in the field interrupt_mode of struct pcie_device.</p>
+in the field interrupt_mode of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pcie_device</span></code>.</p>
 </section>
 <section id="pci-memory-io-mapped-regions">
 <h3><span class="section-number">2.5.2. </span>PCI Memory/IO Mapped Regions<a class="headerlink" href="#pci-memory-io-mapped-regions" title="Link to this heading">¶</a></h3>
@@ -370,8 +370,8 @@ other service driver’s configuration settings.</p>
 <p>Each service driver runs its PCI config operations on its own
 capability structure except the PCI Express capability structure,
 that is shared between many drivers including the service drivers.
-RMW Capability accessors (pcie_capability_clear_and_set_word(),
-pcie_capability_set_word(), and pcie_capability_clear_word()) protect
+RMW Capability accessors (<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pcie_capability_clear_and_set_word()</span></code>,
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pcie_capability_set_word()</span></code>, and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pcie_capability_clear_word()</span></code>) protect
 a selected set of PCI Express Capability Registers:</p>
 <ul class="simple">
 <li><p>Link Control Register</p></li>
@@ -380,7 +380,7 @@ a selected set of PCI Express Capability Registers:</p>
 </ul>
 <p>Any change to those registers should be performed using RMW accessors to
 avoid problems due to concurrent updates. For the up-to-date list of
-protected registers, see pcie_capability_clear_and_set_word().</p>
+protected registers, see <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pcie_capability_clear_and_set_word()</span></code>.</p>
 </section>
 </section>
 </section>

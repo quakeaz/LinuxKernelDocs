@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -326,12 +326,12 @@ code should ideally define ARCH_GENERIC_PCI_MMAP_RESOURCE and use the generic
 implementation of that functionality. To support the historical interface of
 mmap() through files in /proc/bus/pci, platforms may also set HAVE_PCI_MMAP.</p>
 <p>Alternatively, platforms which set HAVE_PCI_MMAP may provide their own
-implementation of pci_mmap_resource_range() instead of defining
+implementation of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_mmap_resource_range()</span></code> instead of defining
 ARCH_GENERIC_PCI_MMAP_RESOURCE.</p>
 <p>Platforms which support write-combining maps of PCI resources must define
-arch_can_pci_mmap_wc() which shall evaluate to non-zero at runtime when
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">arch_can_pci_mmap_wc()</span></code> which shall evaluate to non-zero at runtime when
 write-combining is permitted. Platforms which support maps of I/O resources
-define arch_can_pci_mmap_io() similarly.</p>
+define <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">arch_can_pci_mmap_io()</span></code> similarly.</p>
 <p>Legacy resources are protected by the HAVE_PCI_LEGACY define.  Platforms
 wishing to support legacy functionality should define it and provide
 pci_legacy_read, pci_legacy_write and pci_mmap_legacy_page_range functions.</p>

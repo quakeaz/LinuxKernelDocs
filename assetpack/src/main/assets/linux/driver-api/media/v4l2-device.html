@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -216,7 +216,7 @@
 <h1><span class="section-number">2.5. </span>V4L2 device instance<a class="headerlink" href="#v4l2-device-instance" title="Link to this heading">¶</a></h1>
 <p>Each device instance is represented by a <a class="reference internal" href="#c.v4l2_device" title="v4l2_device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_device</span></code></a>.
 Very simple devices can just allocate this struct, but most of the time you
-would embed this struct inside a larger struct.</p>
+would embed this <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">inside</span></code> a larger struct.</p>
 <p>You must register the device instance by calling:</p>
 <blockquote>
 <div><p><a class="reference internal" href="#c.v4l2_device_register" title="v4l2_device_register"><code class="xref c c-func docutils literal notranslate"><span class="pre">v4l2_device_register</span></code></a>
@@ -317,7 +317,7 @@ safe to unregister <a class="reference internal" href="#c.v4l2_device" title="v4
 purpose <a class="reference internal" href="#c.v4l2_device" title="v4l2_device"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_device</span></code></a> has refcounting support. The refcount is
 increased whenever <a class="reference internal" href="v4l2-dev.html#c.video_register_device" title="video_register_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">video_register_device()</span></code></a> is called and it is
 decreased whenever that device node is released. When the refcount reaches
-zero, then the <a class="reference internal" href="#c.v4l2_device" title="v4l2_device"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_device</span></code></a> release() callback is called. You can
+zero, then the <a class="reference internal" href="#c.v4l2_device" title="v4l2_device"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_device</span></code></a> <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">release()</span></code> callback is called. You can
 do your final cleanup there.</p>
 <p>If other device nodes (e.g. ALSA) are created, then you can increase and
 decrease the refcount manually as well by calling:</p>
@@ -339,7 +339,7 @@ will never reach 0.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.v4l2_device">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">v4l2_device</span></span></span><a class="headerlink" href="#c.v4l2_device" title="Link to this definition">¶</a><br /></dt>
-<dd><p>main struct to for V4L2 device drivers</p>
+<dd><p>main <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">to</span></code> for V4L2 device drivers</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -367,7 +367,7 @@ will never reach 0.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">subdevs</span></code></dt><dd><p>used to keep track of the registered subdevs</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">lock</span></code></dt><dd><p>lock this struct; can be used by the driver as well
-if this struct is embedded into a larger struct.</p>
+if this <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> embedded into a larger struct.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">name</span></code></dt><dd><p>unique device name, by default the driver name + bus ID</p>
 </dd>
@@ -472,15 +472,15 @@ the device driver.</p>
 using the driver name and a driver-global atomic_t instance.</p>
 <p>This function will increment the instance counter and returns the
 instance value used in the name.</p>
-<p>The first time this is called the name field will be set to foo0 and
-this function returns 0. If the name ends with a digit (e.g. cx18),
-then the name will be set to cx18-0 since cx180 would look really odd.</p>
 <p><strong>Example</strong></p>
 <blockquote>
 <div><p>static atomic_t drv_instance = ATOMIC_INIT(0);</p>
 <p>...</p>
 <p>instance = v4l2_device_set_name(&amp;v4l2_dev, “foo”, &amp;drv_instance);</p>
 </div></blockquote>
+<p>The first time this is called the name field will be set to foo0 and
+this function returns 0. If the name ends with a digit (e.g. cx18),
+then the name will be set to cx18-0 since cx180 would look really odd.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.v4l2_device_disconnect">

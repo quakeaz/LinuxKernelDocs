@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -286,7 +286,7 @@ each command.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">char</span> <span class="pre">*sense</span></code></dt><dd><p>pointer to SCSI sense buffer</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">u64</span> <span class="pre">unpacked_lun</span></code></dt><dd><p>unpacked LUN to reference for struct se_lun</p>
+<dt><code class="docutils literal notranslate"><span class="pre">u64</span> <span class="pre">unpacked_lun</span></code></dt><dd><p>unpacked LUN to reference for <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">se_lun</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">u32</span> <span class="pre">data_length</span></code></dt><dd><p>fabric expected data transfer length</p>
 </dd>
@@ -303,12 +303,10 @@ each command.</p>
 return code and handle failures. This will never fail for other drivers,
 and the return code can be ignored.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>less than zero to signal active I/O shutdown failure.</p></li>
 <li><p>zero on success.</p></li>
 </ul>
-</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.target_submit_prep">
@@ -323,15 +321,15 @@ and the return code can be ignored.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">char</span> <span class="pre">*cdb</span></code></dt><dd><p>pointer to SCSI CDB</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scatterlist</span> <span class="pre">*sgl</span></code></dt><dd><p>struct scatterlist memory for unidirectional mapping</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scatterlist</span> <span class="pre">*sgl</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scatterlist</span></code> memory for unidirectional mapping</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">u32</span> <span class="pre">sgl_count</span></code></dt><dd><p>scatterlist count for unidirectional mapping</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scatterlist</span> <span class="pre">*sgl_bidi</span></code></dt><dd><p>struct scatterlist memory for bidirectional READ mapping</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scatterlist</span> <span class="pre">*sgl_bidi</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scatterlist</span></code> memory for bidirectional READ mapping</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">u32</span> <span class="pre">sgl_bidi_count</span></code></dt><dd><p>scatterlist count for bidirectional READ mapping</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scatterlist</span> <span class="pre">*sgl_prot</span></code></dt><dd><p>struct scatterlist memory protection information</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scatterlist</span> <span class="pre">*sgl_prot</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scatterlist</span></code> memory protection information</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">u32</span> <span class="pre">sgl_prot_count</span></code></dt><dd><p>scatterlist count for protection information</p>
 </dd>
@@ -339,12 +337,10 @@ and the return code can be ignored.</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>less than zero to signal failure.</p></li>
 <li><p>zero on success.</p></li>
 </ul>
-</div></blockquote>
 <p><strong>Description</strong></p>
 <p>If failure is returned, lio will the callers queue_status to complete
 the cmd.</p>
@@ -366,7 +362,7 @@ the cmd.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">char</span> <span class="pre">*sense</span></code></dt><dd><p>pointer to SCSI sense buffer</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">u64</span> <span class="pre">unpacked_lun</span></code></dt><dd><p>unpacked LUN to reference for struct se_lun</p>
+<dt><code class="docutils literal notranslate"><span class="pre">u64</span> <span class="pre">unpacked_lun</span></code></dt><dd><p>unpacked LUN to reference for <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">se_lun</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">u32</span> <span class="pre">data_length</span></code></dt><dd><p>fabric expected data transfer length</p>
 </dd>
@@ -418,7 +414,7 @@ and this must be called from process context.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">char</span> <span class="pre">*sense</span></code></dt><dd><p>pointer to SCSI sense buffer</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">u64</span> <span class="pre">unpacked_lun</span></code></dt><dd><p>unpacked LUN to reference for struct se_lun</p>
+<dt><code class="docutils literal notranslate"><span class="pre">u64</span> <span class="pre">unpacked_lun</span></code></dt><dd><p>unpacked LUN to reference for <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">se_lun</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">*fabric_tmr_ptr</span></code></dt><dd><p>fabric context for TMR req</p>
 </dd>
@@ -573,13 +569,13 @@ this may have a ‘UAM’ comment.</p>
 <section id="ring-design">
 <h3>Ring Design<a class="headerlink" href="#ring-design" title="Link to this heading">¶</a></h3>
 <p>The mmaped area is divided into three parts:
-1) The mailbox (struct tcmu_mailbox, below);
+1) The mailbox (<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">tcmu_mailbox</span></code>, below);
 2) The command ring;
 3) Everything beyond the command ring (data).</p>
 <p>The mailbox tells userspace the offset of the command ring from the
 start of the shared memory region, and how big the command ring is.</p>
-<p>The kernel passes SCSI commands to userspace by putting a struct
-tcmu_cmd_entry in the ring, updating mailbox-&gt;cmd_head, and poking
+<p>The kernel passes SCSI commands to userspace by putting a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">tcmu_cmd_entry</span></code> in the ring, updating mailbox-&gt;cmd_head, and poking
 userspace via UIO’s interrupt mechanism.</p>
 <p>tcmu_cmd_entry contains a header. If the header type is PAD,
 userspace should skip hdr-&gt;length bytes (mod cmdr_size) to find the
@@ -867,7 +863,7 @@ to add a host to the system.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>This should be called by partial offload and software iscsi drivers.
-To access the driver specific memory use the iscsi_host_priv() macro.</p>
+To access the driver specific memory use the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">iscsi_host_priv()</span></code> macro.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.iscsi_host_remove">

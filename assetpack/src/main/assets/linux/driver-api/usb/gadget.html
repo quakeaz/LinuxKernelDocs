@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -374,7 +374,7 @@ usable (since it does not yet support enumeration). Any host should
 not see the device, since it’s not activated the data line pullup
 used by the host to detect a device, even if VBUS power is available.</p></li>
 <li><p>Register a gadget driver that implements some higher level device
-function. That will then bind() to a <a class="reference internal" href="#c.usb_gadget" title="usb_gadget"><code class="xref c c-type docutils literal notranslate"><span class="pre">usb_gadget</span></code></a>, which activates
+function. That will then <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code> to a <a class="reference internal" href="#c.usb_gadget" title="usb_gadget"><code class="xref c c-type docutils literal notranslate"><span class="pre">usb_gadget</span></code></a>, which activates
 the data line pullup sometime after detecting VBUS.</p></li>
 <li><p>The hardware driver can now start enumerating. The steps it handles
 are to accept USB <code class="docutils literal notranslate"><span class="pre">power</span></code> and <code class="docutils literal notranslate"><span class="pre">set_address</span></code> requests. Other steps are
@@ -396,11 +396,11 @@ configuration may also involve reporting HNP capabilities through a
 user interface.</p></li>
 <li><p>Do real work and perform data transfers, possibly involving changes
 to interface settings or switching to new configurations, until the
-device is disconnect()ed from the host. Queue any number of transfer
+device is <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">disconnect()</span></code>ed from the host. Queue any number of transfer
 requests to each endpoint. It may be suspended and resumed several
 times before being disconnected. On disconnect, the drivers go back
 to step 3 (above).</p></li>
-<li><p>When the gadget driver module is being unloaded, the driver unbind()
+<li><p>When the gadget driver module is being unloaded, the driver <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unbind()</span></code>
 callback is issued. That lets the controller driver be unloaded.</p></li>
 </ol>
 <p>Drivers will normally be arranged so that just loading the gadget driver
@@ -652,7 +652,7 @@ by this EP (0 - 16, actual number is 2^n)</p>
 <p><strong>Description</strong></p>
 <p>the bus controller driver lists all the general purpose endpoints in
 gadget-&gt;ep_list.  the control endpoint (gadget-&gt;ep0) is not in that list,
-and is accessed only in response to a driver setup() callback.</p>
+and is accessed only in response to a driver <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setup()</span></code> callback.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.usb_gadget">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_gadget</span></span></span><a class="headerlink" href="#c.usb_gadget" title="Link to this definition">¶</a><br /></dt>
@@ -705,14 +705,14 @@ and is accessed only in response to a driver setup() callback.</p>
 </div>
 <p><strong>Members</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">work</span></code></dt><dd><p>(internal use) Workqueue to be used for sysfs_notify()</p>
+<dt><code class="docutils literal notranslate"><span class="pre">work</span></code></dt><dd><p>(internal use) Workqueue to be used for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sysfs_notify()</span></code></p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">udc</span></code></dt><dd><p>struct usb_udc pointer for this gadget</p>
+<dt><code class="docutils literal notranslate"><span class="pre">udc</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_udc</span></code> pointer for this gadget</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">ops</span></code></dt><dd><p>Function pointers used to access hardware-specific operations.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">ep0</span></code></dt><dd><p>Endpoint zero, used when reading or writing responses to
-driver setup() requests</p>
+driver <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setup()</span></code> requests</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">ep_list</span></code></dt><dd><p>List of other endpoints supported by the device.</p>
 </dd>
@@ -813,8 +813,8 @@ read-only to the gadget driver.  That driver data is part of the
 earlier systems is grouped in a similar structure that’s not known
 to the rest of the kernel.</p>
 <p>Values of the three OTG device feature flags are updated before the
-setup() call corresponding to USB_REQ_SET_CONFIGURATION, and before
-driver suspend() calls.  They are valid only when is_otg, and when the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setup()</span></code> call corresponding to USB_REQ_SET_CONFIGURATION, and before
+driver <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">suspend()</span></code> calls.  They are valid only when is_otg, and when the
 device is acting as a B-Peripheral (so is_a_peripheral is false).</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.usb_ep_align">
@@ -1029,36 +1029,40 @@ the driver registration</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>Devices are disabled till a gadget driver successfully bind()s, which
-means the driver will handle setup() requests needed to enumerate (and
+<p>Devices are disabled till a gadget driver successfully <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code>s, which
+means the driver will handle <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setup()</span></code> requests needed to enumerate (and
 meet “chapter 9” requirements) then do some useful work.</p>
 <p>If gadget-&gt;is_otg is true, the gadget driver must provide an OTG
-descriptor during enumeration, or else fail the bind() call.  In such
-cases, no USB traffic may flow until both bind() returns without
-having called usb_gadget_disconnect(), and the USB host stack has
+descriptor during enumeration, or else fail the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code> call.  In such
+cases, no USB traffic may flow until both <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code> returns without
+having called <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_gadget_disconnect()</span></code>, and the USB host stack has
 initialized.</p>
 <p>Drivers use hardware-specific knowledge to configure the usb hardware.
 endpoint addressing is only one of several hardware characteristics that
-are in descriptors the ep0 implementation returns from setup() calls.</p>
+are in descriptors the ep0 implementation returns from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setup()</span></code> calls.</p>
 <p>Except for ep0 implementation, most driver code shouldn’t need change to
 run on top of different usb controllers.  It’ll use endpoints set up by
 that ep0 implementation.</p>
 <p>The usb controller driver handles a few standard usb requests.  Those
 include set_address, and feature flags for devices, interfaces, and
 endpoints (the get_status, set_feature, and clear_feature requests).</p>
-<p>Accordingly, the driver’s setup() callback must always implement all
+<p>Accordingly, the driver’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setup()</span></code> callback must always implement all
 get_descriptor requests, returning at least a device descriptor and
 a configuration descriptor.  Drivers must make sure the endpoint
 descriptors match any hardware constraints. Some hardware also constrains
 other descriptors. (The pxa250 allows only configurations 1, 2, or 3).</p>
-<p>The driver’s setup() callback must also implement set_configuration,
+<p>The driver’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setup()</span></code> callback must also implement set_configuration,
 and should also implement set_interface, get_configuration, and
 get_interface.  Setting a configuration (or interface) is where
 endpoints should be activated or (config 0) shut down.</p>
-<p>The gadget driver’s setup() callback does not have to queue a response to
-ep0 within the setup() call, the driver can do it after setup() returns.
+<p>The gadget driver’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setup()</span></code> callback does not have to queue a response to
+ep0 within the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setup()</span></code> call, the driver can do it after <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setup()</span></code> returns.
 The UDC driver must wait until such a response is queued before proceeding
 with the data/status stages of the control transfer.</p>
+<p><strong>NOTE</strong></p>
+<p>Currently, a number of UDC drivers rely on USB_GADGET_DELAYED_STATUS
+being returned from the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setup()</span></code> callback, which is a bug. See the comment
+next to USB_GADGET_DELAYED_STATUS for details.</p>
 <p>(Note that only the default control endpoint is supported.  Neither
 hosts nor devices generally support control traffic except to ep0.)</p>
 <p>Most devices will ignore USB suspend/resume operations, and so will
@@ -1068,10 +1072,6 @@ local controls (buttons, dials, etc) may need to be re-enabled since
 the (remote) host can’t do that any longer; or an error state might
 be cleared, to make the device behave identically whether or not
 power is maintained.</p>
-<p><strong>NOTE</strong></p>
-<p>Currently, a number of UDC drivers rely on USB_GADGET_DELAYED_STATUS
-being returned from the setup() callback, which is a bug. See the comment
-next to USB_GADGET_DELAYED_STATUS for details.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.usb_gadget_register_driver_owner">
 <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_gadget_register_driver_owner</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.usb_gadget_driver" title="usb_gadget_driver"><span class="n"><span class="pre">usb_gadget_driver</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">driver</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">module</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">owner</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">mod_name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.usb_gadget_register_driver_owner" title="Link to this definition">¶</a><br /></dt>
@@ -1093,8 +1093,8 @@ next to USB_GADGET_DELAYED_STATUS for details.</p>
 <p><strong>Description</strong></p>
 <p>Call this in your gadget driver’s module initialization function,
 to tell the underlying UDC controller driver about your driver.
-The <strong>bind()</strong> function will be called to bind it to a gadget before this
-registration call returns.  It’s expected that the <strong>bind()</strong> function will
+The <strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code></strong> function will be called to bind it to a gadget before this
+registration call returns.  It’s expected that the <strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code></strong> function will
 be in init sections.</p>
 <p>Use the macro defined below instead of calling this directly.</p>
 </div>
@@ -1116,9 +1116,9 @@ be in init sections.</p>
 <p>Call this in your gadget driver’s module cleanup function,
 to tell the underlying usb controller that your driver is
 going away.  If the controller is connected to a USB host,
-it will first disconnect().  The driver is also requested
-to unbind() and clean up any device state, before this procedure
-finally returns.  It’s expected that the unbind() functions
+it will first <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">disconnect()</span></code>.  The driver is also requested
+to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unbind()</span></code> and clean up any device state, before this procedure
+finally returns.  It’s expected that the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unbind()</span></code> functions
 will be in exit sections, so may not be linked in some kernels.</p>
 </div>
 <dl class="c struct">
@@ -1254,37 +1254,6 @@ negative error code if they can’t all be copied.  Useful when
 assembling descriptors for an associated set of interfaces used
 as part of configuring a composite device; or in other cases where
 sets of descriptors need to be marshaled.</p>
-</div>
-<dl class="c function">
-<dt class="sig sig-object c" id="c.usb_gadget_config_buf">
-<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_gadget_config_buf</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">usb_config_descriptor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">config</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="n"><span class="pre">length</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">usb_descriptor_header</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">desc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.usb_gadget_config_buf" title="Link to this definition">¶</a><br /></dt>
-<dd><p>builts a complete configuration descriptor</p>
-</dd></dl>
-
-<div class="kernelindent docutils container">
-<p><strong>Parameters</strong></p>
-<dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">usb_config_descriptor</span> <span class="pre">*config</span></code></dt><dd><p>Header for the descriptor, including characteristics such
-as power requirements and number of interfaces.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">*buf</span></code></dt><dd><p>Buffer for the resulting configuration descriptor.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">length</span></code></dt><dd><p>Length of buffer.  If this is not big enough to hold the
-entire configuration descriptor, an error code will be returned.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">usb_descriptor_header</span> <span class="pre">**desc</span></code></dt><dd><p>Null-terminated vector of pointers to the descriptors (interface,
-endpoint, etc) defining all functions in this device configuration.</p>
-</dd>
-</dl>
-<p><strong>Description</strong></p>
-<p>This copies descriptors into the response buffer, building a descriptor
-for that configuration.  It returns the buffer length or a negative
-status code.  The config.wTotalLength field is set to match the length
-of the result, but other descriptor fields (including power usage and
-interface count) must be set by the caller.</p>
-<p>Gadget drivers could use this when constructing a config descriptor
-in response to USB_REQ_GET_DESCRIPTOR.  They will need to patch the
-resulting bDescriptorType value if USB_DT_OTHER_SPEED_CONFIG is needed.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.usb_copy_descriptors">
@@ -1448,7 +1417,7 @@ number of “Extended Properties”.</p>
     int (*get_alt)(struct usb_function *, unsigned interface);
     void (*disable)(struct usb_function *);
     int (*setup)(struct usb_function *, const struct usb_ctrlrequest *);
-    bool (*req_match)(struct usb_function *,const struct usb_ctrlrequest *, bool config0);
+    bool (*req_match)(struct usb_function *, const struct usb_ctrlrequest *, bool config0);
     void (*suspend)(struct usb_function *);
     void (*resume)(struct usb_function *);
     int (*get_status)(struct usb_function *);
@@ -1462,24 +1431,24 @@ number of “Extended Properties”.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">name</span></code></dt><dd><p>For diagnostics, identifies the function.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">strings</span></code></dt><dd><p>tables of strings, keyed by identifiers assigned during bind()
+<dt><code class="docutils literal notranslate"><span class="pre">strings</span></code></dt><dd><p>tables of strings, keyed by identifiers assigned during <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code>
 and by language IDs provided in control requests</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">fs_descriptors</span></code></dt><dd><p>Table of full (or low) speed descriptors, using interface and
-string identifiers assigned during <strong>bind()</strong>.  If this pointer is null,
+string identifiers assigned during <strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code></strong>.  If this pointer is null,
 the function will not be available at full speed (or at low speed).</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">hs_descriptors</span></code></dt><dd><p>Table of high speed descriptors, using interface and
-string identifiers assigned during <strong>bind()</strong>.  If this pointer is null,
+string identifiers assigned during <strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code></strong>.  If this pointer is null,
 the function will not be available at high speed.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">ss_descriptors</span></code></dt><dd><p>Table of super speed descriptors, using interface and
-string identifiers assigned during <strong>bind()</strong>. If this
+string identifiers assigned during <strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code></strong>. If this
 pointer is null after initiation, the function will not
 be available at super speed.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">ssp_descriptors</span></code></dt><dd><p>Table of super speed plus descriptors, using
-interface and string identifiers assigned during <strong>bind()</strong>. If
+interface and string identifiers assigned during <strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code></strong>. If
 this pointer is null after initiation, the function will not
 be available at super speed plus.</p>
 </dd>
@@ -1492,7 +1461,7 @@ an IAD, only the first interface of IAD has its entry in the table.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">os_desc_n</span></code></dt><dd><p>Number of entries in os_desc_table</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">bind</span></code></dt><dd><p>Before the gadget can register, all of its functions bind() to the
+<dt><code class="docutils literal notranslate"><span class="pre">bind</span></code></dt><dd><p>Before the gadget can register, all of its functions <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code> to the
 available resources including string and interface identifiers used
 in interface or class descriptors; endpoints; I/O buffers; and so on.</p>
 </dd>
@@ -1523,7 +1492,7 @@ include host resetting or reconfiguring the gadget, and disconnection.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">resume</span></code></dt><dd><p>Notifies functions when the host restarts USB traffic.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">get_status</span></code></dt><dd><p>Returns function status as a reply to
-GetStatus() request when the recipient is Interface.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">GetStatus()</span></code> request when the recipient is Interface.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">func_suspend</span></code></dt><dd><p>callback to be called when
 SetFeature(FUNCTION_SUSPEND) is reseived</p>
@@ -1539,9 +1508,9 @@ wakeup signaling.</p>
 <p>A single USB function uses one or more interfaces, and should in most
 cases support operation at both full and high speeds.  Each function is
 associated by <strong><a class="reference internal" href="#c.usb_add_function" title="usb_add_function"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_add_function()</span></code></a></strong> with a one configuration; that function
-causes <strong>bind()</strong> to be called so resources can be allocated as part of
+causes <strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code></strong> to be called so resources can be allocated as part of
 setting up a gadget driver.  Those resources include endpoints, which
-should be allocated using <strong>usb_ep_autoconfig()</strong>.</p>
+should be allocated using <strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_ep_autoconfig()</span></code></strong>.</p>
 <p>To support dual speed operation, a function driver provides descriptors
 for both high and full speed operation.  Except in rare cases that don’t
 involve bulk endpoints, each speed needs different endpoint descriptors.</p>
@@ -1581,7 +1550,7 @@ several independent logical data links to a USB host.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">label</span></code></dt><dd><p>For diagnostics, describes the configuration.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">strings</span></code></dt><dd><p>Tables of strings, keyed by identifiers assigned during <strong>bind()</strong>
+<dt><code class="docutils literal notranslate"><span class="pre">strings</span></code></dt><dd><p>Tables of strings, keyed by identifiers assigned during <strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code></strong>
 and by language IDs provided in control requests.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">descriptors</span></code></dt><dd><p>Table of descriptors preceding all function descriptors.
@@ -1602,7 +1571,7 @@ device infrastructure or directed at a specific interface.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">MaxPower</span></code></dt><dd><p>Power consumption in mA. Used to compute bMaxPower in the
 configuration descriptor after considering the bus speed.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">cdev</span></code></dt><dd><p>assigned by <strong><a class="reference internal" href="#c.usb_add_config" title="usb_add_config"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_add_config()</span></code></a></strong> before calling <strong>bind()</strong>; this is
+<dt><code class="docutils literal notranslate"><span class="pre">cdev</span></code></dt><dd><p>assigned by <strong><a class="reference internal" href="#c.usb_add_config" title="usb_add_config"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_add_config()</span></code></a></strong> before calling <strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code></strong>; this is
 the device associated with this configuration.</p>
 </dd>
 </dl>
@@ -1619,14 +1588,14 @@ include more than one function.</p>
 <p>The lifecycle of a usb_configuration includes allocation, initialization
 of the fields described above, and calling <strong><a class="reference internal" href="#c.usb_add_config" title="usb_add_config"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_add_config()</span></code></a></strong> to set up
 internal data and bind it to a specific device.  The configuration’s
-<strong>bind()</strong> method is then used to initialize all the functions and then
+<strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code></strong> method is then used to initialize all the functions and then
 call <strong><a class="reference internal" href="#c.usb_add_function" title="usb_add_function"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_add_function()</span></code></a></strong> for them.</p>
 <p>Those functions would normally be independent of each other, but that’s
 not mandatory.  CDC WMC devices are an example where functions often
 depend on other functions, with some functions subsidiary to others.
 Such interdependency may be managed in any way, so long as all of the
 descriptors complete by the time the composite driver returns from
-its bind() routine.</p>
+its <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code> routine.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.usb_composite_driver">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usb_composite_driver</span></span></span><a class="headerlink" href="#c.usb_composite_driver" title="Link to this definition">¶</a><br /></dt>
@@ -1778,7 +1747,7 @@ and <a class="reference internal" href="../basics.html#c.module_exit" title="mod
 </div>
 <p><strong>Description</strong></p>
 <p>One of these devices is allocated and initialized before the
-associated device driver’s bind() is called.</p>
+associated device driver’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code> is called.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.config_ep_by_speed_and_alt">
 <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">config_ep_by_speed_and_alt</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.usb_gadget" title="usb_gadget"><span class="n"><span class="pre">usb_gadget</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">g</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.usb_function" title="usb_function"><span class="n"><span class="pre">usb_function</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">f</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.usb_ep" title="usb_ep"><span class="n"><span class="pre">usb_ep</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">_ep</span></span>, <span class="n"><span class="pre">u8</span></span><span class="w"> </span><span class="n"><span class="pre">alt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.config_ep_by_speed_and_alt" title="Link to this definition">¶</a><br /></dt>
@@ -1857,10 +1826,10 @@ for supported speeds</p>
 <p>single threaded during gadget setup</p>
 <p><strong>Description</strong></p>
 <p>After initialization, each configuration must have one or more
-functions added to it.  Adding a function involves calling its <strong>bind()</strong>
+functions added to it.  Adding a function involves calling its <strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code></strong>
 method to allocate resources such as interface and string identifiers
 and endpoints.</p>
-<p>This function returns the value of the function’s bind(), which is
+<p>This function returns the value of the function’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code>, which is
 zero for success else a negative errno value.</p>
 </div>
 <dl class="c function">
@@ -1878,7 +1847,7 @@ zero for success else a negative errno value.</p>
 <p><strong>Description</strong></p>
 <p>Blocks response of the gadget driver to host enumeration by
 preventing the data line pullup from being activated.  This is
-normally called during <strong>bind()</strong> processing to change from the
+normally called during <strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code></strong> processing to change from the
 initial “ready to respond” state, or when a required resource
 becomes available.</p>
 <p>For example, drivers that serve as a passthrough to a userspace
@@ -1923,11 +1892,11 @@ host enumeration procedures.</p>
 <p><strong>Context</strong></p>
 <p>single threaded during gadget setup</p>
 <p><strong>Description</strong></p>
-<p><a class="reference internal" href="#c.usb_interface_id" title="usb_interface_id"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_interface_id()</span></code></a> is called from usb_function.bind() callbacks to
+<p><a class="reference internal" href="#c.usb_interface_id" title="usb_interface_id"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_interface_id()</span></code></a> is called from usb_function.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code> callbacks to
 allocate new interface IDs.  The function driver will then store that
 ID in interface, association, CDC union, and other descriptors.  It
 will also handle any control requests targeted at that interface,
-particularly changing its altsetting via set_alt().  There may
+particularly changing its altsetting via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_alt()</span></code>.  There may
 also be class-specific or vendor-specific requests to handle.</p>
 <p>All interface identifier should be allocated using this routine, to
 ensure that for example different functions don’t wrongly assign
@@ -1979,9 +1948,9 @@ For devices operating at lower speeds  returns negative errno.</p>
 <p><strong>Context</strong></p>
 <p>single threaded during gadget setup</p>
 <p><strong>Description</strong></p>
-<p>One of the main tasks of a composite <strong>bind()</strong> routine is to
+<p>One of the main tasks of a composite <strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code></strong> routine is to
 add each of the configurations it supports, using this routine.</p>
-<p>This function returns the value of the configuration’s <strong>bind()</strong>, which
+<p>This function returns the value of the configuration’s <strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code></strong>, which
 is zero for success else a negative errno value.  Binding configurations
 assigns global resources including string IDs, and per-configuration
 resources such as interface IDs and endpoints.</p>
@@ -2001,7 +1970,7 @@ resources such as interface IDs and endpoints.</p>
 <p><strong>Context</strong></p>
 <p>single threaded during gadget setup</p>
 <p><strong>Description</strong></p>
-<p><strong><a class="reference internal" href="#c.usb_string_id" title="usb_string_id"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_string_id()</span></code></a></strong> is called from bind() callbacks to allocate
+<p><strong><a class="reference internal" href="#c.usb_string_id" title="usb_string_id"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_string_id()</span></code></a></strong> is called from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code> callbacks to allocate
 string IDs.  Drivers for functions, configurations, or gadgets will
 then store that ID in the appropriate descriptors and string table.</p>
 <p>All string identifier should be allocated using this,
@@ -2026,7 +1995,7 @@ meanings to the same identifier.</p>
 <p><strong>Context</strong></p>
 <p>single threaded during gadget setup</p>
 <p><strong>Description</strong></p>
-<p><strong>usb_string_ids()</strong> is called from bind() callbacks to allocate
+<p><strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_string_ids()</span></code></strong> is called from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code> callbacks to allocate
 string IDs.  Drivers for functions, configurations, or gadgets will
 then copy IDs from the string table to the appropriate descriptors
 and string table for other languages.</p>
@@ -2083,7 +2052,7 @@ entry of en-US. Therefore both entries become the same id assign.</p>
 <p>Returns the first requested ID.  This ID and next <strong>n</strong>-1 IDs are now
 valid IDs.  At least provided that <strong>n</strong> is non-zero because if it
 is, returns last requested ID which is now very useful information.</p>
-<p><strong><a class="reference internal" href="#c.usb_string_ids_n" title="usb_string_ids_n"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_string_ids_n()</span></code></a></strong> is called from bind() callbacks to allocate
+<p><strong><a class="reference internal" href="#c.usb_string_ids_n" title="usb_string_ids_n"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_string_ids_n()</span></code></a></strong> is called from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code> callbacks to allocate
 string IDs.  Drivers for functions, configurations, or gadgets will
 then store that ID in the appropriate descriptors and string table.</p>
 <p>All string identifier should be allocated using this,
@@ -2111,7 +2080,7 @@ framework.  The return value is zero, or a negative errno value.
 Those values normally come from the driver’s <strong>bind</strong> method, which does
 all the work of setting up the driver to match the hardware.</p>
 <p>On successful return, the gadget is ready to respond to requests from
-the host, unless one of its components invokes usb_gadget_disconnect()
+the host, unless one of its components invokes <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_gadget_disconnect()</span></code>
 while it was binding.  That would usually be done in order to wait for
 some userspace participation.</p>
 </div>
@@ -2146,7 +2115,7 @@ driver framework.</p>
 <p><strong>Description</strong></p>
 <p>This function must be called by the USB function driver to continue
 with the control transfer’s data/status stage in case it had requested to
-delay the data/status stages. A USB function’s setup handler (e.g. set_alt())
+delay the data/status stages. A USB function’s setup handler (e.g. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_alt()</span></code>)
 can request the composite framework to delay the setup request’s data/status
 stages by returning USB_GADGET_DELAYED_STATUS.</p>
 </div>

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -838,7 +838,7 @@ but pull is a unicast.</p>
 </pre></div>
 </div>
 <p><strong>Members</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">dev</span></code></dt><dd><p>Device interface to this driver</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">id</span></code></dt><dd><p>Board-specific number identifier for this controller/bus</p>
@@ -883,7 +883,16 @@ to enable a stream.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">disable_stream</span></code></dt><dd><p>This function pointer implements controller-specific procedure
 to disable stream.</p>
-<p>‘Manager device’ is responsible for  device management, bandwidth
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">wakeup</span></code></dt><dd><p>This function pointer implements controller-specific procedure
+to wake it up from clock-pause. Framework will call this to bring
+the controller out of clock pause.</p>
+</dd>
+</dl>
+</div>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>‘Manager device’ is responsible for  device management, bandwidth
 allocation, channel setup, and port associations per channel.
 Device management means Logical address assignment/removal based on
 enumeration (report-present, report-absent) of a device.
@@ -901,13 +910,7 @@ previous framer being powered-on.</p>
 device’. Interface device is responsible for monitoring the bus and
 reporting information such as loss-of-synchronization, data
 slot-collision.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">wakeup</span></code></dt><dd><p>This function pointer implements controller-specific procedure
-to wake it up from clock-pause. Framework will call this to bring
-the controller out of clock pause.</p>
-</dd>
-</dl>
-</div>
+</div></blockquote>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.slim_unregister_controller">
 <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">slim_unregister_controller</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.slim_controller" title="slim_controller"><span class="n"><span class="pre">slim_controller</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ctrl</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.slim_unregister_controller" title="Link to this definition">¶</a><br /></dt>
@@ -1130,10 +1133,8 @@ with buffers</p>
 Interface/Value elements. (e.g. transmitting a message to assign logical
 address to a slave device</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>-ETIMEDOUT: If transmission of this message timed out</dt><dd><p>(e.g. due to bus lines not being clocked or driven by controller)</p>
-</dd>
-</dl>
+<p>-ETIMEDOUT: If transmission of this message timed out
+(e.g. due to bus lines not being clocked or driven by controller)</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.slim_xfer_msg">
@@ -1263,7 +1264,7 @@ a new SLIMbus stream and return a valid stream runtime pointer for client
 to use it in subsequent stream apis. state of stream is set to ALLOCATED</p>
 <p><strong>Return</strong></p>
 <p>valid pointer on success and error code on failure.
-From ASoC DPCM framework, this state is linked to startup() operation.</p>
+From ASoC DPCM framework, this state is linked to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">startup()</span></code> operation.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.slim_stream_prepare">
@@ -1282,7 +1283,7 @@ From ASoC DPCM framework, this state is linked to startup() operation.</p>
 <p><strong>Description</strong></p>
 <p>This API will configure SLIMbus stream with config parameters from cfg.
 return zero on success and error code on failure. From ASoC DPCM framework,
-this state is linked to hw_params() operation.</p>
+this state is linked to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hw_params()</span></code> operation.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.slim_stream_enable">
@@ -1301,7 +1302,7 @@ this state is linked to hw_params() operation.</p>
 SLIMbus stream</p>
 <p><strong>Return</strong></p>
 <p>zero on success and error code on failure. From ASoC DPCM framework,
-this state is linked to trigger() start operation.</p>
+this state is linked to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">trigger()</span></code> start operation.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.slim_stream_disable">
@@ -1320,7 +1321,7 @@ this state is linked to trigger() start operation.</p>
 SLIMbus stream</p>
 <p><strong>Return</strong></p>
 <p>zero on success and error code on failure. From ASoC DPCM framework,
-this state is linked to trigger() pause operation.</p>
+this state is linked to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">trigger()</span></code> pause operation.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.slim_stream_unprepare">
@@ -1339,7 +1340,7 @@ this state is linked to trigger() pause operation.</p>
 SLIMbus stream</p>
 <p><strong>Return</strong></p>
 <p>zero on success and error code on failure. From ASoC DPCM framework,
-this state is linked to trigger() stop operation.</p>
+this state is linked to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">trigger()</span></code> stop operation.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.slim_stream_free">
@@ -1359,7 +1360,7 @@ slim stream runtime, user is not allowed to make an dereference
 to stream after this call.</p>
 <p><strong>Return</strong></p>
 <p>zero on success and error code on failure. From ASoC DPCM framework,
-this state is linked to shutdown() operation.</p>
+this state is linked to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shutdown()</span></code> operation.</p>
 </div>
 </section>
 </section>

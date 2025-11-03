@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -347,18 +347,18 @@ externally powered or not.</p>
 <p>For that case, power supply class implements notification mechanism for
 batteries.</p>
 <p>External power supply (AC) lists supplicants (batteries) names in
-“supplied_to” struct member, and each power_supply_changed() call
+“supplied_to” <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">member</span></code>, and each <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">power_supply_changed()</span></code> call
 issued by external power supply will notify supplicants via
 external_power_changed callback.</p>
 </section>
 <section id="devicetree-battery-characteristics">
 <h2>Devicetree battery characteristics<a class="headerlink" href="#devicetree-battery-characteristics" title="Link to this heading">¶</a></h2>
-<p>Drivers should call power_supply_get_battery_info() to obtain battery
+<p>Drivers should call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">power_supply_get_battery_info()</span></code> to obtain battery
 characteristics from a devicetree battery node, defined in
 Documentation/devicetree/bindings/power/supply/battery.yaml. This is
 implemented in drivers/power/supply/bq27xxx_battery.c.</p>
-<p>Properties in struct power_supply_battery_info and their counterparts in the
-battery node have names corresponding to elements in enum power_supply_property,
+<p>Properties in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">power_supply_battery_info</span></code> and their counterparts in the
+battery node have names corresponding to elements in <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">power_supply_property</span></code>,
 for naming consistency between sysfs attributes and battery node properties.</p>
 </section>
 <section id="qa">

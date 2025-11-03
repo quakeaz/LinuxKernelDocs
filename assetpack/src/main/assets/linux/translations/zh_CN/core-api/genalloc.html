@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -203,14 +203,14 @@ Chinese (Simplified)
 <p>该API在以下内核代码中:</p>
 <p>lib/genalloc.c</p>
 <p>值得注意的是，如果在给定的内存池中仍有未完成的分配，这个函数将采取相当极端的步骤，调用
-BUG()，使整个系统崩溃。你已经被警告了。</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">BUG()</span></code>，使整个系统崩溃。你已经被警告了。</p>
 <p>一个新创建的内存池没有内存可以分配。在这种状态下，它是相当无用的，所以首要任务之一通常
 是向内存池里添加内存。这可以通过以下方式完成:</p>
 <p>该API在以下内核代码中:</p>
 <p>include/linux/genalloc.h</p>
 <p>lib/genalloc.c</p>
 <p>对<a class="reference internal" href="../../../core-api/genalloc.html#c.gen_pool_add" title="gen_pool_add"><code class="xref c c-func docutils literal notranslate"><span class="pre">gen_pool_add()</span></code></a>的调用将把从地址（在内核的虚拟地址空间）开始的内存的大小字节放入
-给定的池中，再次使用nid作为节点ID进行辅助内存分配。gen_pool_add_virt()变体将显式
+给定的池中，再次使用nid作为节点ID进行辅助内存分配。<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">gen_pool_add_virt()</span></code>变体将显式
 物理地址与内存联系起来；只有在内存池被用于DMA分配时，这才是必要的。</p>
 <p>从内存池中分配内存（并将其放回）的函数是:</p>
 <p>该API在以下内核代码中:</p>
@@ -218,14 +218,14 @@ BUG()，使整个系统崩溃。你已经被警告了。</p>
 <p>lib/genalloc.c</p>
 <p>正如人们所期望的，<a class="reference internal" href="../../../core-api/genalloc.html#c.gen_pool_alloc" title="gen_pool_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">gen_pool_alloc()</span></code></a>将从给定的池中分配size&lt;字节。<a class="reference internal" href="../../../core-api/genalloc.html#c.gen_pool_dma_alloc" title="gen_pool_dma_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">gen_pool_dma_alloc()</span></code></a>
 变量分配内存用于DMA操作，返回dma所指向的空间中的相关物理地址。这只有在内存是用
-gen_pool_add_virt()添加的情况下才会起作用。请注意，这个函数偏离了genpool通常使用
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">gen_pool_add_virt()</span></code>添加的情况下才会起作用。请注意，这个函数偏离了genpool通常使用
 无符号长值来表示内核地址的模式；它返回一个void * 来代替。</p>
 <p>这一切看起来都比较简单；事实上，一些开发者显然认为这太简单了。毕竟，上面的接口没有提
 供对分配函数如何选择返回哪块特定内存的控制。如果需要这样的控制，下面的函数将是有意义
 的:</p>
 <p>该API在以下内核代码中:</p>
 <p>lib/genalloc.c</p>
-<p>使用gen_pool_alloc_algo()进行的分配指定了一种用于选择要分配的内存的算法；默认算法可
+<p>使用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">gen_pool_alloc_algo()</span></code>进行的分配指定了一种用于选择要分配的内存的算法；默认算法可
 以用<a class="reference internal" href="../../../core-api/genalloc.html#c.gen_pool_set_algo" title="gen_pool_set_algo"><code class="xref c c-func docutils literal notranslate"><span class="pre">gen_pool_set_algo()</span></code></a>来设置。数据值被传递给算法；大多数算法会忽略它，但偶尔也会需
 要它。当然，人们可以写一个特殊用途的算法，但是已经有一套公平的算法可用了:</p>
 <ul class="simple">

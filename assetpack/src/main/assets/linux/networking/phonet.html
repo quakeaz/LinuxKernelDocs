@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -220,7 +220,7 @@ only the (default) Linux FIFO qdisc should be used with them.</p>
 </pre></div>
 </div>
 <p>The resource field is only used when sending and receiving;
-It is ignored by bind() and getsockname().</p>
+It is ignored by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">getsockname()</span></code>.</p>
 </section>
 <section id="low-level-datagram-protocol">
 <h2>Low-level datagram protocol<a class="headerlink" href="#low-level-datagram-protocol" title="Link to this heading">¶</a></h2>
@@ -243,7 +243,7 @@ len = recvfrom(fd, buf, sizeof(buf), 0,
 </pre></div>
 </div>
 <p>This protocol follows the SOCK_DGRAM connection-less semantics.
-However, connect() and getpeername() are not supported, as they did
+However, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">connect()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">getpeername()</span></code> are not supported, as they did
 not seem useful with Phonet usages (could be added easily).</p>
 </section>
 <section id="resource-subscription">
@@ -265,7 +265,7 @@ resource at a time. If not, ioctl() will return EBUSY.</p>
 with end-to-end congestion control. It uses the passive listening
 socket paradigm. The listening socket is bound to an unique free object
 ID. Each listening socket can handle up to 255 simultaneous
-connections, one per accept()’d socket.</p>
+connections, one per <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">accept()</span></code>’d socket.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int lfd, cfd;
 
 lfd = socket(PF_PHONET, SOCK_SEQPACKET, PN_PROTO_PIPE);
@@ -287,7 +287,7 @@ for (;;)
 <p>Connections are traditionally established between two endpoints by a
 “third party” application. This means that both endpoints are passive.</p>
 <p>As of Linux kernel version 2.6.39, it is also possible to connect
-two endpoints directly, using connect() on the active side. This is
+two endpoints directly, using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">connect()</span></code> on the active side. This is
 intended to support the newer Nokia Wireless Modem API, as found in
 e.g. the Nokia Slim Modem in the ST-Ericsson U8500 platform:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct sockaddr_spn spn;

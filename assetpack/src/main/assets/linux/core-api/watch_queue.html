@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -304,7 +304,7 @@ system call.</p>
 <p>A “watch” is a subscription on a watch list, indicating the watch queue, and
 thus the buffer, into which notification records should be written.  The watch
 queue object may also carry filtering rules for that object, as set by
-userspace.  Some parts of the watch struct can be set by the driver:</p>
+userspace.  Some parts of the watch <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">can</span></code> be set by the driver:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct watch {
         union {
                 u32             info_id;        /* ID to be OR&#39;d in to info field */
@@ -318,7 +318,7 @@ userspace.  Some parts of the watch struct can be set by the driver:</p>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">info_id</span></code> value should be an 8-bit number obtained from userspace and
 shifted by WATCH_INFO_ID__SHIFT.  This is OR’d into the WATCH_INFO_ID field of
-struct watch_notification::info when and if the notification is written into
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">watch_notification</span></code>::info when and if the notification is written into
 the associated watch queue buffer.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">private</span></code> field is the driver’s data associated with the watch_list and
 is cleaned up by the <code class="docutils literal notranslate"><span class="pre">watch_list::release_watch()</span></code> method.</p>
@@ -333,7 +333,7 @@ appropriate barriering to avoid lockdep complaints.</p>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">add_watch_to_object(struct</span> <span class="pre">watch</span> <span class="pre">*watch,</span> <span class="pre">struct</span> <span class="pre">watch_list</span> <span class="pre">*wlist);</span></code></p>
 <p>Subscribe a watch to a watch list (notification source).  The
-driver-settable fields in the watch struct must have been set before this
+driver-settable fields in the watch <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">must</span></code> have been set before this
 is called.</p>
 </li>
 <li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int remove_watch_from_object(struct watch_list *wlist,
@@ -369,7 +369,7 @@ the following function should be used:</p>
 <p>The notification should be preformatted and a pointer to the header (<code class="docutils literal notranslate"><span class="pre">n</span></code>)
 should be passed in.  The notification may be larger than this and the size in
 units of buffer slots is noted in <code class="docutils literal notranslate"><span class="pre">n-&gt;info</span> <span class="pre">&amp;</span> <span class="pre">WATCH_INFO_LENGTH</span></code>.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">cred</span></code> struct indicates the credentials of the source (subject) and is
+<p>The <code class="docutils literal notranslate"><span class="pre">cred</span></code> <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">indicates</span></code> the credentials of the source (subject) and is
 passed to the LSMs, such as SELinux, to allow or suppress the recording of the
 note in each individual queue according to the credentials of that queue
 (object).</p>

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -336,7 +336,7 @@ extended by three functions:</p>
 <li><p>hrtimer_restart_sched_tick</p></li>
 <li><p>hrtimer_update_jiffies</p></li>
 </ul>
-<p>hrtimer_stop_sched_tick() is called when a CPU goes into idle state. The code
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hrtimer_stop_sched_tick()</span></code> is called when a CPU goes into idle state. The code
 evaluates the next scheduled timer event (from both hrtimers and the timer
 wheel) and in case that the next event is further away than the next tick it
 reprograms the sched_tick to this future event, to allow longer idle sleeps
@@ -345,10 +345,10 @@ called when an interrupt happens during the idle period, which does not cause a
 reschedule. The call is necessary as the interrupt handler might have armed a
 new timer whose expiry time is before the time which was identified as the
 nearest event in the previous call to hrtimer_stop_sched_tick.</p>
-<p>hrtimer_restart_sched_tick() is called when the CPU leaves the idle state before
-it calls schedule(). hrtimer_restart_sched_tick() resumes the periodic tick,
-which is kept active until the next call to hrtimer_stop_sched_tick().</p>
-<p>hrtimer_update_jiffies() is called from irq_enter() when an interrupt happens
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hrtimer_restart_sched_tick()</span></code> is called when the CPU leaves the idle state before
+it calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">schedule()</span></code>. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hrtimer_restart_sched_tick()</span></code> resumes the periodic tick,
+which is kept active until the next call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hrtimer_stop_sched_tick()</span></code>.</p>
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hrtimer_update_jiffies()</span></code> is called from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irq_enter()</span></code> when an interrupt happens
 in the idle period to make sure that jiffies are up to date and the interrupt
 handler has not to deal with an eventually stale jiffy value.</p>
 <p>The dynamic tick feature provides statistical values which are exported to

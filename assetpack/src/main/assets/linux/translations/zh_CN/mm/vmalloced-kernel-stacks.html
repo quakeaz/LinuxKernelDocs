@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -223,8 +223,8 @@ Chinese (Simplified)
 <ul class="simple">
 <li><p>vmalloc空间必须大到足以容纳许多内核堆栈。这可能排除了许多32位架构。</p></li>
 <li><p>vmalloc空间的堆栈需要可靠地工作。例如，如果vmap页表是按需创建的，当堆栈指向
-具有未填充页表的虚拟地址时，这种机制需要工作，或者架构代码（switch_to()和
-switch_mm()，很可能）需要确保堆栈的页表项在可能未填充的堆栈上运行之前已经填
+具有未填充页表的虚拟地址时，这种机制需要工作，或者架构代码（<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">switch_to()</span></code>和
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">switch_mm()</span></code>，很可能）需要确保堆栈的页表项在可能未填充的堆栈上运行之前已经填
 充。</p></li>
 <li><p>如果堆栈溢出到一个保护页，就应该发生一些合理的事情。“合理”的定义是灵活的，但
 在没有记录任何东西的情况下立即重启是不友好的。</p></li>
@@ -254,18 +254,18 @@ HAVE_ARCH_VMAP_STACK。</p>
 <h2><a class="toc-backref" href="#id11" role="doc-backlink">分配方法</a><a class="headerlink" href="#id4" title="Link to this heading">¶</a></h2>
 <p>当一个新的内核线程被创建时，线程堆栈是由页级分配器分配的虚拟连续的内存页组成。这
 些页面被映射到有PAGE_KERNEL保护的连续的内核虚拟空间。</p>
-<p>alloc_thread_stack_node()调用__vmalloc_node_range()来分配带有PAGE_KERNEL
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">alloc_thread_stack_node()</span></code>调用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__vmalloc_node_range()</span></code>来分配带有PAGE_KERNEL
 保护的栈。</p>
 <ul class="simple">
 <li><p>分配的堆栈被缓存起来，以后会被新的线程重用，所以在分配/释放堆栈给任务时，要手动
 进行memcg核算。因此，__vmalloc_node_range被调用时没有__GFP_ACCOUNT。</p></li>
-<li><p>vm_struct被缓存起来，以便能够找到在中断上下文中启动的空闲线程。 free_thread_stack()
+<li><p>vm_struct被缓存起来，以便能够找到在中断上下文中启动的空闲线程。 <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">free_thread_stack()</span></code>
 可以在中断上下文中调用。</p></li>
 <li><p>在arm64上，所有VMAP的堆栈都需要有相同的对齐方式，以确保VMAP的堆栈溢出检测正常
 工作。架构特定的vmap堆栈分配器照顾到了这个细节。</p></li>
 <li><p>这并不涉及中断堆栈--参考原始补丁</p></li>
 </ul>
-<p>线程栈分配是由clone()、fork()、vfork()、kernel_thread()通过kernel_clone()
+<p>线程栈分配是由clone()、fork()、<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vfork()</span></code>、<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kernel_thread()</span></code>通过<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kernel_clone()</span></code>
 启动的。留点提示在这，以便搜索代码库，了解线程栈何时以及如何分配。</p>
 <p>大量的代码是在:
 <cite>kernel/fork.c &lt;https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/kernel/fork.c&gt;</cite>.</p>

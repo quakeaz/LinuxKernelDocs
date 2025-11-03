@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -195,14 +195,14 @@ when updates have been made to the CRB.</p>
 <ul class="simple">
 <li><p>The tpm_crb_ffa driver registers with the FF-A subsystem in the kernel
 with an architected TPM service UUID defined in the CRB over FF-A spec.</p></li>
-<li><p>If a TPM service is discovered by FF-A, the probe() function in the
+<li><p>If a TPM service is discovered by FF-A, the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> function in the
 tpm_crb_ffa driver runs, and the driver initializes.</p></li>
 <li><p>The probing and initialization of the Linux CRB driver is triggered
 by the discovery of a TPM advertised via ACPI.  The CRB driver can
 detect the type of TPM through the ACPI ‘start’ method.  The start
 method for Arm FF-A was defined in TCG ACPI v1.4 <a class="footnote-reference brackets" href="#id8" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a>.</p></li>
 <li><p>When the CRB driver performs its normal functions such as signaling ‘start’
-and locality request/relinquish it invokes the tpm_crb_ffa_start() funnction
+and locality request/relinquish it invokes the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">tpm_crb_ffa_start()</span></code> funnction
 in the tpm_crb_ffa driver which handles the FF-A messaging to the TPM.</p></li>
 </ul>
 <section id="references">

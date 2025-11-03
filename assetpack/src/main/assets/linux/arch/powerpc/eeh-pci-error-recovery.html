@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -117,6 +117,7 @@
 <li class="toctree-l3"><a class="reference internal" href="elf_hwcaps.html">POWERPC ELF HWCAPs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="elfnote.html">ELF Note PowerPC Namespace</a></li>
 <li class="toctree-l3"><a class="reference internal" href="firmware-assisted-dump.html">Firmware-Assisted Dump</a></li>
+<li class="toctree-l3"><a class="reference internal" href="htm.html">HTM (Hardware Trace Macro)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="hvcs.html">HVCS IBM “Hypervisor Virtual Console Server” Installation Guide</a></li>
 <li class="toctree-l3"><a class="reference internal" href="imc.html">IMC (In-Memory Collection Counters)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="isa-versions.html">CPU to ISA Version Mapping</a></li>
@@ -288,7 +289,7 @@ infrastructure.  Following is a detailed description of how this is
 accomplished.</p>
 <p>EEH must be enabled in the PHB’s very early during the boot process,
 and if a PCI slot is hot-plugged. The former is performed by
-eeh_init() in arch/powerpc/platforms/pseries/eeh.c, and the later by
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">eeh_init()</span></code> in arch/powerpc/platforms/pseries/eeh.c, and the later by
 drivers/pci/hotplug/pSeries_pci.c calling in to the eeh.c code.
 EEH must be enabled before a PCI scan of the device can proceed.
 Current Power5 hardware will not work unless EEH is enabled;
@@ -297,11 +298,11 @@ EEH can no longer be turned off.  PCI devices <em>must</em> be
 registered with the EEH code; the EEH code needs to know about
 the I/O address ranges of the PCI device in order to detect an
 error.  Given an arbitrary address, the routine
-pci_get_device_by_addr() will find the pci device associated
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_get_device_by_addr()</span></code> will find the pci device associated
 with that address (if any).</p>
-<p>The default arch/powerpc/include/asm/io.h macros readb(), inb(), insb(),
+<p>The default arch/powerpc/include/asm/io.h macros <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">readb()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">inb()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">insb()</span></code>,
 etc. include a check to see if the i/o read returned all-0xff’s.
-If so, these make a call to eeh_dn_check_failure(), which in turn
+If so, these make a call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">eeh_dn_check_failure()</span></code>, which in turn
 asks the firmware if the all-ff’s value is the sign of a true EEH
 error.  If it is not, processing continues as normal.  The grand
 total number of these false alarms or “false positives” can be
@@ -317,7 +318,7 @@ beforehand.</p>
 <p>Next, it uses the Linux kernel notifier chain/work queue mechanism to
 allow any interested parties to find out about the failure.  Device
 drivers, or other parts of the kernel, can use
-<cite>eeh_register_notifier(struct notifier_block *)</cite> to find out about EEH
+<cite>eeh_register_notifier(<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">notifier_block</span></code> *)</cite> to find out about EEH
 events.  The event will include a pointer to the pci device, the
 device node and some state info.  Receivers of the event can “do as
 they wish”; the default handler will be described further in this
@@ -335,15 +336,15 @@ config-space info for a device and any devices under it.</p>
 </dd>
 </dl>
 <p>A handler for the EEH notifier_block events is implemented in
-drivers/pci/hotplug/pSeries_pci.c, called handle_eeh_events().
-It saves the device BAR’s and then calls rpaphp_unconfig_pci_adapter().
+drivers/pci/hotplug/pSeries_pci.c, called <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">handle_eeh_events()</span></code>.
+It saves the device BAR’s and then calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rpaphp_unconfig_pci_adapter()</span></code>.
 This last call causes the device driver for the card to be stopped,
 which causes uevents to go out to user space. This triggers
 user-space scripts that might issue commands such as “ifdown eth0”
 for ethernet cards, and so on.  This handler then sleeps for 5 seconds,
 hoping to give the user-space scripts enough time to complete.
 It then resets the PCI card, reconfigures the device BAR’s, and
-any bridges underneath. It then calls rpaphp_enable_pci_slot(),
+any bridges underneath. It then calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rpaphp_enable_pci_slot()</span></code>,
 which restarts the device driver and triggers more user-space
 events (for example, calling “ifup eth0” for ethernet cards).</p>
 </section>
@@ -404,11 +405,11 @@ The following sequence is an example of the pcnet32 device driver:</p>
 </pre></div>
 </div>
 <p>in drivers/pci/pci_driver.c,
-<a class="reference internal" href="../../driver-api/infrastructure.html#c.device_driver" title="device_driver"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device_driver</span></code></a>-&gt;remove() is just pci_device_remove()
-which calls <a class="reference internal" href="../../PCI/pci.html#c.pci_driver" title="pci_driver"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pci_driver</span></code></a>-&gt;remove() which is pcnet32_remove_one()
+<a class="reference internal" href="../../driver-api/infrastructure.html#c.device_driver" title="device_driver"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device_driver</span></code></a>-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove()</span></code> is just <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_device_remove()</span></code>
+which calls <a class="reference internal" href="../../PCI/pci.html#c.pci_driver" title="pci_driver"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pci_driver</span></code></a>-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove()</span></code> which is <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pcnet32_remove_one()</span></code>
 which calls <a class="reference internal" href="../../networking/kapi.html#c.unregister_netdev" title="unregister_netdev"><code class="xref c c-func docutils literal notranslate"><span class="pre">unregister_netdev()</span></code></a>  (in net/core/dev.c)
-which calls dev_close()  (in net/core/dev.c)
-which calls dev-&gt;<a class="reference internal" href="../../networking/ieee802154.html#c.stop" title="stop"><code class="xref c c-func docutils literal notranslate"><span class="pre">stop()</span></code></a> which is pcnet32_close()
+which calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_close()</span></code>  (in net/core/dev.c)
+which calls dev-&gt;<a class="reference internal" href="../../networking/ieee802154.html#c.stop" title="stop"><code class="xref c c-func docutils literal notranslate"><span class="pre">stop()</span></code></a> which is <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pcnet32_close()</span></code>
 which then does the appropriate shutdown.</p>
 <p>---</p>
 <p>Following is the analogous stack trace for events sent to user-space

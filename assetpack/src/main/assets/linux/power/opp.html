@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -274,7 +274,7 @@ to search the OPP list that OPP library internally manages. These search
 functions return the matching pointer representing the opp if a match is
 found, else returns error. These errors are expected to be handled by standard
 error checks such as <a class="reference internal" href="../core-api/kernel-api.html#c.IS_ERR" title="IS_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">IS_ERR()</span></code></a> and appropriate actions taken by the caller.</p>
-<p>Callers of these functions shall call dev_pm_opp_put() after they have used the
+<p>Callers of these functions shall call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_pm_opp_put()</span></code> after they have used the
 OPP. Otherwise the memory for the OPP will never get freed and result in
 memleak.</p>
 <dl>
@@ -493,7 +493,7 @@ for the OPP library to operate on.  Pointer to this structure is
 provided back to the users such as SoC framework to be used as a
 identifier for OPP in the interactions with OPP layer.</p>
 <dl class="simple">
-<dt>WARNING:</dt><dd><p>The struct dev_pm_opp pointer should not be parsed or modified by the
+<dt>WARNING:</dt><dd><p>The <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dev_pm_opp</span></code> pointer should not be parsed or modified by the
 users. The defaults of for an instance is populated by
 dev_pm_opp_add, but the availability of the OPP can be modified
 by dev_pm_opp_enable/disable functions.</p>

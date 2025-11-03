@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -86,6 +86,7 @@
 <li class="toctree-l3"><a class="reference internal" href="kprobes.html">Kernel Probes (Kprobes)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="kprobetrace.html">Kprobe-based Event Tracing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="fprobetrace.html">Fprobe-based Event Tracing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eprobetrace.html">Eprobe - Event-based Probe Tracing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="fprobe.html">Fprobe - Function entry/exit probe</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ring-buffer-design.html">Lockless Ring Buffer Design</a></li>
 </ul>
@@ -203,13 +204,13 @@ an ftrace_ops with ftrace:</p>
 </pre></div>
 </div>
 <p>The registered callback will start being called some time after the
-register_ftrace_function() is called and before it returns. The exact time
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">register_ftrace_function()</span></code> is called and before it returns. The exact time
 that callbacks start being called is dependent upon architecture and scheduling
 of services. The callback itself will have to handle any synchronization if it
 must begin at an exact moment.</p>
-<p>The unregister_ftrace_function() will guarantee that the callback is
-no longer being called by functions after the unregister_ftrace_function()
-returns. Note that to perform this guarantee, the unregister_ftrace_function()
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unregister_ftrace_function()</span></code> will guarantee that the callback is
+no longer being called by functions after the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unregister_ftrace_function()</span></code>
+returns. Note that to perform this guarantee, the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unregister_ftrace_function()</span></code>
 may take some time to finish.</p>
 </section>
 <section id="the-callback-function">
@@ -256,10 +257,10 @@ can help in this regard. If you start your code with:</p>
 </div>
 <p>The code in between will be safe to use, even if it ends up calling a
 function that the callback is tracing. Note, on success,
-ftrace_test_recursion_trylock() will disable preemption, and the
-ftrace_test_recursion_unlock() will enable it again (if it was previously
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_test_recursion_trylock()</span></code> will disable preemption, and the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_test_recursion_unlock()</span></code> will enable it again (if it was previously
 enabled). The instruction pointer (ip) and its parent (parent_ip) is passed to
-ftrace_test_recursion_trylock() to record where the recursion happened
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_test_recursion_trylock()</span></code> to record where the recursion happened
 (if CONFIG_FTRACE_RECORD_RECURSION is set).</p>
 <p>Alternatively, if the FTRACE_OPS_FL_RECURSION flag is set on the ftrace_ops
 (as explained below), then a helper trampoline will be used to test
@@ -360,7 +361,7 @@ match a specific pattern.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ftrace_set_filter</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ops</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;schedule&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">strlen</span><span class="p">(</span><span class="s">&quot;schedule&quot;</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>To add more functions, call the ftrace_set_filter() more than once with the
+<p>To add more functions, call the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_set_filter()</span></code> more than once with the
 &#64;reset parameter set to zero. To remove the current filter set and replace it
 with new functions defined by &#64;buf, have &#64;reset be non-zero.</p>
 <p>To remove all the filtered functions and trace all functions:</p>
@@ -368,7 +369,7 @@ with new functions defined by &#64;buf, have &#64;reset be non-zero.</p>
 </pre></div>
 </div>
 <p>Sometimes more than one function has the same name. To trace just a specific
-function in this case, ftrace_set_filter_ip() can be used.</p>
+function in this case, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_set_filter_ip()</span></code> can be used.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ftrace_set_filter_ip</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ops</span><span class="p">,</span><span class="w"> </span><span class="n">ip</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -386,7 +387,7 @@ to be traced.</p>
 <span class="w">                       </span><span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">reset</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>This takes the same parameters as ftrace_set_filter() but will add the
+<p>This takes the same parameters as <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_set_filter()</span></code> but will add the
 functions it finds to not be traced. This is a separate list from the
 filter list, and this function does not modify the filter list.</p>
 <p>A non-zero &#64;reset will clear the “notrace” list before adding functions
@@ -401,7 +402,7 @@ registering the callback. But the changes may also happen after the callback
 has been registered.</p>
 <p>If a filter is in place, and the &#64;reset is non-zero, and &#64;buf contains a
 matching glob to functions, the switch will happen during the time of
-the ftrace_set_filter() call. At no time will all functions call the callback.</p>
+the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ftrace_set_filter()</span></code> call. At no time will all functions call the callback.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">ftrace_set_filter</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ops</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;schedule&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">strlen</span><span class="p">(</span><span class="s">&quot;schedule&quot;</span><span class="p">),</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
 
 <span class="n">register_ftrace_function</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ops</span><span class="p">);</span>

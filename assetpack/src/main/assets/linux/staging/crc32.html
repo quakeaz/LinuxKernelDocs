@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -188,14 +188,14 @@ ready to process the next bit.</p>
 </div>
 <p>Notice how, to get at bit 32 of the shifted remainder, we look
 at bit 31 of the remainder <em>before</em> shifting it.</p>
-<p>But also notice how the next_input_bit() bits we’re shifting into
+<p>But also notice how the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">next_input_bit()</span></code> bits we’re shifting into
 the remainder don’t actually affect any decision-making until
 32 bits later.  Thus, the first 32 cycles of this are pretty boring.
 Also, to add the CRC to a message, we need a 32-bit-long hole for it at
 the end, so we have to add 32 extra cycles shifting in zeros at the
 end of every message.</p>
 <p>These details lead to a standard trick: rearrange merging in the
-next_input_bit() until the moment it’s needed.  Then the first 32 cycles
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">next_input_bit()</span></code> until the moment it’s needed.  Then the first 32 cycles
 can be precomputed, and merging in the final 32 zero bits to make room
 for the CRC can be skipped entirely.  This changes the code to:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>for (i = 0; i &lt; input_bits; i++) {
@@ -216,7 +216,7 @@ for the CRC can be skipped entirely.  This changes the code to:</p>
 <p>The most significant coefficient of the remainder polynomial is stored
 in the least significant bit of the binary “remainder” variable.
 The other details of endianness have been hidden in CRCPOLY (which must
-be bit-reversed) and next_input_bit().</p>
+be bit-reversed) and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">next_input_bit()</span></code>.</p>
 <p>As long as next_input_bit is returning the bits in a sensible order, we don’t
 <em>have</em> to wait until the last possible moment to merge in additional bits.
 We can do it 8 bits at a time rather than 1 bit at a time:</p>

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -465,7 +465,7 @@ will use the legacy (2.4) layout for all processes.</p>
 <h2>lowmem_reserve_ratio<a class="headerlink" href="#lowmem-reserve-ratio" title="Link to this heading">¶</a></h2>
 <p>For some specialised workloads on highmem machines it is dangerous for
 the kernel to allow process memory to be allocated from the “lowmem”
-zone.  This is because that memory could then be pinned via the mlock()
+zone.  This is because that memory could then be pinned via the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock()</span></code>
 system call, or by unavailability of swapspace.</p>
 <p>And on large highmem machines this lack of reclaimable lowmem memory
 can be fatal.</p>
@@ -479,7 +479,7 @@ highmem or lowmem).</p>
 <p>The <cite>lowmem_reserve_ratio</cite> tunable determines how aggressive the kernel is
 in defending these lower zones.</p>
 <p>If you have a machine which uses highmem or ISA DMA and your
-applications are using mlock(), or if you are running with no swap then
+applications are using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock()</span></code>, or if you are running with no swap then
 you probably should change the lowmem_reserve_ratio setting.</p>
 <p>The lowmem_reserve_ratio is an array. You can see them by reading this file:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>% cat /proc/sys/vm/lowmem_reserve_ratio
@@ -545,7 +545,7 @@ The minimum value is 1 (1/1 -&gt; 100%). The value less than 1 completely
 disables protection of the pages.</p>
 </section>
 <section id="max-map-count">
-<h2>max_map_count:<a class="headerlink" href="#max-map-count" title="Link to this heading">¶</a></h2>
+<h2>max_map_count<a class="headerlink" href="#max-map-count" title="Link to this heading">¶</a></h2>
 <p>This file contains the maximum number of memory map areas a process
 may have. Memory map areas are used as a side-effect of calling
 malloc, directly by mmap, mprotect, and madvise, and also when loading
@@ -565,7 +565,7 @@ memory allocations.</p>
 <p>The default value depends on CONFIG_MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT.</p>
 </section>
 <section id="memory-failure-early-kill">
-<h2>memory_failure_early_kill:<a class="headerlink" href="#memory-failure-early-kill" title="Link to this heading">¶</a></h2>
+<h2>memory_failure_early_kill<a class="headerlink" href="#memory-failure-early-kill" title="Link to this heading">¶</a></h2>
 <p>Control how to kill processes when uncorrected memory error (typically
 a 2bit error in a memory module) is detected in the background by hardware
 that cannot be handled by the kernel. In some cases (like the page
@@ -667,7 +667,7 @@ architecture’s minimum and maximum supported values.</p>
 </section>
 <section id="hugetlb-optimize-vmemmap">
 <h2>hugetlb_optimize_vmemmap<a class="headerlink" href="#hugetlb-optimize-vmemmap" title="Link to this heading">¶</a></h2>
-<p>This knob is not available when the size of ‘struct page’ (a structure defined
+<p>This knob is not available when the size of ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code>’ (a structure defined
 in include/linux/mm_types.h) is not power of two (an unusual system config could
 result in this).</p>
 <p>Enable (set to 1) or disable (set to 0) HugeTLB Vmemmap Optimization (HVO).</p>
@@ -806,11 +806,11 @@ memory until it actually runs out.</p>
 policy that attempts to prevent any overcommit of memory.
 Note that user_reserve_kbytes affects this policy.</p>
 <p>This feature can be very useful because there are a lot of
-programs that malloc() huge amounts of memory “just-in-case”
+programs that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">malloc()</span></code> huge amounts of memory “just-in-case”
 and don’t use much of it.</p>
 <p>The default value is 0.</p>
 <p>See <a class="reference internal" href="../../mm/overcommit-accounting.html"><span class="doc">Overcommit Accounting</span></a> and
-mm/util.c::__vm_enough_memory() for more information.</p>
+mm/util.c::<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__vm_enough_memory()</span></code> for more information.</p>
 </section>
 <section id="overcommit-ratio">
 <h2>overcommit_ratio<a class="headerlink" href="#overcommit-ratio" title="Link to this heading">¶</a></h2>

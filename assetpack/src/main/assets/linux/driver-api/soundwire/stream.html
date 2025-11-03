@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -407,7 +407,7 @@ global lock.</p>
 transmitted on a link for a given Stream (Example 4) or just a subset
 of the data (Example 3). The configuration of the Slave device is not
 handled by a SoundWire subsystem API, but instead by the
-snd_soc_dai_set_tdm_slot() API. The platform or machine driver will
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">snd_soc_dai_set_tdm_slot()</span></code> API. The platform or machine driver will
 typically configure which of the slots are used. For Example 4, the
 same slots would be used by all Devices, while for Example 3 the Slave
 Device1 would use e.g. Slot 0 and Slave device2 slot 1.</p>
@@ -484,12 +484,12 @@ interface associated with the stream, stream state etc.</p></li>
 <code class="docutils literal notranslate"><span class="pre">SDW_STREAM_ALLOCATED</span></code>.</p>
 <p>Bus implements below API for allocate a stream which needs to be called once
 per stream. From ASoC DPCM framework, this stream state maybe linked to
-.startup() operation.</p>
+.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">startup()</span></code> operation.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">sdw_alloc_stream</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream_name</span><span class="p">,</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="n">sdw_stream_type</span><span class="w"> </span><span class="n">type</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>The SoundWire core provides a sdw_startup_stream() helper function,
-typically called during a dailink .startup() callback, which performs
+<p>The SoundWire core provides a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sdw_startup_stream()</span></code> helper function,
+typically called during a dailink .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">startup()</span></code> callback, which performs
 stream allocation and sets the stream pointer for all DAIs
 connected to a stream.</p>
 </section>
@@ -512,7 +512,7 @@ Master(s) and Slave(s) for current stream and their channel mask.</p></li>
 <p>Bus implements below APIs for CONFIG state which needs to be called by
 the respective Master(s) and Slave(s) associated with stream. These APIs can
 only be invoked once by respective Master(s) and Slave(s). From ASoC DPCM
-framework, this stream state is linked to .hw_params() operation.</p>
+framework, this stream state is linked to .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hw_params()</span></code> operation.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">sdw_stream_add_master</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">sdw_bus</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">bus</span><span class="p">,</span>
 <span class="w">              </span><span class="k">struct</span><span class="w"> </span><span class="nc">sdw_stream_config</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream_config</span><span class="p">,</span>
 <span class="w">              </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">sdw_ports_config</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ports_config</span><span class="p">,</span>
@@ -554,8 +554,8 @@ programming PrepareCtrl register.</p></li>
 <code class="docutils literal notranslate"><span class="pre">SDW_STREAM_PREPARED</span></code>.</p>
 <p>Bus implements below API for PREPARE state which needs to be called
 once per stream. From ASoC DPCM framework, this stream state is linked
-to .prepare() operation. Since the .trigger() operations may not
-follow the .prepare(), a direct transition from
+to .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prepare()</span></code> operation. Since the .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">trigger()</span></code> operations may not
+follow the .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prepare()</span></code>, a direct transition from
 <code class="docutils literal notranslate"><span class="pre">SDW_STREAM_PREPARED</span></code> to <code class="docutils literal notranslate"><span class="pre">SDW_STREAM_DEPREPARED</span></code> is allowed.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">sdw_prepare_stream</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">sdw_stream_runtime</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span>
 </pre></div>
@@ -582,7 +582,7 @@ associated with current stream are enabled.</p></li>
 <code class="docutils literal notranslate"><span class="pre">SDW_STREAM_ENABLED</span></code>.</p>
 <p>Bus implements below API for ENABLE state which needs to be called once per
 stream. From ASoC DPCM framework, this stream state is linked to
-.trigger() start operation.</p>
+.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">trigger()</span></code> start operation.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">sdw_enable_stream</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">sdw_stream_runtime</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -607,10 +607,10 @@ with current stream are disabled.</p></li>
 <code class="docutils literal notranslate"><span class="pre">SDW_STREAM_DISABLED</span></code>.</p>
 <p>Bus implements below API for DISABLED state which needs to be called once
 per stream. From ASoC DPCM framework, this stream state is linked to
-.trigger() stop operation.</p>
+.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">trigger()</span></code> stop operation.</p>
 <p>When the INFO_PAUSE flag is supported, a direct transition to
 <code class="docutils literal notranslate"><span class="pre">SDW_STREAM_ENABLED</span></code> is allowed.</p>
-<p>For resume operations where ASoC will use the .prepare() callback, the
+<p>For resume operations where ASoC will use the .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prepare()</span></code> callback, the
 stream can transition from <code class="docutils literal notranslate"><span class="pre">SDW_STREAM_DISABLED</span></code> to
 <code class="docutils literal notranslate"><span class="pre">SDW_STREAM_PREPARED</span></code>, with all required settings restored but
 without updating the bandwidth and bit allocation.</p>
@@ -638,7 +638,7 @@ once per stream. ALSA/ASoC do not have a concept of ‘deprepare’, and
 the mapping from this stream state to ALSA/ASoC operation may be
 implementation specific.</p>
 <p>When the INFO_PAUSE flag is supported, the stream state is linked to
-the .hw_free() operation - the stream is not deprepared on a
+the .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hw_free()</span></code> operation - the stream is not deprepared on a
 TRIGGER_STOP.</p>
 <p>Other implementations may transition to the <code class="docutils literal notranslate"><span class="pre">SDW_STREAM_DEPREPARED</span></code>
 state on TRIGGER_STOP, should they require a transition through the
@@ -663,21 +663,21 @@ current stream.</p></li>
 <code class="docutils literal notranslate"><span class="pre">SDW_STREAM_RELEASED</span></code>.</p>
 <p>Bus implements below APIs for RELEASE state which needs to be called by
 all the Master(s) and Slave(s) associated with stream. From ASoC DPCM
-framework, this stream state is linked to .hw_free() operation.</p>
+framework, this stream state is linked to .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hw_free()</span></code> operation.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">sdw_stream_remove_master</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">sdw_bus</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">bus</span><span class="p">,</span>
 <span class="w">              </span><span class="k">struct</span><span class="w"> </span><span class="nc">sdw_stream_runtime</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span>
 <span class="kt">int</span><span class="w"> </span><span class="nf">sdw_stream_remove_slave</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">sdw_slave</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">slave</span><span class="p">,</span>
 <span class="w">              </span><span class="k">struct</span><span class="w"> </span><span class="nc">sdw_stream_runtime</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>The .shutdown() ASoC DPCM operation calls below Bus API to release
+<p>The .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shutdown()</span></code> ASoC DPCM operation calls below Bus API to release
 stream assigned as part of ALLOCATED state.</p>
-<p>In .shutdown() the data structure maintaining stream state are freed up.</p>
+<p>In .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shutdown()</span></code> the data structure maintaining stream state are freed up.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">sdw_release_stream</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">sdw_stream_runtime</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>The SoundWire core provides a sdw_shutdown_stream() helper function,
-typically called during a dailink .shutdown() callback, which clears
+<p>The SoundWire core provides a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sdw_shutdown_stream()</span></code> helper function,
+typically called during a dailink .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shutdown()</span></code> callback, which clears
 the stream pointer for all DAIS connected to a stream and releases the
 memory allocated for the stream.</p>
 </section>

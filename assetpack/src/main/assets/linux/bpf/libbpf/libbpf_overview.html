@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -250,13 +250,13 @@ cumbersome code.</p>
 <h3>Other Advantages of Using Skeleton File<a class="headerlink" href="#other-advantages-of-using-skeleton-file" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>BPF skeleton provides an interface for user space programs to work with BPF
-global variables. The skeleton code memory maps global variables as a struct
-into user space. The struct interface allows user space programs to initialize
+global variables. The skeleton code memory maps global variables as a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">into</span></code> user space. The <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">interface</span></code> allows user space programs to initialize
 BPF programs before the BPF load phase and fetch and update data from user
 space afterward.</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">skel.h</span></code> file reflects the object file structure by listing out the
 available maps, programs, etc. BPF skeleton provides direct access to all the
-BPF maps and BPF programs as struct fields. This eliminates the need for
+BPF maps and BPF programs as <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fields</span></code>. This eliminates the need for
 string-based lookups with <code class="docutils literal notranslate"><span class="pre">bpf_object_find_map_by_name()</span></code> and
 <code class="docutils literal notranslate"><span class="pre">bpf_object_find_program_by_name()</span></code> APIs, reducing errors due to BPF source
 code and user-space code getting out of sync.</p></li>
@@ -327,7 +327,7 @@ CO-RE relocatable manner is <code class="docutils literal notranslate"><span cla
 </div>
 <p>In the code snippet, we first get a pointer to the current <code class="docutils literal notranslate"><span class="pre">task_struct</span></code> using
 <code class="docutils literal notranslate"><span class="pre">bpf_get_current_task()</span></code>.  We then use <code class="docutils literal notranslate"><span class="pre">bpf_core_read()</span></code> to read the parent
-field of task struct into the <code class="docutils literal notranslate"><span class="pre">parent_task</span></code> variable. <code class="docutils literal notranslate"><span class="pre">bpf_core_read()</span></code> is
+field of task <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">into</span></code> the <code class="docutils literal notranslate"><span class="pre">parent_task</span></code> variable. <code class="docutils literal notranslate"><span class="pre">bpf_core_read()</span></code> is
 just like <code class="docutils literal notranslate"><span class="pre">bpf_probe_read_kernel()</span></code> BPF helper, except it records information
 about the field that should be relocated on the target kernel. i.e, if the
 <code class="docutils literal notranslate"><span class="pre">parent</span></code> field gets shifted to a different offset within

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -360,7 +360,7 @@ statistics are supported in the following commands:</p>
 </pre></div>
 </div>
 <p><strong>Members</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">rx_packets</span></code></dt><dd><p>Number of good packets received by the interface.
 For hardware interfaces counts all good packets received from the device
 by the host, including packets which host had to drop at various stages
@@ -373,12 +373,8 @@ had been successfully transmitted out of the device, only that device
 acknowledged it copied them out of host memory.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">rx_bytes</span></code></dt><dd><p>Number of good received bytes, corresponding to <strong>rx_packets</strong>.</p>
-<p>For IEEE 802.3 devices should count the length of Ethernet Frames
-excluding the FCS.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">tx_bytes</span></code></dt><dd><p>Number of good transmitted bytes, corresponding to <strong>tx_packets</strong>.</p>
-<p>For IEEE 802.3 devices should count the length of Ethernet Frames
-excluding the FCS.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">rx_errors</span></code></dt><dd><p>Total number of bad packets received on this network device.
 This counter must include events counted by <strong>rx_length_errors</strong>,
@@ -404,97 +400,32 @@ e.g. due to lack of resources.</p>
 For hardware interfaces this statistic is commonly calculated
 at the device level (unlike <strong>rx_packets</strong>) and therefore may include
 packets which did not reach the host.</p>
-<p>For IEEE 802.3 devices this counter may be equivalent to:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>30.3.1.1.21 aMulticastFramesReceivedOK</p></li>
-</ul>
-</div></blockquote>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">collisions</span></code></dt><dd><p>Number of collisions during packet transmissions.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">rx_length_errors</span></code></dt><dd><p>Number of packets dropped due to invalid length.
 Part of aggregate “frame” errors in <cite>/proc/net/dev</cite>.</p>
-<p>For IEEE 802.3 devices this counter should be equivalent to a sum
-of the following attributes:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>30.3.1.1.23 aInRangeLengthErrors</p></li>
-<li><p>30.3.1.1.24 aOutOfRangeLengthField</p></li>
-<li><p>30.3.1.1.25 aFrameTooLongErrors</p></li>
-</ul>
-</div></blockquote>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">rx_over_errors</span></code></dt><dd><p>Receiver FIFO overflow event counter.</p>
-<p>Historically the count of overflow events. Such events may be
-reported in the receive descriptors or via interrupts, and may
-not correspond one-to-one with dropped packets.</p>
-<p>The recommended interpretation for high speed interfaces is -
-number of packets dropped because they did not fit into buffers
-provided by the host, e.g. packets larger than MTU or next buffer
-in the ring was not available for a scatter transfer.</p>
-<p>Part of aggregate “frame” errors in <cite>/proc/net/dev</cite>.</p>
-<p>This statistics was historically used interchangeably with
-<strong>rx_fifo_errors</strong>.</p>
-<p>This statistic corresponds to hardware events and is not commonly used
-on software devices.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">rx_crc_errors</span></code></dt><dd><p>Number of packets received with a CRC error.
 Part of aggregate “frame” errors in <cite>/proc/net/dev</cite>.</p>
-<p>For IEEE 802.3 devices this counter must be equivalent to:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>30.3.1.1.6 aFrameCheckSequenceErrors</p></li>
-</ul>
-</div></blockquote>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">rx_frame_errors</span></code></dt><dd><p>Receiver frame alignment errors.
 Part of aggregate “frame” errors in <cite>/proc/net/dev</cite>.</p>
-<p>For IEEE 802.3 devices this counter should be equivalent to:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>30.3.1.1.7 aAlignmentErrors</p></li>
-</ul>
-</div></blockquote>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">rx_fifo_errors</span></code></dt><dd><p>Receiver FIFO error counter.</p>
-<p>Historically the count of overflow events. Those events may be
-reported in the receive descriptors or via interrupts, and may
-not correspond one-to-one with dropped packets.</p>
-<p>This statistics was used interchangeably with <strong>rx_over_errors</strong>.
-Not recommended for use in drivers for high speed interfaces.</p>
-<p>This statistic is used on software devices, e.g. to count software
-packet queue overflow (can) or sequencing errors (GRE).</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">rx_missed_errors</span></code></dt><dd><p>Count of packets missed by the host.
 Folded into the “drop” counter in <cite>/proc/net/dev</cite>.</p>
-<p>Counts number of packets dropped by the device due to lack
-of buffer space. This usually indicates that the host interface
-is slower than the network interface, or host is not keeping up
-with the receive packet rate.</p>
-<p>This statistic corresponds to hardware events and is not used
-on software devices.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">tx_aborted_errors</span></code></dt><dd><p>Part of aggregate “carrier” errors in <cite>/proc/net/dev</cite>.
 For IEEE 802.3 devices capable of half-duplex operation this counter
 must be equivalent to:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>30.3.1.1.11 aFramesAbortedDueToXSColls</p></li>
-</ul>
-</div></blockquote>
-<p>High speed interfaces may use this counter as a general device
-discard counter.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">tx_carrier_errors</span></code></dt><dd><p>Number of frame transmission errors due to loss
 of carrier during transmission.
 Part of aggregate “carrier” errors in <cite>/proc/net/dev</cite>.</p>
-<p>For IEEE 802.3 devices this counter must be equivalent to:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>30.3.1.1.13 aCarrierSenseErrors</p></li>
-</ul>
-</div></blockquote>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">tx_fifo_errors</span></code></dt><dd><p>Number of frame transmission errors due to device
 FIFO underrun / underflow. This condition occurs when the device
@@ -505,22 +436,10 @@ Part of aggregate “carrier” errors in <cite>/proc/net/dev</cite>.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">tx_heartbeat_errors</span></code></dt><dd><p>Number of Heartbeat / SQE Test errors for
 old half-duplex Ethernet.
 Part of aggregate “carrier” errors in <cite>/proc/net/dev</cite>.</p>
-<p>For IEEE 802.3 devices possibly equivalent to:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>30.3.2.1.4 aSQETestErrors</p></li>
-</ul>
-</div></blockquote>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">tx_window_errors</span></code></dt><dd><p>Number of frame transmission errors due
 to late collisions (for Ethernet - after the first 64B of transmission).
 Part of aggregate “carrier” errors in <cite>/proc/net/dev</cite>.</p>
-<p>For IEEE 802.3 devices this counter must be equivalent to:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>30.3.1.1.10 aLateCollisions</p></li>
-</ul>
-</div></blockquote>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">rx_compressed</span></code></dt><dd><p>Number of correctly received compressed packets.
 This counters is only meaningful for interfaces which support
@@ -539,6 +458,90 @@ in destination MAC address.</p>
 </dd>
 </dl>
 </div>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>For IEEE 802.3 devices should count the length of Ethernet Frames
+excluding the FCS.</p>
+<p>For IEEE 802.3 devices should count the length of Ethernet Frames
+excluding the FCS.</p>
+<p>For IEEE 802.3 devices this counter may be equivalent to:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>30.3.1.1.21 aMulticastFramesReceivedOK</p></li>
+</ul>
+</div></blockquote>
+<p>For IEEE 802.3 devices this counter should be equivalent to a sum
+of the following attributes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>30.3.1.1.23 aInRangeLengthErrors</p></li>
+<li><p>30.3.1.1.24 aOutOfRangeLengthField</p></li>
+<li><p>30.3.1.1.25 aFrameTooLongErrors</p></li>
+</ul>
+</div></blockquote>
+<p>Historically the count of overflow events. Such events may be
+reported in the receive descriptors or via interrupts, and may
+not correspond one-to-one with dropped packets.</p>
+<p>The recommended interpretation for high speed interfaces is -
+number of packets dropped because they did not fit into buffers
+provided by the host, e.g. packets larger than MTU or next buffer
+in the ring was not available for a scatter transfer.</p>
+<p>Part of aggregate “frame” errors in <cite>/proc/net/dev</cite>.</p>
+<p>This statistics was historically used interchangeably with
+<strong>rx_fifo_errors</strong>.</p>
+<p>This statistic corresponds to hardware events and is not commonly used
+on software devices.</p>
+<p>For IEEE 802.3 devices this counter must be equivalent to:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>30.3.1.1.6 aFrameCheckSequenceErrors</p></li>
+</ul>
+</div></blockquote>
+<p>For IEEE 802.3 devices this counter should be equivalent to:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>30.3.1.1.7 aAlignmentErrors</p></li>
+</ul>
+</div></blockquote>
+<p>Historically the count of overflow events. Those events may be
+reported in the receive descriptors or via interrupts, and may
+not correspond one-to-one with dropped packets.</p>
+<p>This statistics was used interchangeably with <strong>rx_over_errors</strong>.
+Not recommended for use in drivers for high speed interfaces.</p>
+<p>This statistic is used on software devices, e.g. to count software
+packet queue overflow (can) or sequencing errors (GRE).</p>
+<p>Counts number of packets dropped by the device due to lack
+of buffer space. This usually indicates that the host interface
+is slower than the network interface, or host is not keeping up
+with the receive packet rate.</p>
+<p>This statistic corresponds to hardware events and is not used
+on software devices.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>30.3.1.1.11 aFramesAbortedDueToXSColls</p></li>
+</ul>
+</div></blockquote>
+<p>High speed interfaces may use this counter as a general device
+discard counter.</p>
+<p>For IEEE 802.3 devices this counter must be equivalent to:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>30.3.1.1.13 aCarrierSenseErrors</p></li>
+</ul>
+</div></blockquote>
+<p>For IEEE 802.3 devices possibly equivalent to:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>30.3.2.1.4 aSQETestErrors</p></li>
+</ul>
+</div></blockquote>
+<p>For IEEE 802.3 devices this counter must be equivalent to:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>30.3.1.1.10 aLateCollisions</p></li>
+</ul>
+</div></blockquote>
+</div></blockquote>
 </section>
 <section id="notes-for-driver-authors">
 <h2>Notes for driver authors<a class="headerlink" href="#notes-for-driver-authors" title="Link to this heading">¶</a></h2>

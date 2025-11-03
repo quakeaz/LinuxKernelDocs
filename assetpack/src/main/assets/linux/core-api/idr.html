@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -90,6 +90,7 @@
 <li class="toctree-l3"><a class="reference internal" href="union_find.html">Union-Find in Linux</a></li>
 <li class="toctree-l3"><a class="reference internal" href="min_heap.html">Min Heap API</a></li>
 <li class="toctree-l3"><a class="reference internal" href="parser.html">Generic parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="list.html">Linked Lists in Linux</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#low-level-entry-and-exit">Low level entry and exit</a></li>
@@ -218,7 +219,7 @@ either use the callback-based <a class="reference internal" href="#c.idr_for_eac
 iterator-style <a class="reference internal" href="#c.idr_for_each_entry" title="idr_for_each_entry"><code class="xref c c-func docutils literal notranslate"><span class="pre">idr_for_each_entry()</span></code></a>.  You may need to use
 <a class="reference internal" href="#c.idr_for_each_entry_continue" title="idr_for_each_entry_continue"><code class="xref c c-func docutils literal notranslate"><span class="pre">idr_for_each_entry_continue()</span></code></a> to continue an iteration.  You can
 also use <a class="reference internal" href="#c.idr_get_next" title="idr_get_next"><code class="xref c c-func docutils literal notranslate"><span class="pre">idr_get_next()</span></code></a> if the iterator doesn’t fit your needs.</p>
-<p>When you have finished using an IDR, you can call idr_destroy()
+<p>When you have finished using an IDR, you can call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">idr_destroy()</span></code>
 to release the memory used by the IDR.  This will not free the objects
 pointed to from the IDR; if you want to do that, use one of the iterators
 to do it.</p>
@@ -227,7 +228,7 @@ IDs currently allocated.</p>
 <p>If you need to take a lock while allocating a new ID from the IDR,
 you may need to pass a restrictive set of GFP flags, which can lead
 to the IDR being unable to allocate memory.  To work around this,
-you can call idr_preload() before taking the lock, and then
+you can call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">idr_preload()</span></code> before taking the lock, and then
 <a class="reference internal" href="#c.idr_preload_end" title="idr_preload_end"><code class="xref c c-func docutils literal notranslate"><span class="pre">idr_preload_end()</span></code></a> after the allocation.</p>
 <p>idr synchronization (stolen from radix-tree.h)</p>
 <p><a class="reference internal" href="#c.idr_find" title="idr_find"><code class="xref c c-func docutils literal notranslate"><span class="pre">idr_find()</span></code></a> is able to be called locklessly, using RCU. The caller must
@@ -246,12 +247,12 @@ period).</p>
 <p>The IDA is an ID allocator which does not provide the ability to
 associate an ID with a pointer.  As such, it only needs to store one
 bit per ID, and so is more space efficient than an IDR.  To use an IDA,
-define it using DEFINE_IDA() (or embed a <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ida</span></code> in a data structure,
-then initialise it using ida_init()).  To allocate a new ID, call
+define it using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">DEFINE_IDA()</span></code> (or embed a <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ida</span></code> in a data structure,
+then initialise it using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ida_init()</span></code>).  To allocate a new ID, call
 <a class="reference internal" href="#c.ida_alloc" title="ida_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">ida_alloc()</span></code></a>, <a class="reference internal" href="#c.ida_alloc_min" title="ida_alloc_min"><code class="xref c c-func docutils literal notranslate"><span class="pre">ida_alloc_min()</span></code></a>, <a class="reference internal" href="#c.ida_alloc_max" title="ida_alloc_max"><code class="xref c c-func docutils literal notranslate"><span class="pre">ida_alloc_max()</span></code></a> or <a class="reference internal" href="#c.ida_alloc_range" title="ida_alloc_range"><code class="xref c c-func docutils literal notranslate"><span class="pre">ida_alloc_range()</span></code></a>.
 To free an ID, call <a class="reference internal" href="#c.ida_free" title="ida_free"><code class="xref c c-func docutils literal notranslate"><span class="pre">ida_free()</span></code></a>.</p>
 <p><a class="reference internal" href="#c.ida_destroy" title="ida_destroy"><code class="xref c c-func docutils literal notranslate"><span class="pre">ida_destroy()</span></code></a> can be used to dispose of an IDA without needing to
-free the individual IDs in it.  You can use ida_is_empty() to find
+free the individual IDs in it.  You can use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ida_is_empty()</span></code> to find
 out whether the IDA has any IDs currently allocated.</p>
 <p>The IDA handles its own locking.  It is safe to call any of the IDA
 functions without synchronisation in your code.</p>
@@ -384,7 +385,7 @@ statically allocated IDR, use <a class="reference internal" href="#c.DEFINE_IDR"
 <dl class="c function">
 <dt class="sig sig-object c" id="c.idr_preload_end">
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">idr_preload_end</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.idr_preload_end" title="Link to this definition">¶</a><br /></dt>
-<dd><p>end preload section started with idr_preload()</p>
+<dd><p>end preload section started with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">idr_preload()</span></code></p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -394,8 +395,8 @@ statically allocated IDR, use <a class="reference internal" href="#c.DEFINE_IDR"
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Each idr_preload() should be matched with an invocation of this
-function.  See idr_preload() for details.</p>
+<p>Each <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">idr_preload()</span></code> should be matched with an invocation of this
+function.  See <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">idr_preload()</span></code> for details.</p>
 </div>
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.idr_for_each_entry">

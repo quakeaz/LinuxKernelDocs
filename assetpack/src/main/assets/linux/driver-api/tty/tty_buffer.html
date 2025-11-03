@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -271,7 +271,7 @@ is now allocated and accounted for as ready for normal characters.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Callers other than <a class="reference internal" href="#c.flush_to_ldisc" title="flush_to_ldisc"><code class="xref c c-func docutils literal notranslate"><span class="pre">flush_to_ldisc()</span></code></a> need to exclude the kworker from
-concurrent use of the line discipline, see paste_selection().</p>
+concurrent use of the line discipline, see <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">paste_selection()</span></code>.</p>
 <p><strong>Return</strong></p>
 <p>the number of bytes processed.</p>
 </div>
@@ -559,7 +559,7 @@ buffer.</p>
 <p><strong>Description</strong></p>
 <p>This routine is called out of the software interrupt to flush data from the
 buffer chain to the line discipline.</p>
-<p>The receive_buf() method is single threaded for each tty instance.</p>
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">receive_buf()</span></code> method is single threaded for each tty instance.</p>
 <p>Locking: takes buffer lock to ensure single-threaded flip buffer ‘consumer’.</p>
 </div>
 <dl class="c function">
@@ -579,7 +579,7 @@ buffer chain to the line discipline.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>The function combines tty_insert_flip_string() and <a class="reference internal" href="#c.tty_flip_buffer_push" title="tty_flip_buffer_push"><code class="xref c c-func docutils literal notranslate"><span class="pre">tty_flip_buffer_push()</span></code></a>
+<p>The function combines <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">tty_insert_flip_string()</span></code> and <a class="reference internal" href="#c.tty_flip_buffer_push" title="tty_flip_buffer_push"><code class="xref c c-func docutils literal notranslate"><span class="pre">tty_flip_buffer_push()</span></code></a>
 with the exception of properly holding the <strong>port-&gt;lock</strong>.</p>
 <p>To be used only internally (by pty currently).</p>
 <p><strong>Return</strong></p>

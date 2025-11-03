@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -377,6 +377,68 @@ reserved.</p>
 <p>0 on success, negative error code otherwise.</p>
 </div>
 <dl class="c function">
+<dt class="sig sig-object c" id="c.amdgpu_bo_create_kernel">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">amdgpu_bo_create_kernel</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">amdgpu_device</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">adev</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">align</span></span>, <span class="n"><span class="pre">u32</span></span><span class="w"> </span><span class="n"><span class="pre">domain</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">amdgpu_bo</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bo_ptr</span></span>, <span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">gpu_addr</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">cpu_addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.amdgpu_bo_create_kernel" title="Link to this definition">¶</a><br /></dt>
+<dd><p>create BO for kernel use</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">amdgpu_device</span> <span class="pre">*adev</span></code></dt><dd><p>amdgpu device object</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">size</span></code></dt><dd><p>size for the new BO</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">align</span></code></dt><dd><p>alignment for the new BO</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">u32</span> <span class="pre">domain</span></code></dt><dd><p>where to place it</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">amdgpu_bo</span> <span class="pre">**bo_ptr</span></code></dt><dd><p>used to initialize BOs in structures</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">u64</span> <span class="pre">*gpu_addr</span></code></dt><dd><p>GPU addr of the pinned BO</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">**cpu_addr</span></code></dt><dd><p>optional CPU address mapping</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>Allocates and pins a BO for kernel internal use.</p>
+<p>This function is exported to allow the V4L2 isp device
+external to drm device to create and access the kernel BO.</p>
+<p><strong>Note</strong></p>
+<p>For bo_ptr new BO is only created if bo_ptr points to NULL.</p>
+<p><strong>Return</strong></p>
+<p>0 on success, negative error code otherwise.</p>
+</div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.amdgpu_bo_create_isp_user">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">amdgpu_bo_create_isp_user</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">amdgpu_device</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">adev</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.amdgpu_bo_create_isp_user" title="dma_buf"><span class="n"><span class="pre">dma_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dma_buf</span></span>, <span class="n"><span class="pre">u32</span></span><span class="w"> </span><span class="n"><span class="pre">domain</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">amdgpu_bo</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bo</span></span>, <span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">gpu_addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.amdgpu_bo_create_isp_user" title="Link to this definition">¶</a><br /></dt>
+<dd><p>create user BO for isp</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">amdgpu_device</span> <span class="pre">*adev</span></code></dt><dd><p>amdgpu device object</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dma_buf</span> <span class="pre">*dma_buf</span></code></dt><dd><p>DMABUF handle for isp buffer</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">u32</span> <span class="pre">domain</span></code></dt><dd><p>where to place it</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">amdgpu_bo</span> <span class="pre">**bo</span></code></dt><dd><p>used to initialize BOs in structures</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">u64</span> <span class="pre">*gpu_addr</span></code></dt><dd><p>GPU addr of the pinned BO</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>Imports isp DMABUF to allocate and pin a user BO for isp internal use. It does
+GART alloc to generate gpu_addr for BO to make it accessible through the
+GART aperture for ISP HW.</p>
+<p>This function is exported to allow the V4L2 isp device external to drm device
+to create and access the isp user BO.</p>
+<p><strong>Return</strong></p>
+<p>0 on success, negative error code otherwise.</p>
+</div>
+<dl class="c function">
 <dt class="sig sig-object c" id="c.amdgpu_bo_create_kernel_at">
 <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">amdgpu_bo_create_kernel_at</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">amdgpu_device</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">adev</span></span>, <span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="n"><span class="pre">offset</span></span>, <span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">amdgpu_bo</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bo_ptr</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">cpu_addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.amdgpu_bo_create_kernel_at" title="Link to this definition">¶</a><br /></dt>
 <dd><p>create BO for kernel use at specific location</p>
@@ -400,6 +462,44 @@ reserved.</p>
 <p>Creates a kernel BO at a specific offset in VRAM.</p>
 <p><strong>Return</strong></p>
 <p>0 on success, negative error code otherwise.</p>
+</div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.amdgpu_bo_free_kernel">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">amdgpu_bo_free_kernel</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">amdgpu_bo</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bo</span></span>, <span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">gpu_addr</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">cpu_addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.amdgpu_bo_free_kernel" title="Link to this definition">¶</a><br /></dt>
+<dd><p>free BO for kernel use</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">amdgpu_bo</span> <span class="pre">**bo</span></code></dt><dd><p>amdgpu BO to free</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">u64</span> <span class="pre">*gpu_addr</span></code></dt><dd><p>pointer to where the BO’s GPU memory space address was stored</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">**cpu_addr</span></code></dt><dd><p>pointer to where the BO’s CPU memory space address was stored</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>unmaps and unpin a BO for kernel internal use.</p>
+<p>This function is exported to allow the V4L2 isp device
+external to drm device to free the kernel BO.</p>
+</div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.amdgpu_bo_free_isp_user">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">amdgpu_bo_free_isp_user</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">amdgpu_bo</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bo</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.amdgpu_bo_free_isp_user" title="Link to this definition">¶</a><br /></dt>
+<dd><p>free BO for isp use</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">amdgpu_bo</span> <span class="pre">*bo</span></code></dt><dd><p>amdgpu isp user BO to free</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>unpin and unref BO for isp internal use.</p>
+<p>This function is exported to allow the V4L2 isp device
+external to drm device to free the isp user BO.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.amdgpu_bo_create">
@@ -479,7 +579,7 @@ reserved.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Calls ttm_bo_kmap() to set up the kernel virtual mapping; calls
+<p>Calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ttm_bo_kmap()</span></code> to set up the kernel virtual mapping; calls
 <a class="reference internal" href="#c.amdgpu_bo_kptr" title="amdgpu_bo_kptr"><code class="xref c c-func docutils literal notranslate"><span class="pre">amdgpu_bo_kptr()</span></code></a> to get the kernel virtual address.</p>
 <p><strong>Return</strong></p>
 <p>0 for success or a negative error code on failure.</p>
@@ -497,7 +597,7 @@ reserved.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Calls ttm_kmap_obj_virtual() to get the kernel virtual address</p>
+<p>Calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ttm_kmap_obj_virtual()</span></code> to get the kernel virtual address</p>
 <p><strong>Return</strong></p>
 <p>the virtual address of a buffer object area.</p>
 </div>
@@ -603,7 +703,7 @@ Changes placement and pin size accordingly.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Calls amdgpu_ttm_init() to initialize amdgpu memory manager.</p>
+<p>Calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">amdgpu_ttm_init()</span></code> to initialize amdgpu memory manager.</p>
 <p><strong>Return</strong></p>
 <p>0 for success or a negative error code on failure.</p>
 </div>
@@ -849,6 +949,21 @@ function, it might be useful to add check for this for debugging.</p>
 <p>current GPU offset of the object.</p>
 </div>
 <dl class="c function">
+<dt class="sig sig-object c" id="c.amdgpu_bo_fb_aper_addr">
+<span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">amdgpu_bo_fb_aper_addr</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">amdgpu_bo</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bo</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.amdgpu_bo_fb_aper_addr" title="Link to this definition">¶</a><br /></dt>
+<dd><p>return FB aperture GPU offset of the VRAM bo</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">amdgpu_bo</span> <span class="pre">*bo</span></code></dt><dd><p>amdgpu VRAM buffer object for which we query the offset</p>
+</dd>
+</dl>
+<p><strong>Return</strong></p>
+<p>current FB aperture GPU offset of the object.</p>
+</div>
+<dl class="c function">
 <dt class="sig sig-object c" id="c.amdgpu_bo_gpu_offset_no_check">
 <span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">amdgpu_bo_gpu_offset_no_check</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">amdgpu_bo</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bo</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.amdgpu_bo_gpu_offset_no_check" title="Link to this definition">¶</a><br /></dt>
 <dd><p>return GPU offset of bo</p>
@@ -939,7 +1054,7 @@ objects between different devices via PRIME</span></a>.</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<p>A struct amdgpu_device * if the attaching device is an amdgpu device or
+<p>A <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">amdgpu_device</span></code> * if the attaching device is an amdgpu device or
 partition, NULL otherwise.</p>
 </div>
 <dl class="c function">
@@ -1167,7 +1282,7 @@ address space.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">mmu_notifier_range</span> <span class="pre">*range</span></code></dt><dd><p>details on the invalidation</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">cur_seq</span></code></dt><dd><p>Value to pass to mmu_interval_set_seq()</p>
+<dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">cur_seq</span></code></dt><dd><p>Value to pass to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mmu_interval_set_seq()</span></code></p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -1187,7 +1302,7 @@ potentially dirty.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">mmu_notifier_range</span> <span class="pre">*range</span></code></dt><dd><p>details on the invalidation</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">cur_seq</span></code></dt><dd><p>Value to pass to mmu_interval_set_seq()</p>
+<dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">cur_seq</span></code></dt><dd><p>Value to pass to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mmu_interval_set_seq()</span></code></p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -1646,7 +1761,7 @@ BOs. They must already be reserved with the given ticket.</p>
 <p><strong>Description</strong></p>
 <p>Check if all VM PDs/PTs are ready for updates</p>
 <p><strong>Return</strong></p>
-<p>True if VM is not evicting.</p>
+<p>True if VM is not evicting and all VM entities are not stopped</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.amdgpu_vm_check_compute_bug">
@@ -2348,7 +2463,7 @@ mappings as we do so.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">amdgpu_task_info</span> <span class="pre">*task_info</span></code></dt><dd><p>task_info struct under discussion.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">amdgpu_task_info</span> <span class="pre">*task_info</span></code></dt><dd><p>task_info <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">under</span></code> discussion.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -2656,7 +2771,7 @@ support is used (with mapping between virtual and hardware IRQs).</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">work_struct</span> <span class="pre">*work</span></code></dt><dd><p>work structure in struct amdgpu_irq</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">work_struct</span> <span class="pre">*work</span></code></dt><dd><p>work structure in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">amdgpu_irq</span></code></p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -2671,7 +2786,7 @@ support is used (with mapping between virtual and hardware IRQs).</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">work_struct</span> <span class="pre">*work</span></code></dt><dd><p>work structure in struct amdgpu_irq</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">work_struct</span> <span class="pre">*work</span></code></dt><dd><p>work structure in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">amdgpu_irq</span></code></p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -2686,7 +2801,7 @@ support is used (with mapping between virtual and hardware IRQs).</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">work_struct</span> <span class="pre">*work</span></code></dt><dd><p>work structure in struct amdgpu_irq</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">work_struct</span> <span class="pre">*work</span></code></dt><dd><p>work structure in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">amdgpu_irq</span></code></p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -3128,6 +3243,7 @@ path failure, retry using legacy SW path.</p>
     int (*prepare_suspend)(struct amdgpu_ip_block *ip_block);
     int (*suspend)(struct amdgpu_ip_block *ip_block);
     int (*resume)(struct amdgpu_ip_block *ip_block);
+    void (*complete)(struct amdgpu_ip_block *ip_block);
     bool (*is_idle)(struct amdgpu_ip_block *ip_block);
     int (*wait_for_idle)(struct amdgpu_ip_block *ip_block);
     bool (*check_soft_reset)(struct amdgpu_ip_block *ip_block);
@@ -3169,6 +3285,8 @@ does not configure hw - Optional</p>
 <dt><code class="docutils literal notranslate"><span class="pre">suspend</span></code></dt><dd><p>handles IP specific hw/sw changes for suspend</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">resume</span></code></dt><dd><p>handles IP specific hw/sw changes for resume</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">complete</span></code></dt><dd><p>handles IP specific changes after resume</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">is_idle</span></code></dt><dd><p>returns current IP block idle status</p>
 </dd>

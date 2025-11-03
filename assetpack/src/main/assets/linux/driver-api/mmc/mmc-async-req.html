@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -223,16 +223,16 @@ preparations for the next request are done in parallel with the current
 transfer, the DMA preparation overhead would not affect the MMC performance.</p>
 <p>The intention of non-blocking (asynchronous) MMC requests is to minimize the
 time between when an MMC request ends and another MMC request begins.</p>
-<p>Using mmc_wait_for_req(), the MMC controller is idle while dma_map_sg and
+<p>Using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mmc_wait_for_req()</span></code>, the MMC controller is idle while dma_map_sg and
 dma_unmap_sg are processing. Using non-blocking MMC requests makes it
 possible to prepare the caches for next job in parallel with an active
 MMC request.</p>
 </section>
 <section id="mmc-block-driver">
 <h2>MMC block driver<a class="headerlink" href="#mmc-block-driver" title="Link to this heading">¶</a></h2>
-<p>The mmc_blk_issue_rw_rq() in the MMC block driver is made non-blocking.</p>
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mmc_blk_issue_rw_rq()</span></code> in the MMC block driver is made non-blocking.</p>
 <p>The increase in throughput is proportional to the time it takes to
-prepare (major part of preparations are dma_map_sg() and dma_unmap_sg())
+prepare (major part of preparations are <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_map_sg()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_unmap_sg()</span></code>)
 a request and how fast the memory is. The faster the MMC/SD is the
 more significant the prepare request time becomes. Roughly the expected
 performance gain is 5% for large writes and 10% on large reads on a L2 cache
@@ -246,7 +246,7 @@ in parallel with the transfer performance won’t be affected.</p>
 </section>
 <section id="mmc-core-api-extension">
 <h2>MMC core API extension<a class="headerlink" href="#mmc-core-api-extension" title="Link to this heading">¶</a></h2>
-<p>There is one new public function mmc_start_req().</p>
+<p>There is one new public function <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mmc_start_req()</span></code>.</p>
 <p>It starts a new MMC command request for a host. The function isn’t
 truly non-blocking. If there is an ongoing async request it waits
 for completion of that request and starts the new one and returns. It
@@ -255,17 +255,17 @@ request it starts the new request and returns immediately.</p>
 </section>
 <section id="mmc-host-extensions">
 <h2>MMC host extensions<a class="headerlink" href="#mmc-host-extensions" title="Link to this heading">¶</a></h2>
-<p>There are two optional members in the mmc_host_ops -- pre_req() and
-post_req() -- that the host driver may implement in order to move work
-to before and after the actual mmc_host_ops.request() function is called.</p>
-<p>In the DMA case pre_req() may do dma_map_sg() and prepare the DMA
-descriptor, and post_req() runs the dma_unmap_sg().</p>
+<p>There are two optional members in the mmc_host_ops -- <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pre_req()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">post_req()</span></code> -- that the host driver may implement in order to move work
+to before and after the actual mmc_host_ops.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">request()</span></code> function is called.</p>
+<p>In the DMA case <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pre_req()</span></code> may do <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_map_sg()</span></code> and prepare the DMA
+descriptor, and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">post_req()</span></code> runs the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_unmap_sg()</span></code>.</p>
 </section>
 <section id="optimize-for-the-first-request">
 <h2>Optimize for the first request<a class="headerlink" href="#optimize-for-the-first-request" title="Link to this heading">¶</a></h2>
 <p>The first request in a series of requests can’t be prepared in parallel
 with the previous transfer, since there is no previous request.</p>
-<p>The argument is_first_req in pre_req() indicates that there is no previous
+<p>The argument is_first_req in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pre_req()</span></code> indicates that there is no previous
 request. The host driver may optimize for this scenario to minimize
 the performance loss. A way to optimize for this is to split the current
 request in two chunks, prepare the first chunk and start the request,

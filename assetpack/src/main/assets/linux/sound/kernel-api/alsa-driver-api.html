@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -177,7 +177,7 @@
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span> <span class="pre">*parent</span></code></dt><dd><p>the parent device object</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">idx</span></code></dt><dd><p>card index (address) [0 ... (SNDRV_CARDS-1)]</p>
@@ -189,11 +189,14 @@
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">extra_size</span></code></dt><dd><p>allocate this extra size after the main soundcard structure</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_card</span> <span class="pre">**card_ret</span></code></dt><dd><p>the pointer to store the created card instance</p>
-<p>The function allocates snd_card instance via kzalloc with the given
-space for the driver to use freely.  The allocated struct is stored
-in the given card_ret pointer.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>The function allocates snd_card instance via kzalloc with the given
+space for the driver to use freely.  The allocated <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> stored
+in the given card_ret pointer.</p>
+</div></blockquote>
 <p><strong>Return</strong></p>
 <p>Zero if successful or a negative error code.</p>
 </div>
@@ -281,11 +284,14 @@ Release the object via <a class="reference internal" href="#c.snd_card_unref" ti
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_card</span> <span class="pre">*card</span></code></dt><dd><p>soundcard structure</p>
-<p>Disconnects all APIs from the file-operations (user space).</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Disconnects all APIs from the file-operations (user space).</p>
+</div></blockquote>
 <p><strong>Return</strong></p>
 <p>Zero, otherwise a negative error code.</p>
 <p><strong>Note</strong></p>
@@ -361,14 +367,17 @@ interface associated to given soundcard.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_card</span> <span class="pre">*card</span></code></dt><dd><p>soundcard structure</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*nid</span></code></dt><dd><p>new identification string</p>
-<p>This function sets the card identification and checks for name
-collisions.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This function sets the card identification and checks for name
+collisions.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.snd_card_add_dev_attr">
@@ -395,14 +404,17 @@ collisions.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_card</span> <span class="pre">*card</span></code></dt><dd><p>soundcard structure</p>
-<p>This function registers all the devices assigned to the soundcard.
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This function registers all the devices assigned to the soundcard.
 Until calling this, the ALSA control interface is blocked from the
 external accesses.  Thus, you should call this function at the end
 of the initialization of the card.</p>
-</dd>
-</dl>
+</div></blockquote>
 <p><strong>Return</strong></p>
 <p>Zero otherwise a negative error code if the registration failed.</p>
 </div>
@@ -414,14 +426,17 @@ of the initialization of the card.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_card</span> <span class="pre">*card</span></code></dt><dd><p>soundcard structure</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*component</span></code></dt><dd><p>the component id string</p>
-<p>This function adds the component id string to the supported list.
-The component can be referred from the alsa-lib.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This function adds the component id string to the supported list.
+The component can be referred from the alsa-lib.</p>
+</div></blockquote>
 <p><strong>Return</strong></p>
 <p>Zero otherwise a negative error code.</p>
 </div>
@@ -433,15 +448,18 @@ The component can be referred from the alsa-lib.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_card</span> <span class="pre">*card</span></code></dt><dd><p>soundcard structure</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file</span> <span class="pre">*file</span></code></dt><dd><p>file pointer</p>
-<p>This function adds the file to the file linked-list of the card.
-This linked-list is used to keep tracking the connection state,
-and to avoid the release of busy resources by hotplug.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This function adds the file to the file linked-list of the card.
+This linked-list is used to keep tracking the connection state,
+and to avoid the release of busy resources by hotplug.</p>
+</div></blockquote>
 <p><strong>Return</strong></p>
 <p>zero or a negative error code.</p>
 </div>
@@ -453,17 +471,20 @@ and to avoid the release of busy resources by hotplug.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_card</span> <span class="pre">*card</span></code></dt><dd><p>soundcard structure</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file</span> <span class="pre">*file</span></code></dt><dd><p>file pointer</p>
-<p>This function removes the file formerly added to the card via
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This function removes the file formerly added to the card via
 <a class="reference internal" href="#c.snd_card_file_add" title="snd_card_file_add"><code class="xref c c-func docutils literal notranslate"><span class="pre">snd_card_file_add()</span></code></a> function.
 If all files are removed and <a class="reference internal" href="#c.snd_card_free_when_closed" title="snd_card_free_when_closed"><code class="xref c c-func docutils literal notranslate"><span class="pre">snd_card_free_when_closed()</span></code></a> was
 called beforehand, it processes the pending release of
 resources.</p>
-</dd>
-</dl>
+</div></blockquote>
 <p><strong>Return</strong></p>
 <p>Zero or a negative error code.</p>
 </div>
@@ -844,7 +865,7 @@ otherwise a negative value on error.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Releases the allocated buffer via snd_dma_alloc_pages().</p>
+<p>Releases the allocated buffer via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">snd_dma_alloc_pages()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.snd_devm_alloc_dir_pages">
@@ -867,7 +888,7 @@ otherwise a negative value on error.</p>
 <p><strong>Description</strong></p>
 <p>Allocate buffer pages depending on the given type and manage using devres.
 The pages will be released automatically at the device removal.</p>
-<p>Unlike snd_dma_alloc_pages(), this function requires the real device pointer,
+<p>Unlike <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">snd_dma_alloc_pages()</span></code>, this function requires the real device pointer,
 hence it can’t work with SNDRV_DMA_TYPE_CONTINUOUS or
 SNDRV_DMA_TYPE_VMALLOC type.</p>
 <p><strong>Return</strong></p>
@@ -1258,9 +1279,9 @@ negative error code.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_interval</span> <span class="pre">*i</span></code></dt><dd><p>interval to refine</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">rats_count</span></code></dt><dd><p>number of struct ratden</p>
+<dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">rats_count</span></code></dt><dd><p>number of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ratden</span></code></p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">snd_ratden</span> <span class="pre">*rats</span></code></dt><dd><p>struct ratden array</p>
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">snd_ratden</span> <span class="pre">*rats</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ratden</span></code> array</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">*nump</span></code></dt><dd><p>pointer to store the resultant numerator</p>
 </dd>
@@ -1497,7 +1518,7 @@ negative error code.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">snd_pcm_hw_param_t</span> <span class="pre">var</span></code></dt><dd><p>hw_params variable to apply the ratnums constraint</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">snd_pcm_hw_constraint_ratnums</span> <span class="pre">*r</span></code></dt><dd><p>struct snd_ratnums constriants</p>
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">snd_pcm_hw_constraint_ratnums</span> <span class="pre">*r</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_ratnums</span></code> constriants</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
@@ -1518,7 +1539,7 @@ negative error code.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">snd_pcm_hw_param_t</span> <span class="pre">var</span></code></dt><dd><p>hw_params variable to apply the ratdens constraint</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">snd_pcm_hw_constraint_ratdens</span> <span class="pre">*r</span></code></dt><dd><p>struct snd_ratdens constriants</p>
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">snd_pcm_hw_constraint_ratdens</span> <span class="pre">*r</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_ratdens</span></code> constriants</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
@@ -1783,7 +1804,7 @@ audio data transmission.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">private_value</span></code></dt><dd><p>the value passed to each kcontrol’s private_value field</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_pcm_chmap</span> <span class="pre">**info_ret</span></code></dt><dd><p>store struct snd_pcm_chmap instance if non-NULL</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_pcm_chmap</span> <span class="pre">**info_ret</span></code></dt><dd><p>store <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_pcm_chmap</span></code> instance if non-NULL</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -3221,7 +3242,7 @@ type and size, and set the managed_buffer_alloc flag to each substream.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Allocates the DMA buffer on the BUS type given earlier to
-snd_pcm_lib_preallocate_xxx_pages().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">snd_pcm_lib_preallocate_xxx_pages()</span></code>.</p>
 <p><strong>Return</strong></p>
 <p>1 if the buffer is changed, 0 if not changed, or a negative
 code on failure.</p>
@@ -3292,7 +3313,7 @@ direction of the substream. If the substream is a playback stream the dst
 fields will be initialized, if it is a capture stream the src fields will be
 initialized. The {dst,src}_addr_width field will only be initialized if the
 SND_DMAENGINE_PCM_DAI_FLAG_PACK flag is set or if the addr_width field of
-the DAI DMA data struct is not equal to DMA_SLAVE_BUSWIDTH_UNDEFINED. If
+the DAI DMA data <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> not equal to DMA_SLAVE_BUSWIDTH_UNDEFINED. If
 both conditions are met the latter takes priority.</p>
 </div>
 <dl class="c function">
@@ -3518,9 +3539,9 @@ for dmaengine transfer</p>
 <div class="kernelindent docutils container">
 <p><strong>Definition</strong>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct snd_dmaengine_pcm_config {
-    int (*prepare_slave_config)(struct snd_pcm_substream *substream,struct snd_pcm_hw_params *params, struct dma_slave_config *slave_config);
-    struct dma_chan *(*compat_request_channel)(struct snd_soc_pcm_runtime *rtd, struct snd_pcm_substream *substream);
-    int (*process)(struct snd_pcm_substream *substream,int channel, unsigned long hwoff, unsigned long bytes);
+    int (*prepare_slave_config)(struct snd_pcm_substream *substream, struct snd_pcm_hw_params *params, struct dma_slave_config *slave_config);
+    struct dma_chan *(*compat_request_channel)( struct snd_soc_pcm_runtime *rtd, struct snd_pcm_substream *substream);
+    int (*process)(struct snd_pcm_substream *substream, int channel, unsigned long hwoff, unsigned long bytes);
     const char *name;
     dma_filter_fn compat_filter_fn;
     struct device *dma_dev;
@@ -3553,7 +3574,7 @@ device.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">chan_names</span></code></dt><dd><p>If set, these custom DMA channel names will be requested at
 registration time.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">pcm_hardware</span></code></dt><dd><p>snd_pcm_hardware struct to be used for the PCM.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">pcm_hardware</span></code></dt><dd><p>snd_pcm_hardware <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">to</span></code> be used for the PCM.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">prealloc_buffer_size</span></code></dt><dd><p>Size of the preallocated audio buffer.</p>
 </dd>
@@ -3653,7 +3674,7 @@ access permissions (<strong>access</strong>). Each element is locked when <stron
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Allocates a new struct snd_kcontrol instance and initialize from the given
+<p>Allocates a new <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_kcontrol</span></code> instance and initialize from the given
 template.  When the access field of ncontrol is 0, it’s assumed as
 READWRITE access. When the count field is 0, it’s assumes as one.</p>
 <p><strong>Return</strong></p>
@@ -4092,7 +4113,7 @@ the caller has to fill <strong>info-&gt;access</strong>.</p>
 <p>Writes a value on the given register.  This will invoke the write
 callback directly after the register check.
 This function doesn’t change the register cache unlike
-#snd_ca97_write_cache(), so use this only when you don’t want to
+#<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">snd_ca97_write_cache()</span></code>, so use this only when you don’t want to
 reflect the change to the suspend/resume state.</p>
 </div>
 <dl class="c function">
@@ -4249,7 +4270,7 @@ the private data.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Creates an Codec97 component.  An struct snd_ac97 instance is newly
+<p>Creates an Codec97 component.  An <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_ac97</span></code> instance is newly
 allocated and initialized from the template.  The codec
 is then initialized by the standard procedure.</p>
 <p>The template must include the codec number (num) and address (addr),
@@ -4591,7 +4612,7 @@ NOP when NULL is passed to <strong>kcontrol</strong>.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Add a virtual follower control to the given master element created via
-snd_ctl_create_virtual_master() beforehand.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">snd_ctl_create_virtual_master()</span></code> beforehand.</p>
 <p>All followers must be the same type (returning the same information
 via info callback).  The function doesn’t check it, so it’s your
 responsibility.</p>
@@ -4866,7 +4887,7 @@ Use <a class="reference internal" href="#c.snd_rawmidi_set_ops" title="snd_rawmi
 <p>Creates a new MPU-401 instance.</p>
 <p>Note that the rawmidi instance is returned on the rrawmidi argument,
 not the mpu401 instance itself.  To access to the mpu401 instance,
-cast from rawmidi-&gt;private_data (with struct snd_mpu401 magic-cast).</p>
+cast from rawmidi-&gt;private_data (with <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_mpu401</span></code> magic-cast).</p>
 <p><strong>Return</strong></p>
 <p>Zero if successful, or a negative error code.</p>
 </div>
@@ -5077,7 +5098,7 @@ it will be removed automatically at the card removal, too.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">device</span></code></dt><dd><p>device number</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">dirn</span></code></dt><dd><p>device direction, should be of type enum snd_compr_direction</p>
+<dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">dirn</span></code></dt><dd><p>device direction, should be of type <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">snd_compr_direction</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*id</span></code></dt><dd><p>ID string</p>
 </dd>
@@ -5825,7 +5846,7 @@ Otherwise it clears the current buffer information.</p>
 </dl>
 <p><strong>Note</strong></p>
 <p>This function will work correctly if the control has been registered
-for a component. With snd_soc_add_codec_controls() or via table based
+for a component. With <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">snd_soc_add_codec_controls()</span></code> or via table based
 setup for either a CODEC or component driver. Otherwise the behavior is
 undefined.</p>
 </div>
@@ -5903,10 +5924,10 @@ DAI links in dai_link array.</p>
 <p><strong>Description</strong></p>
 <p>This function updates the DAI link format for all DAIs connected to the DAI
 link for the specified runtime.</p>
-<p>Returns 0 on success, otherwise a negative error code.</p>
 <p><strong>Note</strong></p>
 <p>For setups with a static format set the dai_fmt field in the
-corresponding snd_dai_link struct instead of using this function.</p>
+corresponding snd_dai_link <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">instead</span></code> of using this function.</p>
+<p>Returns 0 on success, otherwise a negative error code.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.snd_soc_set_dmi_name">
@@ -6266,7 +6287,7 @@ before the first IO attempt of the component.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Calls regmap_exit() on the regmap instance associated to the component and
+<p>Calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">regmap_exit()</span></code> on the regmap instance associated to the component and
 removes the regmap instance from the component.</p>
 <p>This function should only be used if <a class="reference internal" href="#c.snd_soc_component_init_regmap" title="snd_soc_component_init_regmap"><code class="xref c c-func docutils literal notranslate"><span class="pre">snd_soc_component_init_regmap()</span></code></a> was used
 to initialize the regmap instance.</p>
@@ -6789,7 +6810,7 @@ depending on nbits, and there is no shift.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Callback strobe a register bit to high then low (or the inverse)
-in one pass of a single mixer enum control.</p>
+in one pass of a single mixer <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">control</span></code>.</p>
 <p>Returns 1 for success.</p>
 </div>
 <dl class="c function">
@@ -6983,7 +7004,7 @@ stream or path usage.</p>
 the widget receiving the audio signal, whilst the source is the sender
 of the audio signal.</p>
 <p>Returns 0 for success else error. On error all resources can be freed
-with a call to snd_soc_card_free().</p>
+with a call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">snd_soc_card_free()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.snd_soc_dapm_del_routes">
@@ -7003,32 +7024,6 @@ with a call to snd_soc_card_free().</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Removes routes from the DAPM context.</p>
-</div>
-<dl class="c function">
-<dt class="sig sig-object c" id="c.snd_soc_dapm_weak_routes">
-<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">snd_soc_dapm_weak_routes</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">snd_soc_dapm_context</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dapm</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">snd_soc_dapm_route</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">route</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">num</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.snd_soc_dapm_weak_routes" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Mark routes between DAPM widgets as weak</p>
-</dd></dl>
-
-<div class="kernelindent docutils container">
-<p><strong>Parameters</strong></p>
-<dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_soc_dapm_context</span> <span class="pre">*dapm</span></code></dt><dd><p>DAPM context</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">snd_soc_dapm_route</span> <span class="pre">*route</span></code></dt><dd><p>audio routes</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">num</span></code></dt><dd><p>number of routes</p>
-</dd>
-</dl>
-<p><strong>Description</strong></p>
-<p>Mark existing routes matching those specified in the passed array
-as being weak, meaning that they are ignored for the purpose of
-power decisions.  The main intended use case is for sidetone paths
-which couple audio between other independent paths if they are both
-active in order to make the combination work better at the user
-level but which aren’t intended to be “used”.</p>
-<p>Note that CODEC drivers should not use this as sidetone type paths
-can frequently also be used as bypass paths.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.snd_soc_dapm_new_widgets">
@@ -7413,55 +7408,6 @@ do any widget power switching.</p>
 do any widget power switching.</p>
 </div>
 <dl class="c function">
-<dt class="sig sig-object c" id="c.snd_soc_dapm_nc_pin_unlocked">
-<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">snd_soc_dapm_nc_pin_unlocked</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">snd_soc_dapm_context</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dapm</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pin</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.snd_soc_dapm_nc_pin_unlocked" title="Link to this definition">¶</a><br /></dt>
-<dd><p>permanently disable pin.</p>
-</dd></dl>
-
-<div class="kernelindent docutils container">
-<p><strong>Parameters</strong></p>
-<dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_soc_dapm_context</span> <span class="pre">*dapm</span></code></dt><dd><p>DAPM context</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*pin</span></code></dt><dd><p>pin name</p>
-</dd>
-</dl>
-<p><strong>Description</strong></p>
-<p>Marks the specified pin as being not connected, disabling it along
-any parent or child widgets.  At present this is identical to
-<a class="reference internal" href="#c.snd_soc_dapm_disable_pin" title="snd_soc_dapm_disable_pin"><code class="xref c c-func docutils literal notranslate"><span class="pre">snd_soc_dapm_disable_pin()</span></code></a> but in future it will be extended to do
-additional things such as disabling controls which only affect
-paths through the pin.</p>
-<p>Requires external locking.</p>
-<p><strong>NOTE</strong></p>
-<p><a class="reference internal" href="#c.snd_soc_dapm_sync" title="snd_soc_dapm_sync"><code class="xref c c-func docutils literal notranslate"><span class="pre">snd_soc_dapm_sync()</span></code></a> needs to be called after this for DAPM to
-do any widget power switching.</p>
-</div>
-<dl class="c function">
-<dt class="sig sig-object c" id="c.snd_soc_dapm_nc_pin">
-<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">snd_soc_dapm_nc_pin</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">snd_soc_dapm_context</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dapm</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pin</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.snd_soc_dapm_nc_pin" title="Link to this definition">¶</a><br /></dt>
-<dd><p>permanently disable pin.</p>
-</dd></dl>
-
-<div class="kernelindent docutils container">
-<p><strong>Parameters</strong></p>
-<dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_soc_dapm_context</span> <span class="pre">*dapm</span></code></dt><dd><p>DAPM context</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*pin</span></code></dt><dd><p>pin name</p>
-</dd>
-</dl>
-<p><strong>Description</strong></p>
-<p>Marks the specified pin as being not connected, disabling it along
-any parent or child widgets.  At present this is identical to
-<a class="reference internal" href="#c.snd_soc_dapm_disable_pin" title="snd_soc_dapm_disable_pin"><code class="xref c c-func docutils literal notranslate"><span class="pre">snd_soc_dapm_disable_pin()</span></code></a> but in future it will be extended to do
-additional things such as disabling controls which only affect
-paths through the pin.</p>
-<p><strong>NOTE</strong></p>
-<p><a class="reference internal" href="#c.snd_soc_dapm_sync" title="snd_soc_dapm_sync"><code class="xref c c-func docutils literal notranslate"><span class="pre">snd_soc_dapm_sync()</span></code></a> needs to be called after this for DAPM to
-do any widget power switching.</p>
-</div>
-<dl class="c function">
 <dt class="sig sig-object c" id="c.snd_soc_dapm_get_pin_status">
 <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">snd_soc_dapm_get_pin_status</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">snd_soc_dapm_context</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dapm</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pin</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.snd_soc_dapm_get_pin_status" title="Link to this definition">¶</a><br /></dt>
 <dd><p>get audio pin status</p>
@@ -7667,7 +7613,7 @@ sound/core/jack.c.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*</span> <span class="pre">name</span></code></dt><dd><p>the name for the snd_kcontrol object</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">mask</span></code></dt><dd><p>a bitmask of enum snd_jack_type values that can be detected
+<dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">mask</span></code></dt><dd><p>a bitmask of <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">snd_jack_type</span></code> values that can be detected
 by this snd_jack_kctl object.</p>
 </dd>
 </dl>
@@ -7689,7 +7635,7 @@ by this snd_jack_kctl object.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*id</span></code></dt><dd><p>an identifying string for this jack</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">type</span></code></dt><dd><p>a bitmask of enum snd_jack_type values that can be detected by
+<dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">type</span></code></dt><dd><p>a bitmask of <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">snd_jack_type</span></code> values that can be detected by
 this jack</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_jack</span> <span class="pre">**jjack</span></code></dt><dd><p>Used to provide the allocated jack object to the caller.</p>
@@ -7766,9 +7712,9 @@ context which can sleep (such as a workqueue).</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_soc_jack</span> <span class="pre">*jack</span></code></dt><dd><p>the jack</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">status</span></code></dt><dd><p>a bitmask of enum snd_jack_type values that are currently detected.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">status</span></code></dt><dd><p>a bitmask of <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">snd_jack_type</span></code> values that are currently detected.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">mask</span></code></dt><dd><p>a bitmask of enum snd_jack_type values that being reported.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">mask</span></code></dt><dd><p>a bitmask of <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">snd_jack_type</span></code> values that being reported.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -7826,7 +7772,7 @@ the type of jack from the already declared jack zones</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_soc_jack</span> <span class="pre">*jack</span></code></dt><dd><p>ASoC jack created with snd_soc_card_jack_new_pins()</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_soc_jack</span> <span class="pre">*jack</span></code></dt><dd><p>ASoC jack created with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">snd_soc_card_jack_new_pins()</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">count</span></code></dt><dd><p>Number of pins</p>
 </dd>
@@ -8090,7 +8036,7 @@ or <a class="reference internal" href="#c.snd_lookup_minor_data" title="snd_look
 <div><p>give a BUG warning message and stack trace</p>
 </div></blockquote>
 <p><strong>Description</strong></p>
-<p>Calls WARN() if CONFIG_SND_DEBUG is set.
+<p>Calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">WARN()</span></code> if CONFIG_SND_DEBUG is set.
 Ignored when CONFIG_SND_DEBUG is not set.</p>
 </div></blockquote>
 <dl class="c macro">
@@ -8120,21 +8066,22 @@ otherwise just evaluates the conditional and returns the value.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">file_operations</span> <span class="pre">*fops</span></code></dt><dd><p>File operations for the driver</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">unit</span></code></dt><dd><p>Unit number to allocate</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span> <span class="pre">*dev</span></code></dt><dd><p>device pointer</p>
-<p>Allocate a special sound device by minor number from the sound
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Allocate a special sound device by minor number from the sound
 subsystem.</p>
-</dd>
-</dl>
+</div></blockquote>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>The allocated number is returned on success. On failure,</dt><dd><p>a negative error code is returned.</p>
-</dd>
-</dl>
+<p>The allocated number is returned on success. On failure,
+a negative error code is returned.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.register_sound_mixer">
@@ -8144,19 +8091,20 @@ subsystem.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">file_operations</span> <span class="pre">*fops</span></code></dt><dd><p>File operations for the driver</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">dev</span></code></dt><dd><p>Unit number to allocate</p>
-<p>Allocate a mixer device. Unit is the number of the mixer requested.
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Allocate a mixer device. Unit is the number of the mixer requested.
 Pass -1 to request the next free mixer unit.</p>
-</dd>
-</dl>
+</div></blockquote>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>On success, the allocated number is returned. On failure,</dt><dd><p>a negative error code is returned.</p>
-</dd>
-</dl>
+<p>On success, the allocated number is returned. On failure,
+a negative error code is returned.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.register_sound_dsp">
@@ -8166,21 +8114,22 @@ Pass -1 to request the next free mixer unit.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">file_operations</span> <span class="pre">*fops</span></code></dt><dd><p>File operations for the driver</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">dev</span></code></dt><dd><p>Unit number to allocate</p>
-<p>Allocate a DSP device. Unit is the number of the DSP requested.
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Allocate a DSP device. Unit is the number of the DSP requested.
 Pass -1 to request the next free DSP unit.</p>
 <p>This function allocates both the audio and dsp device entries together
 and will always allocate them as a matching pair - eg dsp3/audio3</p>
-</dd>
-</dl>
+</div></blockquote>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>On success, the allocated number is returned. On failure,</dt><dd><p>a negative error code is returned.</p>
-</dd>
-</dl>
+<p>On success, the allocated number is returned. On failure,
+a negative error code is returned.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.unregister_sound_special">
@@ -8190,13 +8139,16 @@ and will always allocate them as a matching pair - eg dsp3/audio3</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">unit</span></code></dt><dd><p>unit number to allocate</p>
-<p>Release a sound device that was allocated with
-register_sound_special(). The unit passed is the return value from
-the register function.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Release a sound device that was allocated with
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">register_sound_special()</span></code>. The unit passed is the return value from
+the register function.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.unregister_sound_mixer">
@@ -8206,12 +8158,15 @@ the register function.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">unit</span></code></dt><dd><p>unit number to allocate</p>
-<p>Release a sound device that was allocated with <a class="reference internal" href="#c.register_sound_mixer" title="register_sound_mixer"><code class="xref c c-func docutils literal notranslate"><span class="pre">register_sound_mixer()</span></code></a>.
-The unit passed is the return value from the register function.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Release a sound device that was allocated with <a class="reference internal" href="#c.register_sound_mixer" title="register_sound_mixer"><code class="xref c c-func docutils literal notranslate"><span class="pre">register_sound_mixer()</span></code></a>.
+The unit passed is the return value from the register function.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.unregister_sound_dsp">
@@ -8221,13 +8176,16 @@ The unit passed is the return value from the register function.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">unit</span></code></dt><dd><p>unit number to allocate</p>
-<p>Release a sound device that was allocated with <a class="reference internal" href="#c.register_sound_dsp" title="register_sound_dsp"><code class="xref c c-func docutils literal notranslate"><span class="pre">register_sound_dsp()</span></code></a>.
-The unit passed is the return value from the register function.</p>
-<p>Both of the allocated units are released together automatically.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Release a sound device that was allocated with <a class="reference internal" href="#c.register_sound_dsp" title="register_sound_dsp"><code class="xref c c-func docutils literal notranslate"><span class="pre">register_sound_dsp()</span></code></a>.
+The unit passed is the return value from the register function.</p>
+<p>Both of the allocated units are released together automatically.</p>
+</div></blockquote>
 </div>
 </section>
 </section>

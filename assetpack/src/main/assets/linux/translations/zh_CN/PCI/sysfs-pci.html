@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -313,10 +313,10 @@ cpumask - 文件包含一个cpumask类型的
 <p>为了支持上述的PCI资源映射，Linux平台代码最好定义ARCH_GENERIC_PCI_MMAP_RESOURCE并使用该
 功能的通用实现。为了支持通过/proc/bus/pci中的文件实现mmapmmap()的历史接口，平台也可以设置
 HAVE_PCI_MMAP。</p>
-<p>另外，设置了 HAVE_PCI_MMAP 的平台可以提供他们自己的 pci_mmap_page_range() 实现，而不是定
+<p>另外，设置了 HAVE_PCI_MMAP 的平台可以提供他们自己的 <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_mmap_page_range()</span></code> 实现，而不是定
 义 ARCH_GENERIC_PCI_MMAP_RESOURCE。</p>
-<p>支持PCI资源的写组合映射的平台必须定义arch_can_pci_mmap_wc()，当写组合被允许时，在运行时应
-评估为非零。支持I/O资源映射的平台同样定义arch_can_pci_mmap_io()。</p>
+<p>支持PCI资源的写组合映射的平台必须定义<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">arch_can_pci_mmap_wc()</span></code>，当写组合被允许时，在运行时应
+评估为非零。支持I/O资源映射的平台同样定义<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">arch_can_pci_mmap_io()</span></code>。</p>
 <p>遗留资源由HAVE_PCI_LEGACY定义保护。希望支持遗留功能的平台应该定义它并提供 pci_legacy_read,
 pci_legacy_write 和 pci_mmap_legacy_page_range 函数。</p>
 </section>

@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Directory Entries &#8212; The Linux Kernel  documentation</title>
+    <title>4.3. Directory Entries &#8212; The Linux Kernel  documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=a152c8ac" />
     <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
@@ -13,6 +13,8 @@
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="4.4. Extended Attributes" href="attributes.html" />
+    <link rel="prev" title="4.2. The Contents of inode.i_block" href="ifork.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -31,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -63,10 +65,25 @@
 <li class="toctree-l1"><a class="reference internal" href="../../maintainer/index.html">Maintainer handbook</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../process/index.html">All development-process docs</a></li>
 </ul>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../core-api/index.html">Core API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../driver-api/index.html">Driver APIs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../subsystem-apis.html">Subsystems</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../subsystem-apis.html">Subsystems</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../subsystem-apis.html#core-subsystems">Core subsystems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../subsystem-apis.html#human-interfaces">Human interfaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../subsystem-apis.html#networking-interfaces">Networking interfaces</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../subsystem-apis.html#storage-interfaces">Storage interfaces</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Filesystems in the Linux kernel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../block/index.html">Block</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../cdrom/index.html">CD-ROM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../scsi/index.html">SCSI Subsystem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../target/index.html">TCM Virtual Device</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../nvme/index.html">NVMe Subsystem</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../subsystem-apis.html#other-subsystems">Other subsystems</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../locking/index.html">Locking</a></li>
 </ul>
 <ul>
@@ -130,7 +147,7 @@
 
 
 <section id="directory-entries">
-<h1>Directory Entries<a class="headerlink" href="#directory-entries" title="Link to this heading">¶</a></h1>
+<h1><span class="section-number">4.3. </span>Directory Entries<a class="headerlink" href="#directory-entries" title="Link to this heading">¶</a></h1>
 <p>In an ext4 filesystem, a directory is more or less a flat file that maps
 an arbitrary byte string (usually ASCII) to an inode number on the
 filesystem. There can be many directory entries across the filesystem
@@ -140,7 +157,7 @@ such, directory entries are found by reading the data block(s)
 associated with a directory file for the particular directory entry that
 is desired.</p>
 <section id="linear-classic-directories">
-<h2>Linear (Classic) Directories<a class="headerlink" href="#linear-classic-directories" title="Link to this heading">¶</a></h2>
+<h2><span class="section-number">4.3.1. </span>Linear (Classic) Directories<a class="headerlink" href="#linear-classic-directories" title="Link to this heading">¶</a></h2>
 <p>By default, each directory lists its entries in an “almost-linear”
 array. I write “almost” because it’s not a linear array in the memory
 sense because directory entries are not split across filesystem blocks.
@@ -368,7 +385,7 @@ the entire directory entry block up to (but not including) the fake
 directory entry.</p>
 </section>
 <section id="hash-tree-directories">
-<h2>Hash Tree Directories<a class="headerlink" href="#hash-tree-directories" title="Link to this heading">¶</a></h2>
+<h2><span class="section-number">4.3.2. </span>Hash Tree Directories<a class="headerlink" href="#hash-tree-directories" title="Link to this heading">¶</a></h2>
 <p>A linear array of directory entries isn’t great for performance, so a
 new feature was added to ext3 to provide a faster (but peculiar)
 balanced tree keyed off a hash of the directory entry name. If the
@@ -477,28 +494,28 @@ data.</p></td>
 </tr>
 <tr class="row-even"><td><p>0x18</p></td>
 <td><p>__le32</p></td>
-<td><p>struct dx_root_info.reserved_zero</p></td>
+<td><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dx_root_info</span></code>.reserved_zero</p></td>
 <td><p>Zero.</p></td>
 </tr>
 <tr class="row-odd"><td><p>0x1C</p></td>
 <td><p>u8</p></td>
-<td><p>struct dx_root_info.hash_version</p></td>
+<td><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dx_root_info</span></code>.hash_version</p></td>
 <td><p>Hash type, see <a class="reference internal" href="#dirhash">dirhash</a> table below.</p></td>
 </tr>
 <tr class="row-even"><td><p>0x1D</p></td>
 <td><p>u8</p></td>
-<td><p>struct dx_root_info.info_length</p></td>
+<td><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dx_root_info</span></code>.info_length</p></td>
 <td><p>Length of the tree information, 0x8.</p></td>
 </tr>
 <tr class="row-odd"><td><p>0x1E</p></td>
 <td><p>u8</p></td>
-<td><p>struct dx_root_info.indirect_levels</p></td>
+<td><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dx_root_info</span></code>.indirect_levels</p></td>
 <td><p>Depth of the htree. Cannot be larger than 3 if the INCOMPAT_LARGEDIR
 feature is set; cannot be larger than 2 otherwise.</p></td>
 </tr>
 <tr class="row-even"><td><p>0x1F</p></td>
 <td><p>u8</p></td>
-<td><p>struct dx_root_info.unused_flags</p></td>
+<td><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dx_root_info</span></code>.unused_flags</p></td>
 <td></td>
 </tr>
 <tr class="row-odd"><td><p>0x20</p></td>
@@ -519,7 +536,7 @@ header itself.</p></td>
 <td><p>The block number (within the directory file) that goes with hash=0.</p></td>
 </tr>
 <tr class="row-even"><td><p>0x28</p></td>
-<td><p>struct dx_entry</p></td>
+<td><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dx_entry</span></code></p></td>
 <td><p>entries[0]</p></td>
 <td><p>As many 8-byte <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dx_entry</span></code> as fits in the rest of the data block.</p></td>
 </tr>
@@ -616,7 +633,7 @@ header itself.</p></td>
 hash value of this block. This value is stored in the parent block.</p></td>
 </tr>
 <tr class="row-odd"><td><p>0x12</p></td>
-<td><p>struct dx_entry</p></td>
+<td><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dx_entry</span></code></p></td>
 <td><p>entries[0]</p></td>
 <td><p>As many 8-byte <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dx_entry</span></code> as fits in the rest of the data block.</p></td>
 </tr>

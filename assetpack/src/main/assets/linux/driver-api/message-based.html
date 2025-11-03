@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -224,18 +224,21 @@
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">MPT_CALLBACK</span> <span class="pre">cbfunc</span></code></dt><dd><p>callback function pointer</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">MPT_DRIVER_CLASS</span> <span class="pre">dclass</span></code></dt><dd><p>Protocol driver’s class (<code class="docutils literal notranslate"><span class="pre">MPT_DRIVER_CLASS</span></code> enum value)</p>
+<dt><code class="docutils literal notranslate"><span class="pre">MPT_DRIVER_CLASS</span> <span class="pre">dclass</span></code></dt><dd><p>Protocol driver’s class (<code class="docutils literal notranslate"><span class="pre">MPT_DRIVER_CLASS</span></code> <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">value</span></code>)</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">char</span> <span class="pre">*func_name</span></code></dt><dd><p>call function’s name</p>
-<p>This routine is called by a protocol-specific driver (SCSI host,
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This routine is called by a protocol-specific driver (SCSI host,
 LAN, SCSI target) to register its reply callback routine.  Each
 protocol-specific driver must do this before it will be able to
 use any IOC resources, such as obtaining request frames.</p>
-</dd>
-</dl>
+</div></blockquote>
 <p><strong>NOTES</strong></p>
 <dl>
 <dt>The SCSI protocol driver currently calls this routine thrice</dt><dd><p>in order to register separate callbacks; one for “normal” SCSI IO;
@@ -255,12 +258,15 @@ considered an error by the caller.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">u8</span> <span class="pre">cb_idx</span></code></dt><dd><p>previously registered callback handle</p>
-<p>Each protocol-specific driver should call this routine when its
-module is unloaded.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Each protocol-specific driver should call this routine when its
+module is unloaded.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mpt_event_register">
@@ -270,15 +276,18 @@ module is unloaded.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">u8</span> <span class="pre">cb_idx</span></code></dt><dd><p>previously registered (via mpt_register) callback handle</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">MPT_EVHANDLER</span> <span class="pre">ev_cbfunc</span></code></dt><dd><p>callback function</p>
-<p>This routine can be called by one or more protocol-specific drivers
-if/when they choose to be notified of MPT events.</p>
-<p>Returns 0 for success.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This routine can be called by one or more protocol-specific drivers
+if/when they choose to be notified of MPT events.</p>
+<p>Returns 0 for success.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mpt_event_deregister">
@@ -288,13 +297,16 @@ if/when they choose to be notified of MPT events.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">u8</span> <span class="pre">cb_idx</span></code></dt><dd><p>previously registered callback handle</p>
-<p>Each protocol-specific driver should call this routine
-when it does not (or can no longer) handle events,
-or when its module is unloaded.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Each protocol-specific driver should call this routine
+when it does not (or can no longer) handle events,
+or when its module is unloaded.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mpt_reset_register">
@@ -304,15 +316,18 @@ or when its module is unloaded.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">u8</span> <span class="pre">cb_idx</span></code></dt><dd><p>previously registered (via mpt_register) callback handle</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">MPT_RESETHANDLER</span> <span class="pre">reset_func</span></code></dt><dd><p>reset function</p>
-<p>This routine can be called by one or more protocol-specific drivers
-if/when they choose to be notified of IOC resets.</p>
-<p>Returns 0 for success.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This routine can be called by one or more protocol-specific drivers
+if/when they choose to be notified of IOC resets.</p>
+<p>Returns 0 for success.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mpt_reset_deregister">
@@ -322,13 +337,16 @@ if/when they choose to be notified of IOC resets.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">u8</span> <span class="pre">cb_idx</span></code></dt><dd><p>previously registered callback handle</p>
-<p>Each protocol-specific driver should call this routine
-when it does not (or can no longer) handle IOC reset handling,
-or when its module is unloaded.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Each protocol-specific driver should call this routine
+when it does not (or can no longer) handle IOC reset handling,
+or when its module is unloaded.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mpt_device_driver_register">
@@ -366,16 +384,19 @@ or when its module is unloaded.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">u8</span> <span class="pre">cb_idx</span></code></dt><dd><p>Handle of registered MPT protocol driver</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">MPT_ADAPTER</span> <span class="pre">*ioc</span></code></dt><dd><p>Pointer to MPT adapter structure</p>
-<p>Obtain an MPT request frame from the pool (of 1024) that are
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Obtain an MPT request frame from the pool (of 1024) that are
 allocated per MPT adapter.</p>
 <p>Returns pointer to a MPT request frame or <code class="docutils literal notranslate"><span class="pre">NULL</span></code> if none are available
 or IOC is not active.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mpt_put_msg_frame">
@@ -385,16 +406,19 @@ or IOC is not active.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">u8</span> <span class="pre">cb_idx</span></code></dt><dd><p>Handle of registered MPT protocol driver</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">MPT_ADAPTER</span> <span class="pre">*ioc</span></code></dt><dd><p>Pointer to MPT adapter structure</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">MPT_FRAME_HDR</span> <span class="pre">*mf</span></code></dt><dd><p>Pointer to MPT request frame</p>
-<p>This routine posts an MPT request frame to the request post FIFO of a
-specific MPT adapter.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This routine posts an MPT request frame to the request post FIFO of a
+specific MPT adapter.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mpt_put_msg_frame_hi_pri">
@@ -404,18 +428,21 @@ specific MPT adapter.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">u8</span> <span class="pre">cb_idx</span></code></dt><dd><p>Handle of registered MPT protocol driver</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">MPT_ADAPTER</span> <span class="pre">*ioc</span></code></dt><dd><p>Pointer to MPT adapter structure</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">MPT_FRAME_HDR</span> <span class="pre">*mf</span></code></dt><dd><p>Pointer to MPT request frame</p>
-<p>Send a protocol-specific MPT request frame to an IOC using
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Send a protocol-specific MPT request frame to an IOC using
 hi-priority request queue.</p>
 <p>This routine posts an MPT request frame to the request post FIFO of a
 specific MPT adapter.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mpt_free_msg_frame">
@@ -425,14 +452,17 @@ specific MPT adapter.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">MPT_ADAPTER</span> <span class="pre">*ioc</span></code></dt><dd><p>Pointer to MPT adapter structure</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">MPT_FRAME_HDR</span> <span class="pre">*mf</span></code></dt><dd><p>Pointer to MPT request frame</p>
-<p>This routine places a MPT request frame back on the MPT adapter’s
-FreeQ.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This routine places a MPT request frame back on the MPT adapter’s
+FreeQ.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mpt_send_handshake_request">
@@ -442,7 +472,7 @@ FreeQ.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">u8</span> <span class="pre">cb_idx</span></code></dt><dd><p>Handle of registered MPT protocol driver</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">MPT_ADAPTER</span> <span class="pre">*ioc</span></code></dt><dd><p>Pointer to MPT adapter structure</p>
@@ -452,10 +482,13 @@ FreeQ.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">u32</span> <span class="pre">*req</span></code></dt><dd><p>Pointer to MPT request frame</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">sleepFlag</span></code></dt><dd><p>Use schedule if CAN_SLEEP else use udelay.</p>
-<p>This routine is used exclusively to send MptScsiTaskMgmt
-requests since they are required to be sent via doorbell handshake.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This routine is used exclusively to send MptScsiTaskMgmt
+requests since they are required to be sent via doorbell handshake.</p>
+</div></blockquote>
 <p><strong>NOTE</strong></p>
 <dl>
 <dt>It is the callers responsibility to byte-swap fields in the</dt><dd><p>request which are greater than 1 byte in size.</p>
@@ -471,16 +504,19 @@ requests since they are required to be sent via doorbell handshake.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">iocid</span></code></dt><dd><p>IOC unique identifier (integer)</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">MPT_ADAPTER</span> <span class="pre">**iocpp</span></code></dt><dd><p>Pointer to pointer to IOC adapter</p>
-<p>Given a unique IOC identifier, set pointer to the associated MPT
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Given a unique IOC identifier, set pointer to the associated MPT
 adapter structure.</p>
 <p>Returns iocid and sets iocpp if iocid is found.
 Returns -1 if iocid is not found.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mpt_attach">
@@ -490,11 +526,15 @@ Returns -1 if iocid is not found.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pci_dev</span> <span class="pre">*pdev</span></code></dt><dd><p>Pointer to pci_dev structure</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">pci_device_id</span> <span class="pre">*id</span></code></dt><dd><p>PCI device ID information</p>
-<p>This routine performs all the steps necessary to bring the IOC of
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This routine performs all the steps necessary to bring the IOC of
 a MPT adapter to a OPERATIONAL state.  This includes registering
 memory regions, registering the interrupt, and allocating request
 and reply memory pools.</p>
@@ -502,8 +542,7 @@ and reply memory pools.</p>
 MPT adapter.</p>
 <p>Returns 0 for success, non-zero for failure.</p>
 <p>TODO: Add support for polled controllers</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mpt_detach">
@@ -554,14 +593,17 @@ MPT adapter.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">MPT_ADAPTER</span> <span class="pre">*ioc</span></code></dt><dd><p>Pointer to MPT_ADAPTER structure</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">cooked</span></code></dt><dd><p>Request raw or cooked IOC state</p>
-<p>Returns all IOC Doorbell register bits if cooked==0, else just the
-Doorbell bits in MPI_IOC_STATE_MASK.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Returns all IOC Doorbell register bits if cooked==0, else just the
+Doorbell bits in MPI_IOC_STATE_MASK.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mpt_alloc_fw_memory">
@@ -571,15 +613,18 @@ Doorbell bits in MPI_IOC_STATE_MASK.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">MPT_ADAPTER</span> <span class="pre">*ioc</span></code></dt><dd><p>Pointer to MPT_ADAPTER structure</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">size</span></code></dt><dd><p>total FW bytes</p>
-<p>If memory has already been allocated, the same (cached) value
-is returned.</p>
-<p>Return 0 if successful, or non-zero for failure</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>If memory has already been allocated, the same (cached) value
+is returned.</p>
+<p>Return 0 if successful, or non-zero for failure</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mpt_free_fw_memory">
@@ -589,12 +634,15 @@ is returned.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">MPT_ADAPTER</span> <span class="pre">*ioc</span></code></dt><dd><p>Pointer to MPT_ADAPTER structure</p>
-<p>If alt_img is NULL, delete from ioc structure.
-Else, delete a secondary image in same format.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>If alt_img is NULL, delete from ioc structure.
+Else, delete a secondary image in same format.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mptbase_sas_persist_operation">
@@ -604,11 +652,15 @@ Else, delete a secondary image in same format.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">MPT_ADAPTER</span> <span class="pre">*ioc</span></code></dt><dd><p>Pointer to MPT_ADAPTER structure</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">u8</span> <span class="pre">persist_opcode</span></code></dt><dd><p>see below</p>
-<table class="docutils align-default">
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><table class="docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p>MPI_SAS_OP_CLEAR_NOT_PRESENT</p></td>
 <td><p>Free all persist TargetID mappings for
@@ -619,8 +671,7 @@ devices not currently present.</p></td>
 </tr>
 </tbody>
 </table>
-</dd>
-</dl>
+</div></blockquote>
 <p><strong>NOTE</strong></p>
 <p>Don’t use not this function during interrupt time.</p>
 <blockquote>
@@ -644,11 +695,9 @@ devices not currently present.</p></td>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p>0 on success
+<p>0 on success
 -EFAULT if read of config page header fails or data pointer not NULL
 -ENOMEM if pci_alloc failed</p>
-</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mpt_raid_phys_disk_get_num_paths">
@@ -665,9 +714,7 @@ devices not currently present.</p></td>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p>returns number paths</p>
-</div></blockquote>
+<p>returns number paths</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mpt_raid_phys_disk_pg1">
@@ -686,11 +733,9 @@ devices not currently present.</p></td>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p>0 on success
+<p>0 on success
 -EFAULT if read of config page header fails or data pointer not NULL
 -ENOMEM if pci_alloc failed</p>
-</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mpt_findImVolumes">
@@ -705,11 +750,9 @@ devices not currently present.</p></td>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p>0 on success
+<p>0 on success
 -EFAULT if read of config page header fails or data pointer not NULL
 -ENOMEM if pci_alloc failed</p>
-</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mpt_config">
@@ -719,18 +762,21 @@ devices not currently present.</p></td>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">MPT_ADAPTER</span> <span class="pre">*ioc</span></code></dt><dd><p>Pointer to an adapter structure</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">CONFIGPARMS</span> <span class="pre">*pCfg</span></code></dt><dd><p>Pointer to a configuration structure. Struct contains
 action, page address, direction, physical address
 and pointer to a configuration page header
 Page header is updated.</p>
-<p>Returns 0 for success
--EAGAIN if no msg frames currently available
--EFAULT for non-successful reply or no reply (timeout)</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Returns 0 for success
+-EAGAIN if no msg frames currently available
+-EFAULT for non-successful reply or no reply (timeout)</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mpt_print_ioc_summary">
@@ -740,7 +786,7 @@ Page header is updated.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">MPT_ADAPTER</span> <span class="pre">*ioc</span></code></dt><dd><p>Pointer to MPT_ADAPTER structure</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">char</span> <span class="pre">*buffer</span></code></dt><dd><p>Pointer to buffer where IOC summary info should be written</p>
@@ -750,10 +796,13 @@ Page header is updated.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">len</span></code></dt><dd><p>Offset at which to start writing in buffer</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">showlan</span></code></dt><dd><p>Display LAN stuff?</p>
-<p>This routine writes (english readable) ASCII text, which represents
-a summary of IOC information, to a buffer.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This routine writes (english readable) ASCII text, which represents
+a summary of IOC information, to a buffer.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mpt_set_taskmgmt_in_progress_flag">
@@ -763,12 +812,15 @@ a summary of IOC information, to a buffer.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">MPT_ADAPTER</span> <span class="pre">*ioc</span></code></dt><dd><p>Pointer to MPT_ADAPTER structure</p>
-<p>Returns 0 for SUCCESS or -1 if FAILED.</p>
-<p>If -1 is return, then it was not possible to set the flags</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Returns 0 for SUCCESS or -1 if FAILED.</p>
+<p>If -1 is return, then it was not possible to set the flags</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mpt_clear_taskmgmt_in_progress_flag">
@@ -804,15 +856,18 @@ a summary of IOC information, to a buffer.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">MPT_ADAPTER</span> <span class="pre">*ioc</span></code></dt><dd><p>Pointer to MPT_ADAPTER structure</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">sleepFlag</span></code></dt><dd><p>Indicates if sleep or schedule must be called.</p>
-<p>Returns 0 for SUCCESS or -1 if FAILED.
-Try for softreset first, only if it fails go for expensive
-HardReset.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Returns 0 for SUCCESS or -1 if FAILED.
+Try for softreset first, only if it fails go for expensive
+HardReset.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mpt_HardResetHandler">
@@ -822,16 +877,19 @@ HardReset.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">MPT_ADAPTER</span> <span class="pre">*ioc</span></code></dt><dd><p>Pointer to MPT_ADAPTER structure</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">sleepFlag</span></code></dt><dd><p>Indicates if sleep or schedule must be called.</p>
-<p>Issues SCSI Task Management call based on input arg values.
-If TaskMgmt fails, returns associated SCSI request.</p>
-<p>Remark: _HardResetHandler can be invoked from an interrupt thread (timer)
-or a non-interrupt thread.  In the former, must not call schedule().</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Issues SCSI Task Management call based on input arg values.
+If TaskMgmt fails, returns associated SCSI request.</p>
+<p>Remark: _HardResetHandler can be invoked from an interrupt thread (timer)
+or a non-interrupt thread.  In the former, must not call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">schedule()</span></code>.</p>
+</div></blockquote>
 <p><strong>Note</strong></p>
 <dl>
 <dt>A return of -1 is a FATAL error case, as it means a</dt><dd><p>FW reload/initialization failed.</p>
@@ -847,12 +905,15 @@ or a non-interrupt thread.  In the former, must not call schedule().</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">Scsi_Host</span> <span class="pre">*SChost</span></code></dt><dd><p>Pointer to Scsi_Host structure</p>
-<p>(linux scsi_host_template.info routine)</p>
-<p>Returns pointer to buffer where information was written.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>(linux scsi_host_template.info routine)</p>
+<p>Returns pointer to buffer where information was written.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mptscsih_qcmd">
@@ -862,14 +923,17 @@ or a non-interrupt thread.  In the former, must not call schedule().</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_cmnd</span> <span class="pre">*SCpnt</span></code></dt><dd><p>Pointer to scsi_cmnd structure</p>
-<p>(linux scsi_host_template.queuecommand routine)
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>(linux scsi_host_template.queuecommand routine)
 This is the primary SCSI IO start routine.  Create a MPI SCSIIORequest
 from a linux scsi_cmnd request and send it to the IOC.</p>
 <p>Returns 0. (rtn value discarded by linux scsi mid-layer)</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mptscsih_IssueTaskMgmt">
@@ -879,7 +943,7 @@ from a linux scsi_cmnd request and send it to the IOC.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">MPT_SCSI_HOST</span> <span class="pre">*hd</span></code></dt><dd><p>Pointer to MPT_SCSI_HOST structure</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">u8</span> <span class="pre">type</span></code></dt><dd><p>Task Management type</p>
@@ -893,12 +957,15 @@ from a linux scsi_cmnd request and send it to the IOC.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">ctx2abort</span></code></dt><dd><p>Context for the task to be aborted (if appropriate)</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">ulong</span> <span class="pre">timeout</span></code></dt><dd><p>timeout for task management control</p>
-<p>Remark: _HardResetHandler can be invoked from an interrupt thread (timer)
-or a non-interrupt thread.  In the former, must not call schedule().</p>
-<p>Not all fields are meaningfull for all task types.</p>
-<p>Returns 0 for SUCCESS, or FAILED.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Remark: _HardResetHandler can be invoked from an interrupt thread (timer)
+or a non-interrupt thread.  In the former, must not call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">schedule()</span></code>.</p>
+<p>Not all fields are meaningfull for all task types.</p>
+<p>Returns 0 for SUCCESS, or FAILED.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mptscsih_abort">
@@ -908,12 +975,15 @@ or a non-interrupt thread.  In the former, must not call schedule().</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_cmnd</span> <span class="pre">*</span> <span class="pre">SCpnt</span></code></dt><dd><p>Pointer to scsi_cmnd structure, IO to be aborted</p>
-<p>(linux scsi_host_template.eh_abort_handler routine)</p>
-<p>Returns SUCCESS or FAILED.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>(linux scsi_host_template.eh_abort_handler routine)</p>
+<p>Returns SUCCESS or FAILED.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mptscsih_dev_reset">
@@ -923,12 +993,15 @@ or a non-interrupt thread.  In the former, must not call schedule().</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_cmnd</span> <span class="pre">*</span> <span class="pre">SCpnt</span></code></dt><dd><p>Pointer to scsi_cmnd structure, IO which reset is due to</p>
-<p>(linux scsi_host_template.eh_dev_reset_handler routine)</p>
-<p>Returns SUCCESS or FAILED.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>(linux scsi_host_template.eh_dev_reset_handler routine)</p>
+<p>Returns SUCCESS or FAILED.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mptscsih_bus_reset">
@@ -938,12 +1011,15 @@ or a non-interrupt thread.  In the former, must not call schedule().</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_cmnd</span> <span class="pre">*</span> <span class="pre">SCpnt</span></code></dt><dd><p>Pointer to scsi_cmnd structure, IO which reset is due to</p>
-<p>(linux scsi_host_template.eh_bus_reset_handler routine)</p>
-<p>Returns SUCCESS or FAILED.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>(linux scsi_host_template.eh_bus_reset_handler routine)</p>
+<p>Returns SUCCESS or FAILED.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mptscsih_host_reset">
@@ -953,12 +1029,15 @@ or a non-interrupt thread.  In the former, must not call schedule().</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_cmnd</span> <span class="pre">*SCpnt</span></code></dt><dd><p>Pointer to scsi_cmnd structure, IO which reset is due to</p>
-<p>(linux scsi_host_template.eh_host_reset_handler routine)</p>
-<p>Returns SUCCESS or FAILED.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>(linux scsi_host_template.eh_host_reset_handler routine)</p>
+<p>Returns SUCCESS or FAILED.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mptscsih_taskmgmt_complete">
@@ -968,19 +1047,22 @@ or a non-interrupt thread.  In the former, must not call schedule().</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">MPT_ADAPTER</span> <span class="pre">*ioc</span></code></dt><dd><p>Pointer to MPT_ADAPTER structure</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">MPT_FRAME_HDR</span> <span class="pre">*mf</span></code></dt><dd><p>Pointer to SCSI task mgmt request frame</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">MPT_FRAME_HDR</span> <span class="pre">*mr</span></code></dt><dd><p>Pointer to SCSI task mgmt reply frame</p>
-<p>This routine is called from mptbase.c::mpt_interrupt() at the completion
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This routine is called from mptbase.c::<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mpt_interrupt()</span></code> at the completion
 of any SCSI task management request.
 This routine is registered with the MPT (base) driver at driver
 load/init time via the <a class="reference internal" href="#c.mpt_register" title="mpt_register"><code class="xref c c-func docutils literal notranslate"><span class="pre">mpt_register()</span></code></a> API call.</p>
 <p>Returns 1 indicating alloc’d request frame ptr should be freed.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mptscsih_get_scsi_lookup">

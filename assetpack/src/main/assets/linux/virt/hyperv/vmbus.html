@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -231,7 +231,7 @@ actual ring.  The size of the ring is determined by the VSC in the
 guest and is specific to each synthetic device.   The list of GPAs
 making up the ring is communicated to the Hyper-V host over the
 VMBus control path as a GPA Descriptor List (GPADL).  See function
-vmbus_establish_gpadl().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vmbus_establish_gpadl()</span></code>.</p>
 <p>Each ring buffer is mapped into contiguous Linux kernel virtual
 space in three parts:  1) the 4 Kbyte header page, 2) the memory
 that makes up the ring itself, and 3) a second mapping of the memory
@@ -248,7 +248,7 @@ passed to Hyper-V as a 4 Kbyte area.  But the memory for the actual
 ring must be aligned to PAGE_SIZE and have a size that is a multiple
 of PAGE_SIZE so that the duplicate mapping trick can be done.  Hence
 a portion of the header page is unused and not communicated to
-Hyper-V.  This case is handled by vmbus_establish_gpadl().</p>
+Hyper-V.  This case is handled by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vmbus_establish_gpadl()</span></code>.</p>
 <p>Hyper-V enforces a limit on the aggregate amount of guest memory
 that can be shared with the host via GPADLs.  This limit ensures
 that a rogue guest can’t force the consumption of excessive host
@@ -290,13 +290,13 @@ buffer.  For example, the storvsc driver uses this approach to
 specify the data buffers to/from which disk I/O is done.</p>
 <p>Three functions exist to send VMBus channel messages:</p>
 <ol class="arabic simple">
-<li><p>vmbus_sendpacket():  Control-only messages and messages with
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vmbus_sendpacket()</span></code>:  Control-only messages and messages with
 embedded data -- no GPAs</p></li>
-<li><p>vmbus_sendpacket_pagebuffer(): Message with list of GPAs
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vmbus_sendpacket_pagebuffer()</span></code>: Message with list of GPAs
 identifying data to transfer.  An offset and length is
 associated with each GPA so that multiple discontinuous areas
 of guest memory can be targeted.</p></li>
-<li><p>vmbus_sendpacket_mpb_desc(): Message with list of GPAs
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vmbus_sendpacket_mpb_desc()</span></code>: Message with list of GPAs
 identifying data to transfer.  A single offset and length is
 associated with a list of GPAs.  The GPAs must describe a
 single logical area of guest memory to be targeted.</p></li>
@@ -331,12 +331,12 @@ well on arm64 where a single per-CPU Linux IRQ is allocated for
 VMBUS_MESSAGE_SINT. This IRQ appears in /proc/interrupts as an IRQ labelled
 “Hyper-V VMbus”. Since x86/x64 lacks support for per-CPU IRQs, an x86
 interrupt vector is statically allocated (HYPERVISOR_CALLBACK_VECTOR)
-across all CPUs and explicitly coded to call vmbus_isr(). In this case,
+across all CPUs and explicitly coded to call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vmbus_isr()</span></code>. In this case,
 there’s no Linux IRQ, and the interrupts are visible in aggregate in
 /proc/interrupts on the “HYP” line.</p>
 <p>The synic provides the means to demultiplex the architectural interrupt into
 one or more logical interrupts and route the logical interrupt to the proper
-VMBus handler in Linux. This demultiplexing is done by vmbus_isr() and
+VMBus handler in Linux. This demultiplexing is done by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vmbus_isr()</span></code> and
 related functions that access synic data structures.</p>
 <p>The synic is not modeled in Linux as an irq chip or irq domain,
 and the demultiplexed logical interrupts are not Linux IRQs. As such,
@@ -359,12 +359,12 @@ it sends a new message on the VMBus control path, or when a VMBus
 channel “in” ring buffer transitions from empty to non-empty due to
 the host inserting a new VMBus channel message. The control message stream
 and each VMBus channel “in” ring buffer are separate logical interrupts
-that are demultiplexed by vmbus_isr(). It demultiplexes by first checking
-for channel interrupts by calling vmbus_chan_sched(), which looks at a synic
+that are demultiplexed by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vmbus_isr()</span></code>. It demultiplexes by first checking
+for channel interrupts by calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vmbus_chan_sched()</span></code>, which looks at a synic
 bitmap to determine which channels have pending interrupts on this CPU.
 If multiple channels have pending interrupts for this CPU, they are
 processed sequentially.  When all channel interrupts have been processed,
-vmbus_isr() checks for and processes any messages received on the VMBus
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vmbus_isr()</span></code> checks for and processes any messages received on the VMBus
 control path.</p>
 <p>The guest CPU that a VMBus channel will interrupt is selected by the
 guest when the channel is created, and the host is informed of that
@@ -383,7 +383,7 @@ among the available CPUs in the VM so that interrupts on
 multiple channels can be processed in parallel.</p></li>
 </ol>
 <p>The assignment of VMBus channel interrupts to CPUs is done in the
-function init_vp_index().  This assignment is done outside of the
+function <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init_vp_index()</span></code>.  This assignment is done outside of the
 normal Linux interrupt affinity mechanism, so the interrupts are
 neither “unmanaged” nor “managed” interrupts.</p>
 <p>The CPU that a VMBus channel will interrupt can be seen in
@@ -413,14 +413,14 @@ will interrupt the assigned CPU.  But when the CPU assigned to a
 channel is being changed via sysfs, the guest doesn’t know exactly
 when Hyper-V will make the transition.  The code must work correctly
 even if there is a time lag before Hyper-V starts interrupting the
-new CPU.  See comments in target_cpu_store().</p>
+new CPU.  See comments in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">target_cpu_store()</span></code>.</p>
 </section>
 <section id="vmbus-device-creation-deletion">
 <h2>VMBus device creation/deletion<a class="headerlink" href="#vmbus-device-creation-deletion" title="Link to this heading">¶</a></h2>
 <p>Hyper-V and the Linux guest have a separate message-passing path
 that is used for synthetic device creation and deletion. This
-path does not use a VMBus channel.  See vmbus_post_msg() and
-vmbus_on_msg_dpc().</p>
+path does not use a VMBus channel.  See <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vmbus_post_msg()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vmbus_on_msg_dpc()</span></code>.</p>
 <p>The first step is for the guest to connect to the generic
 Hyper-V VMBus mechanism.  As part of establishing this connection,
 the guest and Hyper-V agree on a VMBus protocol version they will
@@ -439,7 +439,7 @@ and must not be assumed to be consistent in Linux code. Offer
 messages may also arrive long after Linux has initially booted
 because Hyper-V supports adding devices, such as synthetic NICs,
 to running VMs. A new offer message is processed by
-vmbus_process_offer(), which indirectly invokes vmbus_add_channel_work().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vmbus_process_offer()</span></code>, which indirectly invokes <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vmbus_add_channel_work()</span></code>.</p>
 <p>Upon receipt of an offer message, the guest identifies the device
 type based on the class ID, and invokes the correct driver to set up
 the device.  Driver/device matching is performed using the standard
@@ -448,7 +448,7 @@ Linux mechanism.</p>
 the corresponding VSP. It allocates guest memory for the channel
 ring buffers and shares the ring buffer with the Hyper-V host by
 giving the host a list of GPAs for the ring buffer memory.  See
-vmbus_establish_gpadl().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vmbus_establish_gpadl()</span></code>.</p>
 <p>Once the ring buffer is set up, the device driver and VSP exchange
 setup messages via the primary channel.  These messages may include
 negotiating the device protocol version to be used between the Linux
@@ -466,7 +466,7 @@ down the device and remove it. Once a synthetic device is
 rescinded, neither Hyper-V nor Linux retains any state about
 its previous existence. Such a device might be re-added later,
 in which case it is treated as an entirely new device. See
-vmbus_onoffer_rescind().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vmbus_onoffer_rescind()</span></code>.</p>
 <p>For some devices, such as the KVP device, Hyper-V automatically
 sends a rescind message when the primary channel is closed,
 likely as a result of unbinding the device from its driver.

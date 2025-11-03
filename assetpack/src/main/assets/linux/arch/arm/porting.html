@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -174,7 +174,7 @@
 <section id="initial-definitions">
 <h2>Initial definitions<a class="headerlink" href="#initial-definitions" title="Link to this heading">¶</a></h2>
 <p>The following symbol definitions rely on you knowing the translation that
-__virt_to_phys() does for your machine.  This macro converts the passed
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__virt_to_phys()</span></code> does for your machine.  This macro converts the passed
 virtual address to a physical address.  Normally, it is simply:</p>
 <blockquote>
 <div><p>phys = virt - PAGE_OFFSET + PHYS_OFFSET</p>
@@ -204,7 +204,7 @@ independent.</p>
 </dd>
 <dt>INITRD_PHYS</dt><dd><p>Physical address to place the initial RAM disk.  Only relevant if
 you are using the bootpImage stuff (which only works on the old
-struct param_struct).</p>
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">param_struct</span></code>).</p>
 </dd>
 <dt>INITRD_VIRT</dt><dd><p>Virtual address of the initial RAM disk.  The following  constraint
 must be valid:</p>
@@ -212,7 +212,7 @@ must be valid:</p>
 <div><p>__virt_to_phys(INITRD_VIRT) == INITRD_PHYS</p>
 </div></blockquote>
 </dd>
-<dt>PARAMS_PHYS</dt><dd><p>Physical address of the struct param_struct or tag list, giving the
+<dt>PARAMS_PHYS</dt><dd><p>Physical address of the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">param_struct</span></code> or tag list, giving the
 kernel various parameters about its execution environment.</p>
 </dd>
 </dl>
@@ -247,10 +247,10 @@ kernels placed a restriction of 256MB here.</p>
 <dt>DATAADDR</dt><dd><p>Virtual address for the kernel data segment.  Must not be defined
 when using the decompressor.</p>
 </dd>
-<dt>VMALLOC_START / VMALLOC_END</dt><dd><p>Virtual addresses bounding the vmalloc() area.  There must not be
+<dt>VMALLOC_START / VMALLOC_END</dt><dd><p>Virtual addresses bounding the <a class="reference internal" href="../../core-api/mm-api.html#c.vmalloc" title="vmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">vmalloc()</span></code></a> area.  There must not be
 any static mappings in this area; vmalloc will overwrite them.
 The addresses must also be in the kernel segment (see above).
-Normally, the vmalloc() area starts VMALLOC_OFFSET bytes above the
+Normally, the <a class="reference internal" href="../../core-api/mm-api.html#c.vmalloc" title="vmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">vmalloc()</span></code></a> area starts VMALLOC_OFFSET bytes above the
 last virtual RAM address (found using variable high_memory).</p>
 </dd>
 <dt>VMALLOC_OFFSET</dt><dd><p>Offset normally incorporated into VMALLOC_START to provide a hole

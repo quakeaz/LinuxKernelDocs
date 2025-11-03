@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -152,7 +152,7 @@
 debugfs (for error injection).</p>
 <section id="ras-debugfs-sysfs-control-and-error-injection-interfaces">
 <h2>RAS debugfs/sysfs Control and Error Injection Interfaces<a class="headerlink" href="#ras-debugfs-sysfs-control-and-error-injection-interfaces" title="Link to this heading">¶</a></h2>
-<p>The control interface accepts struct ras_debug_if which has two members.</p>
+<p>The control interface accepts <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ras_debug_if</span></code> which has two members.</p>
 <p>First member: ras_debug_if::head or ras_debug_if::inject.</p>
 <p>head is used to indicate which IP block will be under control.</p>
 <p>head has four members, they are block, type, sub_block_index, name.
@@ -163,7 +163,7 @@ name: the name of IP.</p>
 <p>inject has three more members than head, they are address, value and mask.
 As their names indicate, inject operation will write the
 value to the address.</p>
-<p>The second member: struct ras_debug_if::op.
+<p>The second member: <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ras_debug_if</span></code>::op.
 It has three kinds of operations.</p>
 <ul class="simple">
 <li><p>0: disable RAS on the block. Take ::head as its data.</p></li>
@@ -172,8 +172,8 @@ It has three kinds of operations.</p>
 </ul>
 <p>How to use the interface?</p>
 <p>In a program</p>
-<p>Copy the struct ras_debug_if in your code and initialize it.
-Write the struct to the control interface.</p>
+<p>Copy the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ras_debug_if</span></code> in your code and initialize it.
+Write the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">to</span></code> the control interface.</p>
 <p>From shell</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;disable &lt;block&gt;&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>/sys/kernel/debug/dri/&lt;N&gt;/ras/ras_ctrl
 <span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;enable  &lt;block&gt; &lt;error&gt;&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>/sys/kernel/debug/dri/&lt;N&gt;/ras/ras_ctrl

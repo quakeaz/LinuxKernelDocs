@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -707,7 +707,7 @@ otherwise.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Uses file’s refcounting done implicitly by fput().</p>
+<p>Uses file’s refcounting done implicitly by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fput()</span></code>.</p>
 <p>If, as a result of this call, the refcount becomes 0, the ‘release’ file
 operation related to this fd is called. It calls <a class="reference internal" href="#c.dma_buf_ops" title="dma_buf_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">dma_buf_ops.release</span></code></a> vfunc
 in turn, and frees the memory allocated for dmabuf when exported.</p>
@@ -818,7 +818,7 @@ any mapping of <strong>attach</strong> again and inform the importer through
 <dl class="c function">
 <dt class="sig sig-object c" id="c.dma_buf_map_attachment">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sg_table</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">dma_buf_map_attachment</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.dma_buf_attachment" title="dma_buf_attachment"><span class="n"><span class="pre">dma_buf_attachment</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">attach</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="n"><span class="pre">dma_data_direction</span></span><span class="w"> </span><span class="n"><span class="pre">direction</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.dma_buf_map_attachment" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Returns the scatterlist table of the attachment; mapped into _device_ address space. Is a wrapper for map_dma_buf() of the dma_buf_ops.</p>
+<dd><p>Returns the scatterlist table of the attachment; mapped into _device_ address space. Is a wrapper for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">map_dma_buf()</span></code> of the dma_buf_ops.</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -844,7 +844,7 @@ time.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.dma_buf_map_attachment_unlocked">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sg_table</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">dma_buf_map_attachment_unlocked</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.dma_buf_attachment" title="dma_buf_attachment"><span class="n"><span class="pre">dma_buf_attachment</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">attach</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="n"><span class="pre">dma_data_direction</span></span><span class="w"> </span><span class="n"><span class="pre">direction</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.dma_buf_map_attachment_unlocked" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Returns the scatterlist table of the attachment; mapped into _device_ address space. Is a wrapper for map_dma_buf() of the dma_buf_ops.</p>
+<dd><p>Returns the scatterlist table of the attachment; mapped into _device_ address space. Is a wrapper for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">map_dma_buf()</span></code> of the dma_buf_ops.</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -861,7 +861,7 @@ time.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.dma_buf_unmap_attachment">
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dma_buf_unmap_attachment</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.dma_buf_attachment" title="dma_buf_attachment"><span class="n"><span class="pre">dma_buf_attachment</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">attach</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.dma_buf_unmap_attachment" title="sg_table"><span class="n"><span class="pre">sg_table</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sg_table</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="n"><span class="pre">dma_data_direction</span></span><span class="w"> </span><span class="n"><span class="pre">direction</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.dma_buf_unmap_attachment" title="Link to this definition">¶</a><br /></dt>
-<dd><p>unmaps and decreases usecount of the buffer;might deallocate the scatterlist associated. Is a wrapper for unmap_dma_buf() of dma_buf_ops.</p>
+<dd><p>unmaps and decreases usecount of the buffer;might deallocate the scatterlist associated. Is a wrapper for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unmap_dma_buf()</span></code> of dma_buf_ops.</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -880,7 +880,7 @@ time.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.dma_buf_unmap_attachment_unlocked">
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dma_buf_unmap_attachment_unlocked</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.dma_buf_attachment" title="dma_buf_attachment"><span class="n"><span class="pre">dma_buf_attachment</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">attach</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.dma_buf_unmap_attachment_unlocked" title="sg_table"><span class="n"><span class="pre">sg_table</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sg_table</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="n"><span class="pre">dma_data_direction</span></span><span class="w"> </span><span class="n"><span class="pre">direction</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.dma_buf_unmap_attachment_unlocked" title="Link to this definition">¶</a><br /></dt>
-<dd><p>unmaps and decreases usecount of the buffer;might deallocate the scatterlist associated. Is a wrapper for unmap_dma_buf() of dma_buf_ops.</p>
+<dd><p>unmaps and decreases usecount of the buffer;might deallocate the scatterlist associated. Is a wrapper for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unmap_dma_buf()</span></code> of dma_buf_ops.</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -1063,7 +1063,7 @@ mapping.</p>
     int (*pin)(struct dma_buf_attachment *attach);
     void (*unpin)(struct dma_buf_attachment *attach);
     struct sg_table * (*map_dma_buf)(struct dma_buf_attachment *, enum dma_data_direction);
-    void (*unmap_dma_buf)(struct dma_buf_attachment *,struct sg_table *, enum dma_data_direction);
+    void (*unmap_dma_buf)(struct dma_buf_attachment *, struct sg_table *, enum dma_data_direction);
     void (*release)(struct dma_buf *);
     int (*begin_cpu_access)(struct dma_buf *, enum dma_data_direction);
     int (*end_cpu_access)(struct dma_buf *, enum dma_data_direction);
@@ -1134,7 +1134,7 @@ should also check these constraints.</p>
 choose to scan through the list of attachments for this buffer,
 collate the requirements of the attached devices, and choose an
 appropriate backing storage for the buffer.</p>
-<p>Based on enum dma_data_direction, it might be possible to have
+<p>Based on <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">dma_data_direction</span></code>, it might be possible to have
 multiple users accessing at the same time (for reading, maybe), or
 any other kind of sharing that the exporter might wish to make
 available to buffer-users.</p>
@@ -1321,7 +1321,7 @@ access. An example here is v4l.</p></li>
 dependency for implicit synchronization.</p></li>
 </ul>
 <p>DYNAMIC IMPORTER RULES:</p>
-<p>Dynamic importers, see dma_buf_attachment_is_dynamic(), have
+<p>Dynamic importers, see <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_buf_attachment_is_dynamic()</span></code>, have
 additional constraints on how they set up fences:</p>
 <ul class="simple">
 <li><p>Dynamic importers must obey the write fences and wait for them to
@@ -1371,7 +1371,7 @@ calling <a class="reference internal" href="#c.dma_buf_fd" title="dma_buf_fd"><c
 <p><strong>Members</strong></p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">allow_peer2peer</span></code></dt><dd><p>If this is set to true the importer must be able to handle peer
-resources without struct pages.</p>
+resources without <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pages</span></code>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">move_notify</span></code></dt><dd><p>[optional] notification that the DMA-buf is moving</p>
 <p>If this callback is provided the framework can avoid pinning the
@@ -1420,7 +1420,7 @@ point to the new location of the DMA-buf.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">peer2peer</span></code></dt><dd><p>true if the importer can handle peer resources without pages.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">importer_ops</span></code></dt><dd><p>importer operations for this attachment, if provided
-dma_buf_map/unmap_attachment() must be called with the dma_resv lock held.</p>
+dma_buf_map/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unmap_attachment()</span></code> must be called with the dma_resv lock held.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">importer_priv</span></code></dt><dd><p>importer specific attachment data.</p>
 </dd>
@@ -1430,7 +1430,7 @@ dma_buf_map/unmap_attachment() must be called with the dma_resv lock held.</p>
 </div>
 <p><strong>Description</strong></p>
 <p>This structure holds the attachment information between the dma_buf buffer
-and its user device(s). The list contains one attachment struct per device
+and its user device(s). The list contains one attachment <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">per</span></code> device
 attached to the buffer.</p>
 <p>An attachment is created by calling <a class="reference internal" href="#c.dma_buf_attach" title="dma_buf_attach"><code class="xref c c-func docutils literal notranslate"><span class="pre">dma_buf_attach()</span></code></a>, and released again by
 calling <a class="reference internal" href="#c.dma_buf_detach" title="dma_buf_detach"><code class="xref c c-func docutils literal notranslate"><span class="pre">dma_buf_detach()</span></code></a>. The DMA mapping itself needed to initiate a
@@ -1909,7 +1909,7 @@ become necessary after initial adding of the fence.</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This enum describes the different use cases for a dma_resv object and
+<p>This <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">describes</span></code> the different use cases for a dma_resv object and
 controls which fences are returned when queried.</p>
 <p>An important fact is that there is the order KERNEL&lt;WRITE&lt;READ&lt;BOOKKEEP and
 when the dma_resv object is asked for fences for one use case the fences
@@ -1975,7 +1975,7 @@ dynamic buffer management or just to handle implicit synchronization between
 different users of the buffer in userspace. See <a class="reference internal" href="#c.dma_buf" title="dma_buf"><code class="xref c c-type docutils literal notranslate"><span class="pre">dma_buf.resv</span></code></a> for a more
 in-depth discussion.</p>
 <p>The other major use is to manage access and locking within a driver in a
-buffer based memory manager. struct ttm_buffer_object is the canonical
+buffer based memory manager. <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ttm_buffer_object</span></code> is the canonical
 example here, since this is where reservation objects originated from. But
 use in drivers is spreading and some drivers also manage <a class="reference internal" href="../gpu/drm-mm.html#c.drm_gem_object" title="drm_gem_object"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span>
 <span class="pre">drm_gem_object</span></code></a> with the same scheme.</p>
@@ -2165,7 +2165,7 @@ with a writer under RCU. The seqlock is used to notify readers if they
 overlap with a writer.</p>
 <p>As the reservation object may be locked by multiple parties in an
 undefined order, a #ww_acquire_ctx is passed to unwind if a cycle
-is detected. See ww_mutex_lock() and ww_acquire_init(). A reservation
+is detected. See <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ww_mutex_lock()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ww_acquire_init()</span></code>. A reservation
 object may be locked by itself by passing NULL as <strong>ctx</strong>.</p>
 <p>When a die situation is indicated by returning -EDEADLK all locks held by
 <strong>ctx</strong> must be unlocked and then <a class="reference internal" href="#c.dma_resv_lock_slow" title="dma_resv_lock_slow"><code class="xref c c-func docutils literal notranslate"><span class="pre">dma_resv_lock_slow()</span></code></a> called on <strong>obj</strong>.</p>
@@ -2193,7 +2193,7 @@ will run concurrently with a writer under RCU. The seqlock is used to
 notify readers if they overlap with a writer.</p>
 <p>As the reservation object may be locked by multiple parties in an
 undefined order, a #ww_acquire_ctx is passed to unwind if a cycle
-is detected. See ww_mutex_lock() and ww_acquire_init(). A reservation
+is detected. See <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ww_mutex_lock()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ww_acquire_init()</span></code>. A reservation
 object may be locked by itself by passing NULL as <strong>ctx</strong>.</p>
 <p>When a die situation is indicated by returning -EDEADLK all locks held by
 <strong>ctx</strong> must be unlocked and then <a class="reference internal" href="#c.dma_resv_lock_slow_interruptible" title="dma_resv_lock_slow_interruptible"><code class="xref c c-func docutils literal notranslate"><span class="pre">dma_resv_lock_slow_interruptible()</span></code></a> called on
@@ -2291,7 +2291,7 @@ possible, which is also not needed for a trylock.</p>
 <p>Returns the context used to lock a reservation object or NULL if no context
 was used or the object is not locked at all.</p>
 <p>WARNING: This interface is pretty horrible, but TTM needs it because it
-doesn’t pass the struct ww_acquire_ctx around in some very long callchains.
+doesn’t pass the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ww_acquire_ctx</span></code> around in some very long callchains.
 Everyone else just uses it to check whether they’re holding a reservation or
 not.</p>
 </div>
@@ -2939,6 +2939,85 @@ refcount again if <a class="reference internal" href="#c.dma_fence_ops" title="d
 <p>context and seqno are used for easy comparison between fences, allowing
 to check which fence is later by simply using <a class="reference internal" href="#c.dma_fence_later" title="dma_fence_later"><code class="xref c c-func docutils literal notranslate"><span class="pre">dma_fence_later()</span></code></a>.</p>
 </div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.dma_fence_init64">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dma_fence_init64</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.dma_fence" title="dma_fence"><span class="n"><span class="pre">dma_fence</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">fence</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.dma_fence_ops" title="dma_fence_ops"><span class="n"><span class="pre">dma_fence_ops</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ops</span></span>, <span class="n"><span class="pre">spinlock_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">lock</span></span>, <span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="n"><span class="pre">context</span></span>, <span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="n"><span class="pre">seqno</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.dma_fence_init64" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Initialize a custom fence with 64-bit seqno support.</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dma_fence</span> <span class="pre">*fence</span></code></dt><dd><p>the fence to initialize</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">dma_fence_ops</span> <span class="pre">*ops</span></code></dt><dd><p>the dma_fence_ops for operations on this fence</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">spinlock_t</span> <span class="pre">*lock</span></code></dt><dd><p>the irqsafe spinlock to use for locking this fence</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">u64</span> <span class="pre">context</span></code></dt><dd><p>the execution context this fence is run on</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">u64</span> <span class="pre">seqno</span></code></dt><dd><p>a linear increasing sequence number for this context</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>Initializes an allocated fence, the caller doesn’t have to keep its
+refcount after committing with this fence, but it will need to hold a
+refcount again if <a class="reference internal" href="#c.dma_fence_ops" title="dma_fence_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">dma_fence_ops.enable_signaling</span></code></a> gets called.</p>
+<p>Context and seqno are used for easy comparison between fences, allowing
+to check which fence is later by simply using <a class="reference internal" href="#c.dma_fence_later" title="dma_fence_later"><code class="xref c c-func docutils literal notranslate"><span class="pre">dma_fence_later()</span></code></a>.</p>
+</div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.dma_fence_driver_name">
+<span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="pre">__rcu</span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">dma_fence_driver_name</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.dma_fence" title="dma_fence"><span class="n"><span class="pre">dma_fence</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">fence</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.dma_fence_driver_name" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Access the driver name</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dma_fence</span> <span class="pre">*fence</span></code></dt><dd><p>the fence to query</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>Returns a driver name backing the dma-fence implementation.</p>
+<p>IMPORTANT CONSIDERATION:
+Dma-fence contract stipulates that access to driver provided data (data not
+directly embedded into the object itself), such as the <a class="reference internal" href="#c.dma_fence" title="dma_fence"><code class="xref c c-type docutils literal notranslate"><span class="pre">dma_fence.lock</span></code></a> and
+memory potentially accessed by the <a class="reference internal" href="#c.dma_fence" title="dma_fence"><code class="xref c c-type docutils literal notranslate"><span class="pre">dma_fence.ops</span></code></a> functions, is forbidden
+after the fence has been signalled. Drivers are allowed to free that data,
+and some do.</p>
+<p>To allow safe access drivers are mandated to guarantee a RCU grace period
+between signalling the fence and freeing said data.</p>
+<p>As such access to the driver name is only valid inside a RCU locked section.
+The pointer MUST be both queried and USED ONLY WITHIN a SINGLE block guarded
+by the <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_read_lock" title="rcu_read_lock"><code class="xref c c-type docutils literal notranslate"><span class="pre">rcu_read_lock</span></code></a> and <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_read_unlock" title="rcu_read_unlock"><code class="xref c c-type docutils literal notranslate"><span class="pre">rcu_read_unlock</span></code></a> pair.</p>
+</div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.dma_fence_timeline_name">
+<span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="pre">__rcu</span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">dma_fence_timeline_name</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.dma_fence" title="dma_fence"><span class="n"><span class="pre">dma_fence</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">fence</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.dma_fence_timeline_name" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Access the timeline name</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dma_fence</span> <span class="pre">*fence</span></code></dt><dd><p>the fence to query</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>Returns a timeline name provided by the dma-fence implementation.</p>
+<p>IMPORTANT CONSIDERATION:
+Dma-fence contract stipulates that access to driver provided data (data not
+directly embedded into the object itself), such as the <a class="reference internal" href="#c.dma_fence" title="dma_fence"><code class="xref c c-type docutils literal notranslate"><span class="pre">dma_fence.lock</span></code></a> and
+memory potentially accessed by the <a class="reference internal" href="#c.dma_fence" title="dma_fence"><code class="xref c c-type docutils literal notranslate"><span class="pre">dma_fence.ops</span></code></a> functions, is forbidden
+after the fence has been signalled. Drivers are allowed to free that data,
+and some do.</p>
+<p>To allow safe access drivers are mandated to guarantee a RCU grace period
+between signalling the fence and freeing said data.</p>
+<p>As such access to the driver name is only valid inside a RCU locked section.
+The pointer MUST be both queried and USED ONLY WITHIN a SINGLE block guarded
+by the <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_read_lock" title="rcu_read_lock"><code class="xref c c-type docutils literal notranslate"><span class="pre">rcu_read_lock</span></code></a> and <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_read_unlock" title="rcu_read_unlock"><code class="xref c c-type docutils literal notranslate"><span class="pre">rcu_read_unlock</span></code></a> pair.</p>
+</div>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.dma_fence">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dma_fence</span></span></span><a class="headerlink" href="#c.dma_fence" title="Link to this definition">¶</a><br /></dt>
@@ -3026,14 +3105,14 @@ been completed, or never called at all.</p>
 </div>
 <p><strong>Members</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">node</span></code></dt><dd><p>used by <a class="reference internal" href="#c.dma_fence_add_callback" title="dma_fence_add_callback"><code class="xref c c-func docutils literal notranslate"><span class="pre">dma_fence_add_callback()</span></code></a> to append this struct to fence::cb_list</p>
+<dt><code class="docutils literal notranslate"><span class="pre">node</span></code></dt><dd><p>used by <a class="reference internal" href="#c.dma_fence_add_callback" title="dma_fence_add_callback"><code class="xref c c-func docutils literal notranslate"><span class="pre">dma_fence_add_callback()</span></code></a> to append this <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">to</span></code> fence::cb_list</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">func</span></code></dt><dd><p>dma_fence_func_t to call</p>
 </dd>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This struct will be initialized by <a class="reference internal" href="#c.dma_fence_add_callback" title="dma_fence_add_callback"><code class="xref c c-func docutils literal notranslate"><span class="pre">dma_fence_add_callback()</span></code></a>, additional
+<p>This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">will</span></code> be initialized by <a class="reference internal" href="#c.dma_fence_add_callback" title="dma_fence_add_callback"><code class="xref c c-func docutils literal notranslate"><span class="pre">dma_fence_add_callback()</span></code></a>, additional
 data can be passed along by embedding dma_fence_cb in another struct.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.dma_fence_ops">
@@ -3044,7 +3123,6 @@ data can be passed along by embedding dma_fence_cb in another struct.</p>
 <div class="kernelindent docutils container">
 <p><strong>Definition</strong>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct dma_fence_ops {
-    bool use_64bit_seqno;
     const char * (*get_driver_name)(struct dma_fence *fence);
     const char * (*get_timeline_name)(struct dma_fence *fence);
     bool (*enable_signaling)(struct dma_fence *fence);
@@ -3057,9 +3135,6 @@ data can be passed along by embedding dma_fence_cb in another struct.</p>
 </div>
 <p><strong>Members</strong></p>
 <dl>
-<dt><code class="docutils literal notranslate"><span class="pre">use_64bit_seqno</span></code></dt><dd><p>True if this dma_fence implementation uses 64bit seqno, false
-otherwise.</p>
-</dd>
 <dt><code class="docutils literal notranslate"><span class="pre">get_driver_name</span></code></dt><dd><p>Returns the driver name. This is a callback to allow drivers to
 compute the name at runtime, without having it to store permanently
 for each fence, or build a cache of some sort.</p>
@@ -3249,18 +3324,18 @@ value of this function before calling hardware-specific wait instructions.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.__dma_fence_is_later">
-<span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">__dma_fence_is_later</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="n"><span class="pre">f1</span></span>, <span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="n"><span class="pre">f2</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.dma_fence_ops" title="dma_fence_ops"><span class="n"><span class="pre">dma_fence_ops</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ops</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.__dma_fence_is_later" title="Link to this definition">¶</a><br /></dt>
+<span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">__dma_fence_is_later</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.dma_fence" title="dma_fence"><span class="n"><span class="pre">dma_fence</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">fence</span></span>, <span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="n"><span class="pre">f1</span></span>, <span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="n"><span class="pre">f2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.__dma_fence_is_later" title="Link to this definition">¶</a><br /></dt>
 <dd><p>return if f1 is chronologically later than f2</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dma_fence</span> <span class="pre">*fence</span></code></dt><dd><p>fence in whose context to do the comparison</p>
+</dd>
 <dt><code class="docutils literal notranslate"><span class="pre">u64</span> <span class="pre">f1</span></code></dt><dd><p>the first fence’s seqno</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">u64</span> <span class="pre">f2</span></code></dt><dd><p>the second fence’s seqno from the same context</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">dma_fence_ops</span> <span class="pre">*ops</span></code></dt><dd><p>dma_fence_ops associated with the seqno</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -442,7 +442,7 @@ something like
 </tr>
 <tr class="row-odd"><td><p>Dump-ability</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">getsockopt()</span></code></p></td>
-<td><p>Netlink .dump()
+<td><p>Netlink .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dump()</span></code>
 callback</p></td>
 </tr>
 <tr class="row-even"><td><p>Limits on kernel
@@ -580,14 +580,14 @@ the first SEQ byte that ACK is wanted for (snd_una) and the next SEQ byte that
 is wanted (rcv_nxt) - that’s enough information for a rough estimation
 on where in the 4GB SEQ number space both sender and receiver are.
 When they roll over to zero, the corresponding SNE gets incremented.</p>
-<p>tcp_ao_compute_sne() is called for each TCP-AO segment. It compares SEQ numbers
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">tcp_ao_compute_sne()</span></code> is called for each TCP-AO segment. It compares SEQ numbers
 from the segment with snd_una or rcv_nxt and fits the result into a 2GB window around them,
 detecting SEQ numbers rolling over. That simplifies the code a lot and only
 requires SNE numbers to be stored on every TCP-AO socket.</p>
 <p>The 2GB window at first glance seems much more permissive compared to
 RFC 5926. But that is only used to pick the correct SNE before/after
 a rollover. It allows more TCP segment replays, but yet all regular
-TCP checks in tcp_sequence() are applied on the verified segment.
+TCP checks in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">tcp_sequence()</span></code> are applied on the verified segment.
 So, it trades a bit more permissive acceptance of replayed/retransmitted
 segments for the simplicity of the algorithm and what seems better behaviour
 for large TCP windows.</p>

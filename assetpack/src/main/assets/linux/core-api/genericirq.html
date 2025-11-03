@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -184,7 +184,7 @@ generic IRQ handling layer.</p>
 <section id="rationale">
 <h2>Rationale<a class="headerlink" href="#rationale" title="Link to this heading">¶</a></h2>
 <p>The original implementation of interrupt handling in Linux uses the
-__do_IRQ() super-handler, which is able to deal with every type of
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__do_IRQ()</span></code> super-handler, which is able to deal with every type of
 interrupt logic.</p>
 <p>Originally, Russell King identified different types of handlers to build
 a quite universal set for the ARM interrupt handler implementation in
@@ -198,7 +198,7 @@ Linux 2.5/2.6. He distinguished between:</p>
 <ul class="simple">
 <li><p>Fast EOI type</p></li>
 </ul>
-<p>In the SMP world of the __do_IRQ() super-handler another type was
+<p>In the SMP world of the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__do_IRQ()</span></code> super-handler another type was
 identified:</p>
 <ul class="simple">
 <li><p>Per CPU type</p></li>
@@ -232,7 +232,7 @@ and extensible. For example, an (sub)architecture can use a generic
 IRQ-flow implementation for ‘level type’ interrupts and add a
 (sub)architecture specific ‘edge type’ implementation.</p>
 <p>To make the transition to the new model easier and prevent the breakage
-of existing implementations, the __do_IRQ() super-handler is still
+of existing implementations, the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__do_IRQ()</span></code> super-handler is still
 available. This leads to a kind of duality for the time being. Over time
 the new model should be used in more and more architectures, as it
 enables smaller and cleaner IRQ subsystems. It’s deprecated for three
@@ -259,7 +259,7 @@ the descriptor structures array. The descriptor structure contains
 status information and pointers to the interrupt flow method and the
 interrupt chip structure which are assigned to this interrupt.</p>
 <p>Whenever an interrupt triggers, the low-level architecture code calls
-into the generic interrupt code by calling desc-&gt;handle_irq(). This
+into the generic interrupt code by calling desc-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">handle_irq()</span></code>. This
 high-level IRQ handling function only uses desc-&gt;irq_data.chip
 primitives referenced by the assigned chip descriptor structure.</p>
 </section>
@@ -291,7 +291,7 @@ primitives referenced by the assigned chip descriptor structure.</p>
 <li><p><a class="reference internal" href="#c.handle_fasteoi_irq" title="handle_fasteoi_irq"><code class="xref c c-func docutils literal notranslate"><span class="pre">handle_fasteoi_irq()</span></code></a></p></li>
 <li><p><a class="reference internal" href="#c.handle_simple_irq" title="handle_simple_irq"><code class="xref c c-func docutils literal notranslate"><span class="pre">handle_simple_irq()</span></code></a></p></li>
 <li><p><a class="reference internal" href="#c.handle_percpu_irq" title="handle_percpu_irq"><code class="xref c c-func docutils literal notranslate"><span class="pre">handle_percpu_irq()</span></code></a></p></li>
-<li><p>handle_edge_eoi_irq()</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">handle_edge_eoi_irq()</span></code></p></li>
 <li><p><a class="reference internal" href="#c.handle_bad_irq" title="handle_bad_irq"><code class="xref c c-func docutils literal notranslate"><span class="pre">handle_bad_irq()</span></code></a></p></li>
 </ul>
 <p>The interrupt flow handlers (either pre-defined or architecture
@@ -470,7 +470,7 @@ handler(s) to use these basic units of low-level functionality.</p>
 </section>
 <section id="do-irq-entry-point">
 <h2>__do_IRQ entry point<a class="headerlink" href="#do-irq-entry-point" title="Link to this heading">¶</a></h2>
-<p>The original implementation __do_IRQ() was an alternative entry point
+<p>The original implementation <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__do_IRQ()</span></code> was an alternative entry point
 for all types of interrupts. It no longer exists.</p>
 <p>This handler turned out to be not suitable for all interrupt hardware
 and was therefore reimplemented with split functionality for
@@ -756,7 +756,7 @@ associated handler.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Only to be called from chip-&gt;irq_set_type() callbacks.</p>
+<p>Only to be called from chip-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irq_set_type()</span></code> callbacks.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.irq_remove_generic_chip">
@@ -1017,7 +1017,7 @@ irq_request_resources</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.irq_chip_regs">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">irq_chip_regs</span></span></span><a class="headerlink" href="#c.irq_chip_regs" title="Link to this definition">¶</a><br /></dt>
-<dd><p>register offsets for struct irq_gci</p>
+<dd><p>register offsets for <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">irq_gci</span></code></p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -1178,7 +1178,7 @@ different flow mechanisms (level/edge) for it.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">IRQ_GC_INIT_MASK_CACHE</span></code></dt><dd><p>Initialize the mask_cache by reading mask reg</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">IRQ_GC_INIT_NESTED_LOCK</span></code></dt><dd><p>Set the lock class of the irqs to nested for
-irq chips which need to call irq_set_wake() on
+irq chips which need to call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irq_set_wake()</span></code> on
 the parent irq. Usually GPIO implementations</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">IRQ_GC_MASK_CACHE_PER_TYPE</span></code></dt><dd><p>Mask cache is chip type private</p>
@@ -1727,7 +1727,7 @@ return value must be checked.</p>
 <p><strong>Description</strong></p>
 <p>Disable the selected interrupt line. Disables and enables are nested.</p>
 <p>The interrupt to disable must have been requested through request_nmi.
-Unlike disable_nmi(), this function does not ensure existing
+Unlike <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">disable_nmi()</span></code>, this function does not ensure existing
 instances of the IRQ handler have completed before returning.</p>
 </div>
 <dl class="c function">
@@ -1762,7 +1762,7 @@ desc-&gt;irq_data.chip-&gt;bus_lock and desc-&gt;chip-&gt;bus_sync_unlock are NU
 </dl>
 <p><strong>Description</strong></p>
 <p>The interrupt to enable must have been requested through request_nmi.
-Undoes the effect of one call to disable_nmi(). If this matches the last
+Undoes the effect of one call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">disable_nmi()</span></code>. If this matches the last
 disable, processing of interrupts on this IRQ line is re-enabled.</p>
 </div>
 <dl class="c function">
@@ -2021,7 +2021,7 @@ interrupts for this IRQ have completed.</p>
 <p><strong>Description</strong></p>
 <p>This call allocates interrupt resources and enables the interrupt on the
 local CPU. If the interrupt is supposed to be enabled on other CPUs, it
-has to be done on each CPU using enable_percpu_irq().</p>
+has to be done on each CPU using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">enable_percpu_irq()</span></code>.</p>
 <p><strong>dev_id</strong> must be globally unique. It is a per-cpu variable, and
 the handler gets called with the interrupted CPU’s instance of
 that variable.</p>
@@ -2047,7 +2047,7 @@ that variable.</p>
 <p><strong>Description</strong></p>
 <p>This call allocates interrupt resources for a per CPU NMI. Per CPU NMIs
 have to be setup on each CPU by calling <a class="reference internal" href="#c.prepare_percpu_nmi" title="prepare_percpu_nmi"><code class="xref c c-func docutils literal notranslate"><span class="pre">prepare_percpu_nmi()</span></code></a> before
-being enabled on the same CPU by using enable_percpu_nmi().</p>
+being enabled on the same CPU by using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">enable_percpu_nmi()</span></code>.</p>
 <p><strong>dev_id</strong> must be globally unique. It is a per-cpu variable, and the
 handler gets called with the interrupted CPU’s instance of that
 variable.</p>
@@ -2070,7 +2070,7 @@ will fail returning a negative value.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>This call prepares an interrupt line to deliver NMI on the current CPU,
-before that interrupt line gets enabled with enable_percpu_nmi().</p>
+before that interrupt line gets enabled with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">enable_percpu_nmi()</span></code>.</p>
 <p>As a CPU local operation, this should be called from non-preemptible
 context.</p>
 <p>If the interrupt line cannot be used to deliver NMIs, function will fail
@@ -2324,7 +2324,7 @@ line is back to inactive.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Only a single callback will be issued to the chip: an -&gt;eoi() call when
+<p>Only a single callback will be issued to the chip: an -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">eoi()</span></code> call when
 the interrupt has been serviced. This enables support for modern forms
 of interrupt handlers, which handle the flow details in hardware,
 transparently.</p>
@@ -2337,16 +2337,19 @@ transparently.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">irq_desc</span> <span class="pre">*desc</span></code></dt><dd><p>the interrupt description structure for this irq</p>
-<p>A simple NMI-safe handler, considering the restrictions
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>A simple NMI-safe handler, considering the restrictions
 from request_nmi.</p>
-<p>Only a single callback will be issued to the chip: an -&gt;eoi()
+<p>Only a single callback will be issued to the chip: an -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">eoi()</span></code>
 call when the interrupt has been serviced. This enables support
 for modern forms of interrupt handlers, which handle the flow
 details in hardware, transparently.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.handle_edge_irq">
@@ -2385,7 +2388,7 @@ pending interrupts are handled, the loop is left.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Like <a class="reference internal" href="#c.handle_fasteoi_irq" title="handle_fasteoi_irq"><code class="xref c c-func docutils literal notranslate"><span class="pre">handle_fasteoi_irq()</span></code></a>, but for use with hierarchy where the irq_chip
-also needs to have its -&gt;irq_ack() function called.</p>
+also needs to have its -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irq_ack()</span></code> function called.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.handle_fasteoi_mask_irq">
@@ -2401,7 +2404,7 @@ also needs to have its -&gt;irq_ack() function called.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Like <a class="reference internal" href="#c.handle_fasteoi_irq" title="handle_fasteoi_irq"><code class="xref c c-func docutils literal notranslate"><span class="pre">handle_fasteoi_irq()</span></code></a>, but for use with hierarchy where the irq_chip
-also needs to have its -&gt;irq_mask_ack() function called.</p>
+also needs to have its -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irq_mask_ack()</span></code> function called.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.irq_chip_set_parent_state">
@@ -2689,6 +2692,7 @@ functions.</p>
 </dl>
 <p><strong>Return</strong></p>
 <p>0 on success, or -EINVAL if conversion has failed</p>
+<p><strong>Description</strong></p>
 <blockquote>
 <div><p>This function must be called from an IRQ context with irq regs
 initialized.</p>
@@ -2729,6 +2733,7 @@ marked to enforce IRQ-context only.</p>
 </dl>
 <p><strong>Return</strong></p>
 <p>0 on success, or -EINVAL if conversion has failed</p>
+<p><strong>Description</strong></p>
 <blockquote>
 <div><p>This function must be called from an IRQ context with irq regs
 initialized.</p>
@@ -2750,6 +2755,7 @@ initialized.</p>
 </dl>
 <p><strong>Return</strong></p>
 <p>0 on success, or -EINVAL if conversion has failed</p>
+<p><strong>Description</strong></p>
 <blockquote>
 <div><p>This function must be called from an NMI context with irq regs
 initialized.</p>
@@ -2847,7 +2853,7 @@ concurrently.</p>
 <p>Returns the sum of interrupt counts on all cpus since boot for <strong>irq</strong>.</p>
 <p>It uses rcu to protect the access since a concurrent removal of an
 interrupt descriptor is observing an rcu grace period before
-delayed_free_desc()/irq_kobj_release().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">delayed_free_desc()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irq_kobj_release()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.handle_bad_irq">
@@ -2949,11 +2955,14 @@ disable_irq[_nosync] instead.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">irq_desc</span> <span class="pre">*desc</span></code></dt><dd><p>the interrupt description structure for this irq</p>
-<p>Per CPU interrupts on SMP machines without locking requirements</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Per CPU interrupts on SMP machines without locking requirements</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.handle_percpu_devid_irq">

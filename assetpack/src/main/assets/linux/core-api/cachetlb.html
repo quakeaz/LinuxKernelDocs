@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -177,7 +177,7 @@ on all processors in the system.  Don’t let this scare you into
 thinking SMP cache/tlb flushing must be so inefficient, this is in
 fact an area where many optimizations are possible.  For example,
 if it can be proven that a user address space has never executed
-on a cpu (see mm_cpumask()), one need not perform a flush
+on a cpu (see <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mm_cpumask()</span></code>), one need not perform a flush
 for this address space on that cpu.</p>
 <p>First, the TLB flushing interfaces, since they are the simplest.  The
 “TLB” is abstracted under Linux as something the cpu uses to cache
@@ -220,7 +220,7 @@ modifications for the address space ‘vma-&gt;vm_mm’ in the range
 running, there will be no entries in the TLB for ‘mm’ for
 virtual addresses in the range ‘start’ to ‘end-1’.</p>
 <p>The “vma” is the backing store being used for the region.
-Primarily, this is used for munmap() type operations.</p>
+Primarily, this is used for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">munmap()</span></code> type operations.</p>
 <p>The interface is provided in hopes that the port can find
 a suitably efficient method for removing multiple page
 sized translations from the TLB, instead of having the kernel
@@ -321,7 +321,7 @@ addresses from the cache.  After running, there will be no
 entries in the cache for ‘vma-&gt;vm_mm’ for virtual addresses in
 the range ‘start’ to ‘end-1’.</p>
 <p>The “vma” is the backing store being used for the region.
-Primarily, this is used for munmap() type operations.</p>
+Primarily, this is used for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">munmap()</span></code> type operations.</p>
 <p>The interface is provided in hopes that the port can find
 a suitably efficient method for removing multiple page
 sized regions from the cache, instead of having the kernel
@@ -366,9 +366,9 @@ PKMAP_ADDR(LAST_PKMAP).</p>
 of (kernel) virtual addresses from the cache.  After running,
 there will be no entries in the cache for the kernel address
 space for virtual addresses in the range ‘start’ to ‘end-1’.</p>
-<p>The first of these two routines is invoked after vmap_range()
+<p>The first of these two routines is invoked after <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vmap_range()</span></code>
 has installed the page table entries.  The second is invoked
-before vunmap_range() deletes the page table entries.</p>
+before <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vunmap_range()</span></code> deletes the page table entries.</p>
 </div></blockquote>
 </li>
 </ol>
@@ -414,7 +414,7 @@ of the same “color” as the user mapping of the page.  Sparc64
 for example, uses this technique.</p>
 <p>The ‘addr’ parameter tells the virtual address where the
 user will ultimately have this page mapped, and the ‘page’
-parameter gives a pointer to the struct page of the target.</p>
+parameter gives a pointer to the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code> of the target.</p>
 <p>If D-cache aliasing is not an issue, these two routines may
 simply call memcpy/memset directly and do nothing more.</p>
 </div></blockquote>
@@ -458,10 +458,10 @@ efficiently.  It allows one to “defer” (perhaps indefinitely) the
 actual flush if there are currently no user processes mapping this
 page.  See sparc64’s flush_dcache_folio and update_mmu_cache_range
 implementations for an example of how to go about doing this.</p>
-<p>The idea is, first at flush_dcache_folio() time, if
-<a class="reference internal" href="mm-api.html#c.folio_flush_mapping" title="folio_flush_mapping"><code class="xref c c-func docutils literal notranslate"><span class="pre">folio_flush_mapping()</span></code></a> returns a mapping, and mapping_mapped() on that
+<p>The idea is, first at <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">flush_dcache_folio()</span></code> time, if
+<a class="reference internal" href="mm-api.html#c.folio_flush_mapping" title="folio_flush_mapping"><code class="xref c c-func docutils literal notranslate"><span class="pre">folio_flush_mapping()</span></code></a> returns a mapping, and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mapping_mapped()</span></code> on that
 mapping returns %false, just mark the architecture private page
-flag bit.  Later, in update_mmu_cache_range(), a check is made
+flag bit.  Later, in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">update_mmu_cache_range()</span></code>, a check is made
 of this flag bit, and if set the flush is done and the flag bit
 is cleared.</p>
 <div class="admonition important">
@@ -479,20 +479,20 @@ to deal with this.</p>
 <span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">user_vaddr,</span> <span class="pre">void</span> <span class="pre">*dst,</span> <span class="pre">void</span> <span class="pre">*src,</span> <span class="pre">int</span> <span class="pre">len)</span></code></p>
 <blockquote>
 <div><p>When the kernel needs to copy arbitrary data in and out
-of arbitrary user pages (f.e. for ptrace()) it will use
+of arbitrary user pages (f.e. for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ptrace()</span></code>) it will use
 these two routines.</p>
 <p>Any necessary cache flushing or other coherency operations
 that need to occur should happen here.  If the processor’s
 instruction cache does not snoop cpu stores, it is very
 likely that you will need to flush the instruction cache
-for copy_to_user_page().</p>
+for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">copy_to_user_page()</span></code>.</p>
 </div></blockquote>
 <p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">flush_anon_page(struct</span> <span class="pre">vm_area_struct</span> <span class="pre">*vma,</span> <span class="pre">struct</span> <span class="pre">page</span> <span class="pre">*page,</span>
 <span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">vmaddr)</span></code></p>
 <blockquote>
 <div><p>When the kernel needs to access the contents of an anonymous
 page, it calls this function (currently only
-get_user_pages()).  Note: flush_dcache_folio() deliberately
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_user_pages()</span></code>).  Note: <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">flush_dcache_folio()</span></code> deliberately
 doesn’t work for an anonymous page.  The default
 implementation is a nop (and should remain so for all coherent
 architectures).  For incoherent architectures, it should flush

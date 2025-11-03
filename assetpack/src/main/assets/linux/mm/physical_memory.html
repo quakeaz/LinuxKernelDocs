@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -285,7 +285,7 @@ be controlled by users as described in
 structures. The actual structures are allocated early during boot when
 architecture specific code parses the physical memory map reported by the
 firmware. The bulk of the node initialization happens slightly later in the
-boot process by free_area_init() function, described later in Section
+boot process by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">free_area_init()</span></code> function, described later in Section
 <a class="reference internal" href="#initialization"><span class="std std-ref">Initialization</span></a>.</p>
 <p>Along with the node structures, kernel maintains an array of <code class="docutils literal notranslate"><span class="pre">nodemask_t</span></code>
 bitmasks called <code class="docutils literal notranslate"><span class="pre">node_states</span></code>. Each bitmask in this array represents a set of
@@ -320,7 +320,7 @@ node_states[N_CPU]
 <code class="docutils literal notranslate"><span class="pre">include/linux/nodemask.h</span></code>.</p>
 <p>Among other things, nodemasks are used to provide macros for node traversal,
 namely <code class="docutils literal notranslate"><span class="pre">for_each_node()</span></code> and <code class="docutils literal notranslate"><span class="pre">for_each_online_node()</span></code>.</p>
-<p>For instance, to call a function foo() for each online node:</p>
+<p>For instance, to call a function <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">foo()</span></code> for each online node:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>for_each_online_node(nid) {
         pg_data_t *pgdat = NODE_DATA(nid);
 
@@ -348,10 +348,10 @@ core memory management structures.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">nr_zones</span></code></dt><dd><p>Number of populated zones in this node.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">node_mem_map</span></code></dt><dd><p>For UMA systems that use FLATMEM memory model the 0’s node
-<code class="docutils literal notranslate"><span class="pre">node_mem_map</span></code> is array of struct pages representing each physical frame.</p>
+<code class="docutils literal notranslate"><span class="pre">node_mem_map</span></code> is array of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pages</span></code> representing each physical frame.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">node_page_ext</span></code></dt><dd><p>For UMA systems that use FLATMEM memory model the 0’s node
-<code class="docutils literal notranslate"><span class="pre">node_page_ext</span></code> is array of extensions of struct pages. Available only
+<code class="docutils literal notranslate"><span class="pre">node_page_ext</span></code> is array of extensions of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pages</span></code>. Available only
 in the kernels built with <code class="docutils literal notranslate"><span class="pre">CONFIG_PAGE_EXTENSION</span></code> enabled.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">node_start_pfn</span></code></dt><dd><p>The page frame number of the starting page frame in this node.</p>
@@ -466,7 +466,7 @@ falling back to the buddy allocator. Pages are transferred between the Per-CPU
 Pagesets and the global free areas (managed by the buddy allocator) in batches.
 This minimizes the overhead of frequent interactions with the global buddy
 allocator.</p>
-<p>Architecture specific code calls free_area_init() to initializes zones.</p>
+<p>Architecture specific code calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">free_area_init()</span></code> to initializes zones.</p>
 <section id="zone-structure">
 <h3>Zone structure<a class="headerlink" href="#zone-structure" title="Link to this heading">¶</a></h3>
 <p>The zones structure <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">zone</span></code> is defined in <code class="docutils literal notranslate"><span class="pre">include/linux/mmzone.h</span></code>.
@@ -650,7 +650,7 @@ when a compaction succeeds and in <code class="docutils literal notranslate"><sp
 fails to result in a page allocation success.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">compact_blockskip_flush</span></code></dt><dd><p>Set to true when compaction migration scanner and free scanner meet, which
-means the <code class="docutils literal notranslate"><span class="pre">PB_migrate_skip</span></code> bits should be cleared.</p>
+means the <code class="docutils literal notranslate"><span class="pre">PB_compact_skip</span></code> bits should be cleared.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">contiguous</span></code></dt><dd><p>Set to true when the zone is contiguous (in other words, no hole).</p>
 </dd>

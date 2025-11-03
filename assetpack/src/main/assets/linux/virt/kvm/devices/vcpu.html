@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -165,8 +165,8 @@
 <section id="generic-vcpu-interface">
 <h1>Generic vcpu interface<a class="headerlink" href="#generic-vcpu-interface" title="Link to this heading">¶</a></h1>
 <p>The virtual cpu “device” also accepts the ioctls KVM_SET_DEVICE_ATTR,
-KVM_GET_DEVICE_ATTR, and KVM_HAS_DEVICE_ATTR. The interface uses the same struct
-kvm_device_attr as other devices, but targets VCPU-wide settings and controls.</p>
+KVM_GET_DEVICE_ATTR, and KVM_HAS_DEVICE_ATTR. The interface uses the same <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">kvm_device_attr</span></code> as other devices, but targets VCPU-wide settings and controls.</p>
 <p>The groups and attributes per virtual cpu, if any, are architecture specific.</p>
 <section id="group-kvm-arm-vcpu-pmu-v3-ctrl">
 <h2>1. GROUP: KVM_ARM_VCPU_PMU_V3_CTRL<a class="headerlink" href="#group-kvm-arm-vcpu-pmu-v3-ctrl" title="Link to this heading">¶</a></h2>
@@ -249,7 +249,7 @@ irqchip.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p>in kvm_device_attr.addr the address for a PMU event filter is a
-pointer to a struct kvm_pmu_event_filter</p>
+pointer to a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_pmu_event_filter</span></code></p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><table class="docutils align-default">
@@ -340,7 +340,7 @@ if a PMU event filter is already present.</p>
 associated with the PMU specified by this attribute. This is entirely left to
 userspace. However, attempting to run the VCPU on a physical CPU not supported
 by the PMU will fail and KVM_RUN will return with
-exit_reason = KVM_EXIT_FAIL_ENTRY and populate the fail_entry struct by setting
+exit_reason = KVM_EXIT_FAIL_ENTRY and populate the fail_entry <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">by</span></code> setting
 hardare_entry_failure_reason field to KVM_EXIT_FAIL_ENTRY_CPU_UNSUPPORTED and
 the cpu field to the processor id.</p>
 </section>

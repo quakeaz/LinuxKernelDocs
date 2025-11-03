@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -206,7 +206,7 @@ draw這些層次結構相關的文件僅在體系結構提供了下文描述的�
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">**_id</span> <span class="pre">macros</span></code> 的類型是int。
 <code class="docutils literal notranslate"><span class="pre">**_cpumask</span> <span class="pre">macros</span></code> 的類型是 <code class="docutils literal notranslate"><span class="pre">(const)</span> <span class="pre">struct</span> <span class="pre">cpumask</span> <span class="pre">*</span></code> 。後者和恰當的
-<code class="docutils literal notranslate"><span class="pre">**_siblings</span></code> sysfs屬性對應（除了topology_sibling_cpumask()，它和thread_siblings
+<code class="docutils literal notranslate"><span class="pre">**_siblings</span></code> sysfs屬性對應（除了<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">topology_sibling_cpumask()</span></code>，它和thread_siblings
 對應）。</p>
 <p>爲了在所有體系結構上保持一致，include/linux/topology.h提供了上述所有宏的默認定義，以防
 它們未在include/asm-XXX/topology.h中定義:</p>
@@ -249,7 +249,7 @@ draw這些層次結構相關的文件僅在體系結構提供了下文描述的�
 </tbody>
 </table>
 </div></blockquote>
-<p>上述輸出的格式和cpulist_parse()兼容[參見 &lt;linux/cpumask.h&gt;]。下面給些例子。</p>
+<p>上述輸出的格式和<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpulist_parse()</span></code>兼容[參見 &lt;linux/cpumask.h&gt;]。下面給些例子。</p>
 <p>在本例中，系統中有64個CPU，但是CPU 32-63超過了kernel_max值，因爲NR_CPUS配置項是32，
 取值範圍被限制爲0..31。此外注意CPU2和4-31未上線，但是可以上線，因爲它們同時存在於
 present和possible:</p>

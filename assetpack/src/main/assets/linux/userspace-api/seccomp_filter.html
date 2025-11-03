@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -190,7 +190,7 @@ behavior and information flow should be managed with a combination of
 other system hardening techniques and, potentially, an LSM of your
 choosing.  Expressive, dynamic filters provide further options down this
 path (avoiding pathological sizes or selecting which of the multiplexed
-system calls in socketcall() is allowed, for instance) which could be
+system calls in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">socketcall()</span></code> is allowed, for instance) which could be
 construed, incorrectly, as a more complete sandboxing solution.</p>
 </section>
 <section id="usage">
@@ -201,7 +201,7 @@ prctl(2) call as the strict seccomp.  If the architecture has
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">PR_SET_SECCOMP</span></code>:</dt><dd><p>Now takes an additional argument which specifies a new filter
 using a BPF program.
-The BPF program will be executed over struct seccomp_data
+The BPF program will be executed over <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">seccomp_data</span></code>
 reflecting the system call number, arguments, and other
 metadata.  The BPF program must then return one of the
 acceptable values to inform the kernel which action should be
@@ -210,7 +210,7 @@ taken.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>prctl(PR_SET_SECCOMP, SECCOMP_MODE_FILTER, prog);
 </pre></div>
 </div>
-<p>The ‘prog’ argument is a pointer to a struct sock_fprog which
+<p>The ‘prog’ argument is a pointer to a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">sock_fprog</span></code> which
 will contain the filter program.  If the program is invalid, the
 call will return -1 and set errno to <code class="docutils literal notranslate"><span class="pre">EINVAL</span></code>.</p>
 <p>If <code class="docutils literal notranslate"><span class="pre">fork</span></code>/<code class="docutils literal notranslate"><span class="pre">clone</span></code> and <code class="docutils literal notranslate"><span class="pre">execve</span></code> are allowed by &#64;prog, any child

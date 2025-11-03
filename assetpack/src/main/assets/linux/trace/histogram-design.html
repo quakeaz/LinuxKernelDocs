@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -216,13 +216,13 @@ sched_waking was called for that pid.</p>
 <p>Each histogram is represented by a hist_data struct.</p>
 <p>To keep track of each key and value field in the histogram, hist_data
 keeps an array of these fields named fields[].  The fields[] array is
-an array containing struct hist_field representations of each
+an array containing <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hist_field</span></code> representations of each
 histogram val and key in the histogram (variables are also included
 here, but are discussed later). So for the above histogram we have one
 key and one value; in this case the one value is the hitcount value,
 which all histograms have, regardless of whether they define that
 value or not, which the above histogram does not.</p>
-<p>Each struct hist_field contains a pointer to the ftrace_event_field
+<p>Each <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hist_field</span></code> contains a pointer to the ftrace_event_field
 from the event’s trace_event_file along with various bits related to
 that such as the size, offset, type, and a hist_field_fn_t function,
 which is used to grab the field’s data from the ftrace event buffer
@@ -291,7 +291,7 @@ to corresponding parts of the tracing_map.                               |  |</p
 of preallocated tracing_map_elts (abbreviated below as map_entry and     |  |
 map_elt).  The total number of map_entrys in the hist_data.map array =   |  |
 map-&gt;max_elts (actually map-&gt;map_size but only max_elts of those are     |  |
-used.  This is a property required by the map_insert() algorithm).       |  |</p>
+used.  This is a property required by the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">map_insert()</span></code> algorithm).       |  |</p>
 <p>If a map_entry is unused, meaning no key has yet hashed into it, its     |  |
 .key value is 0 and its .val pointer is NULL.  Once a map_entry has      |  |
 been claimed, the .key value contains the key’s hash value and the       |  |
@@ -372,11 +372,11 @@ map_elt.fields = struct tracing_map_field
 </pre></div>
 </div>
 <p>Whenever a new event occurs and it has a hist trigger associated with
-it, event_hist_trigger() is called.  event_hist_trigger() first deals
+it, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">event_hist_trigger()</span></code> is called.  <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">event_hist_trigger()</span></code> first deals
 with the key: for each subkey in the key (in the above example, there
 is just one subkey corresponding to pid), the hist_field that
 represents that subkey is retrieved from hist_data.fields[] and the
-hist_field_fn_t fn() associated with that field, along with the
+hist_field_fn_t <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fn()</span></code> associated with that field, along with the
 field’s size and offset, is used to grab that subkey’s data from the
 current trace record.</p>
 <p>Once the complete key has been retrieved, it’s used to look that key
@@ -384,22 +384,22 @@ up in the tracing_map.  If there’s no tracing_map_elt associated with
 that key, an empty one is claimed and inserted in the map for the new
 key.  In either case, the tracing_map_elt associated with that key is
 returned.</p>
-<p>Once a tracing_map_elt available, hist_trigger_elt_update() is called.
+<p>Once a tracing_map_elt available, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hist_trigger_elt_update()</span></code> is called.
 As the name implies, this updates the element, which basically means
 updating the element’s fields.  There’s a tracing_map_field associated
 with each key and value in the histogram, and each of these correspond
 to the key and value hist_fields created when the histogram was
-created.  hist_trigger_elt_update() goes through each value hist_field
-and, as for the keys, uses the hist_field’s fn() and size and offset
+created.  <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hist_trigger_elt_update()</span></code> goes through each value hist_field
+and, as for the keys, uses the hist_field’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fn()</span></code> and size and offset
 to grab the field’s value from the current trace record.  Once it has
 that value, it simply adds that value to that field’s
 continually-updated tracing_map_field.sum member.  Some hist_field
-fn()s, such as for the hitcount, don’t actually grab anything from the
-trace record (the hitcount fn() just increments the counter sum by 1),
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fn()</span></code>s, such as for the hitcount, don’t actually grab anything from the
+trace record (the hitcount <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fn()</span></code> just increments the counter sum by 1),
 but the idea is the same.</p>
-<p>Once all the values have been updated, hist_trigger_elt_update() is
+<p>Once all the values have been updated, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hist_trigger_elt_update()</span></code> is
 done and returns.  Note that there are also tracing_map_fields for
-each subkey in the key, but hist_trigger_elt_update() doesn’t look at
+each subkey in the key, but <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hist_trigger_elt_update()</span></code> doesn’t look at
 them or update anything - those exist only for sorting, which can
 happen later.</p>
 <section id="basic-histogram-test">
@@ -503,7 +503,7 @@ as another type of hist_field and for a given hist trigger are added
 to the hist_data.fields[] array just after all the val fields.  To
 distinguish them from the existing key and val fields, they’re given a
 new flag type, HIST_FIELD_FL_VAR (abbreviated FL_VAR) and they also
-make use of a new .var.idx field member in struct hist_field, which
+make use of a new .var.idx field member in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hist_field</span></code>, which
 maps them to an index in a new map_elt.vars[] array added to the
 map_elt specifically designed to store and retrieve variable values.
 The diagram below shows those new elements and adds a new variable
@@ -571,7 +571,7 @@ trigger above.</p>
 </pre></div>
 </div>
 <p>This is very similar to the basic case.  In the above diagram, we can     | | |
-see a new .flags member has been added to the struct hist_field           | | |
+see a new .flags member has been added to the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hist_field</span></code>           | | |
 struct, and a new entry added to hist_data.fields representing the ts0    | | |
 variable.  For a normal val hist_field, .flags is just 0 (modulo          | | |
 modifier flags), but if the value is defined as a variable, the .flags    | | |
@@ -580,8 +580,8 @@ contains a set FL_VAR bit.                                                | | |<
 into the tracing_map_elts’ .vars[] array containing variable values.      | | |
 This idx is used whenever the value of the variable is set or read.       | | |
 The map_elt.vars idx assigned to the given variable is assigned and       | | |
-saved in .var.idx by create_tracing_map_fields() after it calls           | | |
-tracing_map_add_var().                                                    | | |</p>
+saved in .var.idx by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">create_tracing_map_fields()</span></code> after it calls           | | |
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">tracing_map_add_var()</span></code>.                                                    | | |</p>
 <p>Below is a representation of the histogram at run-time, which             | | |
 populates the map, along with correspondence to the above hist_data and   | | |
 hist_field data structures.                                               | | |</p>
@@ -826,7 +826,7 @@ event_name variables are also set.</p>
 <p>So, in order to handle an event for the sched_switch histogram,
 because we have a reference to a variable on another histogram, we
 need to resolve all variable references first.  This is done via the
-resolve_var_refs() calls made from event_hist_trigger().  What this
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">resolve_var_refs()</span></code> calls made from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">event_hist_trigger()</span></code>.  What this
 does is grabs the var_refs[] array from the hist_data representing the
 sched_switch histogram.  For each one of those, the referenced
 variable’s var.hist_data along with the current key is used to look up
@@ -978,19 +978,19 @@ variable reference fields:
 <p>Adding onto the previous example, we will now do something with that
 wakeup_lat variable, namely send it and another field as a synthetic
 event.</p>
-<p>The onmatch() action below basically says that whenever we have a
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">onmatch()</span></code> action below basically says that whenever we have a
 sched_switch event, if we have a matching sched_waking event, in this
 case if we have a pid in the sched_waking histogram that matches the
 next_pid field on this sched_switch event, we retrieve the
-variables specified in the wakeup_latency() trace action, and use
+variables specified in the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wakeup_latency()</span></code> trace action, and use
 them to generate a new wakeup_latency event into the trace stream.</p>
-<p>Note that the way the trace handlers such as wakeup_latency() (which
+<p>Note that the way the trace handlers such as <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wakeup_latency()</span></code> (which
 could equivalently be written trace(wakeup_latency,$wakeup_lat,next_pid)
 are implemented, the parameters specified to the trace handler must be
 variables.  In this case, $wakeup_lat is obviously a variable, but
 next_pid isn’t, since it’s just naming a field in the sched_switch
-trace event.  Since this is something that almost every trace() and
-save() action does, a special shortcut is implemented to allow field
+trace event.  Since this is something that almost every <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">trace()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">save()</span></code> action does, a special shortcut is implemented to allow field
 names to be used directly in those cases.  How it works is that under
 the covers, a temporary variable is created for the named field, and
 this variable is what is actually passed to the trace handler.  In the
@@ -1001,8 +1001,8 @@ case we have to generate a new histogram and an unfortunately named
 ‘synthetic_field’ (the use of synthetic here has nothing to do with
 synthetic events) and use that special histogram field as a variable.</p>
 <p>The diagram below illustrates the new elements described above in the
-context of the sched_switch histogram using the onmatch() handler and
-the trace() action.</p>
+context of the sched_switch histogram using the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">onmatch()</span></code> handler and
+the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">trace()</span></code> action.</p>
 <p>First, we define the wakeup_latency synthetic event:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span># echo &#39;wakeup_latency u64 lat; pid_t pid&#39; &gt;&gt; synthetic_events
 </pre></div>
@@ -1013,7 +1013,7 @@ the trace() action.</p>
 </pre></div>
 </div>
 <p>Finally, we create a hist trigger on the sched_switch event that
-generates a wakeup_latency() trace event.  In this case we pass
+generates a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wakeup_latency()</span></code> trace event.  In this case we pass
 next_pid into the wakeup_latency synthetic event invocation, which
 means it will be automatically converted into a field variable:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span># echo &#39;hist:keys=next_pid:wakeup_lat=common_timestamp.usecs-$ts0: \
@@ -1170,24 +1170,24 @@ field does.  These are created separately from normal variable
 creation and are saved in the hist_data-&gt;field_vars[] array.  See
 below for how these are used.  In addition, a reference hist_field is
 also created, which is needed to reference the field variables such as
-$next_pid variable in the trace() action.</p>
+$next_pid variable in the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">trace()</span></code> action.</p>
 <p>Note that $wakeup_lat is also a variable reference, referencing the
 value of the expression common_timestamp-$ts0, and so also needs to
 have a hist field entry representing that reference created.</p>
-<p>When hist_trigger_elt_update() is called to get the normal key and
-value fields, it also calls update_field_vars(), which goes through
+<p>When <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hist_trigger_elt_update()</span></code> is called to get the normal key and
+value fields, it also calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">update_field_vars()</span></code>, which goes through
 each field_var created for the histogram, and available from
-hist_data-&gt;field_vars and calls val-&gt;fn() to get the data from the
+hist_data-&gt;field_vars and calls val-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fn()</span></code> to get the data from the
 current trace record, and then uses the var’s var.idx to set the
 variable at the var.idx offset in the appropriate tracing_map_elt’s
 variable at elt-&gt;vars[var.idx].</p>
-<p>Once all the variables have been updated, resolve_var_refs() can be
-called from event_hist_trigger(), and not only can our $ts0 and
+<p>Once all the variables have been updated, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">resolve_var_refs()</span></code> can be
+called from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">event_hist_trigger()</span></code>, and not only can our $ts0 and
 $next_pid references be resolved but the $wakeup_lat reference as
-well.  At this point, the trace() action can simply access the values
+well.  At this point, the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">trace()</span></code> action can simply access the values
 assembled in the var_ref_vals[] array and generate the trace event.</p>
 <p>The same process occurs for the field variables associated with the
-save() action.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">save()</span></code> action.</p>
 <p>Abbreviations used in the diagram:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>hist_data = struct hist_trigger_data
 hist_data.fields = struct hist_field
@@ -1202,8 +1202,8 @@ FL_VAR_REF = HIST_FIELD_FL_VAR_REF
 <h3>trace() action field variable test<a class="headerlink" href="#trace-action-field-variable-test" title="Link to this heading">¶</a></h3>
 <p>This example adds to the previous test example by finally making use
 of the wakeup_lat variable, but in addition also creates a couple of
-field variables that then are all passed to the wakeup_latency() trace
-action via the onmatch() handler.</p>
+field variables that then are all passed to the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wakeup_latency()</span></code> trace
+action via the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">onmatch()</span></code> handler.</p>
 <p>First, we create the wakeup_latency synthetic event:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span># echo &#39;wakeup_latency u64 lat; pid_t pid; char comm[16]&#39; &gt;&gt; synthetic_events
 </pre></div>
@@ -1285,7 +1285,7 @@ associated with that trigger), while the second variable refers to the
 0 var.idx on the sched_switch hist trigger, as do all the remaining
 variable references.</p>
 <p>Finally, the action tracking variables section just shows the system
-and event name for the onmatch() handler:</p>
+and event name for the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">onmatch()</span></code> handler:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span># cat events/sched/sched_switch/hist_debug
 
 # event histogram
@@ -1420,16 +1420,16 @@ action tracking variables (for onmax()/onchange()/onmatch()):
 </section>
 <section id="action-data-and-the-trace-action">
 <h3>action_data and the trace() action<a class="headerlink" href="#action-data-and-the-trace-action" title="Link to this heading">¶</a></h3>
-<p>As mentioned above, when the trace() action generates a synthetic
+<p>As mentioned above, when the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">trace()</span></code> action generates a synthetic
 event, all the parameters to the synthetic event either already are
 variables or are converted into variables (via field variables), and
 finally all those variable values are collected via references to them
 into a var_ref_vals[] array.</p>
 <p>The values in the var_ref_vals[] array, however, don’t necessarily
 follow the same ordering as the synthetic event params.  To address
-that, struct action_data contains another array, var_ref_idx[] that
+that, <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">action_data</span></code> contains another array, var_ref_idx[] that
 maps the trace action params to the var_ref_vals[] values.  Below is a
-diagram illustrating that for the wakeup_latency() synthetic event:</p>
+diagram illustrating that for the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wakeup_latency()</span></code> synthetic event:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>+------------------+     wakeup_latency()
 | action_data      |       event params               var_ref_vals[]
 +------------------+    +-----------------+        +-----------------+
@@ -1448,7 +1448,7 @@ diagram illustrating that for the wakeup_latency() synthetic event:</p>
 </pre></div>
 </div>
 <p>Basically, how this ends up getting used in the synthetic event probe
-function, trace_event_raw_event_synth(), is as follows:</p>
+function, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">trace_event_raw_event_synth()</span></code>, is as follows:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>for each field i in .synth_event
   val_idx = .var_ref_idx[i]
   val = var_ref_vals[val_idx]
@@ -1457,13 +1457,13 @@ function, trace_event_raw_event_synth(), is as follows:</p>
 </section>
 <section id="action-data-and-the-onxxx-handlers">
 <h3>action_data and the onXXX() handlers<a class="headerlink" href="#action-data-and-the-onxxx-handlers" title="Link to this heading">¶</a></h3>
-<p>The hist trigger onXXX() actions other than onmatch(), such as onmax()
-and onchange(), also make use of and internally create hidden
+<p>The hist trigger <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">onXXX()</span></code> actions other than <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">onmatch()</span></code>, such as <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">onmax()</span></code>
+and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">onchange()</span></code>, also make use of and internally create hidden
 variables.  This information is contained in the
 action_data.track_data struct, and is also visible in the hist_debug
 output as will be described in the example below.</p>
-<p>Typically, the onmax() or onchange() handlers are used in conjunction
-with the save() and snapshot() actions.  For example:</p>
+<p>Typically, the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">onmax()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">onchange()</span></code> handlers are used in conjunction
+with the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">save()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">snapshot()</span></code> actions.  For example:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span># echo &#39;hist:keys=next_pid:wakeup_lat=common_timestamp.usecs-$ts0: \
         onmax($wakeup_lat).save(next_comm,prev_pid,prev_prio,prev_comm)&#39; &gt;&gt;
         /sys/kernel/tracing/events/sched/sched_switch/trigger
@@ -1478,8 +1478,8 @@ with the save() and snapshot() actions.  For example:</p>
 </section>
 <section id="save-action-field-variable-test">
 <h3>save() action field variable test<a class="headerlink" href="#save-action-field-variable-test" title="Link to this heading">¶</a></h3>
-<p>For this example, instead of generating a synthetic event, the save()
-action is used to save field values whenever an onmax() handler
+<p>For this example, instead of generating a synthetic event, the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">save()</span></code>
+action is used to save field values whenever an <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">onmax()</span></code> handler
 detects that a new max latency has been hit.  As in the previous
 example, the values being saved are also field values, but in this
 case, are kept in a separate hist_data array named save_vars[].</p>
@@ -1489,7 +1489,7 @@ case, are kept in a separate hist_data array named save_vars[].</p>
 </div>
 <p>In this case, however, we set up the sched_switch trigger to save some
 sched_switch field values whenever we hit a new maximum latency.  For
-both the onmax() handler and save() action, variables will be created,
+both the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">onmax()</span></code> handler and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">save()</span></code> action, variables will be created,
 which we can use the hist_debug files to examine:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span># echo &#39;hist:keys=next_pid:wakeup_lat=common_timestamp.usecs-$ts0:onmax($wakeup_lat).save(next_comm,prev_pid,prev_prio,prev_comm)&#39; &gt;&gt; events/sched/sched_switch/trigger
 </pre></div>
@@ -1544,13 +1544,13 @@ actions[].track_data information describing the special tracking
 variables and references used to track, in this case, the running
 maximum value.  The actions[].track_data.var_ref member contains the
 reference to the variable being tracked, in this case the $wakeup_lat
-variable.  In order to perform the onmax() handler function, there
+variable.  In order to perform the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">onmax()</span></code> handler function, there
 also needs to be a variable that tracks the current maximum by getting
 updated whenever a new maximum is hit.  In this case, we can see that
 an auto-generated variable named ‘ __max’ has been created and is
 visible in the actions[].track_data.track_var variable.</p>
 <p>Finally, in the new ‘save action variables’ section, we can see that
-the 4 params to the save() function have resulted in 4 field variables
+the 4 params to the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">save()</span></code> function have resulted in 4 field variables
 being created for the purposes of saving the values of the named
 fields when the max is hit.  These variables are kept in a separate
 save_vars[] array off of hist_data, so are displayed in a separate
@@ -1736,7 +1736,7 @@ addition of the prio field:</p>
 </div>
 <p>Here we set up a hist trigger on sched_switch to send a wakeup_latency
 event using an onmatch handler naming the sched_waking event.  Note
-that the third param being passed to the wakeup_latency() is prio,
+that the third param being passed to the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wakeup_latency()</span></code> is prio,
 which is a field name that needs to have a field variable created for
 it.  There isn’t however any prio field on the sched_switch event so
 it would seem that it wouldn’t be possible to create a field variable
@@ -2047,10 +2047,10 @@ HIST_FIELD_FL_ALIAS flag set.  It also has the HIST_FIELD_FL_VAR flag
 set, which is why it appears in the val field section.</p>
 <p>Despite that implementation detail, an alias variable is actually more
 like a variable reference; in fact it can be thought of as a reference
-to a reference.  The implementation copies the var_ref-&gt;fn() from the
+to a reference.  The implementation copies the var_ref-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fn()</span></code> from the
 variable reference being referenced, in this case, the waking_pid
-fn(), which is hist_field_var_ref() and makes that the fn() of the
-alias.  The hist_field_var_ref() fn() requires the var_ref_idx of the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fn()</span></code>, which is <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hist_field_var_ref()</span></code> and makes that the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fn()</span></code> of the
+alias.  The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hist_field_var_ref()</span></code> <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fn()</span></code> requires the var_ref_idx of the
 variable reference it’s using, so waking_pid’s var_ref_idx is also
 copied to the alias.  The end result is that when the value of alias
 is retrieved, in the end it just does the same thing the original
@@ -2062,7 +2062,7 @@ reference fields section.</p>
 <p>Additionally, once it gets that value, since it is also a variable, it
 then saves that value into its var.idx.  So the var.idx of the
 woken_pid alias is 0, which it fills with the value from var_ref_idx 0
-when its fn() is called to update itself.  You’ll also notice that
+when its <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fn()</span></code> is called to update itself.  You’ll also notice that
 there’s a woken_pid var_ref in the variable refs section.  That is the
 reference to the woken_pid alias variable, and you can see that it
 retrieves the value from the same var.idx as the woken_pid alias, 0,

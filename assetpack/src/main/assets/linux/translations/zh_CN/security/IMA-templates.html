@@ -31,7 +31,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -171,7 +171,7 @@ Chinese (Simplified)
 的核心是定义两个新的数据结构：一个是模板描述符，用于确定度量列表中应包含
 哪些信息；另一个是模板字段，用于生成和显示给定类型的数据。</p>
 <p>使用这些结构管理模板非常简单。为了支持一种新的数据类型，开发人员定义字段
-标识符，并实现两个函数，分别为init()和show()，用于生成和显示度量条目。
+标识符，并实现两个函数，分别为<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init()</span></code>和<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">show()</span></code>，用于生成和显示度量条目。
 定义一个新的模板描述符需要通过 <code class="docutils literal notranslate"><span class="pre">ima_template_fmt</span></code> 内核命令行参数指定
 模板格式(一个由 <code class="docutils literal notranslate"><span class="pre">|</span></code> 字符分隔的字段标识符字符串)。在启动时，IMA通过将格
 式转换从支持的模板字段集合中选取模板字段数组，来初始化所选的模板描述符。</p>
@@ -182,7 +182,7 @@ Chinese (Simplified)
 定模板的特定代码，而是简单地调用与所选模板描述符关联的模板字段的 <code class="docutils literal notranslate"><span class="pre">init()</span></code>
 方法，并将结果(指向已分配数据的指针和数据长度)存储在度量条目结构中。</p>
 <p>相同的机制也用于显示度量条目。函数 <code class="docutils literal notranslate"><span class="pre">ima[_ascii]_measurements_show()</span></code> 会为
-每个条目检索用于生成该条目的模板描述符，并为模板字段结构数组中的每一项调用show()
+每个条目检索用于生成该条目的模板描述符，并为模板字段结构数组中的每一项调用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">show()</span></code>
 方法。</p>
 </section>
 <section id="id2">

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -187,7 +187,7 @@ select an idle state to ask the processor to enter in order to save some energy.
 platform that the Linux kernel can run on.  For this reason, data structures
 operated on by them cannot depend on any hardware architecture or platform
 design details as well.</p>
-<p>The governor itself is represented by a struct cpuidle_governor object
+<p>The governor itself is represented by a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpuidle_governor</span></code> object
 containing four callback pointers, <code class="xref c c-member docutils literal notranslate"><span class="pre">enable</span></code>, <code class="xref c c-member docutils literal notranslate"><span class="pre">disable</span></code>,
 <code class="xref c c-member docutils literal notranslate"><span class="pre">select</span></code>, <code class="xref c c-member docutils literal notranslate"><span class="pre">reflect</span></code>, a <code class="xref c c-member docutils literal notranslate"><span class="pre">rating</span></code> field described
 below, and a name (string) used for identifying it.</p>
@@ -211,11 +211,11 @@ callbacks:</p>
 </pre></div>
 </div>
 <p>The role of this callback is to prepare the governor for handling the
-(logical) CPU represented by the struct cpuidle_device object   pointed
-to by the <code class="docutils literal notranslate"><span class="pre">dev</span></code> argument.  The struct cpuidle_driver object pointed
+(logical) CPU represented by the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpuidle_device</span></code> object   pointed
+to by the <code class="docutils literal notranslate"><span class="pre">dev</span></code> argument.  The <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpuidle_driver</span></code> object pointed
 to by the <code class="docutils literal notranslate"><span class="pre">drv</span></code> argument represents the <code class="docutils literal notranslate"><span class="pre">CPUIdle</span></code> driver to be used
 with that CPU (among other things, it should contain the list of
-struct cpuidle_state objects representing idle states that the
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpuidle_state</span></code> objects representing idle states that the
 processor holding the given CPU can be asked to enter).</p>
 <p>It may fail, in which case it is expected to return a negative error
 code, and that causes the kernel to run the architecture-specific
@@ -227,7 +227,7 @@ again.</p>
 </pre></div>
 </div>
 <p>Called to make the governor stop handling the (logical) CPU represented
-by the struct cpuidle_device object pointed to by the <code class="docutils literal notranslate"><span class="pre">dev</span></code>
+by the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpuidle_device</span></code> object pointed to by the <code class="docutils literal notranslate"><span class="pre">dev</span></code>
 argument.</p>
 <p>It is expected to reverse any changes made by the <code class="docutils literal notranslate"><span class="pre">-&gt;enable()</span></code>
 callback when it was last invoked for the target CPU, free all memory
@@ -238,11 +238,11 @@ allocated by that callback and so on.</p>
 </pre></div>
 </div>
 <p>Called to select an idle state for the processor holding the (logical)
-CPU represented by the struct cpuidle_device object pointed to by the
+CPU represented by the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpuidle_device</span></code> object pointed to by the
 <code class="docutils literal notranslate"><span class="pre">dev</span></code> argument.</p>
 <p>The list of idle states to take into consideration is represented by the
-<code class="xref c c-member docutils literal notranslate"><span class="pre">states</span></code> array of struct cpuidle_state objects held by the
-struct cpuidle_driver object pointed to by the <code class="docutils literal notranslate"><span class="pre">drv</span></code> argument (which
+<code class="xref c c-member docutils literal notranslate"><span class="pre">states</span></code> array of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpuidle_state</span></code> objects held by the
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpuidle_driver</span></code> object pointed to by the <code class="docutils literal notranslate"><span class="pre">drv</span></code> argument (which
 represents the <code class="docutils literal notranslate"><span class="pre">CPUIdle</span></code> driver to be used with the CPU at hand).  The
 value returned by this callback is interpreted as an index into that
 array (unless it is a negative error code).</p>
@@ -255,7 +255,7 @@ stopping the scheduler tick on the given CPU (if the tick has been
 stopped on that CPU already, however, it will not be restarted before
 asking the processor to enter the idle state).</p>
 <p>This callback is mandatory (i.e. the <code class="xref c c-member docutils literal notranslate"><span class="pre">select</span></code> callback pointer
-in struct cpuidle_governor must not be <code class="docutils literal notranslate"><span class="pre">NULL</span></code> for the registration
+in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpuidle_governor</span></code> must not be <code class="docutils literal notranslate"><span class="pre">NULL</span></code> for the registration
 of the governor to succeed).</p>
 </dd>
 <dt><code class="xref c c-member docutils literal notranslate"><span class="pre">reflect</span></code></dt><dd><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>void (*reflect) (struct cpuidle_device *dev, int index);
@@ -282,19 +282,19 @@ function.</p>
 <p>CPU idle time management (<code class="docutils literal notranslate"><span class="pre">CPUIdle</span></code>) drivers provide an interface between the
 other parts of <code class="docutils literal notranslate"><span class="pre">CPUIdle</span></code> and the hardware.</p>
 <p>First of all, a <code class="docutils literal notranslate"><span class="pre">CPUIdle</span></code> driver has to populate the <code class="xref c c-member docutils literal notranslate"><span class="pre">states</span></code> array
-of struct cpuidle_state objects included in the struct cpuidle_driver object
+of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpuidle_state</span></code> objects included in the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpuidle_driver</span></code> object
 representing it.  Going forward this array will represent the list of available
 idle states that the processor hardware can be asked to enter shared by all of
 the logical CPUs handled by the given driver.</p>
 <p>The entries in the <code class="xref c c-member docutils literal notranslate"><span class="pre">states</span></code> array are expected to be sorted by the
-value of the <code class="xref c c-member docutils literal notranslate"><span class="pre">target_residency</span></code> field in struct cpuidle_state in
+value of the <code class="xref c c-member docutils literal notranslate"><span class="pre">target_residency</span></code> field in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpuidle_state</span></code> in
 the ascending order (that is, index 0 should correspond to the idle state with
 the minimum value of <code class="xref c c-member docutils literal notranslate"><span class="pre">target_residency</span></code>).  [Since the
 <code class="xref c c-member docutils literal notranslate"><span class="pre">target_residency</span></code> value is expected to reflect the “depth” of the
-idle state represented by the struct cpuidle_state object holding it, this
+idle state represented by the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpuidle_state</span></code> object holding it, this
 sorting order should be the same as the ascending sorting order by the idle
 state “depth”.]</p>
-<p>Three fields in struct cpuidle_state are used by the existing <code class="docutils literal notranslate"><span class="pre">CPUIdle</span></code>
+<p>Three fields in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpuidle_state</span></code> are used by the existing <code class="docutils literal notranslate"><span class="pre">CPUIdle</span></code>
 governors for computations related to idle state selection:</p>
 <dl class="simple">
 <dt><code class="xref c c-member docutils literal notranslate"><span class="pre">target_residency</span></code></dt><dd><p>Minimum time to spend in this idle state including the time needed to
@@ -314,63 +314,63 @@ any idle state at all.  [There are other flags used by the <code class="docutils
 core in special situations.]</p>
 </dd>
 </dl>
-<p>The <code class="xref c c-member docutils literal notranslate"><span class="pre">enter</span></code> callback pointer in struct cpuidle_state, which must not
+<p>The <code class="xref c c-member docutils literal notranslate"><span class="pre">enter</span></code> callback pointer in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpuidle_state</span></code>, which must not
 be <code class="docutils literal notranslate"><span class="pre">NULL</span></code>, points to the routine to execute in order to ask the processor to
 enter this particular idle state:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>void (*enter) (struct cpuidle_device *dev, struct cpuidle_driver *drv,
                int index);
 </pre></div>
 </div>
-<p>The first two arguments of it point to the struct cpuidle_device object
+<p>The first two arguments of it point to the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpuidle_device</span></code> object
 representing the logical CPU running this callback and the
-struct cpuidle_driver object representing the driver itself, respectively,
-and the last one is an index of the struct cpuidle_state entry in the driver’s
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpuidle_driver</span></code> object representing the driver itself, respectively,
+and the last one is an index of the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpuidle_state</span></code> entry in the driver’s
 <code class="xref c c-member docutils literal notranslate"><span class="pre">states</span></code> array representing the idle state to ask the processor to
 enter.</p>
-<p>The analogous <code class="docutils literal notranslate"><span class="pre">-&gt;enter_s2idle()</span></code> callback in struct cpuidle_state is used
+<p>The analogous <code class="docutils literal notranslate"><span class="pre">-&gt;enter_s2idle()</span></code> callback in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpuidle_state</span></code> is used
 only for implementing the suspend-to-idle system-wide power management feature.
 The difference between in and <code class="docutils literal notranslate"><span class="pre">-&gt;enter()</span></code> is that it must not re-enable
 interrupts at any point (even temporarily) or attempt to change the states of
 clock event devices, which the <code class="docutils literal notranslate"><span class="pre">-&gt;enter()</span></code> callback may do sometimes.</p>
 <p>Once the <code class="xref c c-member docutils literal notranslate"><span class="pre">states</span></code> array has been populated, the number of valid
 entries in it has to be stored in the <code class="xref c c-member docutils literal notranslate"><span class="pre">state_count</span></code> field of the
-struct cpuidle_driver object representing the driver.  Moreover, if any
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpuidle_driver</span></code> object representing the driver.  Moreover, if any
 entries in the <code class="xref c c-member docutils literal notranslate"><span class="pre">states</span></code> array represent “coupled” idle states (that
 is, idle states that can only be asked for if multiple related logical CPUs are
-idle), the <code class="xref c c-member docutils literal notranslate"><span class="pre">safe_state_index</span></code> field in struct cpuidle_driver needs
+idle), the <code class="xref c c-member docutils literal notranslate"><span class="pre">safe_state_index</span></code> field in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpuidle_driver</span></code> needs
 to be the index of an idle state that is not “coupled” (that is, one that can be
 asked for if only one logical CPU is idle).</p>
 <p>In addition to that, if the given <code class="docutils literal notranslate"><span class="pre">CPUIdle</span></code> driver is only going to handle a
 subset of logical CPUs in the system, the <code class="xref c c-member docutils literal notranslate"><span class="pre">cpumask</span></code> field in its
-struct cpuidle_driver object must point to the set (mask) of CPUs that will be
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpuidle_driver</span></code> object must point to the set (mask) of CPUs that will be
 handled by it.</p>
 <p>A <code class="docutils literal notranslate"><span class="pre">CPUIdle</span></code> driver can only be used after it has been registered.  If there
 are no “coupled” idle state entries in the driver’s <code class="xref c c-member docutils literal notranslate"><span class="pre">states</span></code> array,
-that can be accomplished by passing the driver’s struct cpuidle_driver object
+that can be accomplished by passing the driver’s <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpuidle_driver</span></code> object
 to <code class="xref c c-func docutils literal notranslate"><span class="pre">cpuidle_register_driver()</span></code>.  Otherwise, <code class="xref c c-func docutils literal notranslate"><span class="pre">cpuidle_register()</span></code>
 should be used for this purpose.</p>
-<p>However, it also is necessary to register struct cpuidle_device objects for
+<p>However, it also is necessary to register <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpuidle_device</span></code> objects for
 all of the logical CPUs to be handled by the given <code class="docutils literal notranslate"><span class="pre">CPUIdle</span></code> driver with the
 help of <code class="xref c c-func docutils literal notranslate"><span class="pre">cpuidle_register_device()</span></code> after the driver has been registered
 and <code class="xref c c-func docutils literal notranslate"><span class="pre">cpuidle_register_driver()</span></code>, unlike <code class="xref c c-func docutils literal notranslate"><span class="pre">cpuidle_register()</span></code>,
 does not do that automatically.  For this reason, the drivers that use
 <code class="xref c c-func docutils literal notranslate"><span class="pre">cpuidle_register_driver()</span></code> to register themselves must also take care
-of registering the struct cpuidle_device objects as needed, so it is generally
+of registering the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpuidle_device</span></code> objects as needed, so it is generally
 recommended to use <code class="xref c c-func docutils literal notranslate"><span class="pre">cpuidle_register()</span></code> for <code class="docutils literal notranslate"><span class="pre">CPUIdle</span></code> driver
 registration in all cases.</p>
-<p>The registration of a struct cpuidle_device object causes the <code class="docutils literal notranslate"><span class="pre">CPUIdle</span></code>
+<p>The registration of a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpuidle_device</span></code> object causes the <code class="docutils literal notranslate"><span class="pre">CPUIdle</span></code>
 <code class="docutils literal notranslate"><span class="pre">sysfs</span></code> interface to be created and the governor’s <code class="docutils literal notranslate"><span class="pre">-&gt;enable()</span></code> callback to
 be invoked for the logical CPU represented by it, so it must take place after
 registering the driver that will handle the CPU in question.</p>
-<p><code class="docutils literal notranslate"><span class="pre">CPUIdle</span></code> drivers and struct cpuidle_device objects can be unregistered
+<p><code class="docutils literal notranslate"><span class="pre">CPUIdle</span></code> drivers and <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpuidle_device</span></code> objects can be unregistered
 when they are not necessary any more which allows some resources associated with
 them to be released.  Due to dependencies between them, all of the
-struct cpuidle_device objects representing CPUs handled by the given
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpuidle_device</span></code> objects representing CPUs handled by the given
 <code class="docutils literal notranslate"><span class="pre">CPUIdle</span></code> driver must be unregistered, with the help of
 <code class="xref c c-func docutils literal notranslate"><span class="pre">cpuidle_unregister_device()</span></code>, before calling
 <code class="xref c c-func docutils literal notranslate"><span class="pre">cpuidle_unregister_driver()</span></code> to unregister the driver.  Alternatively,
 <code class="xref c c-func docutils literal notranslate"><span class="pre">cpuidle_unregister()</span></code> can be called to unregister a <code class="docutils literal notranslate"><span class="pre">CPUIdle</span></code> driver
-along with all of the struct cpuidle_device objects representing CPUs handled
+along with all of the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpuidle_device</span></code> objects representing CPUs handled
 by it.</p>
 <p><code class="docutils literal notranslate"><span class="pre">CPUIdle</span></code> drivers can respond to runtime system configuration changes that
 lead to modifications of the list of available processor idle states (which can
@@ -378,10 +378,10 @@ happen, for example, when the system’s power source is switched from AC to
 battery or the other way around).  Upon a notification of such a change,
 a <code class="docutils literal notranslate"><span class="pre">CPUIdle</span></code> driver is expected to call <code class="xref c c-func docutils literal notranslate"><span class="pre">cpuidle_pause_and_lock()</span></code> to
 turn <code class="docutils literal notranslate"><span class="pre">CPUIdle</span></code> off temporarily and then <code class="xref c c-func docutils literal notranslate"><span class="pre">cpuidle_disable_device()</span></code> for
-all of the struct cpuidle_device objects representing CPUs affected by that
+all of the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpuidle_device</span></code> objects representing CPUs affected by that
 change.  Next, it can update its <code class="xref c c-member docutils literal notranslate"><span class="pre">states</span></code> array in accordance with
 the new configuration of the system, call <code class="xref c c-func docutils literal notranslate"><span class="pre">cpuidle_enable_device()</span></code> for
-all of the relevant struct cpuidle_device objects and invoke
+all of the relevant <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cpuidle_device</span></code> objects and invoke
 <code class="xref c c-func docutils literal notranslate"><span class="pre">cpuidle_resume_and_unlock()</span></code> to allow <code class="docutils literal notranslate"><span class="pre">CPUIdle</span></code> to be used again.</p>
 </section>
 </section>

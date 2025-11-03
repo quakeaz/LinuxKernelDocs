@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -381,7 +381,7 @@ parent of source, then try to lock the parent of target, only to have
 an unrelated lookup splice a distant ancestor of source to some distant
 descendent of the parent of target.   At that point we have cross-directory
 rename holding the lock on parent of source and trying to lock its
-distant ancestor.  Add a bunch of rmdir() attempts on all directories
+distant ancestor.  Add a bunch of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rmdir()</span></code> attempts on all directories
 in between (all of those would fail with -ENOTEMPTY, had they ever gotten
 the locks) and voila - we have a deadlock.</p>
 </section>
@@ -412,7 +412,7 @@ of any loop.  Q.E.D.</p>
 ability to check that directory is a descendent of another object.  Current
 implementation assumes that directory graph is a tree.  This assumption is
 also preserved by all operations (cross-directory rename on a tree that would
-not introduce a cycle will leave it a tree and link() fails for directories).</p>
+not introduce a cycle will leave it a tree and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">link()</span></code> fails for directories).</p>
 <p>Notice that “directory” in the above == “anything that might have
 children”, so if we are going to introduce hybrid objects we will need
 either to make sure that link(2) doesn’t work for them or to make changes

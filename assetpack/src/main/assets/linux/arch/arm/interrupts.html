@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -308,14 +308,14 @@ enables this IRQ (eg, Neponset and SA1111 handlers).</p>
 <dt>set_irq_flags(irq,flags)</dt><dd><p>Set the valid/probe/noautoenable flags.</p>
 </dd>
 <dt>set_irq_type(irq,type)</dt><dd><p>Set active the IRQ edge(s)/level.  This replaces the
-SA1111 INTPOL manipulation, and the set_GPIO_IRQ_edge()
+SA1111 INTPOL manipulation, and the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_GPIO_IRQ_edge()</span></code>
 function.  Type should be one of IRQ_TYPE_xxx defined in
 &lt;linux/irq.h&gt;</p>
 </dd>
 </dl>
 </div></blockquote>
 </li>
-<li><p>set_GPIO_IRQ_edge() is obsolete, and should be replaced by set_irq_type.</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_GPIO_IRQ_edge()</span></code> is obsolete, and should be replaced by set_irq_type.</p></li>
 <li><p>Direct access to SA1111 INTPOL is deprecated.  Use set_irq_type instead.</p></li>
 <li><p>A handler is expected to perform any necessary acknowledgement of the
 parent IRQ via the correct chip specific function.  For instance, if
@@ -328,7 +328,7 @@ while the child handler is called, and the child handler should be the
 the parent IRQ should be unmasked, and the status of all children must
 be re-checked for pending events.  (see the Neponset IRQ handler for
 details).</p></li>
-<li><p>fixup_irq() is gone, as is <cite>arch/arm/mach-*/include/mach/irq.h</cite></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fixup_irq()</span></code> is gone, as is <cite>arch/arm/mach-*/include/mach/irq.h</cite></p></li>
 </ol>
 <p>Please note that this will not solve all problems - some of them are
 hardware based.  Mixing level-based and edge-based IRQs on the same

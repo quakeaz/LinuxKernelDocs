@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -402,7 +402,7 @@ using the bulk regulator APIs.</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>The regulator APIs provide a series of regulator_bulk_() API calls as
+<p>The regulator APIs provide a series of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">regulator_bulk_()</span></code> API calls as
 a convenience to consumers which require multiple supplies.  This
 structure is used to manage data for these calls.</p>
 <dl class="c struct">
@@ -572,8 +572,8 @@ logging). After this time window more critical
 actions should be done (for example prevent
 HW damage).</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">active_discharge</span></code></dt><dd><p>Enable/disable active discharge. The enum
-regulator_active_discharge values are used for
+<dt><code class="docutils literal notranslate"><span class="pre">active_discharge</span></code></dt><dd><p>Enable/disable active discharge. The <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span>
+<span class="pre">regulator_active_discharge</span></code> values are used for
 initialisation.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">always_on</span></code></dt><dd><p>Set if the regulator should never be disabled.</p>
@@ -607,7 +607,7 @@ functionality.</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This struct describes regulator and board/machine specific constraints.</p>
+<p>This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">describes</span></code> regulator and board/machine specific constraints.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.regulator_consumer_supply">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">regulator_consumer_supply</span></span></span><a class="headerlink" href="#c.regulator_consumer_supply" title="Link to this definition">¶</a><br /></dt>
@@ -701,7 +701,7 @@ be usable.</p>
     int (*enable_time) (struct regulator_dev *);
     int (*set_ramp_delay) (struct regulator_dev *, int ramp_delay);
     int (*set_voltage_time) (struct regulator_dev *, int old_uV, int new_uV);
-    int (*set_voltage_time_sel) (struct regulator_dev *,unsigned int old_selector, unsigned int new_selector);
+    int (*set_voltage_time_sel) (struct regulator_dev *, unsigned int old_selector, unsigned int new_selector);
     int (*set_soft_start) (struct regulator_dev *);
     int (*get_status)(struct regulator_dev *);
     unsigned int (*get_optimum_mode) (struct regulator_dev *, int input_uV, int output_uV, int load_uA);
@@ -750,23 +750,6 @@ The driver should select the current closest to max_uA.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">set_over_current_protection</span></code></dt><dd><p>Support enabling of and setting limits for over
 current situation detection. Detection can be configured for three
 levels of severity.</p>
-<ul class="simple">
-<li><p>REGULATOR_SEVERITY_PROT should automatically shut down the regulator(s).</p></li>
-<li><dl class="simple">
-<dt>REGULATOR_SEVERITY_ERR should indicate that over-current situation is</dt><dd><p>caused by an unrecoverable error but HW does not perform
-automatic shut down.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>REGULATOR_SEVERITY_WARN should indicate situation where hardware is</dt><dd><p>still believed to not be damaged but that a board sepcific
-recovery action is needed. If lim_uA is 0 the limit should not
-be changed but the detection should just be enabled/disabled as
-is requested.</p>
-</dd>
-</dl>
-</li>
-</ul>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">set_over_voltage_protection</span></code></dt><dd><p>Support enabling of and setting limits for over
 voltage situation detection. Detection can be configured for same
@@ -845,7 +828,26 @@ is disabled.</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This struct describes regulator operations which can be implemented by
+<blockquote>
+<div><ul class="simple">
+<li><p>REGULATOR_SEVERITY_PROT should automatically shut down the regulator(s).</p></li>
+<li><dl class="simple">
+<dt>REGULATOR_SEVERITY_ERR should indicate that over-current situation is</dt><dd><p>caused by an unrecoverable error but HW does not perform
+automatic shut down.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>REGULATOR_SEVERITY_WARN should indicate situation where hardware is</dt><dd><p>still believed to not be damaged but that a board sepcific
+recovery action is needed. If lim_uA is 0 the limit should not
+be changed but the detection should just be enabled/disabled as
+is requested.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">describes</span></code> regulator operations which can be implemented by
 regulator chip drivers.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.regulator_desc">
@@ -861,7 +863,7 @@ regulator chip drivers.</p>
     const char *of_match;
     bool of_match_full_name;
     const char *regulators_node;
-    int (*of_parse_cb)(struct device_node *,const struct regulator_desc *, struct regulator_config *);
+    int (*of_parse_cb)(struct device_node *, const struct regulator_desc *, struct regulator_config *);
     int (*init_cb)(struct regulator_dev *, struct regulator_config *);
     int id;
     unsigned int continuous_voltage_range:1;
@@ -956,7 +958,7 @@ indicating failure.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">continuous_voltage_range</span></code></dt><dd><p>Indicates if the regulator can set any
 voltage within constrains range.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">n_voltages</span></code></dt><dd><p>Number of selectors available for ops.list_voltage().</p>
+<dt><code class="docutils literal notranslate"><span class="pre">n_voltages</span></code></dt><dd><p>Number of selectors available for ops.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">list_voltage()</span></code>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">n_current_limits</span></code></dt><dd><p>Number of selectors available for current limits</p>
 </dd>
@@ -1073,7 +1075,7 @@ set_pull_down</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">ramp_delay_table</span></code></dt><dd><p>Table for mapping the regulator ramp-rate values. Values
 should be given in units of V/S (uV/uS). See the
-regulator_set_ramp_delay_regmap().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">regulator_set_ramp_delay_regmap()</span></code>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">n_ramp_values</span></code></dt><dd><p>number of elements at <strong>ramp_delay_table</strong>.</p>
 </dd>
@@ -1122,7 +1124,7 @@ description.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">of_node</span></code></dt><dd><p>OpenFirmware node to parse for device tree bindings (may be
 NULL).</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">regmap</span></code></dt><dd><p>regmap to use for core regmap helpers if dev_get_regmap() is
+<dt><code class="docutils literal notranslate"><span class="pre">regmap</span></code></dt><dd><p>regmap to use for core regmap helpers if <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_get_regmap()</span></code> is
 insufficient.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">ena_gpiod</span></code></dt><dd><p>GPIO controlling regulator enable.</p>
@@ -1151,7 +1153,7 @@ contains the runtime variable parts of the regulator description.</p>
 </div>
 <p><strong>Members</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">rdev</span></code></dt><dd><p>Regulator which status the struct indicates.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">rdev</span></code></dt><dd><p>Regulator which status the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">indicates</span></code>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">notifs</span></code></dt><dd><p>Events which have occurred on the regulator.</p>
 </dd>
@@ -1227,8 +1229,8 @@ reporting regulator status to core.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">fatal_cnt</span></code></dt><dd><p>If this IRQ is used to signal HW damaging condition it may be
 best to shut-down regulator(s) or reboot the SOC if error
 handling is repeatedly failing. If fatal_cnt is given the IRQ
-handling is aborted if it fails for fatal_cnt times and die()
-callback (if populated) is called. If die() is not populated
+handling is aborted if it fails for fatal_cnt times and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">die()</span></code>
+callback (if populated) is called. If <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">die()</span></code> is not populated
 poweroff for the system is attempted in order to prevent any
 further damage.</p>
 </dd>
@@ -1255,7 +1257,7 @@ the renable, map_event and die callbacks in regulator_irq_data.</p>
 fail fatal_cnt times this callback is called or system is
 powered off. This callback should implement a final protection
 attempt like disabling the regulator. If protection succeeded
-die() may return 0. If anything else is returned the core
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">die()</span></code> may return 0. If anything else is returned the core
 assumes final protection failed and attempts to perform a
 poweroff as a last resort.</p>
 </dd>
@@ -1265,7 +1267,7 @@ errors and notifs for all rdevs which it signals having
 active events as core does not clean the map data.
 REGULATOR_FAILED_RETRY can be returned to indicate that the
 status reading from IC failed. If this is repeated for
-fatal_cnt times the core will call die() callback or power-off
+fatal_cnt times the core will call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">die()</span></code> callback or power-off
 the system as a last resort to protect the HW.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">renable</span></code></dt><dd><p>Optional callback to check status (if HW supports that) before
@@ -1275,8 +1277,8 @@ are updated. If callback is not implemented then errors are
 assumed to be cleared and IRQ is re-enabled.
 REGULATOR_FAILED_RETRY can be returned to
 indicate that the status reading from IC failed. If this is
-repeated for ‘fatal_cnt’ times the core will call die()
-callback or if die() is not populated then attempt to power-off
+repeated for ‘fatal_cnt’ times the core will call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">die()</span></code>
+callback or if <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">die()</span></code> is not populated then attempt to power-off
 the system as a last resort to protect the HW.
 Returning zero indicates that the problem in HW has been solved
 and IRQ will be re-enabled. Returning REGULATOR_ERROR_ON
@@ -1306,15 +1308,13 @@ re-evaluated and re-sent.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Use of supply names configured via set_consumer_device_supply() is
+<p>Use of supply names configured via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_consumer_device_supply()</span></code> is
 strongly encouraged.  It is recommended that the supply name used
 should match the name used for the supply and/or the relevant
 device pins in the datasheet.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Pointer to a <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">regulator</span></code> corresponding to the regulator</dt><dd><p>producer, or an <a class="reference internal" href="../core-api/kernel-api.html#c.ERR_PTR" title="ERR_PTR"><code class="xref c c-func docutils literal notranslate"><span class="pre">ERR_PTR()</span></code></a> encoded negative error number.</p>
-</dd>
-</dl>
+<p>Pointer to a <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">regulator</span></code> corresponding to the regulator
+producer, or an <a class="reference internal" href="../core-api/kernel-api.html#c.ERR_PTR" title="ERR_PTR"><code class="xref c c-func docutils literal notranslate"><span class="pre">ERR_PTR()</span></code></a> encoded negative error number.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.regulator_get_exclusive">
@@ -1338,15 +1338,13 @@ initialised to reflect the current state of the regulator.</p>
 use of the regulator such as those which need to force the
 regulator off for correct operation of the hardware they are
 controlling.</p>
-<p>Use of supply names configured via set_consumer_device_supply() is
+<p>Use of supply names configured via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_consumer_device_supply()</span></code> is
 strongly encouraged.  It is recommended that the supply name used
 should match the name used for the supply and/or the relevant
 device pins in the datasheet.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Pointer to a <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">regulator</span></code> corresponding to the regulator</dt><dd><p>producer, or an <a class="reference internal" href="../core-api/kernel-api.html#c.ERR_PTR" title="ERR_PTR"><code class="xref c c-func docutils literal notranslate"><span class="pre">ERR_PTR()</span></code></a> encoded negative error number.</p>
-</dd>
-</dl>
+<p>Pointer to a <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">regulator</span></code> corresponding to the regulator
+producer, or an <a class="reference internal" href="../core-api/kernel-api.html#c.ERR_PTR" title="ERR_PTR"><code class="xref c c-func docutils literal notranslate"><span class="pre">ERR_PTR()</span></code></a> encoded negative error number.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.regulator_get_optional">
@@ -1369,15 +1367,13 @@ It can allow the regulator core to provide stub supplies for other
 supplies requested using normal <a class="reference internal" href="#c.regulator_get" title="regulator_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">regulator_get()</span></code></a> calls without
 disrupting the operation of drivers that can handle absent
 supplies.</p>
-<p>Use of supply names configured via set_consumer_device_supply() is
+<p>Use of supply names configured via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_consumer_device_supply()</span></code> is
 strongly encouraged.  It is recommended that the supply name used
 should match the name used for the supply and/or the relevant
 device pins in the datasheet.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Pointer to a <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">regulator</span></code> corresponding to the regulator</dt><dd><p>producer, or an <a class="reference internal" href="../core-api/kernel-api.html#c.ERR_PTR" title="ERR_PTR"><code class="xref c c-func docutils literal notranslate"><span class="pre">ERR_PTR()</span></code></a> encoded negative error number.</p>
-</dd>
-</dl>
+<p>Pointer to a <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">regulator</span></code> corresponding to the regulator
+producer, or an <a class="reference internal" href="../core-api/kernel-api.html#c.ERR_PTR" title="ERR_PTR"><code class="xref c c-func docutils literal notranslate"><span class="pre">ERR_PTR()</span></code></a> encoded negative error number.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.regulator_put">
@@ -1594,11 +1590,9 @@ machine constraints permit this operation.</p>
 users, so it might be enabled even if <a class="reference internal" href="#c.regulator_enable" title="regulator_enable"><code class="xref c c-func docutils literal notranslate"><span class="pre">regulator_enable()</span></code></a> was never
 called for this particular source.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Positive if the regulator driver backing the source/client</dt><dd><p>has requested that the device be enabled, zero if it hasn’t,
+<p>Positive if the regulator driver backing the source/client
+has requested that the device be enabled, zero if it hasn’t,
 else a negative error number.</p>
-</dd>
-</dl>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.regulator_count_voltages">
@@ -1635,11 +1629,9 @@ bitfields in hardware registers.</p>
 <p><strong>Context</strong></p>
 <p>can sleep</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Voltage for <strong>selector</strong> that can be passed to regulator_set_voltage(),</dt><dd><p>0 if <strong>selector</strong> can’t be used on this system, or a negative error
+<p>Voltage for <strong>selector</strong> that can be passed to <a class="reference internal" href="#c.regulator_set_voltage" title="regulator_set_voltage"><code class="xref c c-func docutils literal notranslate"><span class="pre">regulator_set_voltage()</span></code></a>,
+0 if <strong>selector</strong> can’t be used on this system, or a negative error
 number on failure.</p>
-</dd>
-</dl>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.regulator_get_regmap">
@@ -1654,10 +1646,8 @@ number on failure.</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Pointer to the <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">regmap</span></code> for <strong>regulator</strong>, or ERR_PTR()</dt><dd><p>encoded -<code class="docutils literal notranslate"><span class="pre">EOPNOTSUPP</span></code> if <strong>regulator</strong> doesn’t use regmap.</p>
-</dd>
-</dl>
+<p>Pointer to the <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">regmap</span></code> for <strong>regulator</strong>, or <a class="reference internal" href="../core-api/kernel-api.html#c.ERR_PTR" title="ERR_PTR"><code class="xref c c-func docutils literal notranslate"><span class="pre">ERR_PTR()</span></code></a>
+encoded -<code class="docutils literal notranslate"><span class="pre">EOPNOTSUPP</span></code> if <strong>regulator</strong> doesn’t use regmap.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.regulator_get_hardware_vsel_register">
@@ -1683,10 +1673,8 @@ for example.</p>
 <p>On success, the output parameters <strong>vsel_reg</strong> and <strong>vsel_mask</strong> are filled in
 and 0 is returned, otherwise a negative error number is returned.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>0 on success, or -<code class="docutils literal notranslate"><span class="pre">EOPNOTSUPP</span></code> if the regulator does not support</dt><dd><p>voltage selectors.</p>
-</dd>
-</dl>
+<p>0 on success, or -<code class="docutils literal notranslate"><span class="pre">EOPNOTSUPP</span></code> if the regulator does not support
+voltage selectors.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.regulator_list_hardware_vsel">
@@ -1707,11 +1695,9 @@ and 0 is returned, otherwise a negative error number is returned.</p>
 directly written to the regulator registers. The address of the voltage
 register can be determined by calling <strong>regulator_get_hardware_vsel_register</strong>.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>0 on success, -<code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> if the selector is outside the supported</dt><dd><p>range, or -<code class="docutils literal notranslate"><span class="pre">EOPNOTSUPP</span></code> if the regulator does not support voltage
+<p>0 on success, -<code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> if the selector is outside the supported
+range, or -<code class="docutils literal notranslate"><span class="pre">EOPNOTSUPP</span></code> if the regulator does not support voltage
 selectors.</p>
-</dd>
-</dl>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.regulator_hardware_enable">
@@ -1746,10 +1732,8 @@ the predefined voltage or current value.</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>The voltage step size between VSEL values for linear regulators,</dt><dd><p>or 0 if the regulator isn’t a linear regulator.</p>
-</dd>
-</dl>
+<p>The voltage step size between VSEL values for linear regulators,
+or 0 if the regulator isn’t a linear regulator.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.regulator_is_supported_voltage">
@@ -1768,11 +1752,9 @@ the predefined voltage or current value.</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>1 if the voltage range is supported, 0 if not, or a negative error</dt><dd><p>number if <strong>regulator</strong>’s voltage can’t be changed and voltage readback
+<p>1 if the voltage range is supported, 0 if not, or a negative error
+number if <strong>regulator</strong>’s voltage can’t be changed and voltage readback
 failed.</p>
-</dd>
-</dl>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.regulator_set_voltage">
@@ -1847,7 +1829,7 @@ voltage.</p>
 <p>Provided with the starting and target voltage selectors, this function
 returns time in microseconds required to rise or fall to this new voltage</p>
 <p>Drivers providing ramp_delay in regulation_constraints can use this as their
-set_voltage_time_sel() operation.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_voltage_time_sel()</span></code> operation.</p>
 <p><strong>Return</strong></p>
 <p>ramp time in microseconds, or a negative error number if calculation failed.</p>
 </div>
@@ -1929,10 +1911,8 @@ calling this function otherwise this call will fail.</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Current supplied by the specified current sink in uA,</dt><dd><p>or a negative error number on failure.</p>
-</dd>
-</dl>
+<p>Current supplied by the specified current sink in uA,
+or a negative error number on failure.</p>
 <p><strong>NOTE</strong></p>
 <p>If the regulator is disabled it will return the current value. This
 function should not be used to determine regulator state.</p>
@@ -2024,10 +2004,8 @@ calling this function otherwise this call will fail.</p>
 <p><strong>Description</strong></p>
 <p>Get the current regulator operating mode.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Current operating mode as <code class="docutils literal notranslate"><span class="pre">REGULATOR_MODE_*</span></code> values,</dt><dd><p>or a negative error number on failure.</p>
-</dd>
-</dl>
+<p>Current operating mode as <code class="docutils literal notranslate"><span class="pre">REGULATOR_MODE_*</span></code> values,
+or a negative error number on failure.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.regulator_get_error_flags">
@@ -2079,13 +2057,13 @@ o Device is idling in between work.</p>
 <p>This information is also exported via sysfs to userspace.</p>
 <p>DRMS will sum the total requested load on the regulator and change
 to the most efficient operating mode if platform constraints allow.</p>
-<p>If a regulator is an always-on regulator then an individual consumer’s
-load will still be removed if that consumer is fully disabled.</p>
 <p><strong>NOTE</strong></p>
 <p>when a regulator consumer requests to have a regulator
 disabled then any load that consumer requested no longer counts
 toward the total requested load.  If the regulator is re-enabled
 then the previously requested load will start counting again.</p>
+<p>If a regulator is an always-on regulator then an individual consumer’s
+load will still be removed if that consumer is fully disabled.</p>
 <p><strong>Return</strong></p>
 <p>0 on success or a negative error number on failure.</p>
 </div>
@@ -2109,10 +2087,8 @@ for the regulator also enable bypass mode and the machine
 constraints allow this.  Bypass mode means that the regulator is
 simply passing the input directly to the output with no regulation.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>0 on success or if changing bypass is not possible, or</dt><dd><p>a negative error number on failure.</p>
-</dd>
-</dl>
+<p>0 on success or if changing bypass is not possible, or
+a negative error number on failure.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.regulator_register_notifier">
@@ -2321,10 +2297,8 @@ occurred.</p>
 <p><strong>Description</strong></p>
 <p>Called by regulator drivers to register a regulator.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Pointer to a valid <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">regulator_dev</span></code> on success or</dt><dd><p>an <a class="reference internal" href="../core-api/kernel-api.html#c.ERR_PTR" title="ERR_PTR"><code class="xref c c-func docutils literal notranslate"><span class="pre">ERR_PTR()</span></code></a> encoded negative error number on failure.</p>
-</dd>
-</dl>
+<p>Pointer to a valid <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">regulator_dev</span></code> on success or
+an <a class="reference internal" href="../core-api/kernel-api.html#c.ERR_PTR" title="ERR_PTR"><code class="xref c c-func docutils literal notranslate"><span class="pre">ERR_PTR()</span></code></a> encoded negative error number on failure.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.regulator_unregister">

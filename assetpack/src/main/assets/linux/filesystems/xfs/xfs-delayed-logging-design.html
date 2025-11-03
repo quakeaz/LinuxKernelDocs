@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -227,7 +227,7 @@ xfs_iunlock(ip, XFS_ILOCK_EXCL);
 </pre></div>
 </div>
 <p>While this might look similar to a one-shot transaction, there is an important
-difference: xfs_trans_roll() performs a specific operation that links two
+difference: <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xfs_trans_roll()</span></code> performs a specific operation that links two
 transactions together:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ntp = xfs_trans_dup(tp);
 xfs_trans_commit(tp);
@@ -255,7 +255,7 @@ the on-disk journal.</p>
 <section id="transactions-are-asynchronous">
 <h2><span class="section-number">1.4. </span>Transactions are Asynchronous<a class="headerlink" href="#transactions-are-asynchronous" title="Link to this heading">¶</a></h2>
 <p>In XFS, all high level transactions are asynchronous by default. This means that
-xfs_trans_commit() does not guarantee that the modification has been committed
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xfs_trans_commit()</span></code> does not guarantee that the modification has been committed
 to stable storage when it returns. Hence when a system crashes, not all the
 completed transactions will be replayed during recovery.</p>
 <p>However, the logging subsystem does provide global ordering guarantees, such
@@ -381,8 +381,8 @@ to remove the overcommit and start taking new reservations. In other words, we
 can overcommit the reserve head without violating the physical log head and tail
 rules.</p>
 <p>As a result, permanent transactions only “regrant” reservation space during
-xfs_trans_commit() calls, while the physical log space reservation - tracked by
-the write head - is then reserved separately by a call to xfs_log_reserve()
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xfs_trans_commit()</span></code> calls, while the physical log space reservation - tracked by
+the write head - is then reserved separately by a call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xfs_log_reserve()</span></code>
 after the commit completes. Once the commit completes, we can sleep waiting for
 physical log space to be reserved from the write grant head, but only if one
 critical rule has been observed:</p>
@@ -507,7 +507,7 @@ crash is much greater than for the existing logging mechanism.</p>
 will result in a consistent filesystem. What it does mean is that as far as the
 recovered filesystem is concerned, there may be many thousands of transactions
 that simply did not occur as a result of the crash. This makes it even more
-important that applications that care about their data use fsync() where they
+important that applications that care about their data use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fsync()</span></code> where they
 need to ensure application level data integrity is maintained.</p>
 <p>It should be noted that delayed logging is not an innovative new concept that
 warrants rigorous proofs to determine whether it is correct or not. The method

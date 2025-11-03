@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -671,7 +671,7 @@ details.</p>
 <div class="kernelindent docutils container">
 <p><strong>Definition</strong>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct damos_walk_control {
-    void (*walk_fn)(void *data, struct damon_ctx *ctx,struct damon_target *t, struct damon_region *r, struct damos *s, unsigned long sz_filter_passed);
+    void (*walk_fn)(void *data, struct damon_ctx *ctx, struct damon_target *t, struct damon_region *r, struct damos *s, unsigned long sz_filter_passed);
     void *data;
 };
 </pre></div>
@@ -723,6 +723,35 @@ schemes.  Refer to <a class="reference internal" href="#c.damos_walk" title="dam
 </dl>
 </div>
 <dl class="c struct">
+<dt class="sig sig-object c" id="c.damos_migrate_dests">
+<span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">damos_migrate_dests</span></span></span><a class="headerlink" href="#c.damos_migrate_dests" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Migration destination nodes and their weights.</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Definition</strong>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct damos_migrate_dests {
+    unsigned int *node_id_arr;
+    unsigned int *weight_arr;
+    size_t nr_dests;
+};
+</pre></div>
+</div>
+<p><strong>Members</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">node_id_arr</span></code></dt><dd><p>Array of migration destination node ids.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">weight_arr</span></code></dt><dd><p>Array of migration weights for <strong>node_id_arr</strong>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">nr_dests</span></code></dt><dd><p>Length of the <strong>node_id_arr</strong> and <strong>weight_arr</strong> arrays.</p>
+</dd>
+</dl>
+</div>
+<p><strong>Description</strong></p>
+<p><strong>node_id_arr</strong> is an array of the ids of migration destination nodes.
+<strong>weight_arr</strong> is an array of the weights for those.  The weights in
+<strong>weight_arr</strong> are for nodes in <strong>node_id_arr</strong> of same array index.</p>
+<dl class="c struct">
 <dt class="sig sig-object c" id="c.damos">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">damos</span></span></span><a class="headerlink" href="#c.damos" title="Link to this definition">¶</a><br /></dt>
 <dd><p>Represents a Data Access Monitoring-based Operation Scheme.</p>
@@ -737,7 +766,10 @@ schemes.  Refer to <a class="reference internal" href="#c.damos_walk" title="dam
     struct damos_quota quota;
     struct damos_watermarks wmarks;
     union {
-        int target_nid;
+        struct {
+            int target_nid;
+            struct damos_migrate_dests migrate_dests;
+        };
     };
     struct list_head filters;
     struct list_head ops_filters;
@@ -751,7 +783,7 @@ schemes.  Refer to <a class="reference internal" href="#c.damos_walk" title="dam
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">pattern</span></code></dt><dd><p>Access pattern of target regions.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">action</span></code></dt><dd><p><code class="xref c c-type docutils literal notranslate"><span class="pre">damo_action</span></code> to be applied to the target regions.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">action</span></code></dt><dd><p><a class="reference internal" href="#c.damos_action" title="damos_action"><code class="xref c c-type docutils literal notranslate"><span class="pre">damos_action</span></code></a> to be applied to the target regions.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">apply_interval_us</span></code></dt><dd><p>The time between applying the <strong>action</strong>.</p>
 </dd>
@@ -761,7 +793,11 @@ schemes.  Refer to <a class="reference internal" href="#c.damos_walk" title="dam
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">{unnamed_union}</span></code></dt><dd><p>anonymous</p>
 </dd>
+<dt><code class="docutils literal notranslate"><span class="pre">{unnamed_struct}</span></code></dt><dd><p>anonymous</p>
+</dd>
 <dt><code class="docutils literal notranslate"><span class="pre">target_nid</span></code></dt><dd><p>Destination node if <strong>action</strong> is “migrate_{hot,cold}”.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">migrate_dests</span></code></dt><dd><p>Destination nodes if <strong>action</strong> is “migrate_{hot,cold}”.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">filters</span></code></dt><dd><p>Additional set of <a class="reference internal" href="#c.damos_filter" title="damos_filter"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">damos_filter</span></code></a> for <code class="xref c c-type docutils literal notranslate"><span class="pre">action</span></code>.</p>
 </dd>
@@ -784,9 +820,11 @@ CPU time or IO resources for the <code class="xref c c-type docutils literal not
 system situations using <code class="xref c c-type docutils literal notranslate"><span class="pre">wmarks</span></code>.  If all schemes that registered to the
 monitoring context are inactive, DAMON stops monitoring either, and just
 repeatedly checks the watermarks.</p>
+<p><strong>migrate_dests</strong> specifies multiple migration target nodes with different
+weights for migrate_hot or migrate_cold actions.  <strong>target_nid</strong> is ignored if
+this is set.</p>
 <p><strong>target_nid</strong> is used to set the migration target node for migrate_hot or
-migrate_cold actions, which means it’s only meaningful when <strong>action</strong> is either
-“migrate_hot” or “migrate_cold”.</p>
+migrate_cold actions, and <strong>migrate_dests</strong> is unset.</p>
 <p>Before applying the <code class="xref c c-type docutils literal notranslate"><span class="pre">action</span></code> to a memory region, <a class="reference internal" href="#c.damon_operations" title="damon_operations"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">damon_operations</span></code></a>
 implementation could check pages of the region and skip <code class="xref c c-type docutils literal notranslate"><span class="pre">action</span></code> to respect
 <code class="xref c c-type docutils literal notranslate"><span class="pre">filters</span></code></p>
@@ -835,9 +873,10 @@ address spaces</p>
     void (*update)(struct damon_ctx *context);
     void (*prepare_access_checks)(struct damon_ctx *context);
     unsigned int (*check_accesses)(struct damon_ctx *context);
-    int (*get_scheme_score)(struct damon_ctx *context,struct damon_target *t, struct damon_region *r, struct damos *scheme);
-    unsigned long (*apply_scheme)(struct damon_ctx *context,struct damon_target *t, struct damon_region *r, struct damos *scheme, unsigned long *sz_filter_passed);
+    int (*get_scheme_score)(struct damon_ctx *context, struct damon_target *t, struct damon_region *r, struct damos *scheme);
+    unsigned long (*apply_scheme)(struct damon_ctx *context, struct damon_target *t, struct damon_region *r, struct damos *scheme, unsigned long *sz_filter_passed);
     bool (*target_valid)(struct damon_target *t);
+    void (*cleanup_target)(struct damon_target *t);
     void (*cleanup)(struct damon_ctx *context);
 };
 </pre></div>
@@ -859,6 +898,8 @@ address spaces</p>
 <dt><code class="docutils literal notranslate"><span class="pre">apply_scheme</span></code></dt><dd><p>Apply a DAMON-based operation scheme.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">target_valid</span></code></dt><dd><p>Determine if the target is valid.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cleanup_target</span></code></dt><dd><p>Clean up each target before deallocation.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">cleanup</span></code></dt><dd><p>Clean up the context.</p>
 </dd>
@@ -894,44 +935,8 @@ applied.  It should also report how many bytes of the region has passed
 filters (<a class="reference internal" href="#c.damos_filter" title="damos_filter"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">damos_filter</span></code></a>) that handled by itself.
 <strong>target_valid</strong> should check whether the target is still valid for the
 monitoring.
+<strong>cleanup_target</strong> is called before the target will be deallocated.
 <strong>cleanup</strong> is called from <strong>kdamond</strong> just before its termination.</p>
-<dl class="c struct">
-<dt class="sig sig-object c" id="c.damon_callback">
-<span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">damon_callback</span></span></span><a class="headerlink" href="#c.damon_callback" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Monitoring events notification callbacks.</p>
-</dd></dl>
-
-<div class="kernelindent docutils container">
-<p><strong>Definition</strong>:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct damon_callback {
-    int (*after_wmarks_check)(struct damon_ctx *context);
-    int (*after_aggregation)(struct damon_ctx *context);
-    void (*before_terminate)(struct damon_ctx *context);
-};
-</pre></div>
-</div>
-<p><strong>Members</strong></p>
-<dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">after_wmarks_check</span></code></dt><dd><p>Called after each schemes’ watermarks check.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">after_aggregation</span></code></dt><dd><p>Called after each aggregation.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">before_terminate</span></code></dt><dd><p>Called before terminating the monitoring.</p>
-</dd>
-</dl>
-</div>
-<p><strong>Description</strong></p>
-<p>The monitoring thread (<a class="reference internal" href="#c.damon_ctx" title="damon_ctx"><code class="xref c c-type docutils literal notranslate"><span class="pre">damon_ctx.kdamond</span></code></a>) calls <strong>before_terminate</strong> just
-before finishing the monitoring.</p>
-<p>The monitoring thread calls <strong>after_wmarks_check</strong> after each DAMON-based
-operation schemes’ watermarks check.  If users need to make changes to the
-attributes of the monitoring context while it’s deactivated due to the
-watermarks, this is the good place to do.</p>
-<p>The monitoring thread calls <strong>after_aggregation</strong> for each of the aggregation
-intervals.  Therefore, users can safely access the monitoring results
-without additional protection.  For the reason, users are recommended to use
-these callback for the accesses to the results.</p>
-<p>If any callback returns non-zero, monitoring stops.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.damon_intervals_goal">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">damon_intervals_goal</span></span></span><a class="headerlink" href="#c.damon_intervals_goal" title="Link to this definition">¶</a><br /></dt>
@@ -952,7 +957,7 @@ these callback for the accesses to the results.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">access_bp</span></code></dt><dd><p>Access events observation ratio to achieve in bp.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">aggrs</span></code></dt><dd><p>Number of aggregations to acheive <strong>access_bp</strong> within.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">aggrs</span></code></dt><dd><p>Number of aggregations to achieve <strong>access_bp</strong> within.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">min_sample_us</span></code></dt><dd><p>Minimum resulting sampling interval in microseconds.</p>
 </dd>
@@ -968,7 +973,7 @@ aggregations be same to <strong>access_bp</strong>.  The logic increases
 <a class="reference internal" href="#c.damon_attrs" title="damon_attrs"><code class="xref c c-type docutils literal notranslate"><span class="pre">damon_attrs-&gt;aggr_interval</span></code></a> and <a class="reference internal" href="#c.damon_attrs" title="damon_attrs"><code class="xref c c-type docutils literal notranslate"><span class="pre">damon_attrs-&gt;sampling_interval</span></code></a> in same
 ratio if the current access events observation ratio is lower than the
 target for each <strong>aggrs</strong> aggregations, and vice versa.</p>
-<p>If <strong>aggrs</strong> is zero, the tuning is disabled and hence this struct is ignored.</p>
+<p>If <strong>aggrs</strong> is zero, the tuning is disabled and hence this <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> ignored.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.damon_attrs">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">damon_attrs</span></span></span><a class="headerlink" href="#c.damon_attrs" title="Link to this definition">¶</a><br /></dt>
@@ -1013,8 +1018,8 @@ aggregates the information by increasing <a class="reference internal" href="#c.
 also checks whether the target memory regions need update (e.g., by
 <code class="docutils literal notranslate"><span class="pre">mmap()</span></code> calls from the application, in case of virtual memory monitoring)
 and applies the changes for each <strong>ops_update_interval</strong>.  All time intervals
-are in micro-seconds.  Please refer to <a class="reference internal" href="#c.damon_operations" title="damon_operations"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">damon_operations</span></code></a> and <a class="reference internal" href="#c.damon_callback" title="damon_callback"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span>
-<span class="pre">damon_callback</span></code></a> for more detail.</p>
+are in micro-seconds.  Please refer to <a class="reference internal" href="#c.damon_operations" title="damon_operations"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">damon_operations</span></code></a> and <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">damon_call_control</span></code> for more detail.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.damon_ctx">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">damon_ctx</span></span></span><a class="headerlink" href="#c.damon_ctx" title="Link to this definition">¶</a><br /></dt>
@@ -1028,7 +1033,6 @@ are in micro-seconds.  Please refer to <a class="reference internal" href="#c.da
     struct task_struct *kdamond;
     struct mutex kdamond_lock;
     struct damon_operations ops;
-    struct damon_callback callback;
     struct list_head adaptive_targets;
     struct list_head schemes;
 };
@@ -1043,8 +1047,6 @@ are in micro-seconds.  Please refer to <a class="reference internal" href="#c.da
 <dt><code class="docutils literal notranslate"><span class="pre">kdamond_lock</span></code></dt><dd><p>Mutex for the synchronizations with <strong>kdamond</strong>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">ops</span></code></dt><dd><p>Set of monitoring operations for given use cases.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">callback</span></code></dt><dd><p>Set of callbacks for monitoring events notifications.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">adaptive_targets</span></code></dt><dd><p>Head of monitoring targets (<a class="reference internal" href="#c.damon_target" title="damon_target"><code class="xref c c-type docutils literal notranslate"><span class="pre">damon_target</span></code></a>) list.</p>
 </dd>
@@ -1153,9 +1155,7 @@ otherwise.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>This function should be called while the kdamond is not running, an access
-check results aggregation is not ongoing (e.g., from <a class="reference internal" href="#c.damon_callback" title="damon_callback"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span>
-<span class="pre">damon_callback</span></code></a>-&gt;after_aggregation or <a class="reference internal" href="#c.damon_callback" title="damon_callback"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span>
-<span class="pre">damon_callback</span></code></a>-&gt;after_wmarks_check callbacks), or from <a class="reference internal" href="#c.damon_call" title="damon_call"><code class="xref c c-func docutils literal notranslate"><span class="pre">damon_call()</span></code></a>.</p>
+check results aggregation is not ongoing (e.g., from <a class="reference internal" href="#c.damon_call" title="damon_call"><code class="xref c c-func docutils literal notranslate"><span class="pre">damon_call()</span></code></a>.</p>
 <p>Every time interval is in micro-seconds.</p>
 <p><strong>Return</strong></p>
 <p>0 on success, negative error code otherwise.</p>
@@ -1199,7 +1199,7 @@ running.</p>
 should use this function for quota goals-level parameters update of running
 DAMON contexts, instead of manual in-place updates.</p>
 <p>This function should be called from parameters-update safe context, like
-DAMON callbacks.</p>
+<a class="reference internal" href="#c.damon_call" title="damon_call"><code class="xref c c-func docutils literal notranslate"><span class="pre">damon_call()</span></code></a>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.damos_filters_default_reject">
@@ -1234,7 +1234,7 @@ the internal status and results accordingly.  Users should use this function
 for context-level parameters update of running context, instead of manual
 in-place updates.</p>
 <p>This function should be called from parameters-update safe context, like
-DAMON callbacks.</p>
+<a class="reference internal" href="#c.damon_call" title="damon_call"><code class="xref c c-func docutils literal notranslate"><span class="pre">damon_call()</span></code></a>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.damon_nr_running_ctxs">
@@ -1293,6 +1293,21 @@ returns -EBUSY.</p>
 <p>0 on success, negative error code otherwise.</p>
 </div>
 <dl class="c function">
+<dt class="sig sig-object c" id="c.damon_is_running">
+<span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">damon_is_running</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.damon_ctx" title="damon_ctx"><span class="n"><span class="pre">damon_ctx</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ctx</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.damon_is_running" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Returns if a given DAMON context is running.</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">damon_ctx</span> <span class="pre">*ctx</span></code></dt><dd><p>The DAMON context to see if running.</p>
+</dd>
+</dl>
+<p><strong>Return</strong></p>
+<p>true if <strong>ctx</strong> is running, false otherwise.</p>
+</div>
+<dl class="c function">
 <dt class="sig sig-object c" id="c.damon_call">
 <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">damon_call</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.damon_ctx" title="damon_ctx"><span class="n"><span class="pre">damon_ctx</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ctx</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">damon_call_control</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">control</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.damon_call" title="Link to this definition">¶</a><br /></dt>
 <dd><p>Invoke a given function on DAMON worker thread (kdamond).</p>
@@ -1309,8 +1324,9 @@ returns -EBUSY.</p>
 <p><strong>Description</strong></p>
 <p>Ask DAMON worker thread (kdamond) of <strong>ctx</strong> to call a function with an
 argument data that respectively passed via <code class="xref c c-type docutils literal notranslate"><span class="pre">damon_call_control-&gt;fn</span></code> and
-<code class="xref c c-type docutils literal notranslate"><span class="pre">damon_call_control-&gt;data</span></code> of <strong>control</strong>, and wait until the kdamond finishes
-handling of the request.</p>
+<code class="xref c c-type docutils literal notranslate"><span class="pre">damon_call_control-&gt;data</span></code> of <strong>control</strong>.  If <code class="xref c c-type docutils literal notranslate"><span class="pre">damon_call_control-&gt;repeat</span></code> of
+<strong>control</strong> is set, further wait until the kdamond finishes handling of the
+request.  Otherwise, return as soon as the request is made.</p>
 <p>The kdamond executes the function with the argument in the main loop, just
 after a sampling of the iteration is finished.  The function can hence
 safely access the internal data of the <a class="reference internal" href="#c.damon_ctx" title="damon_ctx"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">damon_ctx</span></code></a> without additional

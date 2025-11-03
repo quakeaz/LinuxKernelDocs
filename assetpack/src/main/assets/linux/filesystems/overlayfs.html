@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -153,13 +153,13 @@ Please see MAINTAINERS file for where to send questions.</p>
 <p>This document describes a prototype for a new approach to providing
 overlay-filesystem functionality in Linux (sometimes referred to as
 union-filesystems).  An overlay-filesystem tries to present a
-filesystem which is the result over overlaying one filesystem on top
+filesystem which is the result of overlaying one filesystem on top
 of the other.</p>
 <section id="overlay-objects">
 <h2>Overlay objects<a class="headerlink" href="#overlay-objects" title="Link to this heading">¶</a></h2>
 <p>The overlay filesystem approach is ‘hybrid’, because the objects that
 appear in the filesystem do not always appear to belong to that filesystem.
-In many cases, an object accessed in the union will be indistinguishable
+In many cases, an object accessed in the <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">will</span></code> be indistinguishable
 from accessing the corresponding object from the original filesystem.
 This is most obvious from the ‘st_dev’ field returned by stat(2).</p>
 <p>While directories will report an st_dev from the overlay-filesystem,
@@ -204,18 +204,17 @@ st_dev</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td rowspan="2"></td>
-<td rowspan="2"><p>dir</p></td>
-<td rowspan="2"><p>!dir</p></td>
-<td rowspan="2"><p>dir</p></td>
-<td rowspan="2"><p>!dir</p></td>
-<td rowspan="2"><p>dir</p></td>
-<td rowspan="2"><p>!dir</p></td>
-<td rowspan="2"><p>dir</p></td>
-<td rowspan="2"><p>!dir</p></td>
+<tr class="row-even"><td></td>
+<td><p>dir</p></td>
+<td><p>!dir</p></td>
+<td><p>dir</p></td>
+<td><p>!dir</p></td>
+<td><p>dir</p></td>
+<td><p>!dir</p></td>
+<td><p>dir</p></td>
+<td><p>!dir</p></td>
 </tr>
-<tr class="row-odd"></tr>
-<tr class="row-even"><td><p>All layers
+<tr class="row-odd"><td><p>All layers
 on same fs</p></td>
 <td><p>Y</p></td>
 <td><p>Y</p></td>
@@ -226,7 +225,7 @@ on same fs</p></td>
 <td><p>Y</p></td>
 <td><p>Y</p></td>
 </tr>
-<tr class="row-odd"><td><p>Layers not
+<tr class="row-even"><td><p>Layers not
 on same fs,
 xino=off</p></td>
 <td><p>N</p></td>
@@ -238,7 +237,7 @@ xino=off</p></td>
 <td><p>N</p></td>
 <td><p>Y</p></td>
 </tr>
-<tr class="row-even"><td><p>xino=on/auto</p></td>
+<tr class="row-odd"><td><p>xino=on/auto</p></td>
 <td><p>Y</p></td>
 <td><p>Y</p></td>
 <td><p>Y</p></td>
@@ -248,7 +247,7 @@ xino=off</p></td>
 <td><p>Y</p></td>
 <td><p>Y</p></td>
 </tr>
-<tr class="row-odd"><td><p>xino=on/auto,
+<tr class="row-even"><td><p>xino=on/auto,
 ino overflow</p></td>
 <td><p>N</p></td>
 <td><p>N</p></td>
@@ -594,7 +593,7 @@ of information from up to three different layers:</p>
 </div></blockquote>
 <p>The “lower data” file can be on any lower layer, except from the top most
 lower layer.</p>
-<p>Below the top most lower layer, any number of lower most layers may be defined
+<p>Below the topmost lower layer, any number of lowermost layers may be defined
 as “data-only” lower layers, using double colon (“::”) separators.
 A normal lower layer is not allowed to be below a data-only layer, so single
 colon separators are not allowed to the right of double colon (“::”) separators.</p>
@@ -610,8 +609,8 @@ when a “metacopy” file in one of the lower layers above it, has a “redirec
 to the absolute path of the “lower data” file in the “data-only” lower layer.</p>
 <p>Instead of explicitly enabling “metacopy=on” it is sufficient to specify at
 least one data-only layer to enable redirection of data to a data-only layer.
-In this case other forms of metacopy are rejected.  Note: this way data-only
-layers may be used toghether with “userxattr”, in which case careful attention
+In this case other forms of metacopy are rejected.  Note: this way, data-only
+layers may be used together with “userxattr”, in which case careful attention
 must be given to privileges needed to change the “user.overlay.redirect” xattr
 to prevent misuse.</p>
 <p>Since kernel version v6.8, “data-only” lower layers can also be added using
@@ -676,7 +675,7 @@ default if verity option is not specified.</p>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>“on”:</dt><dd><p>Whenever a metacopy files specifies an expected digest, the
+<dt>“on”:</dt><dd><p>Whenever a metacopy file specifies an expected digest, the
 corresponding data file must match the specified digest. When
 generating a metacopy file the verity digest will be set in it
 based on the source file (if it has one).</p>
@@ -703,7 +702,7 @@ beneath or above the path of another overlay lower layer path.</p>
 another overlay mount is not allowed and may fail with EBUSY.  Using
 partially overlapping paths is not allowed and may fail with EBUSY.
 If files are accessed from two overlayfs mounts which share or overlap the
-upper layer and/or workdir path the behavior of the overlay is undefined,
+upper layer and/or workdir path, the behavior of the overlay is undefined,
 though it will not result in a crash or deadlock.</p>
 <p>Mounting an overlay using an upper layer path, where the upper layer path
 was previously used by another mounted overlay in combination with a
@@ -925,7 +924,7 @@ filesystem that supports xattrs.</p>
 <li><dl class="simple">
 <dt>“auto”: (default)</dt><dd><p>UUID is taken from xattr “trusted.overlay.uuid” if it exists.
 Upgrade to “uuid=on” on first time mount of new overlay filesystem that
-meets the prerequites.
+meets the prerequisites.
 Downgrade to “uuid=null” for existing overlay filesystems that were never
 mounted with “uuid=on”.</p>
 </dd>
@@ -941,19 +940,19 @@ mounts are only used if data written to the overlay can be recreated
 without significant effort.</p>
 <p>The advantage of mounting with the “volatile” option is that all forms of
 sync calls to the upper filesystem are omitted.</p>
-<p>In order to avoid a giving a false sense of safety, the syncfs (and fsync)
+<p>In order to avoid giving a false sense of safety, the syncfs (and fsync)
 semantics of volatile mounts are slightly different than that of the rest of
 VFS.  If any writeback error occurs on the upperdir’s filesystem after a
 volatile mount takes place, all sync functions will return an error.  Once this
 condition is reached, the filesystem will not recover, and every subsequent sync
-call will return an error, even if the upperdir has not experience a new error
+call will return an error, even if the upperdir has not experienced a new error
 since the last sync call.</p>
 <p>When overlay is mounted with “volatile” option, the directory
 “$workdir/work/incompat/volatile” is created.  During next mount, overlay
 checks for this directory and refuses to mount if present. This is a strong
-indicator that user should throw away upper and work directories and create
-fresh one. In very limited cases where the user knows that the system has
-not crashed and contents of upperdir are intact, The “volatile” directory
+indicator that the user should discard upper and work directories and create
+fresh ones. In very limited cases where the user knows that the system has
+not crashed and contents of upperdir are intact, the “volatile” directory
 can be removed.</p>
 </section>
 <section id="user-xattr">

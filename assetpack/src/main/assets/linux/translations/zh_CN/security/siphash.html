@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -247,7 +247,7 @@ static inline hlist_head *some_hashtable_bucket(struct some_hashtable *table, st
 <h2>Struct-passing陷阱<a class="headerlink" href="#struct-passing" title="Link to this heading">¶</a></h2>
 <p>通常情况下，XuY函数的输出长度不够大，因此你可能需要传递一个预填充
 的结构体给SipHash，在这样做时，务必确保结构体没有填充空隙，最简单
-的方法就是将结构体的成员按照大小降序的方式排序，并且使用offsetofend()
+的方法就是将结构体的成员按照大小降序的方式排序，并且使用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">offsetofend()</span></code>
 函数代替sizeof()来获取结构体大小，出于性能的考虑，如果可以的话，最
 好将结构体按右边界对齐，示例如下:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>const struct {
@@ -340,8 +340,8 @@ static inline hlist_head *some_hashtable_bucket(struct some_hashtable *table, st
 </section>
 <section id="id8">
 <h2>性能<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h2>
-<p>hsiphash()大约比jhash()慢三倍，这是因为有许多替换，不过这些都不是问题，
-因为哈希表查找不是瓶颈。而且，这些牺牲是为了hsiphash()的安全性和DoS抗
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hsiphash()</span></code>大约比<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">jhash()</span></code>慢三倍，这是因为有许多替换，不过这些都不是问题，
+因为哈希表查找不是瓶颈。而且，这些牺牲是为了<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hsiphash()</span></code>的安全性和DoS抗
 性，这是值得的。</p>
 </section>
 </section>

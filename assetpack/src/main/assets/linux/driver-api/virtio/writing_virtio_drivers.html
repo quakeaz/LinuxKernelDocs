@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -259,7 +259,7 @@ should be added only for devices that are defined in the spec, see
 include/uapi/linux/virtio_ids.h. Device ids need to be at least reserved
 in the virtio spec before being added to that file.</p>
 <p>If your driver doesn’t have to do anything special in its <code class="docutils literal notranslate"><span class="pre">init</span></code> and
-<code class="docutils literal notranslate"><span class="pre">exit</span></code> methods, you can use the module_virtio_driver() helper to
+<code class="docutils literal notranslate"><span class="pre">exit</span></code> methods, you can use the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">module_virtio_driver()</span></code> helper to
 reduce the amount of boilerplate code.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">probe</span></code> method does the minimum driver setup in this case
 (memory allocation for the device data) and initializes the
@@ -289,7 +289,7 @@ them.</p>
 </section>
 <section id="sending-and-receiving-data">
 <h2>Sending and receiving data<a class="headerlink" href="#sending-and-receiving-data" title="Link to this heading">¶</a></h2>
-<p>The virtio_dummy_recv_cb() callback in the code above will be triggered
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">virtio_dummy_recv_cb()</span></code> callback in the code above will be triggered
 when the device notifies the driver after it finishes processing a
 descriptor or descriptor chain, either for reading or writing. However,
 that’s only the second half of the virtio device-driver communication
@@ -302,7 +302,7 @@ appropriate virtqueue using any of the <a class="reference internal" href="#c.vi
 need to add one input <cite>scatterlist</cite> (for the device to fill in), one
 output <cite>scatterlist</cite> (for the device to consume) or multiple
 <cite>scatterlists</cite>, respectively. Then, once the virtqueue is set up, a call
-to virtqueue_kick() sends a notification that will be serviced by the
+to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">virtqueue_kick()</span></code> sends a notification that will be serviced by the
 hypervisor that implements the device:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct scatterlist sg[1];
 sg_init_one(sg, buffer, BUFLEN);
@@ -386,9 +386,12 @@ at the same time (except where noted).</p>
 <p>Caller must ensure we don’t call this with other virtqueue operations
 at the same time (except where noted).</p>
 <p>Returns zero or a negative error (ie. ENOSPC, ENOMEM, EIO).</p>
+<p>NB: ENOSPC is a special code that is only returned on an attempt to add a
+buffer to a full VQ. It indicates that some buffers are outstanding and that
+the operation can be retried after some buffers have been used.</p>
 </div>
 <p>Then, after the device has read or written the buffers prepared by the
-driver and notifies it back, the driver can call virtqueue_get_buf() to
+driver and notifies it back, the driver can call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">virtqueue_get_buf()</span></code> to
 read the data produced by the device (if the virtqueue was set up with
 input buffers) or simply to reclaim the buffers if they were already
 consumed by the device:</p>
@@ -459,7 +462,7 @@ operations at the same time (except where noted).</p>
 </div>
 <p>But note that some spurious callbacks can still be triggered under
 certain scenarios. The way to disable callbacks reliably is to reset the
-device or the virtqueue (virtio_reset_device()).</p>
+device or the virtqueue (<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">virtio_reset_device()</span></code>).</p>
 </section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Link to this heading">¶</a></h2>

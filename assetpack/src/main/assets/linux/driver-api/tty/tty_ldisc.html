@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -353,54 +353,84 @@ tty/pty pair, and eventually hangup.</p>
 </pre></div>
 </div>
 <p><strong>Members</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">name</span></code></dt><dd><p>name of this ldisc rendered in /proc/tty/ldiscs</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">num</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">N_*</span></code> number (<code class="docutils literal notranslate"><span class="pre">N_TTY</span></code>, <code class="docutils literal notranslate"><span class="pre">N_HDLC</span></code>, ...) reserved to this ldisc</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">open</span></code></dt><dd><p>[TTY] <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
-<p>This function is called when the line discipline is associated with the
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">close</span></code></dt><dd><p>[TTY] <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">flush_buffer</span></code></dt><dd><p>[TTY] <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">read</span></code></dt><dd><p>[TTY] <code class="docutils literal notranslate"><span class="pre">ssize_t</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">struct</span> <span class="pre">file</span> <span class="pre">*file,</span> <span class="pre">u8</span> <span class="pre">*buf,</span>
+<span class="pre">size_t</span> <span class="pre">nr)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">write</span></code></dt><dd><p>[TTY] <code class="docutils literal notranslate"><span class="pre">ssize_t</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">struct</span> <span class="pre">file</span> <span class="pre">*file,</span>
+<span class="pre">const</span> <span class="pre">u8</span> <span class="pre">*buf,</span> <span class="pre">size_t</span> <span class="pre">nr)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ioctl</span></code></dt><dd><p>[TTY] <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">cmd,</span>
+<span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">arg)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">compat_ioctl</span></code></dt><dd><p>[TTY] <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">cmd,</span>
+<span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">arg)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">set_termios</span></code></dt><dd><p>[TTY] <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">const</span> <span class="pre">struct</span> <span class="pre">ktermios</span> <span class="pre">*old)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">poll</span></code></dt><dd><p>[TTY] <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">struct</span> <span class="pre">file</span> <span class="pre">*file,</span>
+<span class="pre">struct</span> <span class="pre">poll_table_struct</span> <span class="pre">*wait)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">hangup</span></code></dt><dd><p>[TTY] <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">receive_buf</span></code></dt><dd><p>[DRV] <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">const</span> <span class="pre">u8</span> <span class="pre">*cp,</span>
+<span class="pre">const</span> <span class="pre">u8</span> <span class="pre">*fp,</span> <span class="pre">size_t</span> <span class="pre">count)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">write_wakeup</span></code></dt><dd><p>[DRV] <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">dcd_change</span></code></dt><dd><p>[DRV] <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">bool</span> <span class="pre">active)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">receive_buf2</span></code></dt><dd><p>[DRV] <code class="docutils literal notranslate"><span class="pre">ssize_t</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">const</span> <span class="pre">u8</span> <span class="pre">*cp,</span>
+<span class="pre">const</span> <span class="pre">u8</span> <span class="pre">*fp,</span> <span class="pre">size_t</span> <span class="pre">count)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">lookahead_buf</span></code></dt><dd><p>[DRV] <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">const</span> <span class="pre">u8</span> <span class="pre">*cp,</span>
+<span class="pre">const</span> <span class="pre">u8</span> <span class="pre">*fp,</span> <span class="pre">size_t</span> <span class="pre">count)</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">owner</span></code></dt><dd><p>module containting this ldisc (for reference counting)</p>
+</dd>
+</dl>
+</div>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This function is called when the line discipline is associated with the
 <strong>tty</strong>. No other call into the line discipline for this tty will occur
 until it completes successfully. It should initialize any state needed
 by the ldisc, and set <strong>tty-&gt;receive_room</strong> to the maximum amount of data
 the line discipline is willing to accept from the driver with a single
-call to <strong>receive_buf()</strong>. Returning an error will prevent the ldisc from
+call to <strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">receive_buf()</span></code></strong>. Returning an error will prevent the ldisc from
 being attached.</p>
 <p>Optional. Can sleep.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">close</span></code></dt><dd><p>[TTY] <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
 <p>This function is called when the line discipline is being shutdown,
 either because the <strong>tty</strong> is being closed or because the <strong>tty</strong> is being
 changed to use a new line discipline. At the point of execution no
 further users will enter the ldisc code for this tty.</p>
 <p>Optional. Can sleep.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">flush_buffer</span></code></dt><dd><p>[TTY] <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
 <p>This function instructs the line discipline to clear its buffers of any
 input characters it may have queued to be delivered to the user mode
 process. It may be called at any point between open and close.</p>
 <p>Optional.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">read</span></code></dt><dd><p>[TTY] <code class="docutils literal notranslate"><span class="pre">ssize_t</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">struct</span> <span class="pre">file</span> <span class="pre">*file,</span> <span class="pre">u8</span> <span class="pre">*buf,</span>
-<span class="pre">size_t</span> <span class="pre">nr)</span></code></p>
 <p>This function is called when the user requests to read from the <strong>tty</strong>.
 The line discipline will return whatever characters it has buffered up
 for the user. If this function is not defined, the user will receive
 an <code class="docutils literal notranslate"><span class="pre">EIO</span></code> error. Multiple read calls may occur in parallel and the ldisc
 must deal with serialization issues.</p>
 <p>Optional: <code class="docutils literal notranslate"><span class="pre">EIO</span></code> unless provided. Can sleep.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">write</span></code></dt><dd><p>[TTY] <code class="docutils literal notranslate"><span class="pre">ssize_t</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">struct</span> <span class="pre">file</span> <span class="pre">*file,</span>
-<span class="pre">const</span> <span class="pre">u8</span> <span class="pre">*buf,</span> <span class="pre">size_t</span> <span class="pre">nr)</span></code></p>
 <p>This function is called when the user requests to write to the <strong>tty</strong>.
 The line discipline will deliver the characters to the low-level tty
 device for transmission, optionally performing some processing on the
 characters first. If this function is not defined, the user will
 receive an <code class="docutils literal notranslate"><span class="pre">EIO</span></code> error.</p>
 <p>Optional: <code class="docutils literal notranslate"><span class="pre">EIO</span></code> unless provided. Can sleep.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">ioctl</span></code></dt><dd><p>[TTY] <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">cmd,</span>
-<span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">arg)</span></code></p>
 <p>This function is called when the user requests an ioctl which is not
 handled by the tty layer or the low-level tty driver. It is intended
 for ioctls which affect line discpline operation.  Note that the search
@@ -408,37 +438,24 @@ order for ioctls is (1) tty layer, (2) tty low-level driver, (3) line
 discpline. So a low-level driver can “grab” an ioctl request before
 the line discpline has a chance to see it.</p>
 <p>Optional.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">compat_ioctl</span></code></dt><dd><p>[TTY] <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">cmd,</span>
-<span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">arg)</span></code></p>
 <p>Process ioctl calls from 32-bit process on 64-bit system.</p>
 <p>Note that only ioctls that are neither “pointer to compatible
 structure” nor tty-generic.  Something private that takes an integer or
 a pointer to wordsize-sensitive structure belongs here, but most of
 ldiscs will happily leave it <code class="docutils literal notranslate"><span class="pre">NULL</span></code>.</p>
 <p>Optional.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">set_termios</span></code></dt><dd><p>[TTY] <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">const</span> <span class="pre">struct</span> <span class="pre">ktermios</span> <span class="pre">*old)</span></code></p>
 <p>This function notifies the line discpline that a change has been made
 to the termios structure.</p>
 <p>Optional.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">poll</span></code></dt><dd><p>[TTY] <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">struct</span> <span class="pre">file</span> <span class="pre">*file,</span>
-<span class="pre">struct</span> <span class="pre">poll_table_struct</span> <span class="pre">*wait)</span></code></p>
 <p>This function is called when a user attempts to select/poll on a <strong>tty</strong>
 device. It is solely the responsibility of the line discipline to
 handle poll requests.</p>
 <p>Optional.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">hangup</span></code></dt><dd><p>[TTY] <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
 <p>Called on a hangup. Tells the discipline that it should cease I/O to
 the tty driver. The driver should seek to perform this action quickly
 but should wait until any pending driver I/O is completed. No further
 calls into the ldisc code will occur.</p>
 <p>Optional. Can sleep.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">receive_buf</span></code></dt><dd><p>[DRV] <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">const</span> <span class="pre">u8</span> <span class="pre">*cp,</span>
-<span class="pre">const</span> <span class="pre">u8</span> <span class="pre">*fp,</span> <span class="pre">size_t</span> <span class="pre">count)</span></code></p>
 <p>This function is called by the low-level tty driver to send characters
 received by the hardware to the line discpline for processing. <strong>cp</strong> is
 a pointer to the buffer of input character received by the device. <strong>fp</strong>
@@ -446,8 +463,6 @@ is a pointer to an array of flag bytes which indicate whether a
 character was received with a parity error, etc. <strong>fp</strong> may be <code class="docutils literal notranslate"><span class="pre">NULL</span></code> to
 indicate all data received is <code class="docutils literal notranslate"><span class="pre">TTY_NORMAL</span></code>.</p>
 <p>Optional.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">write_wakeup</span></code></dt><dd><p>[DRV] <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty)</span></code></p>
 <p>This function is called by the low-level tty driver to signal that line
 discpline should try to send more characters to the low-level driver
 for transmission. If the line discpline does not have any more data to
@@ -455,14 +470,9 @@ send, it can just return. If the line discipline does have some data to
 send, please arise a tasklet or workqueue to do the real data transfer.
 Do not send data in this hook, it may lead to a deadlock.</p>
 <p>Optional.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">dcd_change</span></code></dt><dd><p>[DRV] <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">bool</span> <span class="pre">active)</span></code></p>
 <p>Tells the discipline that the DCD pin has changed its status. Used
 exclusively by the <code class="docutils literal notranslate"><span class="pre">N_PPS</span></code> (Pulse-Per-Second) line discipline.</p>
 <p>Optional.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">receive_buf2</span></code></dt><dd><p>[DRV] <code class="docutils literal notranslate"><span class="pre">ssize_t</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">const</span> <span class="pre">u8</span> <span class="pre">*cp,</span>
-<span class="pre">const</span> <span class="pre">u8</span> <span class="pre">*fp,</span> <span class="pre">size_t</span> <span class="pre">count)</span></code></p>
 <p>This function is called by the low-level tty driver to send characters
 received by the hardware to the line discpline for processing. <strong>cp</strong> is a
 pointer to the buffer of input character received by the device.  <strong>fp</strong>
@@ -471,24 +481,16 @@ character was received with a parity error, etc. <strong>fp</strong> may be <cod
 indicate all data received is <code class="docutils literal notranslate"><span class="pre">TTY_NORMAL</span></code>. If assigned, prefer this
 function for automatic flow control.</p>
 <p>Optional.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">lookahead_buf</span></code></dt><dd><p>[DRV] <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">()(struct</span> <span class="pre">tty_struct</span> <span class="pre">*tty,</span> <span class="pre">const</span> <span class="pre">u8</span> <span class="pre">*cp,</span>
-<span class="pre">const</span> <span class="pre">u8</span> <span class="pre">*fp,</span> <span class="pre">size_t</span> <span class="pre">count)</span></code></p>
 <p>This function is called by the low-level tty driver for characters
-not eaten by -&gt;receive_buf() or -&gt;receive_buf2(). It is useful for
+not eaten by -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">receive_buf()</span></code> or -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">receive_buf2()</span></code>. It is useful for
 processing high-priority characters such as software flow-control
 characters that could otherwise get stuck into the intermediate
 buffer until tty has room to receive them. Ldisc must be able to
-handle later a -&gt;receive_buf() or -&gt;receive_buf2() call for the
+handle later a -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">receive_buf()</span></code> or -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">receive_buf2()</span></code> call for the
 same characters (e.g. by skipping the actions for high-priority
-characters already handled by -&gt;lookahead_buf()).</p>
+characters already handled by -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lookahead_buf()</span></code>).</p>
 <p>Optional.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">owner</span></code></dt><dd><p>module containting this ldisc (for reference counting)</p>
-</dd>
-</dl>
-</div>
-<p><strong>Description</strong></p>
+</div></blockquote>
 <p>This structure defines the interface between the tty line discipline
 implementation and the tty routines. The above routines can be defined.
 Unless noted otherwise, they are optional, and can be filled in with a <code class="docutils literal notranslate"><span class="pre">NULL</span></code>
@@ -602,7 +604,7 @@ possible.</p>
 <ul class="simple">
 <li><p>-<code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> if the discipline index is not [<code class="docutils literal notranslate"><span class="pre">N_TTY</span></code> .. <code class="docutils literal notranslate"><span class="pre">NR_LDISCS</span></code>] or if the
 discipline is not registered</p></li>
-<li><p>-<code class="docutils literal notranslate"><span class="pre">EAGAIN</span></code> if request_module() failed to load or register the discipline</p></li>
+<li><p>-<code class="docutils literal notranslate"><span class="pre">EAGAIN</span></code> if <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">request_module()</span></code> failed to load or register the discipline</p></li>
 <li><p>-<code class="docutils literal notranslate"><span class="pre">ENOMEM</span></code> if allocation failure</p></li>
 <li><p>Otherwise, returns a pointer to the discipline and bumps the ref count</p></li>
 </ul>

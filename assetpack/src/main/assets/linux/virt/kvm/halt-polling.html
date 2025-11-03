@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -180,11 +180,11 @@ wakeup periods where the time spent halt polling is minimised and the time
 savings of not invoking the scheduler are distinguishable.</p>
 <p>The generic halt polling code is implemented in:</p>
 <blockquote>
-<div><p>virt/kvm/kvm_main.c: kvm_vcpu_block()</p>
+<div><p>virt/kvm/kvm_main.c: <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kvm_vcpu_block()</span></code></p>
 </div></blockquote>
 <p>The powerpc kvm-hv specific case is implemented in:</p>
 <blockquote>
-<div><p>arch/powerpc/kvm/book3s_hv.c: kvmppc_vcore_blocked()</p>
+<div><p>arch/powerpc/kvm/book3s_hv.c: <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kvmppc_vcore_blocked()</span></code></p>
 </div></blockquote>
 <section id="halt-polling-interval">
 <h2>Halt Polling Interval<a class="headerlink" href="#halt-polling-interval" title="Link to this heading">¶</a></h2>
@@ -210,14 +210,14 @@ time was greater than the global max polling interval.</p>
 the global max polling interval then the polling interval can be increased in
 the hope that next time during the longer polling interval the wake up source
 will be received while the host is polling and the latency benefits will be
-received. The polling interval is grown in the function grow_halt_poll_ns() and
+received. The polling interval is grown in the function <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">grow_halt_poll_ns()</span></code> and
 is multiplied by the module parameters halt_poll_ns_grow and
 halt_poll_ns_grow_start.</p>
 <p>In the event that the total block time was greater than the global max polling
 interval then the host will never poll for long enough (limited by the global
 max) to wakeup during the polling interval so it may as well be shrunk in order
 to avoid pointless polling. The polling interval is shrunk in the function
-shrink_halt_poll_ns() and is divided by the module parameter
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shrink_halt_poll_ns()</span></code> and is divided by the module parameter
 halt_poll_ns_shrink, or set to 0 iff halt_poll_ns_shrink == 0.</p>
 <p>It is worth noting that this adjustment process attempts to hone in on some
 steady state polling interval but will only really do a good job for wakeups
@@ -257,14 +257,14 @@ each vcpu.</p></td>
 <td><p>The value by which the
 halt polling interval is
 multiplied in the
-grow_halt_poll_ns()
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">grow_halt_poll_ns()</span></code>
 function.</p></td>
 <td><p>2</p></td>
 </tr>
 <tr class="row-even"><td><p>halt_poll_ns_grow_start</p></td>
 <td><p>The initial value to grow
 to from zero in the
-grow_halt_poll_ns()
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">grow_halt_poll_ns()</span></code>
 function.</p></td>
 <td><p>10000</p></td>
 </tr>
@@ -272,7 +272,7 @@ function.</p></td>
 <td><p>The value by which the
 halt polling interval is
 divided in the
-shrink_halt_poll_ns()
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shrink_halt_poll_ns()</span></code>
 function.</p></td>
 <td><p>2</p></td>
 </tr>

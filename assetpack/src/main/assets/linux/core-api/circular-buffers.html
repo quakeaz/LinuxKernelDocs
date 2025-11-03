@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -90,6 +90,7 @@
 <li class="toctree-l3"><a class="reference internal" href="union_find.html">Union-Find in Linux</a></li>
 <li class="toctree-l3"><a class="reference internal" href="min_heap.html">Min Heap API</a></li>
 <li class="toctree-l3"><a class="reference internal" href="parser.html">Generic parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="list.html">Linked Lists in Linux</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#low-level-entry-and-exit">Low level entry and exit</a></li>
@@ -336,7 +337,7 @@ spin_unlock(&amp;producer_lock);
 <p>This will instruct the CPU that the contents of the new item must be written
 before the head index makes it available to the consumer and then instructs the
 CPU that the revised head index must be written before the consumer is woken.</p>
-<p>Note that wake_up() does not guarantee any sort of barrier unless something
+<p>Note that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wake_up()</span></code> does not guarantee any sort of barrier unless something
 is actually awakened.  We therefore cannot rely on it for ordering.  However,
 there is always one element of the array left empty.  Therefore, the
 producer must produce two elements before it could possibly corrupt the
@@ -372,12 +373,12 @@ spin_unlock(&amp;consumer_lock);
 <p>This will instruct the CPU to make sure the index is up to date before reading
 the new item, and then it shall make sure the CPU has finished reading the item
 before it writes the new tail pointer, which will erase the item.</p>
-<p>Note the use of READ_ONCE() and smp_load_acquire() to read the
+<p>Note the use of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">READ_ONCE()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smp_load_acquire()</span></code> to read the
 opposition index.  This prevents the compiler from discarding and
 reloading its cached value.  This isn’t strictly needed if you can
 be sure that the opposition index will _only_ be used the once.
-The smp_load_acquire() additionally forces the CPU to order against
-subsequent memory references.  Similarly, smp_store_release() is used
+The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smp_load_acquire()</span></code> additionally forces the CPU to order against
+subsequent memory references.  Similarly, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smp_store_release()</span></code> is used
 in both algorithms to write the thread’s index.  This documents the
 fact that we are writing to something that can be read concurrently,
 prevents the compiler from tearing the store, and enforces ordering

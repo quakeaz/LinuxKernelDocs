@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -197,8 +197,8 @@ bool kvm_make_all_cpus_request(struct kvm *kvm, unsigned int req);
 </div>
 <p>Typically a requester wants the VCPU to perform the activity as soon
 as possible after making the request.  This means most requests
-(kvm_make_request() calls) are followed by a call to kvm_vcpu_kick(),
-and kvm_make_all_cpus_request() has the kicking of all VCPUs built
+(<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kvm_make_request()</span></code> calls) are followed by a call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kvm_vcpu_kick()</span></code>,
+and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kvm_make_all_cpus_request()</span></code> has the kicking of all VCPUs built
 into it.</p>
 <section id="vcpu-kicks">
 <h3>VCPU Kicks<a class="headerlink" href="#vcpu-kicks" title="Link to this heading">¶</a></h3>
@@ -265,8 +265,8 @@ dependent requests.</p>
 <p>KVM_REQ_TLB_FLUSH</p>
 <blockquote>
 <div><p>KVM’s common MMU notifier may need to flush all of a guest’s TLB
-entries, calling kvm_flush_remote_tlbs() to do so.  Architectures that
-choose to use the common kvm_flush_remote_tlbs() implementation will
+entries, calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kvm_flush_remote_tlbs()</span></code> to do so.  Architectures that
+choose to use the common <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kvm_flush_remote_tlbs()</span></code> implementation will
 need to handle this VCPU request.</p>
 </div></blockquote>
 <p>KVM_REQ_VM_DEAD</p>
@@ -310,7 +310,7 @@ requests when they are awakened later for some other reason.</p>
 </div></blockquote>
 <p>KVM_REQUEST_WAIT</p>
 <blockquote>
-<div><p>When requests with this flag are made with kvm_make_all_cpus_request(),
+<div><p>When requests with this flag are made with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kvm_make_all_cpus_request()</span></code>,
 then the caller will wait for each VCPU to acknowledge its IPI before
 proceeding.  This flag only applies to VCPUs that would receive IPIs.
 If, for example, the VCPU is sleeping, so no IPI is necessary, then
@@ -332,7 +332,7 @@ corresponding read barrier must be inserted after reading the request bit
 and before proceeding to read the new state associated with it.  See
 scenario 3, Message and Flag, of <a class="reference internal" href="#lwn-mb" id="id2"><span>[lwn-mb]</span></a> and the kernel documentation
 <a class="reference internal" href="#memory-barriers" id="id3"><span>[memory-barriers]</span></a>.</p>
-<p>The pair of functions, kvm_check_request() and kvm_make_request(), provide
+<p>The pair of functions, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kvm_check_request()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kvm_make_request()</span></code>, provide
 the memory barriers, allowing this requirement to be handled internally by
 the API.</p>
 </section>
@@ -341,10 +341,10 @@ the API.</p>
 <p>When making requests to VCPUs, we want to avoid the receiving VCPU
 executing in guest mode for an arbitrary long time without handling the
 request.  We can be sure this won’t happen as long as we ensure the VCPU
-thread checks kvm_request_pending() before entering guest mode and that a
+thread checks <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kvm_request_pending()</span></code> before entering guest mode and that a
 kick will send an IPI to force an exit from guest mode when necessary.
 Extra care must be taken to cover the period after the VCPU thread’s last
-kvm_request_pending() check and before it has entered guest mode, as kick
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kvm_request_pending()</span></code> check and before it has entered guest mode, as kick
 IPIs will only trigger guest mode exits for VCPU threads that are in guest
 mode or at least have already disabled interrupts in order to prepare to
 enter guest mode.  This means that an optimized implementation (see “IPI
@@ -352,13 +352,13 @@ Reduction”) must be certain when it’s safe to not send the IPI.  One
 solution, which all architectures except s390 apply, is to:</p>
 <ul class="simple">
 <li><p>set <code class="docutils literal notranslate"><span class="pre">vcpu-&gt;mode</span></code> to IN_GUEST_MODE between disabling the interrupts and
-the last kvm_request_pending() check;</p></li>
+the last <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kvm_request_pending()</span></code> check;</p></li>
 <li><p>enable interrupts atomically when entering the guest.</p></li>
 </ul>
 <p>This solution also requires memory barriers to be placed carefully in both
 the requesting thread and the receiving VCPU.  With the memory barriers we
 can exclude the possibility of a VCPU thread observing
-!kvm_request_pending() on its last check and then not receiving an IPI for
+!<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kvm_request_pending()</span></code> on its last check and then not receiving an IPI for
 the next request made of it, even if the request is made immediately after
 the check.  This is done by way of the Dekker memory barrier pattern
 (scenario 10 of <a class="reference internal" href="#lwn-mb" id="id4"><span>[lwn-mb]</span></a>).  As the Dekker pattern requires two variables,
@@ -378,7 +378,7 @@ if (kvm_request_pending(vcpu)) {        if (READ_ONCE(vcpu-&gt;mode) ==
 <p>As stated above, the IPI is only useful for VCPU threads in guest mode or
 that have already disabled interrupts.  This is why this specific case of
 the Dekker pattern has been extended to disable interrupts before setting
-<code class="docutils literal notranslate"><span class="pre">vcpu-&gt;mode</span></code> to IN_GUEST_MODE.  WRITE_ONCE() and READ_ONCE() are used to
+<code class="docutils literal notranslate"><span class="pre">vcpu-&gt;mode</span></code> to IN_GUEST_MODE.  <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">WRITE_ONCE()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">READ_ONCE()</span></code> are used to
 pedantically implement the memory barrier pattern, guaranteeing the
 compiler doesn’t interfere with <code class="docutils literal notranslate"><span class="pre">vcpu-&gt;mode</span></code>’s carefully planned
 accesses.</p>
@@ -406,7 +406,7 @@ OUTSIDE_GUEST_MODE.</p>
 two-variable Dekker memory barrier pattern, then it’s clear that
 request-less VCPU kicks are almost never correct.  Without the assurance
 that a non-IPI generating kick will still result in an action by the
-receiving VCPU, as the final kvm_request_pending() check does for
+receiving VCPU, as the final <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kvm_request_pending()</span></code> check does for
 request-accompanying kicks, then the kick may not do anything useful at
 all.  If, for instance, a request-less kick was made to a VCPU that was
 just about to set its mode to IN_GUEST_MODE, meaning no IPI is sent, then
@@ -414,11 +414,11 @@ the VCPU thread may continue its entry without actually having done
 whatever it was the kick was meant to initiate.</p>
 <p>One exception is x86’s posted interrupt mechanism.  In this case, however,
 even the request-less VCPU kick is coupled with the same
-local_irq_disable() + smp_mb() pattern described above; the ON bit
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">local_irq_disable()</span></code> + <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smp_mb()</span></code> pattern described above; the ON bit
 (Outstanding Notification) in the posted interrupt descriptor takes the
 role of <code class="docutils literal notranslate"><span class="pre">vcpu-&gt;requests</span></code>.  When sending a posted interrupt, PIR.ON is
 set before reading <code class="docutils literal notranslate"><span class="pre">vcpu-&gt;mode</span></code>; dually, in the VCPU thread,
-vmx_sync_pir_to_irr() reads PIR after setting <code class="docutils literal notranslate"><span class="pre">vcpu-&gt;mode</span></code> to
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vmx_sync_pir_to_irr()</span></code> reads PIR after setting <code class="docutils literal notranslate"><span class="pre">vcpu-&gt;mode</span></code> to
 IN_GUEST_MODE.</p>
 </section>
 </section>
@@ -427,9 +427,9 @@ IN_GUEST_MODE.</p>
 <section id="sleeping-vcpus">
 <h3>Sleeping VCPUs<a class="headerlink" href="#sleeping-vcpus" title="Link to this heading">¶</a></h3>
 <p>VCPU threads may need to consider requests before and/or after calling
-functions that may put them to sleep, e.g. kvm_vcpu_block().  Whether they
+functions that may put them to sleep, e.g. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kvm_vcpu_block()</span></code>.  Whether they
 do or not, and, if they do, which requests need consideration, is
-architecture dependent.  kvm_vcpu_block() calls kvm_arch_vcpu_runnable()
+architecture dependent.  <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kvm_vcpu_block()</span></code> calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kvm_arch_vcpu_runnable()</span></code>
 to check if it should awaken.  One reason to do so is to provide
 architectures a function where requests may be checked if necessary.</p>
 </section>

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -180,16 +180,16 @@ others from using them in the future.</p>
 </section>
 <section id="bug-and-bug-on">
 <h2>BUG() and BUG_ON()<a class="headerlink" href="#bug-and-bug-on" title="Link to this heading">¶</a></h2>
-<p>Use WARN() and WARN_ON() instead, and handle the “impossible”
-error condition as gracefully as possible. While the BUG()-family
+<p>Use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">WARN()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">WARN_ON()</span></code> instead, and handle the “impossible”
+error condition as gracefully as possible. While the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">BUG()</span></code>-family
 of APIs were originally designed to act as an “impossible situation”
 assert and to kill a kernel thread “safely”, they turn out to just be
 too risky. (e.g. “In what order do locks need to be released? Have
-various states been restored?”) Very commonly, using BUG() will
+various states been restored?”) Very commonly, using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">BUG()</span></code> will
 destabilize a system or entirely break it, which makes it impossible
 to debug or even get viable crash reports. Linus has <a class="reference external" href="https://lore.kernel.org/lkml/CA+55aFy6jNLsywVYdGp83AMrXBo_P-pkjkphPGrO=82SPKCpLQ&#64;mail.gmail.com/">very strong</a>
 feelings <a class="reference external" href="https://lore.kernel.org/lkml/CAHk-=whDHsbK3HTOpTF=ue_o04onRwTEaK_ZoJp_fjbqq4+=Jw&#64;mail.gmail.com/">about this</a>.</p>
-<p>Note that the WARN()-family should only be used for “expected to
+<p>Note that the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">WARN()</span></code>-family should only be used for “expected to
 be unreachable” situations. If you want to warn about “reachable
 but undesirable” situations, please use the <a class="reference internal" href="../core-api/printk-basics.html#c.pr_warn" title="pr_warn"><code class="xref c c-func docutils literal notranslate"><span class="pre">pr_warn()</span></code></a>-family of
 functions. System owners may have set the <em>panic_on_warn</em> sysctl,
@@ -296,11 +296,11 @@ NUL-padding, <a class="reference internal" href="../core-api/kernel-api.html#c.s
 </section>
 <section id="strlcpy">
 <h2>strlcpy()<a class="headerlink" href="#strlcpy" title="Link to this heading">¶</a></h2>
-<p>strlcpy() reads the entire source buffer first (since the return value
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">strlcpy()</span></code> reads the entire source buffer first (since the return value
 is meant to match that of <a class="reference internal" href="../core-api/kernel-api.html#c.strlen" title="strlen"><code class="xref c c-func docutils literal notranslate"><span class="pre">strlen()</span></code></a>). This read may exceed the destination
 size limit. This is both inefficient and can lead to linear read overflows
 if a source string is not NUL-terminated. The safe replacement is <a class="reference internal" href="../core-api/kernel-api.html#c.strscpy" title="strscpy"><code class="xref c c-func docutils literal notranslate"><span class="pre">strscpy()</span></code></a>,
-though care must be given to any cases where the return value of strlcpy()
+though care must be given to any cases where the return value of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">strlcpy()</span></code>
 is used, since <a class="reference internal" href="../core-api/kernel-api.html#c.strscpy" title="strscpy"><code class="xref c c-func docutils literal notranslate"><span class="pre">strscpy()</span></code></a> will return negative errno values when it truncates.</p>
 </section>
 <section id="p-format-specifier">
@@ -399,7 +399,7 @@ size problems:</p>
 <p>But this led to other problems, and didn’t solve some problems shared by
 both styles, like not being able to detect when such an array is accidentally
 being used _not_ at the end of a structure (which could happen directly, or
-when such a struct was in unions, structs of structs, etc).</p>
+when such a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">was</span></code> in unions, structs of structs, etc).</p>
 <p>C99 introduced “flexible array members”, which lacks a numeric size for
 the array declaration entirely:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct something {
@@ -476,13 +476,13 @@ instance-&gt;count = count;
 memcpy(instance-&gt;items, source, flex_array_size(instance, items, instance-&gt;count));
 </pre></div>
 </div>
-<p>There are two special cases of replacement where the DECLARE_FLEX_ARRAY()
-helper needs to be used. (Note that it is named __DECLARE_FLEX_ARRAY() for
+<p>There are two special cases of replacement where the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">DECLARE_FLEX_ARRAY()</span></code>
+helper needs to be used. (Note that it is named <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__DECLARE_FLEX_ARRAY()</span></code> for
 use in UAPI headers.) Those cases are when the flexible array is either
-alone in a struct or is part of a union. These are disallowed by the C99
+alone in a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">or</span></code> is part of a union. These are disallowed by the C99
 specification, but for no technical reason (as can be seen by both the
 existing use of such arrays in those places and the work-around that
-DECLARE_FLEX_ARRAY() uses). For example, to convert this:</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">DECLARE_FLEX_ARRAY()</span></code> uses). For example, to convert this:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct something {
         ...
         union {

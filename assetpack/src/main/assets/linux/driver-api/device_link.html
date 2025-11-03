@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -283,7 +283,7 @@ runtime PM integration is added from the busmaster device (consumer)
 to the MMU device (supplier).  The effect with regards to runtime PM
 is the same as if the MMU was the parent of the master device.</p>
 <p>The fact that both devices share the same power domain would normally
-suggest usage of a <a class="reference internal" href="pm/types.html#c.dev_pm_domain" title="dev_pm_domain"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dev_pm_domain</span></code></a> or struct generic_pm_domain,
+suggest usage of a <a class="reference internal" href="pm/types.html#c.dev_pm_domain" title="dev_pm_domain"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dev_pm_domain</span></code></a> or <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">generic_pm_domain</span></code>,
 however these are not independent devices that happen to share a power
 switch, but rather the MMU device serves the busmaster device and is
 useless without it.  A device link creates a synthetic hierarchical
@@ -325,7 +325,7 @@ It also does not by itself track the runtime PM status of the involved
 devices and turn off the power switch only when all of them are runtime
 suspended.  Furthermore it cannot be used to enforce a specific shutdown
 ordering or a driver presence dependency.</p></li>
-<li><p>A struct generic_pm_domain is a lot more heavyweight than a
+<li><p>A <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">generic_pm_domain</span></code> is a lot more heavyweight than a
 device link and does not allow for shutdown ordering or driver presence
 dependencies.  It also cannot be used on ACPI systems.</p></li>
 </ul>

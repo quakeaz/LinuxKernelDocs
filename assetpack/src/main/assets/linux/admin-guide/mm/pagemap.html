@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -332,7 +332,7 @@ i.e. for file backed page: (in-memory data revision &gt;  on-disk one)</p>
 </dd>
 <dt>18 - UNEVICTABLE</dt><dd><p>The page is in the unevictable (non-)LRU list It is somehow pinned and
 not a candidate for LRU page reclaims, e.g. ramfs pages,
-shmctl(SHM_LOCK) and mlock() memory segments.</p>
+shmctl(SHM_LOCK) and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock()</span></code> memory segments.</p>
 </dd>
 <dt>2 - REFERENCED</dt><dd><p>The page has been referenced since last LRU list enqueue/requeue.</p>
 </dd>
@@ -361,11 +361,11 @@ However, values stored only on the normal PTE get lost irretrievably when the
 page is swapped out (i.e. SOFT_DIRTY).</p>
 <p>In user space, whether the page is present, swapped or none can be deduced with
 the help of lseek and/or mincore system calls.</p>
-<p>lseek() can differentiate between accessed pages (present or swapped out) and
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lseek()</span></code> can differentiate between accessed pages (present or swapped out) and
 holes (none/non-allocated) by specifying the SEEK_DATA flag on the file where
 the pages are backed. For anonymous shared pages, the file can be found in
 <code class="docutils literal notranslate"><span class="pre">/proc/pid/map_files/</span></code>.</p>
-<p>mincore() can differentiate between pages in memory (present, including swap
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mincore()</span></code> can differentiate between pages in memory (present, including swap
 cache) and out of memory (swapped out or none/non-allocated).</p>
 </section>
 <section id="other-notes">

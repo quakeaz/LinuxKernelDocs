@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -573,6 +573,13 @@ its siblings.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">parent</span></code></dt><dd><p>Parent node name. Parent node rate limits are considered as additional limits
 to all node children limits. <code class="docutils literal notranslate"><span class="pre">tx_max</span></code> is an upper limit for children.
 <code class="docutils literal notranslate"><span class="pre">tx_share</span></code> is a total bandwidth distributed among children.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">tc_bw</span></code></dt><dd><p>Allow users to set the bandwidth allocation per traffic class on rate
+objects. This enables fine-grained QoS configurations by assigning a relative
+share value to each traffic class. The bandwidth is distributed in proportion
+to the share value for each class, relative to the sum of all shares.
+When applied to a non-leaf node, tc_bw determines how bandwidth is shared
+among its child elements.</p>
 </dd>
 </dl>
 <p><code class="docutils literal notranslate"><span class="pre">tx_priority</span></code> and <code class="docutils literal notranslate"><span class="pre">tx_weight</span></code> can be used simultaneously. In that case

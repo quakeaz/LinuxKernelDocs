@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -186,8 +186,8 @@ Chinese (Simplified)
 <p>也可以参见 :ref: <cite>&lt;异构内存管理 (HMM)&gt;</cite> 以了解将页面迁移到设备私有内存或从设备私有内存中迁移。</p>
 <p>页面迁移的主要目的是通过将页面移到访问该内存的进程所运行的处理器附近来减少内存访问的延迟。</p>
 <p>页面迁移允许进程通过MF_MOVE和MF_MOVE_ALL选项手动重新定位其页面所在的节点，同时通过
-mbind()设置一个新的内存策略。一个进程的页面也可以通过sys_migrate_pages()函数调用从另
-一个进程重新定位。migrate_pages()函数调用接收两组节点，并将一个进程位于旧节点上的页面移
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mbind()</span></code>设置一个新的内存策略。一个进程的页面也可以通过<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sys_migrate_pages()</span></code>函数调用从另
+一个进程重新定位。<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">migrate_pages()</span></code>函数调用接收两组节点，并将一个进程位于旧节点上的页面移
 动到目标节点上。页面迁移功能由Andi Kleen的numactl包提供(需要0.9.3以上的版本，其仓库
 地址https://github.com/numactl/numactl.git)。numactl提供了libnuma，它为页面迁移
 提供了与其他NUMA功能类似的接口。执行 cat <code class="docutils literal notranslate"><span class="pre">/proc/&lt;pid&gt;/numa_maps</span></code>  允许轻松查看进
@@ -203,7 +203,7 @@ mbind()设置一个新的内存策略。一个进程的页面也可以通过sys_
 性能就不会急剧下降。如果cpuset允许的内存节点发生变化，cpuset中的进程页也会被移动。</p>
 <p>页面迁移允许为所有迁移技术保留一组节点中页面的相对位置，这将保留生成的特定内存分配模式即使
 进程已被迁移。为了保留内存延迟，这一点是必要的。迁移后的进程将以类似的性能运行。</p>
-<p>页面迁移分几个步骤进行。首先为那些试图从内核中使用migrate_pages()的进程做一个高层次的
+<p>页面迁移分几个步骤进行。首先为那些试图从内核中使用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">migrate_pages()</span></code>的进程做一个高层次的
 描述（对于用户空间的使用，可以参考上面提到的Andi Kleen的numactl包），然后对低水平的细
 节工作做一个低水平描述。</p>
 <section id="migrate-pages">
@@ -214,15 +214,15 @@ mbind()设置一个新的内存策略。一个进程的页面也可以通过sys_
 来完成的。调用<a class="reference internal" href="../../../core-api/mm-api.html#c.folio_isolate_lru" title="folio_isolate_lru"><code class="xref c c-func docutils literal notranslate"><span class="pre">folio_isolate_lru()</span></code></a>增加了对该页的引用，这样在页面迁移发生时它就不会
 消失。它还可以防止交换器或其他扫描器遇到该页。</p>
 </li>
-<li><p>我们需要有一个new_folio_t类型的函数，可以传递给migrate_pages()。这个函数应该计算
+<li><p>我们需要有一个new_folio_t类型的函数，可以传递给<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">migrate_pages()</span></code>。这个函数应该计算
 出如何在给定的旧页面中分配正确的新页面。</p></li>
-<li><p>migrate_pages()函数被调用，它试图进行迁移。它将调用该函数为每个被考虑迁移的页面分
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">migrate_pages()</span></code>函数被调用，它试图进行迁移。它将调用该函数为每个被考虑迁移的页面分
 配新的页面。</p></li>
 </ol>
 </section>
 <section id="id2">
 <h2>migrate_pages()如何工作<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
-<p>migrate_pages()对它的页面列表进行了多次处理。如果当时对一个页面的所有引用都可以被移除，
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">migrate_pages()</span></code>对它的页面列表进行了多次处理。如果当时对一个页面的所有引用都可以被移除，
 那么这个页面就会被移动。该页已经通过<a class="reference internal" href="../../../core-api/mm-api.html#c.folio_isolate_lru" title="folio_isolate_lru"><code class="xref c c-func docutils literal notranslate"><span class="pre">folio_isolate_lru()</span></code></a>从LRU中移除，并且refcount被
 增加，以便在页面迁移发生时不释放该页。</p>
 <p>步骤:</p>
@@ -266,10 +266,10 @@ mapcount不是零，那么我们就不迁移该页。所有试图访问该页的
 <p>为了克服这个问题，VM支持非LRU页面迁移，它为非LRU可移动页面提供了通用函数，而在迁移
 路径中没有特定的驱动程序钩子。</p>
 <p>如果一个驱动程序想让它的页面可移动，它应该定义三个函数，这些函数是
-struct address_space_operations的函数指针。</p>
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">address_space_operations</span></code>的函数指针。</p>
 <ol class="arabic">
 <li><p><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">(*isolate_page)</span> <span class="pre">(struct</span> <span class="pre">page</span> <span class="pre">*page,</span> <span class="pre">isolate_mode_t</span> <span class="pre">mode);</span></code></p>
-<p>VM对驱动的isolate_page()函数的期望是，如果驱动成功隔离了该页，则返回*true*。
+<p>VM对驱动的<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">isolate_page()</span></code>函数的期望是，如果驱动成功隔离了该页，则返回*true*。
 返回true后，VM会将该页标记为PG_isolated，这样多个CPU的并发隔离就会跳过该
 页进行隔离。如果驱动程序不能隔离该页，它应该返回*false*。</p>
 <p>一旦页面被成功隔离，VM就会使用page.lru字段，因此驱动程序不应期望保留这些字段的值。</p>
@@ -278,18 +278,18 @@ struct address_space_operations的函数指针。</p>
 <p>2. <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">(*migratepage)</span> <span class="pre">(struct</span> <span class="pre">address_space</span> <span class="pre">*mapping,</span></code>
 |       <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span> <span class="pre">*newpage,</span> <span class="pre">struct</span> <span class="pre">page</span> <span class="pre">*oldpage,</span> <span class="pre">enum</span> <span class="pre">migrate_mode);</span></code></p>
 <blockquote>
-<div><p>隔离后，虚拟机用隔离的页面调用驱动的migratepage()。migratepage()的功能是将旧页
-的内容移动到新页，并设置struct page newpage的字段。请记住，如果你成功迁移了旧页
-并返回MIGRATEPAGE_SUCCESS，你应该通过page_lock下的__ClearPageMovable()向虚
+<div><p>隔离后，虚拟机用隔离的页面调用驱动的<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">migratepage()</span></code>。<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">migratepage()</span></code>的功能是将旧页
+的内容移动到新页，并设置<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code> newpage的字段。请记住，如果你成功迁移了旧页
+并返回MIGRATEPAGE_SUCCESS，你应该通过page_lock下的<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__ClearPageMovable()</span></code>向虚
 拟机表明旧页不再可移动。如果驱动暂时不能迁移该页，驱动可以返回-EAGAIN。在-EAGAIN
 时，VM会在短时间内重试页面迁移，因为VM将-EAGAIN理解为 “临时迁移失败”。在返回除
 -EAGAIN以外的任何错误时，VM将放弃页面迁移而不重试。</p>
-<p>在migratepage()函数中，驱动程序不应该接触page.lru字段。</p>
+<p>在<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">migratepage()</span></code>函数中，驱动程序不应该接触page.lru字段。</p>
 </div></blockquote>
 <ol class="arabic" start="3">
 <li><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">(*putback_page)(struct</span> <span class="pre">page</span> <span class="pre">*);</span></code></p>
 <p>如果在隔离页上迁移失败，VM应该将隔离页返回给驱动，因此VM用隔离页调用驱动的
-putback_page()。在这个函数中，驱动应该把隔离页放回自己的数据结构中。</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">putback_page()</span></code>。在这个函数中，驱动应该把隔离页放回自己的数据结构中。</p>
 </li>
 </ol>
 <p>非LRU可移动页标志</p>
@@ -302,26 +302,26 @@ putback_page()。在这个函数中，驱动应该把隔离页放回自己的数
 </pre></div>
 </div>
 <p>它需要address_space的参数来注册将被VM调用的migration family函数。确切地说，
-PG_movable不是struct page的一个真正的标志。相反，VM复用了page-&gt;mapping的低
+PG_movable不是<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code>的一个真正的标志。相反，VM复用了page-&gt;mapping的低
 位来表示它:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>#define PAGE_MAPPING_MOVABLE 0x2
 page-&gt;mapping = page-&gt;mapping | PAGE_MAPPING_MOVABLE;
 </pre></div>
 </div>
-<p>所以驱动不应该直接访问page-&gt;mapping。相反，驱动应该使用page_mapping()，它可
+<p>所以驱动不应该直接访问page-&gt;mapping。相反，驱动应该使用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">page_mapping()</span></code>，它可
 以在页面锁下屏蔽掉page-&gt;mapping的低2位，从而获得正确的<a class="reference internal" href="../../../filesystems/api-summary.html#c.address_space" title="address_space"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">address_space</span></code></a>。</p>
-<p>对于非LRU可移动页面的测试，VM支持__PageMovable()函数。然而，它并不能保证识别
-非LRU可移动页面，因为page-&gt;mapping字段与struct page中的其他变量是统一的。如
+<p>对于非LRU可移动页面的测试，VM支持<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__PageMovable()</span></code>函数。然而，它并不能保证识别
+非LRU可移动页面，因为page-&gt;mapping字段与<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code>中的其他变量是统一的。如
 果驱动程序在被虚拟机隔离后释放了页面，尽管page-&gt;mapping设置了PAGE_MAPPING_MOVABLE，
-但它并没有一个稳定的值（看看__ClearPageMovable）。但是__PageMovable()在页
+但它并没有一个稳定的值（看看__ClearPageMovable）。但是<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__PageMovable()</span></code>在页
 面被隔离后，无论页面是LRU还是非LRU可移动的，调用它开销都很低，因为LRU页面在
 page-&gt;mapping中不可能有PAGE_MAPPING_MOVABLE设置。在用pfn扫描中的<a class="reference internal" href="../../../core-api/mm-api.html#c.lock_page" title="lock_page"><code class="xref c c-func docutils literal notranslate"><span class="pre">lock_page()</span></code></a>
 进行更大开销的检查来选择受害者之前，它也很适合只是瞥一眼来测试非LRU可移动的页面。</p>
-<p>为了保证非LRU的可移动页面，VM提供了PageMovable()函数。与__PageMovable()不
-同，PageMovable()在<a class="reference internal" href="../../../core-api/mm-api.html#c.lock_page" title="lock_page"><code class="xref c c-func docutils literal notranslate"><span class="pre">lock_page()</span></code></a>下验证page-&gt;mapping和
+<p>为了保证非LRU的可移动页面，VM提供了<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">PageMovable()</span></code>函数。与<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__PageMovable()</span></code>不
+同，<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">PageMovable()</span></code>在<a class="reference internal" href="../../../core-api/mm-api.html#c.lock_page" title="lock_page"><code class="xref c c-func docutils literal notranslate"><span class="pre">lock_page()</span></code></a>下验证page-&gt;mapping和
 mapping-&gt;a_ops-&gt;isolate_page。<a class="reference internal" href="../../../core-api/mm-api.html#c.lock_page" title="lock_page"><code class="xref c c-func docutils literal notranslate"><span class="pre">lock_page()</span></code></a>可以防止突然破坏page-&gt;mapping。</p>
-<p>使用__SetPageMovable()的驱动应该在释放页面之前通过page_lock()下的
-__ClearMovablePage()清除该标志。</p>
+<p>使用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__SetPageMovable()</span></code>的驱动应该在释放页面之前通过<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">page_lock()</span></code>下的
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__ClearMovablePage()</span></code>清除该标志。</p>
 </li>
 <li><p>PG_isolated</p>
 <p>为了防止几个CPU同时进行隔离，VM在<a class="reference internal" href="../../../core-api/mm-api.html#c.lock_page" title="lock_page"><code class="xref c c-func docutils literal notranslate"><span class="pre">lock_page()</span></code></a>下将隔离的页面标记为PG_isolated。

@@ -31,7 +31,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -185,6 +185,56 @@ output. <strong>--user-threads</strong> will be used unless the user specify <st
 <div><p>Set timerlat to run without workload, waiting for the user to dispatch a per-cpu
 task that waits for a new period on the tracing/osnoise/per_cpu/cpu$ID/timerlat_fd.
 See linux/tools/rtla/sample/timerlat_load.py for an example of user-load code.</p>
+</div></blockquote>
+<p><strong>--on-threshold</strong> <em>action</em></p>
+<blockquote>
+<div><p>Defines an action to be executed when tracing is stopped on a latency threshold
+specified by <strong>-i/--irq</strong> or <strong>-T/--thread</strong>.</p>
+<p>Multiple --on-threshold actions may be specified, and they will be executed in
+the order they are provided. If any action fails, subsequent actions in the list
+will not be executed.</p>
+<p>Supported actions are:</p>
+<ul>
+<li><p><em>trace[,file=&lt;filename&gt;]</em></p>
+<p>Saves trace output, optionally taking a filename. Alternative to -t/--trace.
+Note that nlike -t/--trace, specifying this multiple times will result in
+the trace being saved multiple times.</p>
+</li>
+<li><p><em>signal,num=&lt;sig&gt;,pid=&lt;pid&gt;</em></p>
+<p>Sends signal to process. “parent” might be specified in place of pid to target
+the parent process of rtla.</p>
+</li>
+<li><p><em>shell,command=&lt;command&gt;</em></p>
+<p>Execute shell command.</p>
+</li>
+<li><p><em>continue</em></p>
+<p>Continue tracing after actions are executed instead of stopping.</p>
+</li>
+</ul>
+<p>Example:</p>
+<p>$ rtla timerlat -T 20 --on-threshold trace
+--on-threshold shell,command=”grep ipi_send timerlat_trace.txt”
+--on-threshold signal,num=2,pid=parent</p>
+<p>This will save a trace with the default filename “timerlat_trace.txt”, print its
+lines that contain the text “ipi_send” on standard output, and send signal 2
+(SIGINT) to the parent process.</p>
+<p>Performance Considerations:</p>
+<p>For time-sensitive actions, it is recommended to run <strong>rtla timerlat</strong> with BPF
+support and RT priority. Note that due to implementational limitations, actions
+might be delayed up to one second after tracing is stopped if BPF mode is not
+available or disabled.</p>
+</div></blockquote>
+<p><strong>--on-end</strong> <em>action</em></p>
+<blockquote>
+<div><p>Defines an action to be executed at the end of <strong>rtla timerlat</strong> tracing.</p>
+<p>Multiple --on-end actions can be specified, and they will be executed in the order
+they are provided. If any action fails, subsequent actions in the list will not be
+executed.</p>
+<p>See the documentation for <strong>--on-threshold</strong> for the list of supported actions, with
+the exception that <em>continue</em> has no effect.</p>
+<p>Example:</p>
+<p>$ rtla timerlat -d 5s --on-end trace</p>
+<p>This runs rtla timerlat with default options and save trace output at the end.</p>
 </div></blockquote>
 
 

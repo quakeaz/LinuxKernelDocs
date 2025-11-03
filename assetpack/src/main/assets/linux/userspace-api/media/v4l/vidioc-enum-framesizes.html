@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -190,18 +190,18 @@ semantics of the function for the different cases:</p>
 (zero-based) is valid. The application should increase the index by
 one for each call until <code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> is returned. The
 <code class="docutils literal notranslate"><span class="pre">v4l2_frmsizeenum.type</span></code> field is set to
-<code class="docutils literal notranslate"><span class="pre">V4L2_FRMSIZE_TYPE_DISCRETE</span></code> by the driver. Of the union only the
+<code class="docutils literal notranslate"><span class="pre">V4L2_FRMSIZE_TYPE_DISCRETE</span></code> by the driver. Of the <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">only</span></code> the
 <code class="docutils literal notranslate"><span class="pre">discrete</span></code> member is valid.</p></li>
 <li><p><strong>Step-wise:</strong> The function returns success if the given index value
 is zero and <code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> for any other index value. The
 <code class="docutils literal notranslate"><span class="pre">v4l2_frmsizeenum.type</span></code> field is set to
-<code class="docutils literal notranslate"><span class="pre">V4L2_FRMSIZE_TYPE_STEPWISE</span></code> by the driver. Of the union only the
+<code class="docutils literal notranslate"><span class="pre">V4L2_FRMSIZE_TYPE_STEPWISE</span></code> by the driver. Of the <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">only</span></code> the
 <code class="docutils literal notranslate"><span class="pre">stepwise</span></code> member is valid.</p></li>
 <li><p><strong>Continuous:</strong> This is a special case of the step-wise type above.
 The function returns success if the given index value is zero and
 <code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> for any other index value. The <code class="docutils literal notranslate"><span class="pre">v4l2_frmsizeenum.type</span></code>
 field is set to <code class="docutils literal notranslate"><span class="pre">V4L2_FRMSIZE_TYPE_CONTINUOUS</span></code> by the driver. Of
-the union only the <code class="docutils literal notranslate"><span class="pre">stepwise</span></code> member is valid and the
+the <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">only</span></code> the <code class="docutils literal notranslate"><span class="pre">stepwise</span></code> member is valid and the
 <code class="docutils literal notranslate"><span class="pre">step_width</span></code> and <code class="docutils literal notranslate"><span class="pre">step_height</span></code> values are set to 1.</p></li>
 </ul>
 <p>When the application calls the function with index zero, it must check

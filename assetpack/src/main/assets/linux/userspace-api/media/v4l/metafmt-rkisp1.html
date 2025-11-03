@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -292,7 +292,7 @@ and histogram as v10.</p>
 </div>
 <p><strong>Description</strong></p>
 <p>Measurements are calculated per window inside the frame.
-This struct represents a window for a measurement.</p>
+This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">represents</span></code> a window for a measurement.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.rkisp1_cif_isp_bls_fixed_val">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rkisp1_cif_isp_bls_fixed_val</span></span></span><a class="headerlink" href="#c.rkisp1_cif_isp_bls_fixed_val" title="Link to this definition">¶</a><br /></dt>
@@ -581,7 +581,7 @@ Bits 4:6 for sample 10. bit 7 unused ... Bits 28:30 for sample 16. Bit 31 unused
 </div>
 <p><strong>Members</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">effect</span></code></dt><dd><p>values from ‘enum v4l2_colorfx’. Possible values are: V4L2_COLORFX_SEPIA,
+<dt><code class="docutils literal notranslate"><span class="pre">effect</span></code></dt><dd><p>values from ‘<code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">v4l2_colorfx</span></code>’. Possible values are: V4L2_COLORFX_SEPIA,
 V4L2_COLORFX_SET_CBCR, V4L2_COLORFX_AQUA, V4L2_COLORFX_EMBOSS,
 V4L2_COLORFX_SKETCH,   V4L2_COLORFX_BW,   V4L2_COLORFX_NEGATIVE</p>
 </dd>
@@ -666,7 +666,7 @@ bits 8:15 - Threshold value of the RGB colors for the color selection effect.</p
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">awb_wnd</span></code></dt><dd><p>white balance measurement window (in pixels)</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">awb_mode</span></code></dt><dd><p>the awb meas mode. From enum rkisp1_cif_isp_awb_mode_type.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">awb_mode</span></code></dt><dd><p>the awb meas mode. From <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">rkisp1_cif_isp_awb_mode_type</span></code>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">max_y</span></code></dt><dd><p>only pixels values &lt; max_y contribute to awb measurement, set to 0
 to disable this feature</p>
@@ -719,7 +719,7 @@ each greater than threshold value for awb measurements</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>All fields in this struct are 10 bit, where:
+<p>All fields in this <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">are</span></code> 10 bit, where:
 0x100h = 1, unsigned integer value, range 0 to 4 with 8 bit fractional part.</p>
 <p>out_data_x = ( AWB_GAIN_X * in_data + 128) &gt;&gt; 8</p>
 <dl class="c struct">
@@ -750,7 +750,7 @@ each greater than threshold value for awb measurements</p>
 </div>
 <p><strong>Members</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">mode</span></code></dt><dd><p>ISP_FILT_MODE register fields (from enum rkisp1_cif_isp_flt_mode)</p>
+<dt><code class="docutils literal notranslate"><span class="pre">mode</span></code></dt><dd><p>ISP_FILT_MODE register fields (from <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">rkisp1_cif_isp_flt_mode</span></code>)</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">grn_stage1</span></code></dt><dd><p>Green filter stage 1 select (range 0x0...0x8)</p>
 </dd>
@@ -842,7 +842,7 @@ represented by 0x000 and a coefficient value of 1 as 0x080.</p>
 </div>
 <p><strong>Members</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">mode</span></code></dt><dd><p>goc mode (from enum rkisp1_cif_isp_goc_mode)</p>
+<dt><code class="docutils literal notranslate"><span class="pre">mode</span></code></dt><dd><p>goc mode (from <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">rkisp1_cif_isp_goc_mode</span></code>)</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">gamma_y</span></code></dt><dd><p>gamma out curve y-axis for all color components</p>
 </dd>
@@ -850,7 +850,7 @@ represented by 0x000 and a coefficient value of 1 as 0x080.</p>
 </div>
 <p><strong>Description</strong></p>
 <p>The number of entries of <strong>gamma_y</strong> depends on the hardware revision
-as is reported by the hw_revision field of the struct media_device_info
+as is reported by the hw_revision field of the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">media_device_info</span></code>
 that is returned by ioctl MEDIA_IOC_DEVICE_INFO.</p>
 <p>V10 has RKISP1_CIF_ISP_GAMMA_OUT_MAX_SAMPLES_V10 entries, V12 has
 RKISP1_CIF_ISP_GAMMA_OUT_MAX_SAMPLES_V12 entries.
@@ -873,7 +873,7 @@ RKISP1_CIF_ISP_GAMMA_OUT_MAX_SAMPLES is equal to the maximum of the two.</p>
 </div>
 <p><strong>Members</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">mode</span></code></dt><dd><p>histogram mode (from enum rkisp1_cif_isp_histogram_mode)</p>
+<dt><code class="docutils literal notranslate"><span class="pre">mode</span></code></dt><dd><p>histogram mode (from <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">rkisp1_cif_isp_histogram_mode</span></code>)</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">histogram_predivider</span></code></dt><dd><p>process every stepsize pixel, all other pixels are
 skipped</p>
@@ -886,7 +886,7 @@ skipped</p>
 </div>
 <p><strong>Description</strong></p>
 <p>The number of entries of <strong>hist_weight</strong> depends on the hardware revision
-as is reported by the hw_revision field of the struct media_device_info
+as is reported by the hw_revision field of the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">media_device_info</span></code>
 that is returned by ioctl MEDIA_IOC_DEVICE_INFO.</p>
 <p>V10 has RKISP1_CIF_ISP_HISTOGRAM_WEIGHT_GRIDS_SIZE_V10 entries, V12 has
 RKISP1_CIF_ISP_HISTOGRAM_WEIGHT_GRIDS_SIZE_V12 entries.
@@ -1342,6 +1342,114 @@ here for future compatibility purposes.</p>
 </dl>
 </div>
 <dl class="c struct">
+<dt class="sig sig-object c" id="c.rkisp1_cif_isp_wdr_tone_curve">
+<span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rkisp1_cif_isp_wdr_tone_curve</span></span></span><a class="headerlink" href="#c.rkisp1_cif_isp_wdr_tone_curve" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Tone mapping curve definition for WDR.</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Definition</strong>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct rkisp1_cif_isp_wdr_tone_curve {
+    __u32 dY[RKISP1_CIF_ISP_WDR_CURVE_NUM_DY_REGS];
+    __u16 ym[RKISP1_CIF_ISP_WDR_CURVE_NUM_COEFF];
+};
+</pre></div>
+</div>
+<p><strong>Members</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">dY</span></code></dt><dd><p>the dYn increments for horizontal (input) axis of the tone curve.
+each 3-bit dY value represents an increment of 2**(value+3).
+dY[0] bits 0:2 is increment dY1, bit 3 unused
+dY[0] bits 4:6 is increment dY2, bit 7 unused
+...
+dY[0] bits 28:30 is increment dY8, bit 31 unused
+... and so on till dY[3] bits 28:30 is increment dY32, bit 31 unused.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ym</span></code></dt><dd><p>the Ym values for the vertical (output) axis of the tone curve.
+each value is 13 bit.</p>
+</dd>
+</dl>
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.rkisp1_cif_isp_wdr_iref_config">
+<span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rkisp1_cif_isp_wdr_iref_config</span></span></span><a class="headerlink" href="#c.rkisp1_cif_isp_wdr_iref_config" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Illumination reference config for WDR.</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Definition</strong>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct rkisp1_cif_isp_wdr_iref_config {
+    __u8 rgb_factor;
+    __u8 use_y9_8;
+    __u8 use_rgb7_8;
+    __u8 disable_transient;
+};
+</pre></div>
+</div>
+<p><strong>Members</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">rgb_factor</span></code></dt><dd><p>defines how much influence the RGBmax approach has in
+comparison to Y (valid values are 0..8).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">use_y9_8</span></code></dt><dd><p>use Y*9/8 for maximum value calculation along with the
+default of R, G, B for noise reduction.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">use_rgb7_8</span></code></dt><dd><p>decrease RGBMax by 7/8 for noise reduction.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">disable_transient</span></code></dt><dd><p>disable transient calculation between Y and RGBY_max.</p>
+</dd>
+</dl>
+</div>
+<p><strong>Description</strong></p>
+<p>Use illumination reference value as described below, instead of only the
+luminance (Y) value for tone mapping and gain calculations:
+IRef = (rgb_factor * RGBMax_tr + (8 - rgb_factor) * Y)/8</p>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.rkisp1_cif_isp_wdr_config">
+<span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rkisp1_cif_isp_wdr_config</span></span></span><a class="headerlink" href="#c.rkisp1_cif_isp_wdr_config" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Configuration for wide dynamic range.</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Definition</strong>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct rkisp1_cif_isp_wdr_config {
+    struct rkisp1_cif_isp_wdr_tone_curve tone_curve;
+    struct rkisp1_cif_isp_wdr_iref_config iref_config;
+    __u16 rgb_offset;
+    __u16 luma_offset;
+    __u16 dmin_thresh;
+    __u8 dmin_strength;
+    __u8 use_rgb_colorspace;
+    __u8 bypass_chroma_mapping;
+    __u8 use_iref;
+};
+</pre></div>
+</div>
+<p><strong>Members</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">tone_curve</span></code></dt><dd><p>tone mapping curve.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">iref_config</span></code></dt><dd><p>illumination reference configuration. (when use_iref is true)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">rgb_offset</span></code></dt><dd><p>RGB offset value for RGB operation mode. (12 bits)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">luma_offset</span></code></dt><dd><p>luminance offset value for RGB operation mode. (12 bits)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">dmin_thresh</span></code></dt><dd><p>lower threshold for deltaMin value. (12 bits)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">dmin_strength</span></code></dt><dd><p>strength factor for deltaMin. (valid range is 0x00..0x10)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">use_rgb_colorspace</span></code></dt><dd><p>use RGB instead of luminance/chrominance colorspace.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">bypass_chroma_mapping</span></code></dt><dd><p>disable chrominance mapping (only valid if
+use_rgb_colorspace = 0)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">use_iref</span></code></dt><dd><p>use illumination reference instead of Y for tone mapping
+and gain calculations.</p>
+</dd>
+</dl>
+</div>
+<dl class="c struct">
 <dt class="sig sig-object c" id="c.rkisp1_cif_isp_awb_meas">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rkisp1_cif_isp_awb_meas</span></span></span><a class="headerlink" href="#c.rkisp1_cif_isp_awb_meas" title="Link to this definition">¶</a><br /></dt>
 <dd><p>AWB measured values</p>
@@ -1444,7 +1552,7 @@ Red if RGB is selected.</p>
 </div>
 <p><strong>Description</strong></p>
 <p>The number of entries of <strong>exp_mean</strong> depends on the hardware revision
-as is reported by the hw_revision field of the struct media_device_info
+as is reported by the hw_revision field of the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">media_device_info</span></code>
 that is returned by ioctl MEDIA_IOC_DEVICE_INFO.</p>
 <p>V10 has RKISP1_CIF_ISP_AE_MEAN_MAX_V10 entries, V12 has
 RKISP1_CIF_ISP_AE_MEAN_MAX_V12 entries. RKISP1_CIF_ISP_AE_MEAN_MAX is equal
@@ -1524,7 +1632,7 @@ area and the weight of each sub-window are configurable using
 struct <strong>rkisp1_cif_isp_hst_config</strong>.</p>
 <p>The histogram contains 16 bins in V10 and 32 bins in V12.</p>
 <p>The number of entries of <strong>hist_bins</strong> depends on the hardware revision
-as is reported by the hw_revision field of the struct media_device_info
+as is reported by the hw_revision field of the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">media_device_info</span></code>
 that is returned by ioctl MEDIA_IOC_DEVICE_INFO.</p>
 <p>V10 has RKISP1_CIF_ISP_HIST_BIN_N_MAX_V10 entries, V12 has
 RKISP1_CIF_ISP_HIST_BIN_N_MAX_V12 entries. RKISP1_CIF_ISP_HIST_BIN_N_MAX is
@@ -1630,6 +1738,8 @@ equal to the maximum of the two.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">RKISP1_EXT_PARAMS_BLOCK_TYPE_COMPAND_EXPAND</span></code></dt><dd><p>Companding expand curve</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">RKISP1_EXT_PARAMS_BLOCK_TYPE_COMPAND_COMPRESS</span></code></dt><dd><p>Companding compress curve</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RKISP1_EXT_PARAMS_BLOCK_TYPE_WDR</span></code></dt><dd><p>Wide dynamic range</p>
 </dd>
 </dl>
 </div>
@@ -2213,6 +2323,33 @@ subtraction). Identified by <code class="xref c c-type docutils literal notransl
 compression curves). Identified by
 <code class="xref c c-type docutils literal notranslate"><span class="pre">RKISP1_EXT_PARAMS_BLOCK_TYPE_COMPAND_EXPAND</span></code> or
 <code class="xref c c-type docutils literal notranslate"><span class="pre">RKISP1_EXT_PARAMS_BLOCK_TYPE_COMPAND_COMPRESS</span></code>.</p>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.rkisp1_ext_params_wdr_config">
+<span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rkisp1_ext_params_wdr_config</span></span></span><a class="headerlink" href="#c.rkisp1_ext_params_wdr_config" title="Link to this definition">¶</a><br /></dt>
+<dd><p>RkISP1 extensible params Wide dynamic range config</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Definition</strong>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct rkisp1_ext_params_wdr_config {
+    struct rkisp1_ext_params_block_header header;
+    struct rkisp1_cif_isp_wdr_config config;
+};
+</pre></div>
+</div>
+<p><strong>Members</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">header</span></code></dt><dd><p>The RkISP1 extensible parameters header, see
+<a class="reference internal" href="#c.rkisp1_ext_params_block_header" title="rkisp1_ext_params_block_header"><code class="xref c c-type docutils literal notranslate"><span class="pre">rkisp1_ext_params_block_header</span></code></a></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">config</span></code></dt><dd><p>WDR configuration, see
+<a class="reference internal" href="#c.rkisp1_cif_isp_wdr_config" title="rkisp1_cif_isp_wdr_config"><code class="xref c c-type docutils literal notranslate"><span class="pre">rkisp1_cif_isp_wdr_config</span></code></a></p>
+</dd>
+</dl>
+</div>
+<p><strong>Description</strong></p>
+<p>RkISP1 extensible parameters WDR block.
+Identified by <code class="xref c c-type docutils literal notranslate"><span class="pre">RKISP1_EXT_PARAMS_BLOCK_TYPE_WDR</span></code></p>
 <dl class="c enum">
 <dt class="sig sig-object c" id="c.rksip1_ext_param_buffer_version">
 <span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rksip1_ext_param_buffer_version</span></span></span><a class="headerlink" href="#c.rksip1_ext_param_buffer_version" title="Link to this definition">¶</a><br /></dt>
@@ -2254,7 +2391,7 @@ header</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This struct contains the configuration parameters of the RkISP1 ISP
+<p>This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">contains</span></code> the configuration parameters of the RkISP1 ISP
 algorithms, serialized by userspace into a data buffer. Each configuration
 parameter block is represented by a block-specific structure which contains a
 <a class="reference internal" href="#c.rkisp1_ext_params_block_header" title="rkisp1_ext_params_block_header"><code class="xref c c-type docutils literal notranslate"><span class="pre">rkisp1_ext_params_block_header</span></code></a> entry as first member. Userspace
@@ -2273,6 +2410,13 @@ When a new format version will be added, a mechanism for userspace to query
 the supported format versions will be implemented in the form of a read-only
 V4L2 control. If such control is not available, userspace should assume only
 RKISP1_EXT_PARAM_BUFFER_V1 is supported by the driver.</p>
+<p>The read-only V4L2 control <code class="docutils literal notranslate"><span class="pre">RKISP1_CID_SUPPORTED_PARAMS_BLOCKS</span></code> can be used
+to query the blocks supported by the device. It contains a bitmask where each
+bit represents the availability of the corresponding entry from the
+<a class="reference internal" href="#c.rkisp1_ext_params_block_type" title="rkisp1_ext_params_block_type"><code class="xref c c-type docutils literal notranslate"><span class="pre">rkisp1_ext_params_block_type</span></code></a> enum. The current and default values
+of the control represents the blocks supported by the device instance, while
+the maximum value represents the blocks supported by the kernel driver,
+independently of the device instance.</p>
 <p>For each ISP block that userspace wants to configure, a block-specific
 structure is appended to the <strong>data</strong> buffer, one after the other without gaps
 in between nor overlaps. Userspace shall populate the <strong>data_size</strong> field with

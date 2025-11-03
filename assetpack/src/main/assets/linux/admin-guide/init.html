@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -209,14 +209,14 @@ shebang header line (<code class="docutils literal notranslate"><span class="pre
 library dependencies). And before tackling scripts, better first test a
 simple non-script binary such as <code class="docutils literal notranslate"><span class="pre">/bin/sh</span></code> and confirm its successful
 execution. To find out more, add code <code class="docutils literal notranslate"><span class="pre">to</span> <span class="pre">init/main.c</span></code> to display
-kernel_execve()s return values.</p></li>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kernel_execve()</span></code>s return values.</p></li>
 </ol>
 <p>Please extend this explanation whenever you find new failure causes
 (after all loading the init binary is a CRITICAL and hard transition step
 which needs to be made as painless as possible), then submit a patch to LKML.
 Further TODOs:</p>
 <ul class="simple">
-<li><p>Implement the various <code class="docutils literal notranslate"><span class="pre">run_init_process()</span></code> invocations via a struct array
+<li><p>Implement the various <code class="docutils literal notranslate"><span class="pre">run_init_process()</span></code> invocations via a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">array</span></code>
 which can then store the <code class="docutils literal notranslate"><span class="pre">kernel_execve()</span></code> result value and on failure
 log it all by iterating over <strong>all</strong> results (very important usability fix).</p></li>
 <li><p>Try to make the implementation itself more helpful in general, e.g. by

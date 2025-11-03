@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -199,18 +199,22 @@ following prctl:</p>
 <blockquote>
 <div><p>prctl(PR_SET_SYSCALL_USER_DISPATCH, &lt;op&gt;, &lt;offset&gt;, &lt;length&gt;, [selector])</p>
 </div></blockquote>
-<p>&lt;op&gt; is either PR_SYS_DISPATCH_ON or PR_SYS_DISPATCH_OFF, to enable and
-disable the mechanism globally for that thread.  When
-PR_SYS_DISPATCH_OFF is used, the other fields must be zero.</p>
-<p>[&lt;offset&gt;, &lt;offset&gt;+&lt;length&gt;) delimit a memory region interval
-from which syscalls are always executed directly, regardless of the
-userspace selector.  This provides a fast path for the C library, which
-includes the most common syscall dispatchers in the native code
-applications, and also provides a way for the signal handler to return
+<p>&lt;op&gt; is either PR_SYS_DISPATCH_EXCLUSIVE_ON/PR_SYS_DISPATCH_INCLUSIVE_ON
+or PR_SYS_DISPATCH_OFF, to enable and disable the mechanism globally for
+that thread.  When PR_SYS_DISPATCH_OFF is used, the other fields must be zero.</p>
+<p>For PR_SYS_DISPATCH_EXCLUSIVE_ON [&lt;offset&gt;, &lt;offset&gt;+&lt;length&gt;) delimit
+a memory region interval from which syscalls are always executed directly,
+regardless of the userspace selector.  This provides a fast path for the
+C library, which includes the most common syscall dispatchers in the native
+code applications, and also provides a way for the signal handler to return
 without triggering a nested SIGSYS on (rt_)sigreturn.  Users of this
 interface should make sure that at least the signal trampoline code is
 included in this region. In addition, for syscalls that implement the
 trampoline code on the vDSO, that trampoline is never intercepted.</p>
+<p>For PR_SYS_DISPATCH_INCLUSIVE_ON [&lt;offset&gt;, &lt;offset&gt;+&lt;length&gt;) delimit
+a memory region interval from which syscalls are dispatched based on
+the userspace selector. Syscalls from outside of the range are always
+executed directly.</p>
 <p>[selector] is a pointer to a char-sized region in the process memory
 region, that provides a quick way to enable disable syscall redirection
 thread-wide, without the need to invoke the kernel directly.  selector

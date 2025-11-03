@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -160,7 +160,7 @@ English
 <section id="the-kernel-s-command-line-parameters">
 <span id="kernelparameters"></span><h1>The kernel’s command-line parameters<a class="headerlink" href="#the-kernel-s-command-line-parameters" title="Link to this heading">¶</a></h1>
 <p>The following is a consolidated list of the kernel parameters as implemented
-by the __setup(), early_param(), core_param() and module_param() macros
+by the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__setup()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">early_param()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">core_param()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">module_param()</span></code> macros
 and sorted into English Dictionary order (defined as ignoring all
 punctuation and sorting digits before letters in a case insensitive
 manner), and with descriptions where known.</p>
@@ -234,7 +234,7 @@ will also change.  Use the same on a small 4 core system, and “16-N” becomes
 <p>The special case-tolerant group name “all” has a meaning of selecting all CPUs,
 so that “nohz_full=all” is the equivalent of “nohz_full=0-N”.</p>
 <p>The semantics of “N” and “all” is supported on a level of bitmaps and holds for
-all users of bitmap_parselist().</p>
+all users of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bitmap_parselist()</span></code>.</p>
 </section>
 <section id="metric-suffixes">
 <h3>Metric suffixes<a class="headerlink" href="#metric-suffixes" title="Link to this heading">¶</a></h3>
@@ -998,6 +998,14 @@ and is between 256 and 4096 characters. It is defined in the file
                         named mounts. Specifying both &quot;all&quot; and &quot;named&quot; disables
                         all v1 hierarchies.
 
+        cgroup_v1_proc= [KNL] Show also missing controllers in /proc/cgroups
+                        Format: { &quot;true&quot; | &quot;false&quot; }
+                        /proc/cgroups lists only v1 controllers by default.
+                        This compatibility option enables listing also v2
+                        controllers (whose v1 code is not compiled!), so that
+                        semi-legacy software can check this file to decide
+                        about usage of v2 (sic) controllers.
+
         cgroup_favordynmods= [KNL] Enable or Disable favordynmods.
                         Format: { &quot;true&quot; | &quot;false&quot; }
                         Defaults to the value of CONFIG_CGROUP_FAVOR_DYNMODS.
@@ -1351,6 +1359,28 @@ and is between 256 and 4096 characters. It is defined in the file
                         0: to disable low allocation.
                         It will be ignored when crashkernel=X,high is not used
                         or memory reserved is below 4G.
+        crashkernel=size[KMG],cma
+                        [KNL, X86] Reserve additional crash kernel memory from
+                        CMA. This reservation is usable by the first system's
+                        userspace memory and kernel movable allocations (memory
+                        balloon, zswap). Pages allocated from this memory range
+                        will not be included in the vmcore so this should not
+                        be used if dumping of userspace memory is intended and
+                        it has to be expected that some movable kernel pages
+                        may be missing from the dump.
+
+                        A standard crashkernel reservation, as described above,
+                        is still needed to hold the crash kernel and initrd.
+
+                        This option increases the risk of a kdump failure: DMA
+                        transfers configured by the first kernel may end up
+                        corrupting the second kernel's memory.
+
+                        This reservation method is intended for systems that
+                        can't afford to sacrifice enough memory for standard
+                        crashkernel reservation and where less reliable and
+                        possibly incomplete kdump is preferable to no kdump at
+                        all.
 
         cryptomgr.notests
                         [KNL] Disable crypto self-tests
@@ -2163,6 +2193,27 @@ and is between 256 and 4096 characters. It is defined in the file
                         backtraces on all cpus.
                         Format: 0 | 1
 
+        hash_pointers=
+                        [KNL,EARLY]
+                        By default, when pointers are printed to the console
+                        or buffers via the %p format string, that pointer is
+                        &quot;hashed&quot;, i.e. obscured by hashing the pointer value.
+                        This is a security feature that hides actual kernel
+                        addresses from unprivileged users, but it also makes
+                        debugging the kernel more difficult since unequal
+                        pointers can no longer be compared. The choices are:
+                        Format: { auto | always | never }
+                        Default: auto
+
+                        auto   - Hash pointers unless slab_debug is enabled.
+                        always - Always hash pointers (even if slab_debug is
+                                 enabled).
+                        never  - Never hash pointers. This option should only
+                                 be specified when debugging the kernel. Do
+                                 not use on production kernels. The boot
+                                 param &quot;no_hash_pointers&quot; is an alias for
+                                 this mode.
+
         hashdist=       [KNL,NUMA] Large hashes allocated during boot
                         are distributed across NUMA nodes.  Defaults on
                         for 64-bit NUMA, off otherwise.
@@ -2577,6 +2628,11 @@ and is between 256 and 4096 characters. It is defined in the file
                         different crypto accelerators. This option can be used
                         to achieve best performance for particular HW.
 
+        ima=            [IMA] Enable or disable IMA
+                        Format: { &quot;off&quot; | &quot;on&quot; }
+                        Default: &quot;on&quot;
+                        Note that disabling IMA is limited to kdump kernel.
+
         indirect_target_selection= [X86,Intel] Mitigation control for Indirect
                         Target Selection(ITS) bug in Intel CPUs. Updated
                         microcode is also required for a fix in IBPB.
@@ -2902,6 +2958,13 @@ and is between 256 and 4096 characters. It is defined in the file
                         Enables support for pseudo-NMIs in the kernel. This
                         requires the kernel to be built with
                         CONFIG_ARM64_PSEUDO_NMI.
+
+        irqchip.riscv_imsic_noipi
+                        [RISC-V,EARLY]
+                        Force the kernel to not use IMSIC software injected MSIs
+                        as IPIs. Intended for system where IMSIC is trap-n-emulated,
+                        and thus want to reduce MMIO traps when triggering IPIs
+                        to multiple harts.
 
         irqfixup        [HW]
                         When an interrupt is not handled search all handlers
@@ -4131,6 +4194,7 @@ and is between 256 and 4096 characters. It is defined in the file
                                                srbds=off [X86,INTEL]
                                                ssbd=force-off [ARM64]
                                                tsx_async_abort=off [X86]
+                                               vmscape=off [X86]
 
                                 Exceptions:
                                                This does not have any effect on
@@ -4154,6 +4218,10 @@ and is between 256 and 4096 characters. It is defined in the file
                                                tsx_async_abort=full,nosmt [X86]
                                                mmio_stale_data=full,nosmt [X86]
                                                retbleed=auto,nosmt [X86]
+
+                        [X86] After one of the above options, additionally
+                        supports attack-vector based controls as documented in
+                        Documentation/admin-guide/hw-vuln/attack_vector_controls.rst
 
         mminit_loglevel=
                         [KNL,EARLY] When CONFIG_DEBUG_MEMORY_INIT is set, this
@@ -4535,18 +4603,7 @@ and is between 256 and 4096 characters. It is defined in the file
 
         no_hash_pointers
                         [KNL,EARLY]
-                        Force pointers printed to the console or buffers to be
-                        unhashed.  By default, when a pointer is printed via %p
-                        format string, that pointer is &quot;hashed&quot;, i.e. obscured
-                        by hashing the pointer value.  This is a security feature
-                        that hides actual kernel addresses from unprivileged
-                        users, but it also makes debugging the kernel more
-                        difficult since unequal pointers can no longer be
-                        compared.  However, if this command-line option is
-                        specified, then all normal pointers will have their true
-                        value printed. This option should only be specified when
-                        debugging the kernel.  Please do not use on production
-                        kernels.
+                        Alias for &quot;hash_pointers=never&quot;.
 
         nohibernate     [HIBERNATION] Disable hibernation and resume.
 
@@ -4898,13 +4955,32 @@ and is between 256 and 4096 characters. It is defined in the file
                         bit 2: print timer info
                         bit 3: print locks info if CONFIG_LOCKDEP is on
                         bit 4: print ftrace buffer
-                        bit 5: print all printk messages in buffer
+                        bit 5: replay all messages on consoles at the end of panic
                         bit 6: print all CPUs backtrace (if available in the arch)
                         bit 7: print only tasks in uninterruptible (blocked) state
                         *Be aware* that this option may print a _lot_ of lines,
                         so there are risks of losing older messages in the log.
                         Use this option carefully, maybe worth to setup a
                         bigger log buffer with &quot;log_buf_len&quot; along with this.
+
+        panic_sys_info= A comma separated list of extra information to be dumped
+                        on panic.
+                        Format: val[,val...]
+                        Where &#64;val can be any of the following:
+
+                        tasks:          print all tasks info
+                        mem:            print system memory info
+                        timers:         print timers info
+                        locks:          print locks info if CONFIG_LOCKDEP is on
+                        ftrace:         print ftrace buffer
+                        all_bt:         print all CPUs backtrace (if available in the arch)
+                        blocked_tasks:  print only tasks in uninterruptible (blocked) state
+
+                        This is a human readable alternative to the 'panic_print' option.
+
+        panic_console_replay
+                        When panic happens, replay all kernel messages on
+                        consoles at the end of panic.
 
         parkbd.port=    [HW] Parallel port number the keyboard adapter is
                         connected to, default is 0.
@@ -5364,6 +5440,18 @@ and is between 256 and 4096 characters. It is defined in the file
                         cleared). If a number is given, then MMCR1 is set to
                         that number, otherwise (e.g., 'pmu_override=on'), MMCR1
                         remains 0.
+
+        pm_async=       [PM]
+                        Format: off
+                        This parameter sets the initial value of the
+                        /sys/power/pm_async sysfs knob at boot time.
+                        If set to &quot;off&quot;, disables asynchronous suspend and
+                        resume of devices during system-wide power transitions.
+                        This can be useful on platforms where device
+                        dependencies are not well-defined, or for debugging
+                        power management issues. Asynchronous operations are
+                        enabled by default.
+
 
         pm_debug_messages       [SUSPEND,KNL]
                         Enable suspend/resume debug messages during boot up.
@@ -5850,7 +5938,8 @@ and is between 256 and 4096 characters. It is defined in the file
                         echo 1 &gt; /sys/module/rcutree/parameters/rcu_normal_wake_from_gp
                         or pass a boot parameter &quot;rcutree.rcu_normal_wake_from_gp=1&quot;
 
-                        Default is 0.
+                        Default is 1 if num_possible_cpus() &lt;= 16 and it is not explicitly
+                        disabled by the boot parameter passing 0.
 
         rcuscale.gp_async= [KNL]
                         Measure performance of asynchronous
@@ -6752,6 +6841,11 @@ and is between 256 and 4096 characters. It is defined in the file
         sa1100ir        [NET]
                         See drivers/net/irda/sa1100_ir.c.
 
+        sched_proxy_exec= [KNL]
+                        Enables or disables &quot;proxy execution&quot; style
+                        solution to mutex-based priority inversion.
+                        Format: &lt;bool&gt;
+
         sched_verbose   [KNL,EARLY] Enables verbose scheduler debug messages.
 
         schedstats=     [KNL,X86] Enable or disable scheduled statistics.
@@ -6923,14 +7017,18 @@ and is between 256 and 4096 characters. It is defined in the file
                         slab_debug can create guard zones around objects and
                         may poison objects when not in use. Also tracks the
                         last alloc / free. For more information see
-                        Documentation/mm/slub.rst.
+                        Documentation/admin-guide/mm/slab.rst.
                         (slub_debug legacy name also accepted for now)
+
+                        Using this option implies the &quot;no_hash_pointers&quot;
+                        option which can be undone by adding the
+                        &quot;hash_pointers=always&quot; option.
 
         slab_max_order= [MM]
                         Determines the maximum allowed order for slabs.
                         A high setting may cause OOMs due to memory
                         fragmentation. For more information see
-                        Documentation/mm/slub.rst.
+                        Documentation/admin-guide/mm/slab.rst.
                         (slub_max_order legacy name also accepted for now)
 
         slab_merge      [MM]
@@ -6945,13 +7043,14 @@ and is between 256 and 4096 characters. It is defined in the file
                         the number of objects indicated. The higher the number
                         of objects the smaller the overhead of tracking slabs
                         and the less frequently locks need to be acquired.
-                        For more information see Documentation/mm/slub.rst.
+                        For more information see
+                        Documentation/admin-guide/mm/slab.rst.
                         (slub_min_objects legacy name also accepted for now)
 
         slab_min_order= [MM]
                         Determines the minimum page order for slabs. Must be
                         lower or equal to slab_max_order. For more information see
-                        Documentation/mm/slub.rst.
+                        Documentation/admin-guide/mm/slab.rst.
                         (slub_min_order legacy name also accepted for now)
 
         slab_nomerge    [MM]
@@ -6965,7 +7064,8 @@ and is between 256 and 4096 characters. It is defined in the file
                         cache (risks via metadata attacks are mostly
                         unchanged). Debug options disable merging on their
                         own.
-                        For more information see Documentation/mm/slub.rst.
+                        For more information see
+                        Documentation/admin-guide/mm/slab.rst.
                         (slub_nomerge legacy name also accepted for now)
 
         slab_strict_numa        [MM]
@@ -7353,6 +7453,11 @@ and is between 256 and 4096 characters. It is defined in the file
                         consumed by the stack hash table. By default this is set
                         to false.
 
+        stack_depot_max_pools= [KNL,EARLY]
+                        Specify the maximum number of pools to use for storing
+                        stack traces. Pools are allocated on-demand up to this
+                        limit. Default value is 8191 pools.
+
         stacktrace      [FTRACE]
                         Enabled the stack tracer on boot up.
 
@@ -7578,6 +7683,14 @@ and is between 256 and 4096 characters. It is defined in the file
                         where TPM is heavily utilized by IMA, thus protection
                         causing a major performance hit, and the space where
                         machines are deployed is by other means guarded.
+
+        tpm_crb_ffa.busy_timeout_ms= [ARM64,TPM]
+                        Maximum time in milliseconds to retry sending a message
+                        to the TPM service before giving up. This parameter controls
+                        how long the system will continue retrying when the TPM
+                        service is busy.
+                        Format: &lt;unsigned int&gt;
+                        Default: 2000 (2 seconds)
 
         tpm_suspend_pcr=[HW,TPM]
                         Format: integer pcr id
@@ -8293,6 +8406,16 @@ and is between 256 and 4096 characters. It is defined in the file
 
         vmpoff=         [KNL,S390] Perform z/VM CP command after power off.
                         Format: &lt;command&gt;
+
+        vmscape=        [X86] Controls mitigation for VMscape attacks.
+                        VMscape attacks can leak information from a userspace
+                        hypervisor to a guest via speculative side-channels.
+
+                        off             - disable the mitigation
+                        ibpb            - use Indirect Branch Prediction Barrier
+                                          (IBPB) mitigation (default)
+                        force           - force vulnerability detection even on
+                                          unaffected processors
 
         vsyscall=       [X86-64,EARLY]
                         Controls the behavior of vsyscalls (i.e. calls to

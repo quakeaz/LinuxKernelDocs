@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -90,6 +90,7 @@
 <li class="toctree-l3"><a class="reference internal" href="union_find.html">Union-Find in Linux</a></li>
 <li class="toctree-l3"><a class="reference internal" href="min_heap.html">Min Heap API</a></li>
 <li class="toctree-l3"><a class="reference internal" href="parser.html">Generic parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="list.html">Linked Lists in Linux</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#low-level-entry-and-exit">Low level entry and exit</a></li>
@@ -173,7 +174,7 @@
 </dl>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
-<p>The folio_queue struct forms a single segment in a segmented list of folios
+<p>The folio_queue <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">forms</span></code> a single segment in a segmented list of folios
 that can be used to form an I/O buffer.  As such, the list can be iterated over
 using the ITER_FOLIOQ iov_iter type.</p>
 <p>The publicly accessible members of the structure are:</p>
@@ -219,7 +220,7 @@ the number of folios added.</p>
 </section>
 <section id="adding-and-removing-folios">
 <h2>Adding and removing folios<a class="headerlink" href="#adding-and-removing-folios" title="Link to this heading">¶</a></h2>
-<p>Folios can be set in the next unused slot in a segment struct by calling one
+<p>Folios can be set in the next unused slot in a segment <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">by</span></code> calling one
 of:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>unsigned int folioq_append(struct folio_queue *folioq,
                            struct folio *folio);
@@ -326,7 +327,7 @@ to take locks.  The ITER_FOLIOQ iterator inserts appropriate barriers to aid
 with this.</p>
 <p>Care must be taken when simultaneously producing and consuming a list.  If the
 last segment is reached and the folios it refers to are entirely consumed by
-the IOV iterators, an iov_iter struct will be left pointing to the last segment
+the IOV iterators, an iov_iter <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">will</span></code> be left pointing to the last segment
 with a slot number equal to the capacity of that segment.  The iterator will
 try to continue on from this if there’s another segment available when it is
 used again, but care must be taken lest the segment got removed and freed by

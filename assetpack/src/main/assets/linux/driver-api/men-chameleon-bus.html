@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -207,7 +207,7 @@ properties of the carrier device (like querying the IRQ number of a PCI
 device). To provide abstraction from the real hardware bus, an MCB carrier
 device provides callback methods to translate the driver’s MCB function calls
 to hardware related function calls. For example a carrier device may
-implement the get_irq() method which can be translated into a hardware bus
+implement the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_irq()</span></code> method which can be translated into a hardware bus
 query for the IRQ number the device should use.</p>
 </section>
 <section id="parser">
@@ -231,12 +231,12 @@ per MCB device. But this is likely going to change in the future.</p>
 <p>Each MCB device has exactly one memory resource, which can be requested from
 the MCB bus. This memory resource is the physical address of the MCB device
 inside the carrier and is intended to be passed to <a class="reference internal" href="device-io.html#c.ioremap" title="ioremap"><code class="xref c c-func docutils literal notranslate"><span class="pre">ioremap()</span></code></a> and friends. It
-is already requested from the kernel by calling request_mem_region().</p>
+is already requested from the kernel by calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">request_mem_region()</span></code>.</p>
 </section>
 <section id="irqs">
 <h3>IRQs<a class="headerlink" href="#irqs" title="Link to this heading">¶</a></h3>
 <p>Each MCB device has exactly one IRQ resource, which can be requested from the
-MCB bus. If a carrier device driver implements the -&gt;get_irq() callback
+MCB bus. If a carrier device driver implements the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_irq()</span></code> callback
 method, the IRQ number assigned by the carrier device will be returned,
 otherwise the IRQ number inside the Chameleon table will be returned. This
 number is suitable to be passed to <a class="reference internal" href="../core-api/genericirq.html#c.request_irq" title="request_irq"><code class="xref c c-func docutils literal notranslate"><span class="pre">request_irq()</span></code></a>.</p>
@@ -296,7 +296,7 @@ static void __exit foo_exit(void)
 module_exit(foo_exit);
 </pre></div>
 </div>
-<p>The module_mcb_driver() macro can be used to reduce the above code:</p>
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">module_mcb_driver()</span></code> macro can be used to reduce the above code:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>module_mcb_driver(foo_driver);
 </pre></div>
 </div>
@@ -304,7 +304,7 @@ module_exit(foo_exit);
 <section id="using-dma">
 <h3>Using DMA<a class="headerlink" href="#using-dma" title="Link to this heading">¶</a></h3>
 <p>To make use of the kernel’s DMA-API’s function, you will need to use the
-carrier device’s ‘<a class="reference internal" href="infrastructure.html#c.device" title="device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span></code></a>’. Fortunately ‘struct mcb_device’ embeds a
+carrier device’s ‘<a class="reference internal" href="infrastructure.html#c.device" title="device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span></code></a>’. Fortunately ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">mcb_device</span></code>’ embeds a
 pointer (-&gt;dma_dev) to the carrier’s device for DMA purposes:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ret = dma_set_mask_and_coherent(&amp;mdev-&gt;dma_dev, DMA_BIT_MASK(dma_bits));
 if (rc)

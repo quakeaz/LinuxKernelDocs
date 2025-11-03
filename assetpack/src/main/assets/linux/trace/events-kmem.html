@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -222,7 +222,7 @@ mm_page_pcpu_drain            page=%p pfn=%lu order=%d cpu=%d migratetype=%d
 </div>
 <p>In front of the page allocator is a per-cpu page allocator. It exists only
 for order-0 pages, reduces contention on the zone-&gt;lock and reduces the
-amount of writing on struct page.</p>
+amount of writing on <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code>.</p>
 <p>When a per-CPU list is empty or pages of the wrong type are allocated,
 the zone-&gt;lock will be taken once and the per-CPU list refilled. The event
 triggered is mm_page_alloc_zone_locked for each page allocated with the

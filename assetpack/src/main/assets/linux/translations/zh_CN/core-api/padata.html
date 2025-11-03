@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -247,8 +247,8 @@ padata就会使用它。</p>
 </pre></div>
 </div>
 <p>这个结构体几乎肯定会被嵌入到一些针对要做的工作的大结构体中。它的大部分字段对
-padata来说是私有的，但是这个结构在初始化时应该被清零，并且应该提供parallel()和
-serial()函数。在完成工作的过程中，这些函数将被调用，我们马上就会遇到。</p>
+padata来说是私有的，但是这个结构在初始化时应该被清零，并且应该提供<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">parallel()</span></code>和
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">serial()</span></code>函数。在完成工作的过程中，这些函数将被调用，我们马上就会遇到。</p>
 <p>工作的提交是通过:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int padata_do_parallel(struct padata_shell *ps,
                        struct padata_priv *padata, int *cb_cpu);
@@ -259,22 +259,22 @@ serial()函数。在完成工作的过程中，这些函数将被调用，我们
 <a class="reference internal" href="../../../core-api/padata.html#c.padata_do_parallel" title="padata_do_parallel"><code class="xref c c-func docutils literal notranslate"><span class="pre">padata_do_parallel()</span></code></a>的返回值在成功时为0，表示工作正在进行中。-EBUSY意味着有人
 在其他地方正在搞乱实例的CPU掩码，而当cb_cpu不在串行cpumask中、并行或串行cpumasks
 中无在线CPU，或实例停止时，则会出现-EINVAL反馈。</p>
-<p>每个提交给<a class="reference internal" href="../../../core-api/padata.html#c.padata_do_parallel" title="padata_do_parallel"><code class="xref c c-func docutils literal notranslate"><span class="pre">padata_do_parallel()</span></code></a>的作业将依次传递给一个CPU上的上述parallel()函数
-的一个调用，所以真正的并行是通过提交多个作业来实现的。parallel()在运行时禁用软
-件中断，因此不能睡眠。parallel()函数把获得的padata_priv结构体指针作为其唯一的参
-数；关于实际要做的工作的信息可能是通过使用container_of()找到封装结构体来获得的。</p>
-<p>请注意，parallel()没有返回值；padata子系统假定parallel()将从此时开始负责这项工
-作。作业不需要在这次调用中完成，但是，如果parallel()留下了未完成的工作，它应该准
+<p>每个提交给<a class="reference internal" href="../../../core-api/padata.html#c.padata_do_parallel" title="padata_do_parallel"><code class="xref c c-func docutils literal notranslate"><span class="pre">padata_do_parallel()</span></code></a>的作业将依次传递给一个CPU上的上述<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">parallel()</span></code>函数
+的一个调用，所以真正的并行是通过提交多个作业来实现的。<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">parallel()</span></code>在运行时禁用软
+件中断，因此不能睡眠。<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">parallel()</span></code>函数把获得的padata_priv结构体指针作为其唯一的参
+数；关于实际要做的工作的信息可能是通过使用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">container_of()</span></code>找到封装结构体来获得的。</p>
+<p>请注意，<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">parallel()</span></code>没有返回值；padata子系统假定<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">parallel()</span></code>将从此时开始负责这项工
+作。作业不需要在这次调用中完成，但是，如果<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">parallel()</span></code>留下了未完成的工作，它应该准
 备在前一个作业完成之前，被以新的作业再次调用</p>
 </section>
 <section id="id4">
 <h3>序列化作业<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h3>
-<p>当一个作业完成时，parallel()（或任何实际完成该工作的函数）应该通过调用通知padata此
+<p>当一个作业完成时，<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">parallel()</span></code>（或任何实际完成该工作的函数）应该通过调用通知padata此
 事:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>void padata_do_serial(struct padata_priv *padata);
 </pre></div>
 </div>
-<p>在未来的某个时刻，<a class="reference internal" href="../../../core-api/padata.html#c.padata_do_serial" title="padata_do_serial"><code class="xref c c-func docutils literal notranslate"><span class="pre">padata_do_serial()</span></code></a>将触发对padata_priv结构体中serial()函数的调
+<p>在未来的某个时刻，<a class="reference internal" href="../../../core-api/padata.html#c.padata_do_serial" title="padata_do_serial"><code class="xref c c-func docutils literal notranslate"><span class="pre">padata_do_serial()</span></code></a>将触发对padata_priv结构体中<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">serial()</span></code>函数的调
 用。这个调用将发生在最初要求调用<a class="reference internal" href="../../../core-api/padata.html#c.padata_do_parallel" title="padata_do_parallel"><code class="xref c c-func docutils literal notranslate"><span class="pre">padata_do_parallel()</span></code></a>的CPU上；它也是在本地软件中断
 被禁用的情况下运行的。
 请注意，这个调用可能会被推迟一段时间，因为padata代码会努力确保作业按照提交的顺序完

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -217,19 +217,19 @@ lib/refcount.c的独立于架构的通用实现在下面使用了原子操作，
 <p>在没有任何内存顺序保证的情况下（即完全无序），atomics和refcounters只提供原
 子性和程序顺序（program order, po）关系（在同一个CPU上）。它保证每个
 <code class="docutils literal notranslate"><span class="pre">atomic_*</span> <span class="pre">()</span></code> 和 <code class="docutils literal notranslate"><span class="pre">refcount_*()</span></code> 操作都是原子性的，指令在单个CPU上按程序
-顺序执行。这是用READ_ONCE()/WRITE_ONCE()和比较并交换原语实现的。</p>
+顺序执行。这是用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">READ_ONCE()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">WRITE_ONCE()</span></code>和比较并交换原语实现的。</p>
 <p>强（完全）内存顺序保证在同一CPU上的所有较早加载和存储的指令（所有程序顺序较早
 [po-earlier]指令）在执行任何程序顺序较后指令（po-later）之前完成。它还保证
 同一CPU上储存的程序优先较早的指令和来自其他CPU传播的指令必须在该CPU执行任何
-程序顺序较后指令之前传播到其他CPU（A-累积属性）。这是用smp_mb()实现的。</p>
+程序顺序较后指令之前传播到其他CPU（A-累积属性）。这是用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smp_mb()</span></code>实现的。</p>
 <p>RELEASE内存顺序保证了在同一CPU上所有较早加载和存储的指令（所有程序顺序较早
 指令）在此操作前完成。它还保证同一CPU上储存的程序优先较早的指令和来自其他CPU
 传播的指令必须在释放（release）操作之前传播到所有其他CPU（A-累积属性）。这是用
-smp_store_release()实现的。</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smp_store_release()</span></code>实现的。</p>
 <p>ACQUIRE内存顺序保证了同一CPU上的所有后加载和存储的指令（所有程序顺序较后
 指令）在获取（acquire）操作之后完成。它还保证在获取操作执行后，同一CPU上
 储存的所有程序顺序较后指令必须传播到所有其他CPU。这是用
-smp_acquire__after_ctrl_dep()实现的。</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smp_acquire__after_ctrl_dep()</span></code>实现的。</p>
 <p>对Refcounters的控制依赖（取决于成功）保证了如果一个对象的引用被成功获得（引用计数
 器的增量或增加行为发生了，函数返回true），那么进一步的存储是针对这个操作的命令。对存
 储的控制依赖没有使用任何明确的屏障来实现，而是依赖于CPU不对存储进行猜测。这只是
@@ -345,7 +345,7 @@ smp_acquire__after_ctrl_dep()实现的。</p>
 <p>函数变化:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>atomic_dec_and_lock() --&gt; <a class="reference internal" href="../../../driver-api/basics.html#c.refcount_dec_and_lock" title="refcount_dec_and_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">refcount_dec_and_lock()</span></code></a></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">atomic_dec_and_lock()</span></code> --&gt; <a class="reference internal" href="../../../driver-api/basics.html#c.refcount_dec_and_lock" title="refcount_dec_and_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">refcount_dec_and_lock()</span></code></a></p></li>
 <li><p><a class="reference internal" href="../../../kernel-hacking/locking.html#c.atomic_dec_and_mutex_lock" title="atomic_dec_and_mutex_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">atomic_dec_and_mutex_lock()</span></code></a> --&gt; <a class="reference internal" href="../../../driver-api/basics.html#c.refcount_dec_and_mutex_lock" title="refcount_dec_and_mutex_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">refcount_dec_and_mutex_lock()</span></code></a></p></li>
 </ul>
 </div></blockquote>

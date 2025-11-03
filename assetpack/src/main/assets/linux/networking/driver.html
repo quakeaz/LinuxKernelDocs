@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -232,7 +232,7 @@ for a driver implementing scatter-gather this means:</p>
 </div>
 <section id="lockless-queue-stop-wake-helper-macros">
 <h4>Lockless queue stop / wake helper macros<a class="headerlink" href="#lockless-queue-stop-wake-helper-macros" title="Link to this heading">¶</a></h4>
-<p>The netif_txq_maybe_stop() and __netif_txq_completed_wake()
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">netif_txq_maybe_stop()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__netif_txq_completed_wake()</span></code>
 macros are designed to safely implement stopping
 and waking netdev queues without full lock protection.</p>
 <p>We assume that there can be no concurrent stop attempts and no concurrent
@@ -240,8 +240,8 @@ wake attempts. The try-stop should happen from the xmit handler,
 while wake up should be triggered from NAPI poll context.
 The two may run concurrently (single producer, single consumer).</p>
 <p>The try-stop side is expected to run from the xmit handler and therefore
-it does not reschedule Tx (netif_tx_start_queue() instead of
-netif_tx_wake_queue()). Uses of the <code class="docutils literal notranslate"><span class="pre">stop</span></code> macros outside of the xmit
+it does not reschedule Tx (<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">netif_tx_start_queue()</span></code> instead of
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">netif_tx_wake_queue()</span></code>). Uses of the <code class="docutils literal notranslate"><span class="pre">stop</span></code> macros outside of the xmit
 handler may lead to xmit queue being enabled but not run.
 The waking side does not have similar context restrictions.</p>
 <p>The macros guarantee that rings will not remain stopped if there’s

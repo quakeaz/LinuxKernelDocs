@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -325,12 +325,12 @@ mutex; invocate <a class="reference internal" href="#c.it_IT.mutex_lock_interrup
 <a class="reference internal" href="#c.it_IT.mutex_unlock" title="it_IT.mutex_unlock"><code class="xref c c-func docutils literal notranslate"><span class="pre">mutex_unlock()</span></code></a> per rilasciarlo. C’è anche <a class="reference internal" href="#c.it_IT.mutex_lock" title="it_IT.mutex_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">mutex_lock()</span></code></a>
 ma questa dovrebbe essere evitata perché non ritorna in caso di segnali.</p>
 <p>Per esempio: <code class="docutils literal notranslate"><span class="pre">net/netfilter/nf_sockopt.c</span></code> permette la registrazione
-di nuove chiamate per setsockopt() e getsockopt()
-usando la funzione nf_register_sockopt(). La registrazione e
+di nuove chiamate per <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setsockopt()</span></code> e <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">getsockopt()</span></code>
+usando la funzione <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nf_register_sockopt()</span></code>. La registrazione e
 la rimozione vengono eseguite solamente quando il modulo viene caricato
 o scaricato (e durante l’avvio del sistema, qui non abbiamo concorrenza),
 e la lista delle funzioni registrate viene consultata solamente quando
-setsockopt() o getsockopt() sono sconosciute al sistema.
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setsockopt()</span></code> o <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">getsockopt()</span></code> sono sconosciute al sistema.
 In questo caso <code class="docutils literal notranslate"><span class="pre">nf_sockopt_mutex</span></code> è perfetto allo scopo, in particolar modo
 visto che setsockopt e getsockopt potrebbero dormire.</p>
 </section>
@@ -339,17 +339,17 @@ visto che setsockopt e getsockopt potrebbero dormire.</p>
 <p>Se un softirq condivide dati col contesto utente, avete due problemi.
 Primo, il contesto utente corrente potrebbe essere interroto da un softirq,
 e secondo, la sezione critica potrebbe essere eseguita da un altro
-processore. Questo è quando spin_lock_bh()
+processore. Questo è quando <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_bh()</span></code>
 (<code class="docutils literal notranslate"><span class="pre">include/linux/spinlock.h</span></code>) viene utilizzato. Questo disabilita i softirq
-sul processore e trattiene il <em>lock</em>. Invece, spin_unlock_bh() fa
+sul processore e trattiene il <em>lock</em>. Invece, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_unlock_bh()</span></code> fa
 l’opposto. (Il suffisso ‘_bh’ è un residuo storico che fa riferimento al
 “Bottom Halves”, il vecchio nome delle interruzioni software. In un mondo
-perfetto questa funzione si chiamerebbe ‘spin_lock_softirq()’).</p>
-<p>Da notare che in questo caso potete utilizzare anche spin_lock_irq()
-o spin_lock_irqsave(), queste fermano anche le interruzioni hardware:
+perfetto questa funzione si chiamerebbe ‘<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_softirq()</span></code>’).</p>
+<p>Da notare che in questo caso potete utilizzare anche <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_irq()</span></code>
+o <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_irqsave()</span></code>, queste fermano anche le interruzioni hardware:
 vedere <a class="reference internal" href="#contesto-di-interruzione-hardware">Contesto di interruzione hardware</a>.</p>
 <p>Questo funziona alla perfezione anche sui sistemi monoprocessore: gli spinlock
-svaniscono e questa macro diventa semplicemente local_bh_disable()
+svaniscono e questa macro diventa semplicemente <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">local_bh_disable()</span></code>
 (<code class="docutils literal notranslate"><span class="pre">include/linux/interrupt.h</span></code>), la quale impedisce ai softirq d’essere
 eseguiti.</p>
 </section>
@@ -376,8 +376,8 @@ più volte in contemporanea), perfino su sistemi multi-processore.</p>
 <section id="differenti-tasklet-timer">
 <h4>Differenti tasklet/timer<a class="headerlink" href="#differenti-tasklet-timer" title="Link to this heading">¶</a></h4>
 <p>Se un altro tasklet/timer vuole condividere dati col vostro tasklet o timer,
-allora avrete bisogno entrambe di spin_lock() e
-spin_unlock(). Qui spin_lock_bh() è inutile, siete già
+allora avrete bisogno entrambe di <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock()</span></code> e
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_unlock()</span></code>. Qui <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_bh()</span></code> è inutile, siete già
 in un tasklet ed avete la garanzia che nessun altro verrà eseguito sullo
 stesso processore.</p>
 </section>
@@ -392,12 +392,12 @@ di migliorare le prestazioni potete utilizzare dati riservati ad ogni
 processore (vedere <a class="reference internal" href="#dati-per-processore">Dati per processore</a>). Se siete arrivati
 fino a questo punto nell’uso dei softirq, probabilmente tenete alla scalabilità
 delle prestazioni abbastanza da giustificarne la complessità aggiuntiva.</p>
-<p>Dovete utilizzare spin_lock() e spin_unlock() per
+<p>Dovete utilizzare <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock()</span></code> e <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_unlock()</span></code> per
 proteggere i dati condivisi.</p>
 </section>
 <section id="diversi-softirqs">
 <h4>Diversi Softirqs<a class="headerlink" href="#diversi-softirqs" title="Link to this heading">¶</a></h4>
-<p>Dovete utilizzare spin_lock() e spin_unlock() per
+<p>Dovete utilizzare <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock()</span></code> e <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_unlock()</span></code> per
 proteggere i dati condivisi, che siano timer, tasklet, diversi softirq o
 lo stesso o altri softirq: uno qualsiasi di essi potrebbe essere in esecuzione
 su un diverso processore.</p>
@@ -415,35 +415,35 @@ preso in carico da un softirq.</p>
 avrete due preoccupazioni. Primo, il softirq può essere interrotto da
 un’interruzione hardware, e secondo, la sezione critica potrebbe essere
 eseguita da un’interruzione hardware su un processore diverso. Questo è il caso
-dove spin_lock_irq() viene utilizzato. Disabilita le interruzioni
-sul processore che l’esegue, poi trattiene il lock. spin_unlock_irq()
+dove <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_irq()</span></code> viene utilizzato. Disabilita le interruzioni
+sul processore che l’esegue, poi trattiene il lock. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_unlock_irq()</span></code>
 fa l’opposto.</p>
-<p>Il gestore d’interruzione hardware non ha bisogno di usare spin_lock_irq()
+<p>Il gestore d’interruzione hardware non ha bisogno di usare <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_irq()</span></code>
 perché i softirq non possono essere eseguiti quando il gestore d’interruzione
-hardware è in esecuzione: per questo si può usare spin_lock(), che è un po’
+hardware è in esecuzione: per questo si può usare <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock()</span></code>, che è un po’
 più veloce. L’unica eccezione è quando un altro gestore d’interruzioni
-hardware utilizza lo stesso <em>lock</em>: spin_lock_irq() impedirà a questo
+hardware utilizza lo stesso <em>lock</em>: <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_irq()</span></code> impedirà a questo
 secondo gestore di interrompere quello in esecuzione.</p>
 <p>Questo funziona alla perfezione anche sui sistemi monoprocessore: gli spinlock
-svaniscono e questa macro diventa semplicemente local_irq_disable()
+svaniscono e questa macro diventa semplicemente <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">local_irq_disable()</span></code>
 (<code class="docutils literal notranslate"><span class="pre">include/asm/smp.h</span></code>), la quale impedisce a softirq/tasklet/BH d’essere
 eseguiti.</p>
-<p>spin_lock_irqsave() (<code class="docutils literal notranslate"><span class="pre">include/linux/spinlock.h</span></code>) è una variante che
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_irqsave()</span></code> (<code class="docutils literal notranslate"><span class="pre">include/linux/spinlock.h</span></code>) è una variante che
 salva lo stato delle interruzioni in una variabile, questa verrà poi passata
-a spin_unlock_irqrestore(). Questo significa che lo stesso codice
+a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_unlock_irqrestore()</span></code>. Questo significa che lo stesso codice
 potrà essere utilizzato in un’interruzione hardware (dove le interruzioni sono
 già disabilitate) e in un softirq (dove la disabilitazione delle interruzioni
 è richiesta).</p>
 <p>Da notare che i softirq (e quindi tasklet e timer) sono eseguiti al ritorno
-da un’interruzione hardware, quindi spin_lock_irq() interrompe
+da un’interruzione hardware, quindi <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_irq()</span></code> interrompe
 anche questi. Tenuto conto di questo si può dire che
-spin_lock_irqsave() è la funzione di sincronizzazione più generica
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_irqsave()</span></code> è la funzione di sincronizzazione più generica
 e potente.</p>
 </section>
 <section id="sincronizzazione-fra-due-gestori-d-interruzioni-hardware">
 <h3>Sincronizzazione fra due gestori d’interruzioni hardware<a class="headerlink" href="#sincronizzazione-fra-due-gestori-d-interruzioni-hardware" title="Link to this heading">¶</a></h3>
 <p>Condividere dati fra due gestori di interruzione hardware è molto raro, ma se
-succede, dovreste usare spin_lock_irqsave(): è una specificità
+succede, dovreste usare <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_irqsave()</span></code>: è una specificità
 dell’architettura il fatto che tutte le interruzioni vengano interrotte
 quando si eseguono di gestori di interruzioni.</p>
 </section>
@@ -456,10 +456,10 @@ quando si eseguono di gestori di interruzioni.</p>
 e volete sincronizzarvi con altri processi, usate i mutex. Potete trattenere
 il mutex e dormire (<code class="docutils literal notranslate"><span class="pre">copy_from_user(</span></code> o <code class="docutils literal notranslate"><span class="pre">kmalloc(x,GFP_KERNEL)</span></code>).</p></li>
 <li><p>Altrimenti (== i dati possono essere manipolati da un’interruzione) usate
-spin_lock_irqsave() e spin_unlock_irqrestore().</p></li>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_irqsave()</span></code> e <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_unlock_irqrestore()</span></code>.</p></li>
 <li><p>Evitate di trattenere uno spinlock per più di 5 righe di codice incluse
 le chiamate a funzione (ad eccezione di quell per l’accesso come
-readb()).</p></li>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">readb()</span></code>).</p></li>
 </ul>
 <section id="tabella-dei-requisiti-minimi">
 <h3>Tabella dei requisiti minimi<a class="headerlink" href="#tabella-dei-requisiti-minimi" title="Link to this heading">¶</a></h3>
@@ -470,7 +470,7 @@ sincronizzazione (per esempio, un thread può essere eseguito solo su un
 processore alla volta, ma se deve condividere dati con un altro thread, allora
 la sincronizzazione è necessaria).</p>
 <p>Ricordatevi il suggerimento qui sopra: potete sempre usare
-spin_lock_irqsave(), che è un sovrainsieme di tutte le altre funzioni
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_irqsave()</span></code>, che è un sovrainsieme di tutte le altre funzioni
 per spinlock.</p>
 <table class="docutils align-default">
 <thead>
@@ -641,10 +641,10 @@ dell’operazione. Posso essere usate quando non serve accedere ai dati
 protetti dal <em>lock</em> quando qualche altro thread lo sta già facendo
 trattenendo il <em>lock</em>. Potrete acquisire il <em>lock</em> più tardi se vi
 serve accedere ai dati protetti da questo <em>lock</em>.</p>
-<p>La funzione spin_trylock() non ritenta di acquisire il <em>lock</em>,
+<p>La funzione <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_trylock()</span></code> non ritenta di acquisire il <em>lock</em>,
 se ci riesce al primo colpo ritorna un valore diverso da zero, altrimenti
 se fallisce ritorna 0. Questa funzione può essere utilizzata in un qualunque
-contesto, ma come spin_lock(): dovete disabilitare i contesti che
+contesto, ma come <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock()</span></code>: dovete disabilitare i contesti che
 potrebbero interrompervi e quindi trattenere lo spinlock.</p>
 <p>La funzione <a class="reference internal" href="#c.it_IT.mutex_trylock" title="it_IT.mutex_trylock"><code class="xref c c-func docutils literal notranslate"><span class="pre">mutex_trylock()</span></code></a> invece di sospendere il vostro processo
 ritorna un valore diverso da zero se è possibile trattenere il lock al primo
@@ -764,14 +764,14 @@ aggiungiamo, rimuoviamo od ispezioniamo la memoria: sia la struttura
 della memoria che il suo contenuto sono protetti dal <em>lock</em>. Questo
 caso è semplice dato che copiamo i dati dall’utente e non permettiamo
 mai loro di accedere direttamente agli oggetti.</p>
-<p>C’è una piccola ottimizzazione qui: nella funzione cache_add()
+<p>C’è una piccola ottimizzazione qui: nella funzione <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cache_add()</span></code>
 impostiamo i campi dell’oggetto prima di acquisire il <em>lock</em>. Questo è
 sicuro perché nessun altro potrà accedervi finché non lo inseriremo
 nella memoria.</p>
 </section>
 <section id="accesso-dal-contesto-utente">
 <h3>Accesso dal contesto utente<a class="headerlink" href="#accesso-dal-contesto-utente" title="Link to this heading">¶</a></h3>
-<p>Ora consideriamo il caso in cui cache_find() può essere invocata
+<p>Ora consideriamo il caso in cui <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cache_find()</span></code> può essere invocata
 dal contesto d’interruzione: sia hardware che software. Un esempio potrebbe
 essere un timer che elimina oggetti dalla memoria.</p>
 <p>Qui di seguito troverete la modifica nel formato <em>patch</em>: le righe <code class="docutils literal notranslate"><span class="pre">-</span></code>
@@ -837,14 +837,14 @@ sono quelle rimosse, mentre quelle <code class="docutils literal notranslate"><s
  }
 </pre></div>
 </div>
-<p>Da notare che spin_lock_irqsave() disabiliterà le interruzioni
+<p>Da notare che <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_irqsave()</span></code> disabiliterà le interruzioni
 se erano attive, altrimenti non farà niente (quando siamo già in un contesto
 d’interruzione); dunque queste funzioni possono essere chiamante in
 sicurezza da qualsiasi contesto.</p>
-<p>Sfortunatamente, cache_add() invoca <a class="reference internal" href="../../../core-api/mm-api.html#c.kmalloc" title="kmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmalloc()</span></code></a> con
+<p>Sfortunatamente, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cache_add()</span></code> invoca <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kmalloc()</span></code> con
 l’opzione <code class="docutils literal notranslate"><span class="pre">GFP_KERNEL</span></code> che è permessa solo in contesto utente. Ho supposto
-che cache_add() venga chiamata dal contesto utente, altrimenti
-questa opzione deve diventare un parametro di cache_add().</p>
+che <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cache_add()</span></code> venga chiamata dal contesto utente, altrimenti
+questa opzione deve diventare un parametro di <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cache_add()</span></code>.</p>
 </section>
 <section id="esporre-gli-oggetti-al-di-fuori-del-file">
 <h3>Esporre gli oggetti al di fuori del file<a class="headerlink" href="#esporre-gli-oggetti-al-di-fuori-del-file" title="Link to this heading">¶</a></h3>
@@ -860,7 +860,7 @@ posto.</p>
 mantiene un puntatore ad un oggetto, presumibilmente si aspetta che questo
 puntatore rimanga valido. Sfortunatamente, questo è garantito solo mentre
 si trattiene il <em>lock</em>, altrimenti qualcuno potrebbe chiamare
-cache_delete() o peggio, aggiungere un oggetto che riutilizza lo
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cache_delete()</span></code> o peggio, aggiungere un oggetto che riutilizza lo
 stesso indirizzo.</p>
 <p>Dato che c’è un solo <em>lock</em>, non potete trattenerlo a vita: altrimenti
 nessun altro potrà eseguire il proprio lavoro.</p>
@@ -957,9 +957,9 @@ significa che non è più usato e l’oggetto può essere rimosso.</p>
 </pre></div>
 </div>
 <p>Abbiamo incapsulato il contatore di riferimenti nelle tipiche funzioni
-di ‘get’ e ‘put’. Ora possiamo ritornare l’oggetto da cache_find()
+di ‘get’ e ‘put’. Ora possiamo ritornare l’oggetto da <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cache_find()</span></code>
 col vantaggio che l’utente può dormire trattenendo l’oggetto (per esempio,
-copy_to_user() per copiare il nome verso lo spazio utente).</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">copy_to_user()</span></code> per copiare il nome verso lo spazio utente).</p>
 <p>Un altro punto da notare è che ho detto che il contatore dovrebbe incrementarsi
 per ogni puntatore ad un oggetto: quindi il contatore di riferimenti è 1
 quando l’oggetto viene inserito nella memoria. In altre versione il framework
@@ -971,8 +971,8 @@ Ci sono un certo numbero di operazioni atomiche definite
 in <code class="docutils literal notranslate"><span class="pre">include/asm/atomic.h</span></code>: queste sono garantite come atomiche su qualsiasi
 processore del sistema, quindi non sono necessari i <em>lock</em>. In questo caso è
 più semplice rispetto all’uso degli spinlock, benché l’uso degli spinlock
-sia più elegante per casi non banali. Le funzioni <a class="reference internal" href="../../../driver-api/basics.html#c.atomic_inc" title="atomic_inc"><code class="xref c c-func docutils literal notranslate"><span class="pre">atomic_inc()</span></code></a> e
-<a class="reference internal" href="../../../driver-api/basics.html#c.atomic_dec_and_test" title="atomic_dec_and_test"><code class="xref c c-func docutils literal notranslate"><span class="pre">atomic_dec_and_test()</span></code></a> vengono usate al posto dei tipici operatori di
+sia più elegante per casi non banali. Le funzioni <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">atomic_inc()</span></code> e
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">atomic_dec_and_test()</span></code> vengono usate al posto dei tipici operatori di
 incremento e decremento, e i <em>lock</em> non sono più necessari per proteggere il
 contatore stesso.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>--- cache.c.refcnt  2003-12-09 15:00:35.000000000 +1100
@@ -1062,7 +1062,7 @@ al nome di cambiare abbiamo tre possibilità:</p>
 <ul class="simple">
 <li><p>Si può togliere static da <code class="docutils literal notranslate"><span class="pre">cache_lock</span></code> e dire agli utenti che devono
 trattenere il <em>lock</em> prima di modificare il nome di un oggetto.</p></li>
-<li><p>Si può fornire una funzione cache_obj_rename() che prende il
+<li><p>Si può fornire una funzione <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cache_obj_rename()</span></code> che prende il
 <em>lock</em> e cambia il nome per conto del chiamante; si dirà poi agli utenti
 di usare questa funzione.</p></li>
 <li><p>Si può decidere che <code class="docutils literal notranslate"><span class="pre">cache_lock</span></code> protegge solo la memoria stessa, ed
@@ -1115,10 +1115,10 @@ per ogni lista), possibilmente con un <em>lock</em> per oggetto.</p></li>
 protetto da <code class="docutils literal notranslate"><span class="pre">cache_lock</span></code> piuttosto che dal <em>lock</em> dell’oggetto; questo
 perché è logicamente parte dell’infrastruttura (come
 <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">list_head</span></code> nell’oggetto). In questo modo,
-in __cache_add(), non ho bisogno di trattenere il <em>lock</em> di ogni
+in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__cache_add()</span></code>, non ho bisogno di trattenere il <em>lock</em> di ogni
 oggetto mentre si cerca il meno popolare.</p>
 <p>Ho anche deciso che il campo id è immutabile, quindi non ho bisogno di
-trattenere il lock dell’oggetto quando si usa __cache_find()
+trattenere il lock dell’oggetto quando si usa <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__cache_find()</span></code>
 per leggere questo campo; il <em>lock</em> dell’oggetto è usato solo dal chiamante
 che vuole leggere o scrivere il campo name.</p>
 <p>Inoltre, da notare che ho aggiunto un commento che descrive i dati che sono
@@ -1138,7 +1138,7 @@ ricorsivi).
 Questo è facile da diagnosticare: non è uno di quei problemi che ti tengono
 sveglio 5 notti a parlare da solo.</p>
 <p>Un caso un pochino più complesso; immaginate d’avere una spazio condiviso
-fra un softirq ed il contesto utente. Se usate spin_lock() per
+fra un softirq ed il contesto utente. Se usate <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock()</span></code> per
 proteggerlo, il contesto utente potrebbe essere interrotto da un softirq
 mentre trattiene il lock, da qui il softirq rimarrà in attesa attiva provando
 ad acquisire il <em>lock</em> già trattenuto nel contesto utente.</p>
@@ -1229,11 +1229,11 @@ spin_unlock_bh(&amp;list_lock);
 </pre></div>
 </div>
 <p>Primo o poi, questo esploderà su un sistema multiprocessore perché un
-temporizzatore potrebbe essere già partiro prima di spin_lock_bh(),
-e prenderà il <em>lock</em> solo dopo spin_unlock_bh(), e cercherà
+temporizzatore potrebbe essere già partiro prima di <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_bh()</span></code>,
+e prenderà il <em>lock</em> solo dopo <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_unlock_bh()</span></code>, e cercherà
 di eliminare il suo oggetto (che però è già stato eliminato).</p>
 <p>Questo può essere evitato controllando il valore di ritorno di
-<a class="reference internal" href="../../../driver-api/basics.html#c.timer_delete" title="timer_delete"><code class="xref c c-func docutils literal notranslate"><span class="pre">timer_delete()</span></code></a>: se ritorna 1, il temporizzatore è stato già
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">timer_delete()</span></code>: se ritorna 1, il temporizzatore è stato già
 rimosso. Se 0, significa (in questo caso) che il temporizzatore è in
 esecuzione, quindi possiamo fare come segue:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>retry:
@@ -1254,12 +1254,12 @@ esecuzione, quindi possiamo fare come segue:</p>
 </pre></div>
 </div>
 <p>Un altro problema è l’eliminazione dei temporizzatori che si riavviano
-da soli (chiamando <a class="reference internal" href="../../../driver-api/basics.html#c.add_timer" title="add_timer"><code class="xref c c-func docutils literal notranslate"><span class="pre">add_timer()</span></code></a> alla fine della loro esecuzione).
+da soli (chiamando <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">add_timer()</span></code> alla fine della loro esecuzione).
 Dato che questo è un problema abbastanza comune con una propensione
-alle corse critiche, dovreste usare <a class="reference internal" href="../../../driver-api/basics.html#c.timer_delete_sync" title="timer_delete_sync"><code class="xref c c-func docutils literal notranslate"><span class="pre">timer_delete_sync()</span></code></a>
+alle corse critiche, dovreste usare <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">timer_delete_sync()</span></code>
 (<code class="docutils literal notranslate"><span class="pre">include/linux/timer.h</span></code>) per gestire questo caso.</p>
 <p>Prima di rilasciare un temporizzatore dovreste chiamare la funzione
-<a class="reference internal" href="../../../driver-api/basics.html#c.timer_shutdown" title="timer_shutdown"><code class="xref c c-func docutils literal notranslate"><span class="pre">timer_shutdown()</span></code></a> o <a class="reference internal" href="../../../driver-api/basics.html#c.timer_shutdown_sync" title="timer_shutdown_sync"><code class="xref c c-func docutils literal notranslate"><span class="pre">timer_shutdown_sync()</span></code></a> di modo che non venga più riarmato.
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">timer_shutdown()</span></code> o <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">timer_shutdown_sync()</span></code> di modo che non venga più riarmato.
 Ogni successivo tentativo di riarmare il temporizzatore verrà silenziosamente
 ignorato.</p>
 </section>
@@ -1331,7 +1331,7 @@ wmb();
 list-&gt;next = new;
 </pre></div>
 </div>
-<p>La funzione wmb() è una barriera di sincronizzazione delle
+<p>La funzione <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wmb()</span></code> è una barriera di sincronizzazione delle
 scritture. Questa garantisce che la prima operazione (impostare l’elemento
 <code class="docutils literal notranslate"><span class="pre">next</span></code> del nuovo elemento) venga completata e vista da tutti i processori
 prima che venga eseguita la seconda operazione (che sarebbe quella di mettere
@@ -1341,7 +1341,7 @@ se non vengono istruiti altrimenti: vogliamo che i lettori non vedano
 completamente il nuovo elemento; oppure che lo vedano correttamente e quindi
 il puntatore <code class="docutils literal notranslate"><span class="pre">next</span></code> deve puntare al resto della lista.</p>
 <p>Fortunatamente, c’è una funzione che fa questa operazione sulle liste
-<code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">list_head</span></code>: <a class="reference internal" href="../../../core-api/kernel-api.html#c.list_add_rcu" title="list_add_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_add_rcu()</span></code></a>
+<code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">list_head</span></code>: <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">list_add_rcu()</span></code>
 (<code class="docutils literal notranslate"><span class="pre">include/linux/list.h</span></code>).</p>
 <p>Rimuovere un elemento dalla lista è anche più facile: sostituiamo il puntatore
 al vecchio elemento con quello del suo successore, e i lettori vedranno
@@ -1349,30 +1349,30 @@ l’elemento o lo salteranno.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>list-&gt;next = old-&gt;next;
 </pre></div>
 </div>
-<p>La funzione <a class="reference internal" href="../../../core-api/kernel-api.html#c.list_del_rcu" title="list_del_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_del_rcu()</span></code></a> (<code class="docutils literal notranslate"><span class="pre">include/linux/list.h</span></code>) fa esattamente
+<p>La funzione <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">list_del_rcu()</span></code> (<code class="docutils literal notranslate"><span class="pre">include/linux/list.h</span></code>) fa esattamente
 questo (la versione normale corrompe il vecchio oggetto, e non vogliamo che
 accada).</p>
 <p>Anche i lettori devono stare attenti: alcuni processori potrebbero leggere
 attraverso il puntatore <code class="docutils literal notranslate"><span class="pre">next</span></code> il contenuto dell’elemento successivo
 troppo presto, ma non accorgersi che il contenuto caricato è sbagliato quando
 il puntatore <code class="docutils literal notranslate"><span class="pre">next</span></code> viene modificato alla loro spalle. Ancora una volta
-c’è una funzione che viene in vostro aiuto <a class="reference internal" href="../../../core-api/kernel-api.html#c.list_for_each_entry_rcu" title="list_for_each_entry_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_for_each_entry_rcu()</span></code></a>
+c’è una funzione che viene in vostro aiuto <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">list_for_each_entry_rcu()</span></code>
 (<code class="docutils literal notranslate"><span class="pre">include/linux/list.h</span></code>). Ovviamente, gli scrittori possono usare
-<a class="reference internal" href="../../../core-api/kernel-api.html#c.list_for_each_entry" title="list_for_each_entry"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_for_each_entry()</span></code></a> dato che non ci possono essere due scrittori
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">list_for_each_entry()</span></code> dato che non ci possono essere due scrittori
 in contemporanea.</p>
 <p>Il nostro ultimo dilemma è il seguente: quando possiamo realmente distruggere
 l’elemento rimosso? Ricordate, un lettore potrebbe aver avuto accesso a questo
 elemento proprio ora: se eliminiamo questo elemento ed il puntatore <code class="docutils literal notranslate"><span class="pre">next</span></code>
 cambia, il lettore salterà direttamente nella spazzatura e scoppierà. Dobbiamo
 aspettare finché tutti i lettori che stanno attraversando la lista abbiano
-finito. Utilizziamo <a class="reference internal" href="../../../core-api/kernel-api.html#c.call_rcu" title="call_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">call_rcu()</span></code></a> per registrare una funzione di
+finito. Utilizziamo <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">call_rcu()</span></code> per registrare una funzione di
 richiamo che distrugga l’oggetto quando tutti i lettori correnti hanno
 terminato. In alternative, potrebbe essere usata la funzione
-<a class="reference internal" href="../../../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a> che blocca l’esecuzione finché tutti i lettori
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code> che blocca l’esecuzione finché tutti i lettori
 non terminano di ispezionare la lista.</p>
 <p>Ma come fa l’RCU a sapere quando i lettori sono finiti? Il meccanismo è
 il seguente: innanzi tutto i lettori accedono alla lista solo fra la coppia
-<a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_read_lock" title="rcu_read_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_lock()</span></code></a>/<a class="reference internal" href="../../../core-api/kernel-api.html#c.rcu_read_unlock" title="rcu_read_unlock"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_unlock()</span></code></a> che disabilita la
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_read_lock()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_read_unlock()</span></code> che disabilita la
 prelazione così che i lettori non vengano sospesi mentre stanno leggendo
 la lista.</p>
 <p>Poi, l’RCU aspetta finché tutti i processori non abbiano dormito almeno
@@ -1458,11 +1458,11 @@ codice RCU è un po’ più ottimizzato di così, ma questa è l’idea di fondo
 </pre></div>
 </div>
 <p>Da notare che i lettori modificano il campo popularity nella funzione
-__cache_find(), e ora non trattiene alcun <em>lock</em>. Una soluzione
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__cache_find()</span></code>, e ora non trattiene alcun <em>lock</em>. Una soluzione
 potrebbe essere quella di rendere la variabile <code class="docutils literal notranslate"><span class="pre">atomic_t</span></code>, ma per l’uso
 che ne abbiamo fatto qui, non ci interessano queste corse critiche perché un
 risultato approssimativo è comunque accettabile, quindi non l’ho cambiato.</p>
-<p>Il risultato è che la funzione cache_find() non ha bisogno di alcuna
+<p>Il risultato è che la funzione <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cache_find()</span></code> non ha bisogno di alcuna
 sincronizzazione con le altre funzioni, quindi è veloce su un sistema
 multi-processore tanto quanto lo sarebbe su un sistema mono-processore.</p>
 <p>Esiste un’ulteriore ottimizzazione possibile: vi ricordate il codice originale
@@ -1473,9 +1473,9 @@ quindi non avete bisogno di incrementare e decrementare il contatore di
 riferimenti.</p>
 <p>Ora, dato che il ‘<em>lock</em> di lettura’ di un RCU non fa altro che disabilitare
 la prelazione, un chiamante che ha sempre la prelazione disabilitata fra le
-chiamate cache_find() e object_put() non necessita
+chiamate <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cache_find()</span></code> e <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">object_put()</span></code> non necessita
 di incrementare e decrementare il contatore di riferimenti. Potremmo
-esporre la funzione __cache_find() dichiarandola non-static,
+esporre la funzione <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__cache_find()</span></code> dichiarandola non-static,
 e quel chiamante potrebbe usare direttamente questa funzione.</p>
 <p>Il beneficio qui sta nel fatto che il contatore di riferimenti no
 viene scritto: l’oggetto non viene alterato in alcun modo e quindi diventa
@@ -1490,9 +1490,9 @@ singolo contatore. Facile e pulito.</p>
 <p>Se questo dovesse essere troppo lento (solitamente non lo è, ma se avete
 dimostrato che lo è devvero), potreste usare un contatore per ogni processore
 e quindi non sarebbe più necessaria la mutua esclusione. Vedere
-DEFINE_PER_CPU(), get_cpu_var() e put_cpu_var()
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">DEFINE_PER_CPU()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_cpu_var()</span></code> e <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">put_cpu_var()</span></code>
 (<code class="docutils literal notranslate"><span class="pre">include/linux/percpu.h</span></code>).</p>
-<p>Il tipo di dato <code class="docutils literal notranslate"><span class="pre">local_t</span></code>, la funzione cpu_local_inc() e tutte
+<p>Il tipo di dato <code class="docutils literal notranslate"><span class="pre">local_t</span></code>, la funzione <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpu_local_inc()</span></code> e tutte
 le altre funzioni associate, sono di particolare utilità per semplici contatori
 per-processore; su alcune architetture sono anche più efficienti
 (<code class="docutils literal notranslate"><span class="pre">include/asm/local.h</span></code>).</p>
@@ -1517,17 +1517,17 @@ enable_irq(irq);
 mutex_unlock(&amp;lock);
 </pre></div>
 </div>
-<p>La funzione <a class="reference internal" href="../../../core-api/genericirq.html#c.disable_irq" title="disable_irq"><code class="xref c c-func docutils literal notranslate"><span class="pre">disable_irq()</span></code></a> impedisce al gestore d’interruzioni
+<p>La funzione <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">disable_irq()</span></code> impedisce al gestore d’interruzioni
 d’essere eseguito (e aspetta che finisca nel caso fosse in esecuzione su
 un altro processore). Lo spinlock, invece, previene accessi simultanei.
 Naturalmente, questo è più lento della semplice chiamata
-spin_lock_irq(), quindi ha senso solo se questo genere di accesso
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_irq()</span></code>, quindi ha senso solo se questo genere di accesso
 è estremamente raro.</p>
 </section>
 </section>
 <section id="quali-funzioni-possono-essere-chiamate-in-modo-sicuro-dalle-interruzioni">
 <h2>Quali funzioni possono essere chiamate in modo sicuro dalle interruzioni?<a class="headerlink" href="#quali-funzioni-possono-essere-chiamate-in-modo-sicuro-dalle-interruzioni" title="Link to this heading">¶</a></h2>
-<p>Molte funzioni del kernel dormono (in sostanza, chiamano schedule())
+<p>Molte funzioni del kernel dormono (in sostanza, chiamano <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">schedule()</span></code>)
 direttamente od indirettamente: non potete chiamarle se trattenere uno
 spinlock o avete la prelazione disabilitata, mai. Questo significa che
 dovete necessariamente essere nel contesto utente: chiamarle da un
@@ -1543,10 +1543,10 @@ dormire.</p>
 <ul>
 <li><p>Accessi allo spazio utente:</p>
 <ul class="simple">
-<li><p>copy_from_user()</p></li>
-<li><p>copy_to_user()</p></li>
-<li><p><a class="reference internal" href="../../../core-api/mm-api.html#c.get_user" title="get_user"><code class="xref c c-func docutils literal notranslate"><span class="pre">get_user()</span></code></a></p></li>
-<li><p><a class="reference internal" href="../../../core-api/mm-api.html#c.put_user" title="put_user"><code class="xref c c-func docutils literal notranslate"><span class="pre">put_user()</span></code></a></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">copy_from_user()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">copy_to_user()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_user()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">put_user()</span></code></p></li>
 </ul>
 </li>
 <li><p>kmalloc(GFP_KERNEL) &lt;kmalloc&gt;`</p></li>
@@ -1566,9 +1566,9 @@ dallo stesso processo che l’ha acquisito.</p>
 <p>Alcune funzioni possono essere chiamate tranquillamente da qualsiasi
 contesto, o trattenendo un qualsiasi <em>lock</em>.</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="../../../core-api/printk-basics.html#c.printk" title="printk"><code class="xref c c-func docutils literal notranslate"><span class="pre">printk()</span></code></a></p></li>
-<li><p><a class="reference internal" href="../../../core-api/mm-api.html#c.kfree" title="kfree"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree()</span></code></a></p></li>
-<li><p><a class="reference internal" href="../../../driver-api/basics.html#c.add_timer" title="add_timer"><code class="xref c c-func docutils literal notranslate"><span class="pre">add_timer()</span></code></a> e <a class="reference internal" href="../../../driver-api/basics.html#c.timer_delete" title="timer_delete"><code class="xref c c-func docutils literal notranslate"><span class="pre">timer_delete()</span></code></a></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">printk()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kfree()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">add_timer()</span></code> e <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">timer_delete()</span></code></p></li>
 </ul>
 </section>
 </section>
@@ -1649,12 +1649,12 @@ acquired it. Recursive locking is not allowed. The task
 may not exit without first unlocking the mutex. Also, kernel
 memory where the mutex resides must not be freed with
 the mutex still locked. The mutex must first be initialized
-(or statically defined) before it can be locked. <a class="reference internal" href="../../../core-api/kernel-api.html#c.memset" title="memset"><code class="xref c c-func docutils literal notranslate"><span class="pre">memset()</span></code></a>-ing
+(or statically defined) before it can be locked. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">memset()</span></code>-ing
 the mutex to 0 is not allowed.</p>
 <p>(The CONFIG_DEBUG_MUTEXES .config option turns on debugging
 checks that will enforce the restrictions and will also do
 deadlock debugging)</p>
-<p>This function is similar to (but not equivalent to) down().</p>
+<p>This function is similar to (but not equivalent to) <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">down()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.it_IT.mutex_unlock">
@@ -1676,7 +1676,7 @@ of a not locked mutex is not allowed.</p>
 returned - <a class="reference internal" href="#c.it_IT.mutex_unlock" title="it_IT.mutex_unlock"><code class="xref c c-func docutils literal notranslate"><span class="pre">mutex_unlock()</span></code></a> can NOT directly be used to release an object such
 that another concurrent task can free it.
 Mutexes are different from spinlocks &amp; refcounts in this aspect.</p>
-<p>This function is similar to (but not equivalent to) up().</p>
+<p>This function is similar to (but not equivalent to) <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">up()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.it_IT.ww_mutex_unlock">
@@ -1796,12 +1796,12 @@ scheduler.</p>
 <p><strong>Description</strong></p>
 <p>Try to acquire the mutex atomically. Returns 1 if the mutex
 has been acquired successfully, and 0 on contention.</p>
+<p><strong>NOTE</strong></p>
+<p>this function follows the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_trylock()</span></code> convention, so
+it is negated from the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">down_trylock()</span></code> return values! Be careful
+about this when converting semaphore users to mutexes.</p>
 <p>This function must not be used in interrupt context. The
 mutex must be released by the same task that acquired it.</p>
-<p><strong>NOTE</strong></p>
-<p>this function follows the spin_trylock() convention, so
-it is negated from the down_trylock() return values! Be careful
-about this when converting semaphore users to mutexes.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.it_IT.atomic_dec_and_mutex_lock">
@@ -1879,10 +1879,8 @@ global hash is returned.</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Initialized hrtimer_sleeper structure or NULL if no timeout</dt><dd><p>value given</p>
-</dd>
-</dl>
+<p>Initialized hrtimer_sleeper structure or NULL if no timeout
+value given</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.it_IT.get_futex_key">
@@ -1911,14 +1909,14 @@ FUTEX_WRITE)</p>
 <blockquote>
 <div><p>( inode-&gt;i_sequence, page offset within mapping, offset_within_page )</p>
 </div></blockquote>
-<p>[ also see get_inode_sequence_number() ]</p>
+<p>[ also see <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_inode_sequence_number()</span></code> ]</p>
 <p>For private mappings (or when <strong>!fshared</strong>), the key is:</p>
 <blockquote>
 <div><p>( current-&gt;mm, address, 0 )</p>
 </div></blockquote>
 <p>This allows (cross process, where applicable) identification of the futex
 without keeping the page pinned for the duration of the FUTEX_WAIT.</p>
-<p><a class="reference internal" href="../../../core-api/mm-api.html#c.lock_page" title="lock_page"><code class="xref c c-func docutils literal notranslate"><span class="pre">lock_page()</span></code></a> might sleep, the caller should not hold a spinlock.</p>
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lock_page()</span></code> might sleep, the caller should not hold a spinlock.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.it_IT.fault_in_user_writeable">
@@ -1938,7 +1936,7 @@ access to <strong>uaddr</strong>.</p>
 <p>We have no generic implementation of a non-destructive write to the
 user address. We know that we faulted in the atomic pagefault
 disabled section so we can as well avoid the #PF overhead by
-calling get_user_pages() right away.</p>
+calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_user_pages()</span></code> right away.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.it_IT.futex_top_waiter">
@@ -2005,12 +2003,10 @@ calling get_user_pages() right away.</p>
 <p>The q-&gt;lock_ptr must not be held by the caller. A call to <a class="reference internal" href="#c.it_IT.futex_unqueue" title="it_IT.futex_unqueue"><code class="xref c c-func docutils literal notranslate"><span class="pre">futex_unqueue()</span></code></a> must
 be paired with exactly one earlier call to <a class="reference internal" href="#c.it_IT.futex_queue" title="it_IT.futex_queue"><code class="xref c c-func docutils literal notranslate"><span class="pre">futex_queue()</span></code></a>.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>1 - if the futex_q was still queued (and we removed unqueued it);</p></li>
 <li><p>0 - if the futex_q was already removed by the waking thread</p></li>
 </ul>
-</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.it_IT.futex_exit_recursive">
@@ -2029,7 +2025,7 @@ be paired with exactly one earlier call to <a class="reference internal" href="#
 observes that state when a task is exiting and loops until the task has
 actually finished the futex cleanup. The worst case for this is that the
 waiter runs through the wait loop until the state becomes visible.</p>
-<p>This is called from the recursive fault handling path in make_task_dead().</p>
+<p>This is called from the recursive fault handling path in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">make_task_dead()</span></code>.</p>
 <p>This is best effort. Either the futex exit code has run already or
 not. If the OWNER_DIED bit has been set on the futex then the waiter can
 take it over. If not, the problem is pushed back to user space. If the
@@ -2085,11 +2081,11 @@ block forever, but there is nothing which can be done about that.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">bitset</span></code></dt><dd><p>bitset for the optional bitmasked wakeup</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">requeue_state</span></code></dt><dd><p>State field for futex_requeue_pi()</p>
+<dt><code class="docutils literal notranslate"><span class="pre">requeue_state</span></code></dt><dd><p>State field for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">futex_requeue_pi()</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">drop_hb_ref</span></code></dt><dd><p>Waiter should drop the extra hash bucket reference if true</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">requeue_wait</span></code></dt><dd><p>RCU wait for futex_requeue_pi() (RT only)</p>
+<dt><code class="docutils literal notranslate"><span class="pre">requeue_wait</span></code></dt><dd><p>RCU wait for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">futex_requeue_pi()</span></code> (RT only)</p>
 </dd>
 </dl>
 </div>
@@ -2101,7 +2097,7 @@ It is considered woken when plist_node_empty(<code class="xref c c-type docutils
 The order of wakeup is always to make the first condition true, then
 the second.</p>
 <p>PI futexes are typically woken before they are removed from the hash list via
-the rt_mutex code. See futex_unqueue_pi().</p>
+the rt_mutex code. See <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">futex_unqueue_pi()</span></code>.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.it_IT.futex_match">
 <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">futex_match</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">union</span></span><span class="w"> </span><span class="n"><span class="pre">futex_key</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">key1</span></span>, <span class="k"><span class="pre">union</span></span><span class="w"> </span><span class="n"><span class="pre">futex_key</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">key2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.it_IT.futex_match" title="Link to this definition">¶</a><br /></dt>
@@ -2138,7 +2134,7 @@ the rt_mutex code. See futex_unqueue_pi().</p>
 <p><strong>Description</strong></p>
 <p>The hb-&gt;lock must be held by the caller, and is released here. A call to
 <a class="reference internal" href="#c.it_IT.futex_queue" title="it_IT.futex_queue"><code class="xref c c-func docutils literal notranslate"><span class="pre">futex_queue()</span></code></a> is typically paired with exactly one call to <a class="reference internal" href="#c.it_IT.futex_unqueue" title="it_IT.futex_unqueue"><code class="xref c c-func docutils literal notranslate"><span class="pre">futex_unqueue()</span></code></a>.  The
-exceptions involve the PI related operations, which may use futex_unqueue_pi()
+exceptions involve the PI related operations, which may use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">futex_unqueue_pi()</span></code>
 or nothing if the unqueue is done as part of the wake process and the unqueue
 state is implicit in the state of woken task (see <a class="reference internal" href="#c.it_IT.futex_wait_requeue_pi" title="it_IT.futex_wait_requeue_pi"><code class="xref c c-func docutils literal notranslate"><span class="pre">futex_wait_requeue_pi()</span></code></a> for
 an example).</p>
@@ -2147,7 +2143,7 @@ an example).</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.it_IT.futex_vector">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">futex_vector</span></span></span><a class="headerlink" href="#c.it_IT.futex_vector" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Auxiliary struct for futex_waitv()</p>
+<dd><p>Auxiliary struct for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">futex_waitv()</span></code></p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -2167,7 +2163,7 @@ an example).</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>Struct used to build an array with all data need for futex_waitv()</p>
+<p>Struct used to build an array with all data need for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">futex_waitv()</span></code></p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.it_IT.futex_lock_pi_atomic">
 <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">futex_lock_pi_atomic</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">u32</span></span><span class="w"> </span><span class="pre">__user</span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">uaddr</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">futex_hash_bucket</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">hb</span></span>, <span class="k"><span class="pre">union</span></span><span class="w"> </span><span class="n"><span class="pre">futex_key</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">key</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">futex_pi_state</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ps</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">task_struct</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">task</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">task_struct</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">exiting</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">set_waiters</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.it_IT.futex_lock_pi_atomic" title="Link to this definition">¶</a><br /></dt>
@@ -2196,13 +2192,11 @@ which is in the middle of exiting</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>0 - ready to wait;</p></li>
 <li><p>1 - acquired the lock;</p></li>
 <li><p>&lt;0 - error</p></li>
 </ul>
-</div></blockquote>
 <p><strong>Description</strong></p>
 <p>The hb-&gt;lock must be held by the caller.</p>
 <p><strong>exiting</strong> is only set when the return value is -EBUSY. If so, this holds
@@ -2230,13 +2224,11 @@ after waiting for the exit to complete.</p>
 the pi_state owner as well as handle race conditions that may allow us to
 acquire the lock. Must be called with the hb lock held.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>1 - success, lock taken;</p></li>
 <li><p>0 - success, lock not taken;</p></li>
 <li><p>&lt;0 - on error (-EFAULT)</p></li>
 </ul>
-</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.it_IT.requeue_futex">
@@ -2327,13 +2319,11 @@ hb1 and hb2 must be held by the caller.</p>
 a refcount on the exiting task on return and the caller needs to drop it
 after waiting for the exit to complete.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>0 - failed to acquire the lock atomically;</p></li>
 <li><p>&gt;0 - acquired the lock, return value is vpid of the top_waiter</p></li>
 <li><p>&lt;0 - error</p></li>
 </ul>
-</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.it_IT.futex_requeue">
@@ -2366,12 +2356,10 @@ pi futex (pi to pi requeue is not supported)</p>
 <p>Requeue waiters on uaddr1 to uaddr2. In the requeue_pi case, try to acquire
 uaddr2 atomically on behalf of the top waiter.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>&gt;=0 - on success, the number of tasks requeued or woken;</p></li>
 <li><p>&lt;0 - on error</p></li>
 </ul>
-</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.it_IT.handle_early_requeue_pi_wakeup">
@@ -2392,9 +2380,7 @@ uaddr2 atomically on behalf of the top waiter.</p>
 <p><strong>Description</strong></p>
 <p>Determine the cause for the early wakeup.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p>-EWOULDBLOCK or -ETIMEDOUT or -ERESTARTNOINTR</p>
-</div></blockquote>
+<p>-EWOULDBLOCK or -ETIMEDOUT or -ERESTARTNOINTR</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.it_IT.futex_wait_requeue_pi">
@@ -2426,7 +2412,7 @@ on uaddr2 and complete the acquisition of the rt_mutex prior to returning to
 userspace.  This ensures the rt_mutex maintains an owner when it has waiters;
 without one, the pi logic would not know which task to boost/deboost, if
 there was a need to.</p>
-<p>We call schedule in futex_wait_queue() when we enqueue and return there
+<p>We call schedule in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">futex_wait_queue()</span></code> when we enqueue and return there
 via the following--
 1) wakeup on uaddr2 after an atomic lock acquisition by <a class="reference internal" href="#c.it_IT.futex_requeue" title="it_IT.futex_requeue"><code class="xref c c-func docutils literal notranslate"><span class="pre">futex_requeue()</span></code></a>
 2) wakeup on uaddr2 after a requeue
@@ -2441,12 +2427,10 @@ via the following--
 <p>If 6, return -EWOULDBLOCK (restarting the syscall would do the same).</p>
 <p>If 4 or 7, we cleanup and return with -ETIMEDOUT.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>0 - On success;</p></li>
 <li><p>&lt;0 - On error</p></li>
 </ul>
-</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.it_IT.futex_do_wait">
@@ -2480,8 +2464,7 @@ via the following--
 <p><strong>Description</strong></p>
 <p>Helper to unqueue a list of futexes. This can’t fail.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><ul>
+<ul>
 <li><p>&gt;=0 - Index of the last futex that was awoken;</p></li>
 <li><dl class="option-list">
 <dt><kbd><span class="option">-1</span></kbd></dt>
@@ -2492,7 +2475,6 @@ via the following--
 </dl>
 </li>
 </ul>
-</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.it_IT.futex_wait_multiple_setup">
@@ -2516,13 +2498,11 @@ caller that it can return this index to userspace (return parameter)</p>
 the futex list is invalid or if any futex was already awoken. On success the
 task is ready to interruptible sleep.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>1 - One of the futexes was woken by another thread</p></li>
 <li><p>0 - Success</p></li>
 <li><p>&lt;0 - -EFAULT, -EWOULDBLOCK or -EINVAL</p></li>
 </ul>
-</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.it_IT.futex_sleep_multiple">
@@ -2565,12 +2545,10 @@ been woken up.</p>
 sleeps on a group of futexes and returns on the first futex that is
 wake, or after the timeout has elapsed.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>&gt;=0 - Hint to the futex that was awoken</p></li>
 <li><p>&lt;0  - On error</p></li>
 </ul>
-</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.it_IT.futex_wait_setup">
@@ -2599,8 +2577,7 @@ wake, or after the timeout has elapsed.</p>
 compare it with the expected value.  Handle atomic faults internally.
 Return with the hb lock held on success, and unlocked on failure.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>0 - uaddr contains val and hb has been locked;</p></li>
 <li><dl class="simple">
 <dt>&lt;0 - On error and the hb is unlocked. A possible reason: the uaddr can not</dt><dd><p>be read, does not contain the expected value or is not properly aligned.</p>
@@ -2608,7 +2585,6 @@ Return with the hb lock held on success, and unlocked on failure.</p>
 </dl>
 </li>
 </ul>
-</div></blockquote>
 </div>
 </section>
 <section id="approfondimenti">
@@ -2649,13 +2625,13 @@ cambiati per disabilitare la prelazioni, anche su sistemi monoprocessore.</p>
 </dd>
 <dt>bh</dt><dd><p>Bottom Half: per ragioni storiche, le funzioni che contengono ‘_bh’ nel
 loro nome ora si riferiscono a qualsiasi interruzione software; per esempio,
-spin_lock_bh() blocca qualsiasi interuzione software sul processore
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_bh()</span></code> blocca qualsiasi interuzione software sul processore
 corrente. I <em>Bottom Halves</em> sono deprecati, e probabilmente verranno
 sostituiti dai tasklet. In un dato momento potrà esserci solo un
 <em>bottom half</em> in esecuzione.</p>
 </dd>
 <dt>contesto d’interruzione</dt><dd><p>Non è il contesto utente: qui si processano le interruzioni hardware e
-software. La macro in_interrupt() ritorna vero.</p>
+software. La macro <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">in_interrupt()</span></code> ritorna vero.</p>
 </dd>
 <dt>contesto utente</dt><dd><p>Il kernel che esegue qualcosa per conto di un particolare processo (per
 esempio una chiamata di sistema) o di un thread del kernel. Potete
@@ -2663,11 +2639,11 @@ identificare il processo con la macro <code class="docutils literal notranslate"
 con lo spazio utente. Può essere interrotto sia da interruzioni software
 che hardware.</p>
 </dd>
-<dt>interruzione hardware</dt><dd><p>Richiesta di interruzione hardware. in_hardirq() ritorna vero in un
+<dt>interruzione hardware</dt><dd><p>Richiesta di interruzione hardware. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">in_hardirq()</span></code> ritorna vero in un
 gestore d’interruzioni hardware.</p>
 </dd>
-<dt>interruzione software / softirq</dt><dd><p>Gestore di interruzioni software: in_hardirq() ritorna falso;
-in_softirq() ritorna vero. I tasklet e le softirq sono entrambi
+<dt>interruzione software / softirq</dt><dd><p>Gestore di interruzioni software: <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">in_hardirq()</span></code> ritorna falso;
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">in_softirq()</span></code> ritorna vero. I tasklet e le softirq sono entrambi
 considerati ‘interruzioni software’.</p>
 <p>In soldoni, un softirq è uno delle 32 interruzioni software che possono
 essere eseguite su più processori in contemporanea. A volte si usa per

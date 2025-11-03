@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -259,7 +259,7 @@ entering critical sections simultaneously.</p></li>
 </ul>
 </dd>
 <dt>waiter</dt><dd><ul>
-<li><p>A waiter is a struct that is stored on the stack of a blocked
+<li><p>A waiter is a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">that</span></code> is stored on the stack of a blocked
 process.  Since the scope of the waiter is within the code for
 a process being blocked on the mutex, it is fine to allocate
 the waiter on the process’s stack (local variable).  This
@@ -357,7 +357,7 @@ to that of G.</p>
 <h2>Mutex Waiters Tree<a class="headerlink" href="#mutex-waiters-tree" title="Link to this heading">¶</a></h2>
 <p>Every mutex keeps track of all the waiters that are blocked on itself. The
 mutex has a rbtree to store these waiters by priority.  This tree is protected
-by a spin lock that is located in the struct of the mutex. This lock is called
+by a spin lock that is located in the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">of</span></code> the mutex. This lock is called
 wait_lock.</p>
 </section>
 <section id="task-pi-tree">
@@ -529,7 +529,7 @@ priorities.</p>
 <p>rt_mutex_adjust_prio_chain is called with a task to be checked for PI
 (de)boosting (the owner of a mutex that a process is blocking on), a flag to
 check for deadlocking, the mutex that the task owns, a pointer to a waiter
-that is the process’s waiter struct that is blocked on the mutex (although this
+that is the process’s waiter <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">that</span></code> is blocked on the mutex (although this
 parameter may be NULL for deboosting), a pointer to the mutex on which the task
 is blocked, and a top_task as the top waiter of the mutex.</p>
 <p>For this explanation, I will not mention deadlock detection. This explanation
@@ -585,8 +585,8 @@ waiters of the lock</p></li>
 owner of the lock, and if the lock still has waiters, the top_waiter
 (highest priority task waiting on the lock) is added to this task’s
 pi_waiters tree.</p>
-<p>If the lock is not taken by try_to_take_rt_mutex(), then the
-task_blocks_on_rt_mutex() function is called. This will add the task to
+<p>If the lock is not taken by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">try_to_take_rt_mutex()</span></code>, then the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">task_blocks_on_rt_mutex()</span></code> function is called. This will add the task to
 the lock’s waiter tree and propagate the pi chain of the lock as well
 as the lock’s owner’s pi_waiters tree. This is described in the next
 section.</p>
@@ -626,7 +626,7 @@ to the TASK_RUNNING state.</p>
 could get the lock, then it will go back to sleep and wait to be woken again.</p>
 <p>The second case is only applicable for tasks that are grabbing a mutex
 that can wake up before getting the lock, either due to a signal or
-a timeout (i.e. rt_mutex_timed_futex_lock()). When woken, it will try to
+a timeout (i.e. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rt_mutex_timed_futex_lock()</span></code>). When woken, it will try to
 take the lock again, if it succeeds, then the task will return with the
 lock held, otherwise it will return with -EINTR if the task was woken
 by a signal, or -ETIMEDOUT if it timed out.</p>

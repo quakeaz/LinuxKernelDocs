@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -212,15 +212,15 @@ described in <a class="reference internal" href="driver-model.html"><span class=
 <li><p>All drivers must define a ccw_driver (see <a class="reference internal" href="driver-model.html"><span class="doc">S/390 driver model interfaces</span></a>) and the associated
 functions.</p></li>
 <li><p><a class="reference internal" href="../../core-api/genericirq.html#c.request_irq" title="request_irq"><code class="xref c c-func docutils literal notranslate"><span class="pre">request_irq()</span></code></a> and <a class="reference internal" href="../../core-api/genericirq.html#c.free_irq" title="free_irq"><code class="xref c c-func docutils literal notranslate"><span class="pre">free_irq()</span></code></a> are no longer done by the driver.</p></li>
-<li><p>The oper_handler is (kindof) replaced by the probe() and set_online() functions
+<li><p>The oper_handler is (kindof) replaced by the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_online()</span></code> functions
 of the ccw_driver.</p></li>
-<li><p>The not_oper_handler is (kindof) replaced by the remove() and set_offline()
+<li><p>The not_oper_handler is (kindof) replaced by the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_offline()</span></code>
 functions of the ccw_driver.</p></li>
 <li><p>The channel device layer is gone.</p></li>
 <li><p>The interrupt handlers must be adapted to use a ccw_device as argument.
 Moreover, they don’t return a devstat, but an irb.</p></li>
 <li><p>Before initiating an io, the options must be set via <a class="reference internal" href="../../driver-api/s390-drivers.html#c.ccw_device_set_options" title="ccw_device_set_options"><code class="xref c c-func docutils literal notranslate"><span class="pre">ccw_device_set_options()</span></code></a>.</p></li>
-<li><p>Instead of calling read_dev_chars()/read_conf_data(), the driver issues
+<li><p>Instead of calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">read_dev_chars()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">read_conf_data()</span></code>, the driver issues
 the channel program and handles the interrupt itself.</p></li>
 </ul>
 <dl class="simple">
@@ -233,16 +233,16 @@ the channel program and handles the interrupt itself.</p></li>
 <dt>ccw_device_halt()</dt><dd><p>terminate the current I/O request processed on the device.</p>
 </dd>
 <dt>do_IRQ()</dt><dd><p>generic interrupt routine. This function is called by the interrupt entry
-routine whenever an I/O interrupt is presented to the system. The do_IRQ()
+routine whenever an I/O interrupt is presented to the system. The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_IRQ()</span></code>
 routine determines the interrupt status and calls the device specific
 interrupt handler according to the rules (flags) defined during I/O request
-initiation with do_IO().</p>
+initiation with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_IO()</span></code>.</p>
 </dd>
 </dl>
-<p>The next chapters describe the functions other than do_IRQ() in more details.
-The do_IRQ() interface is not described, as it is called from the Linux/390
+<p>The next chapters describe the functions other than <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_IRQ()</span></code> in more details.
+The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_IRQ()</span></code> interface is not described, as it is called from the Linux/390
 first level interrupt handler only and does not comprise a device driver
-callable interface. Instead, the functional description of do_IO() also
+callable interface. Instead, the functional description of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_IO()</span></code> also
 describes the input to the device specific interrupt handler.</p>
 <dl class="simple">
 <dt>Note:</dt><dd><p>All explanations apply also to the 64 bit architecture s390x.</p>
@@ -316,7 +316,7 @@ ESA/390 I/O commands itself, but must use the Linux/390 CDS interfaces instead.<
 <a class="reference internal" href="../../driver-api/s390-drivers.html#c.ccw_device_halt" title="ccw_device_halt"><code class="xref c c-func docutils literal notranslate"><span class="pre">ccw_device_halt()</span></code></a> function. Some devices require to initially issue a HALT
 SUBCHANNEL (HSCH) command without having pending I/O requests. This function is
 also covered by <a class="reference internal" href="../../driver-api/s390-drivers.html#c.ccw_device_halt" title="ccw_device_halt"><code class="xref c c-func docutils literal notranslate"><span class="pre">ccw_device_halt()</span></code></a>.</p>
-<p>get_ciw() - get command information word</p>
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_ciw()</span></code> - get command information word</p>
 <p>This call enables a device driver to get information about supported commands
 from the extended SenseID data.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct ciw *
@@ -771,9 +771,9 @@ is required to end the pending operation.</p>
 <h3>Miscellaneous Support Routines<a class="headerlink" href="#miscellaneous-support-routines" title="Link to this heading">¶</a></h3>
 <p>This chapter describes various routines to be used in a Linux/390 device
 driver programming environment.</p>
-<p>get_ccwdev_lock()</p>
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_ccwdev_lock()</span></code></p>
 <p>Get the address of the device specific lock. This is then used in
-spin_lock() / spin_unlock() calls.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock()</span></code> / <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_unlock()</span></code> calls.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>__u8 ccw_device_get_path_mask(struct ccw_device *cdev);
 </pre></div>
 </div>

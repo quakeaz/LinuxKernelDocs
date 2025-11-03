@@ -14,7 +14,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="VGA Switcheroo" href="vga-switcheroo.html" />
-    <link rel="prev" title="Task List" href="nova/core/todo.html" />
+    <link rel="prev" title="Falcon (FAst Logic Controller)" href="nova/core/falcon.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -153,7 +153,7 @@
 <a class="reference internal" href="#c.devm_backlight_device_register" title="devm_backlight_device_register"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_backlight_device_register()</span></code></a>. The properties of the backlight
 driver such as type and max_brightness must be specified.
 When the core detect changes in for example brightness or power state
-the update_status() operation is called. The backlight driver shall
+the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">update_status()</span></code> operation is called. The backlight driver shall
 implement this operation and use it to adjust backlight.</p>
 <p>Several sysfs attributes are provided by the backlight core:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>- brightness         R/W, set the requested brightness level
@@ -165,7 +165,7 @@ implement this operation and use it to adjust backlight.</p>
 <p>The backlight can be adjusted using the sysfs interface, and
 the backlight driver may also support adjusting backlight using
 a hot-key or some other platform or firmware specific way.</p>
-<p>The driver must implement the get_brightness() operation if
+<p>The driver must implement the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_brightness()</span></code> operation if
 the HW do not support all the levels that can be specified in
 brightness, thus providing user-space access to the actual level
 via the actual_brightness attribute.</p>
@@ -175,9 +175,9 @@ When brightness is set by platform specific means, for example
 a hot-key to adjust backlight, the driver must notify the backlight
 core that brightness has changed using <a class="reference internal" href="#c.backlight_force_update" title="backlight_force_update"><code class="xref c c-func docutils literal notranslate"><span class="pre">backlight_force_update()</span></code></a>.</p>
 <p>Display drives can control the backlight device’s status using
-backlight_notify_blank() and backlight_notify_blank_all(). If this
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">backlight_notify_blank()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">backlight_notify_blank_all()</span></code>. If this
 results in a change in the backlight state the functions call the
-update_status() operation.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">update_status()</span></code> operation.</p>
 <dl class="c enum">
 <dt class="sig sig-object c" id="c.backlight_update_reason">
 <span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">backlight_update_reason</span></span></span><a class="headerlink" href="#c.backlight_update_reason" title="Link to this definition">¶</a><br /></dt>
@@ -238,7 +238,7 @@ when calling <a class="reference internal" href="#c.backlight_force_update" titl
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">options</span></code></dt><dd><p>Configure how operations are called from the core.</p>
 <p>The options parameter is used to adjust the behaviour of the core.
-Set BL_CORE_SUSPENDRESUME to get the update_status() operation called
+Set BL_CORE_SUSPENDRESUME to get the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">update_status()</span></code> operation called
 upon suspend and resume.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">update_status</span></code></dt><dd><p>Operation called when properties have changed.</p>
@@ -246,7 +246,7 @@ upon suspend and resume.</p>
 The update_status operation is protected by the update_lock.</p>
 <p>The backlight driver is expected to use <a class="reference internal" href="#c.backlight_is_blank" title="backlight_is_blank"><code class="xref c c-func docutils literal notranslate"><span class="pre">backlight_is_blank()</span></code></a>
 to check if the display is blanked and set brightness accordingly.
-update_status() is called when any of the properties has changed.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">update_status()</span></code> is called when any of the properties has changed.</p>
 <p>RETURNS:</p>
 <p>0 on success, negative error code if any failure occurred.</p>
 </dd>
@@ -284,7 +284,7 @@ the backlight, return true. Otherwise return false.</p>
     int power;
 #define BACKLIGHT_POWER_ON              (0);
 #define BACKLIGHT_POWER_OFF             (4);
-#define BACKLIGHT_POWER_REDUCED         (1) ;
+#define BACKLIGHT_POWER_REDUCED         (1);
     enum backlight_type type;
     unsigned int state;
 #define BL_CORE_SUSPENDED       (1 &lt;&lt; 0)        ;
@@ -311,7 +311,7 @@ driver after registration.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">power</span></code></dt><dd><p>The current power mode.</p>
 <p>User space can configure the power mode using the sysfs
 attribute: /sys/class/backlight/&lt;backlight&gt;/bl_power
-When the power property is updated update_status() is called.</p>
+When the power property is updated <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">update_status()</span></code> is called.</p>
 <p>The possible values are: (0: full on, 4: full off), see
 BACKLIGHT_POWER constants.</p>
 <p>When the backlight device is enabled, <strong>power</strong> is set to
@@ -329,7 +329,7 @@ passed to <a class="reference internal" href="#c.devm_backlight_device_register"
 is expected to be blank. BL_CORE_SUSPENDED is set when the
 driver is suspended.</p>
 <p>backlight drivers are expected to use <a class="reference internal" href="#c.backlight_is_blank" title="backlight_is_blank"><code class="xref c c-func docutils literal notranslate"><span class="pre">backlight_is_blank()</span></code></a>
-in their update_status() operation rather than reading the
+in their <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">update_status()</span></code> operation rather than reading the
 state property.</p>
 <p>The state is maintained by the core and drivers may not modify it.</p>
 </dd>
@@ -362,10 +362,10 @@ state property.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">props</span></code></dt><dd><p>Backlight properties</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">update_lock</span></code></dt><dd><p>The lock used when calling the update_status() operation.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">update_lock</span></code></dt><dd><p>The lock used when calling the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">update_status()</span></code> operation.</p>
 <p>update_lock is an internal backlight lock that serialise access
-to the update_status() operation. The backlight core holds the update_lock
-when calling the update_status() operation. The update_lock shall not
+to the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">update_status()</span></code> operation. The backlight core holds the update_lock
+when calling the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">update_status()</span></code> operation. The update_lock shall not
 be used by backlight drivers.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">ops_lock</span></code></dt><dd><p>The lock used around everything related to backlight_ops.</p>
@@ -375,7 +375,7 @@ invoked. The ops_lock shall not be used by backlight drivers.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">ops</span></code></dt><dd><p>Pointer to the backlight operations.</p>
 <p>If ops is NULL, the driver that registered this device has been unloaded,
-and if class_get_devdata() points to something in the body of that driver,
+and if <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">class_get_devdata()</span></code> points to something in the body of that driver,
 it is also invalid.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">entry</span></code></dt><dd><p>List entry of all registered backlight devices</p>
@@ -463,7 +463,7 @@ it is also invalid.</p>
 <p>Returns the current brightness value, taking in consideration the current
 state. If <a class="reference internal" href="#c.backlight_is_blank" title="backlight_is_blank"><code class="xref c c-func docutils literal notranslate"><span class="pre">backlight_is_blank()</span></code></a> returns true then return 0 as brightness
 otherwise return the current brightness property value.</p>
-<p>Backlight drivers are expected to use this function in their update_status()
+<p>Backlight drivers are expected to use this function in their <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">update_status()</span></code>
 operation to get the brightness value.</p>
 </div>
 <dl class="c function">
@@ -502,7 +502,7 @@ devdata.</p>
 <p>Updates the internal state of the backlight in response to a hardware event,
 and generates an uevent to notify userspace. A backlight driver shall call
 <a class="reference internal" href="#c.backlight_force_update" title="backlight_force_update"><code class="xref c c-func docutils literal notranslate"><span class="pre">backlight_force_update()</span></code></a> when the backlight is changed using, for example,
-a hot-key. The updated brightness is read using get_brightness() and the
+a hot-key. The updated brightness is read using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_brightness()</span></code> and the
 brightness value is reported using an uevent.</p>
 </div>
 <dl class="c function">
@@ -550,7 +550,7 @@ reference by calling <a class="reference internal" href="../driver-api/infrastru
 <p>Creates and registers new backlight device. When a backlight device
 is registered the configuration must be specified in the <strong>props</strong>
 parameter. See description of <a class="reference internal" href="#c.backlight_properties" title="backlight_properties"><code class="xref c c-type docutils literal notranslate"><span class="pre">backlight_properties</span></code></a>.</p>
-<p>struct backlight on success, or an ERR_PTR on error</p>
+<p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">backlight</span></code> on success, or an ERR_PTR on error</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.devm_backlight_device_unregister">

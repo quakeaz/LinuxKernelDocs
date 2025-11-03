@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -268,7 +268,7 @@ Chinese (Simplified)
 </section>
 <section id="id4">
 <h2>基础算法<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h2>
-<p>通过 <a class="reference internal" href="../../../core-api/mm-api.html#c.kmalloc" title="kmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmalloc()</span></code></a>, <code class="xref c c-func docutils literal notranslate"><span class="pre">vmalloc()</span></code>, <a class="reference internal" href="../../../core-api/mm-api.html#c.kmem_cache_alloc" title="kmem_cache_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmem_cache_alloc()</span></code></a> 以及同类
+<p>通过 <a class="reference internal" href="../../../core-api/mm-api.html#c.kmalloc" title="kmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmalloc()</span></code></a>, <a class="reference internal" href="../../../core-api/mm-api.html#c.vmalloc" title="vmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">vmalloc()</span></code></a>, <a class="reference internal" href="../../../core-api/mm-api.html#c.kmem_cache_alloc" title="kmem_cache_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmem_cache_alloc()</span></code></a> 以及同类
 函数均被跟踪，指针，包括一些额外的信息如大小和栈追踪等，都被存储在红黑树中。
 对应的释放函数调用也被追踪，并从 kmemleak 数据结构中移除相应指针。</p>
 <p>对于一个已分配的内存块，如果通过扫描内存（包括保存寄存器）没有发现任何指针指向
@@ -287,7 +287,7 @@ Chinese (Simplified)
 </div></blockquote>
 <p>有些指向已分配的内存块的指针存储在内核内部的数据结构中，它们不能被检测为孤立。
 为了避免这种情况，kmemleak 也存储了指向需要被查找的内存块范围内的任意地址的地址
-数量，如此一来这些内存便不会被认为泄露。一个例子是 __vmalloc()。</p>
+数量，如此一来这些内存便不会被认为泄露。一个例子是 <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__vmalloc()</span></code>。</p>
 </section>
 <section id="kmemleak">
 <h2>用 kmemleak 测试特定部分<a class="headerlink" href="#kmemleak" title="Link to this heading">¶</a></h2>
@@ -323,7 +323,7 @@ Chinese (Simplified)
 <li><p><code class="docutils literal notranslate"><span class="pre">kmemleak_init</span></code> - 初始化 kmemleak</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">kmemleak_alloc</span></code> - 通知一个内存块的分配</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">kmemleak_alloc_percpu</span></code> - 通知一个 percpu 类型的内存分配</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">kmemleak_vmalloc</span></code> - 通知一个使用 vmalloc() 的内存分配</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">kmemleak_vmalloc</span></code> - 通知一个使用 <a class="reference internal" href="../../../core-api/mm-api.html#c.vmalloc" title="vmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">vmalloc()</span></code></a> 的内存分配</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">kmemleak_free</span></code> - 通知一个内存块的释放</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">kmemleak_free_part</span></code> - 通知一个部分的内存释放</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">kmemleak_free_percpu</span></code> - 通知一个 percpu 类型的内存释放</p></li>

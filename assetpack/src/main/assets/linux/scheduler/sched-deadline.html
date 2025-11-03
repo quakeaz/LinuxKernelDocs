@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -696,7 +696,7 @@ is that -deadline tasks have bandwidth on their own (while -rt ones don’t!),
 and thus we don’t need a higher level throttling mechanism to enforce the
 desired bandwidth. In other words, this means that interface parameters are
 only used at admission control time (i.e., when the user calls
-sched_setattr()). Scheduling is then performed considering actual tasks’
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sched_setattr()</span></code>). Scheduling is then performed considering actual tasks’
 parameters, so that CPU bandwidth is allocated to SCHED_DEADLINE tasks
 respecting their needs in terms of granularity. Therefore, using this simple
 interface we can put a cap on total utilization of -deadline tasks (i.e.,
@@ -739,10 +739,10 @@ its own timing constraints needs, in general, a way of declaring:</p>
 <p>Therefore:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>a new struct sched_attr, containing all the necessary fields is
+<li><p>a new <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">sched_attr</span></code>, containing all the necessary fields is
 provided;</p></li>
 <li><p>the new scheduling related syscalls that manipulate it, i.e.,
-sched_setattr() and sched_getattr() are implemented.</p></li>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sched_setattr()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sched_getattr()</span></code> are implemented.</p></li>
 </ul>
 </div></blockquote>
 <p>For debugging purposes, the leftover runtime and absolute deadline of a
@@ -772,14 +772,14 @@ in a period.</p>
 <section id="behavior-of-sched-yield">
 <h3>4.4 Behavior of sched_yield()<a class="headerlink" href="#behavior-of-sched-yield" title="Link to this heading">¶</a></h3>
 <blockquote>
-<div><p>When a SCHED_DEADLINE task calls sched_yield(), it gives up its
+<div><p>When a SCHED_DEADLINE task calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sched_yield()</span></code>, it gives up its
 remaining runtime and is immediately throttled, until the next
 period, when its runtime will be replenished (a special flag
 dl_yielded is set and used to handle correctly throttling and runtime
-replenishment after a call to sched_yield()).</p>
-<p>This behavior of sched_yield() allows the task to wake-up exactly at
+replenishment after a call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sched_yield()</span></code>).</p>
+<p>This behavior of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sched_yield()</span></code> allows the task to wake-up exactly at
 the beginning of the next period. Also, this may be useful in the
-future with bandwidth reclaiming mechanisms, where sched_yield() will
+future with bandwidth reclaiming mechanisms, where <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sched_yield()</span></code> will
 make the leftoever runtime available for reclamation by other
 SCHED_DEADLINE tasks.</p>
 </div></blockquote>
@@ -788,15 +788,17 @@ SCHED_DEADLINE tasks.</p>
 <section id="tasks-cpu-affinity">
 <h2>5. Tasks CPU affinity<a class="headerlink" href="#tasks-cpu-affinity" title="Link to this heading">¶</a></h2>
 <blockquote>
-<div><p>-deadline tasks cannot have an affinity mask smaller that the entire
-root_domain they are created on. However, affinities can be specified
-through the cpuset facility (<a class="reference internal" href="../admin-guide/cgroup-v1/cpusets.html"><span class="doc">CPUSETS</span></a>).</p>
+<div><p>Deadline tasks cannot have a cpu affinity mask smaller than the root domain they
+are created on. So, using <code class="docutils literal notranslate"><span class="pre">sched_setaffinity(2)</span></code> won’t work. Instead, the
+the deadline task should be created in a restricted root domain. This can be
+done using the cpuset controller of either cgroup v1 (deprecated) or cgroup v2.
+See <a class="reference internal" href="../admin-guide/cgroup-v1/cpusets.html#cpusets"><span class="std std-ref">Documentation/admin-guide/cgroup-v1/cpusets.rst</span></a> and
+<a class="reference internal" href="../admin-guide/cgroup-v2.html#cgroup-v2"><span class="std std-ref">Documentation/admin-guide/cgroup-v2.rst</span></a> for more information.</p>
 </div></blockquote>
-<section id="sched-deadline-and-cpusets-howto">
-<h3>5.1 SCHED_DEADLINE and cpusets HOWTO<a class="headerlink" href="#sched-deadline-and-cpusets-howto" title="Link to this heading">¶</a></h3>
+<section id="using-cgroup-v1-cpuset-controller">
+<h3>5.1 Using cgroup v1 cpuset controller<a class="headerlink" href="#using-cgroup-v1-cpuset-controller" title="Link to this heading">¶</a></h3>
 <blockquote>
-<div><p>An example of a simple configuration (pin a -deadline task to CPU0)
-follows (rt-app is used to create a -deadline task):</p>
+<div><p>An example of a simple configuration (pin a -deadline task to CPU0) follows:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>mkdir /dev/cpuset
 mount -t cgroup -o cpuset cpuset /dev/cpuset
 cd /dev/cpuset
@@ -808,10 +810,24 @@ echo 0 &gt; cpuset.sched_load_balance
 echo 1 &gt; cpu0/cpuset.cpu_exclusive
 echo 1 &gt; cpu0/cpuset.mem_exclusive
 echo $$ &gt; cpu0/tasks
-rt-app -t 100000:10000:d:0 -D5 # it is now actually superfluous to specify
-                               # task affinity
+chrt --sched-runtime 100000 --sched-period 200000 --deadline 0 yes &gt; /dev/null
 </pre></div>
 </div>
+</div></blockquote>
+</section>
+<section id="using-cgroup-v2-cpuset-controller">
+<h3>5.2 Using cgroup v2 cpuset controller<a class="headerlink" href="#using-cgroup-v2-cpuset-controller" title="Link to this heading">¶</a></h3>
+<blockquote>
+<div><p>Assuming the cgroup v2 root is mounted at <code class="docutils literal notranslate"><span class="pre">/sys/fs/cgroup</span></code>.</p>
+<blockquote>
+<div><p>cd /sys/fs/cgroup
+echo ‘+cpuset’ &gt; cgroup.subtree_control
+mkdir deadline_group
+echo 0 &gt; deadline_group/cpuset.cpus
+echo ‘root’ &gt; deadline_group/cpuset.cpus.partition
+echo $$ &gt; deadline_group/cgroup.procs
+chrt --sched-runtime 100000 --sched-period 200000 --deadline 0 yes &gt; /dev/null</p>
+</div></blockquote>
 </div></blockquote>
 </section>
 </section>
@@ -852,23 +868,35 @@ is a valuable tool, as it can be used to synthetically recreate certain
 workloads (maybe mimicking real use-cases) and evaluate how the scheduler
 behaves under such workloads. In this way, results are easily reproducible.
 rt-app is available at: <a class="reference external" href="https://github.com/scheduler-tools/rt-app">https://github.com/scheduler-tools/rt-app</a>.</p>
-<p>Thread parameters can be specified from the command line, with something like
-this:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># rt-app -t 100000:10000:d -t 150000:20000:f:10 -D5
+<p>rt-app does not accept command line arguments, and instead reads from a JSON
+configuration file. Here is an example <code class="docutils literal notranslate"><span class="pre">config.json</span></code>:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;tasks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;dl_task&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;policy&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SCHED_DEADLINE&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;priority&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;dl-runtime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;dl-period&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">100000</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;dl-deadline&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">100000</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;fifo_task&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;policy&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SCHED_FIFO&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;priority&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;runtime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">20000</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;sleep&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">130000</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;global&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;duration&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
-<p>The above creates 2 threads. The first one, scheduled by SCHED_DEADLINE,
-executes for 10ms every 100ms. The second one, scheduled at SCHED_FIFO
-priority 10, executes for 20ms every 150ms. The test will run for a total
-of 5 seconds.</p>
-<p>More interestingly, configurations can be described with a json file that
-can be passed as input to rt-app with something like this:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># rt-app my_config.json
-</pre></div>
-</div>
-<p>The parameters that can be specified with the second method are a superset
-of the command line options. Please refer to rt-app documentation for more
-details (<cite>&lt;rt-app-sources&gt;/doc/*.json</cite>).</p>
+<p>On running <code class="docutils literal notranslate"><span class="pre">rt-app</span> <span class="pre">config.json</span></code>, it creates 2 threads. The first one,
+scheduled by SCHED_DEADLINE, executes for 10ms every 100ms. The second one,
+scheduled at SCHED_FIFO priority 10, executes for 20ms every 150ms. The test
+will run for a total of 5 seconds.</p>
+<p>Please refer to the rt-app documentation for the JSON schema and more examples.</p>
 <p>The second testing application is done using chrt which has support
 for SCHED_DEADLINE.</p>
 <p>The usage is straightforward:</p>

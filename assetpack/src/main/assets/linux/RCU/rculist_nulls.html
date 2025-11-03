@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -195,7 +195,7 @@ rcu_read_unlock();
 </pre></div>
 </div>
 <p>Beware that lockless_lookup(key) cannot use traditional <a class="reference internal" href="../core-api/kernel-api.html#c.hlist_for_each_entry_rcu" title="hlist_for_each_entry_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">hlist_for_each_entry_rcu()</span></code></a>
-but a version with an additional memory barrier (smp_rmb())</p>
+but a version with an additional memory barrier (<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smp_rmb()</span></code>)</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>lockless_lookup(key)
 {
   struct hlist_node *node, *next;
@@ -209,7 +209,7 @@ but a version with an additional memory barrier (smp_rmb())</p>
 }
 </pre></div>
 </div>
-<p>And note the traditional <a class="reference internal" href="../core-api/kernel-api.html#c.hlist_for_each_entry_rcu" title="hlist_for_each_entry_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">hlist_for_each_entry_rcu()</span></code></a> misses this smp_rmb():</p>
+<p>And note the traditional <a class="reference internal" href="../core-api/kernel-api.html#c.hlist_for_each_entry_rcu" title="hlist_for_each_entry_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">hlist_for_each_entry_rcu()</span></code></a> misses this <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smp_rmb()</span></code>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct hlist_node *node;
 for (pos = rcu_dereference((head)-&gt;first);
      pos &amp;&amp; ({ prefetch(pos-&gt;next); 1; }) &amp;&amp;
@@ -270,7 +270,7 @@ very very fast (before the end of RCU grace period)</p>
 <hr class="docutils" />
 <section id="avoiding-extra-smp-rmb">
 <h2>Avoiding extra smp_rmb()<a class="headerlink" href="#avoiding-extra-smp-rmb" title="Link to this heading">¶</a></h2>
-<p>With hlist_nulls we can avoid extra smp_rmb() in lockless_lookup().</p>
+<p>With hlist_nulls we can avoid extra <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smp_rmb()</span></code> in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lockless_lookup()</span></code>.</p>
 <p>For example, if we choose to store the slot number as the ‘nulls’
 end-of-list marker for each slot of the hash table, we can detect
 a race (some writer did a delete and/or a move of an object
@@ -281,7 +281,7 @@ the beginning. If the object was moved to the same chain,
 then the reader doesn’t care: It might occasionally
 scan the list again without harm.</p>
 <p>Note that using hlist_nulls means the type of ‘obj_node’ field of
-‘struct object’ becomes ‘struct hlist_nulls_node’.</p>
+‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">object</span></code>’ becomes ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hlist_nulls_node</span></code>’.</p>
 <section id="id1">
 <h3>1) lookup algorithm<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>head = &amp;table[slot];

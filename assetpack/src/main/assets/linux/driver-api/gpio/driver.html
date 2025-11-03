@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -273,13 +273,13 @@ driver code:</p>
 </div></blockquote>
 <p>The code implementing a gpio_chip should support multiple instances of the
 controller, preferably using the driver model. That code will configure each
-gpio_chip and issue <a class="reference internal" href="index.html#c.gpiochip_add_data" title="gpiochip_add_data"><code class="xref c c-func docutils literal notranslate"><span class="pre">gpiochip_add_data()</span></code></a> or devm_gpiochip_add_data(). Removing
+gpio_chip and issue <a class="reference internal" href="index.html#c.gpiochip_add_data" title="gpiochip_add_data"><code class="xref c c-func docutils literal notranslate"><span class="pre">gpiochip_add_data()</span></code></a> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_gpiochip_add_data()</span></code>. Removing
 a GPIO controller should be rare; use <a class="reference internal" href="index.html#c.gpiochip_remove" title="gpiochip_remove"><code class="xref c c-func docutils literal notranslate"><span class="pre">gpiochip_remove()</span></code></a> when it is unavoidable.</p>
 <p>Often a gpio_chip is part of an instance-specific structure with states not
 exposed by the GPIO interfaces, such as addressing, power management, and more.
 Chips such as audio codecs will have complex non-GPIO states.</p>
 <p>Any debugfs dump method should normally ignore lines which haven’t been
-requested. They can use gpiochip_is_requested(), which returns either
+requested. They can use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">gpiochip_is_requested()</span></code>, which returns either
 NULL or the label associated with that GPIO line when it was requested.</p>
 <p>Realtime considerations: the GPIO driver should not use spinlock_t or any
 sleepable APIs (like PM runtime) in its gpio_chip implementation (.get/.set
@@ -289,17 +289,17 @@ contexts). Normally this should not be required.</p>
 <section id="gpio-electrical-configuration">
 <h3>GPIO electrical configuration<a class="headerlink" href="#gpio-electrical-configuration" title="Link to this heading">¶</a></h3>
 <p>GPIO lines can be configured for several electrical modes of operation by using
-the .set_config() callback. Currently this API supports setting:</p>
+the .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_config()</span></code> callback. Currently this API supports setting:</p>
 <ul class="simple">
 <li><p>Debouncing</p></li>
 <li><p>Single-ended modes (open drain/open source)</p></li>
 <li><p>Pull up and pull down resistor enablement</p></li>
 </ul>
 <p>These settings are described below.</p>
-<p>The .set_config() callback uses the same enumerators and configuration
+<p>The .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_config()</span></code> callback uses the same enumerators and configuration
 semantics as the generic pin control drivers. This is not a coincidence: it is
-possible to assign the .set_config() to the function <a class="reference internal" href="index.html#c.gpiochip_generic_config" title="gpiochip_generic_config"><code class="xref c c-func docutils literal notranslate"><span class="pre">gpiochip_generic_config()</span></code></a>
-which will result in pinctrl_gpio_set_config() being called and eventually
+possible to assign the .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_config()</span></code> to the function <a class="reference internal" href="index.html#c.gpiochip_generic_config" title="gpiochip_generic_config"><code class="xref c c-func docutils literal notranslate"><span class="pre">gpiochip_generic_config()</span></code></a>
+which will result in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pinctrl_gpio_set_config()</span></code> being called and eventually
 ending up in the pin control back-end “behind” the GPIO controller, usually
 closer to the actual pins. This way the pin controller can manage the below
 listed GPIO configurations.</p>
@@ -389,7 +389,7 @@ can be driven between VDD and high impedance (open source). In the first case,
 a pull-up resistor is needed on the outgoing rail to complete the circuit, and
 in the second case, a pull-down resistor is needed on the rail.</p>
 <p>Hardware that supports open drain or open source or both, can implement a
-special callback in the gpio_chip: .set_config() that takes a generic
+special callback in the gpio_chip: .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_config()</span></code> that takes a generic
 pinconf packed value telling whether to configure the line as open drain,
 open source or push-pull. This will happen in response to the
 GPIO_OPEN_DRAIN or GPIO_OPEN_SOURCE flag set in the machine file, or coming
@@ -408,18 +408,18 @@ of actively driving the line low, it is set to input.</p>
 </section>
 <section id="gpio-lines-with-pull-up-down-resistor-support">
 <h3>GPIO lines with pull up/down resistor support<a class="headerlink" href="#gpio-lines-with-pull-up-down-resistor-support" title="Link to this heading">¶</a></h3>
-<p>A GPIO line can support pull-up/down using the .set_config() callback. This
+<p>A GPIO line can support pull-up/down using the .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_config()</span></code> callback. This
 means that a pull up or pull-down resistor is available on the output of the
 GPIO line, and this resistor is software controlled.</p>
 <p>In discrete designs, a pull-up or pull-down resistor is simply soldered on
 the circuit board. This is not something we deal with or model in software. The
 most you will think about these lines is that they will very likely be
 configured as open drain or open source (see the section above).</p>
-<p>The .set_config() callback can only turn pull up or down on and off, and will
+<p>The .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_config()</span></code> callback can only turn pull up or down on and off, and will
 no have any semantic knowledge about the resistance used. It will only say
 switch a bit in a register enabling or disabling pull-up or pull-down.</p>
 <p>If the GPIO line supports shunting in different resistance values for the
-pull-up or pull-down resistor, the GPIO chip callback .set_config() will not
+pull-up or pull-down resistor, the GPIO chip callback .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_config()</span></code> will not
 suffice. For these complex use cases, a combined GPIO chip and pin controller
 need to be implemented, as the pin config interface of a pin controller
 supports more versatile control over electrical properties and can handle
@@ -469,8 +469,8 @@ spinlock_t or any sleepable APIs (like PM runtime) as part of its irqchip
 implementation.</p>
 <ul class="simple">
 <li><p>spinlock_t should be replaced with raw_spinlock_t.[1]</p></li>
-<li><p>If sleepable APIs have to be used, these can be done from the .irq_bus_lock()
-and .irq_bus_unlock() callbacks, as these are the only slowpath callbacks
+<li><p>If sleepable APIs have to be used, these can be done from the .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irq_bus_lock()</span></code>
+and .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irq_bus_unlock()</span></code> callbacks, as these are the only slowpath callbacks
 on an irqchip. Create the callbacks if needed.[2]</p></li>
 </ul>
 <section id="cascaded-gpio-irqchips">
@@ -810,16 +810,16 @@ In this case the typical set-up will look like this:</p>
 </div>
 <p>As you can see pretty similar, but you do not supply a parent handler for
 the IRQ, instead a parent irqdomain, an fwnode for the hardware and
-a function .child_to_parent_hwirq() that has the purpose of looking up
+a function .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">child_to_parent_hwirq()</span></code> that has the purpose of looking up
 the parent hardware irq from a child (i.e. this gpio chip) hardware irq.
 As always it is good to look at examples in the kernel tree for advice
 on how to find the required pieces.</p>
 <p>If there is a need to exclude certain GPIO lines from the IRQ domain handled by
 these helpers, we can set .irq.need_valid_mask of the gpiochip before
-devm_gpiochip_add_data() or <a class="reference internal" href="index.html#c.gpiochip_add_data" title="gpiochip_add_data"><code class="xref c c-func docutils literal notranslate"><span class="pre">gpiochip_add_data()</span></code></a> is called. This allocates an
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_gpiochip_add_data()</span></code> or <a class="reference internal" href="index.html#c.gpiochip_add_data" title="gpiochip_add_data"><code class="xref c c-func docutils literal notranslate"><span class="pre">gpiochip_add_data()</span></code></a> is called. This allocates an
 .irq.valid_mask with as many bits set as there are GPIO lines in the chip, each
 bit representing line 0..n-1. Drivers can exclude GPIO lines by clearing bits
-from this mask. The mask can be filled in the init_valid_mask() callback
+from this mask. The mask can be filled in the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init_valid_mask()</span></code> callback
 that is part of the <a class="reference internal" href="index.html#c.gpio_irq_chip" title="gpio_irq_chip"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">gpio_irq_chip</span></code></a>.</p>
 <p>To use the helpers please keep the following in mind:</p>
 <ul class="simple">
@@ -828,7 +828,7 @@ the irqchip can initialize. E.g. .dev and .can_sleep shall be set up
 properly.</p></li>
 <li><p>Nominally set gpio_irq_chip.handler to handle_bad_irq. Then, if your irqchip
 is cascaded, set the handler to <a class="reference internal" href="../../core-api/genericirq.html#c.handle_level_irq" title="handle_level_irq"><code class="xref c c-func docutils literal notranslate"><span class="pre">handle_level_irq()</span></code></a> and/or <a class="reference internal" href="../../core-api/genericirq.html#c.handle_edge_irq" title="handle_edge_irq"><code class="xref c c-func docutils literal notranslate"><span class="pre">handle_edge_irq()</span></code></a>
-in the irqchip .set_type() callback depending on what your controller
+in the irqchip .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_type()</span></code> callback depending on what your controller
 supports and what is requested by the consumer.</p></li>
 </ul>
 </section>
@@ -851,7 +851,7 @@ is released:</p>
 </pre></div>
 </div>
 <p>When implementing an irqchip inside a GPIO driver, these two functions should
-typically be called in the .startup() and .shutdown() callbacks from the
+typically be called in the .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">startup()</span></code> and .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shutdown()</span></code> callbacks from the
 irqchip.</p>
 <p>When using the gpiolib irqchip helpers, these callbacks are automatically
 assigned.</p>
@@ -874,7 +874,7 @@ disabled. When the IRQ is enabled again, a driver should call:</p>
 </pre></div>
 </div>
 <p>When implementing an irqchip inside a GPIO driver, these two functions should
-typically be called in the .<a class="reference internal" href="../../core-api/genericirq.html#c.irq_disable" title="irq_disable"><code class="xref c c-func docutils literal notranslate"><span class="pre">irq_disable()</span></code></a> and .irq_enable() callbacks from the
+typically be called in the .<a class="reference internal" href="../../core-api/genericirq.html#c.irq_disable" title="irq_disable"><code class="xref c c-func docutils literal notranslate"><span class="pre">irq_disable()</span></code></a> and .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irq_enable()</span></code> callbacks from the
 irqchip.</p>
 <p>When IRQCHIP_IMMUTABLE is not advertised by the irqchip, these callbacks
 are automatically assigned. This behaviour is deprecated and on its way
@@ -891,8 +891,8 @@ compliance:</p>
 <ul class="simple">
 <li><p>ensure spinlock_t is not used as part irq_chip implementation</p></li>
 <li><p>ensure that sleepable APIs are not used as part irq_chip implementation
-If sleepable APIs have to be used, these can be done from the .irq_bus_lock()
-and .irq_bus_unlock() callbacks</p></li>
+If sleepable APIs have to be used, these can be done from the .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irq_bus_lock()</span></code>
+and .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irq_bus_unlock()</span></code> callbacks</p></li>
 <li><p>Chained GPIO irqchips: ensure spinlock_t or any sleepable APIs are not used
 from the chained IRQ handler</p></li>
 <li><p>Generic chained GPIO irqchips: take care about <a class="reference internal" href="../../core-api/genericirq.html#c.generic_handle_irq" title="generic_handle_irq"><code class="xref c c-func docutils literal notranslate"><span class="pre">generic_handle_irq()</span></code></a> calls and
@@ -905,7 +905,7 @@ handler if possible</p></li>
 level and edge IRQs</p></li>
 </ul>
 <ul class="simple">
-<li><p>[1] <a class="reference external" href="http://www.spinics.net/lists/linux-omap/msg120425.html">http://www.spinics.net/lists/linux-omap/msg120425.html</a></p></li>
+<li><p>[1] <a class="reference external" href="https://lore.kernel.org/r/1437496011-11486-1-git-send-email-bigeasy&#64;linutronix.de/">https://lore.kernel.org/r/1437496011-11486-1-git-send-email-bigeasy&#64;linutronix.de/</a></p></li>
 <li><p>[2] <a class="reference external" href="https://lore.kernel.org/r/1443209283-20781-2-git-send-email-grygorii.strashko&#64;ti.com">https://lore.kernel.org/r/1443209283-20781-2-git-send-email-grygorii.strashko&#64;ti.com</a></p></li>
 <li><p>[3] <a class="reference external" href="https://lore.kernel.org/r/1443209283-20781-3-git-send-email-grygorii.strashko&#64;ti.com">https://lore.kernel.org/r/1443209283-20781-3-git-send-email-grygorii.strashko&#64;ti.com</a></p></li>
 </ul>

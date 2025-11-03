@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -287,17 +287,17 @@ struct config_item *config_item_get(struct config_item *);
 void config_item_put(struct config_item *);
 </pre></div>
 </div>
-<p>Generally, struct config_item is embedded in a container structure, a
+<p>Generally, <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">config_item</span></code> is embedded in a container structure, a
 structure that actually represents what the subsystem is doing.  The
 config_item portion of that structure is how the object interacts with
 configfs.</p>
 <p>Whether statically defined in a source file or created by a parent
-config_group, a config_item must have one of the _init() functions
+config_group, a config_item must have one of the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_init()</span></code> functions
 called on it.  This initializes the reference count and sets up the
 appropriate fields.</p>
 <p>All users of a config_item should have a reference on it via
-config_item_get(), and drop the reference when they are done via
-config_item_put().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">config_item_get()</span></code>, and drop the reference when they are done via
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">config_item_put()</span></code>.</p>
 <p>By itself, a config_item cannot do much more than appear in configfs.
 Usually a subsystem wants the item to display and/or store attributes,
 among other things.  For that, it needs a type.</p>
@@ -323,7 +323,7 @@ struct config_item_type {
 </div>
 <p>The most basic function of a config_item_type is to define what
 operations can be performed on a config_item.  All items that have been
-allocated dynamically will need to provide the ct_item_ops-&gt;release()
+allocated dynamically will need to provide the ct_item_ops-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">release()</span></code>
 method.  This method is called when the config_item’s reference count
 reaches zero.</p>
 </section>
@@ -369,7 +369,7 @@ The cb_private member is provided for use by the driver, while the
 cb_max_size member specifies the maximum amount of vmalloc buffer
 to be used.</p>
 <p>If binary attribute is readable and the config_item provides a
-ct_item_ops-&gt;read_bin_attribute() method, that method will be called
+ct_item_ops-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">read_bin_attribute()</span></code> method, that method will be called
 whenever userspace asks for a read(2) on the attribute.  The converse
 will happen for write(2). The reads/writes are buffered so only a
 single read/write will occur; the attributes’ need not concern itself
@@ -412,23 +412,23 @@ config_item_type:</p>
 </pre></div>
 </div>
 <p>A group creates child items by providing the
-ct_group_ops-&gt;make_item() method.  If provided, this method is called from
+ct_group_ops-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">make_item()</span></code> method.  If provided, this method is called from
 mkdir(2) in the group’s directory.  The subsystem allocates a new
 config_item (or more likely, its container structure), initializes it,
 and returns it to configfs.  Configfs will then populate the filesystem
 tree to reflect the new item.</p>
 <p>If the subsystem wants the child to be a group itself, the subsystem
-provides ct_group_ops-&gt;make_group().  Everything else behaves the same,
-using the group _init() functions on the group.</p>
+provides ct_group_ops-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">make_group()</span></code>.  Everything else behaves the same,
+using the group <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_init()</span></code> functions on the group.</p>
 <p>Finally, when userspace calls rmdir(2) on the item or group,
-ct_group_ops-&gt;drop_item() is called.  As a config_group is also a
-config_item, it is not necessary for a separate drop_group() method.
-The subsystem must config_item_put() the reference that was initialized
+ct_group_ops-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drop_item()</span></code> is called.  As a config_group is also a
+config_item, it is not necessary for a separate <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drop_group()</span></code> method.
+The subsystem must <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">config_item_put()</span></code> the reference that was initialized
 upon item allocation.  If a subsystem has no work to do, it may omit
-the ct_group_ops-&gt;drop_item() method, and configfs will call
-config_item_put() on the item on behalf of the subsystem.</p>
+the ct_group_ops-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drop_item()</span></code> method, and configfs will call
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">config_item_put()</span></code> on the item on behalf of the subsystem.</p>
 <dl class="simple">
-<dt>Important:</dt><dd><p>drop_item() is void, and as such cannot fail.  When rmdir(2)
+<dt>Important:</dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drop_item()</span></code> is void, and as such cannot fail.  When rmdir(2)
 is called, configfs WILL remove the item from the filesystem tree
 (assuming that it has no children to keep it busy).  The subsystem is
 responsible for responding to this.  If the subsystem has references to
@@ -437,17 +437,17 @@ for the item to actually disappear from the subsystem’s usage.  But it
 is gone from configfs.</p>
 </dd>
 </dl>
-<p>When drop_item() is called, the item’s linkage has already been torn
+<p>When <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drop_item()</span></code> is called, the item’s linkage has already been torn
 down.  It no longer has a reference on its parent and has no place in
 the item hierarchy.  If a client needs to do some cleanup before this
 teardown happens, the subsystem can implement the
-ct_group_ops-&gt;disconnect_notify() method.  The method is called after
+ct_group_ops-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">disconnect_notify()</span></code> method.  The method is called after
 configfs has removed the item from the filesystem view but before the
-item is removed from its parent group.  Like drop_item(),
-disconnect_notify() is void and cannot fail.  Client subsystems should
-not drop any references here, as they still must do it in drop_item().</p>
+item is removed from its parent group.  Like <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drop_item()</span></code>,
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">disconnect_notify()</span></code> is void and cannot fail.  Client subsystems should
+not drop any references here, as they still must do it in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drop_item()</span></code>.</p>
 <p>A config_group cannot be removed while it still has child items.  This
-is implemented in the configfs rmdir(2) code.  -&gt;drop_item() will not be
+is implemented in the configfs rmdir(2) code.  -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drop_item()</span></code> will not be
 called, as the item has not been dropped.  rmdir(2) will fail, as the
 directory is not empty.</p>
 </section>
@@ -467,8 +467,8 @@ void configfs_unregister_subsystem(struct configfs_subsystem *subsys);
 <p>A subsystem consists of a toplevel config_group and a mutex.
 The group is where child config_items are created.  For a subsystem,
 this group is usually defined statically.  Before calling
-configfs_register_subsystem(), the subsystem must have initialized the
-group via the usual group _init() functions, and it must also have
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">configfs_register_subsystem()</span></code>, the subsystem must have initialized the
+group via the usual group <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_init()</span></code> functions, and it must also have
 initialized the mutex.</p>
 <p>When the register call returns, the subsystem is live, and it
 will be visible via configfs.  At that point, mkdir(2) can be called and
@@ -511,18 +511,18 @@ mutex.</p>
 relationship.  Often, however, a larger environment requires aggregation
 outside of the parent/child connection.  This is implemented via
 symlink(2).</p>
-<p>A config_item may provide the ct_item_ops-&gt;allow_link() and
-ct_item_ops-&gt;drop_link() methods.  If the -&gt;allow_link() method exists,
+<p>A config_item may provide the ct_item_ops-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">allow_link()</span></code> and
+ct_item_ops-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drop_link()</span></code> methods.  If the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">allow_link()</span></code> method exists,
 symlink(2) may be called with the config_item as the source of the link.
 These links are only allowed between configfs config_items.  Any
 symlink(2) attempt outside the configfs filesystem will be denied.</p>
-<p>When symlink(2) is called, the source config_item’s -&gt;allow_link()
+<p>When symlink(2) is called, the source config_item’s -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">allow_link()</span></code>
 method is called with itself and a target item.  If the source item
 allows linking to target item, it returns 0.  A source item may wish to
 reject a link if it only wants links to a certain type of object (say,
 in its own subsystem).</p>
 <p>When unlink(2) is called on the symbolic link, the source item is
-notified via the -&gt;drop_link() method.  Like the -&gt;drop_item() method,
+notified via the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drop_link()</span></code> method.  Like the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drop_item()</span></code> method,
 this is a void function and cannot return failure.  The subsystem is
 responsible for responding to the change.</p>
 <p>A config_item cannot be removed while it links to any other item, nor
@@ -532,7 +532,7 @@ allowed in configfs.</p>
 <section id="automatically-created-subgroups">
 <h2>Automatically Created Subgroups<a class="headerlink" href="#automatically-created-subgroups" title="Link to this heading">¶</a></h2>
 <p>A new config_group may want to have two types of child config_items.
-While this could be codified by magic names in -&gt;make_item(), it is much
+While this could be codified by magic names in -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">make_item()</span></code>, it is much
 more explicit to have a method whereby userspace sees this divergence.</p>
 <p>Rather than have a group where some items behave differently than
 others, configfs provides a method whereby one or many subgroups are
@@ -542,13 +542,13 @@ mkdir(“parent”) results in “parent”, “parent/subgroup1”, up through
 “parent/subgroup1”, and items of type N can be created in
 “parent/subgroupN”.</p>
 <p>These automatic subgroups, or default groups, do not preclude other
-children of the parent group.  If ct_group_ops-&gt;make_group() exists,
+children of the parent group.  If ct_group_ops-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">make_group()</span></code> exists,
 other child groups can be created on the parent group directly.</p>
 <p>A configfs subsystem specifies default groups by adding them using the
-configfs_add_default_group() function to the parent config_group
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">configfs_add_default_group()</span></code> function to the parent config_group
 structure.  Each added group is populated in the configfs tree at the same
 time as the parent group.  Similarly, they are removed at the same time
-as the parent.  No extra notification is provided.  When a -&gt;drop_item()
+as the parent.  No extra notification is provided.  When a -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drop_item()</span></code>
 method call notifies the subsystem the parent group is going away, it
 also means every default group child associated with that parent group.</p>
 <p>As a consequence of this, default groups cannot be removed directly via
@@ -561,12 +561,12 @@ group is checking for children.</p>
 example, ocfs2 mounts depend on a heartbeat region item.  If that
 region item is removed with rmdir(2), the ocfs2 mount must BUG or go
 readonly.  Not happy.</p>
-<p>configfs provides two additional API calls: configfs_depend_item() and
-configfs_undepend_item().  A client driver can call
-configfs_depend_item() on an existing item to tell configfs that it is
+<p>configfs provides two additional API calls: <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">configfs_depend_item()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">configfs_undepend_item()</span></code>.  A client driver can call
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">configfs_depend_item()</span></code> on an existing item to tell configfs that it is
 depended on.  configfs will then return -EBUSY from rmdir(2) for that
 item.  When the item is no longer depended on, the client driver calls
-configfs_undepend_item() on it.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">configfs_undepend_item()</span></code> on it.</p>
 <p>These API cannot be called underneath any configfs callbacks, as
 they will conflict.  They can block and allocate.  A client driver
 probably shouldn’t calling them of its own gumption.  Rather it should
@@ -574,7 +574,7 @@ be providing an API that external subsystems call.</p>
 <p>How does this work?  Imagine the ocfs2 mount process.  When it mounts,
 it asks for a heartbeat region item.  This is done via a call into the
 heartbeat code.  Inside the heartbeat code, the region item is looked
-up.  Here, the heartbeat code calls configfs_depend_item().  If it
+up.  Here, the heartbeat code calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">configfs_depend_item()</span></code>.  If it
 succeeds, then heartbeat knows the region is safe to give to ocfs2.
 If it fails, it was being torn down anyway, and heartbeat can gracefully
 pass up an error.</p>

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -193,7 +193,7 @@ kernel service can search for relevant keys.</p>
 <section id="key-overview">
 <h2><a class="toc-backref" href="#id1" role="doc-backlink">Key Overview</a><a class="headerlink" href="#key-overview" title="Link to this heading">¶</a></h2>
 <p>In this context, keys represent units of cryptographic data, authentication
-tokens, keyrings, etc.. These are represented in the kernel by struct key.</p>
+tokens, keyrings, etc.. These are represented in the kernel by <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">key</span></code>.</p>
 <p>Each key has a number of attributes:</p>
 <blockquote>
 <div><blockquote>
@@ -217,7 +217,7 @@ to it, subject to permission checking.</p>
 <li><p>Each key is of a defined “type”. Types must be registered inside the
 kernel by a kernel service (such as a filesystem) before keys of that type
 can be added or used. Userspace programs cannot define new types directly.</p>
-<p>Key types are represented in the kernel by struct key_type. This defines a
+<p>Key types are represented in the kernel by <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">key_type</span></code>. This defines a
 number of operations that can be performed on a key of that type.</p>
 <p>Should a type be removed from the system, all the keys of that type will
 be invalidated.</p>
@@ -235,7 +235,7 @@ actual “key”. In the case of a keyring, this is a list of keys to which
 the keyring links; in the case of a user-defined key, it’s an arbitrary
 blob of data.</p>
 <p>Having a payload is not required; and the payload can, in fact, just be a
-value stored in the struct key itself.</p>
+value stored in the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">key</span></code> itself.</p>
 <p>When a key is instantiated, the key type’s instantiation function is
 called with a blob of data, and that then creates the key’s payload in
 some way.</p>
@@ -603,7 +603,7 @@ will return error EOPNOTSUPP if that function is not supported by the key
 type. The process must also have permission to write to the key to be able
 to update it.</p>
 <p>The payload is of length plen, and may be absent or empty as for
-add_key().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">add_key()</span></code>.</p>
 </li>
 <li><p>Revoke a key:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>long keyctl(KEYCTL_REVOKE, key_serial_t key);
@@ -769,7 +769,7 @@ it, and the key must be uninstantiated.</p>
 <p>If a keyring is specified (non-zero), the key will also be linked into
 that keyring, however all the constraints applying in KEYCTL_LINK apply in
 this case too.</p>
-<p>The payload and plen arguments describe the payload data as for add_key().</p>
+<p>The payload and plen arguments describe the payload data as for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">add_key()</span></code>.</p>
 <p>The payload_iov and ioc arguments describe the payload data in an iovec
 array instead of a single buffer.</p>
 </li>
@@ -813,7 +813,7 @@ KEY_REQKEY_DEFL_GROUP_KEYRING           6       Group keyring
 <p>The old default will be returned if successful and error EINVAL will be
 returned if reqkey_defl is not one of the above values.</p>
 <p>The default keyring can be overridden by the keyring indicated to the
-request_key() system call.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">request_key()</span></code> system call.</p>
 <p>Note that this setting is inherited across fork/exec.</p>
 <p>[1] The default is: the thread keyring if there is one, otherwise
 the process keyring if there is one, otherwise the session keyring if
@@ -899,7 +899,7 @@ successful.</p>
             char *buffer, size_t buflen, struct keyctl_kdf_params *kdf);
 </pre></div>
 </div>
-<p>The params struct contains serial numbers for three keys:</p>
+<p>The params <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">contains</span></code> serial numbers for three keys:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>- The prime, p, known to both parties
 - The local private key
 - The base integer, which is either a shared generator or the
@@ -926,7 +926,7 @@ buffer length is returned.</p></li>
 <p>The kdf parameter allows the caller to apply a key derivation function
 (KDF) on the Diffie-Hellman computation where only the result
 of the KDF is returned to the caller. The KDF is characterized with
-struct keyctl_kdf_params as follows:</p>
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">keyctl_kdf_params</span></code> as follows:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">char</span> <span class="pre">*hashname</span></code> specifies the NUL terminated string identifying
@@ -959,7 +959,7 @@ will remain in the keyring even if the new restriction would reject them.</p>
 <p>“type” is a registered key type.</p>
 <p>“restriction” is a string describing how key linkage is to be restricted.
 The format varies depending on the key type, and the string is passed to
-the lookup_restriction() function for the requested type.  It may specify
+the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lookup_restriction()</span></code> function for the requested type.  It may specify
 a method and relevant data for the restriction such as signature
 verification or constraints on key payload. If the requested key type is
 later unregistered, no keys may be added to the keyring after the key type
@@ -1154,7 +1154,7 @@ used to access that type.  For keys of type “user”, for example, that would 
 encountered:</p>
 <blockquote>
 <div><ul>
-<li><p>struct key *</p>
+<li><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">key</span></code> *</p>
 <p>This simply points to the key structure itself. Key structures will be at
 least four-byte aligned.</p>
 </li>
@@ -1189,7 +1189,7 @@ payload contents” for more information.</p>
 </pre></div>
 </div>
 <p>This is used to request a key or keyring with a description that matches
-the description specified according to the key type’s match_preparse()
+the description specified according to the key type’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">match_preparse()</span></code>
 method. This permits approximate matching to occur. If callout_string is
 not NULL, then /sbin/request-key will be invoked in an attempt to obtain
 the key from userspace. In that case, callout_string will be passed as an
@@ -1207,7 +1207,7 @@ implicitly obtained request-key keys, as set by KEYCTL_SET_REQKEY_KEYRING.</p>
                             const char *callout_info);
 </pre></div>
 </div>
-<p>This is identical to request_key(), except that a domain tag may be
+<p>This is identical to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">request_key()</span></code>, except that a domain tag may be
 specifies that causes search algorithm to only match keys matching that
 tag.  The domain_tag may be NULL, specifying a global domain that is
 separate from any nominated domain.</p>
@@ -1221,8 +1221,8 @@ separate from any nominated domain.</p>
                                      void *aux);
 </pre></div>
 </div>
-<p>This is identical to request_key_tag(), except that the auxiliary data is
-passed to the key_type-&gt;request_key() op if it exists, and the
+<p>This is identical to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">request_key_tag()</span></code>, except that the auxiliary data is
+passed to the key_type-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">request_key()</span></code> op if it exists, and the
 callout_info is a blob of length callout_len, if given (the length may be
 0).</p>
 </li>
@@ -1232,7 +1232,7 @@ callout_info is a blob of length callout_len, if given (the length may be
                             struct key_tag *domain_tag);
 </pre></div>
 </div>
-<p>which is similar to request_key_tag() except that it does not check for
+<p>which is similar to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">request_key_tag()</span></code> except that it does not check for
 keys that are under construction and it will not call out to userspace to
 construct a key if it can’t find a match.</p>
 </li>
@@ -1253,9 +1253,9 @@ functions:</p>
 struct key *key_get(struct key *key);
 </pre></div>
 </div>
-<p>Keys so references will need to be disposed of by calling key_put() when
+<p>Keys so references will need to be disposed of by calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">key_put()</span></code> when
 they’ve been finished with.  The key pointer passed in will be returned.</p>
-<p>In the case of key_get(), if the pointer is NULL or CONFIG_KEYS is not set
+<p>In the case of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">key_get()</span></code>, if the pointer is NULL or CONFIG_KEYS is not set
 then the key will not be dereferenced and no increment will take place.</p>
 </li>
 <li><p>A key’s serial number can be obtained by calling:</p>
@@ -1301,7 +1301,7 @@ key into the new keyring.  The structure may also contain a key pointer
 and an associated key type.  The function is called to check whether a key
 may be added into the keyring or not.  The key type is used by the garbage
 collector to clean up function or data pointers in this structure if the
-given key type is unregistered.  Callers of key_create_or_update() within
+given key type is unregistered.  Callers of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">key_create_or_update()</span></code> within
 the kernel can pass KEY_ALLOC_BYPASS_RESTRICTION to suppress the check.
 An example of using this is to manage rings of cryptographic keys that are
 set up when the kernel boots where userspace is also permitted to add keys
@@ -1342,9 +1342,9 @@ The facility provides access to the keyring type for managing such a bundle:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct key_type key_type_keyring;
 </pre></div>
 </div>
-<p>This can be used with a function such as request_key() to find a specific
+<p>This can be used with a function such as <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">request_key()</span></code> to find a specific
 keyring in a process’s keyrings.  A keyring thus found can then be searched
-with keyring_search().  Note that it is not possible to use request_key() to
+with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">keyring_search()</span></code>.  Note that it is not possible to use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">request_key()</span></code> to
 search a specific keyring, so using keyrings in this way is of limited utility.</p>
 </section>
 <section id="notes-on-accessing-payload-contents">
@@ -1382,7 +1382,7 @@ key management code takes care of this for the key type.</p>
 </div>
 <p>to set the pointer and dispose of the old contents after a grace period.
 Note that only the key type should ever modify a key’s payload.</p>
-<p>Furthermore, an RCU controlled payload must hold a struct rcu_head for the
+<p>Furthermore, an RCU controlled payload must hold a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rcu_head</span></code> for the
 use of <a class="reference internal" href="../../core-api/kernel-api.html#c.call_rcu" title="call_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">call_rcu()</span></code></a> and, if the payload is of variable size, the length of
 the payload. key-&gt;datalen cannot be relied upon to be consistent with the
 payload just dereferenced if the key’s semaphore is not held.</p>
@@ -1418,7 +1418,7 @@ isn&#39;t held.
 <h2><a class="toc-backref" href="#id9" role="doc-backlink">Defining a Key Type</a><a class="headerlink" href="#defining-a-key-type" title="Link to this heading">¶</a></h2>
 <p>A kernel service may want to define its own key type. For instance, an AFS
 filesystem might want to define a Kerberos 5 ticket key type. To do this, it
-author fills in a key_type struct and registers it with the system.</p>
+author fills in a key_type <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">and</span></code> registers it with the system.</p>
 <p>Source files that implement key types should include the following header file:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;linux/key-type.h&gt;
 </pre></div>
@@ -1467,33 +1467,33 @@ quota size from the key type; expiry will be set to TIME_T_MAX and the
 rest will be cleared.</p>
 <p>If a description can be proposed from the payload contents, that should be
 attached as a string to the description field.  This will be used for the
-key description if the caller of add_key() passes NULL or “”.</p>
+key description if the caller of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">add_key()</span></code> passes NULL or “”.</p>
 <p>The method can attach anything it likes to payload.  This is merely passed
-along to the instantiate() or update() operations.  If set, the expiry
+along to the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">instantiate()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">update()</span></code> operations.  If set, the expiry
 time will be applied to the key if it is instantiated from this data.</p>
 <p>The method should return 0 if successful or a negative error code
 otherwise.</p>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">(*free_preparse)(struct</span> <span class="pre">key_preparsed_payload</span> <span class="pre">*prep);</span></code></p>
-<p>This method is only required if the preparse() method is provided,
+<p>This method is only required if the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">preparse()</span></code> method is provided,
 otherwise it is unused.  It cleans up anything attached to the description
-and payload fields of the key_preparsed_payload struct as filled in by the
-preparse() method.  It will always be called after preparse() returns
-successfully, even if instantiate() or update() succeed.</p>
+and payload fields of the key_preparsed_payload <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">as</span></code> filled in by the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">preparse()</span></code> method.  It will always be called after <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">preparse()</span></code> returns
+successfully, even if <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">instantiate()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">update()</span></code> succeed.</p>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">(*instantiate)(struct</span> <span class="pre">key</span> <span class="pre">*key,</span> <span class="pre">struct</span> <span class="pre">key_preparsed_payload</span> <span class="pre">*prep);</span></code></p>
 <p>This method is called to attach a payload to a key during construction.
 The payload attached need not bear any relation to the data passed to this
 function.</p>
 <p>The prep-&gt;data and prep-&gt;datalen fields will define the original payload
-blob.  If preparse() was supplied then other fields may be filled in also.</p>
+blob.  If <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">preparse()</span></code> was supplied then other fields may be filled in also.</p>
 <p>If the amount of data attached to the key differs from the size in
-keytype-&gt;def_datalen, then key_payload_reserve() should be called.</p>
+keytype-&gt;def_datalen, then <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">key_payload_reserve()</span></code> should be called.</p>
 <p>This method does not have to lock the key in order to attach a payload.
 The fact that KEY_FLAG_INSTANTIATED is not set in key-&gt;flags prevents
 anything else from gaining access to the key.</p>
 <p>It is safe to sleep in this method.</p>
-<p>generic_key_instantiate() is provided to simply copy the data from
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">generic_key_instantiate()</span></code> is provided to simply copy the data from
 prep-&gt;payload.data[] to key-&gt;payload.data[], with RCU-safe assignment on
 the first element.  It will then clear prep-&gt;payload.data[] so that the
 free_preparse method doesn’t release the data.</p>
@@ -1502,8 +1502,8 @@ free_preparse method doesn’t release the data.</p>
 <p>If this type of key can be updated, then this method should be provided.
 It is called to update a key’s payload from the blob of data provided.</p>
 <p>The prep-&gt;data and prep-&gt;datalen fields will define the original payload
-blob.  If preparse() was supplied then other fields may be filled in also.</p>
-<p>key_payload_reserve() should be called if the data length might change
+blob.  If <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">preparse()</span></code> was supplied then other fields may be filled in also.</p>
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">key_payload_reserve()</span></code> should be called if the data length might change
 before any changes are actually made. Note that if this succeeds, the type
 is committed to changing the key because it’s already been altered, so all
 memory allocation must be done first.</p>
@@ -1511,7 +1511,7 @@ memory allocation must be done first.</p>
 but this only deters other writers; any changes to the key’s payload must
 be made under RCU conditions, and <a class="reference internal" href="../../core-api/kernel-api.html#c.call_rcu" title="call_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">call_rcu()</span></code></a> must be used to dispose of
 the old payload.</p>
-<p>key_payload_reserve() should be called before the changes are made, but
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">key_payload_reserve()</span></code> should be called before the changes are made, but
 after all allocations and other potentially failing function calls are
 made.</p>
 <p>It is safe to sleep in this method.</p>
@@ -1546,18 +1546,18 @@ search that’s not doing a simple direct match on the key description.</p></li>
 other form of match, may set lookup_type to KEYRING_SEARCH_LOOKUP_ITERATE
 and may attach something to the preparsed pointer for use by <code class="docutils literal notranslate"><span class="pre">(*cmp)()</span></code>.
 <code class="docutils literal notranslate"><span class="pre">(*cmp)()</span></code> should return true if a key matches and false otherwise.</p>
-<p>If preparsed is set, it may be necessary to use the match_free() method to
+<p>If preparsed is set, it may be necessary to use the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">match_free()</span></code> method to
 clean it up.</p>
 <p>The method should return 0 if successful or a negative error code
 otherwise.</p>
 <p>It is permitted to sleep in this method, but <code class="docutils literal notranslate"><span class="pre">(*cmp)()</span></code> may not sleep as
 locks will be held over it.</p>
-<p>If match_preparse() is not provided, keys of this type will be matched
+<p>If <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">match_preparse()</span></code> is not provided, keys of this type will be matched
 exactly by their description.</p>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">(*match_free)(struct</span> <span class="pre">key_match_data</span> <span class="pre">*match_data);</span></code></p>
 <p>This method is optional.  If given, it called to clean up
-match_data-&gt;preparsed after a successful call to match_preparse().</p>
+match_data-&gt;preparsed after a successful call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">match_preparse()</span></code>.</p>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">(*revoke)(struct</span> <span class="pre">key</span> <span class="pre">*key);</span></code></p>
 <p>This method is optional.  It is called to discard part of the payload
@@ -1598,10 +1598,10 @@ when accessing the key’s payload. It is safe to sleep in this method, such
 as might happen when the userspace buffer is accessed.</p>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">(*request_key)(struct</span> <span class="pre">key_construction</span> <span class="pre">*cons,</span> <span class="pre">const</span> <span class="pre">char</span> <span class="pre">*op,</span> <span class="pre">void</span> <span class="pre">*aux);</span></code></p>
-<p>This method is optional.  If provided, request_key() and friends will
+<p>This method is optional.  If provided, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">request_key()</span></code> and friends will
 invoke this function rather than upcalling to /sbin/request-key to operate
 upon a key of this type.</p>
-<p>The aux parameter is as passed to request_key_async_with_auxdata() and
+<p>The aux parameter is as passed to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">request_key_async_with_auxdata()</span></code> and
 similar or is NULL otherwise.  Also passed are the construction record for
 the key to be operated upon and the operation type (currently only
 “create”).</p>
@@ -1617,10 +1617,10 @@ construction record is destroyed by this action and the authorisation key
 will be revoked.  If an error is indicated, the key under construction
 will be negatively instantiated if it wasn’t already instantiated.</p>
 <p>If this method returns an error, that error will be returned to the
-caller of request_key*().  complete_request_key() must be called prior to
+caller of request_key*().  <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">complete_request_key()</span></code> must be called prior to
 returning.</p>
 <p>The key under construction and the authorisation key can be found in the
-key_construction struct pointed to by cons:</p>
+key_construction <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pointed</span></code> to by cons:</p>
 <blockquote>
 <div><ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">key</span> <span class="pre">*key;</span></code></p>
@@ -1680,9 +1680,9 @@ kernel_pkey_sign        Raw data        Signature       -
 kernel_pkey_verify      Raw data        -               Signature
 </pre></div>
 </div>
-<p>asym_eds_op() deals with encryption, decryption and signature creation as
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">asym_eds_op()</span></code> deals with encryption, decryption and signature creation as
 specified by params-&gt;op.  Note that params-&gt;op is also set for
-asym_verify_signature().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">asym_verify_signature()</span></code>.</p>
 <p>Encrypting and signature creation both take raw data in the input buffer
 and return the encrypted result in the output buffer.  Padding may have
 been added if an encoding was set.  In the case of signature creation,
@@ -1695,8 +1695,8 @@ an encoding was set.</p>
 second input buffer and checks that the one matches the other.  Padding
 will be validated.  Depending on the encoding, the digest algorithm used
 to generate the raw data may need to be indicated in hash_algo.</p>
-<p>If successful, asym_eds_op() should return the number of bytes written
-into the output buffer.  asym_verify_signature() should return 0.</p>
+<p>If successful, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">asym_eds_op()</span></code> should return the number of bytes written
+into the output buffer.  <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">asym_verify_signature()</span></code> should return 0.</p>
 <p>A variety of errors may be returned, including EOPNOTSUPP if the operation
 is not supported; EKEYREJECTED if verification fails; ENOPKG if the
 required crypto isn’t available.</p>
@@ -1708,7 +1708,7 @@ required crypto isn’t available.</p>
 </div>
 <p>This method is optional.  If provided it allows information about the
 public or asymmetric key held in the key to be determined.</p>
-<p>The parameter block is as for asym_eds_op() and co. but in_len and out_len
+<p>The parameter block is as for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">asym_eds_op()</span></code> and co. but in_len and out_len
 are unused.  The encoding and hash_algo fields should be used to reduce
 the returned buffer/data sizes as appropriate.</p>
 <p>If successful, the following information is filled in:</p>

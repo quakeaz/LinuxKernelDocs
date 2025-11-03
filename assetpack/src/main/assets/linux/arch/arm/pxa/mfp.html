@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -287,7 +287,7 @@ covered in a single mfp-pxa300.h.</p>
 };
 </pre></div>
 </div>
-<p>a) once the pin configurations are passed to pxa{2xx,3xx}_mfp_config(),
+<p>a) once the pin configurations are passed to pxa{2xx,3xx}<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_mfp_config()</span></code>,
 and written to the actual registers, they are useless and may discard,
 adding ‘__initdata’ will help save some additional bytes here.</p>
 <p>b) when there is only one possible pin configurations for a component,
@@ -303,13 +303,13 @@ WAKEUP_ON_LEVEL_HIGH - specifically for enabling of keypad GPIOs,</p>
 </div></blockquote>
 <p>to indicate that this pin has the capability of wake-up the system,
 and on which edge(s). This, however, doesn’t necessarily mean the
-pin _will_ wakeup the system, it will only when set_irq_wake() is
-invoked with the corresponding GPIO IRQ (GPIO_IRQ(xx) or gpio_to_irq())
-and eventually calls gpio_set_wake() for the actual register setting.</p>
+pin _will_ wakeup the system, it will only when <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_irq_wake()</span></code> is
+invoked with the corresponding GPIO IRQ (GPIO_IRQ(xx) or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">gpio_to_irq()</span></code>)
+and eventually calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">gpio_set_wake()</span></code> for the actual register setting.</p>
 <p>d) although PXA3xx MFP supports edge detection on each pin, the
 internal logic will only wakeup the system when those specific bits
 in ADxER registers are set, which can be well mapped to the
-corresponding peripheral, thus set_irq_wake() can be called with
+corresponding peripheral, thus <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_irq_wake()</span></code> can be called with
 the peripheral IRQ to enable the wakeup.</p>
 </li>
 </ol>
@@ -365,7 +365,7 @@ make them effective there-after.</p>
 </ul>
 <dl class="simple">
 <dt>for</dt><dd><ol class="arabic simple">
-<li><p>Unified pin definitions - enum constants for all configurable pins</p></li>
+<li><p>Unified pin definitions - <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">constants</span></code> for all configurable pins</p></li>
 <li><p>processor-neutral bit definitions for a possible MFP configuration</p></li>
 </ol>
 </dd>

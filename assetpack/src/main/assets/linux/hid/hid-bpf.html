@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -340,7 +340,7 @@ inserted it allows us by pinning the program and closing all of its fds pointing
     u32 flags;
     int (*hid_device_event)(struct hid_bpf_ctx *ctx, enum hid_report_type report_type, u64 source);
     int (*hid_rdesc_fixup)(struct hid_bpf_ctx *ctx);
-    int (*hid_hw_request)(struct hid_bpf_ctx *ctx, unsigned char reportnum,enum hid_report_type rtype, enum hid_class_request reqtype, u64 source);
+    int (*hid_hw_request)(struct hid_bpf_ctx *ctx, unsigned char reportnum, enum hid_report_type rtype, enum hid_class_request reqtype, u64 source);
     int (*hid_hw_output_report)(struct hid_bpf_ctx *ctx, u64 source);
 };
 </pre></div>
@@ -370,11 +370,11 @@ of the HID device</p>
 value to change the incoming size buffer; a negative
 error code to interrupt the processing of this device</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">hid_hw_request</span></code></dt><dd><p>called whenever a hid_hw_raw_request() call is emitted
+<dt><code class="docutils literal notranslate"><span class="pre">hid_hw_request</span></code></dt><dd><p>called whenever a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hid_hw_raw_request()</span></code> call is emitted
 on the HID device</p>
 <p>It has the following arguments:</p>
 <p><code class="docutils literal notranslate"><span class="pre">ctx</span></code>: The HID-BPF context as <a class="reference internal" href="#c.hid_bpf_ctx" title="hid_bpf_ctx"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hid_bpf_ctx</span></code></a></p>
-<p><code class="docutils literal notranslate"><span class="pre">reportnum</span></code>: the report number, as in hid_hw_raw_request()</p>
+<p><code class="docutils literal notranslate"><span class="pre">reportnum</span></code>: the report number, as in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hid_hw_raw_request()</span></code></p>
 <p><code class="docutils literal notranslate"><span class="pre">rtype</span></code>: the report type (<code class="docutils literal notranslate"><span class="pre">HID_INPUT_REPORT</span></code>, <code class="docutils literal notranslate"><span class="pre">HID_FEATURE_REPORT</span></code>,
 <code class="docutils literal notranslate"><span class="pre">HID_OUTPUT_REPORT</span></code>)</p>
 <p><code class="docutils literal notranslate"><span class="pre">reqtype</span></code>: the request</p>
@@ -386,7 +386,7 @@ stops hid-core from processing that event. A positive value should be
 returned with the number of bytes returned in the incoming buffer; a
 negative error code interrupts the processing of this call.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">hid_hw_output_report</span></code></dt><dd><p>called whenever a hid_hw_output_report() call is emitted
+<dt><code class="docutils literal notranslate"><span class="pre">hid_hw_output_report</span></code></dt><dd><p>called whenever a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hid_hw_output_report()</span></code> call is emitted
 on the HID device</p>
 <p>It has the following arguments:</p>
 <p><code class="docutils literal notranslate"><span class="pre">ctx</span></code>: The HID-BPF context as <a class="reference internal" href="#c.hid_bpf_ctx" title="hid_bpf_ctx"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hid_bpf_ctx</span></code></a></p>
@@ -422,32 +422,36 @@ code interrupts the processing of this call.</p>
 </pre></div>
 </div>
 <p><strong>Members</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">hid</span></code></dt><dd><p>the <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hid_device</span></code> representing the device itself</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">allocated_size</span></code></dt><dd><p>Allocated size of data.</p>
-<p>This is how much memory is available and can be requested
-by the HID program.
-Note that for <code class="docutils literal notranslate"><span class="pre">HID_BPF_RDESC_FIXUP</span></code>, that memory is set to
-<code class="docutils literal notranslate"><span class="pre">4096</span></code> (4 KB)</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">{unnamed_union}</span></code></dt><dd><p>anonymous</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">retval</span></code></dt><dd><p>Return value of the previous program.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">size</span></code></dt><dd><p>Valid data in the data field.</p>
-<p>Programs can get the available valid size in data by fetching this field.
-Programs can also change this value by returning a positive number in the
-program.
-To discard the event, return a negative error code.</p>
-<p><code class="docutils literal notranslate"><span class="pre">size</span></code> must always be less or equal than <code class="docutils literal notranslate"><span class="pre">allocated_size</span></code> (it is enforced
-once all BPF programs have been run).</p>
 </dd>
 </dl>
 </div>
 <p><strong>Description</strong></p>
 <p><code class="docutils literal notranslate"><span class="pre">data</span></code> is not directly accessible from the context. We need to issue
 a call to <a class="reference internal" href="#c.hid_bpf_get_data" title="hid_bpf_get_data"><code class="xref c c-func docutils literal notranslate"><span class="pre">hid_bpf_get_data()</span></code></a> in order to get a pointer to that field.</p>
+<blockquote>
+<div><blockquote>
+<div><p>This is how much memory is available and can be requested
+by the HID program.
+Note that for <code class="docutils literal notranslate"><span class="pre">HID_BPF_RDESC_FIXUP</span></code>, that memory is set to
+<code class="docutils literal notranslate"><span class="pre">4096</span></code> (4 KB)</p>
+</div></blockquote>
+<p>Programs can get the available valid size in data by fetching this field.
+Programs can also change this value by returning a positive number in the
+program.
+To discard the event, return a negative error code.</p>
+<p><code class="docutils literal notranslate"><span class="pre">size</span></code> must always be less or equal than <code class="docutils literal notranslate"><span class="pre">allocated_size</span></code> (it is enforced
+once all BPF programs have been run).</p>
+</div></blockquote>
 <p><code class="docutils literal notranslate"><span class="pre">hid</span></code> and <code class="docutils literal notranslate"><span class="pre">allocated_size</span></code> are read-only, <code class="docutils literal notranslate"><span class="pre">size</span></code> and <code class="docutils literal notranslate"><span class="pre">retval</span></code> are read-write.</p>
 </section>
 <section id="available-api-that-can-be-used-in-all-hid-bpf-struct-ops-programs">

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -307,7 +307,7 @@ type. For example, a 4-bit bitfield encodes <code class="docutils literal notran
 The <code class="docutils literal notranslate"><span class="pre">btf_type.size</span> <span class="pre">*</span> <span class="pre">8</span></code> must be equal to or greater than <code class="docutils literal notranslate"><span class="pre">BTF_INT_BITS()</span></code>
 for the type. The maximum value of <code class="docutils literal notranslate"><span class="pre">BTF_INT_BITS()</span></code> is 128.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">BTF_INT_OFFSET()</span></code> specifies the starting bit offset to calculate values
-for this int. For example, a bitfield struct member has:</p>
+for this int. For example, a bitfield <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">member</span></code> has:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>btf member bit offset 100 from the start of the structure,</p></li>
@@ -315,9 +315,9 @@ for this int. For example, a bitfield struct member has:</p>
 <li><p>the int type has <code class="docutils literal notranslate"><span class="pre">BTF_INT_OFFSET()</span> <span class="pre">=</span> <span class="pre">2</span></code> and <code class="docutils literal notranslate"><span class="pre">BTF_INT_BITS()</span> <span class="pre">=</span> <span class="pre">4</span></code></p></li>
 </ul>
 </div></blockquote>
-<p>Then in the struct memory layout, this member will occupy <code class="docutils literal notranslate"><span class="pre">4</span></code> bits starting
+<p>Then in the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">memory</span></code> layout, this member will occupy <code class="docutils literal notranslate"><span class="pre">4</span></code> bits starting
 from bits <code class="docutils literal notranslate"><span class="pre">100</span> <span class="pre">+</span> <span class="pre">2</span> <span class="pre">=</span> <span class="pre">102</span></code>.</p>
-<p>Alternatively, the bitfield struct member can be the following to access the
+<p>Alternatively, the bitfield <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">member</span></code> can be the following to access the
 same bits as the above:</p>
 <blockquote>
 <div><ul class="simple">
@@ -403,8 +403,8 @@ chained representation for multidimensional arrays.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">name_off</span></code>: 0 or offset to a valid C identifier</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">info.kind_flag</span></code>: 0 or 1</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">info.kind</span></code>: BTF_KIND_STRUCT or BTF_KIND_UNION</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">info.vlen</span></code>: the number of struct/union members</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">info.size</span></code>: the size of the struct/union in bytes</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">info.vlen</span></code>: the number of struct/<code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">members</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">info.size</span></code>: the size of the struct/<code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">in</span></code> bytes</p></li>
 </ul>
 </dd>
 </dl>
@@ -425,9 +425,9 @@ chained representation for multidimensional arrays.</p>
 </dd>
 </dl>
 <p>If the type info <code class="docutils literal notranslate"><span class="pre">kind_flag</span></code> is not set, the offset contains only bit offset
-of the member. Note that the base type of the bitfield can only be int or enum
-type. If the bitfield size is 32, the base type can be either int or enum
-type. If the bitfield size is not 32, the base type must be int, and int type
+of the member. Note that the base type of the bitfield can only be int or <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span>
+<span class="pre">type</span></code>. If the bitfield size is 32, the base type can be either int or <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span>
+<span class="pre">type</span></code>. If the bitfield size is not 32, the base type must be int, and int type
 <code class="docutils literal notranslate"><span class="pre">BTF_INT_BITS()</span></code> encodes the bitfield size.</p>
 <p>If the <code class="docutils literal notranslate"><span class="pre">kind_flag</span></code> is set, the <code class="docutils literal notranslate"><span class="pre">btf_member.offset</span></code> contains both member
 bitfield size and bit offset. The bitfield size and bit offset are calculated
@@ -453,7 +453,7 @@ exist.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">name_off</span></code>: 0 or offset to a valid C identifier</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">info.kind_flag</span></code>: 0 for unsigned, 1 for signed</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">info.kind</span></code>: BTF_KIND_ENUM</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">info.vlen</span></code>: number of enum values</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">info.vlen</span></code>: number of <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">values</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: 1/2/4/8</p></li>
 </ul>
 </dd>
@@ -472,7 +472,7 @@ exist.</p>
 </ul>
 </dd>
 </dl>
-<p>If the original enum value is signed and the size is less than 4,
+<p>If the original <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">value</span></code> is signed and the size is less than 4,
 that value will be sign extended into 4 bytes. If the size is 8,
 the value will be truncated into 4 bytes.</p>
 </section>
@@ -734,8 +734,8 @@ It has the following btf type chain:</p>
 </pre></div>
 </div>
 <p>Basically, a pointer type points to zero or more
-type_tag, then zero or more const/volatile/restrict/typedef
-and finally the base type. The base type is one of
+type_tag, then zero or more const/volatile/restrict/<code class="xref c c-type broken_xref docutils literal notranslate"><span class="pre">typedef</span>
+<span class="pre">and</span></code> finally the base type. The base type is one of
 int, ptr, array, struct, union, enum, func_proto and float types.</p>
 <p>Similarly to decl tags, if the <code class="docutils literal notranslate"><span class="pre">info.kind_flag</span></code> is 0, then this is a
 normal type tag, and the <code class="docutils literal notranslate"><span class="pre">name_off</span></code> encodes btf_type_tag attribute
@@ -751,7 +751,7 @@ attribute-list of the attribute specifier.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">name_off</span></code>: 0 or offset to a valid C identifier</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">info.kind_flag</span></code>: 0 for unsigned, 1 for signed</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">info.kind</span></code>: BTF_KIND_ENUM64</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">info.vlen</span></code>: number of enum values</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">info.vlen</span></code>: number of <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">values</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: 1/2/4/8</p></li>
 </ul>
 </dd>
@@ -772,7 +772,7 @@ attribute-list of the attribute specifier.</p>
 </ul>
 </dd>
 </dl>
-<p>If the original enum value is signed and the size is less than 8,
+<p>If the original <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">value</span></code> is signed and the size is less than 8,
 that value will be sign extended into 8 bytes.</p>
 </section>
 </section>
@@ -1150,7 +1150,7 @@ information stored in the .BTF.base section and the new .BTF base; the type
 information in the .BTF.base section allows us to update the split BTF
 references to point at the corresponding new base BTF IDs.</p>
 <p>BTF relocation happens on kernel module load when a kernel module has a
-.BTF.base section, and libbpf also provides a btf__relocate() API to
+.BTF.base section, and libbpf also provides a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">btf__relocate()</span></code> API to
 accomplish this.</p>
 <p>As an example consider the following base BTF:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[1] INT &#39;int&#39; size=4 bits_offset=0 nr_bits=32 encoding=SIGNED
@@ -1163,7 +1163,7 @@ accomplish this.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[3] PTR &#39;(anon)&#39; type_id=2
 </pre></div>
 </div>
-<p>i.e. split BTF describes a pointer to struct foo { int f1; int f2 };</p>
+<p>i.e. split BTF describes a pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">foo</span></code> { int f1; int f2 };</p>
 <p>.BTF.base will consist of:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[1] INT &#39;int&#39; size=4 bits_offset=0 nr_bits=32 encoding=SIGNED
 [2] STRUCT &#39;foo&#39; size=8 vlen=0
@@ -1178,7 +1178,7 @@ accomplish this.</p>
 </pre></div>
 </div>
 <p>...we can use our .BTF.base description to know that the split BTF reference
-is to struct foo, and relocation results in new split BTF:</p>
+is to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">foo</span></code>, and relocation results in new split BTF:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[4] PTR &#39;(anon)&#39; type_id=3
 </pre></div>
 </div>

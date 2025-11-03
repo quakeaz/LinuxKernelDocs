@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -150,16 +150,16 @@
 <h1>Immutable biovecs and biovec iterators<a class="headerlink" href="#immutable-biovecs-and-biovec-iterators" title="Link to this heading">¶</a></h1>
 <p>Kent Overstreet &lt;<a class="reference external" href="mailto:kmo&#37;&#52;&#48;daterainc&#46;com">kmo<span>&#64;</span>daterainc<span>&#46;</span>com</a>&gt;</p>
 <p>As of 3.13, biovecs should never be modified after a bio has been submitted.
-Instead, we have a new struct bvec_iter which represents a range of a biovec -
+Instead, we have a new <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">bvec_iter</span></code> which represents a range of a biovec -
 the iterator will be modified as the bio is completed, not the biovec.</p>
 <p>More specifically, old code that needed to partially complete a bio would
 update bi_sector and bi_size, and advance bi_idx to the next biovec. If it
 ended up partway through a biovec, it would increment bv_offset and decrement
 bv_len by the number of bytes completed in that biovec.</p>
 <p>In the new scheme of things, everything that must be mutated in order to
-partially complete a bio is segregated into struct bvec_iter: bi_sector,
+partially complete a bio is segregated into <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">bvec_iter</span></code>: bi_sector,
 bi_size and bi_idx have been moved there; and instead of modifying bv_offset
-and bv_len, struct bvec_iter has bi_bvec_done, which represents the number of
+and bv_len, <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">bvec_iter</span></code> has bi_bvec_done, which represents the number of
 bytes completed in the current bvec.</p>
 <p>There are a bunch of new helper macros for hiding the gory details - in
 particular, presenting the illusion of partially completed biovecs so that
@@ -167,18 +167,18 @@ normal code doesn’t have to deal with bi_bvec_done.</p>
 <blockquote>
 <div><ul>
 <li><p>Driver code should no longer refer to biovecs directly; we now have
-bio_iovec() and bio_iter_iovec() macros that return literal struct biovecs,
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bio_iovec()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bio_iter_iovec()</span></code> macros that return literal <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">biovecs</span></code>,
 constructed from the raw biovecs but taking into account bi_bvec_done and
 bi_size.</p>
-<p>bio_for_each_segment() has been updated to take a bvec_iter argument
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bio_for_each_segment()</span></code> has been updated to take a bvec_iter argument
 instead of an integer (that corresponded to bi_idx); for a lot of code the
 conversion just required changing the types of the arguments to
-bio_for_each_segment().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bio_for_each_segment()</span></code>.</p>
 </li>
-<li><p>Advancing a bvec_iter is done with bio_advance_iter(); <a class="reference internal" href="../core-api/kernel-api.html#c.bio_advance" title="bio_advance"><code class="xref c c-func docutils literal notranslate"><span class="pre">bio_advance()</span></code></a> is a
-wrapper around bio_advance_iter() that operates on bio-&gt;bi_iter, and also
+<li><p>Advancing a bvec_iter is done with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bio_advance_iter()</span></code>; <a class="reference internal" href="../core-api/kernel-api.html#c.bio_advance" title="bio_advance"><code class="xref c c-func docutils literal notranslate"><span class="pre">bio_advance()</span></code></a> is a
+wrapper around <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bio_advance_iter()</span></code> that operates on bio-&gt;bi_iter, and also
 advances the bio integrity’s iter if present.</p>
-<p>There is a lower level advance function - bvec_iter_advance() - which takes
+<p>There is a lower level advance function - <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bvec_iter_advance()</span></code> - which takes
 a pointer to a biovec, not a bio; this is used by the bio integrity code.</p>
 </li>
 </ul>
@@ -209,7 +209,7 @@ it somewhere else if there was an error) had to save the entire bvec array
 arbitrary range of an existing biovec, both starting and ending midway
 through biovecs. This is what enables efficient splitting of arbitrary
 bios. Note that this means we _only_ use bi_size to determine when we’ve
-reached the end of a bio, not bi_vcnt - and the bio_iovec() macro takes
+reached the end of a bio, not bi_vcnt - and the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bio_iovec()</span></code> macro takes
 bi_size into account when constructing biovecs.</p></li>
 <li><p>Splitting bios is now much simpler. The old <a class="reference internal" href="../filesystems/api-summary.html#c.bio_split" title="bio_split"><code class="xref c c-func docutils literal notranslate"><span class="pre">bio_split()</span></code></a> didn’t even work on
 bios with more than a single bvec! Now, we can efficiently split arbitrary
@@ -238,9 +238,9 @@ perfectly fine.</p>
 <li><p>Almost all usage of bi_idx is now incorrect and has been removed; instead,
 where previously you would have used bi_idx you’d now use a bvec_iter,
 probably passing it to one of the helper macros.</p>
-<p>I.e. instead of using bio_iovec_idx() (or bio-&gt;bi_iovec[bio-&gt;bi_idx]), you
-now use bio_iter_iovec(), which takes a bvec_iter and returns a
-literal struct bio_vec - constructed on the fly from the raw biovec but
+<p>I.e. instead of using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bio_iovec_idx()</span></code> (or bio-&gt;bi_iovec[bio-&gt;bi_idx]), you
+now use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bio_iter_iovec()</span></code>, which takes a bvec_iter and returns a
+literal <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">bio_vec</span></code> - constructed on the fly from the raw biovec but
 taking into account bi_bvec_done (and bi_size).</p>
 </li>
 <li><p>bi_vcnt can’t be trusted or relied upon by driver code - i.e. anything that
@@ -256,7 +256,7 @@ could eliminate a lot of complexity particularly in stacked drivers. Code
 that creates bios can then create whatever size bios are convenient, and
 more importantly stacked drivers don’t have to deal with both their own bio
 size limitations and the limitations of the underlying devices. Thus
-there’s no need to define -&gt;merge_bvec_fn() callbacks for individual block
+there’s no need to define -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">merge_bvec_fn()</span></code> callbacks for individual block
 drivers.</p></li>
 </ul>
 </div></blockquote>
@@ -278,15 +278,15 @@ bio_last_bvec_all()
 </pre></div>
 </div>
 <ul>
-<li><p>The following helpers iterate over single-page segment. The passed ‘struct
-bio_vec’ will contain a single-page IO vector during the iteration:</p>
+<li><p>The following helpers iterate over single-page segment. The passed ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">bio_vec</span></code>’ will contain a single-page IO vector during the iteration:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>bio_for_each_segment()
 bio_for_each_segment_all()
 </pre></div>
 </div>
 </li>
-<li><p>The following helpers iterate over multi-page bvec. The passed ‘struct
-bio_vec’ will contain a multi-page IO vector during the iteration:</p>
+<li><p>The following helpers iterate over multi-page bvec. The passed ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">bio_vec</span></code>’ will contain a multi-page IO vector during the iteration:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>bio_for_each_bvec()
 bio_for_each_bvec_all()
 rq_for_each_bvec()

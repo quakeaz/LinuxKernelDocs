@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -584,7 +584,7 @@ LANG1 | LANG2 (for others), or STEREO | SAP.</p>
 <p>Which one is returned depends on the chosen channel, each next valid channel
 will cycle through the possible audio subchannel combinations. This allows
 you to test the various combinations by just switching channels..</p>
-<p>Finally, for these inputs the v4l2_timecode struct is filled in the
+<p>Finally, for these inputs the v4l2_timecode <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> filled in the
 dequeued v4l2_buffer struct.</p>
 </section>
 <section id="hdmi-input">
@@ -1084,13 +1084,13 @@ Disconnect control which is valid for all devices.</p>
 <li><p>Wrap Sequence Number:</p>
 <blockquote>
 <div><p>test what happens when you wrap the sequence number in
-struct v4l2_buffer around.</p>
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_buffer</span></code> around.</p>
 </div></blockquote>
 </li>
 <li><p>Wrap Timestamp:</p>
 <blockquote>
-<div><p>test what happens when you wrap the timestamp in struct
-v4l2_buffer around.</p>
+<div><p>test what happens when you wrap the timestamp in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">v4l2_buffer</span></code> around.</p>
 </div></blockquote>
 </li>
 <li><p>Percentage of Dropped Buffers:</p>
@@ -1117,21 +1117,21 @@ corrupt).</p>
 <blockquote>
 <div><p>when pressed, the next REQBUFS or CREATE_BUFS
 ioctl call will fail with an error. To be precise: the videobuf2
-queue_setup() op will return -EINVAL.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">queue_setup()</span></code> op will return -EINVAL.</p>
 </div></blockquote>
 </li>
 <li><p>Inject VIDIOC_QBUF Error:</p>
 <blockquote>
 <div><p>when pressed, the next VIDIOC_QBUF or
 VIDIOC_PREPARE_BUFFER ioctl call will fail with an error. To be
-precise: the videobuf2 buf_prepare() op will return -EINVAL.</p>
+precise: the videobuf2 <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">buf_prepare()</span></code> op will return -EINVAL.</p>
 </div></blockquote>
 </li>
 <li><p>Inject VIDIOC_STREAMON Error:</p>
 <blockquote>
 <div><p>when pressed, the next VIDIOC_STREAMON ioctl
 call will fail with an error. To be precise: the videobuf2
-start_streaming() op will return -EINVAL.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">start_streaming()</span></code> op will return -EINVAL.</p>
 </div></blockquote>
 </li>
 <li><p>Inject Fatal Streaming Error:</p>
@@ -1323,7 +1323,7 @@ matters too much. This also prohibits capturing with ‘Field Top’ or ‘Field
 Bottom’ when the output video is set to ‘Field Alternate’. This combination,
 while legal, became too complicated to support. Both sides have to be ‘Field
 Alternate’ for this to work. Also note that for this specific case the
-sequence and field counting in struct v4l2_buffer on the capture side may not
+sequence and field counting in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_buffer</span></code> on the capture side may not
 be 100% accurate.</p></li>
 <li><p>field settings V4L2_FIELD_SEQ_TB/BT are not supported. While it is possible to
 implement this, it would mean a lot of work to get this right. Since these

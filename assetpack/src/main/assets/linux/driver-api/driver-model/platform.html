@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -178,7 +178,7 @@ list of resources such as addresses and IRQs:</p>
 <h2>Platform drivers<a class="headerlink" href="#platform-drivers" title="Link to this heading">¶</a></h2>
 <p>Platform drivers follow the standard driver model convention, where
 discovery/enumeration is handled outside the drivers, and drivers
-provide probe() and remove() methods.  They support power management
+provide <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove()</span></code> methods.  They support power management
 and shutdown notifications using the standard conventions:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct platform_driver {
       int (*probe)(struct platform_device *);
@@ -193,7 +193,7 @@ and shutdown notifications using the standard conventions:</p>
 };
 </pre></div>
 </div>
-<p>Note that probe() should in general verify that the specified device hardware
+<p>Note that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> should in general verify that the specified device hardware
 actually exists; sometimes platform setup code can’t be sure.  The probing
 can use device resources, including clocks, and device platform_data.</p>
 <p>Platform drivers register themselves the normal way:</p>
@@ -201,7 +201,7 @@ can use device resources, including clocks, and device platform_data.</p>
 </pre></div>
 </div>
 <p>Or, in common situations where the device is known not to be hot-pluggable,
-the probe() routine can live in an init section to reduce the driver’s
+the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> routine can live in an init section to reduce the driver’s
 runtime memory footprint:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int platform_driver_probe(struct platform_driver *drv,
                   int (*probe)(struct platform_device *))
@@ -302,19 +302,19 @@ to indicate there’s only one.</p></li>
 named “serial”.  While “my_rtc”/-1 would be bus_id “my_rtc” (no instance id)
 and use the platform_driver called “my_rtc”.</p>
 <p>Driver binding is performed automatically by the driver core, invoking
-driver probe() after finding a match between device and driver.  If the
-probe() succeeds, the driver and device are bound as usual.  There are
+driver <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> after finding a match between device and driver.  If the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> succeeds, the driver and device are bound as usual.  There are
 three different ways to find such a match:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Whenever a device is registered, the drivers for that bus are
 checked for matches.  Platform devices should be registered very
 early during system boot.</p></li>
-<li><p>When a driver is registered using platform_driver_register(), all
+<li><p>When a driver is registered using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">platform_driver_register()</span></code>, all
 unbound devices on that bus are checked for matches.  Drivers
 usually register later during booting, or by module loading.</p></li>
-<li><p>Registering a driver using platform_driver_probe() works just like
-using platform_driver_register(), except that the driver won’t
+<li><p>Registering a driver using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">platform_driver_probe()</span></code> works just like
+using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">platform_driver_register()</span></code>, except that the driver won’t
 be probed later if another device registers.  (Which is OK, since
 this interface is only for use with non-hotpluggable devices.)</p></li>
 </ul>
@@ -324,20 +324,20 @@ this interface is only for use with non-hotpluggable devices.)</p></li>
 <h2>Early Platform Devices and Drivers<a class="headerlink" href="#early-platform-devices-and-drivers" title="Link to this heading">¶</a></h2>
 <p>The early platform interfaces provide platform data to platform device
 drivers early on during the system boot. The code is built on top of the
-early_param() command line parsing and can be executed very early on.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">early_param()</span></code> command line parsing and can be executed very early on.</p>
 <p>Example: “earlyprintk” class early serial console in 6 steps</p>
 </section>
 <section id="registering-early-platform-device-data">
 <h2>1. Registering early platform device data<a class="headerlink" href="#registering-early-platform-device-data" title="Link to this heading">¶</a></h2>
 <p>The architecture code registers platform device data using the function
-early_platform_add_devices(). In the case of early serial console this
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">early_platform_add_devices()</span></code>. In the case of early serial console this
 should be hardware configuration for the serial port. Devices registered
 at this point will later on be matched against early platform drivers.</p>
 </section>
 <section id="parsing-kernel-command-line">
 <h2>2. Parsing kernel command line<a class="headerlink" href="#parsing-kernel-command-line" title="Link to this heading">¶</a></h2>
-<p>The architecture code calls parse_early_param() to parse the kernel
-command line. This will execute all matching early_param() callbacks.
+<p>The architecture code calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">parse_early_param()</span></code> to parse the kernel
+command line. This will execute all matching <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">early_param()</span></code> callbacks.
 User specified early platform devices will be registered at this point.
 For the early serial console case the user can specify port on the
 kernel command line as “earlyprintk=serial.0” where “earlyprintk” is
@@ -349,22 +349,22 @@ id can be omitted.</p>
 <h2>3. Installing early platform drivers belonging to a certain class<a class="headerlink" href="#installing-early-platform-drivers-belonging-to-a-certain-class" title="Link to this heading">¶</a></h2>
 <p>The architecture code may optionally force registration of all early
 platform drivers belonging to a certain class using the function
-early_platform_driver_register_all(). User specified devices from
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">early_platform_driver_register_all()</span></code>. User specified devices from
 step 2 have priority over these. This step is omitted by the serial
 driver example since the early serial driver code should be disabled
 unless the user has specified port on the kernel command line.</p>
 </section>
 <section id="early-platform-driver-registration">
 <h2>4. Early platform driver registration<a class="headerlink" href="#early-platform-driver-registration" title="Link to this heading">¶</a></h2>
-<p>Compiled-in platform drivers making use of early_platform_init() are
+<p>Compiled-in platform drivers making use of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">early_platform_init()</span></code> are
 automatically registered during step 2 or 3. The serial driver example
 should use early_platform_init(“earlyprintk”, &amp;platform_driver).</p>
 </section>
 <section id="probing-of-early-platform-drivers-belonging-to-a-certain-class">
 <h2>5. Probing of early platform drivers belonging to a certain class<a class="headerlink" href="#probing-of-early-platform-drivers-belonging-to-a-certain-class" title="Link to this heading">¶</a></h2>
-<p>The architecture code calls early_platform_driver_probe() to match
+<p>The architecture code calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">early_platform_driver_probe()</span></code> to match
 registered early platform devices associated with a certain class with
-registered early platform drivers. Matched devices will get probed().
+registered early platform drivers. Matched devices will get <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probed()</span></code>.
 This step can be executed at any point during the early boot. As soon
 as possible may be good for the serial port case.</p>
 </section>
@@ -372,9 +372,9 @@ as possible may be good for the serial port case.</p>
 <h2>6. Inside the early platform driver probe()<a class="headerlink" href="#inside-the-early-platform-driver-probe" title="Link to this heading">¶</a></h2>
 <p>The driver code needs to take special care during early boot, especially
 when it comes to memory allocation and interrupt registration. The code
-in the probe() function can use is_early_platform_device() to check if
+in the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> function can use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">is_early_platform_device()</span></code> to check if
 it is called at early platform device or at the regular platform device
-time. The early serial driver performs register_console() at this point.</p>
+time. The early serial driver performs <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">register_console()</span></code> at this point.</p>
 <p>For further information, see &lt;linux/platform_device.h&gt;.</p>
 </section>
 </section>

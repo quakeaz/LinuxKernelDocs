@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -295,7 +295,7 @@ All 912 UAPI headers compatible with x86 appear to be backwards compatible
 EOF
 </pre></div>
 </div>
-<p>Since we’re re-ordering an existing struct member, there’s no ambiguity,
+<p>Since we’re re-ordering an existing <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">member</span></code>, there’s no ambiguity,
 and the script will report the breakage even if you pass <code class="docutils literal notranslate"><span class="pre">-i</span></code>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>% ./scripts/check-uapi.sh -i
 Installing user-facing UAPI headers from dirty tree... OK
@@ -529,8 +529,8 @@ error - 1/910 UAPI headers compatible with x86 appear _not_ to be backwards comp
 <section id="struct-expansions">
 <h3>Struct Expansions<a class="headerlink" href="#struct-expansions" title="Link to this heading">¶</a></h3>
 <p>Depending on how a structure is handled in kernelspace, a change which
-expands a struct could be non-breaking.</p>
-<p>If a struct is used as the argument to an ioctl, then the kernel driver
+expands a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">could</span></code> be non-breaking.</p>
+<p>If a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> used as the argument to an ioctl, then the kernel driver
 must be able to handle ioctl commands of any size. Beyond that, you need
 to be careful when copying data from the user. Say, for example, that
 <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">foo</span></code> is changed like this:</p>
@@ -567,11 +567,11 @@ in the ioctl code that the user passed in and then use
         ...
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">copy_struct_from_user</span></code> will zero the struct in the kernel and then copy
+<p><code class="docutils literal notranslate"><span class="pre">copy_struct_from_user</span></code> will zero the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">in</span></code> the kernel and then copy
 only the bytes passed in from the user (leaving new members zeroized).
 If the user passed in a larger struct, the extra members are ignored.</p>
 <p>If you know this situation is accounted for in the kernel code, you can
-pass <code class="docutils literal notranslate"><span class="pre">-i</span></code> to the script, and struct expansions like this will be ignored.</p>
+pass <code class="docutils literal notranslate"><span class="pre">-i</span></code> to the script, and <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">expansions</span></code> like this will be ignored.</p>
 </section>
 <section id="flex-array-migration">
 <h3>Flex Array Migration<a class="headerlink" href="#flex-array-migration" title="Link to this heading">¶</a></h3>

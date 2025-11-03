@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -187,7 +187,7 @@ Chinese (Simplified)
 <p>尽管启用page owner会使内核的大小增加几千字节，但这些代码大部分都在页面分配器和
 热路径之外。构建带有page owner的内核，并在需要时打开它，将是调试内核内存问题的
 最佳选择。</p>
-<p>有一个问题是由实现细节引起的。页所有者将信息存储到struct page扩展的内存中。这
+<p>有一个问题是由实现细节引起的。页所有者将信息存储到<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code>扩展的内存中。这
 个内存的初始化时间比稀疏内存系统中的页面分配器启动的时间要晚一些，所以，在初始化
 之前，许多页面可以被分配，但它们没有所有者信息。为了解决这个问题，这些早期分配的
 页面在初始化阶段被调查并标记为分配。虽然这并不意味着它们有正确的所有者信息，但至

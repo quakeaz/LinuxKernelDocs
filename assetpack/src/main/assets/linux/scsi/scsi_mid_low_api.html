@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -237,17 +237,17 @@ by the mid level</p></li>
 supplied functions” below.</p>
 <p>Those functions in group b) are listed in a section entitled “Interface
 functions” below. Their function pointers are placed in the members of
-“struct scsi_host_template”, an instance of which is passed to
+“<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_host_template</span></code>”, an instance of which is passed to
 <a class="reference internal" href="../driver-api/scsi.html#c.scsi_host_alloc" title="scsi_host_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">scsi_host_alloc()</span></code></a>.  Those interface functions that the LLD does not
 wish to supply should have NULL placed in the corresponding member of
-struct scsi_host_template.  Defining an instance of struct
-scsi_host_template at file scope will cause NULL to be  placed in function
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_host_template</span></code>.  Defining an instance of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">scsi_host_template</span></code> at file scope will cause NULL to be  placed in function
 pointer members not explicitly initialized.</p>
 <p>Those usages in group c) should be handled with care, especially in a
 “hotplug” environment. LLDs should be aware of the lifetime of instances
 that are shared with the mid level and other layers.</p>
 <p>All functions defined within an LLD and all data defined at file scope
-should be static. For example the sdev_init() function in an LLD
+should be static. For example the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sdev_init()</span></code> function in an LLD
 called “xxx” could be defined as
 <code class="docutils literal notranslate"><span class="pre">static</span> <span class="pre">int</span> <span class="pre">xxx_sdev_init(struct</span> <span class="pre">scsi_device</span> <span class="pre">*</span> <span class="pre">sdev)</span> <span class="pre">{</span> <span class="pre">/*</span> <span class="pre">code</span> <span class="pre">*/</span> <span class="pre">}</span></code></p>
 </section>
@@ -256,7 +256,7 @@ called “xxx” could be defined as
 <p>In this model an LLD controls when SCSI hosts are introduced and removed
 from the SCSI subsystem. Hosts can be introduced as early as driver
 initialization and removed as late as driver shutdown. Typically a driver
-will respond to a sysfs probe() callback that indicates an HBA has been
+will respond to a sysfs <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> callback that indicates an HBA has been
 detected. After confirming that the new device is one that the LLD wants
 to control, the LLD will initialize the HBA and then register a new host
 with the SCSI mid level.</p>
@@ -292,11 +292,11 @@ scsi_scan_host()  -------+
 </pre></div>
 </div>
 <p>If the LLD wants to adjust the default queue settings, it can invoke
-<a class="reference internal" href="../driver-api/scsi.html#c.scsi_change_queue_depth" title="scsi_change_queue_depth"><code class="xref c c-func docutils literal notranslate"><span class="pre">scsi_change_queue_depth()</span></code></a> in its sdev_configure() routine.</p>
+<a class="reference internal" href="../driver-api/scsi.html#c.scsi_change_queue_depth" title="scsi_change_queue_depth"><code class="xref c c-func docutils literal notranslate"><span class="pre">scsi_change_queue_depth()</span></code></a> in its <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sdev_configure()</span></code> routine.</p>
 <p>When an HBA is being removed it could be as part of an orderly shutdown
 associated with the LLD module being unloaded (e.g. with the “rmmod”
-command) or in response to a “hot unplug” indicated by sysfs()’s
-remove() callback being invoked. In either case, the sequence is the
+command) or in response to a “hot unplug” indicated by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sysfs()</span></code>’s
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove()</span></code> callback being invoked. In either case, the sequence is the
 same:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>        HBA REMOVE: assume 2 SCSI devices attached
 LLD                      mid level                 LLD
@@ -308,9 +308,9 @@ scsi_remove_host() ---------+
 scsi_host_put()
 </pre></div>
 </div>
-<p>It may be useful for a LLD to keep track of struct Scsi_Host instances
+<p>It may be useful for a LLD to keep track of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">Scsi_Host</span></code> instances
 (a pointer is returned by <a class="reference internal" href="../driver-api/scsi.html#c.scsi_host_alloc" title="scsi_host_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">scsi_host_alloc()</span></code></a>). Such instances are “owned”
-by the mid-level.  struct Scsi_Host instances are freed from
+by the mid-level.  <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">Scsi_Host</span></code> instances are freed from
 <a class="reference internal" href="../driver-api/scsi.html#c.scsi_host_put" title="scsi_host_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">scsi_host_put()</span></code></a> when the reference count hits zero.</p>
 <p>Hot unplugging an HBA that controls a disk which is processing SCSI
 commands on a mounted file system is an interesting situation. Reference
@@ -345,26 +345,26 @@ scsi_remove_device() -------+
                     sdev_destroy()
 </pre></div>
 </div>
-<p>It may be useful for an LLD to keep track of struct scsi_device instances
-(a pointer is passed as the parameter to sdev_init() and
-sdev_configure() callbacks). Such instances are “owned” by the mid-level.
-struct scsi_device instances are freed after sdev_destroy().</p>
+<p>It may be useful for an LLD to keep track of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_device</span></code> instances
+(a pointer is passed as the parameter to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sdev_init()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sdev_configure()</span></code> callbacks). Such instances are “owned” by the mid-level.
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_device</span></code> instances are freed after <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sdev_destroy()</span></code>.</p>
 </section>
 <section id="reference-counting">
 <h2>Reference Counting<a class="headerlink" href="#reference-counting" title="Link to this heading">¶</a></h2>
 <p>The Scsi_Host structure has had reference counting infrastructure added.
-This effectively spreads the ownership of struct Scsi_Host instances
+This effectively spreads the ownership of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">Scsi_Host</span></code> instances
 across the various SCSI layers which use them. Previously such instances
 were exclusively owned by the mid level. LLDs would not usually need to
 directly manipulate these reference counts but there may be some cases
 where they do.</p>
 <p>There are 3 reference counting functions of interest associated with
-struct Scsi_Host:</p>
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">Scsi_Host</span></code>:</p>
 <blockquote>
 <div><ul class="simple">
 <li><dl class="simple">
-<dt>scsi_host_alloc():</dt><dd><p>returns a pointer to new instance of struct
-Scsi_Host which has its reference count ^^ set to 1</p>
+<dt>scsi_host_alloc():</dt><dd><p>returns a pointer to new instance of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">Scsi_Host</span></code> which has its reference count ^^ set to 1</p>
 </dd>
 </dl>
 </li>
@@ -383,7 +383,7 @@ is freed</p>
 </ul>
 </div></blockquote>
 <p>The scsi_device structure has had reference counting infrastructure added.
-This effectively spreads the ownership of struct scsi_device instances
+This effectively spreads the ownership of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_device</span></code> instances
 across the various SCSI layers which use them. Previously such instances
 were exclusively owned by the mid level. See the access functions declared
 towards the end of include/scsi/scsi_device.h . If an LLD wants to keep
@@ -393,7 +393,7 @@ use <a class="reference internal" href="../driver-api/scsi.html#c.scsi_device_pu
 delete it).</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>struct Scsi_Host actually has 2 reference counts which are manipulated
+<p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">Scsi_Host</span></code> actually has 2 reference counts which are manipulated
 in parallel by these functions.</p>
 </div>
 </section>
@@ -709,21 +709,21 @@ void scsi_unblock_requests(struct Scsi_Host * shost)
 <section id="interface-functions">
 <h2>Interface Functions<a class="headerlink" href="#interface-functions" title="Link to this heading">¶</a></h2>
 <p>Interface functions are supplied (defined) by LLDs and their function
-pointers are placed in an instance of struct scsi_host_template which
+pointers are placed in an instance of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_host_template</span></code> which
 is passed to <a class="reference internal" href="../driver-api/scsi.html#c.scsi_host_alloc" title="scsi_host_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">scsi_host_alloc()</span></code></a>.
 Some are mandatory. Interface functions should be declared static. The
-accepted convention is that driver “xyz” will declare its sdev_configure()
+accepted convention is that driver “xyz” will declare its <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sdev_configure()</span></code>
 function as:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>static int xyz_sdev_configure(struct scsi_device * sdev);
 </pre></div>
 </div>
 <p>and so forth for all interface functions listed below.</p>
 <p>A pointer to this function should be placed in the ‘sdev_configure’ member
-of a “struct scsi_host_template” instance. A pointer to such an instance
+of a “<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_host_template</span></code>” instance. A pointer to such an instance
 should be passed to the mid level’s <a class="reference internal" href="../driver-api/scsi.html#c.scsi_host_alloc" title="scsi_host_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">scsi_host_alloc()</span></code></a>.
 .</p>
 <p>The interface functions are also described in the include/scsi/scsi_host.h
-file immediately above their definition point in “struct scsi_host_template”.
+file immediately above their definition point in “<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_host_template</span></code>”.
 In some cases more detail is given in scsi_host.h than below.</p>
 <p>The interface functions are listed below in alphabetical order.</p>
 <p>Summary:</p>
@@ -1109,7 +1109,7 @@ In some cases more detail is given in scsi_host.h than below.</p>
 <h2>Data Structures<a class="headerlink" href="#data-structures" title="Link to this heading">¶</a></h2>
 <section id="struct-scsi-host-template">
 <h3>struct scsi_host_template<a class="headerlink" href="#struct-scsi-host-template" title="Link to this heading">¶</a></h3>
-<p>There is one “struct scsi_host_template” instance per LLD <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>. It is
+<p>There is one “<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_host_template</span></code>” instance per LLD <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>. It is
 typically initialized as a file scope static in a driver’s header file. That
 way members that are not explicitly initialized will be set to 0 or NULL.
 Members of interest:</p>
@@ -1157,17 +1157,17 @@ See scsi_netlink.h for a description of valid formats.</p></li>
 <p>In extreme situations a single driver may have several instances
 if it controls several different classes of hardware (e.g. an LLD
 that handles both ISA and PCI cards and has a separate instance of
-struct scsi_host_template for each class).</p>
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_host_template</span></code> for each class).</p>
 </aside>
 </aside>
 </section>
 <section id="struct-scsi-host">
 <h3>struct Scsi_Host<a class="headerlink" href="#struct-scsi-host" title="Link to this heading">¶</a></h3>
-<p>There is one struct Scsi_Host instance per host (HBA) that an LLD
-controls. The struct Scsi_Host structure has many members in common
-with “struct scsi_host_template”. When a new struct Scsi_Host instance
+<p>There is one <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">Scsi_Host</span></code> instance per host (HBA) that an LLD
+controls. The <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">Scsi_Host</span></code> structure has many members in common
+with “<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_host_template</span></code>”. When a new <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">Scsi_Host</span></code> instance
 is created (in <a class="reference internal" href="../driver-api/scsi.html#c.scsi_host_alloc" title="scsi_host_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">scsi_host_alloc()</span></code></a> in hosts.c) those common members are
-initialized from the driver’s struct scsi_host_template instance. Members
+initialized from the driver’s <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_host_template</span></code> instance. Members
 of interest:</p>
 <blockquote>
 <div><dl class="simple">
@@ -1208,8 +1208,8 @@ controlled by the host. Overridden by LLD calls to
 </ul>
 </dd>
 <dt>hostt</dt><dd><ul class="simple">
-<li><p>pointer to driver’s struct scsi_host_template from which
-this struct Scsi_Host instance was spawned</p></li>
+<li><p>pointer to driver’s <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_host_template</span></code> from which
+this <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">Scsi_Host</span></code> instance was spawned</p></li>
 </ul>
 </dd>
 <dt>hostt-&gt;proc_name</dt><dd><ul class="simple">
@@ -1217,12 +1217,12 @@ this struct Scsi_Host instance was spawned</p></li>
 </ul>
 </dd>
 <dt>transportt</dt><dd><ul class="simple">
-<li><p>pointer to driver’s struct scsi_transport_template instance
+<li><p>pointer to driver’s <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_transport_template</span></code> instance
 (if any). FC and SPI transports currently supported.</p></li>
 </ul>
 </dd>
 <dt>hostdata[0]</dt><dd><ul class="simple">
-<li><p>area reserved for LLD at end of struct Scsi_Host. Size
+<li><p>area reserved for LLD at end of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">Scsi_Host</span></code>. Size
 is set by the second argument (named ‘privsize’) to
 <a class="reference internal" href="../driver-api/scsi.html#c.scsi_host_alloc" title="scsi_host_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">scsi_host_alloc()</span></code></a>.</p></li>
 </ul>
@@ -1243,8 +1243,8 @@ The structure is defined in include/scsi/scsi_device.h</p>
 <p>Instances of this structure convey SCSI commands to the LLD and responses
 back to the mid level. The SCSI mid level will ensure that no more SCSI
 commands become queued against the LLD than are indicated by
-<a class="reference internal" href="../driver-api/scsi.html#c.scsi_change_queue_depth" title="scsi_change_queue_depth"><code class="xref c c-func docutils literal notranslate"><span class="pre">scsi_change_queue_depth()</span></code></a> (or struct Scsi_Host::cmd_per_lun). There will
-be at least one instance of struct scsi_cmnd available for each SCSI device.
+<a class="reference internal" href="../driver-api/scsi.html#c.scsi_change_queue_depth" title="scsi_change_queue_depth"><code class="xref c c-func docutils literal notranslate"><span class="pre">scsi_change_queue_depth()</span></code></a> (or <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">Scsi_Host</span></code>::cmd_per_lun). There will
+be at least one instance of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_cmnd</span></code> available for each SCSI device.
 Members of interest:</p>
 <blockquote>
 <div><dl class="simple">
@@ -1258,7 +1258,7 @@ Members of interest:</p>
 </dd>
 <dt>sc_data_direction</dt><dd><ul class="simple">
 <li><p>direction of data transfer in data phase. See
-“enum dma_data_direction” in include/linux/dma-mapping.h</p></li>
+“<code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">dma_data_direction</span></code>” in include/linux/dma-mapping.h</p></li>
 </ul>
 </dd>
 <dt>result</dt><dd><ul class="simple">
@@ -1267,8 +1267,8 @@ of 0 implies a successfully completed command (and all
 data (if any) has been transferred to or from the SCSI
 target device). ‘result’ is a 32-bit unsigned integer that
 can be viewed as 2 related bytes. The SCSI status value is
-in the LSB. See include/scsi/scsi.h status_byte() and
-host_byte() macros and related constants.</p></li>
+in the LSB. See include/scsi/scsi.h <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">status_byte()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">host_byte()</span></code> macros and related constants.</p></li>
 </ul>
 </dd>
 <dt>sense_buffer</dt><dd><ul class="simple">
@@ -1331,11 +1331,11 @@ bytes blocks have been received ‘resid_len’ could be set like this:</p>
 </section>
 <section id="locks">
 <h2>Locks<a class="headerlink" href="#locks" title="Link to this heading">¶</a></h2>
-<p>Each struct Scsi_Host instance has a spin_lock called struct
-Scsi_Host::default_lock which is initialized in <a class="reference internal" href="../driver-api/scsi.html#c.scsi_host_alloc" title="scsi_host_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">scsi_host_alloc()</span></code></a> [found in
-hosts.c]. Within the same function the struct Scsi_Host::host_lock pointer
+<p>Each <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">Scsi_Host</span></code> instance has a spin_lock called <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">Scsi_Host</span></code>::default_lock which is initialized in <a class="reference internal" href="../driver-api/scsi.html#c.scsi_host_alloc" title="scsi_host_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">scsi_host_alloc()</span></code></a> [found in
+hosts.c]. Within the same function the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">Scsi_Host</span></code>::host_lock pointer
 is initialized to point at default_lock.  Thereafter lock and unlock
-operations performed by the mid level use the struct Scsi_Host::host_lock
+operations performed by the mid level use the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">Scsi_Host</span></code>::host_lock
 pointer.  Previously drivers could override the host_lock pointer but
 this is not allowed anymore.</p>
 </section>
@@ -1354,8 +1354,8 @@ to perform an extra data in phase on such responses</p></li>
 </ol>
 </div></blockquote>
 <p>Either way, when a status of CHECK CONDITION is detected, the mid level
-decides whether the LLD has performed autosense by checking struct
-scsi_cmnd::sense_buffer[0] . If this byte has an upper nibble of 7 (or 0xf)
+decides whether the LLD has performed autosense by checking <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">scsi_cmnd</span></code>::sense_buffer[0] . If this byte has an upper nibble of 7 (or 0xf)
 then autosense is assumed to have taken place. If it has another value (and
 this byte is initialized to 0 before each command) then the mid level will
 issue a REQUEST SENSE command.</p>
@@ -1367,17 +1367,17 @@ to perform autosense.</p>
 <section id="changes-since-linux-kernel-2-4-series">
 <h2>Changes since Linux kernel 2.4 series<a class="headerlink" href="#changes-since-linux-kernel-2-4-series" title="Link to this heading">¶</a></h2>
 <p>io_request_lock has been replaced by several finer grained locks. The lock
-relevant to LLDs is struct Scsi_Host::host_lock and there is
+relevant to LLDs is <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">Scsi_Host</span></code>::host_lock and there is
 one per SCSI host.</p>
 <p>The older error handling mechanism has been removed. This means the
-LLD interface functions abort() and reset() have been removed.
-The struct scsi_host_template::use_new_eh_code flag has been removed.</p>
+LLD interface functions <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">abort()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">reset()</span></code> have been removed.
+The <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_host_template</span></code>::use_new_eh_code flag has been removed.</p>
 <p>In the 2.4 series the SCSI subsystem configuration descriptions were
 aggregated with the configuration descriptions from all other Linux
 subsystems in the Documentation/Configure.help file. In the 2.6 series,
 the SCSI subsystem now has its own (much smaller) drivers/scsi/Kconfig
 file that contains both configuration and help information.</p>
-<p>struct SHT has been renamed to struct scsi_host_template.</p>
+<p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">SHT</span></code> has been renamed to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_host_template</span></code>.</p>
 <p>Addition of the “hotplug initialization model” and many extra functions
 to support it.</p>
 </section>

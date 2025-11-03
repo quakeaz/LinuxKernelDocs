@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -186,15 +186,15 @@ messages.</p>
 <p>Dynamic debug is only able to target:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="../../core-api/printk-basics.html#c.pr_debug" title="pr_debug"><code class="xref c c-func docutils literal notranslate"><span class="pre">pr_debug()</span></code></a></p></li>
-<li><p>dev_dbg()</p></li>
-<li><p>print_hex_dump_debug()</p></li>
-<li><p>print_hex_dump_bytes()</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_dbg()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">print_hex_dump_debug()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">print_hex_dump_bytes()</span></code></p></li>
 </ul>
 <p>Therefore the usability of this tool is, as of now, quite limited as there is
 no uniform rule for adding debug prints to the codebase, resulting in a variety
 of ways these prints are implemented.</p>
 <p>Also, note that most debug statements are implemented as a variation of
-dprintk(), which have to be activated via a parameter in respective module,
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dprintk()</span></code>, which have to be activated via a parameter in respective module,
 dynamic debug is unable to do that step for you.</p>
 <p>Here is one example, that enables all available <a class="reference internal" href="../../core-api/printk-basics.html#c.pr_debug" title="pr_debug"><code class="xref c c-func docutils literal notranslate"><span class="pre">pr_debug()</span></code></a>’s within the file:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ alias ddcmd=&#39;echo $* &gt; /proc/dynamic_debug/control&#39;

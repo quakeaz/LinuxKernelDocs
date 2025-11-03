@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -230,7 +230,7 @@ describing the relationship the device has to other entities.</p>
 </pre></div>
 </div>
 <p>It is recommended that the generic device not be the first item in
-the struct to discourage programmers from doing mindless casts
+the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">to</span></code> discourage programmers from doing mindless casts
 between the object types. Instead macros, or inline functions,
 should be created to convert from the generic object type:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>#define to_pci_dev(n) container_of(n, struct pci_dev, dev)
@@ -351,7 +351,7 @@ of operations that the driver model core may call.</p>
 </div>
 </li>
 <li><p>Initialize the generic driver structure.</p>
-<p>When the driver registers with the bus (e.g. doing pci_register_driver()),
+<p>When the driver registers with the bus (e.g. doing <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_register_driver()</span></code>),
 initialize the necessary fields of the driver: the name and bus
 fields.</p>
 </li>
@@ -441,9 +441,9 @@ and zero otherwise. It may also return error code (for example
 -EPROBE_DEFER) if determining that given driver supports the device is
 not possible.</p>
 <p>When a device is registered, the bus’s list of drivers is iterated
-over. bus-&gt;match() is called for each one until a match is found.</p>
+over. bus-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">match()</span></code> is called for each one until a match is found.</p>
 <p>When a driver is registered, the bus’s list of devices is iterated
-over. bus-&gt;match() is called for each device that is not already
+over. bus-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">match()</span></code> is called for each device that is not already
 claimed by a driver.</p>
 <p>When a device is successfully bound to a driver, device-&gt;driver is
 set, the device is added to a per-driver list of devices, and a

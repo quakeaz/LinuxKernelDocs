@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -176,7 +176,7 @@ them to a “housekeeping” CPU dedicated to such work.</p>
 <li><p>Documentation/admin-guide/cgroup-v1:  Using cgroups to bind tasks to sets of CPUs.</p></li>
 <li><p>man taskset:  Using the taskset command to bind tasks to sets
 of CPUs.</p></li>
-<li><p>man sched_setaffinity:  Using the sched_setaffinity() system
+<li><p>man sched_setaffinity:  Using the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sched_setaffinity()</span></code> system
 call to bind tasks to sets of CPUs.</p></li>
 <li><p>/sys/devices/system/cpu/cpuN/online:  Control CPU N’s hotplug state,
 writing “0” to offline and “1” to online.</p></li>
@@ -301,7 +301,7 @@ bring it back online before you start your application.)</p></li>
 <p>Do one or more of the following:</p>
 <ol class="arabic simple">
 <li><p>Avoid use of drivers that use tasklets.  (Such drivers will contain
-calls to things like tasklet_schedule().)</p></li>
+calls to things like <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">tasklet_schedule()</span></code>.)</p></li>
 <li><p>Convert all drivers that you must use from tasklets to workqueues.</p></li>
 <li><p>Force interrupts for drivers using tasklets onto other CPUs,
 and also do I/O involving these drivers on other CPUs.</p></li>
@@ -403,19 +403,19 @@ to remove it, even if its addition was a mistake.</p></li>
 application cannot tolerate:</p>
 <ol class="loweralpha">
 <li><p>Avoid using oprofile, thus avoiding OS jitter from
-wq_sync_buffer().</p></li>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wq_sync_buffer()</span></code>.</p></li>
 <li><p>Limit your CPU frequency so that a CPU-frequency
 governor is not required, possibly enlisting the aid of
 special heatsinks or other cooling technologies.  If done
 correctly, and if you CPU architecture permits, you should
 be able to build your kernel with CONFIG_CPU_FREQ=n to
 avoid the CPU-frequency governor periodically running
-on each CPU, including cs_dbs_timer() and od_dbs_timer().</p>
+on each CPU, including <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cs_dbs_timer()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">od_dbs_timer()</span></code>.</p>
 <p>WARNING:  Please check your CPU specifications to
 make sure that this is safe on your particular system.</p>
 </li>
 <li><p>As of v3.18, Christoph Lameter’s on-demand vmstat workers
-commit prevents OS jitter due to vmstat_update() on
+commit prevents OS jitter due to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vmstat_update()</span></code> on
 CONFIG_SMP=y systems.  Before v3.18, is not possible
 to entirely get rid of the OS jitter, but you can
 decrease its frequency by writing a large value to
@@ -423,7 +423,7 @@ decrease its frequency by writing a large value to
 for an interval of one second.  Of course, larger values
 will make your virtual-memory statistics update more
 slowly.  Of course, you can also run your workload at
-a real-time priority, thus preempting vmstat_update(),
+a real-time priority, thus preempting <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vmstat_update()</span></code>,
 but if your workload is CPU-bound, this is a bad idea.
 However, there is an RFC patch from Christoph Lameter
 (based on an earlier one from Gilad Ben-Yossef) that
@@ -434,12 +434,12 @@ CONFIG_PPC_RTAS_DAEMON=n.  This prevents the RTAS
 daemon from running on each CPU every second or so.
 (This will require editing Kconfig files and will defeat
 this platform’s RAS functionality.)  This avoids jitter
-due to the rtas_event_scan() function.
+due to the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rtas_event_scan()</span></code> function.
 WARNING:  Please check your CPU specifications to
 make sure that this is safe on your particular system.</p></li>
 <li><p>If running on PowerMAC, build your kernel with
 CONFIG_PMAC_RACKMETER=n to disable the CPU-meter,
-avoiding OS jitter from rackmeter_do_timer().</p></li>
+avoiding OS jitter from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rackmeter_do_timer()</span></code>.</p></li>
 </ol>
 </li>
 </ol>

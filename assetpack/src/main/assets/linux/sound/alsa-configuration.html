@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -2165,9 +2165,16 @@ thus the main port must be specified!!! Other options are optional.</p>
 Influence depends on the device
 Default: 0x0000</p>
 </dd>
-<dt>ignore_ctl_error</dt><dd><p>Ignore any USB-controller regarding mixer interface (default: no)</p>
+<dt>ignore_ctl_error</dt><dd><p>Ignore any USB-controller regarding mixer interface (default: no)
+<code class="docutils literal notranslate"><span class="pre">ignore_ctl_error=1</span></code> may help when you get an error at accessing
+the mixer element such as URB error -22.  This happens on some
+buggy USB device or the controller.  This workaround corresponds to
+the <code class="docutils literal notranslate"><span class="pre">quirk_flags</span></code> bit 14, too.</p>
 </dd>
 <dt>autoclock</dt><dd><p>Enable auto-clock selection for UAC2 devices (default: yes)</p>
+</dd>
+<dt>lowlatency</dt><dd><p>Enable low latency playback mode (default: yes).
+Could disable it to switch back to the old mode if face a regression.</p>
 </dd>
 <dt>quirk_alias</dt><dd><p>Quirk alias list, pass strings like <code class="docutils literal notranslate"><span class="pre">0123abcd:5678beef</span></code>, which
 applies the existing quirk for the device 5678:beef to a new
@@ -2178,7 +2185,7 @@ and the playback stream sync mode is ASYNC, the driver tries to
 tie an adjacent ASYNC capture stream as the implicit feedback
 source.  This is equivalent with quirk_flags bit 17.</p>
 </dd>
-<dt>use_vmalloc</dt><dd><p>Use vmalloc() for allocations of the PCM buffers (default: yes).
+<dt>use_vmalloc</dt><dd><p>Use <a class="reference internal" href="../core-api/mm-api.html#c.vmalloc" title="vmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">vmalloc()</span></code></a> for allocations of the PCM buffers (default: yes).
 For architectures with non-coherent memory like ARM or MIPS, the
 mmap access may give inconsistent results with vmalloc’ed
 buffers.  If mmap is used on such architectures, turn off this
@@ -2197,6 +2204,11 @@ until the USB interface 4 gets probed.
 The driver prints a message like “Found post-registration device
 assignment: 1234abcd:04” for such a device, so that user can
 notice the need.</p>
+</dd>
+<dt>skip_validation</dt><dd><p>Skip unit descriptor validation (default: no).
+The option is used to ignore the validation errors with the hexdump
+of the unit descriptor instead of a driver probe error, so that we
+can check its details.</p>
 </dd>
 <dt>quirk_flags</dt><dd><p>Contains the bit flags for various device specific workarounds.
 Applied to the corresponding card index.</p>
@@ -2221,6 +2233,16 @@ Applied to the corresponding card index.</p>
 <li><p>bit 16: Set up the interface at first like UAC1</p></li>
 <li><p>bit 17: Apply the generic implicit feedback sync mode</p></li>
 <li><p>bit 18: Don’t apply implicit feedback sync mode</p></li>
+<li><p>bit 19: Don’t closed interface during setting sample rate</p></li>
+<li><p>bit 20: Force an interface reset whenever stopping &amp; restarting
+a stream</p></li>
+<li><p>bit 21: Do not set PCM rate (frequency) when only one rate is
+available for the given endpoint.</p></li>
+<li><p>bit 22: Set the fixed resolution 16 for Mic Capture Volume</p></li>
+<li><p>bit 23: Set the fixed resolution 384 for Mic Capture Volume</p></li>
+<li><p>bit 24: Set minimum volume control value as mute for devices
+where the lowest playback value represents muted state instead
+of minimum audible volume</p></li>
 </ul>
 </div></blockquote>
 </dd>
@@ -2229,10 +2251,9 @@ Applied to the corresponding card index.</p>
 <p>NB: <code class="docutils literal notranslate"><span class="pre">nrpacks</span></code> parameter can be modified dynamically via sysfs.
 Don’t put the value over 20.  Changing via sysfs has no sanity
 check.</p>
-<p>NB: <code class="docutils literal notranslate"><span class="pre">ignore_ctl_error=1</span></code> may help when you get an error at accessing
-the mixer element such as URB error -22.  This happens on some
-buggy USB device or the controller.  This workaround corresponds to
-the <code class="docutils literal notranslate"><span class="pre">quirk_flags</span></code> bit 14, too.</p>
+<p>NB: <code class="docutils literal notranslate"><span class="pre">ignore_ctl_error=1</span></code> just provides a quick way to work around the
+issues.  If you have a buggy device that requires these quirks, please
+report it to the upstream.</p>
 <p>NB: <code class="docutils literal notranslate"><span class="pre">quirk_alias</span></code> option is provided only for testing / development.
 If you want to have a proper support, contact to upstream for
 adding the matching quirk in the driver code statically.

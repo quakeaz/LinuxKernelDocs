@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -217,7 +217,7 @@ spin_unlock(&amp;the_lock);
 <p>如果所有的代碼都遵循加鎖規則，當持有the_lock的時候，不可能意外的改變shared_data的
 值。任何可能訪問該數據的其他代碼都會在這個鎖上等待。自旋鎖原語跟內存屏障一樣—— 它
 們顯式的用來書寫成這樣 —— 意味着數據訪問不會跨越它們而被優化。所以本來編譯器認爲
-它知道在shared_data裏面將有什麼，但是因爲spin_lock()調用跟內存屏障一樣，會強制編
+它知道在shared_data裏面將有什麼，但是因爲<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock()</span></code>調用跟內存屏障一樣，會強制編
 譯器忘記它所知道的一切。那麼在訪問這些數據時不會有優化的問題。</p>
 <p>如果shared_data被聲名爲volatile，鎖操作將仍然是必須的。就算我們知道沒有其他人正在
 使用它，編譯器也將被阻止優化對臨界區內shared_data的訪問。在鎖有效的同時，
@@ -234,7 +234,7 @@ volatile —— 並且是有潛在危害的。</p>
     cpu_relax();
 </pre></div>
 </div>
-<p>cpu_relax()調用會降低CPU的能量消耗或者讓位於超線程雙處理器；它也作爲內存屏障一樣出
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpu_relax()</span></code>調用會降低CPU的能量消耗或者讓位於超線程雙處理器；它也作爲內存屏障一樣出
 現，所以，再一次，volatile不是必需的。當然，忙等待一開始就是一種反常規的做法。</p>
 <p>在內核中，一些稀少的情況下volatile仍然是有意義的：</p>
 <blockquote>

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -223,7 +223,7 @@ modes is covered in the second part of the book.</p>
 <section id="basic-hardware-handling">
 <h2>Basic hardware handling<a class="headerlink" href="#basic-hardware-handling" title="Link to this heading">¶</a></h2>
 <p>TBD</p>
-<p>This chapter shall contain information on getting a hw struct allocated
+<p>This chapter shall contain information on getting a hw <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">allocated</span></code>
 and registered with mac80211.</p>
 <p>Since it is required to allocate rates/modes before registering a hw
 struct, this chapter shall also contain information on setting up the
@@ -334,7 +334,7 @@ only in that case.</p>
 autonomously manages the PS status of connected stations. When
 this flag is set mac80211 will not trigger PS mode for connected
 stations based on the PM bit of incoming frames.
-Use ieee80211_start_ps()/ieee8021_end_ps() to manually configure
+Use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ieee80211_start_ps()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ieee8021_end_ps()</span></code> to manually configure
 the PS mode of connected stations.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">IEEE80211_HW_TX_AMPDU_SETUP_IN_HW</span></code></dt><dd><p>The device handles TX A-MPDU session
@@ -398,7 +398,7 @@ max_rc_amsdu_len in <a class="reference internal" href="mac80211-advanced.html#c
 skbs, needed for zero-copy software A-MSDU.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">IEEE80211_HW_REPORTS_LOW_ACK</span></code></dt><dd><p>The driver (or firmware) reports low ack event
-by ieee80211_report_low_ack() based on its own algorithm. For such
+by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ieee80211_report_low_ack()</span></code> based on its own algorithm. For such
 drivers, mac80211 packet loss mechanism will not be triggered and driver
 is completely depending on firmware event for station kickout.</p>
 </dd>
@@ -457,9 +457,6 @@ multicast frames on all links, mac80211 should not do that.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">IEEE80211_HW_DISALLOW_PUNCTURING</span></code></dt><dd><p>HW requires disabling puncturing in EHT
 and connecting with a lower bandwidth instead</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">IEEE80211_HW_DISALLOW_PUNCTURING_5GHZ</span></code></dt><dd><p>HW requires disabling puncturing in
-EHT in 5 GHz and connecting with a lower bandwidth instead</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">IEEE80211_HW_HANDLES_QUIET_CSA</span></code></dt><dd><p>HW/driver handles quieting for CSA, so
 no need to stop queues. This really should be set by a driver that
@@ -702,7 +699,7 @@ information for an 802.11 PHY.</p>
 <div class="kernelindent docutils container">
 <p><strong>Definition</strong>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct ieee80211_ops {
-    void (*tx)(struct ieee80211_hw *hw,struct ieee80211_tx_control *control, struct sk_buff *skb);
+    void (*tx)(struct ieee80211_hw *hw, struct ieee80211_tx_control *control, struct sk_buff *skb);
     int (*start)(struct ieee80211_hw *hw);
     void (*stop)(struct ieee80211_hw *hw, bool suspend);
 #ifdef CONFIG_PM;
@@ -711,130 +708,131 @@ information for an 802.11 PHY.</p>
     void (*set_wakeup)(struct ieee80211_hw *hw, bool enabled);
 #endif;
     int (*add_interface)(struct ieee80211_hw *hw, struct ieee80211_vif *vif);
-    int (*change_interface)(struct ieee80211_hw *hw,struct ieee80211_vif *vif, enum nl80211_iftype new_type, bool p2p);
+    int (*change_interface)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, enum nl80211_iftype new_type, bool p2p);
     void (*remove_interface)(struct ieee80211_hw *hw, struct ieee80211_vif *vif);
-    int (*config)(struct ieee80211_hw *hw, u32 changed);
-    void (*bss_info_changed)(struct ieee80211_hw *hw,struct ieee80211_vif *vif,struct ieee80211_bss_conf *info, u64 changed);
-    void (*vif_cfg_changed)(struct ieee80211_hw *hw,struct ieee80211_vif *vif, u64 changed);
-    void (*link_info_changed)(struct ieee80211_hw *hw,struct ieee80211_vif *vif,struct ieee80211_bss_conf *info, u64 changed);
+    int (*config)(struct ieee80211_hw *hw, int radio_idx, u32 changed);
+    void (*bss_info_changed)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_bss_conf *info, u64 changed);
+    void (*vif_cfg_changed)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, u64 changed);
+    void (*link_info_changed)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_bss_conf *info, u64 changed);
     int (*start_ap)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_bss_conf *link_conf);
     void (*stop_ap)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_bss_conf *link_conf);
     u64 (*prepare_multicast)(struct ieee80211_hw *hw, struct netdev_hw_addr_list *mc_list);
-    void (*configure_filter)(struct ieee80211_hw *hw,unsigned int changed_flags,unsigned int *total_flags, u64 multicast);
-    void (*config_iface_filter)(struct ieee80211_hw *hw,struct ieee80211_vif *vif,unsigned int filter_flags, unsigned int changed_flags);
+    void (*configure_filter)(struct ieee80211_hw *hw, unsigned int changed_flags, unsigned int *total_flags, u64 multicast);
+    void (*config_iface_filter)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, unsigned int filter_flags, unsigned int changed_flags);
     int (*set_tim)(struct ieee80211_hw *hw, struct ieee80211_sta *sta, bool set);
-    int (*set_key)(struct ieee80211_hw *hw, enum set_key_cmd cmd,struct ieee80211_vif *vif, struct ieee80211_sta *sta, struct ieee80211_key_conf *key);
-    void (*update_tkip_key)(struct ieee80211_hw *hw,struct ieee80211_vif *vif,struct ieee80211_key_conf *conf,struct ieee80211_sta *sta, u32 iv32, u16 *phase1key);
-    void (*set_rekey_data)(struct ieee80211_hw *hw,struct ieee80211_vif *vif, struct cfg80211_gtk_rekey_data *data);
+    int (*set_key)(struct ieee80211_hw *hw, enum set_key_cmd cmd, struct ieee80211_vif *vif, struct ieee80211_sta *sta, struct ieee80211_key_conf *key);
+    void (*update_tkip_key)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_key_conf *conf, struct ieee80211_sta *sta, u32 iv32, u16 *phase1key);
+    void (*set_rekey_data)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct cfg80211_gtk_rekey_data *data);
     void (*set_default_unicast_key)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, int idx);
     int (*hw_scan)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_scan_request *req);
     void (*cancel_hw_scan)(struct ieee80211_hw *hw, struct ieee80211_vif *vif);
-    int (*sched_scan_start)(struct ieee80211_hw *hw,struct ieee80211_vif *vif,struct cfg80211_sched_scan_request *req, struct ieee80211_scan_ies *ies);
+    int (*sched_scan_start)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct cfg80211_sched_scan_request *req, struct ieee80211_scan_ies *ies);
     int (*sched_scan_stop)(struct ieee80211_hw *hw, struct ieee80211_vif *vif);
-    void (*sw_scan_start)(struct ieee80211_hw *hw,struct ieee80211_vif *vif, const u8 *mac_addr);
+    void (*sw_scan_start)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, const u8 *mac_addr);
     void (*sw_scan_complete)(struct ieee80211_hw *hw, struct ieee80211_vif *vif);
     int (*get_stats)(struct ieee80211_hw *hw, struct ieee80211_low_level_stats *stats);
-    void (*get_key_seq)(struct ieee80211_hw *hw,struct ieee80211_key_conf *key, struct ieee80211_key_seq *seq);
-    int (*set_frag_threshold)(struct ieee80211_hw *hw, u32 value);
-    int (*set_rts_threshold)(struct ieee80211_hw *hw, u32 value);
+    void (*get_key_seq)(struct ieee80211_hw *hw, struct ieee80211_key_conf *key, struct ieee80211_key_seq *seq);
+    int (*set_frag_threshold)(struct ieee80211_hw *hw, int radio_idx, u32 value);
+    int (*set_rts_threshold)(struct ieee80211_hw *hw, int radio_idx, u32 value);
     int (*sta_add)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_sta *sta);
     int (*sta_remove)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_sta *sta);
 #ifdef CONFIG_MAC80211_DEBUGFS;
     void (*vif_add_debugfs)(struct ieee80211_hw *hw, struct ieee80211_vif *vif);
-    void (*link_add_debugfs)(struct ieee80211_hw *hw,struct ieee80211_vif *vif,struct ieee80211_bss_conf *link_conf, struct dentry *dir);
-    void (*sta_add_debugfs)(struct ieee80211_hw *hw,struct ieee80211_vif *vif,struct ieee80211_sta *sta, struct dentry *dir);
-    void (*link_sta_add_debugfs)(struct ieee80211_hw *hw,struct ieee80211_vif *vif,struct ieee80211_link_sta *link_sta, struct dentry *dir);
+    void (*link_add_debugfs)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_bss_conf *link_conf, struct dentry *dir);
+    void (*sta_add_debugfs)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_sta *sta, struct dentry *dir);
+    void (*link_sta_add_debugfs)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_link_sta *link_sta, struct dentry *dir);
 #endif;
     void (*sta_notify)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, enum sta_notify_cmd, struct ieee80211_sta *sta);
-    int (*sta_set_txpwr)(struct ieee80211_hw *hw,struct ieee80211_vif *vif, struct ieee80211_sta *sta);
-    int (*sta_state)(struct ieee80211_hw *hw, struct ieee80211_vif *vif,struct ieee80211_sta *sta,enum ieee80211_sta_state old_state, enum ieee80211_sta_state new_state);
-    void (*sta_pre_rcu_remove)(struct ieee80211_hw *hw,struct ieee80211_vif *vif, struct ieee80211_sta *sta);
-    void (*link_sta_rc_update)(struct ieee80211_hw *hw,struct ieee80211_vif *vif,struct ieee80211_link_sta *link_sta, u32 changed);
-    void (*sta_rate_tbl_update)(struct ieee80211_hw *hw,struct ieee80211_vif *vif, struct ieee80211_sta *sta);
-    void (*sta_statistics)(struct ieee80211_hw *hw,struct ieee80211_vif *vif,struct ieee80211_sta *sta, struct station_info *sinfo);
-    int (*conf_tx)(struct ieee80211_hw *hw,struct ieee80211_vif *vif,unsigned int link_id, u16 ac, const struct ieee80211_tx_queue_params *params);
+    int (*sta_set_txpwr)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_sta *sta);
+    int (*sta_state)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_sta *sta, enum ieee80211_sta_state old_state, enum ieee80211_sta_state new_state);
+    void (*sta_pre_rcu_remove)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_sta *sta);
+    void (*link_sta_rc_update)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_link_sta *link_sta, u32 changed);
+    void (*sta_rate_tbl_update)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_sta *sta);
+    void (*sta_statistics)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_sta *sta, struct station_info *sinfo);
+    int (*conf_tx)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, unsigned int link_id, u16 ac, const struct ieee80211_tx_queue_params *params);
     u64 (*get_tsf)(struct ieee80211_hw *hw, struct ieee80211_vif *vif);
     void (*set_tsf)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, u64 tsf);
     void (*offset_tsf)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, s64 offset);
     void (*reset_tsf)(struct ieee80211_hw *hw, struct ieee80211_vif *vif);
     int (*tx_last_beacon)(struct ieee80211_hw *hw);
-    int (*ampdu_action)(struct ieee80211_hw *hw,struct ieee80211_vif *vif, struct ieee80211_ampdu_params *params);
+    void (*link_sta_statistics)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_link_sta *link_sta, struct link_station_info *link_sinfo);
+    int (*ampdu_action)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_ampdu_params *params);
     int (*get_survey)(struct ieee80211_hw *hw, int idx, struct survey_info *survey);
     void (*rfkill_poll)(struct ieee80211_hw *hw);
-    void (*set_coverage_class)(struct ieee80211_hw *hw, s16 coverage_class);
+    void (*set_coverage_class)(struct ieee80211_hw *hw, int radio_idx, s16 coverage_class);
 #ifdef CONFIG_NL80211_TESTMODE;
     int (*testmode_cmd)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, void *data, int len);
-    int (*testmode_dump)(struct ieee80211_hw *hw, struct sk_buff *skb,struct netlink_callback *cb, void *data, int len);
+    int (*testmode_dump)(struct ieee80211_hw *hw, struct sk_buff *skb, struct netlink_callback *cb, void *data, int len);
 #endif;
     void (*flush)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, u32 queues, bool drop);
     void (*flush_sta)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_sta *sta);
-    void (*channel_switch)(struct ieee80211_hw *hw,struct ieee80211_vif *vif, struct ieee80211_channel_switch *ch_switch);
-    int (*set_antenna)(struct ieee80211_hw *hw, u32 tx_ant, u32 rx_ant);
-    int (*get_antenna)(struct ieee80211_hw *hw, u32 *tx_ant, u32 *rx_ant);
-    int (*remain_on_channel)(struct ieee80211_hw *hw,struct ieee80211_vif *vif,struct ieee80211_channel *chan,int duration, enum ieee80211_roc_type type);
+    void (*channel_switch)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_channel_switch *ch_switch);
+    int (*set_antenna)(struct ieee80211_hw *hw, int radio_idx, u32 tx_ant, u32 rx_ant);
+    int (*get_antenna)(struct ieee80211_hw *hw, int radio_idx, u32 *tx_ant, u32 *rx_ant);
+    int (*remain_on_channel)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_channel *chan, int duration, enum ieee80211_roc_type type);
     int (*cancel_remain_on_channel)(struct ieee80211_hw *hw, struct ieee80211_vif *vif);
     int (*set_ringparam)(struct ieee80211_hw *hw, u32 tx, u32 rx);
     void (*get_ringparam)(struct ieee80211_hw *hw, u32 *tx, u32 *tx_max, u32 *rx, u32 *rx_max);
     bool (*tx_frames_pending)(struct ieee80211_hw *hw);
     int (*set_bitrate_mask)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, const struct cfg80211_bitrate_mask *mask);
-    void (*event_callback)(struct ieee80211_hw *hw,struct ieee80211_vif *vif, const struct ieee80211_event *event);
-    void (*allow_buffered_frames)(struct ieee80211_hw *hw,struct ieee80211_sta *sta,u16 tids, int num_frames,enum ieee80211_frame_release_type reason, bool more_data);
-    void (*release_buffered_frames)(struct ieee80211_hw *hw,struct ieee80211_sta *sta,u16 tids, int num_frames,enum ieee80211_frame_release_type reason, bool more_data);
+    void (*event_callback)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, const struct ieee80211_event *event);
+    void (*allow_buffered_frames)(struct ieee80211_hw *hw, struct ieee80211_sta *sta, u16 tids, int num_frames, enum ieee80211_frame_release_type reason, bool more_data);
+    void (*release_buffered_frames)(struct ieee80211_hw *hw, struct ieee80211_sta *sta, u16 tids, int num_frames, enum ieee80211_frame_release_type reason, bool more_data);
     int (*get_et_sset_count)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, int sset);
-    void (*get_et_stats)(struct ieee80211_hw *hw,struct ieee80211_vif *vif, struct ethtool_stats *stats, u64 *data);
-    void (*get_et_strings)(struct ieee80211_hw *hw,struct ieee80211_vif *vif, u32 sset, u8 *data);
-    void (*mgd_prepare_tx)(struct ieee80211_hw *hw,struct ieee80211_vif *vif, struct ieee80211_prep_tx_info *info);
-    void (*mgd_complete_tx)(struct ieee80211_hw *hw,struct ieee80211_vif *vif, struct ieee80211_prep_tx_info *info);
-    void (*mgd_protect_tdls_discover)(struct ieee80211_hw *hw,struct ieee80211_vif *vif, unsigned int link_id);
+    void (*get_et_stats)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ethtool_stats *stats, u64 *data);
+    void (*get_et_strings)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, u32 sset, u8 *data);
+    void (*mgd_prepare_tx)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_prep_tx_info *info);
+    void (*mgd_complete_tx)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_prep_tx_info *info);
+    void (*mgd_protect_tdls_discover)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, unsigned int link_id);
     int (*add_chanctx)(struct ieee80211_hw *hw, struct ieee80211_chanctx_conf *ctx);
     void (*remove_chanctx)(struct ieee80211_hw *hw, struct ieee80211_chanctx_conf *ctx);
-    void (*change_chanctx)(struct ieee80211_hw *hw,struct ieee80211_chanctx_conf *ctx, u32 changed);
-    int (*assign_vif_chanctx)(struct ieee80211_hw *hw,struct ieee80211_vif *vif,struct ieee80211_bss_conf *link_conf, struct ieee80211_chanctx_conf *ctx);
-    void (*unassign_vif_chanctx)(struct ieee80211_hw *hw,struct ieee80211_vif *vif,struct ieee80211_bss_conf *link_conf, struct ieee80211_chanctx_conf *ctx);
-    int (*switch_vif_chanctx)(struct ieee80211_hw *hw,struct ieee80211_vif_chanctx_switch *vifs,int n_vifs, enum ieee80211_chanctx_switch_mode mode);
+    void (*change_chanctx)(struct ieee80211_hw *hw, struct ieee80211_chanctx_conf *ctx, u32 changed);
+    int (*assign_vif_chanctx)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_bss_conf *link_conf, struct ieee80211_chanctx_conf *ctx);
+    void (*unassign_vif_chanctx)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_bss_conf *link_conf, struct ieee80211_chanctx_conf *ctx);
+    int (*switch_vif_chanctx)(struct ieee80211_hw *hw, struct ieee80211_vif_chanctx_switch *vifs, int n_vifs, enum ieee80211_chanctx_switch_mode mode);
     void (*reconfig_complete)(struct ieee80211_hw *hw, enum ieee80211_reconfig_type reconfig_type);
 #if IS_ENABLED(CONFIG_IPV6);
-    void (*ipv6_addr_change)(struct ieee80211_hw *hw,struct ieee80211_vif *vif, struct inet6_dev *idev);
+    void (*ipv6_addr_change)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct inet6_dev *idev);
 #endif;
-    void (*channel_switch_beacon)(struct ieee80211_hw *hw,struct ieee80211_vif *vif, struct cfg80211_chan_def *chandef);
-    int (*pre_channel_switch)(struct ieee80211_hw *hw,struct ieee80211_vif *vif, struct ieee80211_channel_switch *ch_switch);
-    int (*post_channel_switch)(struct ieee80211_hw *hw,struct ieee80211_vif *vif, struct ieee80211_bss_conf *link_conf);
-    void (*abort_channel_switch)(struct ieee80211_hw *hw,struct ieee80211_vif *vif, struct ieee80211_bss_conf *link_conf);
-    void (*channel_switch_rx_beacon)(struct ieee80211_hw *hw,struct ieee80211_vif *vif, struct ieee80211_channel_switch *ch_switch);
+    void (*channel_switch_beacon)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct cfg80211_chan_def *chandef);
+    int (*pre_channel_switch)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_channel_switch *ch_switch);
+    int (*post_channel_switch)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_bss_conf *link_conf);
+    void (*abort_channel_switch)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_bss_conf *link_conf);
+    void (*channel_switch_rx_beacon)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_channel_switch *ch_switch);
     int (*join_ibss)(struct ieee80211_hw *hw, struct ieee80211_vif *vif);
     void (*leave_ibss)(struct ieee80211_hw *hw, struct ieee80211_vif *vif);
     u32 (*get_expected_throughput)(struct ieee80211_hw *hw, struct ieee80211_sta *sta);
     int (*get_txpower)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, unsigned int link_id, int *dbm);
-    int (*tdls_channel_switch)(struct ieee80211_hw *hw,struct ieee80211_vif *vif,struct ieee80211_sta *sta, u8 oper_class,struct cfg80211_chan_def *chandef, struct sk_buff *tmpl_skb, u32 ch_sw_tm_ie);
-    void (*tdls_cancel_channel_switch)(struct ieee80211_hw *hw,struct ieee80211_vif *vif, struct ieee80211_sta *sta);
-    void (*tdls_recv_channel_switch)(struct ieee80211_hw *hw,struct ieee80211_vif *vif, struct ieee80211_tdls_ch_sw_params *params);
+    int (*tdls_channel_switch)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_sta *sta, u8 oper_class, struct cfg80211_chan_def *chandef, struct sk_buff *tmpl_skb, u32 ch_sw_tm_ie);
+    void (*tdls_cancel_channel_switch)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_sta *sta);
+    void (*tdls_recv_channel_switch)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_tdls_ch_sw_params *params);
     void (*wake_tx_queue)(struct ieee80211_hw *hw, struct ieee80211_txq *txq);
     void (*sync_rx_queues)(struct ieee80211_hw *hw);
-    int (*start_nan)(struct ieee80211_hw *hw,struct ieee80211_vif *vif, struct cfg80211_nan_conf *conf);
+    int (*start_nan)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct cfg80211_nan_conf *conf);
     int (*stop_nan)(struct ieee80211_hw *hw, struct ieee80211_vif *vif);
-    int (*nan_change_conf)(struct ieee80211_hw *hw,struct ieee80211_vif *vif, struct cfg80211_nan_conf *conf, u32 changes);
-    int (*add_nan_func)(struct ieee80211_hw *hw,struct ieee80211_vif *vif, const struct cfg80211_nan_func *nan_func);
-    void (*del_nan_func)(struct ieee80211_hw *hw,struct ieee80211_vif *vif, u8 instance_id);
-    bool (*can_aggregate_in_amsdu)(struct ieee80211_hw *hw,struct sk_buff *head, struct sk_buff *skb);
-    int (*get_ftm_responder_stats)(struct ieee80211_hw *hw,struct ieee80211_vif *vif, struct cfg80211_ftm_responder_stats *ftm_stats);
+    int (*nan_change_conf)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct cfg80211_nan_conf *conf, u32 changes);
+    int (*add_nan_func)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, const struct cfg80211_nan_func *nan_func);
+    void (*del_nan_func)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, u8 instance_id);
+    bool (*can_aggregate_in_amsdu)(struct ieee80211_hw *hw, struct sk_buff *head, struct sk_buff *skb);
+    int (*get_ftm_responder_stats)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct cfg80211_ftm_responder_stats *ftm_stats);
     int (*start_pmsr)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct cfg80211_pmsr_request *request);
     void (*abort_pmsr)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct cfg80211_pmsr_request *request);
-    int (*set_tid_config)(struct ieee80211_hw *hw,struct ieee80211_vif *vif,struct ieee80211_sta *sta, struct cfg80211_tid_config *tid_conf);
-    int (*reset_tid_config)(struct ieee80211_hw *hw,struct ieee80211_vif *vif, struct ieee80211_sta *sta, u8 tids);
+    int (*set_tid_config)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_sta *sta, struct cfg80211_tid_config *tid_conf);
+    int (*reset_tid_config)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_sta *sta, u8 tids);
     void (*update_vif_offload)(struct ieee80211_hw *hw, struct ieee80211_vif *vif);
     void (*sta_set_4addr)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_sta *sta, bool enabled);
     int (*set_sar_specs)(struct ieee80211_hw *hw, const struct cfg80211_sar_specs *sar);
-    void (*sta_set_decap_offload)(struct ieee80211_hw *hw,struct ieee80211_vif *vif, struct ieee80211_sta *sta, bool enabled);
-    void (*add_twt_setup)(struct ieee80211_hw *hw,struct ieee80211_sta *sta, struct ieee80211_twt_setup *twt);
+    void (*sta_set_decap_offload)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_sta *sta, bool enabled);
+    void (*add_twt_setup)(struct ieee80211_hw *hw, struct ieee80211_sta *sta, struct ieee80211_twt_setup *twt);
     void (*twt_teardown_request)(struct ieee80211_hw *hw, struct ieee80211_sta *sta, u8 flowid);
     int (*set_radar_background)(struct ieee80211_hw *hw, struct cfg80211_chan_def *chandef);
-    int (*net_fill_forward_path)(struct ieee80211_hw *hw,struct ieee80211_vif *vif,struct ieee80211_sta *sta,struct net_device_path_ctx *ctx, struct net_device_path *path);
-    bool (*can_activate_links)(struct ieee80211_hw *hw,struct ieee80211_vif *vif, u16 active_links);
-    int (*change_vif_links)(struct ieee80211_hw *hw,struct ieee80211_vif *vif,u16 old_links, u16 new_links, struct ieee80211_bss_conf *old[IEEE80211_MLD_MAX_NUM_LINKS]);
-    int (*change_sta_links)(struct ieee80211_hw *hw,struct ieee80211_vif *vif,struct ieee80211_sta *sta, u16 old_links, u16 new_links);
-    int (*set_hw_timestamp)(struct ieee80211_hw *hw,struct ieee80211_vif *vif, struct cfg80211_set_hw_timestamp *hwts);
-    int (*net_setup_tc)(struct ieee80211_hw *hw,struct ieee80211_vif *vif,struct net_device *dev,enum tc_setup_type type, void *type_data);
-    enum ieee80211_neg_ttlm_res(*can_neg_ttlm)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_neg_ttlm *ttlm);
+    int (*net_fill_forward_path)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_sta *sta, struct net_device_path_ctx *ctx, struct net_device_path *path);
+    bool (*can_activate_links)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, u16 active_links);
+    int (*change_vif_links)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, u16 old_links, u16 new_links, struct ieee80211_bss_conf *old[IEEE80211_MLD_MAX_NUM_LINKS]);
+    int (*change_sta_links)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_sta *sta, u16 old_links, u16 new_links);
+    int (*set_hw_timestamp)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct cfg80211_set_hw_timestamp *hwts);
+    int (*net_setup_tc)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct net_device *dev, enum tc_setup_type type, void *type_data);
+    enum ieee80211_neg_ttlm_res (*can_neg_ttlm)(struct ieee80211_hw *hw, struct ieee80211_vif *vif, struct ieee80211_neg_ttlm *ttlm);
     void (*prep_add_interface)(struct ieee80211_hw *hw, enum nl80211_iftype type);
 };
 </pre></div>
@@ -883,9 +881,9 @@ to also unregister the device. If it returns 1, then mac80211
 will also go through the regular complete restart on resume.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">set_wakeup</span></code></dt><dd><p>Enable or disable wakeup when WoWLAN configuration is
-modified. The reason is that device_set_wakeup_enable() is
+modified. The reason is that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">device_set_wakeup_enable()</span></code> is
 supposed to be called when the configuration changes, not only
-in suspend().</p>
+in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">suspend()</span></code>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">add_interface</span></code></dt><dd><p>Called when a netdevice attached to the hardware is
 enabled. Because it is not called for monitor mode devices, <strong>start</strong>
@@ -950,7 +948,7 @@ disabled/enabled via <strong>bss_info_changed</strong>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">prepare_multicast</span></code></dt><dd><p>Prepare for multicast filter configuration.
 This callback is optional, and its return value is passed
-to configure_filter(). This callback must be atomic.</p>
+to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">configure_filter()</span></code>. This callback must be atomic.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">configure_filter</span></code></dt><dd><p>Configure the device’s RX filter.
 See the section “Frame filtering” for more information.
@@ -982,7 +980,7 @@ The callback must be atomic.</p>
 host is suspended, it can assign this callback to retrieve the data
 necessary to do GTK rekeying, this is the KEK, KCK and replay counter.
 After rekeying was done it should (for example during resume) notify
-userspace of the new replay counter using ieee80211_gtk_rekey_notify().</p>
+userspace of the new replay counter using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ieee80211_gtk_rekey_notify()</span></code>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">set_default_unicast_key</span></code></dt><dd><p>Set the default (unicast) key index, useful for
 WEP when the device sends data packets autonomously, e.g. for ARP
@@ -1017,11 +1015,11 @@ The callback can sleep.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">sched_scan_start</span></code></dt><dd><p>Ask the hardware to start scanning repeatedly at
 specific intervals.  The driver must call the
-ieee80211_sched_scan_results() function whenever it finds results.
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ieee80211_sched_scan_results()</span></code> function whenever it finds results.
 This process will continue until sched_scan_stop is called.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">sched_scan_stop</span></code></dt><dd><p>Tell the hardware to stop an ongoing scheduled scan.
-In this case, ieee80211_sched_scan_stopped() must not be called.</p>
+In this case, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ieee80211_sched_scan_stopped()</span></code> must not be called.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">sw_scan_start</span></code></dt><dd><p>Notifier function that is called just before a software scan
 is started. Can be NULL, if the driver doesn’t need this notification.
@@ -1147,7 +1145,7 @@ The callback can sleep.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">offset_tsf</span></code></dt><dd><p>Offset the TSF timer by the specified value in the
 firmware/hardware.  Preferred to set_tsf as it avoids delay between
-calling set_tsf() and hardware getting programmed, which will show up
+calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_tsf()</span></code> and hardware getting programmed, which will show up
 as TSF delay. Is not a required function.
 The callback can sleep.</p>
 </dd>
@@ -1161,6 +1159,15 @@ The callback can sleep.</p>
 This is needed only for IBSS mode and the result of this function is
 used to determine whether to reply to Probe Requests.
 Returns non-zero if this device sent the last beacon.
+The callback can sleep.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">link_sta_statistics</span></code></dt><dd><p>Get link statistics for this station. For example with
+beacon filtering, the statistics kept by mac80211 might not be
+accurate, so let the driver pre-fill the statistics. The driver can
+fill most of the values (indicating which by setting the filled
+bitmap), but not all of them make sense - see the source for which
+ones are possible.
+Statistics that the driver doesn’t fill will be filled by mac80211.
 The callback can sleep.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">ampdu_action</span></code></dt><dd><p>Perform a certain A-MPDU action.
@@ -1194,7 +1201,7 @@ if the session can start immediately.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">rfkill_poll</span></code></dt><dd><p>Poll rfkill hardware state. If you need this, you also
 need to set wiphy-&gt;rfkill_poll to <code class="docutils literal notranslate"><span class="pre">true</span></code> before registration,
-and need to call wiphy_rfkill_set_hw_state() in the callback.
+and need to call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wiphy_rfkill_set_hw_state()</span></code> in the callback.
 The callback can sleep.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">set_coverage_class</span></code></dt><dd><p>Set slot time for given coverage class as specified
@@ -1222,7 +1229,7 @@ The callback can sleep.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">channel_switch</span></code></dt><dd><p>Drivers that need (or want) to offload the channel
 switch operation for CSAs received from the AP may implement this
-callback. They must then call ieee80211_chswitch_done() to indicate
+callback. They must then call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ieee80211_chswitch_done()</span></code> to indicate
 completion of the channel switch.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">set_antenna</span></code></dt><dd><p>Set antenna configuration (tx_ant, rx_ant) on the device.
@@ -1233,12 +1240,12 @@ reject TX/RX mask combinations they cannot support by returning -EINVAL
 <dt><code class="docutils literal notranslate"><span class="pre">get_antenna</span></code></dt><dd><p>Get current antenna configuration from device (tx_ant, rx_ant).</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">remain_on_channel</span></code></dt><dd><p>Starts an off-channel period on the given channel, must
-call back to ieee80211_ready_on_channel() when on that channel. Note
+call back to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ieee80211_ready_on_channel()</span></code> when on that channel. Note
 that normal channel traffic is not stopped as this is intended for hw
 offload. Frames to transmit on the off-channel channel are transmitted
 normally except for the <code class="docutils literal notranslate"><span class="pre">IEEE80211_TX_CTL_TX_OFFCHAN</span></code> flag. When the
 duration (which will always be non-zero) expires, the driver must call
-ieee80211_remain_on_channel_expired().
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ieee80211_remain_on_channel_expired()</span></code>.
 Note that this callback may be called while the device is in IDLE and
 must be accepted in this case.
 This callback may sleep.</p>
@@ -1330,7 +1337,9 @@ The callback is optional and can (should!) sleep.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">mgd_complete_tx</span></code></dt><dd><p>Notify the driver that the response frame for a previously
 transmitted frame announced with <strong>mgd_prepare_tx</strong> was received, the data
-is filled similarly to <strong>mgd_prepare_tx</strong> though the duration is not used.</p>
+is filled similarly to <strong>mgd_prepare_tx</strong> though the duration is not used.
+Note that this isn’t always called for each <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mgd_prepare_tx()</span></code> call, for
+example for SAE the ‘confirm’ messages can be on the air in any order.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">mgd_protect_tdls_discover</span></code></dt><dd><p>Protect a TDLS discovery session. After sending
 a TDLS discovery-request, we expect a reply to arrive on the AP’s
@@ -1366,7 +1375,7 @@ another, as specified in the list of
 to the mode defined in <code class="xref c c-type docutils literal notranslate"><span class="pre">ieee80211_chanctx_switch_mode</span></code>.
 This callback may sleep.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">reconfig_complete</span></code></dt><dd><p>Called after a call to ieee80211_restart_hw() and
+<dt><code class="docutils literal notranslate"><span class="pre">reconfig_complete</span></code></dt><dd><p>Called after a call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ieee80211_restart_hw()</span></code> and
 during resume, when the reconfiguration has completed.
 This can help the driver implement the reconfiguration step (and
 indicate mac80211 is ready to receive frames).
@@ -1380,10 +1389,10 @@ This callback is optional; it must not sleep.</p>
 Beacons are modified to include CSA or ECSA IEs before calling this
 function. The corresponding count fields in these IEs must be
 decremented, and when they reach 1 the driver must call
-ieee80211_csa_finish(). Drivers which use <a class="reference internal" href="mac80211-advanced.html#c.ieee80211_beacon_get" title="ieee80211_beacon_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">ieee80211_beacon_get()</span></code></a>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ieee80211_csa_finish()</span></code>. Drivers which use <a class="reference internal" href="mac80211-advanced.html#c.ieee80211_beacon_get" title="ieee80211_beacon_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">ieee80211_beacon_get()</span></code></a>
 get the csa counter decremented by mac80211, but must check if it is
-1 using ieee80211_beacon_counter_is_complete() after the beacon has been
-transmitted and then call ieee80211_csa_finish().
+1 using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ieee80211_beacon_counter_is_complete()</span></code> after the beacon has been
+transmitted and then call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ieee80211_csa_finish()</span></code>.
 If the CSA count starts as zero or 1, this function will not be called,
 since there won’t be any time to beacon before the switch anyway.</p>
 </dd>
@@ -1459,7 +1468,7 @@ cfg80211_nan_func must not be referenced outside the scope of
 this call.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">del_nan_func</span></code></dt><dd><p>Remove a NAN function. The driver must call
-ieee80211_nan_func_terminated() with
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ieee80211_nan_func_terminated()</span></code> with
 NL80211_NAN_FUNC_TERM_REASON_USER_REQUEST reason code upon removal.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">can_aggregate_in_amsdu</span></code></dt><dd><p>Called in order to determine if HW supports
@@ -1520,6 +1529,8 @@ but may immediately disappear after the function returns. The old or
 new links bitmaps may be 0 if going from/to a non-MLO situation.
 The <strong>old</strong> array contains pointers to the old bss_conf structures
 that were already removed, in case they’re needed.
+Note that removal of link should always succeed, so the return value
+will be ignored in a removal only case.
 This callback can sleep.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">change_sta_links</span></code></dt><dd><p>Change the valid links of a station, similar to
@@ -1733,7 +1744,7 @@ otherwise each channel context has the number of chains listed.</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This struct indicates how the driver shall configure the hardware.</p>
+<p>This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">indicates</span></code> how the driver shall configure the hardware.</p>
 </section>
 <section id="virtual-interfaces">
 <h2>Virtual interfaces<a class="headerlink" href="#virtual-interfaces" title="Link to this heading">¶</a></h2>
@@ -2202,7 +2213,7 @@ and once at rate 1 after which we received an acknowledgement.</p>
 <p><strong>Definition</strong>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct ieee80211_tx_info {
     u32 flags;
-    u32 band:3,status_data_idr:1,status_data:13,hw_queue:4, tx_time_est:10;
+    u32 band:3, status_data_idr:1, status_data:13, hw_queue:4, tx_time_est:10;
     union {
         struct {
             union {
@@ -2260,13 +2271,13 @@ link the frame will be transmitted on</p>
 <dt><code class="docutils literal notranslate"><span class="pre">status_data</span></code></dt><dd><p>internal data for TX status handling, assigned privately,
 see also <code class="xref c c-type docutils literal notranslate"><span class="pre">enum</span> <span class="pre">ieee80211_status_data</span></code> for the internal documentation</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">hw_queue</span></code></dt><dd><p>HW queue to put the frame on, skb_get_queue_mapping() gives the AC</p>
+<dt><code class="docutils literal notranslate"><span class="pre">hw_queue</span></code></dt><dd><p>HW queue to put the frame on, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">skb_get_queue_mapping()</span></code> gives the AC</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">tx_time_est</span></code></dt><dd><p>TX time estimate in units of 4us, used internally</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">{unnamed_union}</span></code></dt><dd><p>anonymous</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">control</span></code></dt><dd><p>union part for control data</p>
+<dt><code class="docutils literal notranslate"><span class="pre">control</span></code></dt><dd><p><code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">part</span></code> for control data</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">{unnamed_union}</span></code></dt><dd><p>anonymous</p>
 </dd>
@@ -2294,11 +2305,11 @@ see also <code class="xref c c-type docutils literal notranslate"><span class="p
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">control.enqueue_time</span></code></dt><dd><p>enqueue time (for iTXQs)</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">ack</span></code></dt><dd><p>union part for pure ACK data</p>
+<dt><code class="docutils literal notranslate"><span class="pre">ack</span></code></dt><dd><p><code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">part</span></code> for pure ACK data</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">ack.cookie</span></code></dt><dd><p>cookie for the ACK</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">status</span></code></dt><dd><p>union part for status data</p>
+<dt><code class="docutils literal notranslate"><span class="pre">status</span></code></dt><dd><p><code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">part</span></code> for status data</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">status.rates</span></code></dt><dd><p>attempted rates</p>
 </dd>
@@ -2370,7 +2381,7 @@ any fields it needs after calling this helper.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Constants</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">RX_FLAG_MMIC_ERROR</span></code></dt><dd><p>Michael MIC error was reported on this frame.
 Use together with <code class="docutils literal notranslate"><span class="pre">RX_FLAG_MMIC_STRIPPED</span></code>.</p>
 </dd>
@@ -2478,18 +2489,6 @@ frame</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">RX_FLAG_RADIOTAP_HE</span></code></dt><dd><p>HE radiotap data is present
 (<code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ieee80211_radiotap_he</span></code>, mac80211 will fill in</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>DATA3_DATA_MCS</p></li>
-<li><p>DATA3_DATA_DCM</p></li>
-<li><p>DATA3_CODING</p></li>
-<li><p>DATA5_GI</p></li>
-<li><p>DATA5_DATA_BW_RU_ALLOC</p></li>
-<li><p>DATA6_NSTS</p></li>
-<li><p>DATA3_STBC</p></li>
-</ul>
-</div></blockquote>
-<p>from the RX info data, so leave those zeroed when building this data)</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">RX_FLAG_RADIOTAP_HE_MU</span></code></dt><dd><p>HE MU radiotap data is present
 (<code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ieee80211_radiotap_he_mu</span></code>)</p>
@@ -2508,6 +2507,20 @@ hardware or driver)</p>
 </div>
 <p><strong>Description</strong></p>
 <p>These flags are used with the <strong>flag</strong> member of <a class="reference internal" href="#c.ieee80211_rx_status" title="ieee80211_rx_status"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ieee80211_rx_status</span></code></a>.</p>
+<blockquote>
+<div><blockquote>
+<div><ul class="simple">
+<li><p>DATA3_DATA_MCS</p></li>
+<li><p>DATA3_DATA_DCM</p></li>
+<li><p>DATA3_CODING</p></li>
+<li><p>DATA5_GI</p></li>
+<li><p>DATA5_DATA_BW_RU_ALLOC</p></li>
+<li><p>DATA6_NSTS</p></li>
+<li><p>DATA3_STBC</p></li>
+</ul>
+</div></blockquote>
+<p>from the RX info data, so leave those zeroed when building this data)</p>
+</div></blockquote>
 <dl class="c enum">
 <dt class="sig sig-object c" id="c.mac80211_rx_encoding_flags">
 <span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mac80211_rx_encoding_flags</span></span></span><a class="headerlink" href="#c.mac80211_rx_encoding_flags" title="Link to this definition">¶</a><br /></dt>
@@ -3021,13 +3034,13 @@ in monitor mode. However, for best CPU usage and power consumption,
 having as few frames as possible percolate through the stack is
 desirable. Hence, the hardware should filter as much as possible.</p>
 <p>To achieve this, mac80211 uses filter flags (see below) to tell
-the driver’s configure_filter() function which frames should be
+the driver’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">configure_filter()</span></code> function which frames should be
 passed to mac80211 and which should be filtered out.</p>
-<p>Before configure_filter() is invoked, the prepare_multicast()
+<p>Before <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">configure_filter()</span></code> is invoked, the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prepare_multicast()</span></code>
 callback is invoked with the parameters <strong>mc_count</strong> and <strong>mc_list</strong>
 for the combined multicast address list of all virtual interfaces.
 It’s use is optional, and it returns a u64 that is passed to
-configure_filter(). Additionally, configure_filter() has the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">configure_filter()</span></code>. Additionally, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">configure_filter()</span></code> has the
 arguments <strong>changed_flags</strong> telling which flags were changed and
 <strong>total_flags</strong> with the new flag states.</p>
 <p>If your device has no multicast address filters your driver will

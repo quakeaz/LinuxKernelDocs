@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -325,7 +325,7 @@ name.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>This is <a class="reference internal" href="#c.printk" title="printk"><code class="xref c c-func docutils literal notranslate"><span class="pre">printk()</span></code></a>. It can be called from any context. We want it to work.</p>
-<p>If printk indexing is enabled, _printk() is called from printk_index_wrap.
+<p>If printk indexing is enabled, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_printk()</span></code> is called from printk_index_wrap.
 Otherwise, printk is simply #defined to _printk.</p>
 <p>We try to grab the console_lock. If we succeed, it’s easy - we log the
 output and call the console drivers.  If we fail to get the semaphore, we
@@ -548,10 +548,10 @@ defined. Otherwise it does nothing.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This macro expands to dynamic_pr_debug() if CONFIG_DYNAMIC_DEBUG is
+<p>This macro expands to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dynamic_pr_debug()</span></code> if CONFIG_DYNAMIC_DEBUG is
 set. Otherwise, if DEBUG is defined, it’s equivalent to a printk with
 KERN_DEBUG loglevel. If DEBUG is not defined it does nothing.</p>
-<p>It uses <a class="reference internal" href="#c.pr_fmt" title="pr_fmt"><code class="xref c c-func docutils literal notranslate"><span class="pre">pr_fmt()</span></code></a> to generate the format string (dynamic_pr_debug() uses
+<p>It uses <a class="reference internal" href="#c.pr_fmt" title="pr_fmt"><code class="xref c c-func docutils literal notranslate"><span class="pre">pr_fmt()</span></code></a> to generate the format string (<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dynamic_pr_debug()</span></code> uses
 <a class="reference internal" href="#c.pr_fmt" title="pr_fmt"><code class="xref c c-func docutils literal notranslate"><span class="pre">pr_fmt()</span></code></a> internally).</p>
 </div>
 </section>

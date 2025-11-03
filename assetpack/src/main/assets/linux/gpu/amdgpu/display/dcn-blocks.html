@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -270,7 +270,7 @@ cannot process very large surface;</p></li>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This struct is used as a node in an MPC tree.</p>
+<p>This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> used as a node in an MPC tree.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.mpc_tree">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mpc_tree</span></span></span><a class="headerlink" href="#c.mpc_tree" title="Link to this definition">¶</a><br /></dt>
@@ -302,38 +302,38 @@ cannot process very large surface;</p></li>
 <div class="kernelindent docutils container">
 <p><strong>Definition</strong>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct mpc_funcs {
-    void (*read_mpcc_state)(struct mpc *mpc,int mpcc_inst, struct mpcc_state *s);
-    struct mpcc* (*insert_plane)(struct mpc *mpc,struct mpc_tree *tree,struct mpcc_blnd_cfg *blnd_cfg,struct mpcc_sm_cfg *sm_cfg,struct mpcc *insert_above_mpcc,int dpp_id, int mpcc_id);
-    void (*remove_mpcc)(struct mpc *mpc,struct mpc_tree *tree, struct mpcc *mpcc);
+    void (*read_mpcc_state)( struct mpc *mpc, int mpcc_inst, struct mpcc_state *s);
+    struct mpcc* (*insert_plane)( struct mpc *mpc, struct mpc_tree *tree, struct mpcc_blnd_cfg *blnd_cfg, struct mpcc_sm_cfg *sm_cfg, struct mpcc *insert_above_mpcc, int dpp_id, int mpcc_id);
+    void (*remove_mpcc)( struct mpc *mpc, struct mpc_tree *tree, struct mpcc *mpcc);
     void (*mpc_init)(struct mpc *mpc);
-    void (*mpc_init_single_inst)(struct mpc *mpc, unsigned int mpcc_id);
-    void (*update_blending)(struct mpc *mpc,struct mpcc_blnd_cfg *blnd_cfg, int mpcc_id);
-    void (*cursor_lock)(struct mpc *mpc,int opp_id, bool lock);
-    struct mpcc* (*insert_plane_to_secondary)(struct mpc *mpc,struct mpc_tree *tree,struct mpcc_blnd_cfg *blnd_cfg,struct mpcc_sm_cfg *sm_cfg,struct mpcc *insert_above_mpcc,int dpp_id, int mpcc_id);
-    void (*remove_mpcc_from_secondary)(struct mpc *mpc,struct mpc_tree *tree, struct mpcc *mpcc);
-    struct mpcc* (*get_mpcc_for_dpp_from_secondary)(struct mpc_tree *tree, int dpp_id);
-    struct mpcc* (*get_mpcc_for_dpp)(struct mpc_tree *tree, int dpp_id);
+    void (*mpc_init_single_inst)( struct mpc *mpc, unsigned int mpcc_id);
+    void (*update_blending)( struct mpc *mpc, struct mpcc_blnd_cfg *blnd_cfg, int mpcc_id);
+    void (*cursor_lock)( struct mpc *mpc, int opp_id, bool lock);
+    struct mpcc* (*insert_plane_to_secondary)( struct mpc *mpc, struct mpc_tree *tree, struct mpcc_blnd_cfg *blnd_cfg, struct mpcc_sm_cfg *sm_cfg, struct mpcc *insert_above_mpcc, int dpp_id, int mpcc_id);
+    void (*remove_mpcc_from_secondary)( struct mpc *mpc, struct mpc_tree *tree, struct mpcc *mpcc);
+    struct mpcc* (*get_mpcc_for_dpp_from_secondary)( struct mpc_tree *tree, int dpp_id);
+    struct mpcc* (*get_mpcc_for_dpp)( struct mpc_tree *tree, int dpp_id);
     void (*wait_for_idle)(struct mpc *mpc, int id);
     void (*assert_mpcc_idle_before_connect)(struct mpc *mpc, int mpcc_id);
-    void (*init_mpcc_list_from_hw)(struct mpc *mpc, struct mpc_tree *tree);
-    void (*set_denorm)(struct mpc *mpc,int opp_id, enum dc_color_depth output_depth);
-    void (*set_denorm_clamp)(struct mpc *mpc,int opp_id, struct mpc_denorm_clamp denorm_clamp);
-    void (*set_output_csc)(struct mpc *mpc,int opp_id,const uint16_t *regval, enum mpc_output_csc_mode ocsc_mode);
-    void (*set_ocsc_default)(struct mpc *mpc,int opp_id,enum dc_color_space color_space, enum mpc_output_csc_mode ocsc_mode);
-    void (*set_output_gamma)(struct mpc *mpc,int mpcc_id, const struct pwl_params *params);
-    void (*power_on_mpc_mem_pwr)(struct mpc *mpc,int mpcc_id, bool power_on);
-    void (*set_dwb_mux)(struct mpc *mpc,int dwb_id, int mpcc_id);
-    void (*disable_dwb_mux)(struct mpc *mpc, int dwb_id);
-    bool (*is_dwb_idle)(struct mpc *mpc, int dwb_id);
-    void (*set_out_rate_control)(struct mpc *mpc,int opp_id,bool enable,bool rate_2x_mode, struct mpc_dwb_flow_control *flow_control);
-    void (*set_gamut_remap)(struct mpc *mpc,int mpcc_id, const struct mpc_grph_gamut_adjustment *adjust);
-    bool (*program_1dlut)(struct mpc *mpc,const struct pwl_params *params, uint32_t rmu_idx);
-    bool (*program_shaper)(struct mpc *mpc,const struct pwl_params *params, uint32_t rmu_idx);
+    void (*init_mpcc_list_from_hw)( struct mpc *mpc, struct mpc_tree *tree);
+    void (*set_denorm)(struct mpc *mpc, int opp_id, enum dc_color_depth output_depth);
+    void (*set_denorm_clamp)( struct mpc *mpc, int opp_id, struct mpc_denorm_clamp denorm_clamp);
+    void (*set_output_csc)(struct mpc *mpc, int opp_id, const uint16_t *regval, enum mpc_output_csc_mode ocsc_mode);
+    void (*set_ocsc_default)(struct mpc *mpc, int opp_id, enum dc_color_space color_space, enum mpc_output_csc_mode ocsc_mode);
+    void (*set_output_gamma)( struct mpc *mpc, int mpcc_id, const struct pwl_params *params);
+    void (*power_on_mpc_mem_pwr)( struct mpc *mpc, int mpcc_id, bool power_on);
+    void (*set_dwb_mux)( struct mpc *mpc, int dwb_id, int mpcc_id);
+    void (*disable_dwb_mux)( struct mpc *mpc, int dwb_id);
+    bool (*is_dwb_idle)( struct mpc *mpc, int dwb_id);
+    void (*set_out_rate_control)( struct mpc *mpc, int opp_id, bool enable, bool rate_2x_mode, struct mpc_dwb_flow_control *flow_control);
+    void (*set_gamut_remap)( struct mpc *mpc, int mpcc_id, const struct mpc_grph_gamut_adjustment *adjust);
+    bool (*program_1dlut)( struct mpc *mpc, const struct pwl_params *params, uint32_t rmu_idx);
+    bool (*program_shaper)( struct mpc *mpc, const struct pwl_params *params, uint32_t rmu_idx);
     uint32_t (*acquire_rmu)(struct mpc *mpc, int mpcc_id, int rmu_idx);
-    bool (*program_3dlut)(struct mpc *mpc,const struct tetrahedral_params *params, int rmu_idx);
+    bool (*program_3dlut)( struct mpc *mpc, const struct tetrahedral_params *params, int rmu_idx);
     int (*release_rmu)(struct mpc *mpc, int mpcc_id);
-    unsigned int (*get_mpc_out_mux)(struct mpc *mpc, int opp_id);
-    void (*set_bg_color)(struct mpc *mpc,struct tg_color *bg_color, int mpcc_id);
+    unsigned int (*get_mpc_out_mux)( struct mpc *mpc, int opp_id);
+    void (*set_bg_color)(struct mpc *mpc, struct tg_color *bg_color, int mpcc_id);
     void (*set_mpc_mem_lp_mode)(struct mpc *mpc);
     void (*set_movable_cm_location)(struct mpc *mpc, enum mpcc_movable_cm_location location, int mpcc_id);
     void (*update_3dlut_fast_load_select)(struct mpc *mpc, int mpcc_id, int hubp_idx);
@@ -507,8 +507,8 @@ is associated with specified plane.</p>
 <p>Return:</p>
 <p>void</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">init_mpcc_list_from_hw</span></code></dt><dd><p>Iterate through the MPCC array from a given MPC context struct
-and configure each MPCC according to its registers’ values.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">init_mpcc_list_from_hw</span></code></dt><dd><p>Iterate through the MPCC array from a given MPC context <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">and</span></code> configure each MPCC according to its registers’ values.</p>
 <p>Parameters:
 - [in/out] mpc - MPC context to initialize MPCC array.
 - [in/out] tree - MPC tree structure containing MPCC contexts to initialize.</p>
@@ -725,6 +725,10 @@ set its bg color.</p>
 <p>Return:</p>
 <p>void</p>
 </dd>
+<dt><code class="docutils literal notranslate"><span class="pre">mcm</span></code></dt><dd><p>MPC MCM new HW sequential programming functions</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">rmcm</span></code></dt><dd><p>MPC RMCM new HW sequential programming functions</p>
+</dd>
 </dl>
 </div>
 </section>
@@ -783,7 +787,7 @@ and status channels for these interfaces.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">dc_link</span> <span class="pre">*link</span></code></dt><dd><p>Reference a link struct containing one or more sinks and the
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">dc_link</span> <span class="pre">*link</span></code></dt><dd><p>Reference a link <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">containing</span></code> one or more sinks and the
 connective status.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">link_resource</span> <span class="pre">*link_res</span></code></dt><dd><p>Mappable hardware resource used to enable a link.</p>
@@ -808,7 +812,7 @@ connective status.</p>
 <p>This function behaves like a get function to return the link_hwss populated
 in the link_hwss_dio.c file.</p>
 <p><strong>Return</strong></p>
-<p>Return the reference to the filled struct of link_hwss.</p>
+<p>Return the reference to the filled <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">of</span></code> link_hwss.</p>
 </div>
 </section>
 </section>

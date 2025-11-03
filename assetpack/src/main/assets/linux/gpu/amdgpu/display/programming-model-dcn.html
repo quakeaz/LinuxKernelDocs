@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -219,14 +219,14 @@ attention to the names in the boxes since they represent a data structure in
 the driver:</p>
 <figure class="align-default">
 <img alt="../../../_images/dc-arch-overview.svg" src="../../../_images/dc-arch-overview.svg" /></figure>
-<p>Let’s start with the central block in the image, <cite>dc</cite>. The <cite>dc</cite> struct is
+<p>Let’s start with the central block in the image, <cite>dc</cite>. The <cite>dc</cite> <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code>
 initialized per GPU; for example, one GPU has one <cite>dc</cite> instance, two GPUs have
 two <cite>dc</cite> instances, and so forth. In other words we have one ‘dc’ per ‘amdgpu’
 instance. In some ways, this object behaves like the <cite>Singleton</cite> pattern.</p>
 <p>After the <cite>dc</cite> block in the diagram, you can see the <cite>dc_link</cite> component, which
 is a low-level abstraction for the connector. One interesting aspect of the
 image is that connectors are not part of the DCN block; they are defined by the
-platform/board and not by the SoC. The <cite>dc_link</cite> struct is the high-level data
+platform/board and not by the SoC. The <cite>dc_link</cite> <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> the high-level data
 container with information such as connected sinks, connection status, signal
 types, etc. After <cite>dc_link</cite>, there is the <cite>dc_sink</cite>, which is the object that
 represents the connected display.</p>
@@ -256,13 +256,13 @@ composition at the DC level.</p>
 <section id="basic-operations">
 <h3>Basic Operations<a class="headerlink" href="#basic-operations" title="Link to this heading">¶</a></h3>
 <p>Now that we have covered the basic objects, it is time to examine some of the
-basic hardware/software operations. Let’s start with the <cite>dc_create()</cite>
+basic hardware/software operations. Let’s start with the <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dc_create()</span></code></cite>
 function, which directly works with the <cite>dc</cite> data struct; this function behaves
 like a constructor responsible for the basic software initialization and
 preparing for enabling other parts of the API. It is important to highlight
 that this operation does not touch any hardware configuration; it is only a
 software initialization.</p>
-<p>Next, we have the <cite>dc_hardware_init()</cite>, which also relies on the <cite>dc</cite> data
+<p>Next, we have the <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dc_hardware_init()</span></code></cite>, which also relies on the <cite>dc</cite> data
 struct. Its main function is to put the hardware in a valid state. It is worth
 highlighting that the hardware might initialize in an unknown state, and it is
 a requirement to put it in a valid state; this function has multiple callbacks
@@ -273,7 +273,7 @@ structure. This function retrieves and enumerates all the <cite>dc_links</cite> 
 on the device; this is required since this information is not part of the SoC
 definition but depends on the board configuration. As soon as the <cite>dc_link</cite> is
 initialized, it is useful to figure out if any of them are already connected to
-the display by using the <cite>dc_link_detect()</cite> function. After the driver figures
+the display by using the <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dc_link_detect()</span></code></cite> function. After the driver figures
 out if any display is connected to the device, the challenging phase starts:
 configuring the monitor to show something. Nonetheless, dealing with the ideal
 configuration is not a DC task since this is the Display Manager (<cite>amdgpu_dm</cite>)

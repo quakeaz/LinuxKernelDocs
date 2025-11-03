@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -310,9 +310,9 @@ faulting thread continue with <code class="docutils literal notranslate"><span c
 <code class="docutils literal notranslate"><span class="pre">UFFD_PAGEFAULT_FLAG_*</span></code> flags.</p></li>
 <li><p>None of the page-delivering ioctls default to the range that you
 registered with.  You must fill in all fields for the appropriate
-ioctl struct including the range.</p></li>
+ioctl <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">including</span></code> the range.</p></li>
 <li><p>You get the address of the access that triggered the missing page
-event out of a struct uffd_msg that you read in the thread from the
+event out of a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">uffd_msg</span></code> that you read in the thread from the
 uffd.  You can supply as many pages as you want with these IOCTLs.
 Keep in mind that unless you used DONTWAKE then the first of any of
 those IOCTLs wakes up the faulting thread.</p></li>
@@ -329,10 +329,10 @@ signal handler.</p>
 Instead of using mprotect(2) you use
 <code class="docutils literal notranslate"><span class="pre">ioctl(uffd,</span> <span class="pre">UFFDIO_WRITEPROTECT,</span> <span class="pre">struct</span> <span class="pre">*uffdio_writeprotect)</span></code>
 while <code class="docutils literal notranslate"><span class="pre">mode</span> <span class="pre">=</span> <span class="pre">UFFDIO_WRITEPROTECT_MODE_WP</span></code>
-in the struct passed in.  The range does not default to and does not
+in the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">passed</span></code> in.  The range does not default to and does not
 have to be identical to the range you registered with.  You can write
 protect as many ranges as you like (inside the registered range).
-Then, in the thread reading from uffd the struct will have
+Then, in the thread reading from uffd the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">will</span></code> have
 <code class="docutils literal notranslate"><span class="pre">msg.arg.pagefault.flags</span> <span class="pre">&amp;</span> <span class="pre">UFFD_PAGEFAULT_FLAG_WP</span></code> set. Now you send
 <code class="docutils literal notranslate"><span class="pre">ioctl(uffd,</span> <span class="pre">UFFDIO_WRITEPROTECT,</span> <span class="pre">struct</span> <span class="pre">*uffdio_writeprotect)</span></code>
 again while <code class="docutils literal notranslate"><span class="pre">pagefault.mode</span></code> does not have <code class="docutils literal notranslate"><span class="pre">UFFDIO_WRITEPROTECT_MODE_WP</span></code>
@@ -483,7 +483,7 @@ duplicated into the newly created process. The manager
 receives <code class="docutils literal notranslate"><span class="pre">UFFD_EVENT_FORK</span></code> with file descriptor of the new
 <code class="docutils literal notranslate"><span class="pre">userfaultfd</span></code> context in the <code class="docutils literal notranslate"><span class="pre">uffd_msg.fork</span></code>.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">UFFD_FEATURE_EVENT_REMAP</span></code></dt><dd><p>enable notifications about mremap() calls. When the
+<dt><code class="docutils literal notranslate"><span class="pre">UFFD_FEATURE_EVENT_REMAP</span></code></dt><dd><p>enable notifications about <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mremap()</span></code> calls. When the
 non-cooperative process moves a virtual memory area to a
 different location, the manager will receive
 <code class="docutils literal notranslate"><span class="pre">UFFD_EVENT_REMAP</span></code>. The <code class="docutils literal notranslate"><span class="pre">uffd_msg.remap</span></code> will contain the old and
@@ -491,7 +491,7 @@ new addresses of the area and its original length.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">UFFD_FEATURE_EVENT_REMOVE</span></code></dt><dd><p>enable notifications about madvise(MADV_REMOVE) and
 madvise(MADV_DONTNEED) calls. The event <code class="docutils literal notranslate"><span class="pre">UFFD_EVENT_REMOVE</span></code> will
-be generated upon these calls to madvise(). The <code class="docutils literal notranslate"><span class="pre">uffd_msg.remove</span></code>
+be generated upon these calls to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">madvise()</span></code>. The <code class="docutils literal notranslate"><span class="pre">uffd_msg.remove</span></code>
 will contain start and end addresses of the removed area.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">UFFD_FEATURE_EVENT_UNMAP</span></code></dt><dd><p>enable notifications about memory unmapping. The manager will
@@ -506,8 +506,8 @@ removed, but the area is not, the area remains monitored by the
 <code class="docutils literal notranslate"><span class="pre">userfaultfd</span></code>, and if a page fault occurs in that area it will be
 delivered to the manager. The proper resolution for such page fault is
 to zeromap the faulting address. However, in the latter case, when an
-area is unmapped, either explicitly (with munmap() system call), or
-implicitly (e.g. during mremap()), the area is removed and in turn the
+area is unmapped, either explicitly (with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">munmap()</span></code> system call), or
+implicitly (e.g. during <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mremap()</span></code>), the area is removed and in turn the
 <code class="docutils literal notranslate"><span class="pre">userfaultfd</span></code> context for such area disappears too and the manager will
 not get further userland page faults from the removed area. Still, the
 notification is required in order to prevent manager from using

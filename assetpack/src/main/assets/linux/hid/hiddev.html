@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -218,7 +218,7 @@ it performs an interrupt transfer containing a report which contains
 the changed value.  The hid-core.c module parses the report, and
 returns to hiddev.c the individual usages that have changed within
 the report.  In its basic mode, the hiddev will make these individual
-usage changes available to the reader using a struct hiddev_event:</p>
+usage changes available to the reader using a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hiddev_event</span></code>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct hiddev_event {
     unsigned hid;
     signed int value;
@@ -259,27 +259,27 @@ collections the device has from the num_applications field from the
 hiddev_devinfo structure.</p>
 <dl class="simple">
 <dt>HIDIOCGCOLLECTIONINFO</dt><dd><ul class="simple">
-<li><p>struct hiddev_collection_info (read/write)</p></li>
+<li><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hiddev_collection_info</span></code> (read/write)</p></li>
 </ul>
 </dd>
 </dl>
 <p>This returns a superset of the information above, providing not only
 application collections, but all the collections the device has.  It
 also returns the level the collection lives in the hierarchy.
-The user passes in a hiddev_collection_info struct with the index
+The user passes in a hiddev_collection_info <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">with</span></code> the index
 field set to the index that should be returned.  The ioctl fills in
 the other fields.  If the index is larger than the last collection
 index, the ioctl returns -1 and sets errno to -EINVAL.</p>
 <dl class="simple">
 <dt>HIDIOCGDEVINFO</dt><dd><ul class="simple">
-<li><p>struct hiddev_devinfo (read)</p></li>
+<li><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hiddev_devinfo</span></code> (read)</p></li>
 </ul>
 </dd>
 </dl>
 <p>Gets a hiddev_devinfo structure which describes the device.</p>
 <dl class="simple">
 <dt>HIDIOCGSTRING</dt><dd><ul class="simple">
-<li><p>struct hiddev_string_descriptor (read/write)</p></li>
+<li><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hiddev_string_descriptor</span></code> (read/write)</p></li>
 </ul>
 </dd>
 </dl>
@@ -306,7 +306,7 @@ device at attach time.</p>
 <p>Gets the device name</p>
 <dl class="simple">
 <dt>HIDIOCGREPORT</dt><dd><ul class="simple">
-<li><p>struct hiddev_report_info (write)</p></li>
+<li><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hiddev_report_info</span></code> (write)</p></li>
 </ul>
 </dd>
 </dl>
@@ -315,7 +315,7 @@ in order to selectively update the usage structures (in contrast to
 INITREPORT).</p>
 <dl class="simple">
 <dt>HIDIOCSREPORT</dt><dd><ul class="simple">
-<li><p>struct hiddev_report_info (write)</p></li>
+<li><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hiddev_report_info</span></code> (write)</p></li>
 </ul>
 </dd>
 </dl>
@@ -325,7 +325,7 @@ individual usage values in the report before sending the report in full
 to the device.</p>
 <dl class="simple">
 <dt>HIDIOCGREPORTINFO</dt><dd><ul class="simple">
-<li><p>struct hiddev_report_info (read/write)</p></li>
+<li><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hiddev_report_info</span></code> (read/write)</p></li>
 </ul>
 </dd>
 </dl>
@@ -341,7 +341,7 @@ returns non-zero when there is no more next ID. The real report ID is
 filled into the returned hiddev_report_info structure.</p>
 <dl class="simple">
 <dt>HIDIOCGFIELDINFO</dt><dd><ul class="simple">
-<li><p>struct hiddev_field_info (read/write)</p></li>
+<li><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hiddev_field_info</span></code> (read/write)</p></li>
 </ul>
 </dd>
 </dl>
@@ -352,7 +352,7 @@ be filled in, which should be a number from 0 and maxfield-1, as
 returned from a previous HIDIOCGREPORTINFO call.</p>
 <dl class="simple">
 <dt>HIDIOCGUCODE</dt><dd><ul class="simple">
-<li><p>struct hiddev_usage_ref (read/write)</p></li>
+<li><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hiddev_usage_ref</span></code> (read/write)</p></li>
 </ul>
 </dd>
 </dl>
@@ -361,7 +361,7 @@ its report type, report id, field index, and index within the
 field have already been filled into the structure.</p>
 <dl class="simple">
 <dt>HIDIOCGUSAGE</dt><dd><ul class="simple">
-<li><p>struct hiddev_usage_ref (read/write)</p></li>
+<li><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hiddev_usage_ref</span></code> (read/write)</p></li>
 </ul>
 </dd>
 </dl>
@@ -373,7 +373,7 @@ filled in with the report and field information associated with this
 usage if it is found.</p>
 <dl class="simple">
 <dt>HIDIOCSUSAGE</dt><dd><ul class="simple">
-<li><p>struct hiddev_usage_ref (write)</p></li>
+<li><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hiddev_usage_ref</span></code> (write)</p></li>
 </ul>
 </dd>
 </dl>
@@ -382,7 +382,7 @@ the hiddev_usage_ref structure as above, but additionally fills in
 the value field.</p>
 <dl class="simple">
 <dt>HIDIOGCOLLECTIONINDEX</dt><dd><ul class="simple">
-<li><p>struct hiddev_usage_ref (write)</p></li>
+<li><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hiddev_usage_ref</span></code> (write)</p></li>
 </ul>
 </dd>
 </dl>
@@ -404,7 +404,7 @@ that influence the read() call above.  The flags are as follows:</p>
 <div><dl class="simple">
 <dt>HIDDEV_FLAG_UREF</dt><dd><ul class="simple">
 <li><p>read() calls will now return
-struct hiddev_usage_ref instead of struct hiddev_event.
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hiddev_usage_ref</span></code> instead of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hiddev_event</span></code>.
 This is a larger structure, but in situations where the
 device has more than one usage in its reports with the
 same usage code, this mode serves to resolve such
@@ -414,7 +414,7 @@ ambiguity.</p></li>
 <dt>HIDDEV_FLAG_REPORT</dt><dd><ul class="simple">
 <li><p>This flag can only be used in conjunction
 with HIDDEV_FLAG_UREF.  With this flag set, when the device
-sends a report, a struct hiddev_usage_ref will be returned
+sends a report, a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hiddev_usage_ref</span></code> will be returned
 to read() filled in with the report_type and report_id, but
 with field_index set to FIELD_INDEX_NONE.  This serves as
 additional notification when the device has sent a report.</p></li>

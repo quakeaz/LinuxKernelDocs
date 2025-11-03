@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -164,10 +164,13 @@ following heaps:</p>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">cma</span></code> heap allocates physically contiguous, cacheable,
 buffers. Only present if a CMA region is present. Such a region is
 usually created either through the kernel commandline through the
-<cite>cma</cite> parameter, a memory region Device-Tree node with the
-<cite>linux,cma-default</cite> property set, or through the <cite>CMA_SIZE_MBYTES</cite> or
-<cite>CMA_SIZE_PERCENTAGE</cite> Kconfig options. Depending on the platform, it
-might be called <code class="docutils literal notranslate"><span class="pre">reserved</span></code>, <code class="docutils literal notranslate"><span class="pre">linux,cma</span></code>, or <code class="docutils literal notranslate"><span class="pre">default-pool</span></code>.</p></li>
+<code class="docutils literal notranslate"><span class="pre">cma</span></code> parameter, a memory region Device-Tree node with the
+<code class="docutils literal notranslate"><span class="pre">linux,cma-default</span></code> property set, or through the <code class="docutils literal notranslate"><span class="pre">CMA_SIZE_MBYTES</span></code> or
+<code class="docutils literal notranslate"><span class="pre">CMA_SIZE_PERCENTAGE</span></code> Kconfig options. The heap’s name in devtmpfs is
+<code class="docutils literal notranslate"><span class="pre">default_cma_region</span></code>. For backwards compatibility, when the
+<code class="docutils literal notranslate"><span class="pre">DMABUF_HEAPS_CMA_LEGACY</span></code> Kconfig option is set, a duplicate node is
+created following legacy naming conventions; the legacy name might be
+<code class="docutils literal notranslate"><span class="pre">reserved</span></code>, <code class="docutils literal notranslate"><span class="pre">linux,cma</span></code>, or <code class="docutils literal notranslate"><span class="pre">default-pool</span></code>.</p></li>
 </ul>
 </div></blockquote>
 </section>

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -306,7 +306,7 @@ Users:          libraw1394;
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This struct may be used to access generic members of all fw_cdev_event_*
+<p>This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">may</span></code> be used to access generic members of all fw_cdev_event_*
 types regardless of the specific type.</p>
 <p>Data passed in the <strong>closure</strong> field for a request will be returned in the
 corresponding event.  It is big enough to hold a pointer on all platforms.
@@ -849,7 +849,7 @@ the client implements ABI version &lt;= 5. It has the lack of time stamp field c
 </pre></div>
 </div>
 <p><strong>Members</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">closure</span></code></dt><dd><p>See <a class="reference internal" href="#c.fw_cdev_event_common" title="fw_cdev_event_common"><code class="xref c c-type docutils literal notranslate"><span class="pre">fw_cdev_event_common</span></code></a>; set by <code class="docutils literal notranslate"><span class="pre">FW_CDEV_IOC_SEND_PHY_PACKET</span></code>
 or <code class="docutils literal notranslate"><span class="pre">FW_CDEV_IOC_RECEIVE_PHY_PACKETS</span></code> ioctl</p>
 </dd>
@@ -863,15 +863,17 @@ or <code class="docutils literal notranslate"><span class="pre">FW_CDEV_IOC_RECE
 which the packet arrived. For <code class="docutils literal notranslate"><span class="pre">FW_CDEV_EVENT_PHY_PACKET_SENT2</span></code> and non-ping packet,
 the time stamp of isochronous cycle at which the packet was sent. For ping packet,
 the tick count for round-trip time measured by 1394 OHCI controller.</p>
-<p>The time stamp of isochronous cycle at which either the response was sent for
-<code class="docutils literal notranslate"><span class="pre">FW_CDEV_EVENT_PHY_PACKET_SENT2</span></code> or the request arrived for
-<code class="docutils literal notranslate"><span class="pre">FW_CDEV_EVENT_PHY_PACKET_RECEIVED2</span></code>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">data</span></code></dt><dd><p>Incoming data</p>
 </dd>
 </dl>
 </div>
 <p><strong>Description</strong></p>
+<blockquote>
+<div><p>The time stamp of isochronous cycle at which either the response was sent for
+<code class="docutils literal notranslate"><span class="pre">FW_CDEV_EVENT_PHY_PACKET_SENT2</span></code> or the request arrived for
+<code class="docutils literal notranslate"><span class="pre">FW_CDEV_EVENT_PHY_PACKET_RECEIVED2</span></code>.</p>
+</div></blockquote>
 <p>If <strong>type</strong> is <code class="docutils literal notranslate"><span class="pre">FW_CDEV_EVENT_PHY_PACKET_SENT2</span></code>, <strong>length</strong> is 8 and <strong>data</strong> consists of the two PHY
 packet quadlets to be sent, in host byte order,</p>
 <p>If <strong>type</strong> is <code class="docutils literal notranslate"><span class="pre">FW_CDEV_EVENT_PHY_PACKET_RECEIVED2</span></code>, <strong>length</strong> is 8 and <strong>data</strong> consists of the two PHY
@@ -887,7 +889,7 @@ resolution.</p>
 <dl class="c union">
 <dt class="sig sig-object c" id="c.fw_cdev_event">
 <span class="k"><span class="pre">union</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fw_cdev_event</span></span></span><a class="headerlink" href="#c.fw_cdev_event" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Convenience union of fw_cdev_event_* types</p>
+<dd><p>Convenience <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">of</span></code> fw_cdev_event_* types</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -1935,7 +1937,7 @@ and the zero byte fit into <strong>size</strong>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">length</span></code></dt><dd><p>length of the payload, in bytes</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">union</span> <span class="pre">fw_transaction_callback</span> <span class="pre">callback</span></code></dt><dd><p>union of two functions whether to receive time stamp or not for response
+<dt><code class="docutils literal notranslate"><span class="pre">union</span> <span class="pre">fw_transaction_callback</span> <span class="pre">callback</span></code></dt><dd><p><code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">of</span></code> two functions whether to receive time stamp or not for response
 subaction.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">with_tstamp</span></code></dt><dd><p>Whether to receive time stamp or not for response subaction.</p>
@@ -1952,7 +1954,7 @@ constants instead of <code class="docutils literal notranslate"><span class="pre
 <p>Make sure that the value in <strong>destination_id</strong> is not older than the one in
 <strong>generation</strong>.  Otherwise the request is in danger to be sent to a wrong node.</p>
 <p>In case of asynchronous stream packets i.e. <code class="docutils literal notranslate"><span class="pre">TCODE_STREAM_DATA</span></code>, the caller
-needs to synthesize <strong>destination_id</strong> with fw_stream_packet_destination_id().
+needs to synthesize <strong>destination_id</strong> with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fw_stream_packet_destination_id()</span></code>.
 It will contain tag, channel, and sy data instead of a node ID then.</p>
 <p>The payload buffer at <strong>data</strong> is going to be DMA-mapped except in case of
 <strong>length</strong> &lt;= 8 or of local (loopback) requests.  Hence make sure that the
@@ -1966,10 +1968,10 @@ the firewire-core specific <code class="docutils literal notranslate"><span clas
 specific rcodes (<code class="docutils literal notranslate"><span class="pre">RCODE_CANCELLED</span></code>, <code class="docutils literal notranslate"><span class="pre">RCODE_BUSY</span></code>, <code class="docutils literal notranslate"><span class="pre">RCODE_GENERATION</span></code>,
 <code class="docutils literal notranslate"><span class="pre">RCODE_NO_ACK</span></code>) denote transaction timeout, busy responder, stale request
 generation, or missing ACK respectively.</p>
-<p>Note some timing corner cases:  fw_send_request() may complete much earlier
+<p>Note some timing corner cases:  <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fw_send_request()</span></code> may complete much earlier
 than when the request packet actually hits the wire.  On the other hand,
 transaction completion and hence execution of <strong>callback</strong> may happen even
-before fw_send_request() returns.</p>
+before <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fw_send_request()</span></code> returns.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.fw_run_transaction">
@@ -1998,8 +2000,8 @@ before fw_send_request() returns.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Returns the RCODE.  See fw_send_request() for parameter documentation.
-Unlike fw_send_request(), <strong>data</strong> points to the payload of the request or/and
+<p>Returns the RCODE.  See <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fw_send_request()</span></code> for parameter documentation.
+Unlike <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fw_send_request()</span></code>, <strong>data</strong> points to the payload of the request or/and
 to the payload of the response.  DMA mapping restrictions apply to outbound
 request payloads of &gt;= 8 bytes but not to inbound response payloads.</p>
 </div>
@@ -2019,9 +2021,10 @@ request payloads of &gt;= 8 bytes but not to inbound response payloads.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>region-&gt;start, -&gt;end, and handler-&gt;length have to be quadlet-aligned.</p>
-<p>When a request is received that falls within the specified address range,
-the specified callback is invoked.  The parameters passed to the callback
-give the details of the particular request.</p>
+<p>When a request is received that falls within the specified address range, the specified callback
+is invoked.  The parameters passed to the callback give the details of the particular request.
+The callback is invoked in the workqueue context in most cases. However, if the request is
+initiated by the local node, the callback is invoked in the initiator’s context.</p>
 <p>To be called in process context.
 Return value:  0 on success, non-zero otherwise.</p>
 <p>The start offset of the handler’s address region is determined by
@@ -2042,7 +2045,7 @@ Return value:  0 on success, non-zero otherwise.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>To be called in process context.</p>
-<p>When <a class="reference internal" href="#c.fw_core_remove_address_handler" title="fw_core_remove_address_handler"><code class="xref c c-func docutils literal notranslate"><span class="pre">fw_core_remove_address_handler()</span></code></a> returns, <strong>handler-&gt;callback()</strong> is
+<p>When <a class="reference internal" href="#c.fw_core_remove_address_handler" title="fw_core_remove_address_handler"><code class="xref c c-func docutils literal notranslate"><span class="pre">fw_core_remove_address_handler()</span></code></a> returns, <strong>handler-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">callback()</span></code></strong> is
 guaranteed to not run on any CPU anymore.</p>
 </div>
 <dl class="c function">

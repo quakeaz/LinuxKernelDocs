@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -190,13 +190,13 @@ exists in the module loader, so this former approach produced redundant
 code. So, instead of duplicating code and re-implementing what the module
 loader can already do, livepatch leverages existing code in the module
 loader to perform the all the arch-specific relocation work. Specifically,
-livepatch reuses the apply_relocate_add() function in the module loader to
+livepatch reuses the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">apply_relocate_add()</span></code> function in the module loader to
 write relocations. The patch module ELF format described in this document
 enables livepatch to be able to do this. The hope is that this will make
 livepatch more easily portable to other architectures and reduce the amount
 of arch-specific code required to port livepatch to a particular
 architecture.</p>
-<p>Since apply_relocate_add() requires access to a module’s section header
+<p>Since <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">apply_relocate_add()</span></code> requires access to a module’s section header
 table, symbol table, and relocation section indices, ELF information is
 preserved for livepatch modules (see section 5). Livepatch manages its own
 relocation sections and symbols, which are described in this document. The
@@ -220,7 +220,7 @@ these relocations. In the new format, livepatch manages its own SHT_RELA
 relocation sections in place of dynrela sections, and the symbols that the
 relas reference are special livepatch symbols (see section 2 and 3). The
 arch-specific livepatch relocation code is replaced by a call to
-apply_relocate_add().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">apply_relocate_add()</span></code>.</p>
 </section>
 </section>
 <section id="livepatch-modinfo-field">
@@ -260,11 +260,11 @@ sections, as in the case of the sample livepatch module (see
 samples/livepatch).</p>
 <p>Since ELF information is preserved for livepatch modules (see Section 5), a
 livepatch relocation section can be applied simply by passing in the
-appropriate section index to apply_relocate_add(), which then uses it to
+appropriate section index to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">apply_relocate_add()</span></code>, which then uses it to
 access the relocation section and apply the relocations.</p>
 <p>Every symbol referenced by a rela in a livepatch relocation section is a
 livepatch symbol. These must be resolved before livepatch can call
-apply_relocate_add(). See Section 3 for more information.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">apply_relocate_add()</span></code>. See Section 3 for more information.</p>
 </section>
 <section id="livepatch-relocation-section-format">
 <h2><a class="toc-backref" href="#id7" role="doc-backlink">3.1 Livepatch relocation section format</a><a class="headerlink" href="#livepatch-relocation-section-format" title="Link to this heading">¶</a></h2>
@@ -353,7 +353,7 @@ a patch module loads. For example, this is the case when livepatch patches
 a module that is not loaded yet. In this case, the relevant livepatch
 symbols are resolved simply when the target module loads. In any case, for
 any livepatch relocation section, all livepatch symbols referenced by that
-section must be resolved before livepatch can call apply_relocate_add() for
+section must be resolved before livepatch can call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">apply_relocate_add()</span></code> for
 that reloc section.</p>
 <p>Livepatch symbols must be marked with SHN_LIVEPATCH so that the module
 loader can identify and ignore them. Livepatch modules keep these symbols
@@ -363,13 +363,13 @@ module-&gt;symtab.</p>
 <section id="a-livepatch-module-s-symbol-table">
 <h2><a class="toc-backref" href="#id10" role="doc-backlink">4.1 A livepatch module’s symbol table</a><a class="headerlink" href="#a-livepatch-module-s-symbol-table" title="Link to this heading">¶</a></h2>
 <p>Normally, a stripped down copy of a module’s symbol table (containing only
-“core” symbols) is made available through module-&gt;symtab (See layout_symtab()
+“core” symbols) is made available through module-&gt;symtab (See <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">layout_symtab()</span></code>
 in kernel/module/kallsyms.c). For livepatch modules, the symbol table copied
 into memory on module load must be exactly the same as the symbol table produced
 when the patch module was compiled. This is because the relocations in each
 livepatch relocation section refer to their respective symbols with their symbol
 indices, and the original symbol indices (and thus the symtab ordering) must be
-preserved in order for apply_relocate_add() to find the right symbol.</p>
+preserved in order for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">apply_relocate_add()</span></code> to find the right symbol.</p>
 <p>For example, take this particular rela from a livepatch module:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Relocation section &#39;.klp.rela.btrfs.text.btrfs_feature_attr_show&#39; at offset 0x2ba0 contains 4 entries:
     Offset             Info             Type               Symbol&#39;s Value  Symbol&#39;s Name + Addend
@@ -444,11 +444,11 @@ The symbol position of a unique symbol is 0.</p>
 <section id="symbol-table-and-elf-section-access">
 <h2><a class="toc-backref" href="#id13" role="doc-backlink">5. Symbol table and ELF section access</a><a class="headerlink" href="#symbol-table-and-elf-section-access" title="Link to this heading">¶</a></h2>
 <p>A livepatch module’s symbol table is accessible through module-&gt;symtab.</p>
-<p>Since apply_relocate_add() requires access to a module’s section headers,
+<p>Since <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">apply_relocate_add()</span></code> requires access to a module’s section headers,
 symbol table, and relocation section indices, ELF information is preserved for
 livepatch modules and is made accessible by the module loader through
 module-&gt;klp_info, which is a <a class="reference internal" href="../driver-api/basics.html#c.klp_modinfo" title="klp_modinfo"><code class="xref c c-type docutils literal notranslate"><span class="pre">klp_modinfo</span></code></a> struct. When a livepatch module
-loads, this struct is filled in by the module loader.</p>
+loads, this <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> filled in by the module loader.</p>
 </section>
 </section>
 

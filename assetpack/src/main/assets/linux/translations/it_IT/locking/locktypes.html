@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -188,9 +188,9 @@ annidarli, ed usarli su kernel PREEMPT_RT.</p>
 <h3>Blocchi ad attesa con sospensione<a class="headerlink" href="#blocchi-ad-attesa-con-sospensione" title="Link to this heading">¶</a></h3>
 <p>I blocchi ad attesa con sospensione possono essere acquisiti solo in un contesti
 dov’è possibile la prelazione.</p>
-<p>Diverse implementazioni permettono di usare try_lock() anche in altri contesti,
+<p>Diverse implementazioni permettono di usare <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">try_lock()</span></code> anche in altri contesti,
 nonostante ciò è bene considerare anche la sicurezza dei corrispondenti
-unlock(). Inoltre, vanno prese in considerazione anche le varianti di <em>debug</em>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unlock()</span></code>. Inoltre, vanno prese in considerazione anche le varianti di <em>debug</em>
 di queste primitive. Insomma, non usate i blocchi ad attesa con sospensioni in
 altri contesti a meno che proprio non vi siano alternative.</p>
 <p>In questa categoria troviamo:</p>
@@ -246,13 +246,13 @@ protezione:</p>
 <blockquote>
 <div><table class="docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p>_bh()</p></td>
+<tr class="row-odd"><td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_bh()</span></code></p></td>
 <td><p>disabilita / abilita  <em>bottom halves</em> (interruzioni software)</p></td>
 </tr>
-<tr class="row-even"><td><p>_irq()</p></td>
+<tr class="row-even"><td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_irq()</span></code></p></td>
 <td><p>disabilita / abilita le interruzioni</p></td>
 </tr>
-<tr class="row-odd"><td><p>_irqsave/restore()</p></td>
+<tr class="row-odd"><td><p>_irqsave/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">restore()</span></code></p></td>
 <td><p>salva e disabilita le interruzioni / ripristina ed attiva le interruzioni</p></td>
 </tr>
 </tbody>
@@ -332,22 +332,22 @@ nell’abilitazione o disabilitazione della prelazione o le interruzioni.</p>
 <div><table class="docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p>local_lock(&amp;llock)</p></td>
-<td><p>preempt_disable()</p></td>
+<td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">preempt_disable()</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>local_unlock(&amp;llock)</p></td>
-<td><p>preempt_enable()</p></td>
+<td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">preempt_enable()</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>local_lock_irq(&amp;llock)</p></td>
-<td><p>local_irq_disable()</p></td>
+<td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">local_irq_disable()</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>local_unlock_irq(&amp;llock)</p></td>
-<td><p>local_irq_enable()</p></td>
+<td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">local_irq_enable()</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>local_lock_irqsave(&amp;llock)</p></td>
-<td><p>local_irq_save()</p></td>
+<td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">local_irq_save()</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>local_unlock_irqrestore(&amp;llock)</p></td>
-<td><p>local_irq_restore()</p></td>
+<td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">local_irq_restore()</span></code></p></td>
 </tr>
 </tbody>
 </table>
@@ -362,7 +362,7 @@ classiche primitive in quanto sono opache e senza alcun ambito di
 visibilità.</p></li>
 <li><p>Se viene abilitato lockdep, allora local_lock ottiene un lockmap che
 permette di verificare la bontà della protezione. Per esempio, questo può
-identificare i casi dove una funzione usa preempt_disable() come meccanismo
+identificare i casi dove una funzione usa <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">preempt_disable()</span></code> come meccanismo
 di protezione in un contesto d’interruzione (anche software). A parte
 questo, lockdep_assert_held(&amp;llock) funziona come tutte le altre primitive
 di sincronizzazione.</p></li>
@@ -415,7 +415,7 @@ sull’uso di rt_mutex. Questo ne modifica il significato:</p>
 <li><p>I suffissi relativi alla interruzioni (_irq, _irqsave / _irqrestore) per le
 operazioni spin_lock / spin_unlock non hanno alcun effetto sullo stato delle
 interruzioni della CPU.</p></li>
-<li><p>I suffissi relativi alle interruzioni software (_bh()) disabilitano i
+<li><p>I suffissi relativi alle interruzioni software (<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_bh()</span></code>) disabilitano i
 relativi gestori d’interruzione.</p>
 <p>I kernel non-PREEMPT_RT disabilitano la prelazione per ottenere lo stesso effetto.</p>
 <p>I kernel PREEMPT_RT usano un blocco per CPU per la serializzazione, il che
@@ -516,7 +516,7 @@ raw_spin_lock(&amp;lock);
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>raw_spin_lock_irq(&amp;lock);
 </pre></div>
 </div>
-<p>Ma su un kernel PREEMPT_RT questo codice non funzionerà perché local_lock_irq()
+<p>Ma su un kernel PREEMPT_RT questo codice non funzionerà perché <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">local_lock_irq()</span></code>
 si traduce in uno spinlock_t per CPU che non disabilita né le interruzioni né la
 prelazione. Il seguente codice funzionerà su entrambe i kernel con o senza
 PREEMPT_RT:</p>
@@ -549,8 +549,8 @@ func3()
 </div>
 <p>Questo funziona correttamente su un kernel non-PREEMPT_RT, ma su un kernel
 PREEMPT_RT local_lock_1 e local_lock_2 sono distinti e non possono serializzare
-i chiamanti di func3(). L’<em>assert</em> di lockdep verrà attivato su un kernel
-PREEMPT_RT perché local_lock_irqsave() non disabilita le interruzione a casa
+i chiamanti di <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">func3()</span></code>. L’<em>assert</em> di lockdep verrà attivato su un kernel
+PREEMPT_RT perché <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">local_lock_irqsave()</span></code> non disabilita le interruzione a casa
 della specifica semantica di spinlock_t in PREEMPT_RT. La corretta sostituzione
 è:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>func1()
@@ -588,10 +588,10 @@ spin_lock(&amp;lock);
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>spin_lock_irq(&amp;lock);
 </pre></div>
 </div>
-<p>Lo stesso vale per rwlock_t e le varianti con _irqsave().</p>
+<p>Lo stesso vale per rwlock_t e le varianti con <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_irqsave()</span></code>.</p>
 <p>Sui kernel PREEMPT_RT questo codice non funzionerà perché gli rtmutex richiedono
 un contesto con la possibilità di prelazione. Al suo posto, usate
-spin_lock_irq() o spin_lock_irqsave() e le loro controparti per il rilascio. I
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_irq()</span></code> o <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_irqsave()</span></code> e le loro controparti per il rilascio. I
 kernel PREEMPT_RT offrono un meccanismo local_lock per i casi in cui la
 disabilitazione delle interruzioni ed acquisizione di un blocco devono rimanere
 separati. Acquisire un local_lock àncora un processo ad una CPU permettendo cose
@@ -606,7 +606,7 @@ p-&gt;count += this_cpu_read(var2);
 </div>
 <p>Questo codice è corretto su un kernel non-PREEMPT_RT, ma non lo è su un
 PREEMPT_RT. La modifica della semantica di spinlock_t su PREEMPT_RT non permette
-di acquisire p-&gt;lock perché, implicitamente, get_cpu_ptr() disabilita la
+di acquisire p-&gt;lock perché, implicitamente, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_cpu_ptr()</span></code> disabilita la
 prelazione. La seguente sostituzione funzionerà su entrambe i kernel:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct foo *p;
 
@@ -616,10 +616,10 @@ spin_lock(&amp;p-&gt;lock);
 p-&gt;count += this_cpu_read(var2);
 </pre></div>
 </div>
-<p>La funzione migrate_disable() assicura che il processo venga tenuto sulla CPU
+<p>La funzione <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">migrate_disable()</span></code> assicura che il processo venga tenuto sulla CPU
 corrente, e di conseguenza garantisce che gli accessi per-CPU alle variabili var1 e
 var2 rimangano sulla stessa CPU fintanto che il processo rimane prelabile.</p>
-<p>La sostituzione con migrate_disable() non funzionerà nel seguente scenario:</p>
+<p>La sostituzione con <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">migrate_disable()</span></code> non funzionerà nel seguente scenario:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>func()
 {
   struct foo *p;
@@ -629,7 +629,7 @@ var2 rimangano sulla stessa CPU fintanto che il processo rimane prelabile.</p>
   p-&gt;val = func2();
 </pre></div>
 </div>
-<p>Questo non funziona perché migrate_disable() non protegge dal ritorno da un
+<p>Questo non funziona perché <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">migrate_disable()</span></code> non protegge dal ritorno da un
 processo che aveva avuto il diritto di prelazione. Una sostituzione più adatta
 per questo caso è:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>func()

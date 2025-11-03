@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -200,7 +200,7 @@ task policy “fall back” to the System Default Policy.</p>
 <p>The task policy applies to the entire address space of a task. Thus,
 it is inheritable, and indeed is inherited, across both fork()
 [clone() w/o the CLONE_VM flag] and exec*().  This allows a parent task
-to establish the task policy for a child task exec()’d from an
+to establish the task policy for a child task <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">exec()</span></code>’d from an
 executable image that has no awareness of memory policy.  See the
 <a class="reference internal" href="#memory-policy-apis"><span class="std std-ref">Memory Policy APIs</span></a> section,
 below, for an overview of the system call
@@ -221,7 +221,7 @@ the policy at the time they were allocated.</p>
 virtual address space.  A task may define a specific policy for a range
 of its virtual address space.   See the
 <a class="reference internal" href="#memory-policy-apis"><span class="std std-ref">Memory Policy APIs</span></a> section,
-below, for an overview of the mbind() system call used to set a VMA
+below, for an overview of the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mbind()</span></code> system call used to set a VMA
 policy.</p>
 <p>A VMA policy will govern the allocation of pages that back
 this region of the address space.  Any regions of the task’s
@@ -245,7 +245,7 @@ the policy is installed; and they are inherited across
 fork().  However, because VMA policies refer to a specific
 region of a task’s address space, and because the address
 space is discarded and recreated on exec*(), VMA policies
-are NOT inheritable across exec().  Thus, only NUMA-aware
+are NOT inheritable across <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">exec()</span></code>.  Thus, only NUMA-aware
 applications may use VMA policies.</p></li>
 <li><p>A task may install a new VMA policy on a sub-range of a
 previously mmap()ed region.  When this happens, Linux splits
@@ -255,7 +255,7 @@ its own policy.</p></li>
 the policy is installed.  Any pages already faulted into the
 VMA range remain where they were allocated based on the
 policy at the time they were allocated.  However, since
-2.6.16, Linux supports page migration via the mbind() system
+2.6.16, Linux supports page migration via the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mbind()</span></code> system
 call, so that page contents can be moved to match a newly
 installed policy.</p></li>
 </ul>
@@ -263,14 +263,14 @@ installed policy.</p></li>
 <dt>Shared Policy</dt><dd><p>Conceptually, shared policies apply to “memory objects” mapped
 shared into one or more tasks’ distinct address spaces.  An
 application installs shared policies the same way as VMA
-policies--using the mbind() system call specifying a range of
+policies--using the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mbind()</span></code> system call specifying a range of
 virtual addresses that map the shared object.  However, unlike
 VMA policies, which can be considered to be an attribute of a
 range of a task’s address space, shared policies apply
 directly to the shared object.  Thus, all tasks that attach to
 the object share the policy, and all pages allocated for the
 shared object, by any task, will obey the shared policy.</p>
-<p>As of 2.6.22, only shared memory segments, created by shmget() or
+<p>As of 2.6.22, only shared memory segments, created by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shmget()</span></code> or
 mmap(MAP_ANONYMOUS|MAP_SHARED), support shared policy.  When shared
 policy support was added to Linux, the associated data structures were
 added to hugetlbfs shmem segments.  At the time, hugetlbfs did not
@@ -304,7 +304,7 @@ policy, the optional mode flags determine the behavior of the mode,
 and the optional set of nodes can be viewed as the arguments to the
 policy behavior.</p>
 <p>Internally, memory policies are implemented by a reference counted
-structure, struct mempolicy.  Details of this structure will be
+structure, <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">mempolicy</span></code>.  Details of this structure will be
 discussed in context, below, as required to explain the behavior.</p>
 <p>NUMA memory policy supports the following 4 behavioral modes:</p>
 <dl>
@@ -333,7 +333,7 @@ allocation fails, the kernel will search other nodes, in order
 of increasing distance from the preferred node based on
 information provided by the platform firmware.</p>
 <p>Internally, the Preferred policy uses a single node--the
-preferred_node member of struct mempolicy.  When the internal
+preferred_node member of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">mempolicy</span></code>.  When the internal
 mode flag MPOL_F_LOCAL is set, the preferred_node is ignored
 and the policy is interpreted as local allocation.  “Local”
 allocation policy can be viewed as a Preferred policy that
@@ -457,9 +457,9 @@ MPOL_PREFERRED policies that were created with an empty nodemask
 </section>
 <section id="memory-policy-reference-counting">
 <h2>Memory Policy Reference Counting<a class="headerlink" href="#memory-policy-reference-counting" title="Link to this heading">¶</a></h2>
-<p>To resolve use/free races, struct mempolicy contains an atomic reference
-count field.  Internal interfaces, mpol_get()/mpol_put() increment and
-decrement this reference count, respectively.  mpol_put() will only free
+<p>To resolve use/free races, <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">mempolicy</span></code> contains an atomic reference
+count field.  Internal interfaces, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mpol_get()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mpol_put()</span></code> increment and
+decrement this reference count, respectively.  <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mpol_put()</span></code> will only free
 the structure back to the mempolicy kmem cache when the reference count
 goes to zero.</p>
 <p>When a new memory policy is allocated, its reference count is initialized
@@ -471,7 +471,7 @@ on completion of the policy installation.</p>
 on the reference count, as this can lead to cache lines bouncing between cpus
 and NUMA nodes.  “Usage” here means one of the following:</p>
 <ol class="arabic simple">
-<li><p>querying of the policy, either by the task itself [using the get_mempolicy()
+<li><p>querying of the policy, either by the task itself [using the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_mempolicy()</span></code>
 API discussed below] or by another task using the /proc/&lt;pid&gt;/numa_maps
 interface.</p></li>
 <li><p>examination of the policy to determine the policy mode and associated node
@@ -487,8 +487,8 @@ follows:</p>
 changed nor freed, once the system is up and running.</p></li>
 <li><p>for querying the policy, we do not need to take an extra reference on the
 target task’s task policy nor vma policies because we always acquire the
-task’s mm’s mmap_lock for read during the query.  The set_mempolicy() and
-mbind() APIs [see below] always acquire the mmap_lock for write when
+task’s mm’s mmap_lock for read during the query.  The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_mempolicy()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mbind()</span></code> APIs [see below] always acquire the mmap_lock for write when
 installing or replacing task or vma policies.  Thus, there is no possibility
 of a task or thread freeing a policy while another task or thread is
 querying it.</p></li>
@@ -559,7 +559,7 @@ policy or location of a specified virtual address, depending on the
            unsigned flags);
 </pre></div>
 </div>
-<p>mbind() installs the policy specified by (mode, nmask, maxnodes) as a
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mbind()</span></code> installs the policy specified by (mode, nmask, maxnodes) as a
 VMA policy for the range of the calling task’s address space specified
 by the ‘start’ and ‘len’ arguments.  Additional actions may be
 requested via the ‘flags’ argument.</p>
@@ -604,7 +604,7 @@ installed.  If MPOL_F_RELATIVE_NODES is used, the policy’s nodes are mapped
 onto and folded into the task’s set of allowed nodes as previously described.</p>
 <p>The interaction of memory policies and cpusets can be problematic when tasks
 in two cpusets share access to a memory region, such as shared memory segments
-created by shmget() of mmap() with the MAP_ANONYMOUS and MAP_SHARED flags, and
+created by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shmget()</span></code> of mmap() with the MAP_ANONYMOUS and MAP_SHARED flags, and
 any of the tasks install shared policy on the region, only nodes whose
 memories are allowed in both cpusets may be used in the policies.  Obtaining
 this information requires “stepping outside” the memory policy APIs to use the

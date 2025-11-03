@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -232,7 +232,7 @@ instance describes a physical wireless device connected to the system. Each
 such wiphy can have zero, one, or many virtual interfaces associated with
 it, which need to be identified as such by pointing the network interface’s
 <strong>ieee80211_ptr</strong> pointer to a <a class="reference internal" href="#c.wireless_dev" title="wireless_dev"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">wireless_dev</span></code></a> which further describes
-the wireless part of the interface. Normally this struct is embedded in the
+the wireless part of the interface. Normally this <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> embedded in the
 network interface’s private data area. Drivers can optionally allow creating
 or destroying virtual interfaces on the fly, but without at least one or the
 ability to create some the wireless device isn’t useful.</p>
@@ -381,7 +381,7 @@ even if otherwise set to NO_IR.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">max_reg_power</span></code></dt><dd><p>maximum regulatory transmission power (in dBm)</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">beacon_found</span></code></dt><dd><p>helper to regulatory code to indicate when a beacon
-has been found on this channel. Use regulatory_hint_found_beacon()
+has been found on this channel. Use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">regulatory_hint_found_beacon()</span></code>
 to enable this, this is useful only on 5 GHz band.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">orig_flags</span></code></dt><dd><p>channel flags at registration time, used by regulatory
@@ -551,7 +551,7 @@ rates” IE, i.e. CCK rates first, then OFDM.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">vht_cap</span></code></dt><dd><p>VHT capabilities in this band</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">s1g_cap</span></code></dt><dd><p>S1G capabilities in this band (S1B band only, of course)</p>
+<dt><code class="docutils literal notranslate"><span class="pre">s1g_cap</span></code></dt><dd><p>S1G capabilities in this band (S1G band only, of course)</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">edmg_cap</span></code></dt><dd><p>EDMG capabilities in this band</p>
 </dd>
@@ -704,7 +704,7 @@ used for asking the driver/firmware to perform a TDLS operation.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">WIPHY_FLAG_REPORTS_OBSS</span></code></dt><dd><p>the device will report beacons from other BSSes
 when there are virtual interfaces in AP mode by calling
-cfg80211_report_obss_beacon().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cfg80211_report_obss_beacon()</span></code>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">WIPHY_FLAG_AP_PROBE_RESP_OFFLOAD</span></code></dt><dd><p>When operating as an AP, the device
 responds to probe-requests in hardware.</p>
@@ -721,7 +721,7 @@ beaconing mode (AP, IBSS, Mesh, ...).</p>
 <dt><code class="docutils literal notranslate"><span class="pre">WIPHY_FLAG_NOTIFY_REGDOM_BY_DRIVER</span></code></dt><dd><p>The device could handle reg notify for
 NL80211_REGDOM_SET_BY_DRIVER.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">WIPHY_FLAG_CHANNEL_CHANGE_ON_BEACON</span></code></dt><dd><p>reg_call_notifier() is called if driver
+<dt><code class="docutils literal notranslate"><span class="pre">WIPHY_FLAG_CHANNEL_CHANGE_ON_BEACON</span></code></dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">reg_call_notifier()</span></code> is called if driver
 set this flag to update channels on beacon hints.</p>
 </dd>
 </dl>
@@ -799,9 +799,10 @@ combination must be greater or equal to this value.</p>
 </div>
 <p><strong>Description</strong></p>
 <p>With this structure the driver can describe which interface
-combinations it supports concurrently. When set in a struct wiphy_radio,
+combinations it supports concurrently. When set in a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">wiphy_radio</span></code>,
 the combinations refer to combinations of interfaces currently active on
 that radio.</p>
+<p><strong>Examples</strong></p>
 <ol class="arabic">
 <li><p>Allow #STA &lt;= 1, #AP &lt;= 1, matching BI, channels = 1, 2 total:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">ieee80211_iface_limit</span><span class="w"> </span><span class="n">limits1</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
@@ -848,7 +849,6 @@ that radio.</p>
 </div>
 </li>
 </ol>
-<p><strong>Examples</strong></p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.wiphy">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">wiphy</span></span></span><a class="headerlink" href="#c.wiphy" title="Link to this definition">¶</a><br /></dt>
@@ -912,6 +912,7 @@ that radio.</p>
     const void *privid;
     struct ieee80211_supported_band *bands[NUM_NL80211_BANDS];
     void (*reg_notifier)(struct wiphy *wiphy, struct regulatory_request *request);
+    struct wiphy_radio_cfg *radio_cfg;
     const struct ieee80211_regdomain __rcu *regd;
     struct device dev;
     bool registered;
@@ -1006,7 +1007,7 @@ supports for ACL.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">signal_type</span></code></dt><dd><p>signal type reported in <a class="reference internal" href="#c.cfg80211_bss" title="cfg80211_bss"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cfg80211_bss</span></code></a>.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">bss_priv_size</span></code></dt><dd><p>each BSS struct has private data allocated with it,
+<dt><code class="docutils literal notranslate"><span class="pre">bss_priv_size</span></code></dt><dd><p>each BSS <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">has</span></code> private data allocated with it,
 this variable determines its size</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">max_scan_ssids</span></code></dt><dd><p>maximum number of SSIDs the device can scan for in
@@ -1075,7 +1076,7 @@ suites are specified separately.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">wowlan_config</span></code></dt><dd><p>current WoWLAN configuration; this should usually not be
 used since access to it is necessarily racy, use the parameter passed
-to the suspend() operation instead.</p>
+to the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">suspend()</span></code> operation instead.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">max_remain_on_channel_duration</span></code></dt><dd><p>Maximum time a remain-on-channel operation
 may request, if implemented.</p>
@@ -1120,9 +1121,13 @@ wiphy is theirs, e.g. in global notifiers</p>
 note that if your driver uses <a class="reference internal" href="#c.wiphy_apply_custom_regulatory" title="wiphy_apply_custom_regulatory"><code class="xref c c-func docutils literal notranslate"><span class="pre">wiphy_apply_custom_regulatory()</span></code></a>
 the reg_notifier’s request can be passed as NULL</p>
 </dd>
+<dt><code class="docutils literal notranslate"><span class="pre">radio_cfg</span></code></dt><dd><p>configuration of radios belonging to a muli-radio wiphy. This
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">contains</span></code> a list of all radio specific attributes and should be
+used only for multi-radio wiphy.</p>
+</dd>
 <dt><code class="docutils literal notranslate"><span class="pre">regd</span></code></dt><dd><p>the driver’s regulatory domain, if one was requested via
 the <a class="reference internal" href="#c.regulatory_hint" title="regulatory_hint"><code class="xref c c-func docutils literal notranslate"><span class="pre">regulatory_hint()</span></code></a> API. This can be used by the driver
-on the reg_notifier() if it chooses to ignore future
+on the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">reg_notifier()</span></code> if it chooses to ignore future
 regulatory domain changes caused by other drivers.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">dev</span></code></dt><dd><p>(virtual) <a class="reference internal" href="../infrastructure.html#c.device" title="device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span></code></a> for this wiphy. The item in
@@ -1169,7 +1174,7 @@ wishes to limit the number of csa counters. Default (0) means
 infinite.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">bss_select_support</span></code></dt><dd><p>bitmask indicating the BSS selection criteria supported
-by the driver in the .connect() callback. The bit position maps to the
+by the driver in the .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">connect()</span></code> callback. The bit position maps to the
 attribute indices defined in <code class="xref c c-type docutils literal notranslate"><span class="pre">enum</span> <span class="pre">nl80211_bss_select_attr</span></code>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">nan_supported_bands</span></code></dt><dd><p>bands supported by the device in NAN mode, a
@@ -1299,7 +1304,7 @@ specify a mac address).</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">wiphy</span> <span class="pre">*wiphy</span></code></dt><dd><p>The wiphy whose device struct to look up</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">wiphy</span> <span class="pre">*wiphy</span></code></dt><dd><p>The wiphy whose device <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">to</span></code> look up</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
@@ -1586,7 +1591,7 @@ registered for unexpected class 3 frames (AP mode)</p>
 <dt><code class="docutils literal notranslate"><span class="pre">unprot_beacon_reported</span></code></dt><dd><p>(private) timestamp of last
 unprotected beacon report</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">u</span></code></dt><dd><p>union containing data specific to <strong>iftype</strong></p>
+<dt><code class="docutils literal notranslate"><span class="pre">u</span></code></dt><dd><p><code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">containing</span></code> data specific to <strong>iftype</strong></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">links</span></code></dt><dd><p>array of <code class="docutils literal notranslate"><span class="pre">IEEE80211_MLD_MAX_NUM_LINKS</span></code> elements containing <strong>addr</strong>
 <strong>ap</strong> and <strong>client</strong> for each link</p>
@@ -1730,7 +1735,7 @@ MU-MIMO packets going to the specified station; <code class="docutils literal no
 <dt><code class="docutils literal notranslate"><span class="pre">key</span></code></dt><dd><p>key material</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">seq</span></code></dt><dd><p>sequence counter (IV/PN) for TKIP and CCMP keys, only used
-with the get_key() callback, must be in little endian,
+with the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_key()</span></code> callback, must be in little endian,
 length given by <strong>seq_len</strong>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">key_len</span></code></dt><dd><p>length of key material</p>
@@ -1778,7 +1783,7 @@ length given by <strong>seq_len</strong>.</p>
 </div>
 <p><strong>Description</strong></p>
 <p>Used by the driver to indicate which info in <a class="reference internal" href="#c.survey_info" title="survey_info"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">survey_info</span></code></a>
-it has filled in during the get_survey().</p>
+it has filled in during the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_survey()</span></code>.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.survey_info">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">survey_info</span></span></span><a class="headerlink" href="#c.survey_info" title="Link to this definition">¶</a><br /></dt>
@@ -1828,7 +1833,7 @@ optional</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>Used by dump_survey() to report back per-channel survey information.</p>
+<p>Used by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dump_survey()</span></code> to report back per-channel survey information.</p>
 <p>This structure can later be expanded with things like
 channel duty cycle etc.</p>
 <dl class="c struct">
@@ -1859,9 +1864,9 @@ channel duty cycle etc.</p>
 </pre></div>
 </div>
 <p><strong>Members</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">wpa_versions</span></code></dt><dd><p>indicates which, if any, WPA versions are enabled
-(from enum nl80211_wpa_versions)</p>
+(from <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">nl80211_wpa_versions</span></code>)</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">cipher_group</span></code></dt><dd><p>group key cipher suite (or 0 if unset)</p>
 </dd>
@@ -1898,7 +1903,12 @@ offload)</p>
 <dt><code class="docutils literal notranslate"><span class="pre">sae_pwd_len</span></code></dt><dd><p>length of SAE password (for devices supporting SAE offload)</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">sae_pwe</span></code></dt><dd><p>The mechanisms allowed for SAE PWE derivation:</p>
-<dl class="simple">
+</dd>
+</dl>
+</div>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><dl class="simple">
 <dt>NL80211_SAE_PWE_UNSPECIFIED</dt><dd><p>Not-specified, used to indicate userspace did not specify any
 preference. The driver should follow its internal policy in
 such a scenario.</p>
@@ -1910,9 +1920,7 @@ such a scenario.</p>
 <dt>NL80211_SAE_PWE_BOTH</dt><dd><p>Allow either hunting-and-pecking loop or hash-to-element</p>
 </dd>
 </dl>
-</dd>
-</dl>
-</div>
+</div></blockquote>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.cfg80211_beacon_data">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cfg80211_beacon_data</span></span></span><a class="headerlink" href="#c.cfg80211_beacon_data" title="Link to this definition">¶</a><br /></dt>
@@ -2038,6 +2046,8 @@ attribute is present in beacon data or not.</p>
     struct cfg80211_fils_discovery fils_discovery;
     struct cfg80211_unsol_bcast_probe_resp unsol_bcast_probe_resp;
     struct cfg80211_mbssid_config mbssid_config;
+    u8 s1g_long_beacon_period;
+    struct cfg80211_s1g_short_beacon s1g_short_beacon;
 };
 </pre></div>
 </div>
@@ -2109,6 +2119,10 @@ networks.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">unsol_bcast_probe_resp</span></code></dt><dd><p>Unsolicited broadcast probe response parameters</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">mbssid_config</span></code></dt><dd><p>AP settings for multiple bssid</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">s1g_long_beacon_period</span></code></dt><dd><p>S1G long beacon period</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">s1g_short_beacon</span></code></dt><dd><p>S1G short beacon data</p>
 </dd>
 </dl>
 </div>
@@ -2275,7 +2289,7 @@ type for 802.11n transmissions.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">legacy</span></code></dt><dd><p>bitrate in 100kbit/s for 802.11abg</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">mcs</span></code></dt><dd><p>mcs index if struct describes an HT/VHT/HE/EHT/S1G rate</p>
+<dt><code class="docutils literal notranslate"><span class="pre">mcs</span></code></dt><dd><p>mcs index if <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">describes</span></code> an HT/VHT/HE/EHT/S1G rate</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">nss</span></code></dt><dd><p>number of streams (VHT &amp; HE only)</p>
 </dd>
@@ -2358,6 +2372,8 @@ only valid if bw is <code class="docutils literal notranslate"><span class="pre"
     u8 mld_addr[ETH_ALEN] ;
     const u8 *assoc_resp_ies;
     size_t assoc_resp_ies_len;
+    u16 valid_links;
+    struct link_station_info *links[IEEE80211_MLD_MAX_NUM_LINKS];
 };
 </pre></div>
 </div>
@@ -2472,8 +2488,8 @@ received packet with an FCS error matches the peer MAC address.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">mlo_params_valid</span></code></dt><dd><p>Indicates <strong>assoc_link_id</strong> and <strong>mld_addr</strong> fields are filled
 by driver. Drivers use this only in <a class="reference internal" href="#c.cfg80211_new_sta" title="cfg80211_new_sta"><code class="xref c c-func docutils literal notranslate"><span class="pre">cfg80211_new_sta()</span></code></a> calls when AP
 MLD’s MLME/SME is offload to driver. Drivers won’t fill this
-information in cfg80211_del_sta_sinfo(), get_station() and
-dump_station() callbacks.</p>
+information in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cfg80211_del_sta_sinfo()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_station()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dump_station()</span></code> callbacks.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">assoc_link_id</span></code></dt><dd><p>Indicates MLO link ID of the AP, with which the station
 completed (re)association. This information filled for both MLO
@@ -2486,16 +2502,23 @@ For non-MLO STA connection, filled with all zeros.</p>
 This is used only when in AP mode with drivers that do not use user
 space MLME/SME implementation. The information is provided only for the
 <a class="reference internal" href="#c.cfg80211_new_sta" title="cfg80211_new_sta"><code class="xref c c-func docutils literal notranslate"><span class="pre">cfg80211_new_sta()</span></code></a> calls to notify user space of the IEs. Drivers won’t
-fill this information in cfg80211_del_sta_sinfo(), get_station() and
-dump_station() callbacks. User space needs this information to determine
+fill this information in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cfg80211_del_sta_sinfo()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_station()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dump_station()</span></code> callbacks. User space needs this information to determine
 the accepted and rejected affiliated links of the connected station.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">assoc_resp_ies_len</span></code></dt><dd><p>Length of <strong>assoc_resp_ies</strong> buffer in octets.</p>
 </dd>
+<dt><code class="docutils literal notranslate"><span class="pre">valid_links</span></code></dt><dd><p>bitmap of valid links, or 0 for non-MLO. Drivers fill this
+information in <a class="reference internal" href="#c.cfg80211_new_sta" title="cfg80211_new_sta"><code class="xref c c-func docutils literal notranslate"><span class="pre">cfg80211_new_sta()</span></code></a>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cfg80211_del_sta_sinfo()</span></code>,
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_station()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dump_station()</span></code> callbacks.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">links</span></code></dt><dd><p>reference to Link sta entries for MLO STA, all link specific
+information is accessed through links[link_id].</p>
+</dd>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>Station information filled by driver for get_station() and dump_station.</p>
+<p>Station information filled by driver for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_station()</span></code> and dump_station.</p>
 <dl class="c enum">
 <dt class="sig sig-object c" id="c.monitor_flags">
 <span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">monitor_flags</span></span></span><a class="headerlink" href="#c.monitor_flags" title="Link to this definition">¶</a><br /></dt>
@@ -2557,7 +2580,7 @@ according to the nl80211 flags.</p>
 </div>
 <p><strong>Description</strong></p>
 <p>Used by the driver to indicate which info in <a class="reference internal" href="#c.mpath_info" title="mpath_info"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">mpath_info</span></code></a> it has filled
-in during get_station() or dump_station().</p>
+in during <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_station()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dump_station()</span></code>.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.mpath_info">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mpath_info</span></span></span><a class="headerlink" href="#c.mpath_info" title="Link to this definition">¶</a><br /></dt>
@@ -2611,7 +2634,7 @@ userspace can tell whether it got a consistent snapshot.</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>Mesh path information filled by driver for get_mpath() and dump_mpath().</p>
+<p>Mesh path information filled by driver for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_mpath()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dump_mpath()</span></code>.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.bss_parameters">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bss_parameters</span></span></span><a class="headerlink" href="#c.bss_parameters" title="Link to this definition">¶</a><br /></dt>
@@ -2803,8 +2826,8 @@ authentication.</p>
 <p><strong>Members</strong></p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">bss</span></code></dt><dd><p>The BSS to associate with. If the call is successful the driver is
-given a reference that it must give back to cfg80211_send_rx_assoc()
-or to cfg80211_assoc_timeout(). To ensure proper refcounting, new
+given a reference that it must give back to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cfg80211_send_rx_assoc()</span></code>
+or to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cfg80211_assoc_timeout()</span></code>. To ensure proper refcounting, new
 association requests while already associating must be rejected.
 This also applies to the <strong>links.bss</strong> parameter, which is used instead
 of this one (it is <code class="docutils literal notranslate"><span class="pre">NULL</span></code>) for MLO associations.</p>
@@ -3021,7 +3044,7 @@ CFG80211_MAX_WEP_KEYS WEP keys</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This structure defines the IBSS parameters for the join_ibss()
+<p>This structure defines the IBSS parameters for the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">join_ibss()</span></code>
 method.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.cfg80211_connect_params">
@@ -3221,7 +3244,7 @@ threshold to generate a new PMK before the current one expires.</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This structure is passed to the set/del_pmksa() method for PMKSA
+<p>This structure is passed to the set/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">del_pmksa()</span></code> method for PMKSA
 caching.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.cfg80211_ops">
@@ -3235,43 +3258,43 @@ caching.</p>
     int (*suspend)(struct wiphy *wiphy, struct cfg80211_wowlan *wow);
     int (*resume)(struct wiphy *wiphy);
     void (*set_wakeup)(struct wiphy *wiphy, bool enabled);
-    struct wireless_dev * (*add_virtual_intf)(struct wiphy *wiphy,const char *name,unsigned char name_assign_type,enum nl80211_iftype type, struct vif_params *params);
+    struct wireless_dev * (*add_virtual_intf)(struct wiphy *wiphy, const char *name, unsigned char name_assign_type, enum nl80211_iftype type, struct vif_params *params);
     int (*del_virtual_intf)(struct wiphy *wiphy, struct wireless_dev *wdev);
-    int (*change_virtual_intf)(struct wiphy *wiphy,struct net_device *dev,enum nl80211_iftype type, struct vif_params *params);
-    int (*add_intf_link)(struct wiphy *wiphy,struct wireless_dev *wdev, unsigned int link_id);
-    void (*del_intf_link)(struct wiphy *wiphy,struct wireless_dev *wdev, unsigned int link_id);
-    int (*add_key)(struct wiphy *wiphy, struct net_device *netdev,int link_id, u8 key_index, bool pairwise, const u8 *mac_addr, struct key_params *params);
-    int (*get_key)(struct wiphy *wiphy, struct net_device *netdev,int link_id, u8 key_index, bool pairwise,const u8 *mac_addr, void *cookie, void (*callback)(void *cookie, struct key_params*));
-    int (*del_key)(struct wiphy *wiphy, struct net_device *netdev,int link_id, u8 key_index, bool pairwise, const u8 *mac_addr);
-    int (*set_default_key)(struct wiphy *wiphy,struct net_device *netdev, int link_id, u8 key_index, bool unicast, bool multicast);
-    int (*set_default_mgmt_key)(struct wiphy *wiphy,struct net_device *netdev, int link_id, u8 key_index);
-    int (*set_default_beacon_key)(struct wiphy *wiphy,struct net_device *netdev,int link_id, u8 key_index);
+    int (*change_virtual_intf)(struct wiphy *wiphy, struct net_device *dev, enum nl80211_iftype type, struct vif_params *params);
+    int (*add_intf_link)(struct wiphy *wiphy, struct wireless_dev *wdev, unsigned int link_id);
+    void (*del_intf_link)(struct wiphy *wiphy, struct wireless_dev *wdev, unsigned int link_id);
+    int (*add_key)(struct wiphy *wiphy, struct net_device *netdev, int link_id, u8 key_index, bool pairwise, const u8 *mac_addr, struct key_params *params);
+    int (*get_key)(struct wiphy *wiphy, struct net_device *netdev, int link_id, u8 key_index, bool pairwise, const u8 *mac_addr, void *cookie, void (*callback)(void *cookie, struct key_params*));
+    int (*del_key)(struct wiphy *wiphy, struct net_device *netdev, int link_id, u8 key_index, bool pairwise, const u8 *mac_addr);
+    int (*set_default_key)(struct wiphy *wiphy, struct net_device *netdev, int link_id, u8 key_index, bool unicast, bool multicast);
+    int (*set_default_mgmt_key)(struct wiphy *wiphy, struct net_device *netdev, int link_id, u8 key_index);
+    int (*set_default_beacon_key)(struct wiphy *wiphy, struct net_device *netdev, int link_id, u8 key_index);
     int (*start_ap)(struct wiphy *wiphy, struct net_device *dev, struct cfg80211_ap_settings *settings);
     int (*change_beacon)(struct wiphy *wiphy, struct net_device *dev, struct cfg80211_ap_update *info);
     int (*stop_ap)(struct wiphy *wiphy, struct net_device *dev, unsigned int link_id);
-    int (*add_station)(struct wiphy *wiphy, struct net_device *dev,const u8 *mac, struct station_parameters *params);
+    int (*add_station)(struct wiphy *wiphy, struct net_device *dev, const u8 *mac, struct station_parameters *params);
     int (*del_station)(struct wiphy *wiphy, struct net_device *dev, struct station_del_parameters *params);
-    int (*change_station)(struct wiphy *wiphy, struct net_device *dev,const u8 *mac, struct station_parameters *params);
+    int (*change_station)(struct wiphy *wiphy, struct net_device *dev, const u8 *mac, struct station_parameters *params);
     int (*get_station)(struct wiphy *wiphy, struct net_device *dev, const u8 *mac, struct station_info *sinfo);
     int (*dump_station)(struct wiphy *wiphy, struct net_device *dev, int idx, u8 *mac, struct station_info *sinfo);
     int (*add_mpath)(struct wiphy *wiphy, struct net_device *dev, const u8 *dst, const u8 *next_hop);
     int (*del_mpath)(struct wiphy *wiphy, struct net_device *dev, const u8 *dst);
     int (*change_mpath)(struct wiphy *wiphy, struct net_device *dev, const u8 *dst, const u8 *next_hop);
     int (*get_mpath)(struct wiphy *wiphy, struct net_device *dev, u8 *dst, u8 *next_hop, struct mpath_info *pinfo);
-    int (*dump_mpath)(struct wiphy *wiphy, struct net_device *dev,int idx, u8 *dst, u8 *next_hop, struct mpath_info *pinfo);
+    int (*dump_mpath)(struct wiphy *wiphy, struct net_device *dev, int idx, u8 *dst, u8 *next_hop, struct mpath_info *pinfo);
     int (*get_mpp)(struct wiphy *wiphy, struct net_device *dev, u8 *dst, u8 *mpp, struct mpath_info *pinfo);
-    int (*dump_mpp)(struct wiphy *wiphy, struct net_device *dev,int idx, u8 *dst, u8 *mpp, struct mpath_info *pinfo);
-    int (*get_mesh_config)(struct wiphy *wiphy,struct net_device *dev, struct mesh_config *conf);
-    int (*update_mesh_config)(struct wiphy *wiphy,struct net_device *dev, u32 mask, const struct mesh_config *nconf);
-    int (*join_mesh)(struct wiphy *wiphy, struct net_device *dev,const struct mesh_config *conf, const struct mesh_setup *setup);
+    int (*dump_mpp)(struct wiphy *wiphy, struct net_device *dev, int idx, u8 *dst, u8 *mpp, struct mpath_info *pinfo);
+    int (*get_mesh_config)(struct wiphy *wiphy, struct net_device *dev, struct mesh_config *conf);
+    int (*update_mesh_config)(struct wiphy *wiphy, struct net_device *dev, u32 mask, const struct mesh_config *nconf);
+    int (*join_mesh)(struct wiphy *wiphy, struct net_device *dev, const struct mesh_config *conf, const struct mesh_setup *setup);
     int (*leave_mesh)(struct wiphy *wiphy, struct net_device *dev);
     int (*join_ocb)(struct wiphy *wiphy, struct net_device *dev, struct ocb_setup *setup);
     int (*leave_ocb)(struct wiphy *wiphy, struct net_device *dev);
     int (*change_bss)(struct wiphy *wiphy, struct net_device *dev, struct bss_parameters *params);
     void (*inform_bss)(struct wiphy *wiphy, struct cfg80211_bss *bss, const struct cfg80211_bss_ies *ies, void *data);
     int (*set_txq_params)(struct wiphy *wiphy, struct net_device *dev, struct ieee80211_txq_params *params);
-    int (*libertas_set_mesh_channel)(struct wiphy *wiphy,struct net_device *dev, struct ieee80211_channel *chan);
-    int (*set_monitor_channel)(struct wiphy *wiphy,struct net_device *dev, struct cfg80211_chan_def *chandef);
+    int (*libertas_set_mesh_channel)(struct wiphy *wiphy, struct net_device *dev, struct ieee80211_channel *chan);
+    int (*set_monitor_channel)(struct wiphy *wiphy, struct net_device *dev, struct cfg80211_chan_def *chandef);
     int (*scan)(struct wiphy *wiphy, struct cfg80211_scan_request *request);
     void (*abort_scan)(struct wiphy *wiphy, struct wireless_dev *wdev);
     int (*auth)(struct wiphy *wiphy, struct net_device *dev, struct cfg80211_auth_request *req);
@@ -3279,71 +3302,71 @@ caching.</p>
     int (*deauth)(struct wiphy *wiphy, struct net_device *dev, struct cfg80211_deauth_request *req);
     int (*disassoc)(struct wiphy *wiphy, struct net_device *dev, struct cfg80211_disassoc_request *req);
     int (*connect)(struct wiphy *wiphy, struct net_device *dev, struct cfg80211_connect_params *sme);
-    int (*update_connect_params)(struct wiphy *wiphy,struct net_device *dev,struct cfg80211_connect_params *sme, u32 changed);
+    int (*update_connect_params)(struct wiphy *wiphy, struct net_device *dev, struct cfg80211_connect_params *sme, u32 changed);
     int (*disconnect)(struct wiphy *wiphy, struct net_device *dev, u16 reason_code);
     int (*join_ibss)(struct wiphy *wiphy, struct net_device *dev, struct cfg80211_ibss_params *params);
     int (*leave_ibss)(struct wiphy *wiphy, struct net_device *dev);
     int (*set_mcast_rate)(struct wiphy *wiphy, struct net_device *dev, int rate[NUM_NL80211_BANDS]);
-    int (*set_wiphy_params)(struct wiphy *wiphy, u32 changed);
-    int (*set_tx_power)(struct wiphy *wiphy, struct wireless_dev *wdev, enum nl80211_tx_power_setting type, int mbm);
-    int (*get_tx_power)(struct wiphy *wiphy, struct wireless_dev *wdev, unsigned int link_id, int *dbm);
+    int (*set_wiphy_params)(struct wiphy *wiphy, int radio_idx, u32 changed);
+    int (*set_tx_power)(struct wiphy *wiphy, struct wireless_dev *wdev, int radio_idx, enum nl80211_tx_power_setting type, int mbm);
+    int (*get_tx_power)(struct wiphy *wiphy, struct wireless_dev *wdev, int radio_idx, unsigned int link_id, int *dbm);
     void (*rfkill_poll)(struct wiphy *wiphy);
 #ifdef CONFIG_NL80211_TESTMODE;
     int (*testmode_cmd)(struct wiphy *wiphy, struct wireless_dev *wdev, void *data, int len);
-    int (*testmode_dump)(struct wiphy *wiphy, struct sk_buff *skb,struct netlink_callback *cb, void *data, int len);
+    int (*testmode_dump)(struct wiphy *wiphy, struct sk_buff *skb, struct netlink_callback *cb, void *data, int len);
 #endif;
-    int (*set_bitrate_mask)(struct wiphy *wiphy,struct net_device *dev,unsigned int link_id,const u8 *peer, const struct cfg80211_bitrate_mask *mask);
+    int (*set_bitrate_mask)(struct wiphy *wiphy, struct net_device *dev, unsigned int link_id, const u8 *peer, const struct cfg80211_bitrate_mask *mask);
     int (*dump_survey)(struct wiphy *wiphy, struct net_device *netdev, int idx, struct survey_info *info);
     int (*set_pmksa)(struct wiphy *wiphy, struct net_device *netdev, struct cfg80211_pmksa *pmksa);
     int (*del_pmksa)(struct wiphy *wiphy, struct net_device *netdev, struct cfg80211_pmksa *pmksa);
     int (*flush_pmksa)(struct wiphy *wiphy, struct net_device *netdev);
-    int (*remain_on_channel)(struct wiphy *wiphy,struct wireless_dev *wdev,struct ieee80211_channel *chan,unsigned int duration, u64 *cookie);
-    int (*cancel_remain_on_channel)(struct wiphy *wiphy,struct wireless_dev *wdev, u64 cookie);
-    int (*mgmt_tx)(struct wiphy *wiphy, struct wireless_dev *wdev,struct cfg80211_mgmt_tx_params *params, u64 *cookie);
-    int (*mgmt_tx_cancel_wait)(struct wiphy *wiphy,struct wireless_dev *wdev, u64 cookie);
+    int (*remain_on_channel)(struct wiphy *wiphy, struct wireless_dev *wdev, struct ieee80211_channel *chan, unsigned int duration, u64 *cookie);
+    int (*cancel_remain_on_channel)(struct wiphy *wiphy, struct wireless_dev *wdev, u64 cookie);
+    int (*mgmt_tx)(struct wiphy *wiphy, struct wireless_dev *wdev, struct cfg80211_mgmt_tx_params *params, u64 *cookie);
+    int (*mgmt_tx_cancel_wait)(struct wiphy *wiphy, struct wireless_dev *wdev, u64 cookie);
     int (*set_power_mgmt)(struct wiphy *wiphy, struct net_device *dev, bool enabled, int timeout);
-    int (*set_cqm_rssi_config)(struct wiphy *wiphy,struct net_device *dev, s32 rssi_thold, u32 rssi_hyst);
-    int (*set_cqm_rssi_range_config)(struct wiphy *wiphy,struct net_device *dev, s32 rssi_low, s32 rssi_high);
-    int (*set_cqm_txe_config)(struct wiphy *wiphy,struct net_device *dev, u32 rate, u32 pkts, u32 intvl);
-    void (*update_mgmt_frame_registrations)(struct wiphy *wiphy,struct wireless_dev *wdev, struct mgmt_frame_regs *upd);
-    int (*set_antenna)(struct wiphy *wiphy, u32 tx_ant, u32 rx_ant);
-    int (*get_antenna)(struct wiphy *wiphy, u32 *tx_ant, u32 *rx_ant);
-    int (*sched_scan_start)(struct wiphy *wiphy,struct net_device *dev, struct cfg80211_sched_scan_request *request);
+    int (*set_cqm_rssi_config)(struct wiphy *wiphy, struct net_device *dev, s32 rssi_thold, u32 rssi_hyst);
+    int (*set_cqm_rssi_range_config)(struct wiphy *wiphy, struct net_device *dev, s32 rssi_low, s32 rssi_high);
+    int (*set_cqm_txe_config)(struct wiphy *wiphy, struct net_device *dev, u32 rate, u32 pkts, u32 intvl);
+    void (*update_mgmt_frame_registrations)(struct wiphy *wiphy, struct wireless_dev *wdev, struct mgmt_frame_regs *upd);
+    int (*set_antenna)(struct wiphy *wiphy, int radio_idx, u32 tx_ant, u32 rx_ant);
+    int (*get_antenna)(struct wiphy *wiphy, int radio_idx, u32 *tx_ant, u32 *rx_ant);
+    int (*sched_scan_start)(struct wiphy *wiphy, struct net_device *dev, struct cfg80211_sched_scan_request *request);
     int (*sched_scan_stop)(struct wiphy *wiphy, struct net_device *dev, u64 reqid);
     int (*set_rekey_data)(struct wiphy *wiphy, struct net_device *dev, struct cfg80211_gtk_rekey_data *data);
-    int (*tdls_mgmt)(struct wiphy *wiphy, struct net_device *dev,const u8 *peer, int link_id,u8 action_code, u8 dialog_token, u16 status_code,u32 peer_capability, bool initiator, const u8 *buf, size_t len);
+    int (*tdls_mgmt)(struct wiphy *wiphy, struct net_device *dev, const u8 *peer, int link_id, u8 action_code, u8 dialog_token, u16 status_code, u32 peer_capability, bool initiator, const u8 *buf, size_t len);
     int (*tdls_oper)(struct wiphy *wiphy, struct net_device *dev, const u8 *peer, enum nl80211_tdls_operation oper);
     int (*probe_client)(struct wiphy *wiphy, struct net_device *dev, const u8 *peer, u64 *cookie);
-    int (*set_noack_map)(struct wiphy *wiphy,struct net_device *dev, u16 noack_map);
-    int (*get_channel)(struct wiphy *wiphy,struct wireless_dev *wdev,unsigned int link_id, struct cfg80211_chan_def *chandef);
+    int (*set_noack_map)(struct wiphy *wiphy, struct net_device *dev, u16 noack_map);
+    int (*get_channel)(struct wiphy *wiphy, struct wireless_dev *wdev, unsigned int link_id, struct cfg80211_chan_def *chandef);
     int (*start_p2p_device)(struct wiphy *wiphy, struct wireless_dev *wdev);
     void (*stop_p2p_device)(struct wiphy *wiphy, struct wireless_dev *wdev);
     int (*set_mac_acl)(struct wiphy *wiphy, struct net_device *dev, const struct cfg80211_acl_data *params);
-    int (*start_radar_detection)(struct wiphy *wiphy,struct net_device *dev,struct cfg80211_chan_def *chandef, u32 cac_time_ms, int link_id);
+    int (*start_radar_detection)(struct wiphy *wiphy, struct net_device *dev, struct cfg80211_chan_def *chandef, u32 cac_time_ms, int link_id);
     void (*end_cac)(struct wiphy *wiphy, struct net_device *dev, unsigned int link_id);
     int (*update_ft_ies)(struct wiphy *wiphy, struct net_device *dev, struct cfg80211_update_ft_ies_params *ftie);
-    int (*crit_proto_start)(struct wiphy *wiphy,struct wireless_dev *wdev,enum nl80211_crit_proto_id protocol, u16 duration);
+    int (*crit_proto_start)(struct wiphy *wiphy, struct wireless_dev *wdev, enum nl80211_crit_proto_id protocol, u16 duration);
     void (*crit_proto_stop)(struct wiphy *wiphy, struct wireless_dev *wdev);
     int (*set_coalesce)(struct wiphy *wiphy, struct cfg80211_coalesce *coalesce);
-    int (*channel_switch)(struct wiphy *wiphy,struct net_device *dev, struct cfg80211_csa_settings *params);
-    int (*set_qos_map)(struct wiphy *wiphy,struct net_device *dev, struct cfg80211_qos_map *qos_map);
-    int (*set_ap_chanwidth)(struct wiphy *wiphy, struct net_device *dev,unsigned int link_id, struct cfg80211_chan_def *chandef);
-    int (*add_tx_ts)(struct wiphy *wiphy, struct net_device *dev,u8 tsid, const u8 *peer, u8 user_prio, u16 admitted_time);
+    int (*channel_switch)(struct wiphy *wiphy, struct net_device *dev, struct cfg80211_csa_settings *params);
+    int (*set_qos_map)(struct wiphy *wiphy, struct net_device *dev, struct cfg80211_qos_map *qos_map);
+    int (*set_ap_chanwidth)(struct wiphy *wiphy, struct net_device *dev, unsigned int link_id, struct cfg80211_chan_def *chandef);
+    int (*add_tx_ts)(struct wiphy *wiphy, struct net_device *dev, u8 tsid, const u8 *peer, u8 user_prio, u16 admitted_time);
     int (*del_tx_ts)(struct wiphy *wiphy, struct net_device *dev, u8 tsid, const u8 *peer);
-    int (*tdls_channel_switch)(struct wiphy *wiphy,struct net_device *dev,const u8 *addr, u8 oper_class, struct cfg80211_chan_def *chandef);
-    void (*tdls_cancel_channel_switch)(struct wiphy *wiphy,struct net_device *dev, const u8 *addr);
+    int (*tdls_channel_switch)(struct wiphy *wiphy, struct net_device *dev, const u8 *addr, u8 oper_class, struct cfg80211_chan_def *chandef);
+    void (*tdls_cancel_channel_switch)(struct wiphy *wiphy, struct net_device *dev, const u8 *addr);
     int (*start_nan)(struct wiphy *wiphy, struct wireless_dev *wdev, struct cfg80211_nan_conf *conf);
     void (*stop_nan)(struct wiphy *wiphy, struct wireless_dev *wdev);
     int (*add_nan_func)(struct wiphy *wiphy, struct wireless_dev *wdev, struct cfg80211_nan_func *nan_func);
     void (*del_nan_func)(struct wiphy *wiphy, struct wireless_dev *wdev, u64 cookie);
-    int (*nan_change_conf)(struct wiphy *wiphy,struct wireless_dev *wdev,struct cfg80211_nan_conf *conf, u32 changes);
-    int (*set_multicast_to_unicast)(struct wiphy *wiphy,struct net_device *dev, const bool enabled);
-    int (*get_txq_stats)(struct wiphy *wiphy,struct wireless_dev *wdev, struct cfg80211_txq_stats *txqstats);
+    int (*nan_change_conf)(struct wiphy *wiphy, struct wireless_dev *wdev, struct cfg80211_nan_conf *conf, u32 changes);
+    int (*set_multicast_to_unicast)(struct wiphy *wiphy, struct net_device *dev, const bool enabled);
+    int (*get_txq_stats)(struct wiphy *wiphy, struct wireless_dev *wdev, struct cfg80211_txq_stats *txqstats);
     int (*set_pmk)(struct wiphy *wiphy, struct net_device *dev, const struct cfg80211_pmk_conf *conf);
     int (*del_pmk)(struct wiphy *wiphy, struct net_device *dev, const u8 *aa);
     int (*external_auth)(struct wiphy *wiphy, struct net_device *dev, struct cfg80211_external_auth_params *params);
-    int (*tx_control_port)(struct wiphy *wiphy,struct net_device *dev,const u8 *buf, size_t len,const u8 *dest, const __be16 proto,const bool noencrypt, int link_id, u64 *cookie);
-    int (*get_ftm_responder_stats)(struct wiphy *wiphy,struct net_device *dev, struct cfg80211_ftm_responder_stats *ftm_stats);
+    int (*tx_control_port)(struct wiphy *wiphy, struct net_device *dev, const u8 *buf, size_t len, const u8 *dest, const __be16 proto, const bool noencrypt, int link_id, u64 *cookie);
+    int (*get_ftm_responder_stats)(struct wiphy *wiphy, struct net_device *dev, struct cfg80211_ftm_responder_stats *ftm_stats);
     int (*start_pmsr)(struct wiphy *wiphy, struct wireless_dev *wdev, struct cfg80211_pmsr_request *request);
     void (*abort_pmsr)(struct wiphy *wiphy, struct wireless_dev *wdev, struct cfg80211_pmsr_request *request);
     int (*update_owe_info)(struct wiphy *wiphy, struct net_device *dev, struct cfg80211_update_owe_info *owe_info);
@@ -3351,7 +3374,7 @@ caching.</p>
     int (*set_tid_config)(struct wiphy *wiphy, struct net_device *dev, struct cfg80211_tid_config *tid_conf);
     int (*reset_tid_config)(struct wiphy *wiphy, struct net_device *dev, const u8 *peer, u8 tids);
     int (*set_sar_specs)(struct wiphy *wiphy, struct cfg80211_sar_specs *sar);
-    int (*color_change)(struct wiphy *wiphy,struct net_device *dev, struct cfg80211_color_change_settings *params);
+    int (*color_change)(struct wiphy *wiphy, struct net_device *dev, struct cfg80211_color_change_settings *params);
     int (*set_fils_aad)(struct wiphy *wiphy, struct net_device *dev, struct cfg80211_fils_aad *fils_aad);
     int (*set_radar_background)(struct wiphy *wiphy, struct cfg80211_chan_def *chandef);
     int (*add_link_station)(struct wiphy *wiphy, struct net_device *dev, struct link_station_parameters *params);
@@ -3374,7 +3397,7 @@ configured for the device.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">resume</span></code></dt><dd><p>wiphy device needs to be resumed</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">set_wakeup</span></code></dt><dd><p>Called when WoWLAN is enabled/disabled, use this callback
-to call device_set_wakeup_enable() to enable/disable wakeup from
+to call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">device_set_wakeup_enable()</span></code> to enable/disable wakeup from
 the device.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">add_virtual_intf</span></code></dt><dd><p>create a new virtual interface with the given name,
@@ -3441,7 +3464,7 @@ interface. This should reject the call when AP mode wasn’t started.</p>
 validated in cfg80211, in particular the auth/assoc/authorized flags
 might come to the driver in invalid combinations -- make sure to check
 them, also against the existing state! Drivers must call
-cfg80211_check_station_change() to validate the information.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cfg80211_check_station_change()</span></code> to validate the information.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">get_station</span></code></dt><dd><p>get station information for the station identified by <strong>mac</strong></p>
 </dd>
@@ -3534,7 +3557,7 @@ The connect function can also be used to request the driver to perform a
 specific roam when connected to an ESS. In that case, the prev_bssid
 parameter is set to the BSSID of the currently associated BSS as an
 indication of requesting reassociation.
-In both the driver-initiated and new connect() call initiated roaming
+In both the driver-initiated and new <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">connect()</span></code> call initiated roaming
 cases, the result of roaming is indicated with a call to
 <a class="reference internal" href="#c.cfg80211_roamed" title="cfg80211_roamed"><code class="xref c c-func docutils literal notranslate"><span class="pre">cfg80211_roamed()</span></code></a>. (invoked with the wireless_dev mutex held)</p>
 </dd>
@@ -3569,7 +3592,7 @@ have changed. The actual parameter values are available in
 <a class="reference internal" href="#c.wiphy" title="wiphy"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">wiphy</span></code></a>. If returning an error, no value should be changed.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">set_tx_power</span></code></dt><dd><p>set the transmit power according to the parameters,
-the power passed is in mBm, to get dBm use MBM_TO_DBM(). The
+the power passed is in mBm, to get dBm use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">MBM_TO_DBM()</span></code>. The
 wdev may be <code class="docutils literal notranslate"><span class="pre">NULL</span></code> if power was set for the wiphy, and will
 always be <code class="docutils literal notranslate"><span class="pre">NULL</span></code> unless the driver supports per-vif TX power
 (as advertised by the nl80211 feature flag.)</p>
@@ -3650,7 +3673,7 @@ reject TX/RX mask combinations they cannot support by returning -EINVAL
 given request id. This call must stop the scheduled scan and be ready
 for starting a new one before it returns, i.e. <strong>sched_scan_start</strong> may be
 called immediately after that again and should not fail in that case.
-The driver should not call cfg80211_sched_scan_stopped() for a requested
+The driver should not call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cfg80211_sched_scan_stopped()</span></code> for a requested
 stop (when this method returns 0).</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">set_rekey_data</span></code></dt><dd><p>give the data necessary for GTK rekeying to the driver</p>
@@ -3660,7 +3683,7 @@ stop (when this method returns 0).</p>
 <dt><code class="docutils literal notranslate"><span class="pre">tdls_oper</span></code></dt><dd><p>Perform a high-level TDLS operation (e.g. TDLS link setup).</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">probe_client</span></code></dt><dd><p>probe an associated client, must return a cookie that it
-later passes to cfg80211_probe_status().</p>
+later passes to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cfg80211_probe_status()</span></code>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">set_noack_map</span></code></dt><dd><p>Set the NoAck Map for the TIDs.</p>
 </dd>
@@ -3700,7 +3723,7 @@ reliability. This operation can not fail.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">channel_switch</span></code></dt><dd><p>initiate channel-switch procedure (with CSA). Driver is
 responsible for veryfing if the switch is possible. Since this is
 inherently tricky driver may decide to disconnect an interface later
-with cfg80211_stop_iface(). This doesn’t mean driver can accept
+with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cfg80211_stop_iface()</span></code>. This doesn’t mean driver can accept
 everything. It should do it’s best to verify requests and reject them
 as soon as possible.</p>
 </dd>
@@ -3737,7 +3760,7 @@ peers must be on the base channel when the call completes.</p>
 On success <strong>nan_func</strong> ownership is transferred to the driver and
 it may access it outside of the scope of this function. The driver
 should free the <strong>nan_func</strong> when no longer needed by calling
-cfg80211_free_nan_func().
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cfg80211_free_nan_func()</span></code>.
 On success the driver should assign an instance_id in the
 provided <strong>nan_func</strong>.</p>
 </dd>
@@ -3821,9 +3844,9 @@ reconfiguration, i.e., add and/or remove links to/from the
 association using ML reconfiguration action frames. Successfully added
 links will be added to the set of valid links. Successfully removed
 links will be removed from the set of valid links. The driver must
-indicate removed links by calling cfg80211_links_removed() and added
-links by calling cfg80211_mlo_reconf_add_done(). When calling
-cfg80211_mlo_reconf_add_done() the bss pointer must be given for each
+indicate removed links by calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cfg80211_links_removed()</span></code> and added
+links by calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cfg80211_mlo_reconf_add_done()</span></code>. When calling
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cfg80211_mlo_reconf_add_done()</span></code> the bss pointer must be given for each
 link for which MLO reconfiguration ‘add’ operation was requested.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">set_epcs</span></code></dt><dd><p>Enable/Disable EPCS for station mode.</p>
@@ -3831,7 +3854,7 @@ link for which MLO reconfiguration ‘add’ operation was requested.</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This struct is registered by fullmac card drivers and/or wireless stacks
+<p>This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> registered by fullmac card drivers and/or wireless stacks
 in order to handle configuration requests on their interfaces.</p>
 <p>All callbacks except where otherwise noted should return 0
 on success or a negative error code.</p>
@@ -3858,14 +3881,14 @@ the RTNL also cannot be acquired in any handlers.</p>
 <p><strong>Description</strong></p>
 <p>This function is called whenever an authentication, disassociation or
 deauthentication frame has been received and processed in station mode.
-After being asked to authenticate via cfg80211_ops::auth() the driver must
+After being asked to authenticate via cfg80211_ops::<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">auth()</span></code> the driver must
 call either this function or <a class="reference internal" href="#c.cfg80211_auth_timeout" title="cfg80211_auth_timeout"><code class="xref c c-func docutils literal notranslate"><span class="pre">cfg80211_auth_timeout()</span></code></a>.
-After being asked to associate via cfg80211_ops::assoc() the driver must
+After being asked to associate via cfg80211_ops::<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">assoc()</span></code> the driver must
 call either this function or <a class="reference internal" href="#c.cfg80211_auth_timeout" title="cfg80211_auth_timeout"><code class="xref c c-func docutils literal notranslate"><span class="pre">cfg80211_auth_timeout()</span></code></a>.
 While connected, the driver must calls this for received and processed
 disassociation and deauthentication frames. If the frame couldn’t be used
 because it was unprotected, the driver must call the function
-cfg80211_rx_unprot_mlme_mgmt() instead.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cfg80211_rx_unprot_mlme_mgmt()</span></code> instead.</p>
 <p>This function may sleep. The caller must hold the corresponding wdev’s mutex.</p>
 </div>
 <dl class="c function">
@@ -3901,7 +3924,7 @@ mutex.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>After being asked to associate via cfg80211_ops::assoc() the driver must
+<p>After being asked to associate via cfg80211_ops::<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">assoc()</span></code> the driver must
 call either this function or <a class="reference internal" href="#c.cfg80211_auth_timeout" title="cfg80211_auth_timeout"><code class="xref c c-func docutils literal notranslate"><span class="pre">cfg80211_auth_timeout()</span></code></a>.</p>
 <p>This function may sleep. The caller must hold the corresponding wdev’s mutex.</p>
 </div>
@@ -3953,7 +3976,7 @@ corresponding wdev’s mutex.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>This function is called whenever the local MAC detects a MIC failure in a
-received frame. This matches with MLME-MICHAELMICFAILURE.indication()
+received frame. This matches with MLME-MICHAELMICFAILURE.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">indication()</span></code>
 primitive.</p>
 </div>
 <dl class="c function">
@@ -4054,7 +4077,7 @@ connection, links[0].bssid points to the BSSID of the AP (may be <code class="do
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">links.bss</span></code></dt><dd><p>For MLO connection, entry of bss to which STA link is connected.
 For non-MLO connection, links[0].bss points to entry of bss to which STA
-is connected. It can be obtained through cfg80211_get_bss() (may be
+is connected. It can be obtained through <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cfg80211_get_bss()</span></code> (may be
 <code class="docutils literal notranslate"><span class="pre">NULL</span></code>). It is recommended to store the bss from the connect_request and
 hold a reference to it and return through this param to avoid a warning
 if the bss is expired during the connection, esp. for those drivers
@@ -4085,7 +4108,7 @@ to be specified.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>It should be called by the underlying driver once execution of the connection
-request from connect() has been completed. This is similar to
+request from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">connect()</span></code> has been completed. This is similar to
 <a class="reference internal" href="#c.cfg80211_connect_bss" title="cfg80211_connect_bss"><code class="xref c c-func docutils literal notranslate"><span class="pre">cfg80211_connect_bss()</span></code></a>, but takes a structure pointer for connection response
 parameters. Only one of the functions among <a class="reference internal" href="#c.cfg80211_connect_bss" title="cfg80211_connect_bss"><code class="xref c c-func docutils literal notranslate"><span class="pre">cfg80211_connect_bss()</span></code></a>,
 <a class="reference internal" href="#c.cfg80211_connect_result" title="cfg80211_connect_result"><code class="xref c c-func docutils literal notranslate"><span class="pre">cfg80211_connect_result()</span></code></a>, <a class="reference internal" href="#c.cfg80211_connect_timeout" title="cfg80211_connect_timeout"><code class="xref c c-func docutils literal notranslate"><span class="pre">cfg80211_connect_timeout()</span></code></a>,
@@ -4105,7 +4128,7 @@ and <a class="reference internal" href="#c.cfg80211_connect_done" title="cfg8021
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">u8</span> <span class="pre">*bssid</span></code></dt><dd><p>the BSSID of the AP</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cfg80211_bss</span> <span class="pre">*bss</span></code></dt><dd><p>Entry of bss to which STA got connected to, can be obtained through
-cfg80211_get_bss() (may be <code class="docutils literal notranslate"><span class="pre">NULL</span></code>). But it is recommended to store the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cfg80211_get_bss()</span></code> (may be <code class="docutils literal notranslate"><span class="pre">NULL</span></code>). But it is recommended to store the
 bss from the connect_request and hold a reference to it and return
 through this param to avoid a warning if the bss is expired during the
 connection, esp. for those drivers implementing connect op.
@@ -4140,7 +4163,7 @@ This value is ignored in other cases (<strong>status</strong> &gt;= 0).</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>It should be called by the underlying driver once execution of the connection
-request from connect() has been completed. This is similar to
+request from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">connect()</span></code> has been completed. This is similar to
 <a class="reference internal" href="#c.cfg80211_connect_result" title="cfg80211_connect_result"><code class="xref c c-func docutils literal notranslate"><span class="pre">cfg80211_connect_result()</span></code></a>, but with the option of identifying the exact bss
 entry for the connection. Only one of the functions among
 <a class="reference internal" href="#c.cfg80211_connect_bss" title="cfg80211_connect_bss"><code class="xref c c-func docutils literal notranslate"><span class="pre">cfg80211_connect_bss()</span></code></a>, <a class="reference internal" href="#c.cfg80211_connect_result" title="cfg80211_connect_result"><code class="xref c c-func docutils literal notranslate"><span class="pre">cfg80211_connect_result()</span></code></a>,
@@ -4176,7 +4199,7 @@ the real status code for failures.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>It should be called by the underlying driver once execution of the connection
-request from connect() has been completed. This is similar to
+request from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">connect()</span></code> has been completed. This is similar to
 <a class="reference internal" href="#c.cfg80211_connect_bss" title="cfg80211_connect_bss"><code class="xref c c-func docutils literal notranslate"><span class="pre">cfg80211_connect_bss()</span></code></a> which allows the exact bss entry to be specified. Only
 one of the functions among <a class="reference internal" href="#c.cfg80211_connect_bss" title="cfg80211_connect_bss"><code class="xref c c-func docutils literal notranslate"><span class="pre">cfg80211_connect_bss()</span></code></a>, <a class="reference internal" href="#c.cfg80211_connect_result" title="cfg80211_connect_result"><code class="xref c c-func docutils literal notranslate"><span class="pre">cfg80211_connect_result()</span></code></a>,
 <a class="reference internal" href="#c.cfg80211_connect_timeout" title="cfg80211_connect_timeout"><code class="xref c c-func docutils literal notranslate"><span class="pre">cfg80211_connect_timeout()</span></code></a>, and <a class="reference internal" href="#c.cfg80211_connect_done" title="cfg80211_connect_done"><code class="xref c c-func docutils literal notranslate"><span class="pre">cfg80211_connect_done()</span></code></a> should be called.</p>
@@ -4204,7 +4227,7 @@ one of the functions among <a class="reference internal" href="#c.cfg80211_conne
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>It should be called by the underlying driver whenever connect() has failed
+<p>It should be called by the underlying driver whenever <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">connect()</span></code> has failed
 in a sequence where no explicit authentication/association rejection was
 received from the AP. This could happen, e.g., due to not being able to send
 out the Authentication or Association Request frame or timing out while
@@ -4235,9 +4258,9 @@ It should be called by the underlying driver whenever it roamed from one AP
 to another while connected. Drivers which have roaming implemented in
 firmware should pass the bss entry to avoid a race in bss entry timeout where
 the bss entry of the new AP is seen in the driver, but gets timed out by the
-time it is accessed in __cfg80211_roamed() due to delay in scheduling
+time it is accessed in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__cfg80211_roamed()</span></code> due to delay in scheduling
 rdev-&gt;event_work. In case of any failures, the reference is released
-either in <a class="reference internal" href="#c.cfg80211_roamed" title="cfg80211_roamed"><code class="xref c c-func docutils literal notranslate"><span class="pre">cfg80211_roamed()</span></code></a> or in __cfg80211_romed(), Otherwise, it will be
+either in <a class="reference internal" href="#c.cfg80211_roamed" title="cfg80211_roamed"><code class="xref c c-func docutils literal notranslate"><span class="pre">cfg80211_roamed()</span></code></a> or in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__cfg80211_romed()</span></code>, Otherwise, it will be
 released while disconnecting from the current bss.</p>
 </div>
 <dl class="c function">
@@ -4345,7 +4368,7 @@ channel</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">len</span></code></dt><dd><p>length of the frame data</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">u32</span> <span class="pre">flags</span></code></dt><dd><p>flags, as defined in enum nl80211_rxmgmt_flags</p>
+<dt><code class="docutils literal notranslate"><span class="pre">u32</span> <span class="pre">flags</span></code></dt><dd><p>flags, as defined in <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">nl80211_rxmgmt_flags</span></code></p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -4368,7 +4391,7 @@ driver is responsible for rejecting the frame.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">wireless_dev</span> <span class="pre">*wdev</span></code></dt><dd><p>wireless device receiving the frame</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">u64</span> <span class="pre">cookie</span></code></dt><dd><p>Cookie returned by cfg80211_ops::mgmt_tx()</p>
+<dt><code class="docutils literal notranslate"><span class="pre">u64</span> <span class="pre">cookie</span></code></dt><dd><p>Cookie returned by cfg80211_ops::<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mgmt_tx()</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">u8</span> <span class="pre">*buf</span></code></dt><dd><p>Management frame (header + body)</p>
 </dd>
@@ -4381,7 +4404,7 @@ driver is responsible for rejecting the frame.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>This function is called whenever a management frame was requested to be
-transmitted with cfg80211_ops::mgmt_tx() to report the TX status of the
+transmitted with cfg80211_ops::<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mgmt_tx()</span></code> to report the TX status of the
 transmission attempt.</p>
 </div>
 <dl class="c function">
@@ -4492,10 +4515,9 @@ to userspace.</p>
     u8 bssid[ETH_ALEN] ;
     struct wiphy *wiphy;
     unsigned long scan_start;
-    struct cfg80211_scan_info info;
-    bool notified;
     bool no_cck;
     bool scan_6ghz;
+    bool first_part;
     u32 n_6ghz_params;
     struct cfg80211_scan_6ghz_params *scan_6ghz_params;
     s8 tsf_report_link_id;
@@ -4540,14 +4562,14 @@ be taken from the <strong>mac_addr</strong></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">scan_start</span></code></dt><dd><p>time (in jiffies) when the scan started</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">info</span></code></dt><dd><p>(internal) information about completed scan</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">notified</span></code></dt><dd><p>(internal) scan request was notified as done or aborted</p>
-</dd>
 <dt><code class="docutils literal notranslate"><span class="pre">no_cck</span></code></dt><dd><p>used to send probe requests at non CCK rate in 2GHz band</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">scan_6ghz</span></code></dt><dd><p>relevant for split scan request only,
-true if this is the second scan request</p>
+true if this is a 6 GHz scan request</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">first_part</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if this is the first part of a split scan request or a
+scan that was not split. May be <code class="docutils literal notranslate"><span class="pre">true</span></code> for a <strong>scan_6ghz</strong> scan if no other
+channels were requested</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">n_6ghz_params</span></code></dt><dd><p>number of 6 GHz params</p>
 </dd>
@@ -4663,15 +4685,15 @@ proberesp_ies depending on whether Probe Response frame has been
 received. It is always non-<code class="docutils literal notranslate"><span class="pre">NULL</span></code>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">beacon_ies</span></code></dt><dd><p>the information elements from the last Beacon frame
-(implementation note: if <strong>hidden_beacon_bss</strong> is set this struct doesn’t
+(implementation note: if <strong>hidden_beacon_bss</strong> is set this <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">doesn</span></code>’t
 own the beacon_ies, but they’re just pointers to the ones from the
 <strong>hidden_beacon_bss</strong> struct)</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">proberesp_ies</span></code></dt><dd><p>the information elements from the last Probe Response frame</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">hidden_beacon_bss</span></code></dt><dd><p>in case this BSS struct represents a probe response from
-a BSS that hides the SSID in its beacon, this points to the BSS struct
-that holds the beacon data. <strong>beacon_ies</strong> is still valid, of course, and
+<dt><code class="docutils literal notranslate"><span class="pre">hidden_beacon_bss</span></code></dt><dd><p>in case this BSS <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">represents</span></code> a probe response from
+a BSS that hides the SSID in its beacon, this points to the BSS <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">that</span></code> holds the beacon data. <strong>beacon_ies</strong> is still valid, of course, and
 points to the same data as hidden_beacon_bss-&gt;beacon_ies in that case.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">transmitted_bss</span></code></dt><dd><p>pointer to the transmitted BSS, if this is a
@@ -4799,7 +4821,7 @@ having to fit into the given data.</p>
 <p>This informs cfg80211 that BSS information was found and
 the BSS should be updated/added.</p>
 <p><strong>Return</strong></p>
-<p>A referenced struct, must be released with cfg80211_put_bss()!
+<p>A referenced struct, must be released with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cfg80211_put_bss()</span></code>!
 Or <code class="docutils literal notranslate"><span class="pre">NULL</span></code> on error.</p>
 </div>
 <dl class="c function">
@@ -4836,7 +4858,7 @@ Or <code class="docutils literal notranslate"><span class="pre">NULL</span></cod
 <p>This informs cfg80211 that BSS information was found and
 the BSS should be updated/added.</p>
 <p><strong>Return</strong></p>
-<p>A referenced struct, must be released with cfg80211_put_bss()!
+<p>A referenced struct, must be released with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cfg80211_put_bss()</span></code>!
 Or <code class="docutils literal notranslate"><span class="pre">NULL</span></code> on error.</p>
 </div>
 <dl class="c function">
@@ -4898,7 +4920,7 @@ out, so it is not necessary to use this function at all.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ieee80211_get_channel">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.ieee80211_channel" title="ieee80211_channel"><span class="n"><span class="pre">ieee80211_channel</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">ieee80211_get_channel</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.ieee80211_get_channel" title="wiphy"><span class="n"><span class="pre">wiphy</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">wiphy</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">freq</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ieee80211_get_channel" title="Link to this definition">¶</a><br /></dt>
-<dd><p>get channel struct from wiphy for specified frequency</p>
+<dd><p>get channel <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">from</span></code> wiphy for specified frequency</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -4910,7 +4932,7 @@ out, so it is not necessary to use this function at all.</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<p>The channel struct from <strong>wiphy</strong> at <strong>freq</strong>.</p>
+<p>The channel <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">from</span></code> <strong>wiphy</strong> at <strong>freq</strong>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ieee80211_get_response_rate">
@@ -4975,12 +4997,12 @@ rates in the band’s bitrate table.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">_next_bitmap</span></code></dt><dd><p>internal pointer to next present u32</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">this_arg</span></code></dt><dd><p>pointer to current radiotap arg; it is valid after each
-call to ieee80211_radiotap_iterator_next() but also after
-ieee80211_radiotap_iterator_init() where it will point to
+call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ieee80211_radiotap_iterator_next()</span></code> but also after
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ieee80211_radiotap_iterator_init()</span></code> where it will point to
 the beginning of the actual data portion</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">this_arg_index</span></code></dt><dd><p>index of current arg, valid after each successful call
-to ieee80211_radiotap_iterator_next()</p>
+to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ieee80211_radiotap_iterator_next()</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">this_arg_size</span></code></dt><dd><p>length of the current arg, for convenience</p>
 </dd>
@@ -5197,7 +5219,7 @@ can be found, the return value is encoded using <a class="reference internal" hr
 check and <a class="reference internal" href="../../core-api/kernel-api.html#c.PTR_ERR" title="PTR_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">PTR_ERR()</span></code></a> to obtain the numeric return value. The numeric return
 value will be -ERANGE if we determine the given center_freq does not even
 have a regulatory rule for a frequency range in the center_freq’s band.
-See freq_in_rule_band() for our current definition of a band -- this is
+See <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">freq_in_rule_band()</span></code> for our current definition of a band -- this is
 purely subjective and right now it’s 802.11 specific.</p>
 </div>
 </section>
@@ -5266,7 +5288,7 @@ the testmode command. Since it is intended for a reply, calling
 it outside of the <strong>testmode_cmd</strong> operation is invalid.</p>
 <p>The returned skb is pre-filled with the wiphy index and set up in
 a way that any data that is put into the skb (with <a class="reference internal" href="../../networking/kapi.html#c.skb_put" title="skb_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">skb_put()</span></code></a>,
-nla_put() or similar) will end up being within the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nla_put()</span></code> or similar) will end up being within the
 <code class="docutils literal notranslate"><span class="pre">NL80211_ATTR_TESTDATA</span></code> attribute, so all that needs to be done
 with the skb is adding data for the corresponding userspace tool
 which can then read that data out of the testdata attribute. You

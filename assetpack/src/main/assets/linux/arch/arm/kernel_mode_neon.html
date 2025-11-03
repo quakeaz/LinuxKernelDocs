@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -177,7 +177,7 @@
 code</p></li>
 <li><p>Isolate your NEON code in a separate compilation unit, and compile it with
 ‘-march=armv7-a -mfpu=neon -mfloat-abi=softfp’</p></li>
-<li><p>Put kernel_neon_begin() and kernel_neon_end() calls around the calls into your
+<li><p>Put <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kernel_neon_begin()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kernel_neon_end()</span></code> calls around the calls into your
 NEON code</p></li>
 <li><p>Don’t sleep in your NEON code, and be aware that it will be executed with
 preemption disabled</p></li>
@@ -190,7 +190,7 @@ code that runs in kernel mode. However, for performance reasons, the NEON/VFP
 register file is not preserved and restored at every context switch or taken
 exception like the normal register file is, so some manual intervention is
 required. Furthermore, special care is required for code that may sleep [i.e.,
-may call schedule()], as NEON or VFP instructions will be executed in a
+may call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">schedule()</span></code>], as NEON or VFP instructions will be executed in a
 non-preemptible section for reasons outlined below.</p>
 </section>
 <section id="lazy-preserve-and-restore">
@@ -206,11 +206,11 @@ necessary.</p>
 <p>Any use of the NEON/VFP unit in kernel mode should not interfere with this, so
 it is required to do an ‘eager’ preserve of the NEON/VFP register file, and
 enable the NEON/VFP unit explicitly so no exceptions are generated on first
-subsequent use. This is handled by the function kernel_neon_begin(), which
+subsequent use. This is handled by the function <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kernel_neon_begin()</span></code>, which
 should be called before any kernel mode NEON or VFP instructions are issued.
 Likewise, the NEON/VFP unit should be disabled again after use to make sure user
 mode will hit the lazy restore trap upon next use. This is handled by the
-function kernel_neon_end().</p>
+function <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kernel_neon_end()</span></code>.</p>
 </section>
 <section id="interruptions-in-kernel-mode">
 <h2>Interruptions in kernel mode<a class="headerlink" href="#interruptions-in-kernel-mode" title="Link to this heading">¶</a></h2>
@@ -223,8 +223,8 @@ following rules and restrictions apply in the kernel:
 * NEON/VFP code is not allowed to sleep;
 * NEON/VFP code is executed with preemption disabled.</p>
 <p>If latency is a concern, it is possible to put back to back calls to
-kernel_neon_end() and kernel_neon_begin() in places in your code where none of
-the NEON registers are live. (Additional calls to kernel_neon_begin() should be
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kernel_neon_end()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kernel_neon_begin()</span></code> in places in your code where none of
+the NEON registers are live. (Additional calls to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kernel_neon_begin()</span></code> should be
 reasonably cheap if no context switch occurred in the meantime)</p>
 </section>
 <section id="vfp-and-support-code">
@@ -240,8 +240,8 @@ fail and generate an OOPS.</p>
 </section>
 <section id="separating-neon-code-from-ordinary-code">
 <h2>Separating NEON code from ordinary code<a class="headerlink" href="#separating-neon-code-from-ordinary-code" title="Link to this heading">¶</a></h2>
-<p>The compiler is not aware of the special significance of kernel_neon_begin() and
-kernel_neon_end(), i.e., that it is only allowed to issue NEON/VFP instructions
+<p>The compiler is not aware of the special significance of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kernel_neon_begin()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kernel_neon_end()</span></code>, i.e., that it is only allowed to issue NEON/VFP instructions
 between calls to these respective functions. Furthermore, GCC may generate NEON
 instructions of its own at -O3 level if -mfpu=neon is selected, and even if the
 kernel is currently compiled at -O2, future changes may result in NEON/VFP
@@ -251,7 +251,7 @@ kernel is by adhering to the following rules:</p>
 <ul class="simple">
 <li><p>isolate the NEON code in a separate compilation unit and compile it with
 ‘-march=armv7-a -mfpu=neon -mfloat-abi=softfp’;</p></li>
-<li><p>issue the calls to kernel_neon_begin(), kernel_neon_end() as well as the calls
+<li><p>issue the calls to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kernel_neon_begin()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kernel_neon_end()</span></code> as well as the calls
 into the unit containing the NEON code from a compilation unit which is <em>not</em>
 built with the GCC flag ‘-mfpu=neon’ set.</p></li>
 </ul>

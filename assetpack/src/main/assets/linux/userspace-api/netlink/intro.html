@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -168,8 +168,8 @@ opened first:</p>
 </div>
 <p>The use of sockets allows for a natural way of exchanging information
 in both directions (to and from the kernel). The operations are still
-performed synchronously when applications send() the request but
-a separate recv() system call is needed to read the reply.</p>
+performed synchronously when applications <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">send()</span></code> the request but
+a separate <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recv()</span></code> system call is needed to read the reply.</p>
 <p>A very simplified flow of a Netlink “call” will therefore look
 something like:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">socket</span><span class="p">(</span><span class="n">AF_NETLINK</span><span class="p">,</span><span class="w"> </span><span class="n">SOCK_RAW</span><span class="p">,</span><span class="w"> </span><span class="n">NETLINK_GENERIC</span><span class="p">);</span>
@@ -231,7 +231,7 @@ defines its own fixed metadata header. (Similarly to how network
 headers stack - Ethernet &gt; IP &gt; TCP we have Netlink &gt; Generic N. &gt; Family.)</p>
 <p>A Netlink message always starts with <a class="reference internal" href="#c.nlmsghdr" title="nlmsghdr"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">nlmsghdr</span></code></a>, which is followed
 by a protocol-specific header. In case of Generic Netlink the protocol
-header is struct genlmsghdr.</p>
+header is <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">genlmsghdr</span></code>.</p>
 <p>The practical meaning of the fields in case of Generic Netlink is as follows:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">nlmsghdr</span><span class="w"> </span><span class="p">{</span>
 <span class="w">      </span><span class="n">__u32</span><span class="w">   </span><span class="n">nlmsg_len</span><span class="p">;</span><span class="w">      </span><span class="cm">/* Length of message including headers */</span>
@@ -312,7 +312,7 @@ They carry return codes for operations. Note that unless
 the <code class="docutils literal notranslate"><span class="pre">NLM_F_ACK</span></code> flag is set on the request Netlink will not respond
 with <code class="docutils literal notranslate"><span class="pre">NLMSG_ERROR</span></code> if there is no error. To avoid having to special-case
 this quirk it is recommended to always set <code class="docutils literal notranslate"><span class="pre">NLM_F_ACK</span></code>.</p>
-<p>The format of <code class="docutils literal notranslate"><span class="pre">NLMSG_ERROR</span></code> is described by struct nlmsgerr:</p>
+<p>The format of <code class="docutils literal notranslate"><span class="pre">NLMSG_ERROR</span></code> is described by <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">nlmsgerr</span></code>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>----------------------------------------------
 | struct nlmsghdr - response header          |
 ----------------------------------------------
@@ -332,7 +332,7 @@ the request which led to the error. This could be useful when trying
 to match requests to responses or re-parse the request to dump it into
 logs.</p>
 <p>The payload of the request is not echoed in messages reporting success
-(<code class="docutils literal notranslate"><span class="pre">error</span> <span class="pre">==</span> <span class="pre">0</span></code>) or if <code class="docutils literal notranslate"><span class="pre">NETLINK_CAP_ACK</span></code> setsockopt() was set.
+(<code class="docutils literal notranslate"><span class="pre">error</span> <span class="pre">==</span> <span class="pre">0</span></code>) or if <code class="docutils literal notranslate"><span class="pre">NETLINK_CAP_ACK</span></code> <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setsockopt()</span></code> was set.
 The latter is common
 and perhaps recommended as having to read a copy of every request back
 from the kernel is rather wasteful. The absence of request payload
@@ -456,7 +456,7 @@ struct nlmsghdr: /* Copy of the request header as we sent it */
   __u32 nlmsg_pid:    0
 </pre></div>
 </div>
-<p>The order of attributes (struct nlattr) is not guaranteed so the user
+<p>The order of attributes (<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">nlattr</span></code>) is not guaranteed so the user
 has to walk the attributes and parse them.</p>
 <p>Note that Generic Netlink sockets are not associated or bound to a single
 family. A socket can be used to exchange messages with many different
@@ -468,7 +468,7 @@ the <code class="xref c c-member docutils literal notranslate"><span class="pre"
 <p>Extended ACK controls reporting of additional error/warning TLVs
 in <code class="docutils literal notranslate"><span class="pre">NLMSG_ERROR</span></code> and <code class="docutils literal notranslate"><span class="pre">NLMSG_DONE</span></code> messages. To maintain backward
 compatibility this feature has to be explicitly enabled by setting
-the <code class="docutils literal notranslate"><span class="pre">NETLINK_EXT_ACK</span></code> setsockopt() to <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p>
+the <code class="docutils literal notranslate"><span class="pre">NETLINK_EXT_ACK</span></code> <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setsockopt()</span></code> to <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p>
 <p>Types of extended ack attributes are defined in <a class="reference internal" href="#c.nlmsgerr_attrs" title="nlmsgerr_attrs"><code class="xref c c-enum docutils literal notranslate"><span class="pre">enum</span> <span class="pre">nlmsgerr_attrs</span></code></a>.
 The most commonly used attributes are <code class="docutils literal notranslate"><span class="pre">NLMSGERR_ATTR_MSG</span></code>,
 <code class="docutils literal notranslate"><span class="pre">NLMSGERR_ATTR_OFFS</span></code> and <code class="docutils literal notranslate"><span class="pre">NLMSGERR_ATTR_MISS_*</span></code>.</p>
@@ -513,14 +513,14 @@ a request.</p>
 <span id="id1"></span><h3>nlmsg_pid<a class="headerlink" href="#nlmsg-pid" title="Link to this heading">¶</a></h3>
 <p><code class="xref c c-member docutils literal notranslate"><span class="pre">nlmsghdr.nlmsg_pid</span></code> is the Netlink equivalent of an address.
 It is referred to as Port ID, sometimes Process ID because for historical
-reasons if the application does not select (bind() to) an explicit Port ID
+reasons if the application does not select (<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code> to) an explicit Port ID
 kernel will automatically assign it the ID equal to its Process ID
-(as reported by the getpid() system call).</p>
-<p>Similarly to the bind() semantics of the TCP/IP network protocols the value
+(as reported by the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">getpid()</span></code> system call).</p>
+<p>Similarly to the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code> semantics of the TCP/IP network protocols the value
 of zero means “assign automatically”, hence it is common for applications
 to leave the <code class="xref c c-member docutils literal notranslate"><span class="pre">nlmsghdr.nlmsg_pid</span></code> field initialized to <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
 <p>The field is still used today in rare cases when kernel needs to send
-a unicast notification. User space application can use bind() to associate
+a unicast notification. User space application can use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code> to associate
 its socket with a specific PID, it then communicates its PID to the kernel.
 This way the kernel can reach the specific user space process.</p>
 <p>This sort of communication is utilized in UMH (User Mode Helper)-like
@@ -583,7 +583,7 @@ multicast group is dynamic and can be found inside the Family information.
 The <code class="docutils literal notranslate"><span class="pre">CTRL_ATTR_MCAST_GROUPS</span></code> attribute contains nests with names
 (<code class="docutils literal notranslate"><span class="pre">CTRL_ATTR_MCAST_GRP_NAME</span></code>) and IDs (<code class="docutils literal notranslate"><span class="pre">CTRL_ATTR_MCAST_GRP_ID</span></code>) of
 the groups family.</p>
-<p>Once the Group ID is known a setsockopt() call adds the socket to the group:</p>
+<p>Once the Group ID is known a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setsockopt()</span></code> call adds the socket to the group:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">group_id</span><span class="p">;</span>
 
 <span class="cm">/* .. find the group ID... */</span>
@@ -602,16 +602,16 @@ handling much harder.</p>
 <h3>Buffer sizing<a class="headerlink" href="#buffer-sizing" title="Link to this heading">¶</a></h3>
 <p>Netlink sockets are datagram sockets rather than stream sockets,
 meaning that each message must be received in its entirety by a single
-recv()/recvmsg() system call. If the buffer provided by the user is too
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recv()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recvmsg()</span></code> system call. If the buffer provided by the user is too
 short, the message will be truncated and the <code class="docutils literal notranslate"><span class="pre">MSG_TRUNC</span></code> flag set
-in struct msghdr (struct msghdr is the second argument
-of the recvmsg() system call, <em>not</em> a Netlink header).</p>
+in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">msghdr</span></code> (<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">msghdr</span></code> is the second argument
+of the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recvmsg()</span></code> system call, <em>not</em> a Netlink header).</p>
 <p>Upon truncation the remaining part of the message is discarded.</p>
 <p>Netlink expects that the user buffer will be at least 8kB or a page
 size of the CPU architecture, whichever is bigger. Particular Netlink
 families may, however, require a larger buffer. 32kB buffer is recommended
 for most efficient handling of dumps (larger buffer fits more dumped
-objects and therefore fewer recvmsg() calls are needed).</p>
+objects and therefore fewer <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recvmsg()</span></code> calls are needed).</p>
 </section>
 </section>
 <section id="classic-netlink">
@@ -639,7 +639,7 @@ as “families” making the term very confusing:</p>
 <li><p>AF_NETLINK is a bona fide socket protocol family</p></li>
 <li><p>AF_NETLINK’s documentation refers to what comes after its own
 header (<a class="reference internal" href="#c.nlmsghdr" title="nlmsghdr"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">nlmsghdr</span></code></a>) in a message as a “Family Header”</p></li>
-<li><p>Generic Netlink is a family for AF_NETLINK (struct genlmsghdr follows
+<li><p>Generic Netlink is a family for AF_NETLINK (<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">genlmsghdr</span></code> follows
 <a class="reference internal" href="#c.nlmsghdr" title="nlmsghdr"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">nlmsghdr</span></code></a>), yet it also calls its users “Families”.</p></li>
 </ol>
 </div></blockquote>
@@ -668,7 +668,7 @@ it would free the application from having to probe what kernel supports.
 The application could make a request to change the state and check which
 parts of the request “stuck”.</p>
 <p>This is no longer the case for new Generic Netlink families and those opting
-in to strict checking. See enum netlink_validation for validation types
+in to strict checking. See <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">netlink_validation</span></code> for validation types
 performed.</p>
 </section>
 <section id="fixed-metadata-and-structures">
@@ -690,8 +690,8 @@ and <code class="docutils literal notranslate"><span class="pre">SET</span></cod
 is defined by the 2 lowest bits of the message type, so commands for
 new objects would always be allocated with a stride of 4.</p>
 <p>Each object would also have its own fixed metadata shared by all request
-types (e.g. struct ifinfomsg for netdev requests, struct ifaddrmsg for address
-requests, struct tcmsg for qdisc requests).</p>
+types (e.g. <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ifinfomsg</span></code> for netdev requests, <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ifaddrmsg</span></code> for address
+requests, <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">tcmsg</span></code> for qdisc requests).</p>
 <p>Even though other protocols and Generic Netlink commands often use
 the same verbs in their message names (<code class="docutils literal notranslate"><span class="pre">GET</span></code>, <code class="docutils literal notranslate"><span class="pre">SET</span></code>) the concept
 of request types did not find wider adoption.</p>

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -214,7 +214,7 @@ directory is having <code class="docutils literal notranslate"><span class="pre"
 comma (“,”).</p>
 <pre class="literal-block"><a class="reference internal" href="#sysfs-root"><span class="std std-ref">/sys/kernel/mm/damon</span></a>/admin
 │ <a class="reference internal" href="#sysfs-kdamonds"><span class="std std-ref">kdamonds</span></a>/nr_kdamonds
-│ │ <a class="reference internal" href="#sysfs-kdamond"><span class="std std-ref">0</span></a>/state,pid
+│ │ <a class="reference internal" href="#sysfs-kdamond"><span class="std std-ref">0</span></a>/state,pid,refresh_ms
 │ │ │ <a class="reference internal" href="#sysfs-contexts"><span class="std std-ref">contexts</span></a>/nr_contexts
 │ │ │ │ <a class="reference internal" href="#sysfs-context"><span class="std std-ref">0</span></a>/avail_operations,operations
 │ │ │ │ │ <a class="reference internal" href="#sysfs-monitoring-attrs"><span class="std std-ref">monitoring_attrs</span></a>/
@@ -240,6 +240,8 @@ comma (“,”).</p>
 │ │ │ │ │ │ │ <a class="reference internal" href="#sysfs-watermarks"><span class="std std-ref">watermarks</span></a>/metric,interval_us,high,mid,low
 │ │ │ │ │ │ │ <a class="reference internal" href="#sysfs-filters"><span class="std std-ref">{core_,ops_,}filters</span></a>/nr_filters
 │ │ │ │ │ │ │ │ 0/type,matching,allow,memcg_path,addr_start,addr_end,target_idx,min,max
+│ │ │ │ │ │ │ <a class="reference internal" href="#damon-sysfs-dests"><span class="std std-ref">dests</span></a>/nr_dests
+│ │ │ │ │ │ │ │ 0/id,weight
 │ │ │ │ │ │ │ <a class="reference internal" href="#sysfs-schemes-stats"><span class="std std-ref">stats</span></a>/nr_tried,sz_tried,nr_applied,sz_applied,sz_ops_filter_passed,qt_exceeds
 │ │ │ │ │ │ │ <a class="reference internal" href="#sysfs-schemes-tried-regions"><span class="std std-ref">tried_regions</span></a>/total_bytes
 │ │ │ │ │ │ │ │ 0/start,end,nr_accesses,age,sz_filter_passed
@@ -267,8 +269,8 @@ kdamond.</p>
 </section>
 <section id="kdamonds-n">
 <span id="sysfs-kdamond"></span><h3>kdamonds/&lt;N&gt;/<a class="headerlink" href="#kdamonds-n" title="Link to this heading">¶</a></h3>
-<p>In each kdamond directory, two files (<code class="docutils literal notranslate"><span class="pre">state</span></code> and <code class="docutils literal notranslate"><span class="pre">pid</span></code>) and one directory
-(<code class="docutils literal notranslate"><span class="pre">contexts</span></code>) exist.</p>
+<p>In each kdamond directory, three files (<code class="docutils literal notranslate"><span class="pre">state</span></code>, <code class="docutils literal notranslate"><span class="pre">pid</span></code> and <code class="docutils literal notranslate"><span class="pre">refresh_ms</span></code>)
+and one directory (<code class="docutils literal notranslate"><span class="pre">contexts</span></code>) exist.</p>
 <p>Reading <code class="docutils literal notranslate"><span class="pre">state</span></code> returns <code class="docutils literal notranslate"><span class="pre">on</span></code> if the kdamond is currently running, or
 <code class="docutils literal notranslate"><span class="pre">off</span></code> if it is not running.</p>
 <p>Users can write below commands for the kdamond to the <code class="docutils literal notranslate"><span class="pre">state</span></code> file.</p>
@@ -302,6 +304,12 @@ kdamond.</p></li>
 kdamond.  For more details, refer to <a class="reference internal" href="#sysfs-quotas"><span class="std std-ref">quotas directory</span></a>.</p></li>
 </ul>
 <p>If the state is <code class="docutils literal notranslate"><span class="pre">on</span></code>, reading <code class="docutils literal notranslate"><span class="pre">pid</span></code> shows the pid of the kdamond thread.</p>
+<p>Users can ask the kernel to periodically update files showing auto-tuned
+parameters and DAMOS stats instead of manually writing
+<code class="docutils literal notranslate"><span class="pre">update_tuned_intervals</span></code> like keywords to <code class="docutils literal notranslate"><span class="pre">state</span></code> file.  For this, users
+should write the desired update time interval in milliseconds to <code class="docutils literal notranslate"><span class="pre">refresh_ms</span></code>
+file.  If the interval is zero, the periodic update is disabled.  Reading the
+file shows currently set time interval.</p>
 <p><code class="docutils literal notranslate"><span class="pre">contexts</span></code> directory contains files for controlling the monitoring contexts
 that this kdamond will execute.</p>
 </section>
@@ -405,10 +413,10 @@ to <code class="docutils literal notranslate"><span class="pre">N-1</span></code
 </section>
 <section id="schemes-n">
 <span id="sysfs-scheme"></span><h3>schemes/&lt;N&gt;/<a class="headerlink" href="#schemes-n" title="Link to this heading">¶</a></h3>
-<p>In each scheme directory, seven directories (<code class="docutils literal notranslate"><span class="pre">access_pattern</span></code>, <code class="docutils literal notranslate"><span class="pre">quotas</span></code>,
-<code class="docutils literal notranslate"><span class="pre">watermarks</span></code>, <code class="docutils literal notranslate"><span class="pre">core_filters</span></code>, <code class="docutils literal notranslate"><span class="pre">ops_filters</span></code>, <code class="docutils literal notranslate"><span class="pre">filters</span></code>, <code class="docutils literal notranslate"><span class="pre">stats</span></code>, and
-<code class="docutils literal notranslate"><span class="pre">tried_regions</span></code>) and three files (<code class="docutils literal notranslate"><span class="pre">action</span></code>, <code class="docutils literal notranslate"><span class="pre">target_nid</span></code> and
-<code class="docutils literal notranslate"><span class="pre">apply_interval</span></code>) exist.</p>
+<p>In each scheme directory, eight directories (<code class="docutils literal notranslate"><span class="pre">access_pattern</span></code>, <code class="docutils literal notranslate"><span class="pre">quotas</span></code>,
+<code class="docutils literal notranslate"><span class="pre">watermarks</span></code>, <code class="docutils literal notranslate"><span class="pre">core_filters</span></code>, <code class="docutils literal notranslate"><span class="pre">ops_filters</span></code>, <code class="docutils literal notranslate"><span class="pre">filters</span></code>, <code class="docutils literal notranslate"><span class="pre">dests</span></code>,
+<code class="docutils literal notranslate"><span class="pre">stats</span></code>, and <code class="docutils literal notranslate"><span class="pre">tried_regions</span></code>) and three files (<code class="docutils literal notranslate"><span class="pre">action</span></code>, <code class="docutils literal notranslate"><span class="pre">target_nid</span></code>
+and <code class="docutils literal notranslate"><span class="pre">apply_interval</span></code>) exist.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">action</span></code> file is for setting and getting the scheme’s <a class="reference internal" href="../../../mm/damon/design.html#damon-design-damos-action"><span class="std std-ref">action</span></a>.  The keywords that can be written to and read
 from the file and their meaning are same to those of the list on
 <a class="reference internal" href="../../../mm/damon/design.html#damon-design-damos-action"><span class="std std-ref">design doc</span></a>.</p>
@@ -544,6 +552,24 @@ echo N &gt; 1/allow
 <p>Refer to the <a class="reference internal" href="../../../mm/damon/design.html#damon-design-damos-filters"><span class="std std-ref">DAMOS filters design documentation</span></a> for more details including how multiple filters
 of different <code class="docutils literal notranslate"><span class="pre">allow</span></code> works, when each of the filters are supported, and
 differences on stats.</p>
+</section>
+<section id="schemes-n-dests">
+<span id="damon-sysfs-dests"></span><h3>schemes/&lt;N&gt;/dests/<a class="headerlink" href="#schemes-n-dests" title="Link to this heading">¶</a></h3>
+<p>Directory for specifying the destinations of given DAMON-based operation
+scheme’s action.  This directory is ignored if the action of the given scheme
+is not supporting multiple destinations.  Only <code class="docutils literal notranslate"><span class="pre">DAMOS_MIGRATE_{HOT,COLD}</span></code>
+actions are supporting multiple destinations.</p>
+<p>In the beginning, the directory has only one file, <code class="docutils literal notranslate"><span class="pre">nr_dests</span></code>.  Writing a
+number (<code class="docutils literal notranslate"><span class="pre">N</span></code>) to the file creates the number of child directories named <code class="docutils literal notranslate"><span class="pre">0</span></code>
+to <code class="docutils literal notranslate"><span class="pre">N-1</span></code>.  Each directory represents each action destination.</p>
+<p>Each destination directory contains two files, namely <code class="docutils literal notranslate"><span class="pre">id</span></code> and <code class="docutils literal notranslate"><span class="pre">weight</span></code>.
+Users can write and read the identifier of the destination to <code class="docutils literal notranslate"><span class="pre">id</span></code> file.
+For <code class="docutils literal notranslate"><span class="pre">DAMOS_MIGRATE_{HOT,COLD}</span></code> actions, the migrate destination node’s node
+id should be written to <code class="docutils literal notranslate"><span class="pre">id</span></code> file.  Users can write and read the weight of
+the destination among the given destinations to the <code class="docutils literal notranslate"><span class="pre">weight</span></code> file.  The
+weight can be an arbitrary integer.  When DAMOS apply the action to each entity
+of the memory region, it will select the destination of the action based on the
+relative weights of the destinations.</p>
 </section>
 <section id="schemes-n-stats">
 <span id="sysfs-schemes-stats"></span><h3>schemes/&lt;N&gt;/stats/<a class="headerlink" href="#schemes-n-stats" title="Link to this heading">¶</a></h3>

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -635,7 +635,7 @@ device. For PCI devices, typically <code class="docutils literal notranslate"><s
 <h3>Components<a class="headerlink" href="#components" title="Link to this heading">¶</a></h3>
 <p>After the card is created, you can attach the components (devices) to
 the card instance. In an ALSA driver, a component is represented as a
-struct snd_device object. A component
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_device</span></code> object. A component
 can be a PCM instance, a control interface, a raw MIDI interface, etc.
 Each such instance has one component entry.</p>
 <p>A component can be created via the <a class="reference internal" href="alsa-driver-api.html#c.snd_device_new" title="snd_device_new"><code class="xref c c-func docutils literal notranslate"><span class="pre">snd_device_new()</span></code></a>
@@ -680,7 +680,7 @@ argument of <a class="reference internal" href="alsa-driver-api.html#c.snd_card_
                    sizeof(struct mychip), &amp;card);
 </pre></div>
 </div>
-<p>struct mychip is the type of the chip record.</p>
+<p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">mychip</span></code> is the type of the chip record.</p>
 <p>In return, the allocated record can be accessed as</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct mychip *chip = card-&gt;private_data;
 </pre></div>
@@ -914,7 +914,7 @@ if (pci_set_dma_mask(pci, DMA_BIT_MASK(28)) &lt; 0 ||
 functions.  These resources must be released in the destructor
 function (see below).</p>
 <p>Now assume that the PCI device has an I/O port with 8 bytes and an
-interrupt. Then struct mychip will have the
+interrupt. Then <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">mychip</span></code> will have the
 following fields:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct mychip {
         struct snd_card *card;
@@ -1397,7 +1397,7 @@ corresponding argument.</p>
 <p>If a chip supports multiple playbacks or captures, you can specify more
 numbers, but they must be handled properly in open/close, etc.
 callbacks. When you need to know which substream you are referring to,
-then it can be obtained from struct snd_pcm_substream data passed to each
+then it can be obtained from <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_pcm_substream</span></code> data passed to each
 callback as follows:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct snd_pcm_substream *substream;
 int index = substream-&gt;number;
@@ -1576,7 +1576,7 @@ DMA buffer information by yourself.</p>
 <p>In the sections below, important records are explained.</p>
 <section id="hardware-description">
 <h4>Hardware Description<a class="headerlink" href="#hardware-description" title="Link to this heading">¶</a></h4>
-<p>The hardware descriptor (struct snd_pcm_hardware) contains the definitions of
+<p>The hardware descriptor (<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_pcm_hardware</span></code>) contains the definitions of
 the fundamental hardware configuration. Above all, you’ll need to define this
 in the <a class="reference internal" href="#pcm-open-callback">PCM open callback</a>. Note that the runtime instance holds a copy of
 the descriptor, not a pointer to the existing descriptor. That is,
@@ -1682,7 +1682,7 @@ configurations. The PCM configurations are stored in the runtime
 instance after the application sends <code class="docutils literal notranslate"><span class="pre">hw_params</span></code> data via
 alsa-lib. There are many fields copied from hw_params and sw_params
 structs. For example, <code class="docutils literal notranslate"><span class="pre">format</span></code> holds the format type chosen by the
-application. This field contains the enum value
+application. This field contains the <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">value</span></code>
 <code class="docutils literal notranslate"><span class="pre">SNDRV_PCM_FORMAT_XXX</span></code>.</p>
 <p>One thing to be noted is that the configured buffer and period sizes
 are stored in “frames” in the runtime. In the ALSA world, <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">frame</span> <span class="pre">=</span>
@@ -1720,11 +1720,11 @@ you like, too.</p>
 <section id="running-status">
 <h4>Running Status<a class="headerlink" href="#running-status" title="Link to this heading">¶</a></h4>
 <p>The running status can be referred via <code class="docutils literal notranslate"><span class="pre">runtime-&gt;status</span></code>. This is
-a pointer to a struct snd_pcm_mmap_status record.
+a pointer to a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_pcm_mmap_status</span></code> record.
 For example, you can get the current
 DMA hardware pointer via <code class="docutils literal notranslate"><span class="pre">runtime-&gt;status-&gt;hw_ptr</span></code>.</p>
 <p>The DMA application pointer can be referred via <code class="docutils literal notranslate"><span class="pre">runtime-&gt;control</span></code>,
-which points to a struct snd_pcm_mmap_control record.
+which points to a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_pcm_mmap_control</span></code> record.
 However, accessing this value directly is not recommended.</p>
 </section>
 <section id="private-data">
@@ -1758,7 +1758,7 @@ error number such as <code class="docutils literal notranslate"><span class="pre
 number, it is advised to check what value other parts of the kernel
 return when the same kind of request fails.</p>
 <p>Each callback function takes at least one argument containing a
-struct snd_pcm_substream pointer. To retrieve the chip
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_pcm_substream</span></code> pointer. To retrieve the chip
 record from the given substream instance, you can use the following
 macro:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int xxx(...) {
@@ -2157,7 +2157,7 @@ non-atomic contexts. For example, the function
 <a class="reference internal" href="alsa-driver-api.html#c.snd_pcm_period_elapsed" title="snd_pcm_period_elapsed"><code class="xref c c-func docutils literal notranslate"><span class="pre">snd_pcm_period_elapsed()</span></code></a> is called typically from the
 interrupt handler. But, if you set up the driver to use a threaded
 interrupt handler, this call can be in non-atomic context, too. In such
-a case, you can set the <code class="docutils literal notranslate"><span class="pre">nonatomic</span></code> field of the struct snd_pcm object
+a case, you can set the <code class="docutils literal notranslate"><span class="pre">nonatomic</span></code> field of the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_pcm</span></code> object
 after creating it. When this flag is set, mutex and rwsem are used internally
 in the PCM core instead of spin and rwlocks, so that you can call all PCM
 functions safely in a non-atomic
@@ -2201,7 +2201,7 @@ static int snd_mychip_pcm_open(struct snd_pcm_substream *substream)
 complete list. You can even define your own constraint rules. For
 example, let’s suppose my_chip can manage a substream of 1 channel if
 and only if the format is <code class="docutils literal notranslate"><span class="pre">S16_LE</span></code>, otherwise it supports any format
-specified in struct snd_pcm_hardware (or in any other
+specified in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_pcm_hardware</span></code> (or in any other
 constraint_list). You can build a rule like this:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>static int hw_rule_channels_by_format(struct snd_pcm_hw_params *params,
                                       struct snd_pcm_hw_rule *rule)
@@ -2292,7 +2292,7 @@ if you want to add your own controls.</p>
 <h3>Definition of Controls<a class="headerlink" href="#definition-of-controls" title="Link to this heading">¶</a></h3>
 <p>To create a new control, you need to define the following three
 callbacks: <code class="docutils literal notranslate"><span class="pre">info</span></code>, <code class="docutils literal notranslate"><span class="pre">get</span></code> and <code class="docutils literal notranslate"><span class="pre">put</span></code>. Then, define a
-struct snd_kcontrol_new record, such as:</p>
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_kcontrol_new</span></code> record, such as:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>static struct snd_kcontrol_new my_control = {
         .iface = SNDRV_CTL_ELEM_IFACE_MIXER,
         .name = &quot;PCM Playback Switch&quot;,
@@ -2403,7 +2403,7 @@ controls should be inactive while no PCM device is open.</p>
 <h4>info callback<a class="headerlink" href="#info-callback" title="Link to this heading">¶</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">info</span></code> callback is used to get detailed information on this
 control. This must store the values of the given
-struct snd_ctl_elem_info object. For example,
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_ctl_elem_info</span></code> object. For example,
 for a boolean control with a single element:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>static int snd_myctl_mono_info(struct snd_kcontrol *kcontrol,
                         struct snd_ctl_elem_info *uinfo)
@@ -2540,10 +2540,10 @@ if (err &lt; 0)
         return err;
 </pre></div>
 </div>
-<p>where <code class="docutils literal notranslate"><span class="pre">my_control</span></code> is the struct snd_kcontrol_new object defined above,
+<p>where <code class="docutils literal notranslate"><span class="pre">my_control</span></code> is the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_kcontrol_new</span></code> object defined above,
 and chip is the object pointer to be passed to kcontrol-&gt;private_data which
 can be referred to in callbacks.</p>
-<p><a class="reference internal" href="alsa-driver-api.html#c.snd_ctl_new1" title="snd_ctl_new1"><code class="xref c c-func docutils literal notranslate"><span class="pre">snd_ctl_new1()</span></code></a> allocates a new struct snd_kcontrol instance, and
+<p><a class="reference internal" href="alsa-driver-api.html#c.snd_ctl_new1" title="snd_ctl_new1"><code class="xref c c-func docutils literal notranslate"><span class="pre">snd_ctl_new1()</span></code></a> allocates a new <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_kcontrol</span></code> instance, and
 <a class="reference internal" href="alsa-driver-api.html#c.snd_ctl_add" title="snd_ctl_add"><code class="xref c c-func docutils literal notranslate"><span class="pre">snd_ctl_add()</span></code></a> assigns the given control component to the
 card.</p>
 </section>
@@ -2557,7 +2557,7 @@ can call <a class="reference internal" href="alsa-driver-api.html#c.snd_ctl_noti
 <p>This function takes the card pointer, the event-mask, and the control id
 pointer for the notification. The event-mask specifies the types of
 notification, for example, in the above example, the change of control
-values is notified. The id pointer is the pointer of struct snd_ctl_elem_id
+values is notified. The id pointer is the pointer of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_ctl_elem_id</span></code>
 to be notified. You can find some examples in <code class="docutils literal notranslate"><span class="pre">es1938.c</span></code> or <code class="docutils literal notranslate"><span class="pre">es1968.c</span></code>
 for hardware volume interrupts.</p>
 </section>
@@ -2662,7 +2662,7 @@ snd_ac97_bus(card, 0, &amp;ops, NULL, &amp;pbus);
 </pre></div>
 </div>
 <p>The bus record is shared among all belonging ac97 instances.</p>
-<p>And then call <a class="reference internal" href="alsa-driver-api.html#c.snd_ac97_mixer" title="snd_ac97_mixer"><code class="xref c c-func docutils literal notranslate"><span class="pre">snd_ac97_mixer()</span></code></a> with a struct snd_ac97_template
+<p>And then call <a class="reference internal" href="alsa-driver-api.html#c.snd_ac97_mixer" title="snd_ac97_mixer"><code class="xref c c-func docutils literal notranslate"><span class="pre">snd_ac97_mixer()</span></code></a> with a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_ac97_template</span></code>
 record together with the bus pointer created above:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct snd_ac97_template ac97;
 int err;
@@ -2821,10 +2821,10 @@ devices on the card, set <code class="docutils literal notranslate"><span class=
 <a class="reference internal" href="#midi-interrupt-handler">below</a>).</p>
 <p>Usually, the port address corresponds to the command port and port + 1
 corresponds to the data port. If not, you may change the <code class="docutils literal notranslate"><span class="pre">cport</span></code>
-field of struct snd_mpu401 manually afterward.
-However, struct snd_mpu401 pointer is
+field of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_mpu401</span></code> manually afterward.
+However, <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_mpu401</span></code> pointer is
 not returned explicitly by <a class="reference internal" href="alsa-driver-api.html#c.snd_mpu401_uart_new" title="snd_mpu401_uart_new"><code class="xref c c-func docutils literal notranslate"><span class="pre">snd_mpu401_uart_new()</span></code></a>. You
-need to cast <code class="docutils literal notranslate"><span class="pre">rmidi-&gt;private_data</span></code> to struct snd_mpu401 explicitly:</p>
+need to cast <code class="docutils literal notranslate"><span class="pre">rmidi-&gt;private_data</span></code> to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_mpu401</span></code> explicitly:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct snd_mpu401 *mpu;
 mpu = rmidi-&gt;private_data;
 </pre></div>
@@ -2928,7 +2928,7 @@ list_for_each_entry(substream,
 <p>In all the callbacks, the private data that you’ve set for the rawmidi
 device can be accessed as <code class="docutils literal notranslate"><span class="pre">substream-&gt;rmidi-&gt;private_data</span></code>.</p>
 <p>If there is more than one port, your callbacks can determine the port
-index from the struct snd_rawmidi_substream data passed to each
+index from the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">snd_rawmidi_substream</span></code> data passed to each
 callback:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct snd_rawmidi_substream *substream;
 int index = substream-&gt;number;
@@ -3025,8 +3025,8 @@ from the device is usually done in an interrupt handler.</p>
 until all data read from the substream buffer have been transmitted.
 This ensures that the device can be closed and the driver unloaded
 without losing data.</p>
-<p>This callback is optional. If you do not set <code class="docutils literal notranslate"><span class="pre">drain</span></code> in the struct
-snd_rawmidi_ops structure, ALSA will simply wait for 50 milliseconds
+<p>This callback is optional. If you do not set <code class="docutils literal notranslate"><span class="pre">drain</span></code> in the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">snd_rawmidi_ops</span></code> structure, ALSA will simply wait for 50 milliseconds
 instead.</p>
 </section>
 </section>
@@ -3276,7 +3276,7 @@ specified pointer (<code class="docutils literal notranslate"><span class="pre">
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>my_memcpy_to_iter(dst, my_buffer + pos, count);
 </pre></div>
 </div>
-<p>The given <code class="docutils literal notranslate"><span class="pre">src</span></code> or <code class="docutils literal notranslate"><span class="pre">dst</span></code> a struct iov_iter pointer containing the
+<p>The given <code class="docutils literal notranslate"><span class="pre">src</span></code> or <code class="docutils literal notranslate"><span class="pre">dst</span></code> a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">iov_iter</span></code> pointer containing the
 pointer and the size.  Use the existing helpers to copy or access the
 data as defined in <code class="docutils literal notranslate"><span class="pre">linux/uio.h</span></code>.</p>
 <p>Careful readers might notice that these callbacks receive the
@@ -3326,7 +3326,7 @@ provides an interface for handling SG-buffers. The API is provided in
 <a class="reference internal" href="alsa-driver-api.html#c.snd_pcm_set_managed_buffer_all" title="snd_pcm_set_managed_buffer_all"><code class="xref c c-func docutils literal notranslate"><span class="pre">snd_pcm_set_managed_buffer_all()</span></code></a> with
 <code class="docutils literal notranslate"><span class="pre">SNDRV_DMA_TYPE_DEV_SG</span></code> in the PCM constructor like for other PCI
 pre-allocations. You need to pass <code class="docutils literal notranslate"><span class="pre">&amp;pci-&gt;dev</span></code>, where pci is
-the struct pci_dev pointer of the chip as well:</p>
+the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pci_dev</span></code> pointer of the chip as well:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>snd_pcm_set_managed_buffer_all(pcm, SNDRV_DMA_TYPE_DEV_SG,
                                &amp;pci-&gt;dev, size, max);
 </pre></div>
@@ -3349,7 +3349,7 @@ standard API function <a class="reference internal" href="alsa-driver-api.html#c
 </section>
 <section id="vmalloc-ed-buffers">
 <h3>Vmalloc’ed Buffers<a class="headerlink" href="#vmalloc-ed-buffers" title="Link to this heading">¶</a></h3>
-<p>It’s possible to use a buffer allocated via <code class="xref c c-func docutils literal notranslate"><span class="pre">vmalloc()</span></code>, for
+<p>It’s possible to use a buffer allocated via <a class="reference internal" href="../../core-api/mm-api.html#c.vmalloc" title="vmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">vmalloc()</span></code></a>, for
 example, for an intermediate buffer.
 You can simply allocate it via the standard
 <a class="reference internal" href="alsa-driver-api.html#c.snd_pcm_lib_malloc_pages" title="snd_pcm_lib_malloc_pages"><code class="xref c c-func docutils literal notranslate"><span class="pre">snd_pcm_lib_malloc_pages()</span></code></a> and co. after setting up the

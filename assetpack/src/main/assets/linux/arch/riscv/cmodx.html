@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -180,8 +180,8 @@ AUIPC + JALR, are required to compose a function call. However, it is impossible
 to patch 2 instructions and expect that a concurrent read-side executes them
 without a race condition. This series makes atmoic code patching possible in
 RISC-V ftrace. Kernel preemption makes things even worse as it allows the old
-state to persist across the patching process with stop_machine().</p>
-<p>In order to get rid of stop_machine() and run dynamic ftrace with full kernel
+state to persist across the patching process with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">stop_machine()</span></code>.</p>
+<p>In order to get rid of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">stop_machine()</span></code> and run dynamic ftrace with full kernel
 preemption, we partially initialize each patchable function entry at boot-time,
 setting the first instruction to AUIPC, and the second to NOP. Now, atmoic
 patching is possible because the kernel only has to update one instruction.
@@ -203,21 +203,21 @@ synchronized the icache and instruction storage with fence.i, the icache on the
 new hart will no longer be clean. This is due to the behavior of fence.i only
 affecting the hart that it is called on. Thus, the hart that the task has been
 migrated to may not have synchronized instruction storage and icache.</p>
-<p>There are two ways to solve this problem: use the riscv_flush_icache() syscall,
-or use the <code class="docutils literal notranslate"><span class="pre">PR_RISCV_SET_ICACHE_FLUSH_CTX</span></code> prctl() and emit fence.i in
+<p>There are two ways to solve this problem: use the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">riscv_flush_icache()</span></code> syscall,
+or use the <code class="docutils literal notranslate"><span class="pre">PR_RISCV_SET_ICACHE_FLUSH_CTX</span></code> <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prctl()</span></code> and emit fence.i in
 userspace. The syscall performs a one-off icache flushing operation. The prctl
 changes the Linux ABI to allow userspace to emit icache flushing operations.</p>
 <p>As an aside, “deferred” icache flushes can sometimes be triggered in the kernel.
-At the time of writing, this only occurs during the riscv_flush_icache() syscall
-and when the kernel uses copy_to_user_page(). These deferred flushes happen only
-when the memory map being used by a hart changes. If the prctl() context caused
+At the time of writing, this only occurs during the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">riscv_flush_icache()</span></code> syscall
+and when the kernel uses <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">copy_to_user_page()</span></code>. These deferred flushes happen only
+when the memory map being used by a hart changes. If the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prctl()</span></code> context caused
 an icache flush, this deferred icache flush will be skipped as it is redundant.
-Therefore, there will be no additional flush when using the riscv_flush_icache()
-syscall inside of the prctl() context.</p>
+Therefore, there will be no additional flush when using the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">riscv_flush_icache()</span></code>
+syscall inside of the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prctl()</span></code> context.</p>
 </section>
 <section id="prctl-interface">
 <h2>prctl() Interface<a class="headerlink" href="#prctl-interface" title="Link to this heading">¶</a></h2>
-<p>Call prctl() with <code class="docutils literal notranslate"><span class="pre">PR_RISCV_SET_ICACHE_FLUSH_CTX</span></code> as the first argument. The
+<p>Call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prctl()</span></code> with <code class="docutils literal notranslate"><span class="pre">PR_RISCV_SET_ICACHE_FLUSH_CTX</span></code> as the first argument. The
 remaining arguments will be delegated to the riscv_set_icache_flush_ctx
 function detailed below.</p>
 <dl class="c function">
@@ -277,8 +277,8 @@ across harts will not occur.</p>
 </div>
 <p>Example usage:</p>
 <p>The following files are meant to be compiled and linked with each other. The
-modify_instruction() function replaces an add with 0 with an add with one,
-causing the instruction sequence in get_value() to change from returning a zero
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">modify_instruction()</span></code> function replaces an add with 0 with an add with one,
+causing the instruction sequence in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_value()</span></code> to change from returning a zero
 to returning a one.</p>
 <p>cmodx.c:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>#include &lt;stdio.h&gt;

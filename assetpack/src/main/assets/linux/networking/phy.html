@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -432,6 +432,12 @@ Multiport Copper Interface document. It supports 4 ports over a 10.3125 GHz
 SerDes lane, each port having speeds of 2.5G / 1G / 100M / 10M achieved
 through symbol replication. The PCS expects the standard USXGMII code word.</p>
 </dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PHY_INTERFACE_MODE_MIILITE</span></code></dt><dd><p>Non-standard, simplified MII mode, without TXER, RXER, CRS and COL signals
+as defined for the MII. The absence of COL signal makes half-duplex link
+modes impossible but does not interfere with BroadR-Reach link modes on
+Broadcom (and other two-wire Ethernet) PHYs, because they are full-duplex
+only.</p>
+</dd>
 </dl>
 </section>
 <section id="pause-frames-flow-control">
@@ -599,8 +605,8 @@ interest.  It should therefore only operate on that PHY.</p>
         int (*run)(struct phy_device *));
 </pre></div>
 </div>
-<p>Or using one of the two stubs, phy_register_fixup_for_uid() and
-phy_register_fixup_for_id():</p>
+<p>Or using one of the two stubs, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">phy_register_fixup_for_uid()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">phy_register_fixup_for_id()</span></code>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int phy_register_fixup_for_uid(u32 phy_uid, u32 phy_uid_mask,
                int (*run)(struct phy_device *));
 int phy_register_fixup_for_id(const char *phy_id,
@@ -609,7 +615,7 @@ int phy_register_fixup_for_id(const char *phy_id,
 </div>
 <p>The stubs set one of the two matching criteria, and set the other one to
 match anything.</p>
-<p>When <a class="reference internal" href="kapi.html#c.phy_register_fixup" title="phy_register_fixup"><code class="xref c c-func docutils literal notranslate"><span class="pre">phy_register_fixup()</span></code></a> or *_for_uid()/*_for_id() is called at module load
+<p>When <a class="reference internal" href="kapi.html#c.phy_register_fixup" title="phy_register_fixup"><code class="xref c c-func docutils literal notranslate"><span class="pre">phy_register_fixup()</span></code></a> or *<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_for_uid()</span></code>/*<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_for_id()</span></code> is called at module load
 time, the module needs to unregister the fixup and free allocated memory when
 it’s unloaded.</p>
 <p>Call one of following function before unloading module:</p>

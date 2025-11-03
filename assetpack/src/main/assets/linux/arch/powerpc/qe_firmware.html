@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -117,6 +117,7 @@
 <li class="toctree-l3"><a class="reference internal" href="elf_hwcaps.html">POWERPC ELF HWCAPs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="elfnote.html">ELF Note PowerPC Namespace</a></li>
 <li class="toctree-l3"><a class="reference internal" href="firmware-assisted-dump.html">Firmware-Assisted Dump</a></li>
+<li class="toctree-l3"><a class="reference internal" href="htm.html">HTM (Hardware Trace Macro)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="hvcs.html">HVCS IBM “Hypervisor Virtual Console Server” Installation Guide</a></li>
 <li class="toctree-l3"><a class="reference internal" href="imc.html">IMC (In-Memory Collection Counters)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="isa-versions.html">CPU to ISA Version Mapping</a></li>
@@ -327,11 +328,11 @@ some other data used in uploading that microcode.  The format of these files
 do not lend themselves to simple inclusion into other code.  Hence,
 the need for a more portable format.  This section defines that format.</p>
 <p>Instead of distributing a header file, the microcode and related data are
-embedded into a binary blob.  This blob is passed to the qe_upload_firmware()
+embedded into a binary blob.  This blob is passed to the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">qe_upload_firmware()</span></code>
 function, which parses the blob and performs everything necessary to upload
 the microcode.</p>
 <p>All integers are big-endian.  See the comments for function
-qe_upload_firmware() for up-to-date implementation information.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">qe_upload_firmware()</span></code> for up-to-date implementation information.</p>
 <p>This structure supports versioning, where the version of the structure is
 embedded into the structure itself.  To ensure forward and backwards
 compatibility, all versions of the structure must use the same ‘qe_header’
@@ -376,10 +377,10 @@ soc.minor = 0
 <p>‘extended_modes’ is a bitfield that defines special functionality which has an
 impact on the device drivers.  Each bit has its own impact and has special
 instructions for the driver associated with it.  This field is stored in
-the QE library and available to any driver that calls qe_get_firmware_info().</p>
+the QE library and available to any driver that calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">qe_get_firmware_info()</span></code>.</p>
 <p>‘vtraps’ is an array of 8 words that contain virtual trap values for each
 virtual traps.  As with ‘extended_modes’, this field is stored in the QE
-library and available to any driver that calls qe_get_firmware_info().</p>
+library and available to any driver that calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">qe_get_firmware_info()</span></code>.</p>
 <dl>
 <dt>‘microcode’ (type: struct qe_microcode):</dt><dd><p>For each RISC processor there is one ‘microcode’ structure.  The first
 ‘microcode’ structure is for the first RISC, and so on.</p>

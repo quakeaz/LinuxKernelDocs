@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -199,13 +199,13 @@ CONFIG_PROVE_RWSEM_LOCKING在一个架构上被提供--这些都是不在IRQ上�
 </ul>
 <p>然后还需要做一些功能上的改变来实现对irq-flags-tracing的支持:</p>
 <ul class="simple">
-<li><p>在低级入口代码中增加（构建条件）对trace_hardirqs_off()/trace_hardirqs_on()
+<li><p>在低级入口代码中增加（构建条件）对<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">trace_hardirqs_off()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">trace_hardirqs_on()</span></code>
 函数的调用。锁验证器会密切关注 “real”的irq-flags是否与 “virtual”的irq-flags
 状态相匹配，如果两者不匹配，则会发出警告（并关闭自己）。通常维护arch中
 irq-flags-track的大部分时间都是在这种状态下度过的：看看lockdep的警告，试着
 找出我们还没有搞定的汇编代码。修复并重复。一旦系统启动，并且在irq-flags跟踪功
 能中没有出现lockdep警告的情况下，arch支持就完成了。</p></li>
-<li><p>如果该架构有不可屏蔽的中断，那么需要通过lockdep_off()/lockdep_on()将这些中
+<li><p>如果该架构有不可屏蔽的中断，那么需要通过<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lockdep_off()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lockdep_on()</span></code>将这些中
 断从irq跟踪[和锁验证]机制中排除。</p></li>
 </ul>
 <blockquote>

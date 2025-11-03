@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -219,7 +219,6 @@ memory_notify结构体的指针:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct memory_notify {
         unsigned long start_pfn;
         unsigned long nr_pages;
-        int status_change_nid_normal;
         int status_change_nid;
 }
 </pre></div>
@@ -227,8 +226,6 @@ memory_notify结构体的指针:</p>
 <ul>
 <li><p>start_pfn是在线/离线内存的start_pfn。</p></li>
 <li><p>nr_pages是在线/离线内存的页数。</p></li>
-<li><p>status_change_nid_normal是当nodemask的N_NORMAL_MEMORY被设置/清除时设置节
-点id，如果是-1，则nodemask状态不改变。</p></li>
 <li><p>status_change_nid是当nodemask的N_MEMORY被（将）设置/清除时设置的节点id。这
 意味着一个新的（没上线的）节点通过联机获得新的内存，而一个节点失去了所有的内
 存。如果这个值为-1，那么nodemask的状态就不会改变。</p>
@@ -255,12 +252,12 @@ NOTIFY_BAD, NOTIFY_STOP中的一个值。</p>
 <p>特别是，在添加内存和用户空间试图以比预期更快的速度上线该内存时，有可能出现锁反转，
 使用device_hotplug_lock可以避免此情况:</p>
 <ul class="simple">
-<li><p>device_online()将首先接受device_lock()，然后是mem_hotplug_lock。</p></li>
-<li><p>add_memory_resource()将首先使用mem_hotplug_lock，然后是device_lock()（在创
-建设备时，在bus_add_device()期间）。</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">device_online()</span></code>将首先接受<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">device_lock()</span></code>，然后是mem_hotplug_lock。</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">add_memory_resource()</span></code>将首先使用mem_hotplug_lock，然后是<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">device_lock()</span></code>（在创
+建设备时，在<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bus_add_device()</span></code>期间）。</p></li>
 </ul>
-<p>由于在使用device_lock()之前，设备对用户空间是可见的，这可能导致锁的反转。</p>
-<p>内存的上线/下线应该通过device_online()/device_offline()完成————确保它与通过
+<p>由于在使用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">device_lock()</span></code>之前，设备对用户空间是可见的，这可能导致锁的反转。</p>
+<p>内存的上线/下线应该通过<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">device_online()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">device_offline()</span></code>完成————确保它与通过
 sysfs进行的操作正确同步。建议持有device_hotplug_lock（例如，保护online_type）。</p>
 <p>当添加/删除/上线/下线内存或者添加/删除异构或设备内存时，我们应该始终持有写模式的
 mem_hotplug_lock，以序列化内存热插拔（例如访问全局/区域变量）。</p>

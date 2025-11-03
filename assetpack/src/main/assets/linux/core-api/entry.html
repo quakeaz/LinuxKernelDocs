@@ -14,7 +14,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="refcount_t API compared to atomic_t" href="refcount-vs-atomic.html" />
-    <link rel="prev" title="Generic parser" href="parser.html" />
+    <link rel="prev" title="Linked Lists in Linux" href="list.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -171,7 +171,7 @@ overwrite the debug registers of the initial breakpoint.</p>
 <p>Such code must be marked with the ‘noinstr’ attribute, placing that code into a
 special section inaccessible to instrumentation and debug facilities. Some
 functions are partially instrumentable, which is handled by marking them
-noinstr and using instrumentation_begin() and instrumentation_end() to flag the
+noinstr and using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">instrumentation_begin()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">instrumentation_end()</span></code> to flag the
 instrumentable ranges of code:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">noinstr</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">entry</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
 <span class="p">{</span>
@@ -215,7 +215,7 @@ invoked from low-level assembly code looks like this:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>syscall_enter_from_user_mode() first invokes enter_from_user_mode() which
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">syscall_enter_from_user_mode()</span></code> first invokes <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">enter_from_user_mode()</span></code> which
 establishes state in the following order:</p>
 <blockquote>
 <div><ul class="simple">
@@ -227,10 +227,10 @@ establishes state in the following order:</p>
 <p>and then invokes the various entry work functions like ptrace, seccomp, audit,
 syscall tracing, etc. After all that is done, the instrumentable invoke_syscall
 function can be invoked. The instrumentable code section then ends, after which
-syscall_exit_to_user_mode() is invoked.</p>
-<p>syscall_exit_to_user_mode() handles all work which needs to be done before
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">syscall_exit_to_user_mode()</span></code> is invoked.</p>
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">syscall_exit_to_user_mode()</span></code> handles all work which needs to be done before
 returning to user space like tracing, audit, signals, task work etc. After
-that it invokes exit_to_user_mode() which again handles the state
+that it invokes <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">exit_to_user_mode()</span></code> which again handles the state
 transition in the reverse order:</p>
 <blockquote>
 <div><ul class="simple">
@@ -239,12 +239,12 @@ transition in the reverse order:</p>
 <li><p>Lockdep</p></li>
 </ul>
 </div></blockquote>
-<p>syscall_enter_from_user_mode() and syscall_exit_to_user_mode() are also
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">syscall_enter_from_user_mode()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">syscall_exit_to_user_mode()</span></code> are also
 available as fine grained subfunctions in cases where the architecture code
 has to do extra work between the various steps. In such cases it has to
-ensure that enter_from_user_mode() is called first on entry and
-exit_to_user_mode() is called last on exit.</p>
-<p>Do not nest syscalls. Nested systcalls will cause RCU and/or context tracking
+ensure that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">enter_from_user_mode()</span></code> is called first on entry and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">exit_to_user_mode()</span></code> is called last on exit.</p>
+<p>Do not nest syscalls. Nested syscalls will cause RCU and/or context tracking
 to print a warning.</p>
 </section>
 <section id="kvm">
@@ -252,11 +252,11 @@ to print a warning.</p>
 <p>Entering or exiting guest mode is very similar to syscalls. From the host
 kernel point of view the CPU goes off into user space when entering the
 guest and returns to the kernel on exit.</p>
-<p>kvm_guest_enter_irqoff() is a KVM-specific variant of exit_to_user_mode()
-and kvm_guest_exit_irqoff() is the KVM variant of enter_from_user_mode().
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">guest_state_enter_irqoff()</span></code> is a KVM-specific variant of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">exit_to_user_mode()</span></code>
+and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">guest_state_exit_irqoff()</span></code> is the KVM variant of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">enter_from_user_mode()</span></code>.
 The state operations have the same ordering.</p>
 <p>Task work handling is done separately for guest at the boundary of the
-vcpu_run() loop via xfer_to_guest_mode_handle_work() which is a subset of
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vcpu_run()</span></code> loop via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xfer_to_guest_mode_handle_work()</span></code> which is a subset of
 the work handled on return to user space.</p>
 <p>Do not nest KVM entry/exit transitions because doing so is nonsensical.</p>
 </section>
@@ -270,7 +270,7 @@ and exit handling is exactly the same as for syscalls.</p>
 exit handling is slightly different. RCU state is only updated when the
 interrupt is raised in the context of the CPU’s idle task. Otherwise, RCU will
 already be watching. Lockdep and tracing have to be updated unconditionally.</p>
-<p>irqentry_enter() and irqentry_exit() provide the implementation for this.</p>
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irqentry_enter()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irqentry_exit()</span></code> provide the implementation for this.</p>
 <p>The architecture-specific part looks similar to syscall handling:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">noinstr</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">interrupt</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">pt_regs</span><span class="w"> </span><span class="o">*</span><span class="n">regs</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">nr</span><span class="p">)</span>
 <span class="p">{</span>
@@ -290,22 +290,22 @@ already be watching. Lockdep and tracing have to be updated unconditionally.</p>
 </pre></div>
 </div>
 <p>Note that the invocation of the actual interrupt handler is within a
-irq_enter_rcu() and irq_exit_rcu() pair.</p>
-<p>irq_enter_rcu() updates the preemption count which makes in_hardirq()
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irq_enter_rcu()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irq_exit_rcu()</span></code> pair.</p>
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irq_enter_rcu()</span></code> updates the preemption count which makes <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">in_hardirq()</span></code>
 return true, handles NOHZ tick state and interrupt time accounting. This
-means that up to the point where irq_enter_rcu() is invoked in_hardirq()
+means that up to the point where <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irq_enter_rcu()</span></code> is invoked <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">in_hardirq()</span></code>
 returns false.</p>
-<p>irq_exit_rcu() handles interrupt time accounting, undoes the preemption
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irq_exit_rcu()</span></code> handles interrupt time accounting, undoes the preemption
 count update and eventually handles soft interrupts and NOHZ tick state.</p>
-<p>In theory, the preemption count could be updated in irqentry_enter(). In
-practice, deferring this update to irq_enter_rcu() allows the preemption-count
-code to be traced, while also maintaining symmetry with irq_exit_rcu() and
-irqentry_exit(), which are described in the next paragraph. The only downside
-is that the early entry code up to irq_enter_rcu() must be aware that the
+<p>In theory, the preemption count could be updated in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irqentry_enter()</span></code>. In
+practice, deferring this update to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irq_enter_rcu()</span></code> allows the preemption-count
+code to be traced, while also maintaining symmetry with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irq_exit_rcu()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irqentry_exit()</span></code>, which are described in the next paragraph. The only downside
+is that the early entry code up to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irq_enter_rcu()</span></code> must be aware that the
 preemption count has not yet been updated with the HARDIRQ_OFFSET state.</p>
-<p>Note that irq_exit_rcu() must remove HARDIRQ_OFFSET from the preemption count
+<p>Note that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irq_exit_rcu()</span></code> must remove HARDIRQ_OFFSET from the preemption count
 before it handles soft interrupts, whose handlers must run in BH context rather
-than irq-disabled context. In addition, irqentry_exit() might schedule, which
+than irq-disabled context. In addition, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irqentry_exit()</span></code> might schedule, which
 also requires that HARDIRQ_OFFSET has been removed from the preemption count.</p>
 <p>Even though interrupt handlers are expected to run with local interrupts
 disabled, interrupt nesting is common from an entry/exit perspective. For
@@ -327,7 +327,7 @@ in kernel mode (code patching). From user-space, they are treated like
 interrupts, while from kernel mode they are treated like NMIs.</p>
 <p>NMIs and other NMI-like exceptions handle state transitions without
 distinguishing between user-mode and kernel-mode origin.</p>
-<p>The state update on entry is handled in irqentry_nmi_enter() which updates
+<p>The state update on entry is handled in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irqentry_nmi_enter()</span></code> which updates
 state in the following order:</p>
 <blockquote>
 <div><ul class="simple">
@@ -337,11 +337,11 @@ state in the following order:</p>
 <li><p>Tracing</p></li>
 </ul>
 </div></blockquote>
-<p>The exit counterpart irqentry_nmi_exit() does the reverse operation in the
+<p>The exit counterpart <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irqentry_nmi_exit()</span></code> does the reverse operation in the
 reverse order.</p>
 <p>Note that the update of the preemption counter has to be the first
 operation on enter and the last operation on exit. The reason is that both
-lockdep and RCU rely on in_nmi() returning true in this case. The
+lockdep and RCU rely on <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">in_nmi()</span></code> returning true in this case. The
 preemption count modification in the NMI entry/exit case must not be
 traced.</p>
 <p>Architecture-specific code looks like this:</p>
@@ -385,7 +385,7 @@ traced.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>There is no combined irqentry_nmi_if_kernel() function available as the
+<p>There is no combined <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irqentry_nmi_if_kernel()</span></code> function available as the
 above cannot be handled in an exception-agnostic way.</p>
 <p>NMIs can happen in any context. For example, an NMI-like exception triggered
 while handling an NMI. So NMI entry code has to be reentrant and state updates

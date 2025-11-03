@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -235,7 +235,7 @@ to be configured to the TDX guest.</p>
 <ul class="simple">
 <li><p>id: KVM_TDX_CAPABILITIES</p></li>
 <li><p>flags: must be 0</p></li>
-<li><p>data: pointer to struct kvm_tdx_capabilities</p></li>
+<li><p>data: pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_tdx_capabilities</span></code></p></li>
 <li><p>hw_error: must be 0</p></li>
 </ul>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct kvm_tdx_capabilities {
@@ -277,7 +277,7 @@ KVM_CREATE_VM and before creating any VCPUs.</p>
 <ul class="simple">
 <li><p>id: KVM_TDX_INIT_VM</p></li>
 <li><p>flags: must be 0</p></li>
-<li><p>data: pointer to struct kvm_tdx_init_vm</p></li>
+<li><p>data: pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_tdx_init_vm</span></code></p></li>
 <li><p>hw_error: must be 0</p></li>
 </ul>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct kvm_tdx_init_vm {
@@ -342,7 +342,7 @@ KVM_SET_MEMORY_ATTRIBUTES to set the attribute.</p>
 <ul class="simple">
 <li><p>id: KVM_TDX_INIT_MEM_REGION</p></li>
 <li><p>flags: currently only KVM_TDX_MEASURE_MEMORY_REGION is defined</p></li>
-<li><p>data: pointer to struct kvm_tdx_init_mem_region</p></li>
+<li><p>data: pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_tdx_init_mem_region</span></code></p></li>
 <li><p>hw_error: must be 0</p></li>
 </ul>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>#define KVM_TDX_MEASURE_MEMORY_REGION   (1UL &lt;&lt; 0)
@@ -386,11 +386,11 @@ struct kvm_tdx_init_mem_region {
 <p>Get the CPUID values that the TDX module virtualizes for the TD guest.
 When it returns -E2BIG, the user space should allocate a larger buffer and
 retry. The minimum buffer size is updated in the nent field of the
-struct kvm_cpuid2.</p>
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_cpuid2</span></code>.</p>
 <ul class="simple">
 <li><p>id: KVM_TDX_GET_CPUID</p></li>
 <li><p>flags: must be 0</p></li>
-<li><p>data: pointer to struct kvm_cpuid2 (in/out)</p></li>
+<li><p>data: pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_cpuid2</span></code> (in/out)</p></li>
 <li><p>hw_error: must be 0 (out)</p></li>
 </ul>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct kvm_cpuid2 {

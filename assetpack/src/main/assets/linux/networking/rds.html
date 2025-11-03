@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -171,7 +171,7 @@ as IB.</p>
 <p>RDS uses IPv4 addresses and 16bit port numbers to identify
 the end point of a connection. All socket operations that involve
 passing addresses between kernel and user space generally
-use a struct sockaddr_in.</p>
+use a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">sockaddr_in</span></code>.</p>
 <p>The fact that IPv4 addresses are used does not mean the underlying
 transport has to be IP-based. In fact, RDS over IB uses a
 reliable IB connection; the IP address is used exclusively to
@@ -246,7 +246,7 @@ a congestion update is sent to all peers.</p>
 notifications via control messages (for instance, there is a
 notification when a congestion update arrived, or when a RDMA
 operation completes). These notifications are received through
-the msg.msg_control buffer of struct msghdr. The format of the
+the msg.msg_control buffer of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">msghdr</span></code>. The format of the
 messages is described in manpages.</p>
 </dd>
 <dt>poll(fd)</dt><dd><p>RDS supports the poll interface to allow the application
@@ -307,7 +307,7 @@ always return EINVAL.</p>
 <blockquote>
 <div><p>Message header</p>
 <blockquote>
-<div><p>The message header is a ‘struct rds_header’ (see rds.h):</p>
+<div><p>The message header is a ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rds_header</span></code>’ (see rds.h):</p>
 <p>Fields:</p>
 <blockquote>
 <div><dl>
@@ -420,7 +420,7 @@ be sent and sets header fields as needed, based on the socket API.
 This is then queued for the individual connection and sent by the
 connection’s transport.</p>
 </dd>
-<dt>struct rds_incoming</dt><dd><p>a generic struct referring to incoming data that can be handed from
+<dt>struct rds_incoming</dt><dd><p>a generic <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">referring</span></code> to incoming data that can be handed from
 the transport to the general code and queued by the general code
 while the socket is awoken. It is then passed back to the transport
 code to handle the actual copy-to-user.</p>
@@ -457,7 +457,7 @@ re-established.</p>
 <blockquote>
 <div><dl class="simple">
 <dt>rds_sendmsg()</dt><dd><ul class="simple">
-<li><p>struct rds_message built from incoming data</p></li>
+<li><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rds_message</span></code> built from incoming data</p></li>
 <li><p>CMSGs parsed (e.g. RDMA ops)</p></li>
 <li><p>transport connection alloced and connected if not already</p></li>
 <li><p>rds_message placed on send queue</p></li>
@@ -465,7 +465,7 @@ re-established.</p>
 </ul>
 </dd>
 <dt>rds_send_worker()</dt><dd><ul class="simple">
-<li><p>calls rds_send_xmit() until queue is empty</p></li>
+<li><p>calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rds_send_xmit()</span></code> until queue is empty</p></li>
 </ul>
 </dd>
 <dt>rds_send_xmit()</dt><dd><ul class="simple">
@@ -494,7 +494,7 @@ re-established.</p>
 <dt>rds_ib_recv_cq_comp_handler()</dt><dd><ul class="simple">
 <li><p>looks at write completions</p></li>
 <li><p>unmaps recv buffer from device</p></li>
-<li><p>no errors, call rds_ib_process_recv()</p></li>
+<li><p>no errors, call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rds_ib_process_recv()</span></code></p></li>
 <li><p>refill recv ring</p></li>
 </ul>
 </dd>
@@ -505,7 +505,7 @@ re-established.</p>
 <li><dl class="simple">
 <dt>if completed datagram:</dt><dd><ul>
 <li><p>update cong map if datagram was cong update</p></li>
-<li><p>call rds_recv_incoming() otherwise</p></li>
+<li><p>call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rds_recv_incoming()</span></code> otherwise</p></li>
 <li><p>note if ack is required</p></li>
 </ul>
 </dd>
@@ -550,15 +550,15 @@ connection. RDS sockets will be attached to a path based on some hash
 (e.g., of local address and RDS port number) and packets for that RDS
 socket will be sent over the attached path using TCP to segment/reassemble
 RDS datagrams on that path.</p>
-<p>Multipathed RDS is implemented by splitting the struct rds_connection into
-a common (to all paths) part, and a per-path struct rds_conn_path. All
+<p>Multipathed RDS is implemented by splitting the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rds_connection</span></code> into
+a common (to all paths) part, and a per-path <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rds_conn_path</span></code>. All
 I/O workqs and reconnect threads are driven from the rds_conn_path.
 Transports such as TCP that are multipath capable may then set up a
 TCP socket per rds_conn_path, and this is managed by the transport via
 the transport private cp_transport_data pointer.</p>
 <p>Transports announce themselves as multipath capable by setting the
 t_mp_capable bit during registration with the rds core module. When the
-transport is multipath-capable, rds_sendmsg() hashes outgoing traffic
+transport is multipath-capable, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rds_sendmsg()</span></code> hashes outgoing traffic
 across multiple paths. The outgoing hash is computed based on the
 local address and port that the PF_RDS socket is bound to.</p>
 <p>Additionally, even if the transport is MP capable, we may be
@@ -567,7 +567,7 @@ a different number of paths. As a result, the peering nodes need
 to agree on the number of paths to be used for the connection.
 This is done by sending out a control packet exchange before the
 first data packet. The control packet exchange must have completed
-prior to outgoing hash completion in rds_sendmsg() when the transport
+prior to outgoing hash completion in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rds_sendmsg()</span></code> when the transport
 is multipath capable.</p>
 <p>The control packet is an RDS ping packet (i.e., packet to rds dest
 port 0) with the ping packet having a rds extension header option  of

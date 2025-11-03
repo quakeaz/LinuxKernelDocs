@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -714,10 +714,8 @@ introduced.</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">1</span></code> if the two structures are equal field-by-field,
+<p><code class="docutils literal notranslate"><span class="pre">1</span></code> if the two structures are equal field-by-field,
 <code class="docutils literal notranslate"><span class="pre">0</span></code> if not.</p>
-</div></blockquote>
 <p><strong>Context</strong></p>
 <p>any</p>
 </div>
@@ -843,12 +841,10 @@ can have different interrupt handlers for different ccw devices
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This function calls the driver’s set_offline() function for <strong>cdev</strong>, if
+<p>This function calls the driver’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_offline()</span></code> function for <strong>cdev</strong>, if
 given, and then disables <strong>cdev</strong>.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">0</span></code> on success and a negative error value on failure.</p>
-</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">0</span></code> on success and a negative error value on failure.</p>
 <p><strong>Context</strong></p>
 <p>enabled, ccw device lock not held</p>
 </div>
@@ -865,13 +861,11 @@ given, and then disables <strong>cdev</strong>.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This function first enables <strong>cdev</strong> and then calls the driver’s set_online()
-function for <strong>cdev</strong>, if given. If set_online() returns an error, <strong>cdev</strong> is
+<p>This function first enables <strong>cdev</strong> and then calls the driver’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_online()</span></code>
+function for <strong>cdev</strong>, if given. If <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_online()</span></code> returns an error, <strong>cdev</strong> is
 disabled again.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">0</span></code> on success and a negative error value on failure.</p>
-</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">0</span></code> on success and a negative error value on failure.</p>
 <p><strong>Context</strong></p>
 <p>enabled, ccw device lock not held</p>
 </div>
@@ -891,10 +885,8 @@ disabled again.</p>
 <p>This function searches all devices attached to the ccw bus for a device
 matching <strong>dev_id</strong>.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p>If a device is found its reference count is increased and returned;
+<p>If a device is found its reference count is increased and returned;
 else <code class="docutils literal notranslate"><span class="pre">NULL</span></code> is returned.</p>
-</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.get_ccwdev_by_busid">
@@ -914,10 +906,8 @@ else <code class="docutils literal notranslate"><span class="pre">NULL</span></c
 <p>This function searches all devices owned by <strong>cdrv</strong> for a device with a bus
 id matching <strong>bus_id</strong>.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p>If a match is found, its reference count of the found device is increased
+<p>If a match is found, its reference count of the found device is increased
 and it is returned; else <code class="docutils literal notranslate"><span class="pre">NULL</span></code> is returned.</p>
-</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ccw_driver_register">
@@ -934,9 +924,7 @@ and it is returned; else <code class="docutils literal notranslate"><span class=
 <p><strong>Description</strong></p>
 <p>This function is mainly a wrapper around <a class="reference internal" href="infrastructure.html#c.driver_register" title="driver_register"><code class="xref c c-func docutils literal notranslate"><span class="pre">driver_register()</span></code></a>.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">0</span></code> on success and a negative error value on failure.</p>
-</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">0</span></code> on success and a negative error value on failure.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ccw_driver_unregister">
@@ -987,9 +975,7 @@ subsystem.</p>
 <p>All flags specified in <strong>flags</strong> are set, all flags not specified in <strong>flags</strong>
 are cleared.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">0</span></code> on success, -<code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> on an invalid flag combination.</p>
-</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">0</span></code> on success, -<code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> on an invalid flag combination.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ccw_device_set_options">
@@ -1008,9 +994,7 @@ are cleared.</p>
 <p><strong>Description</strong></p>
 <p>All flags specified in <strong>flags</strong> are set, the remainder is left untouched.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">0</span></code> on success, -<code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> if an invalid flag combination would ensue.</p>
-</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">0</span></code> on success, -<code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> if an invalid flag combination would ensue.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ccw_device_clear_options">
@@ -1076,11 +1060,9 @@ are cleared.</p>
 <p><strong>Description</strong></p>
 <p><a class="reference internal" href="#c.ccw_device_clear" title="ccw_device_clear"><code class="xref c c-func docutils literal notranslate"><span class="pre">ccw_device_clear()</span></code></a> calls csch on <strong>cdev</strong>’s subchannel.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">0</span></code> on success,
+<p><code class="docutils literal notranslate"><span class="pre">0</span></code> on success,
 -<code class="docutils literal notranslate"><span class="pre">ENODEV</span></code> on device not operational,
 -<code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> on invalid device state.</p>
-</div></blockquote>
 <p><strong>Context</strong></p>
 <p>Interrupts disabled, ccw device lock held</p>
 </div>
@@ -1124,12 +1106,10 @@ The interruption handler will echo back the <strong>intparm</strong> specified h
 another interruption parameter is specified by a subsequent invocation of
 <a class="reference internal" href="#c.ccw_device_halt" title="ccw_device_halt"><code class="xref c c-func docutils literal notranslate"><span class="pre">ccw_device_halt()</span></code></a> or <a class="reference internal" href="#c.ccw_device_clear" title="ccw_device_clear"><code class="xref c c-func docutils literal notranslate"><span class="pre">ccw_device_clear()</span></code></a>.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">0</span></code>, if the operation was successful;
+<p><code class="docutils literal notranslate"><span class="pre">0</span></code>, if the operation was successful;
 -<code class="docutils literal notranslate"><span class="pre">EBUSY</span></code>, if the device is busy, or status pending;
 -<code class="docutils literal notranslate"><span class="pre">EACCES</span></code>, if no path specified in <strong>lpm</strong> is operational;
 -<code class="docutils literal notranslate"><span class="pre">ENODEV</span></code>, if the device is not operational.</p>
-</div></blockquote>
 <p><strong>Context</strong></p>
 <p>Interrupts disabled, ccw device lock held</p>
 </div>
@@ -1167,12 +1147,10 @@ The interruption handler will echo back the <strong>intparm</strong> specified h
 another interruption parameter is specified by a subsequent invocation of
 <a class="reference internal" href="#c.ccw_device_halt" title="ccw_device_halt"><code class="xref c c-func docutils literal notranslate"><span class="pre">ccw_device_halt()</span></code></a> or <a class="reference internal" href="#c.ccw_device_clear" title="ccw_device_clear"><code class="xref c c-func docutils literal notranslate"><span class="pre">ccw_device_clear()</span></code></a>.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">0</span></code>, if the operation was successful;
+<p><code class="docutils literal notranslate"><span class="pre">0</span></code>, if the operation was successful;
 -<code class="docutils literal notranslate"><span class="pre">EBUSY</span></code>, if the device is busy, or status pending;
 -<code class="docutils literal notranslate"><span class="pre">EACCES</span></code>, if no path specified in <strong>lpm</strong> is operational;
 -<code class="docutils literal notranslate"><span class="pre">ENODEV</span></code>, if the device is not operational.</p>
-</div></blockquote>
 <p><strong>Context</strong></p>
 <p>Interrupts disabled, ccw device lock held</p>
 </div>
@@ -1208,12 +1186,10 @@ The interruption handler will echo back the <strong>intparm</strong> specified h
 another interruption parameter is specified by a subsequent invocation of
 <a class="reference internal" href="#c.ccw_device_halt" title="ccw_device_halt"><code class="xref c c-func docutils literal notranslate"><span class="pre">ccw_device_halt()</span></code></a> or <a class="reference internal" href="#c.ccw_device_clear" title="ccw_device_clear"><code class="xref c c-func docutils literal notranslate"><span class="pre">ccw_device_clear()</span></code></a>.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">0</span></code>, if the operation was successful;
+<p><code class="docutils literal notranslate"><span class="pre">0</span></code>, if the operation was successful;
 -<code class="docutils literal notranslate"><span class="pre">EBUSY</span></code>, if the device is busy, or status pending;
 -<code class="docutils literal notranslate"><span class="pre">EACCES</span></code>, if no path specified in <strong>lpm</strong> is operational;
 -<code class="docutils literal notranslate"><span class="pre">ENODEV</span></code>, if the device is not operational.</p>
-</div></blockquote>
 <p><strong>Context</strong></p>
 <p>Interrupts disabled, ccw device lock held</p>
 </div>
@@ -1255,12 +1231,10 @@ The interruption handler will echo back the <strong>intparm</strong> specified h
 another interruption parameter is specified by a subsequent invocation of
 <a class="reference internal" href="#c.ccw_device_halt" title="ccw_device_halt"><code class="xref c c-func docutils literal notranslate"><span class="pre">ccw_device_halt()</span></code></a> or <a class="reference internal" href="#c.ccw_device_clear" title="ccw_device_clear"><code class="xref c c-func docutils literal notranslate"><span class="pre">ccw_device_clear()</span></code></a>.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">0</span></code>, if the operation was successful;
+<p><code class="docutils literal notranslate"><span class="pre">0</span></code>, if the operation was successful;
 -<code class="docutils literal notranslate"><span class="pre">EBUSY</span></code>, if the device is busy, or status pending;
 -<code class="docutils literal notranslate"><span class="pre">EACCES</span></code>, if no path specified in <strong>lpm</strong> is operational;
 -<code class="docutils literal notranslate"><span class="pre">ENODEV</span></code>, if the device is not operational.</p>
-</div></blockquote>
 <p><strong>Context</strong></p>
 <p>Interrupts disabled, ccw device lock held</p>
 </div>
@@ -1284,12 +1258,10 @@ The interruption handler will echo back the <strong>intparm</strong> specified h
 another interruption parameter is specified by a subsequent invocation of
 <a class="reference internal" href="#c.ccw_device_clear" title="ccw_device_clear"><code class="xref c c-func docutils literal notranslate"><span class="pre">ccw_device_clear()</span></code></a>.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">0</span></code> on success,
+<p><code class="docutils literal notranslate"><span class="pre">0</span></code> on success,
 -<code class="docutils literal notranslate"><span class="pre">ENODEV</span></code> on device not operational,
 -<code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> on invalid device state,
 -<code class="docutils literal notranslate"><span class="pre">EBUSY</span></code> on device busy or interrupt pending.</p>
-</div></blockquote>
 <p><strong>Context</strong></p>
 <p>Interrupts disabled, ccw device lock held</p>
 </div>
@@ -1308,12 +1280,10 @@ another interruption parameter is specified by a subsequent invocation of
 <p><strong>Description</strong></p>
 <p><a class="reference internal" href="#c.ccw_device_resume" title="ccw_device_resume"><code class="xref c c-func docutils literal notranslate"><span class="pre">ccw_device_resume()</span></code></a> calls rsch on <strong>cdev</strong>’s subchannel.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">0</span></code> on success,
+<p><code class="docutils literal notranslate"><span class="pre">0</span></code> on success,
 -<code class="docutils literal notranslate"><span class="pre">ENODEV</span></code> on device not operational,
 -<code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> on invalid device state,
 -<code class="docutils literal notranslate"><span class="pre">EBUSY</span></code> on device busy or interrupt pending.</p>
-</div></blockquote>
 <p><strong>Context</strong></p>
 <p>Interrupts disabled, ccw device lock held</p>
 </div>
@@ -1337,11 +1307,9 @@ commands available to the device may have been stored in the extended
 sense data. This function searches for CIWs of a specified command
 type in the extended sense data.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">NULL</span></code> if no extended sense data has been stored or if no CIW of the
+<p><code class="docutils literal notranslate"><span class="pre">NULL</span></code> if no extended sense data has been stored or if no CIW of the
 specified command type could be found,
 else a pointer to the CIW of the specified command type.</p>
-</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ccw_device_get_path_mask">
@@ -1356,10 +1324,8 @@ else a pointer to the CIW of the specified command type.</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">0</span></code> if no subchannel for the device is available,
+<p><code class="docutils literal notranslate"><span class="pre">0</span></code> if no subchannel for the device is available,
 else the mask of currently available paths for the ccw device’s subchannel.</p>
-</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ccw_device_get_chp_desc">
@@ -1718,13 +1684,16 @@ new ioctl number.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ccw_device</span> <span class="pre">*cdev</span></code></dt><dd><p>The ccw device to be enabled</p>
-<p>Enable channel measurements for <strong>cdev</strong>. If this is called on a device
-for which channel measurement is already enabled a reset of the
-measurement data is triggered.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Enable channel measurements for <strong>cdev</strong>. If this is called on a device
+for which channel measurement is already enabled a reset of the
+measurement data is triggered.</p>
+</div></blockquote>
 <p><strong>Return</strong></p>
 <p><code class="docutils literal notranslate"><span class="pre">0</span></code> for success or a negative error value.</p>
 <p><strong>Context</strong></p>
@@ -1882,9 +1851,7 @@ devices as slave devices and can be associated with the netdevice.</p>
 <p><strong>Description</strong></p>
 <p>This function attempts to put the ccwgroup device into the online state.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">0</span></code> on success and a negative error value on failure.</p>
-</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">0</span></code> on success and a negative error value on failure.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ccwgroup_set_offline">
@@ -1903,9 +1870,7 @@ devices as slave devices and can be associated with the netdevice.</p>
 <p><strong>Description</strong></p>
 <p>This function attempts to put the ccwgroup device into the offline state.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">0</span></code> on success and a negative error value on failure.</p>
-</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">0</span></code> on success and a negative error value on failure.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ccwgroup_create_dev">
@@ -1929,9 +1894,7 @@ devices as slave devices and can be associated with the netdevice.</p>
 <p>Create and register a new ccw group device as a child of <strong>parent</strong>. Slave
 devices are obtained from the list of bus ids given in <strong>buf</strong>.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">0</span></code> on success and an error code on failure.</p>
-</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">0</span></code> on success and an error code on failure.</p>
 <p><strong>Context</strong></p>
 <p>non-atomic</p>
 </div>
@@ -1981,9 +1944,7 @@ devices are obtained from the list of bus ids given in <strong>buf</strong>.</p>
 <p>This is a dummy probe function for ccw devices that are slave devices in
 a ccw group device.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p>always <code class="docutils literal notranslate"><span class="pre">0</span></code></p>
-</div></blockquote>
+<p>always <code class="docutils literal notranslate"><span class="pre">0</span></code></p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ccwgroup_remove_ccwdev">

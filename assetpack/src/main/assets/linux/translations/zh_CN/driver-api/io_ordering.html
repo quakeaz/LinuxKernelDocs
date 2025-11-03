@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -187,7 +187,7 @@ Chinese (Simplified)
 设备寄存器或桥寄存器，触发IO芯片清刷未处理的写操作到达设备后才处理读操作，
 而达到保证目的。驱动程序通常在spinlock保护的临界区退出之前使用这种技术。
 这也可以保证后面的写操作只在前面的写操作之后到达设备（这非常类似于内存
-屏障操作，mb()，不过仅适用于I/O）。</p>
+屏障操作，<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mb()</span></code>，不过仅适用于I/O）。</p>
 <p>假设一个设备驱动程的具体例子:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>        ...
 CPU A:  spin_lock_irqsave(&amp;dev_lock, flags)

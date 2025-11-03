@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -424,7 +424,7 @@ static void put_entry(struct my_data *entry)
 }
 </pre></div>
 </div>
-<p>这对于在put_entry()中移除<a class="reference internal" href="../../../core-api/kref.html#c.kref_put" title="kref_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">kref_put()</span></code></a>周围的mutex锁是很有用的，但是重要的是
+<p>这对于在<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">put_entry()</span></code>中移除<a class="reference internal" href="../../../core-api/kref.html#c.kref_put" title="kref_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">kref_put()</span></code></a>周围的mutex锁是很有用的，但是重要的是
 kref_get_unless_zero被封装在查找表中的同一关键部分，否则kref_get_unless_zero
 可能引用已经释放的内存。注意，在不检查其返回值的情况下使用kref_get_unless_zero
 是非法的。如果你确信（已经有了一个有效的指针）<a class="reference internal" href="../../../core-api/kref.html#c.kref_get_unless_zero" title="kref_get_unless_zero"><code class="xref c c-func docutils literal notranslate"><span class="pre">kref_get_unless_zero()</span></code></a>会返回true，

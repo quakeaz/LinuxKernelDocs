@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -117,6 +117,7 @@
 <li class="toctree-l3"><a class="reference internal" href="elf_hwcaps.html">POWERPC ELF HWCAPs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="elfnote.html">ELF Note PowerPC Namespace</a></li>
 <li class="toctree-l3"><a class="reference internal" href="firmware-assisted-dump.html">Firmware-Assisted Dump</a></li>
+<li class="toctree-l3"><a class="reference internal" href="htm.html">HTM (Hardware Trace Macro)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="hvcs.html">HVCS IBM “Hypervisor Virtual Console Server” Installation Guide</a></li>
 <li class="toctree-l3"><a class="reference internal" href="imc.html">IMC (In-Memory Collection Counters)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="isa-versions.html">CPU to ISA Version Mapping</a></li>
@@ -195,7 +196,7 @@ using the Linux perf_events API.</p>
 <section id="terminology">
 <h2>Terminology<a class="headerlink" href="#terminology" title="Link to this heading">¶</a></h2>
 <p>Throughout this document we will refer to an “EBB event” or “EBB events”. This
-just refers to a struct perf_event which has set the “EBB” flag in its
+just refers to a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">perf_event</span></code> which has set the “EBB” flag in its
 attr.config. All events which can be configured on the hardware PMU are
 possible “EBB events”.</p>
 </section>
@@ -237,7 +238,7 @@ Note that if you are creating a group of EBB events, only the leader can have
 these attributes set.</p>
 <p>An EBB event must NOT set any of the “inherit”, “sample_period”, “freq” or
 “enable_on_exec” attributes.</p>
-<p>An EBB event must be attached to a task. This is specified to perf_event_open()
+<p>An EBB event must be attached to a task. This is specified to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">perf_event_open()</span></code>
 by passing a pid value, typically 0 indicating the current task.</p>
 <p>All events in a group must agree on whether they want EBB. That is all events
 must request EBB, or none may request EBB.</p>
@@ -248,7 +249,7 @@ userspace is able to reliably determine which PMC the event is scheduled on.</p>
 <h2>Enabling an EBB event<a class="headerlink" href="#enabling-an-ebb-event" title="Link to this heading">¶</a></h2>
 <p>Once an EBB event has been successfully opened, it must be enabled with the
 perf_events API. This can be achieved either via the ioctl() interface, or the
-prctl() interface.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prctl()</span></code> interface.</p>
 <p>However, due to the design of the perf_events API, enabling an event does not
 guarantee that it has been scheduled on the PMU. To ensure that the EBB event
 has been scheduled on the PMU, you must perform a read() on the event. If the

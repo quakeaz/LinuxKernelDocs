@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -243,7 +243,7 @@ MSI功能。</p>
 <p>flags参数用来指定设备和驱动程序可以使用哪种类型的中断（PCI_IRQ_INTX, PCI_IRQ_MSI,
 PCI_IRQ_MSIX）。一个方便的短语（PCI_IRQ_ALL_TYPES）也可以用来要求任何可能的中断类型。
 如果PCI_IRQ_AFFINITY标志被设置，<a class="reference internal" href="../../../PCI/msi-howto.html#c.pci_alloc_irq_vectors" title="pci_alloc_irq_vectors"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_alloc_irq_vectors()</span></code></a>将把中断分散到可用的CPU上。</p>
-<p>要获得传递给require_irq()和<a class="reference internal" href="../../../core-api/genericirq.html#c.free_irq" title="free_irq"><code class="xref c c-func docutils literal notranslate"><span class="pre">free_irq()</span></code></a>的Linux IRQ号码和向量，请使用以下函数:</p>
+<p>要获得传递给<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">require_irq()</span></code>和<a class="reference internal" href="../../../core-api/genericirq.html#c.free_irq" title="free_irq"><code class="xref c c-func docutils literal notranslate"><span class="pre">free_irq()</span></code></a>的Linux IRQ号码和向量，请使用以下函数:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int pci_irq_vector(struct pci_dev *dev, unsigned int nr);
 </pre></div>
 </div>
@@ -297,7 +297,7 @@ pci_disable_msix()            /* deprecated */
 <p>此外，还有一些API来提供支持的MSI或MSI-X向量的数量：<a class="reference internal" href="../../../driver-api/pci/pci.html#c.pci_msi_vec_count" title="pci_msi_vec_count"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_msi_vec_count()</span></code></a>和
 <a class="reference internal" href="../../../PCI/msi-howto.html#c.pci_msix_vec_count" title="pci_msix_vec_count"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_msix_vec_count()</span></code></a>。一般来说，应该避免使用这些方法，而是让<a class="reference internal" href="../../../PCI/msi-howto.html#c.pci_alloc_irq_vectors" title="pci_alloc_irq_vectors"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_alloc_irq_vectors()</span></code></a>
 来限制向量的数量。如果你对向量的数量有合法的特殊用例，我们可能要重新审视这个决定，
-并增加一个pci_nr_irq_vectors()助手，透明地处理MSI和MSI-X。</p>
+并增加一个<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_nr_irq_vectors()</span></code>助手，透明地处理MSI和MSI-X。</p>
 </section>
 <section id="id7">
 <h3><span class="section-number">4.4.4. </span>使用MSI时需要考虑的因素<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h3>
@@ -306,8 +306,8 @@ pci_disable_msix()            /* deprecated */
 <p>大多数设备驱动程序都有一个每的自旋锁，在中断处理程序中被占用。对于基于引脚的中断
 或单一的MSI，没有必要禁用中断（Linux保证同一中断不会被重新输入）。如果一个设备
 使用多个中断，驱动程序必须在锁被持有的时候禁用中断。如果设备发出一个不同的中断，
-驱动程序将死锁，试图递归地获取自旋锁。这种死锁可以通过使用spin_lock_irqsave()
-或spin_lock_irq()来避免，它们可以禁用本地中断并获取锁（见《不可靠的锁定指南》）。</p>
+驱动程序将死锁，试图递归地获取自旋锁。这种死锁可以通过使用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_irqsave()</span></code>
+或<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_irq()</span></code>来避免，它们可以禁用本地中断并获取锁（见《不可靠的锁定指南》）。</p>
 </section>
 </section>
 <section id="msi-msi-x">
@@ -330,7 +330,7 @@ pci_disable_msix()            /* deprecated */
 <p>一些主控芯片组根本无法正确支持MSI。如果我们幸运的话，制造商知道这一点，并在
 ACPI FADT表中指明了它。在这种情况下，Linux会自动禁用MSI。有些板卡在表中没
 有包括这一信息，因此我们必须自己检测它们。完整的列表可以在drivers/pci/quirks.c
-中的quirk_disable_all_msi()函数附近找到。</p>
+中的<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">quirk_disable_all_msi()</span></code>函数附近找到。</p>
 <p>如果你有一块有MSI问题的板子，你可以在内核命令行中传递pci=nomsi来禁用所有设
 备上的MSI。你最好把问题报告给linux-<a class="reference external" href="mailto:pci&#37;&#52;&#48;vger&#46;kernel&#46;org">pci<span>&#64;</span>vger<span>&#46;</span>kernel<span>&#46;</span>org</a>，包括完整的
 “lspci -v“，这样我们就可以把这些怪癖添加到内核中。</p>

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -158,12 +158,12 @@ antenna subsystem via Satellite Equipment Control - SEC (on satellite
 systems). The actual parameters are specific to each particular digital
 TV standards, and may change as the digital TV specs evolves.</p>
 <p>In the past (up to DVB API version 3 - DVBv3), the strategy used was to have a
-union with the parameters needed to tune for DVB-S, DVB-C, DVB-T and
+<code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">with</span></code> the parameters needed to tune for DVB-S, DVB-C, DVB-T and
 ATSC delivery systems grouped there. The problem is that, as the second
-generation standards appeared, the size of such union was not big
+generation standards appeared, the size of such <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">was</span></code> not big
 enough to group the structs that would be required for those new
 standards. Also, extending it would break userspace.</p>
-<p>So, the legacy union/struct based approach was deprecated, in favor
+<p>So, the legacy union/<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">based</span></code> approach was deprecated, in favor
 of a properties set approach. On such approach,
 <a class="reference internal" href="fe-get-property.html#fe-get-property"><span class="std std-ref">FE_GET_PROPERTY and FE_SET_PROPERTY</span></a> are used
 to setup the frontend and read its status.</p>

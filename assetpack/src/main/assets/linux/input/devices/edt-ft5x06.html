@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -174,8 +174,25 @@ lower values indicate higher sensitivity.</p>
 </dd>
 </dl>
 <p>For debugging purposes the driver provides a few files in the debug
-filesystem (if available in the kernel). In /sys/kernel/debug/edt_ft5x06
-you’ll find the following files:</p>
+filesystem (if available in the kernel). They are located in:</p>
+<blockquote>
+<div><p>/sys/kernel/debug/i2c/&lt;i2c-bus&gt;/&lt;i2c-device&gt;/</p>
+</div></blockquote>
+<p>If you don’t know the bus and device numbers, you can look them up with this
+command:</p>
+<blockquote>
+<div><p>$ ls -l /sys/bus/i2c/drivers/edt_ft5x06</p>
+</div></blockquote>
+<p>The dereference of the symlink will contain the needed information. You will
+need the last two elements of its path:</p>
+<blockquote>
+<div><p>0-0038 -&gt; ../../../../devices/platform/soc/fcfee800.i2c/i2c-0/0-0038</p>
+</div></blockquote>
+<p>So in this case, the location for the debug files is:</p>
+<blockquote>
+<div><p>/sys/kernel/debug/i2c/i2c-0/0-0038/</p>
+</div></blockquote>
+<p>There, you’ll find the following files:</p>
 <dl class="simple">
 <dt>num_x, num_y:</dt><dd><p>(readonly) contains the number of sensor fields in X- and
 Y-direction.</p>

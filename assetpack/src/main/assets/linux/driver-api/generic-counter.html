@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -431,7 +431,7 @@ for defining a counter device.</p>
     const char *name;
     void *priv;
     union {
-        int (*action_read)(struct counter_device *counter,struct counter_count *count,struct counter_synapse *synapse, enum counter_synapse_action *action);
+        int (*action_read)(struct counter_device *counter, struct counter_count *count, struct counter_synapse *synapse, enum counter_synapse_action *action);
         int (*device_u8_read)(struct counter_device *counter, u8 *val);
         int (*count_u8_read)(struct counter_device *counter, struct counter_count *count, u8 *val);
         int (*signal_u8_read)(struct counter_device *counter, struct counter_signal *signal, u8 *val);
@@ -441,13 +441,13 @@ for defining a counter device.</p>
         int (*device_u64_read)(struct counter_device *counter, u64 *val);
         int (*count_u64_read)(struct counter_device *counter, struct counter_count *count, u64 *val);
         int (*signal_u64_read)(struct counter_device *counter, struct counter_signal *signal, u64 *val);
-        int (*signal_array_u32_read)(struct counter_device *counter,struct counter_signal *signal, size_t idx, u32 *val);
+        int (*signal_array_u32_read)(struct counter_device *counter, struct counter_signal *signal, size_t idx, u32 *val);
         int (*device_array_u64_read)(struct counter_device *counter, size_t idx, u64 *val);
-        int (*count_array_u64_read)(struct counter_device *counter,struct counter_count *count, size_t idx, u64 *val);
-        int (*signal_array_u64_read)(struct counter_device *counter,struct counter_signal *signal, size_t idx, u64 *val);
+        int (*count_array_u64_read)(struct counter_device *counter, struct counter_count *count, size_t idx, u64 *val);
+        int (*signal_array_u64_read)(struct counter_device *counter, struct counter_signal *signal, size_t idx, u64 *val);
     };
     union {
-        int (*action_write)(struct counter_device *counter,struct counter_count *count,struct counter_synapse *synapse, enum counter_synapse_action action);
+        int (*action_write)(struct counter_device *counter, struct counter_count *count, struct counter_synapse *synapse, enum counter_synapse_action action);
         int (*device_u8_write)(struct counter_device *counter, u8 val);
         int (*count_u8_write)(struct counter_device *counter, struct counter_count *count, u8 val);
         int (*signal_u8_write)(struct counter_device *counter, struct counter_signal *signal, u8 val);
@@ -457,10 +457,10 @@ for defining a counter device.</p>
         int (*device_u64_write)(struct counter_device *counter, u64 val);
         int (*count_u64_write)(struct counter_device *counter, struct counter_count *count, u64 val);
         int (*signal_u64_write)(struct counter_device *counter, struct counter_signal *signal, u64 val);
-        int (*signal_array_u32_write)(struct counter_device *counter,struct counter_signal *signal, size_t idx, u32 val);
+        int (*signal_array_u32_write)(struct counter_device *counter, struct counter_signal *signal, size_t idx, u32 val);
         int (*device_array_u64_write)(struct counter_device *counter, size_t idx, u64 val);
-        int (*count_array_u64_write)(struct counter_device *counter,struct counter_count *count, size_t idx, u64 val);
-        int (*signal_array_u64_write)(struct counter_device *counter,struct counter_signal *signal, size_t idx, u64 val);
+        int (*count_array_u64_write)(struct counter_device *counter, struct counter_count *count, size_t idx, u64 val);
+        int (*signal_array_u64_write)(struct counter_device *counter, struct counter_signal *signal, size_t idx, u64 val);
     };
 };
 </pre></div>
@@ -745,13 +745,13 @@ the val parameter.</p>
 <div class="kernelindent docutils container">
 <p><strong>Definition</strong>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct counter_ops {
-    int (*signal_read)(struct counter_device *counter,struct counter_signal *signal, enum counter_signal_level *level);
+    int (*signal_read)(struct counter_device *counter, struct counter_signal *signal, enum counter_signal_level *level);
     int (*count_read)(struct counter_device *counter, struct counter_count *count, u64 *value);
     int (*count_write)(struct counter_device *counter, struct counter_count *count, u64 value);
-    int (*function_read)(struct counter_device *counter,struct counter_count *count, enum counter_function *function);
-    int (*function_write)(struct counter_device *counter,struct counter_count *count, enum counter_function function);
-    int (*action_read)(struct counter_device *counter,struct counter_count *count,struct counter_synapse *synapse, enum counter_synapse_action *action);
-    int (*action_write)(struct counter_device *counter,struct counter_count *count,struct counter_synapse *synapse, enum counter_synapse_action action);
+    int (*function_read)(struct counter_device *counter, struct counter_count *count, enum counter_function *function);
+    int (*function_write)(struct counter_device *counter, struct counter_count *count, enum counter_function function);
+    int (*action_read)(struct counter_device *counter, struct counter_count *count, struct counter_synapse *synapse, enum counter_synapse_action *action);
+    int (*action_write)(struct counter_device *counter, struct counter_count *count, struct counter_synapse *synapse, enum counter_synapse_action action);
     int (*events_configure)(struct counter_device *counter);
     int (*watch_validate)(struct counter_device *counter, const struct counter_watch *watch);
 };
@@ -904,7 +904,7 @@ component watch configuration.</p>
 <p><strong>Description</strong></p>
 <p>This is part one of counter registration. The structure is allocated
 dynamically to ensure the right lifetime for the embedded <a class="reference internal" href="infrastructure.html#c.device" title="device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span></code></a>.</p>
-<p>If this succeeds, call counter_put() to get rid of the counter_device again.</p>
+<p>If this succeeds, call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">counter_put()</span></code> to get rid of the counter_device again.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.counter_add">
@@ -953,7 +953,7 @@ dynamically to ensure the right lifetime for the embedded <a class="reference in
 </dl>
 <p><strong>Description</strong></p>
 <p>This is the device managed version of <a class="reference internal" href="#c.counter_add" title="counter_add"><code class="xref c c-func docutils literal notranslate"><span class="pre">counter_add()</span></code></a>. It registers a cleanup
-callback to care for calling counter_put().</p>
+callback to care for calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">counter_put()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.devm_counter_add">
@@ -1038,11 +1038,11 @@ device driver may define several standard attributes like so:</p>
 </div>
 <p>This makes it simple to see, add, and modify the attributes that are
 supported by this driver (“direction”, “enable”, and “ceiling”) and to
-maintain this code without getting lost in a web of struct braces.</p>
+maintain this code without getting lost in a web of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">braces</span></code>.</p>
 <p>Callbacks must match the function type expected for the respective
 component or extension. These function types are defined in the <a class="reference internal" href="#c.counter_comp" title="counter_comp"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span>
-<span class="pre">counter_comp</span></code></a> structure as the “<code class="docutils literal notranslate"><span class="pre">*_read</span></code>” and “<code class="docutils literal notranslate"><span class="pre">*_write</span></code>” union
-members.</p>
+<span class="pre">counter_comp</span></code></a> structure as the “<code class="docutils literal notranslate"><span class="pre">*_read</span></code>” and “<code class="docutils literal notranslate"><span class="pre">*_write</span></code>” <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span>
+<span class="pre">members</span></code>.</p>
 <p>The corresponding callback prototypes for the extensions mentioned in
 the previous example above would be:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int count_direction_read(struct counter_device *counter,

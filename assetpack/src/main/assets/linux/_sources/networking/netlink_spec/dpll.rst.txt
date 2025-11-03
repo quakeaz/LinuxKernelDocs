@@ -66,11 +66,11 @@ Get list of DPLL devices (dump) or attributes of a single dpll device
         :attributes: [``id``]
 
     **reply**
-        :attributes: [``id``, ``module-name``, ``mode``, ``mode-supported``, ``lock-status``, ``lock-status-error``, ``temp``, ``clock-id``, ``type``]
+        :attributes: [``id``, ``module-name``, ``mode``, ``mode-supported``, ``lock-status``, ``lock-status-error``, ``temp``, ``clock-id``, ``type``, ``phase-offset-monitor``]
 
 :dump:
     **reply**
-        :attributes: [``id``, ``module-name``, ``mode``, ``mode-supported``, ``lock-status``, ``lock-status-error``, ``temp``, ``clock-id``, ``type``]
+        :attributes: [``id``, ``module-name``, ``mode``, ``mode-supported``, ``lock-status``, ``lock-status-error``, ``temp``, ``clock-id``, ``type``, ``phase-offset-monitor``]
 
 
 
@@ -90,7 +90,7 @@ Set attributes for a DPLL device
         dpll-post-doit
 
     **request**
-        :attributes: [``id``]
+        :attributes: [``id``, ``phase-offset-monitor``]
 
 
 
@@ -174,14 +174,14 @@ Get list of pins and its attributes.
         :attributes: [``id``]
 
     **reply**
-        :attributes: [``id``, ``board-label``, ``panel-label``, ``package-label``, ``type``, ``frequency``, ``frequency-supported``, ``capabilities``, ``parent-device``, ``parent-pin``, ``phase-adjust-min``, ``phase-adjust-max``, ``phase-adjust``, ``fractional-frequency-offset``, ``esync-frequency``, ``esync-frequency-supported``, ``esync-pulse``]
+        :attributes: [``id``, ``board-label``, ``panel-label``, ``package-label``, ``type``, ``frequency``, ``frequency-supported``, ``capabilities``, ``parent-device``, ``parent-pin``, ``phase-adjust-min``, ``phase-adjust-max``, ``phase-adjust``, ``fractional-frequency-offset``, ``esync-frequency``, ``esync-frequency-supported``, ``esync-pulse``, ``reference-sync``]
 
 :dump:
     **request**
         :attributes: [``id``]
 
     **reply**
-        :attributes: [``id``, ``board-label``, ``panel-label``, ``package-label``, ``type``, ``frequency``, ``frequency-supported``, ``capabilities``, ``parent-device``, ``parent-pin``, ``phase-adjust-min``, ``phase-adjust-max``, ``phase-adjust``, ``fractional-frequency-offset``, ``esync-frequency``, ``esync-frequency-supported``, ``esync-pulse``]
+        :attributes: [``id``, ``board-label``, ``panel-label``, ``package-label``, ``type``, ``frequency``, ``frequency-supported``, ``capabilities``, ``parent-device``, ``parent-pin``, ``phase-adjust-min``, ``phase-adjust-max``, ``phase-adjust``, ``fractional-frequency-offset``, ``esync-frequency``, ``esync-frequency-supported``, ``esync-pulse``, ``reference-sync``]
 
 
 
@@ -201,7 +201,7 @@ Set attributes of a target pin
         dpll-pin-post-doit
 
     **request**
-        :attributes: [``id``, ``frequency``, ``direction``, ``prio``, ``state``, ``parent-device``, ``parent-pin``, ``phase-adjust``, ``esync-frequency``]
+        :attributes: [``id``, ``frequency``, ``direction``, ``prio``, ``state``, ``parent-device``, ``parent-pin``, ``phase-adjust``, ``esync-frequency``, ``reference-sync``]
 
 
 
@@ -430,6 +430,19 @@ phase-offset-divider
 :doc: phase offset divider allows userspace to calculate a value of measured signal phase difference between a pin and dpll device as a fractional value with three digit decimal precision. Value of (DPLL_A_PHASE_OFFSET / DPLL_PHASE_OFFSET_DIVIDER) is an integer part of a measured phase offset value. Value of (DPLL_A_PHASE_OFFSET % DPLL_PHASE_OFFSET_DIVIDER) is a fractional part of a measured phase offset value.
 
 
+.. _dpll-definition-feature-state:
+
+feature-state
+=============
+:type: enum
+:doc: Allow control (enable/disable) and status checking over features.
+
+
+:entries:
+    :disable: feature shall be disabled
+    :enable: feature shall be enabled
+
+
 
 --------------
 Attribute sets
@@ -491,6 +504,12 @@ clock-quality-level (``u32``)
 :enum: :ref:`dpll-definition-clock-quality-level`
 :multi-attr: True
 :doc: Level of quality of a clock device. This mainly applies when the dpll lock-status is DPLL_LOCK_STATUS_HOLDOVER. This could be put to message multiple times to indicate possible parallel quality levels (e.g. one specified by ITU option 1 and another one specified by option 2).
+
+
+phase-offset-monitor (``u32``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+:enum: :ref:`dpll-definition-feature-state`
+:doc: Receive or request state of phase offset monitor feature. If enabled, dpll device shall monitor and notify all currently available inputs for changes of their phase offset against the dpll device.
 
 
 .. _dpll-attribute-set-pin:
@@ -621,6 +640,13 @@ esync-pulse (``u32``)
 :doc: A ratio of high to low state of a SYNC signal pulse embedded into base clock frequency. Value is in percents.
 
 
+reference-sync (``nest``)
+~~~~~~~~~~~~~~~~~~~~~~~~~
+:multi-attr: True
+:nested-attributes: :ref:`dpll-attribute-set-reference-sync`
+:doc: Capable pin provides list of pins that can be bound to create a reference-sync pin pair.
+
+
 .. _dpll-attribute-set-pin-parent-device:
 
 pin-parent-device
@@ -667,4 +693,16 @@ frequency-min
 
 frequency-max
 ~~~~~~~~~~~~~
+
+
+.. _dpll-attribute-set-reference-sync:
+
+reference-sync
+==============
+id
+~~
+
+
+state
+~~~~~
 

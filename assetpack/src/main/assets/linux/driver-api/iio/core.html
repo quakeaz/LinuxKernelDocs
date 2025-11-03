@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -397,7 +397,7 @@ voltage measurement for channel 1.</p></li>
     const char *name;
     enum iio_shared_by shared;
     ssize_t (*read)(struct iio_dev *, uintptr_t private, struct iio_chan_spec const *, char *buf);
-    ssize_t (*write)(struct iio_dev *, uintptr_t private,struct iio_chan_spec const *, const char *buf, size_t len);
+    ssize_t (*write)(struct iio_dev *, uintptr_t private, struct iio_chan_spec const *, const char *buf, size_t len);
     uintptr_t private;
 };
 </pre></div>
@@ -445,9 +445,9 @@ voltage measurement for channel 1.</p></li>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>The iio_enum struct can be used to implement enum style channel attributes.
+<p>The iio_enum <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">can</span></code> be used to implement <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">style</span></code> channel attributes.
 Enum style attributes are those which have a set of strings which map to
-unsigned integer values. The IIO enum helper code takes care of mapping
+unsigned integer values. The IIO <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">helper</span></code> code takes care of mapping
 between value and string as well as generating a “_available” file which
 contains a list of all available items. The set callback will be called when
 the attribute is updated. The last parameter is the index to the newly
@@ -460,7 +460,7 @@ item and is supposed to return the index for it.</p>
 
 <p><code class="docutils literal notranslate"><span class="pre">IIO_ENUM</span> <span class="pre">(_name,</span> <span class="pre">_shared,</span> <span class="pre">_e)</span></code></p>
 <blockquote>
-<div><p>Initialize enum extended channel attribute</p>
+<div><p>Initialize <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">extended</span></code> channel attribute</p>
 </div></blockquote>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
@@ -482,7 +482,7 @@ item and is supposed to return the index for it.</p>
 
 <p><code class="docutils literal notranslate"><span class="pre">IIO_ENUM_AVAILABLE</span> <span class="pre">(_name,</span> <span class="pre">_shared,</span> <span class="pre">_e)</span></code></p>
 <blockquote>
-<div><p>Initialize enum available extended channel attribute</p>
+<div><p>Initialize <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">available</span></code> extended channel attribute</p>
 </div></blockquote>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
@@ -495,7 +495,7 @@ item and is supposed to return the index for it.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Creates a read only attribute which lists all the available enum items in a
+<p>Creates a read only attribute which lists all the available <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">items</span></code> in a
 space separated list. This should usually be used together with <a class="reference internal" href="#c.IIO_ENUM" title="IIO_ENUM"><code class="xref c c-func docutils literal notranslate"><span class="pre">IIO_ENUM()</span></code></a></p>
 </div>
 <dl class="c struct">
@@ -560,17 +560,17 @@ main hardware</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">dir</span></code></dt><dd><p>Direction of the event</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">mask_separate</span></code></dt><dd><p>Bit mask of enum iio_event_info values. Attributes
+<dt><code class="docutils literal notranslate"><span class="pre">mask_separate</span></code></dt><dd><p>Bit mask of <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">iio_event_info</span></code> values. Attributes
 set in this mask will be registered per channel.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">mask_shared_by_type</span></code></dt><dd><p>Bit mask of enum iio_event_info values. Attributes
+<dt><code class="docutils literal notranslate"><span class="pre">mask_shared_by_type</span></code></dt><dd><p>Bit mask of <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">iio_event_info</span></code> values. Attributes
 set in this mask will be shared by channel type.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">mask_shared_by_dir</span></code></dt><dd><p>Bit mask of enum iio_event_info values. Attributes
+<dt><code class="docutils literal notranslate"><span class="pre">mask_shared_by_dir</span></code></dt><dd><p>Bit mask of <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">iio_event_info</span></code> values. Attributes
 set in this mask will be shared by channel type and
 direction.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">mask_shared_by_all</span></code></dt><dd><p>Bit mask of enum iio_event_info values. Attributes
+<dt><code class="docutils literal notranslate"><span class="pre">mask_shared_by_all</span></code></dt><dd><p>Bit mask of <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">iio_event_info</span></code> values. Attributes
 set in this mask will be shared by all channels.</p>
 </dd>
 </dl>
@@ -671,7 +671,7 @@ from a buffer.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">{unnamed_union}</span></code></dt><dd><p>anonymous</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">scan_type</span></code></dt><dd><p>struct describing the scan type - mutually exclusive
+<dt><code class="docutils literal notranslate"><span class="pre">scan_type</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">describing</span></code> the scan type - mutually exclusive
 with ext_scan_type.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">{unnamed_struct}</span></code></dt><dd><p>anonymous</p>
@@ -722,7 +722,7 @@ have its name field set to NULL.</p>
 informative name. Note this has no effect codes etc,
 unlike modifiers.
 This field is deprecated in favour of providing
-iio_info-&gt;read_label() to override the label, which
+iio_info-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">read_label()</span></code> to override the label, which
 unlike <strong>extend_name</strong> does not affect sysfs filenames.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">datasheet_name</span></code></dt><dd><p>A name used in in-kernel mapping of channels. It should
@@ -794,21 +794,21 @@ given attribute type, false otherwise.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct iio_info {
     const struct attribute_group    *event_attrs;
     const struct attribute_group    *attrs;
-    int (*read_raw)(struct iio_dev *indio_dev,struct iio_chan_spec const *chan,int *val,int *val2, long mask);
-    int (*read_raw_multi)(struct iio_dev *indio_dev,struct iio_chan_spec const *chan,int max_len,int *vals,int *val_len, long mask);
-    int (*read_avail)(struct iio_dev *indio_dev,struct iio_chan_spec const *chan,const int **vals,int *type,int *length, long mask);
-    int (*write_raw)(struct iio_dev *indio_dev,struct iio_chan_spec const *chan,int val,int val2, long mask);
-    int (*read_label)(struct iio_dev *indio_dev,struct iio_chan_spec const *chan, char *label);
-    int (*write_raw_get_fmt)(struct iio_dev *indio_dev,struct iio_chan_spec const *chan, long mask);
-    int (*read_event_config)(struct iio_dev *indio_dev,const struct iio_chan_spec *chan,enum iio_event_type type, enum iio_event_direction dir);
-    int (*write_event_config)(struct iio_dev *indio_dev,const struct iio_chan_spec *chan,enum iio_event_type type,enum iio_event_direction dir, bool state);
-    int (*read_event_value)(struct iio_dev *indio_dev,const struct iio_chan_spec *chan,enum iio_event_type type,enum iio_event_direction dir, enum iio_event_info info, int *val, int *val2);
-    int (*write_event_value)(struct iio_dev *indio_dev,const struct iio_chan_spec *chan,enum iio_event_type type,enum iio_event_direction dir, enum iio_event_info info, int val, int val2);
-    int (*read_event_label)(struct iio_dev *indio_dev,struct iio_chan_spec const *chan,enum iio_event_type type,enum iio_event_direction dir, char *label);
+    int (*read_raw)(struct iio_dev *indio_dev, struct iio_chan_spec const *chan, int *val, int *val2, long mask);
+    int (*read_raw_multi)(struct iio_dev *indio_dev, struct iio_chan_spec const *chan, int max_len, int *vals, int *val_len, long mask);
+    int (*read_avail)(struct iio_dev *indio_dev, struct iio_chan_spec const *chan, const int **vals, int *type, int *length, long mask);
+    int (*write_raw)(struct iio_dev *indio_dev, struct iio_chan_spec const *chan, int val, int val2, long mask);
+    int (*read_label)(struct iio_dev *indio_dev, struct iio_chan_spec const *chan, char *label);
+    int (*write_raw_get_fmt)(struct iio_dev *indio_dev, struct iio_chan_spec const *chan, long mask);
+    int (*read_event_config)(struct iio_dev *indio_dev, const struct iio_chan_spec *chan, enum iio_event_type type, enum iio_event_direction dir);
+    int (*write_event_config)(struct iio_dev *indio_dev, const struct iio_chan_spec *chan, enum iio_event_type type, enum iio_event_direction dir, bool state);
+    int (*read_event_value)(struct iio_dev *indio_dev, const struct iio_chan_spec *chan, enum iio_event_type type, enum iio_event_direction dir, enum iio_event_info info, int *val, int *val2);
+    int (*write_event_value)(struct iio_dev *indio_dev, const struct iio_chan_spec *chan, enum iio_event_type type, enum iio_event_direction dir, enum iio_event_info info, int val, int val2);
+    int (*read_event_label)(struct iio_dev *indio_dev, struct iio_chan_spec const *chan, enum iio_event_type type, enum iio_event_direction dir, char *label);
     int (*validate_trigger)(struct iio_dev *indio_dev, struct iio_trigger *trig);
     int (*get_current_scan_type)(const struct iio_dev *indio_dev, const struct iio_chan_spec *chan);
     int (*update_scan_mode)(struct iio_dev *indio_dev, const unsigned long *scan_mask);
-    int (*debugfs_reg_access)(struct iio_dev *indio_dev,unsigned int reg, unsigned int writeval, unsigned int *readval);
+    int (*debugfs_reg_access)(struct iio_dev *indio_dev, unsigned int reg, unsigned int writeval, unsigned int *readval);
     int (*fwnode_xlate)(struct iio_dev *indio_dev, const struct fwnode_reference_args *iiospec);
     int (*hwfifo_set_watermark)(struct iio_dev *indio_dev, unsigned int val);
     int (*hwfifo_flush_to_buffer)(struct iio_dev *indio_dev, unsigned int count);
@@ -964,7 +964,7 @@ supported by the IIO device. This list should be
 initialized before registering the IIO device. It can
 also be filed up by the IIO core, as a result of
 enabling particular features in the driver
-(see iio_triggered_event_setup()).</p>
+(see <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">iio_triggered_event_setup()</span></code>).</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">dev</span></code></dt><dd><p>[DRIVER] device structure, should be assigned a parent
 and owner</p>
@@ -980,7 +980,7 @@ masks first.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">masklength</span></code></dt><dd><p>[INTERN] the length of the mask established from
 channels</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">active_scan_mask</span></code></dt><dd><p>[INTERN] union of all scan masks requested by buffers</p>
+<dt><code class="docutils literal notranslate"><span class="pre">active_scan_mask</span></code></dt><dd><p>[INTERN] <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">of</span></code> all scan masks requested by buffers</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">scan_timestamp</span></code></dt><dd><p>[INTERN] set if any buffers have requested timestamp</p>
 </dd>
@@ -1004,7 +1004,7 @@ channels</p>
 enable/disable</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">priv</span></code></dt><dd><p>[DRIVER] reference to driver’s private information
-<strong>MUST</strong> be accessed <strong>ONLY</strong> via iio_priv() helper</p>
+<strong>MUST</strong> be accessed <strong>ONLY</strong> via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">iio_priv()</span></code> helper</p>
 </dd>
 </dl>
 </div>
@@ -1065,7 +1065,7 @@ information.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.dev_to_iio_dev">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.iio_dev" title="iio_dev"><span class="n"><span class="pre">iio_dev</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">dev_to_iio_dev</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../infrastructure.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.dev_to_iio_dev" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Get IIO device struct from a device struct</p>
+<dd><p>Get IIO device <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">from</span></code> a device struct</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -1170,7 +1170,7 @@ retrieved by <a class="reference internal" href="#c.iio_device_get_drvdata" titl
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Declares a buffer that is safe to use with iio_push_to_buffer_with_ts(). In
+<p>Declares a buffer that is safe to use with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">iio_push_to_buffer_with_ts()</span></code>. In
 addition to allocating enough space for <strong>count</strong> elements of <strong>type</strong>, it also
 allocates space for a s64 timestamp at the end of the buffer and ensures
 proper alignment of the timestamp.</p>
@@ -1608,7 +1608,7 @@ automatically freed on driver detach.</p>
 <p>If the device is in direct mode it is guaranteed to stay
 that way until <a class="reference internal" href="#c.__iio_device_release_direct" title="__iio_device_release_direct"><code class="xref c c-func docutils literal notranslate"><span class="pre">__iio_device_release_direct()</span></code></a> is called.</p>
 <p>Use with <a class="reference internal" href="#c.__iio_device_release_direct" title="__iio_device_release_direct"><code class="xref c c-func docutils literal notranslate"><span class="pre">__iio_device_release_direct()</span></code></a>.</p>
-<p>Drivers should only call iio_device_claim_direct().</p>
+<p>Drivers should only call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">iio_device_claim_direct()</span></code>.</p>
 <p><strong>Return</strong></p>
 <p>true on success, false on failure.</p>
 </div>
@@ -1627,7 +1627,7 @@ that way until <a class="reference internal" href="#c.__iio_device_release_direc
 <p><strong>Description</strong></p>
 <p>Release the claim. Device is no longer guaranteed to stay
 in direct mode.</p>
-<p>Drivers should only call iio_device_release_direct().</p>
+<p>Drivers should only call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">iio_device_release_direct()</span></code>.</p>
 <p>Use with <a class="reference internal" href="#c.__iio_device_claim_direct" title="__iio_device_claim_direct"><code class="xref c c-func docutils literal notranslate"><span class="pre">__iio_device_claim_direct()</span></code></a></p>
 </div>
 <dl class="c function">

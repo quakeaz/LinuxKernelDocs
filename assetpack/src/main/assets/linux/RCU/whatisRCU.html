@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -528,11 +528,11 @@ depending on the flavor:</p>
 <li><p><a class="reference internal" href="../core-api/kernel-api.html#c.rcu_read_lock" title="rcu_read_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_lock()</span></code></a> / <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_read_unlock" title="rcu_read_unlock"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_unlock()</span></code></a>
 <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_dereference" title="rcu_dereference"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_dereference()</span></code></a></p></li>
 <li><p><a class="reference internal" href="../core-api/kernel-api.html#c.rcu_read_lock_bh" title="rcu_read_lock_bh"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_lock_bh()</span></code></a> / <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_read_unlock_bh" title="rcu_read_unlock_bh"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_unlock_bh()</span></code></a>
-local_bh_disable() / local_bh_enable()
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">local_bh_disable()</span></code> / <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">local_bh_enable()</span></code>
 <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_dereference_bh" title="rcu_dereference_bh"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_dereference_bh()</span></code></a></p></li>
 <li><p><a class="reference internal" href="../core-api/kernel-api.html#c.rcu_read_lock_sched" title="rcu_read_lock_sched"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_lock_sched()</span></code></a> / <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_read_unlock_sched" title="rcu_read_unlock_sched"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_unlock_sched()</span></code></a>
-preempt_disable() / preempt_enable()
-local_irq_save() / local_irq_restore()
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">preempt_disable()</span></code> / <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">preempt_enable()</span></code>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">local_irq_save()</span></code> / <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">local_irq_restore()</span></code>
 hardirq enter / hardirq exit
 NMI enter / NMI exit
 <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_dereference_sched" title="rcu_dereference_sched"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_dereference_sched()</span></code></a></p></li>
@@ -637,7 +637,7 @@ and <a class="reference internal" href="NMI-RCU.html"><span class="doc">Using RC
 </section>
 <section id="what-if-my-updating-thread-cannot-block">
 <span id="id7"></span><h2>4.  WHAT IF MY UPDATING THREAD CANNOT BLOCK?<a class="headerlink" href="#what-if-my-updating-thread-cannot-block" title="Link to this heading">¶</a></h2>
-<p>In the example above, foo_update_a() blocks until a grace period elapses.
+<p>In the example above, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">foo_update_a()</span></code> blocks until a grace period elapses.
 This is quite simple, but in some cases one cannot afford to wait so
 long -- there might be other high-priority work to be done.</p>
 <p>In such cases, one uses <a class="reference internal" href="../core-api/kernel-api.html#c.call_rcu" title="call_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">call_rcu()</span></code></a> rather than <a class="reference internal" href="../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a>.
@@ -647,7 +647,7 @@ The <a class="reference internal" href="../core-api/kernel-api.html#c.call_rcu" 
 </div>
 <p>This function invokes func(head) after a grace period has elapsed.
 This invocation might happen from either softirq or process context,
-so the function is not permitted to block.  The foo struct needs to
+so the function is not permitted to block.  The foo <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">needs</span></code> to
 have an rcu_head structure added, perhaps as follows:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct foo {
         int a;
@@ -657,7 +657,7 @@ have an rcu_head structure added, perhaps as follows:</p>
 };
 </pre></div>
 </div>
-<p>The foo_update_a() function might then be written as follows:</p>
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">foo_update_a()</span></code> function might then be written as follows:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>/*
  * Create a new struct foo that is the same as the one currently
  * pointed to by gbl_foo, except that field &quot;a&quot; is replaced
@@ -687,7 +687,7 @@ void foo_update_a(int new_a)
 }
 </pre></div>
 </div>
-<p>The foo_reclaim() function might appear as follows:</p>
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">foo_reclaim()</span></code> function might appear as follows:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>void foo_reclaim(struct rcu_head *rp)
 {
         struct foo *fp = container_of(rp, struct foo, rcu);
@@ -698,14 +698,14 @@ void foo_update_a(int new_a)
 }
 </pre></div>
 </div>
-<p>The container_of() primitive is a macro that, given a pointer into a
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">container_of()</span></code> primitive is a macro that, given a pointer into a
 struct, the type of the struct, and the pointed-to field within the
 struct, returns a pointer to the beginning of the struct.</p>
-<p>The use of <a class="reference internal" href="../core-api/kernel-api.html#c.call_rcu" title="call_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">call_rcu()</span></code></a> permits the caller of foo_update_a() to
+<p>The use of <a class="reference internal" href="../core-api/kernel-api.html#c.call_rcu" title="call_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">call_rcu()</span></code></a> permits the caller of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">foo_update_a()</span></code> to
 immediately regain control, without needing to worry further about the
 old version of the newly updated element.  It also clearly shows the
-RCU distinction between updater, namely foo_update_a(), and reclaimer,
-namely foo_reclaim().</p>
+RCU distinction between updater, namely <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">foo_update_a()</span></code>, and reclaimer,
+namely <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">foo_reclaim()</span></code>.</p>
 <p>The summary of advice is the same as for the previous section, except
 that we are now using <a class="reference internal" href="../core-api/kernel-api.html#c.call_rcu" title="call_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">call_rcu()</span></code></a> rather than <a class="reference internal" href="../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a>:</p>
 <ul class="simple">
@@ -722,7 +722,7 @@ to avoid having to write your own callback:</p>
 </pre></div>
 </div>
 <p>If the occasional sleep is permitted, the single-argument form may
-be used, omitting the rcu_head structure from struct foo.</p>
+be used, omitting the rcu_head structure from <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">foo</span></code>.</p>
 <blockquote>
 <div><p>kfree_rcu_mightsleep(old_fp);</p>
 </div></blockquote>
@@ -800,7 +800,7 @@ primitive write-acquires this same lock, then releases it.  This means
 that once <a class="reference internal" href="../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a> exits, all RCU read-side critical sections
 that were in progress before <a class="reference internal" href="../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a> was called are guaranteed
 to have completed -- there is no way that <a class="reference internal" href="../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a> would have
-been able to write-acquire the lock otherwise.  The smp_mb__after_spinlock()
+been able to write-acquire the lock otherwise.  The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smp_mb__after_spinlock()</span></code>
 promotes <a class="reference internal" href="../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a> to a full memory barrier in compliance with
 the “Memory-Barrier Guarantees” listed in:</p>
 <blockquote>
@@ -846,8 +846,8 @@ read-side overhead is precisely zero, at least on non-Alpha CPUs.
 And there is absolutely no way that <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_read_lock" title="rcu_read_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_lock()</span></code></a> can possibly
 participate in a deadlock cycle!</p>
 <p>The implementation of <a class="reference internal" href="../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a> simply schedules itself on each
-CPU in turn.  The run_on() primitive can be implemented straightforwardly
-in terms of the sched_setaffinity() primitive.  Of course, a somewhat less
+CPU in turn.  The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">run_on()</span></code> primitive can be implemented straightforwardly
+in terms of the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sched_setaffinity()</span></code> primitive.  Of course, a somewhat less
 “toy” implementation would restore the affinity upon completion rather
 than just leaving all tasks running on the last CPU, but when I said
 “toy”, I meant <strong>toy</strong>!</p>
@@ -991,7 +991,7 @@ not be a problem, but it is necessary to check carefully regardless.
 For example, if multiple independent list updates must be seen as
 a single atomic update, converting to RCU will require special care.</p>
 <p>Also, the presence of <a class="reference internal" href="../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a> means that the RCU version of
-delete() can now block.  If this is a problem, there is a callback-based
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">delete()</span></code> can now block.  If this is a problem, there is a callback-based
 mechanism that never blocks, namely <a class="reference internal" href="../core-api/kernel-api.html#c.call_rcu" title="call_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">call_rcu()</span></code></a> or <a class="reference internal" href="../core-api/kernel-api.html#c.kfree_rcu" title="kfree_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree_rcu()</span></code></a>, that can
 be used in place of <a class="reference internal" href="../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a>.</p>
 </section>
@@ -1008,7 +1008,7 @@ re-allocated for some other purpose.  Once a type-safe reference to the
 object is obtained, some other mechanism is needed to ensure consistent
 access to the data in the object.  This could involve taking a spinlock,
 but with RCU the typical approach is to perform reads with SMP-aware
-operations such as smp_load_acquire(), to perform updates with atomic
+operations such as <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smp_load_acquire()</span></code>, to perform updates with atomic
 read-modify-write operations, and to provide the necessary ordering.
 RCU provides a number of support functions that embed the required
 operations and ordering, such as the <a class="reference internal" href="../core-api/kernel-api.html#c.list_for_each_entry_rcu" title="list_for_each_entry_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_for_each_entry_rcu()</span></code></a> macro
@@ -1048,10 +1048,10 @@ unfortunately any spinlock in a <code class="docutils literal notranslate"><span
 initialized after each and every call to <a class="reference internal" href="../core-api/mm-api.html#c.kmem_cache_alloc" title="kmem_cache_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmem_cache_alloc()</span></code></a>, which renders
 reference-free spinlock acquisition completely unsafe.  Therefore, when
 using <code class="docutils literal notranslate"><span class="pre">SLAB_TYPESAFE_BY_RCU</span></code>, make proper use of a reference counter.
-If using refcount_t, the specialized refcount_{add|inc}_not_zero_acquire()
+If using refcount_t, the specialized refcount_{add|inc}<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_not_zero_acquire()</span></code>
 and <a class="reference internal" href="../driver-api/basics.html#c.refcount_set_release" title="refcount_set_release"><code class="xref c c-func docutils literal notranslate"><span class="pre">refcount_set_release()</span></code></a> APIs should be used to ensure correct operation
 ordering when verifying object identity and when initializing newly
-allocated objects. Acquire fence in refcount_{add|inc}_not_zero_acquire()
+allocated objects. Acquire fence in refcount_{add|inc}<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_not_zero_acquire()</span></code>
 ensures that identity checks happen <em>after</em> reference count is taken.
 <a class="reference internal" href="../driver-api/basics.html#c.refcount_set_release" title="refcount_set_release"><code class="xref c c-func docutils literal notranslate"><span class="pre">refcount_set_release()</span></code></a> should be called after a newly allocated object is
 fully initialized and release fence ensures that new values are visible
@@ -1239,7 +1239,7 @@ SRCU is not necessary.  (The -rt patchset turns spinlocks into
 sleeplocks, hence this distinction.)</p></li>
 <li><p>Do you need to treat NMI handlers, hardirq handlers,
 and code segments with preemption disabled (whether
-via preempt_disable(), local_irq_save(), local_bh_disable(),
+via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">preempt_disable()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">local_irq_save()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">local_bh_disable()</span></code>,
 or some other mechanism) as if they were explicit RCU readers?
 If so, RCU-sched readers are the only choice that will work
 for you, but since about v4.20 you use can use the vanilla RCU
@@ -1276,7 +1276,7 @@ algorithm.]</p>
 <ol class="arabic simple">
 <li><p>CPU 0 acquires some unrelated lock, call it
 “problematic_lock”, disabling irq via
-spin_lock_irqsave().</p></li>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_irqsave()</span></code>.</p></li>
 <li><p>CPU 1 enters <a class="reference internal" href="../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a>, write-acquiring
 rcu_gp_mutex.</p></li>
 <li><p>CPU 0 enters <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_read_lock" title="rcu_read_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_lock()</span></code></a>, but must wait

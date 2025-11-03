@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -184,7 +184,7 @@
 };
 </pre></div>
 </div>
-<p>Update statistics, in dequeue() methods only, (while owning qdisc-&gt;running):</p>
+<p>Update statistics, in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dequeue()</span></code> methods only, (while owning qdisc-&gt;running):</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>mystruct-&gt;tstats.packet++;
 mystruct-&gt;qstats.backlog += skb-&gt;pkt_len;
 </pre></div>
@@ -214,7 +214,7 @@ mystruct-&gt;qstats.backlog += skb-&gt;pkt_len;
 </section>
 <section id="tca-stats-tca-xstats-backward-compatibility">
 <h2>TCA_STATS/TCA_XSTATS backward compatibility:<a class="headerlink" href="#tca-stats-tca-xstats-backward-compatibility" title="Link to this heading">¶</a></h2>
-<p>Prior users of struct tc_stats and xstats can maintain backward
+<p>Prior users of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">tc_stats</span></code> and xstats can maintain backward
 compatibility by calling the compat wrappers to keep providing the
 existing TLV types:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>my_dumping_routine(struct sk_buff *skb, ...)
@@ -227,7 +227,7 @@ existing TLV types:</p>
 }
 </pre></div>
 </div>
-<p>A struct tc_stats will be filled out during gnet_stats_copy_* calls
+<p>A <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">tc_stats</span></code> will be filled out during gnet_stats_copy_* calls
 and appended to the skb. TCA_XSTATS is provided if gnet_stats_copy_app
 was called.</p>
 </section>
@@ -245,10 +245,10 @@ space. The value of this TLV should contain a tc_estimator structure.
 As usual, such a TLV needs to be 32 bit aligned and therefore the
 length needs to be appropriately set, etc. The estimator interval
 and ewma log need to be converted to the appropriate values.
-tc_estimator.c::tc_setup_estimator() is advisable to be used as the
+tc_estimator.c::<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">tc_setup_estimator()</span></code> is advisable to be used as the
 conversion routine. It does a few clever things. It takes a time
-interval in microsecs, a time constant also in microsecs and a struct
-tc_estimator to  be populated. The returned tc_estimator can be
+interval in microsecs, a time constant also in microsecs and a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">tc_estimator</span></code> to  be populated. The returned tc_estimator can be
 transported to the kernel.  Transfer such a structure in a TLV of type
 TCA_RATE to your code in the kernel.</p></li>
 </ol>

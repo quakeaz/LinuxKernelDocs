@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -375,7 +375,7 @@ payload length for all DLC values greater or equal to 8).</p>
 allows the user to define their own structs and unions to easily access
 the CAN payload. There is no given byteorder on the CAN bus by
 default. A read(2) system call on a CAN_RAW socket transfers a
-struct can_frame to the user space.</p>
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">can_frame</span></code> to the user space.</p>
 <p>The sockaddr_can structure has an interface index like the
 PF_PACKET socket, that also binds to a specific interface:</p>
 <div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr_can</span><span class="w"> </span><span class="p">{</span>
@@ -433,7 +433,7 @@ the system call recvfrom(2) may be used instead of read(2). To send
 on a socket that is bound to ‘any’ interface sendto(2) is needed to
 specify the outgoing interface.</p>
 <p>Reading CAN frames from a bound CAN_RAW socket (see above) consists
-of reading a struct can_frame:</p>
+of reading a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">can_frame</span></code>:</p>
 <div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">can_frame</span><span class="w"> </span><span class="n">frame</span><span class="p">;</span>
 
 <span class="n">nbytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">read</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">frame</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">can_frame</span><span class="p">));</span>
@@ -498,11 +498,11 @@ examples. The new CAN FD capable CAN controllers support two different
 bitrates for the arbitration phase and the payload phase of the CAN FD frame
 and up to 64 bytes of payload. This extended payload length breaks all the
 kernel interfaces (ABI) which heavily rely on the CAN frame with fixed eight
-bytes of payload (struct can_frame) like the CAN_RAW socket. Therefore e.g.
+bytes of payload (<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">can_frame</span></code>) like the CAN_RAW socket. Therefore e.g.
 the CAN_RAW socket supports a new socket option CAN_RAW_FD_FRAMES that
 switches the socket into a mode that allows the handling of CAN FD frames
 and Classical CAN frames simultaneously (see <a class="reference internal" href="#socketcan-rawfd"><span class="std std-ref">RAW Socket Option CAN_RAW_FD_FRAMES</span></a>).</p>
-<p>The struct canfd_frame is defined in include/linux/can.h:</p>
+<p>The <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">canfd_frame</span></code> is defined in include/linux/can.h:</p>
 <div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">canfd_frame</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="n">canid_t</span><span class="w"> </span><span class="n">can_id</span><span class="p">;</span><span class="w">  </span><span class="cm">/* 32 bit CAN_ID + EFF/RTR/ERR flags */</span>
 <span class="w">        </span><span class="n">__u8</span><span class="w">    </span><span class="n">len</span><span class="p">;</span><span class="w">     </span><span class="cm">/* frame payload length in byte (0 .. 64) */</span>
@@ -513,13 +513,13 @@ and Classical CAN frames simultaneously (see <a class="reference internal" href=
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>The struct canfd_frame and the existing struct can_frame have the can_id,
+<p>The <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">canfd_frame</span></code> and the existing <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">can_frame</span></code> have the can_id,
 the payload length and the payload data at the same offset inside their
 structures. This allows to handle the different structures very similar.
-When the content of a struct can_frame is copied into a struct canfd_frame
+When the content of a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">can_frame</span></code> is copied into a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">canfd_frame</span></code>
 all structure elements can be used as-is - only the data[] becomes extended.</p>
-<p>When introducing the struct canfd_frame it turned out that the data length
-code (DLC) of the struct can_frame was used as a length information as the
+<p>When introducing the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">canfd_frame</span></code> it turned out that the data length
+code (DLC) of the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">can_frame</span></code> was used as a length information as the
 length and the DLC has a 1:1 mapping in the range of 0 .. 8. To preserve
 the easy handling of the length information the canfd_frame.len element
 contains a plain length value from 0 .. 64. So both canfd_frame.len and
@@ -723,10 +723,10 @@ when reading from the socket:</p>
 <p>When reading with size CANFD_MTU only returns CAN_MTU bytes that have
 been received from the socket a Classical CAN frame has been read into the
 provided CAN FD structure. Note that the canfd_frame.flags data field is
-not specified in the struct can_frame and therefore it is only valid in
+not specified in the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">can_frame</span></code> and therefore it is only valid in
 CANFD_MTU sized CAN FD frames.</p>
 <p>Implementation hint for new CAN applications:</p>
-<p>To build a CAN FD aware application use struct canfd_frame as basic CAN
+<p>To build a CAN FD aware application use <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">canfd_frame</span></code> as basic CAN
 data structure for CAN_RAW based applications. When the application is
 executed on an older Linux kernel and switching the CAN_RAW_FD_FRAMES
 socket option returns an error: No problem. You’ll get Classical CAN frames
@@ -760,7 +760,7 @@ monitoring of received messages.</p>
 created and modified at runtime; both the message content and the two
 possible transmit intervals can be altered.</p>
 <p>A BCM socket is not intended for sending individual CAN frames using the
-struct can_frame as known from the CAN_RAW socket. Instead a special BCM
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">can_frame</span></code> as known from the CAN_RAW socket. Instead a special BCM
 configuration message is defined. The basic BCM configuration message used
 to communicate with the broadcast manager and the available operations are
 defined in the linux/can/bcm.h include. The BCM message consists of a
@@ -773,7 +773,7 @@ The broadcast manager sends responses to user space in the same form:</p>
 <span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">timeval</span><span class="w"> </span><span class="n">ival1</span><span class="p">,</span><span class="w"> </span><span class="n">ival2</span><span class="p">;</span><span class="w">    </span><span class="cm">/* count and subsequent interval */</span>
 <span class="w">        </span><span class="n">canid_t</span><span class="w"> </span><span class="n">can_id</span><span class="p">;</span><span class="w">                 </span><span class="cm">/* unique can_id for task */</span>
 <span class="w">        </span><span class="n">__u32</span><span class="w"> </span><span class="n">nframes</span><span class="p">;</span><span class="w">                  </span><span class="cm">/* number of can_frames following */</span>
-<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">can_frame</span><span class="w"> </span><span class="n">frames</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">can_frame</span><span class="w"> </span><span class="n">frames</span><span class="p">[];</span>
 <span class="p">};</span>
 </pre></div>
 </div>
@@ -805,8 +805,8 @@ distinguished by the unique can_id in each BCM message. However additional
 CAN_BCM sockets are recommended to communicate on multiple CAN interfaces.
 When the broadcast manager socket is bound to ‘any’ CAN interface (=&gt; the
 interface index is set to zero) the configured receive filters apply to any
-CAN interface unless the sendto() syscall is used to overrule the ‘any’ CAN
-interface index. When using recvfrom() instead of read() to retrieve BCM
+CAN interface unless the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sendto()</span></code> syscall is used to overrule the ‘any’ CAN
+interface index. When using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recvfrom()</span></code> instead of read() to retrieve BCM
 socket messages the originating CAN interface is provided in can_ifindex.</p>
 <section id="broadcast-manager-operations">
 <h4>Broadcast Manager Operations<a class="headerlink" href="#broadcast-manager-operations" title="Link to this heading">¶</a></h4>
@@ -869,7 +869,7 @@ and count. Starting the timer leads simultaneously to emit a CAN frame.</p>
 <dt>TX_CP_CAN_ID:</dt><dd><p>Copies the can_id from the message header to each
 subsequent frame in frames. This is intended as usage simplification. For
 TX tasks the unique can_id from the message header may differ from the
-can_id(s) stored for transmission in the subsequent struct can_frame(s).</p>
+can_id(s) stored for transmission in the subsequent <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">can_frame</span></code>(s).</p>
 </dd>
 <dt>RX_FILTER_ID:</dt><dd><p>Filter by can_id alone, no frames required (nframes=0).</p>
 </dd>
@@ -884,7 +884,7 @@ RX_CHANGED message will be generated when the (cyclic) receive restarts.</p>
 </dd>
 <dt>RX_RTR_FRAME:</dt><dd><p>Send reply for RTR-request (placed in op-&gt;frames[0]).</p>
 </dd>
-<dt>CAN_FD_FRAME:</dt><dd><p>The CAN frames following the bcm_msg_head are struct canfd_frame’s</p>
+<dt>CAN_FD_FRAME:</dt><dd><p>The CAN frames following the bcm_msg_head are <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">canfd_frame</span></code>’s</p>
 </dd>
 </dl>
 </section>
@@ -969,11 +969,11 @@ filters) can be added as array to the TX_SETUP BCM configuration message:</p>
 </section>
 <section id="broadcast-manager-can-fd-support">
 <h4>Broadcast Manager CAN FD Support<a class="headerlink" href="#broadcast-manager-can-fd-support" title="Link to this heading">¶</a></h4>
-<p>The programming API of the CAN_BCM depends on struct can_frame which is
+<p>The programming API of the CAN_BCM depends on <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">can_frame</span></code> which is
 given as array directly behind the bcm_msg_head structure. To follow this
 schema for the CAN FD frames a new flag ‘CAN_FD_FRAME’ in the bcm_msg_head
 flags indicates that the concatenated CAN frame structures behind the
-bcm_msg_head are defined as struct canfd_frame:</p>
+bcm_msg_head are defined as <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">canfd_frame</span></code>:</p>
 <div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">bcm_msg_head</span><span class="w"> </span><span class="n">msg_head</span><span class="p">;</span>
 <span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">canfd_frame</span><span class="w"> </span><span class="n">frame</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span>
@@ -987,7 +987,7 @@ bcm_msg_head are defined as struct canfd_frame:</p>
 </pre></div>
 </div>
 <p>When using CAN FD frames for multiplex filtering the MUX mask is still
-expected in the first 64 bit of the struct canfd_frame data section.</p>
+expected in the first 64 bit of the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">canfd_frame</span></code> data section.</p>
 </section>
 </section>
 <section id="connected-transport-protocols-sock-seqpacket">
@@ -1082,16 +1082,12 @@ drivers you mainly have to deal with:</p>
 for writing CAN network device driver are described below:</p>
 <section id="general-settings">
 <h3>General Settings<a class="headerlink" href="#general-settings" title="Link to this heading">¶</a></h3>
-<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="n">dev</span><span class="o">-&gt;</span><span class="n">type</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">ARPHRD_CAN</span><span class="p">;</span><span class="w"> </span><span class="cm">/* the netdevice hardware type */</span>
-<span class="n">dev</span><span class="o">-&gt;</span><span class="n">flags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IFF_NOARP</span><span class="p">;</span><span class="w">  </span><span class="cm">/* CAN has no arp */</span>
-
-<span class="n">dev</span><span class="o">-&gt;</span><span class="n">mtu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CAN_MTU</span><span class="p">;</span><span class="w"> </span><span class="cm">/* sizeof(struct can_frame) -&gt; Classical CAN interface */</span>
-
-<span class="n">or</span><span class="w"> </span><span class="n">alternative</span><span class="p">,</span><span class="w"> </span><span class="n">when</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">controller</span><span class="w"> </span><span class="n">supports</span><span class="w"> </span><span class="n">CAN</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">flexible</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">rate</span><span class="o">:</span>
-<span class="n">dev</span><span class="o">-&gt;</span><span class="n">mtu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CANFD_MTU</span><span class="p">;</span><span class="w"> </span><span class="cm">/* sizeof(struct canfd_frame) -&gt; CAN FD interface */</span>
+<p>CAN network device drivers can use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">alloc_candev_mqs()</span></code> and friends instead of
+<a class="reference internal" href="kapi.html#c.alloc_netdev_mqs" title="alloc_netdev_mqs"><code class="xref c c-func docutils literal notranslate"><span class="pre">alloc_netdev_mqs()</span></code></a>, to automatically take care of CAN-specific setup:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="n">dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">alloc_candev_mqs</span><span class="p">(...);</span>
 </pre></div>
 </div>
-<p>The struct can_frame or struct canfd_frame is the payload of each socket
+<p>The <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">can_frame</span></code> or <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">canfd_frame</span></code> is the payload of each socket
 buffer (skbuff) in the protocol family PF_CAN.</p>
 </section>
 <section id="socketcan-local-loopback2">
@@ -1142,7 +1138,7 @@ termination 120 [ 0, 120 ]
 </pre></div>
 </div>
 <p>To enable termination resistor support to a can-controller, either
-implement in the controller’s struct can-priv:</p>
+implement in the controller’s <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">can</span></code>-priv:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>termination_const
 termination_const_cnt
 do_set_termination
@@ -1354,7 +1350,7 @@ layer is a plain value from 0 .. 64 instead of the CAN ‘data length code’.
 The data length code was a 1:1 mapping to the payload length in the Classical
 CAN frames anyway. The payload length to the bus-relevant DLC mapping is
 only performed inside the CAN drivers, preferably with the helper
-functions can_fd_dlc2len() and can_fd_len2dlc().</p>
+functions <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">can_fd_dlc2len()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">can_fd_len2dlc()</span></code>.</p>
 <p>The CAN netdevice driver capabilities can be distinguished by the network
 devices maximum transfer unit (MTU):</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>MTU = 16 (CAN_MTU)   =&gt; sizeof(struct can_frame)   =&gt; Classical CAN device

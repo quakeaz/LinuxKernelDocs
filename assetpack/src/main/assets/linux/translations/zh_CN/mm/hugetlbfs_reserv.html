@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -257,16 +257,16 @@ reserv_map 中的一个区域可能表示该范围存在预留，或预留不存
 <section id="id5">
 <h2>创建预留<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h2>
 <p>当创建一个巨大的有页面支持的共享内存段（shmget(SHM_HUGETLB)）或通过mmap(MAP_HUGETLB)
-创建一个映射时，就会创建预留。这些操作会导致对函数hugetlb_reserve_pages()的调用:</p>
+创建一个映射时，就会创建预留。这些操作会导致对函数<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hugetlb_reserve_pages()</span></code>的调用:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int hugetlb_reserve_pages(struct inode *inode,
                           long from, long to,
                           struct vm_area_struct *vma,
                           vm_flags_t vm_flags)
 </pre></div>
 </div>
-<p>hugetlb_reserve_pages()做的第一件事是检查在调用shmget()或mmap()时是否指定了NORESERVE
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hugetlb_reserve_pages()</span></code>做的第一件事是检查在调用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shmget()</span></code>或mmap()时是否指定了NORESERVE
 标志。如果指定了NORESERVE，那么这个函数立即返回，因为不需要预留。</p>
-<p>参数’from’和’to’是映射或基础文件的巨页索引。对于shmget()，’from’总是0，’to’对应于段/映射
+<p>参数’from’和’to’是映射或基础文件的巨页索引。对于<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shmget()</span></code>，’from’总是0，’to’对应于段/映射
 的长度。对于mmap()，offset参数可以用来指定进入底层文件的偏移量。在这种情况下，’from’和’to’
 参数已经被这个偏移量所调整。</p>
 <p>PRIVATE和SHARED映射之间的一个很大的区别是预留在预留映射中的表示方式。</p>
@@ -276,7 +276,7 @@ reserv_map 中的一个区域可能表示该范围存在预留，或预留不存
 <li><p>对于私有映射，预留映射中没有条目表示相应页面存在预留。随着预留被消耗，条目被添加到预留映射中。
 因此，预留映射也可用于确定哪些预留已被消耗。</p></li>
 </ul>
-<p>对于私有映射，hugetlb_reserve_pages()创建预留映射并将其挂在VMA结构体上。此外，
+<p>对于私有映射，<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hugetlb_reserve_pages()</span></code>创建预留映射并将其挂在VMA结构体上。此外，
 HPAGE_RESV_OWNER标志被设置，以表明该VMA拥有预留。</p>
 <p>预留映射被查阅以确定当前映射/段需要多少巨页预留。对于私有映射，这始终是一个值（to - from）。
 然而，对于共享映射来说，一些预留可能已经存在于(to - from)的范围内。关于如何实现这一点的细节，
@@ -284,8 +284,8 @@ HPAGE_RESV_OWNER标志被设置，以表明该VMA拥有预留。</p>
 <p>该映射可能与一个子池（subpool）相关联。如果是这样，将查询子池以确保有足够的空间用于映射。子池
 有可能已经预留了可用于映射的预留空间。更多细节请参见 :ref: <cite>子池预留 &lt;sub_pool_resv&gt;</cite>
 一节。</p>
-<p>在咨询了预留映射和子池之后，就知道了需要的新预留数量。hugetlb_acct_memory()函数被调用以检查
-并获取所要求的预留数量。hugetlb_acct_memory()调用到可能分配和调整剩余页数的函数。然而，在这
+<p>在咨询了预留映射和子池之后，就知道了需要的新预留数量。<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hugetlb_acct_memory()</span></code>函数被调用以检查
+并获取所要求的预留数量。<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hugetlb_acct_memory()</span></code>调用到可能分配和调整剩余页数的函数。然而，在这
 些函数中，代码只是检查以确保有足够的空闲的巨页来容纳预留。如果有的话，全局预留计数resv_huge_pages
 会被调整，如下所示:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>if (resv_needed &lt;= (resv_huge_pages - free_huge_pages))
@@ -296,12 +296,12 @@ HPAGE_RESV_OWNER标志被设置，以表明该VMA拥有预留。</p>
 <p>如果有足够的空闲的巨页，并且全局计数resv_huge_pages被调整，那么与映射相关的预留映射被修改以
 反映预留。在共享映射的情况下，将存在一个file_region，包括’from’-‘to’范围。对于私有映射，
 不对预留映射进行修改，因为没有条目表示存在预留。</p>
-<p>如果hugetlb_reserve_pages()成功，全局预留数和与映射相关的预留映射将根据需要被修改，以确保
+<p>如果<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hugetlb_reserve_pages()</span></code>成功，全局预留数和与映射相关的预留映射将根据需要被修改，以确保
 在’from’-‘to’范围内存在预留。</p>
 </section>
 <section id="id6">
 <h2>消耗预留/分配一个巨页<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h2>
-<p>当与预留相关的巨页在相应的映射中被分配和实例化时，预留就被消耗了。该分配是在函数alloc_hugetlb_folio()
+<p>当与预留相关的巨页在相应的映射中被分配和实例化时，预留就被消耗了。该分配是在函数<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">alloc_hugetlb_folio()</span></code>
 中进行的:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
                              unsigned long addr, int avoid_reserve)
@@ -311,15 +311,15 @@ HPAGE_RESV_OWNER标志被设置，以表明该VMA拥有预留。</p>
 此外，alloc_hugetlb_folio需要一个参数avoid_reserve，该参数表示即使看起来已经为指定的地址预留了
 预留，也不应该使用预留。avoid_reserve参数最常被用于写时拷贝和页面迁移的情况下，即现有页面的额
 外拷贝被分配。</p>
-<p>调用辅助函数vma_needs_reservation()来确定是否存在对映射(vma)中地址的预留。关于这个函数的详
+<p>调用辅助函数<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vma_needs_reservation()</span></code>来确定是否存在对映射(vma)中地址的预留。关于这个函数的详
 细内容，请参见 <a class="reference internal" href="../../../mm/hugetlbfs_reserv.html#resv-map-helpers"><span class="std std-ref">预留映射帮助函数</span></a> 一节。从
-vma_needs_reservation()返回的值通常为0或1。如果该地址存在预留，则为0，如果不存在预留，则为1。
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vma_needs_reservation()</span></code>返回的值通常为0或1。如果该地址存在预留，则为0，如果不存在预留，则为1。
 如果不存在预留，并且有一个与映射相关联的子池，则查询子池以确定它是否包含预留。如果子池包含预留，
 则可将其中一个用于该分配。然而，在任何情况下，avoid_reserve参数都会优先考虑为分配使用预留。在
-确定预留是否存在并可用于分配后，调用dequeue_huge_page_vma()函数。这个函数需要两个与预留有关
+确定预留是否存在并可用于分配后，调用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dequeue_huge_page_vma()</span></code>函数。这个函数需要两个与预留有关
 的参数：</p>
 <ul class="simple">
-<li><p>avoid_reserve，这是传递给alloc_hugetlb_folio()的同一个值/参数。</p></li>
+<li><p>avoid_reserve，这是传递给<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">alloc_hugetlb_folio()</span></code>的同一个值/参数。</p></li>
 <li><p>chg，尽管这个参数的类型是long，但只有0或1的值被传递给dequeue_huge_page_vma。如果该值为0，
 则表明存在预留（关于可能的问题，请参见 “预留和内存策略” 一节）。如果值
 为1，则表示不存在预留，如果可能的话，必须从全局空闲池中取出该页。</p></li>
@@ -337,7 +337,7 @@ resv_huge_pages--;      /* 减少全局预留计数 */
 SetPagePrivate(page) 和 resv_huge_pages--.</p>
 <p>在获得一个新的巨页后，(folio)-&gt;_hugetlb_subpool被设置为与该页面相关的子池的值，如果它存在的话。当页
 面被释放时，这将被用于子池的计数。</p>
-<p>然后调用函数vma_commit_reservation()，根据预留的消耗情况调整预留映射。一般来说，这涉及
+<p>然后调用函数<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vma_commit_reservation()</span></code>，根据预留的消耗情况调整预留映射。一般来说，这涉及
 到确保页面在区域映射的file_region结构体中被表示。对于预留存在的共享映射，预留映射中的条目
 已经存在，所以不做任何改变。然而，如果共享映射中没有预留，或者这是一个私有映射，则必须创建一
 个新的条目。</p>
@@ -346,12 +346,12 @@ SetPagePrivate(page) 和 resv_huge_pages--.</p>
 SetPagePrivate(page)和resv_huge_pages-。</p>
 <p>在获得一个新的巨页后，(page)-&gt;private被设置为与该页面相关的子池的值，如果它存在的话。当页
 面被释放时，这将被用于子池的计数。</p>
-<p>然后调用函数vma_commit_reservation()，根据预留的消耗情况调整预留映射。一般来说，这涉及
+<p>然后调用函数<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vma_commit_reservation()</span></code>，根据预留的消耗情况调整预留映射。一般来说，这涉及
 到确保页面在区域映射的file_region结构体中被表示。对于预留存在的共享映射，预留映射中的条目
 已经存在，所以不做任何改变。然而，如果共享映射中没有预留，或者这是一个私有映射，则必须创建
 一个新的条目。</p>
-<p>在alloc_hugetlb_folio()开始调用vma_needs_reservation()和页面分配后调用
-vma_commit_reservation()之间，预留映射有可能被改变。如果hugetlb_reserve_pages在共
+<p>在<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">alloc_hugetlb_folio()</span></code>开始调用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vma_needs_reservation()</span></code>和页面分配后调用
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vma_commit_reservation()</span></code>之间，预留映射有可能被改变。如果hugetlb_reserve_pages在共
 享映射中为同一页面被调用，这将是可能的。在这种情况下，预留计数和子池空闲页计数会有一个偏差。
 这种罕见的情况可以通过比较vma_needs_reservation和vma_commit_reservation的返回值来
 识别。如果检测到这种竞争，子池和全局预留计数将被调整以进行补偿。关于这些函数的更多信息，请
@@ -365,13 +365,13 @@ vma_commit_reservation()之间，预留映射有可能被改变。如果hugetlb_
 </section>
 <section id="id8">
 <h2>释放巨页<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h2>
-<p>巨页释放是由函数free_huge_folio()执行的。这个函数是hugetlbfs复合页的析构器。因此，它只传
+<p>巨页释放是由函数<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">free_huge_folio()</span></code>执行的。这个函数是hugetlbfs复合页的析构器。因此，它只传
 递一个指向页面结构体的指针。当一个巨页被释放时，可能需要进行预留计算。如果该页与包含保
 留的子池相关联，或者该页在错误路径上被释放，必须恢复全局预留计数，就会出现这种情况。</p>
 <p>page-&gt;private字段指向与该页相关的任何子池。如果PagePrivate标志被设置，它表明全局预留计数
 应该被调整（关于如何设置这些标志的信息，请参见
 :ref: <cite>消耗预留/分配一个巨页 &lt;consume_resv&gt;</cite> ）。</p>
-<p>该函数首先调用hugepage_subpool_put_pages()来处理该页。如果这个函数返回一个0的值（不等于
+<p>该函数首先调用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hugepage_subpool_put_pages()</span></code>来处理该页。如果这个函数返回一个0的值（不等于
 传递的1的值），它表明预留与子池相关联，这个新释放的页面必须被用来保持子池预留的数量超过最小值。
 因此，在这种情况下，全局resv_huge_pages计数器被递增。</p>
 <p>如果页面中设置了PagePrivate标志，那么全局resv_huge_pages计数器将永远被递增。</p>
@@ -384,7 +384,7 @@ vma_commit_reservation()之间，预留映射有可能被改变。如果hugetlb_
 如果指定了这个选项，与min_size相对应的巨页的数量将被预留给文件系统使用。这个数字在结构体
 hugepage_subpool的min_hpages字段中被跟踪。在挂载时，hugetlb_acct_memory(min_hpages)
 被调用以预留指定数量的巨页。如果它们不能被预留，挂载就会失败。</p>
-<p>当从子池中获取或释放页面时，会调用hugepage_subpool_get/put_pages()函数。
+<p>当从子池中获取或释放页面时，会调用hugepage_subpool_get/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">put_pages()</span></code>函数。
 hugepage_subpool_get/put_pages被传递给巨页数量，以此来调整子池的 “已用页面” 计数
 （get为下降，put为上升）。通常情况下，如果子池中没有足够的页面，它们会返回与传递的相同的值或
 一个错误。</p>
@@ -422,25 +422,25 @@ long region_count(struct resv_map *resv, long f, long t);
 </div>
 <p>在预留映射上的操作通常涉及两个操作:</p>
 <ol class="arabic">
-<li><p>region_chg()被调用来检查预留映射，并确定在指定的范围[f, t]内有多少页目前没有被代表。</p>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_chg()</span></code>被调用来检查预留映射，并确定在指定的范围[f, t]内有多少页目前没有被代表。</p>
 <p>调用代码执行全局检查和分配，以确定是否有足够的巨页使操作成功。</p>
 </li>
 <li><ol class="loweralpha simple">
-<li><p>如果操作能够成功，region_add()将被调用，以实际修改先前传递给region_chg()的相同范围
+<li><p>如果操作能够成功，<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_add()</span></code>将被调用，以实际修改先前传递给<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_chg()</span></code>的相同范围
 [f, t]的预留映射。</p></li>
 <li><p>如果操作不能成功，region_abort被调用，在相同的范围[f, t]内中止操作。</p></li>
 </ol>
 </li>
 </ol>
-<p>注意，这是一个两步的过程， region_add()和 region_abort()在事先调用 region_chg()后保证
-成功。 region_chg()负责预先分配任何必要的数据结构以确保后续操作（特别是 region_add()）的
+<p>注意，这是一个两步的过程， <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_add()</span></code>和 <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_abort()</span></code>在事先调用 <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_chg()</span></code>后保证
+成功。 <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_chg()</span></code>负责预先分配任何必要的数据结构以确保后续操作（特别是 <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_add()</span></code>）的
 成功。</p>
-<p>如上所述，region_chg()确定该范围内当前没有在映射中表示的页面的数量。region_add()返回添加
-到映射中的范围内的页数。在大多数情况下， region_add() 的返回值与 region_chg() 的返回值相
-同。然而，在共享映射的情况下，有可能在调用 region_chg() 和 region_add() 之间对预留映射进
-行更改。在这种情况下，region_add()的返回值将与region_chg()的返回值不符。在这种情况下，全局计数
+<p>如上所述，<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_chg()</span></code>确定该范围内当前没有在映射中表示的页面的数量。<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_add()</span></code>返回添加
+到映射中的范围内的页数。在大多数情况下， <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_add()</span></code> 的返回值与 <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_chg()</span></code> 的返回值相
+同。然而，在共享映射的情况下，有可能在调用 <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_chg()</span></code> 和 <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_add()</span></code> 之间对预留映射进
+行更改。在这种情况下，<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_add()</span></code>的返回值将与<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_chg()</span></code>的返回值不符。在这种情况下，全局计数
 和子池计数很可能是不正确的，需要调整。检查这种情况并进行适当的调整是调用者的责任。</p>
-<p>函数region_del()被调用以从预留映射中移除区域。
+<p>函数<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_del()</span></code>被调用以从预留映射中移除区域。
 它通常在以下情况下被调用:</p>
 <ul class="simple">
 <li><p>当hugetlbfs文件系统中的一个文件被删除时，该节点将被释放，预留映射也被释放。在释放预留映射
@@ -449,15 +449,15 @@ long region_count(struct resv_map *resv, long f, long t);
 此外，预留映射中任何超过新文件大小的file_region条目必须被删除。在这种情况下，region_del
 的范围是[new_end_of_file, LONG_MAX]。</p></li>
 <li><p>当在一个hugetlbfs文件中打洞时。在这种情况下，巨页被一次次从文件的中间移除。当这些页被移除
-时，region_del()被调用以从预留映射中移除相应的条目。在这种情况下，region_del被传递的范
+时，<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_del()</span></code>被调用以从预留映射中移除相应的条目。在这种情况下，region_del被传递的范
 围是[page_idx, page_idx + 1]。</p></li>
 </ul>
-<p>在任何情况下，region_del()都会返回从预留映射中删除的页面数量。在非常罕见的情况下，region_del()
+<p>在任何情况下，<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_del()</span></code>都会返回从预留映射中删除的页面数量。在非常罕见的情况下，<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_del()</span></code>
 会失败。这只能发生在打洞的情况下，即它必须分割一个现有的file_region条目，而不能分配一个新的
-结构体。在这种错误情况下，region_del()将返回-ENOMEM。这里的问题是，预留映射将显示对该页有
-预留。然而，子池和全局预留计数将不反映该预留。为了处理这种情况，调用函数hugetlb_fix_reserve_counts()
+结构体。在这种错误情况下，<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_del()</span></code>将返回-ENOMEM。这里的问题是，预留映射将显示对该页有
+预留。然而，子池和全局预留计数将不反映该预留。为了处理这种情况，调用函数<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hugetlb_fix_reserve_counts()</span></code>
 来调整计数器，使其与不能被删除的预留映射条目相对应。</p>
-<p>region_count()在解除私有巨页映射时被调用。在私有映射中，预留映射中没有条目表明存在一个预留。
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_count()</span></code>在解除私有巨页映射时被调用。在私有映射中，预留映射中没有条目表明存在一个预留。
 因此，通过计算预留映射中的条目数，我们知道有多少预留被消耗了，有多少预留是未完成的
 （Outstanding = (end - start) - region_count（resv, start, end））。由于映射正在消
 失，子池和全局预留计数被未完成的预留数量所减去。</p>
@@ -473,13 +473,13 @@ long region_count(struct resv_map *resv, long f, long t);
                            unsigned long addr)
 </pre></div>
 </div>
-<p>该函数为指定的页面调用 region_chg()。如果不存在预留，则返回1。如果存在预留，则返回0:</p>
+<p>该函数为指定的页面调用 <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_chg()</span></code>。如果不存在预留，则返回1。如果存在预留，则返回0:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>long vma_commit_reservation(struct hstate *h,
                             struct vm_area_struct *vma,
                             unsigned long addr)
 </pre></div>
 </div>
-<p>这将调用 region_add()，用于指定的页面。与region_chg和region_add的情况一样，该函数应在
+<p>这将调用 <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_add()</span></code>，用于指定的页面。与region_chg和region_add的情况一样，该函数应在
 先前调用的vma_needs_reservation后调用。它将为该页添加一个预留条目。如果预留被添加，它将
 返回1，如果没有则返回0。返回值应与之前调用vma_needs_reservation的返回值进行比较。如果出
 现意外的差异，说明在两次调用之间修改了预留映射:</p>
@@ -488,14 +488,14 @@ long region_count(struct resv_map *resv, long f, long t);
                          unsigned long addr)
 </pre></div>
 </div>
-<p>这将调用指定页面的 region_abort()。与region_chg和region_abort的情况一样，该函数应在
+<p>这将调用指定页面的 <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_abort()</span></code>。与region_chg和region_abort的情况一样，该函数应在
 先前调用的vma_needs_reservation后被调用。它将中止/结束正在进行的预留添加操作:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>long vma_add_reservation(struct hstate *h,
                          struct vm_area_struct *vma,
                          unsigned long addr)
 </pre></div>
 </div>
-<p>这是一个特殊的包装函数，有助于在错误路径上清理预留。它只从repare_reserve_on_error()函数
+<p>这是一个特殊的包装函数，有助于在错误路径上清理预留。它只从<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">repare_reserve_on_error()</span></code>函数
 中调用。该函数与vma_needs_reservation一起使用，试图将一个预留添加到预留映射中。它考虑到
 了私有和共享映射的不同预留映射语义。因此，region_add被调用用于共享映射（因为映射中的条目表
 示预留），而region_del被调用用于私有映射（因为映射中没有条目表示预留）。关于在错误路径上需
@@ -514,7 +514,7 @@ long region_count(struct resv_map *resv, long f, long t);
 （在实例化和清除PagePrivate之前），那么free_huge_folio将增加全局预留计数。然而，预留映射
 显示报留被消耗了。这种不一致的状态将导致预留的巨页的 “泄漏” 。全局预留计数将比它原本的要高，
 并阻止分配一个预先分配的页面。</p>
-<p>函数 restore_reserve_on_error() 试图处理这种情况。它有相当完善的文档。这个函数的目的
+<p>函数 <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">restore_reserve_on_error()</span></code> 试图处理这种情况。它有相当完善的文档。这个函数的目的
 是将预留映射恢复到页面分配前的状态。通过这种方式，预留映射的状态将与页面释放后的全局预留计
 数相对应。</p>
 <p>函数restore_reserve_on_error本身在试图恢复预留映射条目时可能会遇到错误。在这种情况下，

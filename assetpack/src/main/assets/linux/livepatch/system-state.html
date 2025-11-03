@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -176,7 +176,7 @@ or by the newly used code. Also it must be possible to find changes done by
 already installed livepatches.</p>
 <p>Each modified state is described by <a class="reference internal" href="api.html#c.klp_state" title="klp_state"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">klp_state</span></code></a>, see
 include/linux/livepatch.h.</p>
-<p>Each livepatch defines an array of struct klp_states. They mention
+<p>Each livepatch defines an array of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">klp_states</span></code>. They mention
 all states that the livepatch modifies.</p>
 <p>The livepatch author must define the following two fields for each
 <a class="reference internal" href="api.html#c.klp_state" title="klp_state"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">klp_state</span></code></a>:</p>
@@ -254,24 +254,24 @@ cannot get enabled.</p></li>
 <h2>4. Expected usage<a class="headerlink" href="#expected-usage" title="Link to this heading">¶</a></h2>
 <p>System states are usually modified by livepatch callbacks. The expected
 role of each callback is as follows:</p>
-<p><em>pre_patch()</em></p>
+<p><em><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pre_patch()</span></code></em></p>
 <blockquote>
 <div><ul>
 <li><p>Allocate <em>state-&gt;data</em> when necessary. The allocation might fail
-and <em>pre_patch()</em> is the only callback that could stop loading
+and <em><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pre_patch()</span></code></em> is the only callback that could stop loading
 of the livepatch. The allocation is not needed when the data
 are already provided by previously installed livepatches.</p></li>
 <li><p>Do any other preparatory action that is needed by
 the new code even before the transition gets finished.
 For example, initialize <em>state-&gt;data</em>.</p>
-<p>The system state itself is typically modified in <em>post_patch()</em>
+<p>The system state itself is typically modified in <em><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">post_patch()</span></code></em>
 when the entire system is able to handle it.</p>
 </li>
 <li><p>Clean up its own mess in case of error. It might be done by a custom
-code or by calling <em>post_unpatch()</em> explicitly.</p></li>
+code or by calling <em><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">post_unpatch()</span></code></em> explicitly.</p></li>
 </ul>
 </div></blockquote>
-<p><em>post_patch()</em></p>
+<p><em><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">post_patch()</span></code></em></p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Copy <em>state-&gt;data</em> from the previous livepatch when they are
@@ -283,7 +283,7 @@ the new code to use it.</p></li>
 not longer needed.</p></li>
 </ul>
 </div></blockquote>
-<p><em>pre_unpatch()</em></p>
+<p><em><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pre_unpatch()</span></code></em></p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Prevent the code, added by the livepatch, relying on the system
@@ -291,7 +291,7 @@ state change.</p></li>
 <li><p>Revert the system state modification..</p></li>
 </ul>
 </div></blockquote>
-<p><em>post_unpatch()</em></p>
+<p><em><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">post_unpatch()</span></code></em></p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Distinguish transition reverse and livepatch disabling by
@@ -303,11 +303,11 @@ state. It might mean doing nothing.</p></li>
 </div></blockquote>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><em>pre_unpatch()</em> typically does symmetric operations to <em>post_patch()</em>.
+<p><em><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pre_unpatch()</span></code></em> typically does symmetric operations to <em><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">post_patch()</span></code></em>.
 Except that it is called only when the livepatch is being disabled.
 Therefore it does not need to care about any previously installed
 livepatch.</p>
-<p><em>post_unpatch()</em> typically does symmetric operations to <em>pre_patch()</em>.
+<p><em><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">post_unpatch()</span></code></em> typically does symmetric operations to <em><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pre_patch()</span></code></em>.
 It might be called also during the transition reverse. Therefore it
 has to handle the state of the previously installed livepatches.</p>
 </div>

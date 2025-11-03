@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -86,6 +86,7 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Kernel Probes (Kprobes)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="kprobetrace.html">Kprobe-based Event Tracing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="fprobetrace.html">Fprobe-based Event Tracing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eprobetrace.html">Eprobe - Event-based Probe Tracing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="fprobe.html">Fprobe - Function entry/exit probe</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ring-buffer-design.html">Lockless Ring Buffer Design</a></li>
 </ul>
@@ -182,7 +183,7 @@ function returns.</p>
 <p>In the typical case, Kprobes-based instrumentation is packaged as
 a kernel module.  The module’s init function installs (“registers”)
 one or more probes, and the exit function unregisters them.  A
-registration function such as register_kprobe() specifies where
+registration function such as <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">register_kprobe()</span></code> specifies where
 the probe is to be inserted and what handler is to be called when
 the probe is hit.</p>
 <p>There are also <code class="docutils literal notranslate"><span class="pre">register_/unregister_*probes()</span></code> functions for batch
@@ -205,7 +206,7 @@ with a breakpoint instruction (e.g., int3 on i386 and x86_64).</p>
 registers are saved, and control passes to Kprobes via the
 notifier_call_chain mechanism.  Kprobes executes the “pre_handler”
 associated with the kprobe, passing the handler the addresses of the
-kprobe struct and the saved registers.</p>
+kprobe <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">and</span></code> the saved registers.</p>
 <p>Next, Kprobes single-steps its copy of the probed instruction.
 (It would be simpler to single-step the actual instruction in place,
 but then Kprobes would have to temporarily remove the breakpoint
@@ -236,7 +237,7 @@ returning from it.</p>
 <h3>Return Probes<a class="headerlink" href="#return-probes" title="Link to this heading">¶</a></h3>
 <section id="how-does-a-return-probe-work">
 <h4>How Does a Return Probe Work?<a class="headerlink" href="#how-does-a-return-probe-work" title="Link to this heading">¶</a></h4>
-<p>When you call register_kretprobe(), Kprobes establishes a kprobe at
+<p>When you call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">register_kretprobe()</span></code>, Kprobes establishes a kprobe at
 the entry to the function.  When the probed function is called and this
 probe is hit, Kprobes saves a copy of the return address, and replaces
 the return address with the address of a “trampoline.”  The trampoline
@@ -249,9 +250,9 @@ kretprobe, then sets the saved instruction pointer to the saved return
 address, and that’s where execution resumes upon return from the trap.</p>
 <p>While the probed function is executing, its return address is
 stored in an object of type kretprobe_instance.  Before calling
-register_kretprobe(), the user sets the maxactive field of the
-kretprobe struct to specify how many instances of the specified
-function can be probed simultaneously.  register_kretprobe()
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">register_kretprobe()</span></code>, the user sets the maxactive field of the
+kretprobe <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">to</span></code> specify how many instances of the specified
+function can be probed simultaneously.  <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">register_kretprobe()</span></code>
 pre-allocates the indicated number of kretprobe_instance objects.</p>
 <p>For example, if the function is non-recursive and is called with a
 spinlock held, maxactive = 1 should be enough.  If the function is
@@ -364,9 +365,9 @@ optimized region <a class="footnote-reference brackets" href="#id5" id="id3" rol
 that all interruptions that were active when <a class="reference internal" href="../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a>
 was called are done, but only if CONFIG_PREEMPT=n.  So, this version
 of kprobe optimization supports only kernels with CONFIG_PREEMPT=n <a class="footnote-reference brackets" href="#id6" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a>.</p>
-<p>After that, the Kprobe-optimizer calls stop_machine() to replace
+<p>After that, the Kprobe-optimizer calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">stop_machine()</span></code> to replace
 the optimized region with a jump instruction to the detour buffer,
-using text_poke_smp().</p>
+using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">text_poke_smp()</span></code>.</p>
 </section>
 <section id="unoptimization">
 <h4>Unoptimization<a class="headerlink" href="#unoptimization" title="Link to this heading">¶</a></h4>
@@ -375,7 +376,7 @@ another kprobe, it will be unoptimized.  If this happens before
 the optimization is complete, the kprobe is just dequeued from the
 optimized list.  If the optimization has been done, the jump is
 replaced with the original code (except for an int3 breakpoint in
-the first byte) by using text_poke_smp().</p>
+the first byte) by using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">text_poke_smp()</span></code>.</p>
 <aside class="footnote-list brackets">
 <aside class="footnote brackets" id="id5" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">3</a><span class="fn-bracket">]</span></span>
@@ -416,7 +417,7 @@ that there are some functions where kprobes cannot probe. Probing
 fault) or the nested probe handler may never be called.
 Kprobes manages such functions as a blacklist.
 If you want to add a function into the blacklist, you just need
-to (1) include linux/kprobes.h and (2) use NOKPROBE_SYMBOL() macro
+to (1) include linux/kprobes.h and (2) use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">NOKPROBE_SYMBOL()</span></code> macro
 to specify a blacklisted function.
 Kprobes checks the given probe address against the blacklist and
 rejects registering it, if the given address is in the blacklist.</p>
@@ -449,7 +450,7 @@ ensure that CONFIG_KPROBES is set to “y”, look for “Kprobes” under
 make sure “Loadable module support” (CONFIG_MODULES) and “Module
 unloading” (CONFIG_MODULE_UNLOAD) are set to “y”.</p>
 <p>Also make sure that CONFIG_KALLSYMS and perhaps even CONFIG_KALLSYMS_ALL
-are set to “y”, since kallsyms_lookup_name() is used by the in-kernel
+are set to “y”, since <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kallsyms_lookup_name()</span></code> is used by the in-kernel
 kprobe address resolution code.</p>
 <p>If you need to insert a probe in the middle of a function, you may find
 it useful to “Compile the kernel with debug info” (CONFIG_DEBUG_INFO),
@@ -478,7 +479,7 @@ aren’t hit until calling enable_kprobe(kp).</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <ol class="arabic">
-<li><p>With the introduction of the “symbol_name” field to struct kprobe,
+<li><p>With the introduction of the “symbol_name” field to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kprobe</span></code>,
 the probepoint address resolution will now be taken care of by the kernel.
 The following will now work:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>kp.symbol_name = &quot;symbol_name&quot;;
@@ -487,7 +488,7 @@ The following will now work:</p>
 <p>(64-bit powerpc intricacies such as function descriptors are handled
 transparently)</p>
 </li>
-<li><p>Use the “offset” field of struct kprobe if the offset into the symbol
+<li><p>Use the “offset” field of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kprobe</span></code> if the offset into the symbol
 to install a probepoint is known. This field is used to calculate the
 probepoint.</p></li>
 <li><p>Specify either the kprobe “symbol_name” OR the “addr”. If both are
@@ -497,7 +498,7 @@ does not validate if the kprobe.addr is at an instruction boundary.
 Use “offset” with caution.</p></li>
 </ol>
 </div>
-<p>register_kprobe() returns 0 on success, or a negative errno otherwise.</p>
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">register_kprobe()</span></code> returns 0 on success, or a negative errno otherwise.</p>
 <p>User’s pre-handler (kp-&gt;pre_handler):</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>#include &lt;linux/kprobes.h&gt;
 #include &lt;linux/ptrace.h&gt;
@@ -505,7 +506,7 @@ int pre_handler(struct kprobe *p, struct pt_regs *regs);
 </pre></div>
 </div>
 <p>Called with p pointing to the kprobe associated with the breakpoint,
-and regs pointing to the struct containing the registers saved when
+and regs pointing to the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">containing</span></code> the registers saved when
 the breakpoint was hit.  Return 0 here unless you’re a Kprobes geek.</p>
 <p>User’s post-handler (kp-&gt;post_handler):</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>#include &lt;linux/kprobes.h&gt;
@@ -526,8 +527,8 @@ int register_kretprobe(struct kretprobe *rp);
 <p>Establishes a return probe for the function whose address is
 rp-&gt;kp.addr.  When that function returns, Kprobes calls rp-&gt;handler.
 You must set rp-&gt;maxactive appropriately before you call
-register_kretprobe(); see “How Does a Return Probe Work?” for details.</p>
-<p>register_kretprobe() returns 0 on success, or a negative errno
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">register_kretprobe()</span></code>; see “How Does a Return Probe Work?” for details.</p>
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">register_kretprobe()</span></code> returns 0 on success, or a negative errno
 otherwise.</p>
 <p>User’s return-probe handler (rp-&gt;handler):</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>#include &lt;linux/kprobes.h&gt;
@@ -614,7 +615,7 @@ int disable_kretprobe(struct kretprobe *rp);
 </pre></div>
 </div>
 <p>Temporarily disables the specified <code class="docutils literal notranslate"><span class="pre">*probe</span></code>. You can enable it again by using
-enable_*probe(). You must specify the probe which has been registered.</p>
+enable_*<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code>. You must specify the probe which has been registered.</p>
 </section>
 <section id="enable-probe">
 <h3>enable_*probe<a class="headerlink" href="#enable-probe" title="Link to this heading">¶</a></h3>
@@ -623,7 +624,7 @@ int enable_kprobe(struct kprobe *kp);
 int enable_kretprobe(struct kretprobe *rp);
 </pre></div>
 </div>
-<p>Enables <code class="docutils literal notranslate"><span class="pre">*probe</span></code> which has been disabled by disable_*probe(). You must specify
+<p>Enables <code class="docutils literal notranslate"><span class="pre">*probe</span></code> which has been disabled by disable_*<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code>. You must specify
 the probe which has been registered.</p>
 </section>
 </section>
@@ -667,9 +668,9 @@ disabled on x86/x86-64).  In any case, your handler should not yield
 the CPU (e.g., by attempting to acquire a semaphore, or waiting I/O).</p>
 <p>Since a return probe is implemented by replacing the return
 address with the trampoline’s address, stack backtraces and calls
-to __builtin_return_address() will typically yield the trampoline’s
+to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__builtin_return_address()</span></code> will typically yield the trampoline’s
 address instead of the real return address for kretprobed functions.
-(As far as we can tell, __builtin_return_address() is used only
+(As far as we can tell, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__builtin_return_address()</span></code> is used only
 for instrumentation and error reporting.)</p>
 <p>If the number of times a function is called does not match the number
 of times it returns, registering a return probe on that function may
@@ -677,13 +678,13 @@ produce undesirable results. In such a case, a line:
 kretprobe BUG!: Processing kretprobe d000000000041aa8 &#64; c00000000004f48c
 gets printed. With this information, one will be able to correlate the
 exact instance of the kretprobe that caused the problem. We have the
-do_exit() case covered. do_execve() and do_fork() are not an issue.
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_exit()</span></code> case covered. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_execve()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_fork()</span></code> are not an issue.
 We’re unaware of other specific cases where this could be a problem.</p>
 <p>If, upon entry to or exit from a function, the CPU is running on
 a stack other than that of the current task, registering a return
 probe on that function may produce undesirable results.  For this
 reason, Kprobes doesn’t support return probes (or kprobes)
-on the x86_64 version of __switch_to(); the registration functions
+on the x86_64 version of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__switch_to()</span></code>; the registration functions
 return -EINVAL.</p>
 <p>On x86/x86-64, since the Jump Optimization of Kprobes modifies
 instructions widely, there are some limitations to optimization. To

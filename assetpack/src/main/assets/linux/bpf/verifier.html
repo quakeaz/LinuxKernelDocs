@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -215,7 +215,7 @@ certain fields within ctx structure with specified size and alignment.</p>
 </pre></div>
 </div>
 <p>intends to load a word from address R6 + 8 and store it into R0
-If R6=PTR_TO_CTX, via is_valid_access() callback the verifier will know
+If R6=PTR_TO_CTX, via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">is_valid_access()</span></code> callback the verifier will know
 that offset 8 of size 4 bytes can be accessed for reading, otherwise
 the verifier will reject the program.
 If R6=PTR_TO_STACK, then access should be aligned and be within
@@ -234,7 +234,7 @@ Though R10 is correct read-only register and has type PTR_TO_STACK
 and R10 - 4 is within stack bounds, there were no stores into that location.</p>
 <p>Pointer register spill/fill is tracked as well, since four (R6-R9)
 callee saved registers may not be enough for some programs.</p>
-<p>Allowed function calls are customized with bpf_verifier_ops-&gt;get_func_proto()
+<p>Allowed function calls are customized with bpf_verifier_ops-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_func_proto()</span></code>
 The eBPF verifier will check that registers match argument constraints.
 After the call register R0 will be set to return type of the function.</p>
 <p>Function calls is a main mechanism to extend functionality of eBPF programs.
@@ -261,7 +261,7 @@ pointer type.  The types of pointers describe their base, as follows:</p>
 <div><dl class="simple">
 <dt>PTR_TO_CTX</dt><dd><p>Pointer to bpf_context.</p>
 </dd>
-<dt>CONST_PTR_TO_MAP</dt><dd><p>Pointer to struct bpf_map.  “Const” because arithmetic
+<dt>CONST_PTR_TO_MAP</dt><dd><p>Pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">bpf_map</span></code>.  “Const” because arithmetic
 on these pointers is forbidden.</p>
 </dd>
 <dt>PTR_TO_MAP_VALUE</dt><dd><p>Pointer to the value stored in a map element.</p>
@@ -277,7 +277,7 @@ these pointers is forbidden.</p>
 </dd>
 <dt>PTR_TO_PACKET_END</dt><dd><p>skb-&gt;data + headlen; arithmetic forbidden.</p>
 </dd>
-<dt>PTR_TO_SOCKET</dt><dd><p>Pointer to struct bpf_sock_ops, implicitly refcounted.</p>
+<dt>PTR_TO_SOCKET</dt><dd><p>Pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">bpf_sock_ops</span></code>, implicitly refcounted.</p>
 </dd>
 <dt>PTR_TO_SOCKET_OR_NULL</dt><dd><p>Either a pointer to a socket, or NULL; socket lookup
 returns this type, which becomes a PTR_TO_SOCKET when
@@ -406,9 +406,9 @@ R4=inv(id=0,umax_value=3570,var_off=(0x0; 0xfffe)), since multiplying an 8-bit
 value by constant 14 will keep upper 52 bits as zero, also the least significant
 bit will be zero as 14 is even.  Similarly <code class="docutils literal notranslate"><span class="pre">r2</span> <span class="pre">&gt;&gt;=</span> <span class="pre">48</span></code> will make
 R2=inv(id=0,umax_value=65535,var_off=(0x0; 0xffff)), since the shift is not sign
-extending.  This logic is implemented in adjust_reg_min_max_vals() function,
-which calls adjust_ptr_min_max_vals() for adding pointer to scalar (or vice
-versa) and adjust_scalar_min_max_vals() for operations on two scalars.</p>
+extending.  This logic is implemented in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">adjust_reg_min_max_vals()</span></code> function,
+which calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">adjust_ptr_min_max_vals()</span></code> for adding pointer to scalar (or vice
+versa) and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">adjust_scalar_min_max_vals()</span></code> for operations on two scalars.</p>
 <p>The end result is that bpf program author can access packet directly
 using normal C code as:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>void *data = (void *)(long)skb-&gt;data;
@@ -441,10 +441,10 @@ previous state, r1 held a packet-pointer, and in the current state, r1 holds a
 packet-pointer with a range as long or longer and at least as strict an
 alignment, then r1 is safe.  Similarly, if r2 was NOT_INIT before then it can’t
 have been used by any path from that point, so any value in r2 (including
-another NOT_INIT) is safe.  The implementation is in the function regsafe().
+another NOT_INIT) is safe.  The implementation is in the function <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">regsafe()</span></code>.
 Pruning considers not only the registers but also the stack (and any spilled
 registers it may hold).  They must all be safe for the branch to be pruned.
-This is implemented in states_equal().</p>
+This is implemented in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">states_equal()</span></code>.</p>
 <p>Some technical details about state pruning implementation could be found below.</p>
 <section id="register-liveness-tracking">
 <h3>Register liveness tracking<a class="headerlink" href="#register-liveness-tracking" title="Link to this heading">¶</a></h3>
@@ -784,7 +784,7 @@ BPF_EXIT_INSN(),
 invalid indirect read from stack off -8+0 size 8
 </pre></div>
 </div>
-<p>Program that uses invalid map_fd=0 while calling to map_lookup_elem() function:</p>
+<p>Program that uses invalid map_fd=0 while calling to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">map_lookup_elem()</span></code> function:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
 BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
 BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
@@ -802,7 +802,7 @@ BPF_EXIT_INSN(),
 fd 0 is not pointing to valid bpf_map
 </pre></div>
 </div>
-<p>Program that doesn’t check return value of map_lookup_elem() before accessing
+<p>Program that doesn’t check return value of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">map_lookup_elem()</span></code> before accessing
 map element:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
 BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
@@ -823,7 +823,7 @@ BPF_EXIT_INSN(),
 R0 invalid mem access &#39;map_value_or_null&#39;
 </pre></div>
 </div>
-<p>Program that correctly checks map_lookup_elem() returned value for NULL, but
+<p>Program that correctly checks <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">map_lookup_elem()</span></code> returned value for NULL, but
 accesses the memory with incorrect alignment:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
 BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
@@ -847,7 +847,7 @@ BPF_EXIT_INSN(),
 misaligned access off 4 size 8
 </pre></div>
 </div>
-<p>Program that correctly checks map_lookup_elem() returned value for NULL and
+<p>Program that correctly checks <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">map_lookup_elem()</span></code> returned value for NULL and
 accesses memory with correct alignment in one side of ‘if’ branch, but fails
 to do so in the other side of ‘if’ branch:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),

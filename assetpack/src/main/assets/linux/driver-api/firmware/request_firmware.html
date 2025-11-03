@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -235,13 +235,17 @@ an error is returned.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">firmware</span> <span class="pre">**firmware_p</span></code></dt><dd><p>pointer to firmware image</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*name</span></code></dt><dd><p>name of firmware file</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span> <span class="pre">*device</span></code></dt><dd><p>device for which firmware is being loaded</p>
-<p><strong>firmware_p</strong> will be used to return a firmware image by the name
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p><strong>firmware_p</strong> will be used to return a firmware image by the name
 of <strong>name</strong> for device <strong>device</strong>.</p>
 <p>Should be called from user context where sleeping is allowed.</p>
 <p><strong>name</strong> will be used as $FIRMWARE in the uevent environment and
@@ -252,8 +256,7 @@ allowed, but “foo/../bar.bin” is not.</p>
 <p>Caller must hold the reference count of <strong>device</strong>.</p>
 <p>The function can be called safely inside device’s suspend and
 resume callback.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 </section>
 <section id="firmware-request-nowarn">
@@ -380,7 +383,7 @@ in atomic contexts.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">module</span> <span class="pre">*module</span></code></dt><dd><p>module requesting the firmware</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">uevent</span></code></dt><dd><p>sends uevent to copy the firmware image if this flag
@@ -397,19 +400,22 @@ is non-zero else the firmware copy must be done manually.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">(*cont)(const</span> <span class="pre">struct</span> <span class="pre">firmware</span> <span class="pre">*fw,</span> <span class="pre">void</span> <span class="pre">*context)</span></code></dt><dd><p>function will be called asynchronously when the firmware
 request is over.</p>
-<p>Caller must hold the reference count of <strong>device</strong>.</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Caller must hold the reference count of <strong>device</strong>.</p>
 <dl class="simple">
 <dt>Asynchronous variant of request_firmware() for user contexts:</dt><dd><ul class="simple">
 <li><p>sleep for as small periods as possible since it may
 increase kernel boot time of built-in device drivers
-requesting firmware in their -&gt;probe() methods, if
+requesting firmware in their -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> methods, if
 <strong>gfp</strong> is GFP_KERNEL.</p></li>
 <li><p>can’t sleep at all if <strong>gfp</strong> is GFP_ATOMIC.</p></li>
 </ul>
 </dd>
 </dl>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 </section>
 </section>

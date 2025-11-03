@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -185,7 +185,7 @@ per-process statistics from the kernel to userspace.</p>
 <section id="terminology">
 <h2>Terminology<a class="headerlink" href="#terminology" title="Link to this heading">¶</a></h2>
 <p>“pid”, “tid” and “task” are used interchangeably and refer to the standard
-Linux task defined by struct task_struct.  per-pid stats are the same as
+Linux task defined by <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">task_struct</span></code>.  per-pid stats are the same as
 per-task stats.</p>
 <p>“tgid”, “process” and “thread group” are used interchangeably and refer to the
 tasks that share an mm_struct i.e. the traditional Unix process. Despite the
@@ -220,7 +220,7 @@ receive buffer sizes.</p>
 <p>To avoid this documentation becoming obsolete as the interface evolves, only
 an outline of the current version is given. taskstats.h always overrides the
 description here.</p>
-<p>struct taskstats is the common accounting structure for both per-pid and
+<p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">taskstats</span></code> is the common accounting structure for both per-pid and
 per-tgid data. It is versioned and can be extended by each accounting subsystem
 that is added to the kernel. The fields and their semantics are defined in the
 taskstats.h file.</p>
@@ -252,7 +252,7 @@ command. The payload is a series of three attributes of type:</p>
 a pid/tgid will be followed by some stats.</p>
 <p>b) TASKSTATS_TYPE_PID/TGID: attribute whose payload is the pid/tgid whose stats
 are being returned.</p>
-<p>c) TASKSTATS_TYPE_STATS: attribute with a struct taskstats as payload. The
+<p>c) TASKSTATS_TYPE_STATS: attribute with a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">taskstats</span></code> as payload. The
 same structure is used for both per-pid and per-tgid stats.</p>
 <ol class="arabic simple" start="3">
 <li><p>New message sent by kernel whenever a task exits. The payload consists of a
@@ -288,9 +288,9 @@ threads of the same thread group.</p>
 per-task/process stats as patches to collect them get added to the kernel
 in future:</p>
 <ol class="arabic simple">
-<li><p>Adding more fields to the end of the existing struct taskstats. Backward
+<li><p>Adding more fields to the end of the existing <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">taskstats</span></code>. Backward
 compatibility is ensured by the version number within the
-structure. Userspace will use only the fields of the struct that correspond
+structure. Userspace will use only the fields of the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">that</span></code> correspond
 to the version its using.</p></li>
 <li><p>Defining separate statistic structs and using the netlink attributes
 interface to return them. Since userspace processes each netlink attribute
@@ -301,7 +301,7 @@ understand (because it is using an older version of the interface).</p></li>
 overhead. If only a few fields need to be added, then 1. is the preferable
 path since the kernel and userspace don’t need to incur the overhead of
 processing new netlink attributes. But if the new fields expand the existing
-struct too much, requiring disparate userspace accounting utilities to
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">too</span></code> much, requiring disparate userspace accounting utilities to
 unnecessarily receive large structures whose fields are of no interest, then
 extending the attributes structure would be worthwhile.</p>
 </section>

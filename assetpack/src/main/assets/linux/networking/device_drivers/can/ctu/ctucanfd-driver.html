@@ -34,7 +34,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -867,10 +867,8 @@ state to <code class="docutils literal notranslate"><span class="pre">CAN_STATE_
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>True - Frame can be inserted to TXT Buffer, False - If attempted, frame will not be</dt><dd><p>inserted to TXT Buffer</p>
-</dd>
-</dl>
+<p>True - Frame can be inserted to TXT Buffer, False - If attempted, frame will not be
+inserted to TXT Buffer</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ctucan_insert_frame">
@@ -891,8 +889,9 @@ state to <code class="docutils literal notranslate"><span class="pre">CAN_STATE_
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>True - Frame inserted successfully</dt><dd><dl class="simple">
+<ul class="simple">
+<li><p>True - Frame inserted successfully</p></li>
+<li><dl class="simple">
 <dt>False - Frame was not inserted due to one of:</dt><dd><ol class="arabic simple">
 <li><p>TXT Buffer is not writable (it is in wrong state)</p></li>
 <li><p>Invalid TXT buffer index</p></li>
@@ -900,8 +899,8 @@ state to <code class="docutils literal notranslate"><span class="pre">CAN_STATE_
 </ol>
 </dd>
 </dl>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ctucan_give_txtb_cmd">
@@ -938,10 +937,8 @@ state to <code class="docutils literal notranslate"><span class="pre">CAN_STATE_
 <p>Invoked from upper layers to initiate transmission. Uses the next available free TXT Buffer and
 populates its fields to start the transmission.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">NETDEV_TX_OK</span></code> on success, <code class="docutils literal notranslate"><span class="pre">NETDEV_TX_BUSY</span></code> when no free TXT buffer is available,</dt><dd><p>negative return values reserved for error cases</p>
-</dd>
-</dl>
+<p><code class="docutils literal notranslate"><span class="pre">NETDEV_TX_OK</span></code> on success, <code class="docutils literal notranslate"><span class="pre">NETDEV_TX_BUSY</span></code> when no free TXT buffer is available,
+negative return values reserved for error cases</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ctucan_read_rx_frame">
@@ -978,11 +975,9 @@ populates its fields to start the transmission.</p>
 <p>This function is invoked from the CAN isr(poll) to process the Rx frames. It does minimal
 processing and invokes “netif_receive_skb” to complete further processing.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>1 when frame is passed to the network layer, 0 when the first frame word is read but</dt><dd><p>system is out of free SKBs temporally and left code to resolve SKB allocation later,
+<p>1 when frame is passed to the network layer, 0 when the first frame word is read but
+system is out of free SKBs temporally and left code to resolve SKB allocation later,
 -<code class="docutils literal notranslate"><span class="pre">EAGAIN</span></code> in a case of empty Rx FIFO.</p>
-</dd>
-</dl>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ctucan_read_fault_state">

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -165,7 +165,7 @@
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p><a class="reference internal" href="#c.module_init" title="module_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">module_init()</span></code></a> will either be called during do_initcalls() (if
+<p><a class="reference internal" href="#c.module_init" title="module_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">module_init()</span></code></a> will either be called during <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_initcalls()</span></code> (if
 builtin) or at module insertion time (if a module).  There can only
 be one per module.</p>
 </div>
@@ -186,7 +186,7 @@ be one per module.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p><a class="reference internal" href="#c.module_exit" title="module_exit"><code class="xref c c-func docutils literal notranslate"><span class="pre">module_exit()</span></code></a> will wrap the driver clean-up code
-with cleanup_module() when used with rmmod when
+with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cleanup_module()</span></code> when used with rmmod when
 the driver is a module.  If the driver is statically
 compiled into the kernel, <a class="reference internal" href="#c.module_exit" title="module_exit"><code class="xref c c-func docutils literal notranslate"><span class="pre">module_exit()</span></code></a> has no effect.
 There can only be one per module.</p>
@@ -238,19 +238,19 @@ This call will fail if the module is in the process of being removed.</p>
 usage of this call. This can be gauranteed through two means:</p>
 <ol class="arabic simple">
 <li><p>Direct protection: you know an earlier caller must have increased the
-module reference through __module_get(). This can typically be achieved
+module reference through <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__module_get()</span></code>. This can typically be achieved
 by having another entity other than the module itself increment the
 module reference count.</p></li>
 <li><p>Implied protection: there is an implied protection against module
 removal. An example of this is the implied protection used by kernfs /
 sysfs. The sysfs store / read file operations are guaranteed to exist
-through the use of kernfs’s active reference (see kernfs_active()) and a
+through the use of kernfs’s active reference (see <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kernfs_active()</span></code>) and a
 sysfs / kernfs file removal cannot happen unless the same file is not
 active. Therefore, if a sysfs file is being read or written to the module
 which created it must still exist. It is therefore safe to use
 <a class="reference internal" href="#c.try_module_get" title="try_module_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">try_module_get()</span></code></a> on module sysfs store / read ops.</p></li>
 </ol>
-<p>One of the real values to <a class="reference internal" href="#c.try_module_get" title="try_module_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">try_module_get()</span></code></a> is the module_is_live() check
+<p>One of the real values to <a class="reference internal" href="#c.try_module_get" title="try_module_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">try_module_get()</span></code></a> is the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">module_is_live()</span></code> check
 which ensures that the caller of <a class="reference internal" href="#c.try_module_get" title="try_module_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">try_module_get()</span></code></a> can yield to userspace
 module removal requests and gracefully fail if the module is on its way out.</p>
 <p>Returns true if the reference count was successfully incremented.</p>
@@ -351,9 +351,9 @@ device flags.</p>
 <p><strong>Description</strong></p>
 <p>In most cases, drivers will create a table of device IDs by using
 <a class="reference internal" href="usb/usb.html#c.USB_DEVICE" title="USB_DEVICE"><code class="xref c c-func docutils literal notranslate"><span class="pre">USB_DEVICE()</span></code></a>, or similar macros designed for that purpose.
-They will then export it to userspace using MODULE_DEVICE_TABLE(),
+They will then export it to userspace using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">MODULE_DEVICE_TABLE()</span></code>,
 and provide it to the USB core through their usb_driver structure.</p>
-<p>See the usb_match_id() function for information about how matches are
+<p>See the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_match_id()</span></code> function for information about how matches are
 performed.  Briefly, you will normally use one of several macros to help
 construct these entries.  Each entry you provide will either identify
 one or more specific products, or will identify a class of products
@@ -378,7 +378,7 @@ record quirks of specific products.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This macro is used to create a struct acpi_device_id that matches a
+<p>This macro is used to create a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">acpi_device_id</span></code> that matches a
 specific PCI class. The .id and .driver_data fields will be left
 initialized with the default value.</p>
 </div>
@@ -681,7 +681,7 @@ the identifier.</p>
 </div>
 <p><strong>Members</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt><dd><p>DFL FIU type of the device. See enum dfl_id_type.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt><dd><p>DFL FIU type of the device. See <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">dfl_id_type</span></code>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">feature_id</span></code></dt><dd><p>feature identifier local to its DFL FIU type.</p>
 </dd>
@@ -883,7 +883,7 @@ processes.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">preempt_notifier</span> <span class="pre">*notifier</span></code></dt><dd><p>notifier struct to register</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">preempt_notifier</span> <span class="pre">*notifier</span></code></dt><dd><p>notifier <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">to</span></code> register</p>
 </dd>
 </dl>
 </div>
@@ -896,7 +896,7 @@ processes.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">preempt_notifier</span> <span class="pre">*notifier</span></code></dt><dd><p>notifier struct to unregister</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">preempt_notifier</span> <span class="pre">*notifier</span></code></dt><dd><p>notifier <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">to</span></code> unregister</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -919,10 +919,10 @@ processes.</p>
 recursion and tracing preempt enabling caused by the tracing
 infrastructure itself. But as tracing can happen in areas coming
 from userspace or just about to enter userspace, a preempt enable
-can occur before user_exit() is called. This will cause the scheduler
+can occur before <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">user_exit()</span></code> is called. This will cause the scheduler
 to be called when the system is still in usermode.</p>
 <p>To prevent this, the preempt_enable_notrace will use this function
-instead of preempt_schedule() to exit user context if needed before
+instead of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">preempt_schedule()</span></code> to exit user context if needed before
 calling the scheduler.</p>
 </div>
 <dl class="c function">
@@ -1022,7 +1022,7 @@ considerations.</p>
 <p>In order to avoid having to look at the other cfs_rq’s, we use a
 differential update where we store the last value we propagated. This in
 turn allows skipping updates if the differential is ‘small’.</p>
-<p>Updating tg’s load_avg is necessary before update_cfs_share().</p>
+<p>Updating tg’s load_avg is necessary before <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">update_cfs_share()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.update_cfs_rq_load_avg">
@@ -1033,7 +1033,7 @@ turn allows skipping updates if the differential is ‘small’.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">u64</span> <span class="pre">now</span></code></dt><dd><p>current time, as per cfs_rq_clock_pelt()</p>
+<dt><code class="docutils literal notranslate"><span class="pre">u64</span> <span class="pre">now</span></code></dt><dd><p>current time, as per <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cfs_rq_clock_pelt()</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cfs_rq</span> <span class="pre">*cfs_rq</span></code></dt><dd><p>cfs_rq to update</p>
 </dd>
@@ -1041,7 +1041,7 @@ turn allows skipping updates if the differential is ‘small’.</p>
 <p><strong>Description</strong></p>
 <p>The cfs_rq avg is the direct sum of all its entities (blocked and runnable)
 avg. The immediate corollary is that all (fair) tasks must be attached.</p>
-<p>cfs_rq-&gt;avg is used for task_h_load() and update_cfs_share() for example.</p>
+<p>cfs_rq-&gt;avg is used for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">task_h_load()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">update_cfs_share()</span></code> for example.</p>
 <p>Since both these conditions indicate a changed cfs_rq-&gt;avg.load we should
 call <a class="reference internal" href="#c.update_tg_load_avg" title="update_tg_load_avg"><code class="xref c c-func docutils literal notranslate"><span class="pre">update_tg_load_avg()</span></code></a> when this function returns true.</p>
 <p><strong>Return</strong></p>
@@ -1119,7 +1119,7 @@ of such a task would be significantly decayed at this point of time.</p>
 CPU contention for CFS tasks can be detected by CPU runnable &gt; CPU
 utilization. Boosting is implemented in <a class="reference internal" href="#c.cpu_util" title="cpu_util"><code class="xref c c-func docutils literal notranslate"><span class="pre">cpu_util()</span></code></a> so that internal
 users (e.g. EAS) can use it next to external users (e.g. schedutil),
-latter via cpu_util_cfs_boost().</p>
+latter via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpu_util_cfs_boost()</span></code>.</p>
 <p>CPU utilization can be higher than the current CPU capacity
 (f_curr/f_max * max CPU capacity) or even the max CPU capacity because
 of rounding errors as well as task migrations or wakeups of new tasks.
@@ -1360,7 +1360,7 @@ structure.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>This inline function should be used to reinitialize a completion structure so it can
-be reused. This is especially important after complete_all() is used.</p>
+be reused. This is especially important after <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">complete_all()</span></code> is used.</p>
 </div>
 </section>
 <section id="time-and-timer-routines">
@@ -1807,14 +1807,14 @@ MAX_JIFFY_OFFSET values] mean ‘infinite timeout’ too.</p></li>
 <li><p>all other values are converted to jiffies by either multiplying
 the input value by a factor or dividing it with a factor and
 handling any 32-bit overflows.
-for the details see _msecs_to_jiffies()</p></li>
+for the details see <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_msecs_to_jiffies()</span></code></p></li>
 </ul>
 <p><a class="reference internal" href="#c.msecs_to_jiffies" title="msecs_to_jiffies"><code class="xref c c-func docutils literal notranslate"><span class="pre">msecs_to_jiffies()</span></code></a> checks for the passed in value being a constant
-via __builtin_constant_p() allowing gcc to eliminate most of the
+via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__builtin_constant_p()</span></code> allowing gcc to eliminate most of the
 code. <a class="reference internal" href="#c.__msecs_to_jiffies" title="__msecs_to_jiffies"><code class="xref c c-func docutils literal notranslate"><span class="pre">__msecs_to_jiffies()</span></code></a> is called if the value passed does not
 allow constant folding and the actual conversion must be done at
 runtime.
-The HZ range specific helpers _msecs_to_jiffies() are called both
+The HZ range specific helpers <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_msecs_to_jiffies()</span></code> are called both
 directly here and from <a class="reference internal" href="#c.__msecs_to_jiffies" title="__msecs_to_jiffies"><code class="xref c c-func docutils literal notranslate"><span class="pre">__msecs_to_jiffies()</span></code></a> in the case where
 constant folding is not possible.</p>
 <p><strong>Return</strong></p>
@@ -1868,11 +1868,11 @@ the input value by a factor or dividing it with a factor and
 handling any 32-bit overflows as for msecs_to_jiffies.</p></li>
 </ul>
 <p><a class="reference internal" href="#c.usecs_to_jiffies" title="usecs_to_jiffies"><code class="xref c c-func docutils literal notranslate"><span class="pre">usecs_to_jiffies()</span></code></a> checks for the passed in value being a constant
-via __builtin_constant_p() allowing gcc to eliminate most of the
+via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__builtin_constant_p()</span></code> allowing gcc to eliminate most of the
 code. <a class="reference internal" href="#c.__usecs_to_jiffies" title="__usecs_to_jiffies"><code class="xref c c-func docutils literal notranslate"><span class="pre">__usecs_to_jiffies()</span></code></a> is called if the value passed does not
 allow constant folding and the actual conversion must be done at
 runtime.
-The HZ range specific helpers _usecs_to_jiffies() are called both
+The HZ range specific helpers <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_usecs_to_jiffies()</span></code> are called both
 directly here and from <a class="reference internal" href="#c.__msecs_to_jiffies" title="__msecs_to_jiffies"><code class="xref c c-func docutils literal notranslate"><span class="pre">__msecs_to_jiffies()</span></code></a> in the case where
 constant folding is not possible.</p>
 <p><strong>Return</strong></p>
@@ -2011,10 +2011,10 @@ MAX_JIFFY_OFFSET values] mean ‘infinite timeout’ too.</p></li>
 <li><p>all other values are converted to jiffies by either multiplying
 the input value by a factor or dividing it with a factor and
 handling any 32-bit overflows.
-for the details see _msecs_to_jiffies()</p></li>
+for the details see <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_msecs_to_jiffies()</span></code></p></li>
 </ul>
 <p><a class="reference internal" href="#c.msecs_to_jiffies" title="msecs_to_jiffies"><code class="xref c c-func docutils literal notranslate"><span class="pre">msecs_to_jiffies()</span></code></a> checks for the passed in value being a constant
-via __builtin_constant_p() allowing gcc to eliminate most of the
+via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__builtin_constant_p()</span></code> allowing gcc to eliminate most of the
 code, <a class="reference internal" href="#c.__msecs_to_jiffies" title="__msecs_to_jiffies"><code class="xref c c-func docutils literal notranslate"><span class="pre">__msecs_to_jiffies()</span></code></a> is called if the value passed does not
 allow constant folding and the actual conversion must be done at
 runtime.
@@ -2886,12 +2886,10 @@ for the rest of the shutdown operation.</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>...</dt><dd><p>cmp1  &lt; cmp2: return &lt;0
+<p>...
+cmp1  &lt; cmp2: return &lt;0
 cmp1 == cmp2: return 0
 cmp1  &gt; cmp2: return &gt;0</p>
-</dd>
-</dl>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ktime_after">
@@ -3116,7 +3114,7 @@ softirq based mode is considered for debug purpose only!</p>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hrtimer</span> <span class="pre">*timer</span></code></dt><dd><p>hrtimer to stop</p>
 </dd>
 </dl>
-<p><strong>Return</strong></p>
+<p><strong>Description</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><p>0 when the timer was not active</p></li>
@@ -3139,10 +3137,8 @@ cannot be stopped</p></li>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p>0 when the timer was not active
+<p>0 when the timer was not active
 1 when the timer was active</p>
-</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.__hrtimer_get_remaining">
@@ -3167,7 +3163,7 @@ cannot be stopped</p></li>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hrtimer</span> <span class="pre">*timer</span></code></dt><dd><p>the timer to be initialized</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">enum</span> <span class="pre">hrtimer_restart</span> <span class="pre">(*function)(struct</span> <span class="pre">hrtimer</span> <span class="pre">*)</span></code></dt><dd><p>the callback function</p>
@@ -3177,11 +3173,14 @@ cannot be stopped</p></li>
 <dt><code class="docutils literal notranslate"><span class="pre">enum</span> <span class="pre">hrtimer_mode</span> <span class="pre">mode</span></code></dt><dd><p>The modes which are relevant for initialization:
 HRTIMER_MODE_ABS, HRTIMER_MODE_REL, HRTIMER_MODE_ABS_SOFT,
 HRTIMER_MODE_REL_SOFT</p>
-<p>The PINNED variants of the above can be handed in,
-but the PINNED bit is ignored as pinning happens
-when the hrtimer is started</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>The PINNED variants of the above can be handed in,
+but the PINNED bit is ignored as pinning happens
+when the hrtimer is started</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.hrtimer_setup_on_stack">
@@ -3202,7 +3201,7 @@ when the hrtimer is started</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Similar to <a class="reference internal" href="#c.hrtimer_setup" title="hrtimer_setup"><code class="xref c c-func docutils literal notranslate"><span class="pre">hrtimer_setup()</span></code></a>, except that this one must be used if struct hrtimer is in stack
+<p>Similar to <a class="reference internal" href="#c.hrtimer_setup" title="hrtimer_setup"><code class="xref c c-func docutils literal notranslate"><span class="pre">hrtimer_setup()</span></code></a>, except that this one must be used if <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hrtimer</span></code> is in stack
 memory.</p>
 </div>
 <dl class="c function">
@@ -3220,7 +3219,7 @@ memory.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Wrapper around hrtimer_start_expires() for hrtimer_sleeper based timers
+<p>Wrapper around <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hrtimer_start_expires()</span></code> for hrtimer_sleeper based timers
 to allow PREEMPT_RT to tweak the delivery mode (soft/hardirq context)</p>
 </div>
 <dl class="c function">
@@ -3259,8 +3258,11 @@ to allow PREEMPT_RT to tweak the delivery mode (soft/hardirq context)</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>returns true if the wait list is not empty</p>
+<p><strong>NOTE</strong></p>
+<p>this function is lockless and requires care, incorrect usage _will_
+lead to sporadic and non-obvious failure.</p>
 <p>Use either while holding wait_queue_head::lock or when used for wakeups
-with an extra smp_mb() like:</p>
+with an extra <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smp_mb()</span></code> like:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>CPU0 - waker                    CPU1 - waiter
 
                                 for (;;) {
@@ -3273,14 +3275,11 @@ if (waitqueue_active(wq_head))         if (@cond)
                                 finish_wait(&amp;wq_head, &amp;wait);
 </pre></div>
 </div>
-<p>Because without the explicit smp_mb() it’s possible for the
+<p>Because without the explicit <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smp_mb()</span></code> it’s possible for the
 <a class="reference internal" href="#c.waitqueue_active" title="waitqueue_active"><code class="xref c c-func docutils literal notranslate"><span class="pre">waitqueue_active()</span></code></a> load to get hoisted over the <strong>cond</strong> store such that we’ll
 observe an empty wait list while the waiter might not observe <strong>cond</strong>.</p>
-<p>Also note that this ‘optimization’ trades a spin_lock() for an smp_mb(),
+<p>Also note that this ‘optimization’ trades a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock()</span></code> for an <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smp_mb()</span></code>,
 which (when the lock is uncontended) are of roughly equal cost.</p>
-<p><strong>NOTE</strong></p>
-<p>this function is lockless and requires care, incorrect usage _will_
-lead to sporadic and non-obvious failure.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.wq_has_single_sleeper">
@@ -3355,7 +3354,7 @@ an explicit <a class="reference internal" href="../core-api/kernel-api.html#c.sy
 <p>The process is put to sleep (TASK_UNINTERRUPTIBLE) until the
 <strong>condition</strong> evaluates to true. The <strong>condition</strong> is checked each time
 the waitqueue <strong>wq_head</strong> is woken up.</p>
-<p>wake_up() has to be called after changing any variable that could
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wake_up()</span></code> has to be called after changing any variable that could
 change the result of the wait condition.</p>
 </div>
 <dl class="c macro">
@@ -3379,7 +3378,7 @@ change the result of the wait condition.</p>
 <p>The process is put to sleep (TASK_INTERRUPTIBLE -- so as not to contribute
 to system load) until the <strong>condition</strong> evaluates to true. The
 <strong>condition</strong> is checked each time the waitqueue <strong>wq_head</strong> is woken up.</p>
-<p>wake_up() has to be called after changing any variable that could
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wake_up()</span></code> has to be called after changing any variable that could
 change the result of the wait condition.</p>
 </div>
 <dl class="c macro">
@@ -3405,7 +3404,7 @@ change the result of the wait condition.</p>
 <p>The process is put to sleep (TASK_UNINTERRUPTIBLE) until the
 <strong>condition</strong> evaluates to true. The <strong>condition</strong> is checked each time
 the waitqueue <strong>wq_head</strong> is woken up.</p>
-<p>wake_up() has to be called after changing any variable that could
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wake_up()</span></code> has to be called after changing any variable that could
 change the result of the wait condition.</p>
 <p><strong>Return</strong></p>
 <p>0 if the <strong>condition</strong> evaluated to <code class="docutils literal notranslate"><span class="pre">false</span></code> after the <strong>timeout</strong> elapsed,
@@ -3438,7 +3437,7 @@ to <code class="docutils literal notranslate"><span class="pre">true</span></cod
 <p>The process is put to sleep (TASK_UNINTERRUPTIBLE) until the
 <strong>condition</strong> evaluates to true. The <strong>condition</strong> is checked each time
 the waitqueue <strong>wq_head</strong> is woken up.</p>
-<p>wake_up() has to be called after changing any variable that could
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wake_up()</span></code> has to be called after changing any variable that could
 change the result of the wait condition.</p>
 </div>
 <dl class="c macro">
@@ -3462,7 +3461,7 @@ change the result of the wait condition.</p>
 <p>The process is put to sleep (TASK_INTERRUPTIBLE) until the
 <strong>condition</strong> evaluates to true or a signal is received.
 The <strong>condition</strong> is checked each time the waitqueue <strong>wq_head</strong> is woken up.</p>
-<p>wake_up() has to be called after changing any variable that could
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wake_up()</span></code> has to be called after changing any variable that could
 change the result of the wait condition.</p>
 <p>The function will return -ERESTARTSYS if it was interrupted by a
 signal and 0 if <strong>condition</strong> evaluated to true.</p>
@@ -3490,7 +3489,7 @@ signal and 0 if <strong>condition</strong> evaluated to true.</p>
 <p>The process is put to sleep (TASK_INTERRUPTIBLE) until the
 <strong>condition</strong> evaluates to true or a signal is received.
 The <strong>condition</strong> is checked each time the waitqueue <strong>wq_head</strong> is woken up.</p>
-<p>wake_up() has to be called after changing any variable that could
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wake_up()</span></code> has to be called after changing any variable that could
 change the result of the wait condition.</p>
 <p><strong>Return</strong></p>
 <p>0 if the <strong>condition</strong> evaluated to <code class="docutils literal notranslate"><span class="pre">false</span></code> after the <strong>timeout</strong> elapsed,
@@ -3522,7 +3521,7 @@ interrupted by a signal.</p>
 <p>The process is put to sleep (TASK_UNINTERRUPTIBLE) until the
 <strong>condition</strong> evaluates to true or a signal is received.
 The <strong>condition</strong> is checked each time the waitqueue <strong>wq_head</strong> is woken up.</p>
-<p>wake_up() has to be called after changing any variable that could
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wake_up()</span></code> has to be called after changing any variable that could
 change the result of the wait condition.</p>
 <p>The function returns 0 if <strong>condition</strong> became true, or -ETIME if the timeout
 elapsed.</p>
@@ -3550,7 +3549,7 @@ elapsed.</p>
 <p>The process is put to sleep (TASK_INTERRUPTIBLE) until the
 <strong>condition</strong> evaluates to true or a signal is received.
 The <strong>condition</strong> is checked each time the waitqueue <strong>wq</strong> is woken up.</p>
-<p>wake_up() has to be called after changing any variable that could
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wake_up()</span></code> has to be called after changing any variable that could
 change the result of the wait condition.</p>
 <p>The function returns 0 if <strong>condition</strong> became true, -ERESTARTSYS if it was
 interrupted by a signal, or -ETIME if the timeout elapsed.</p>
@@ -3576,7 +3575,7 @@ interrupted by a signal, or -ETIME if the timeout elapsed.</p>
 <p>The process is put to sleep (TASK_IDLE) until the
 <strong>condition</strong> evaluates to true.
 The <strong>condition</strong> is checked each time the waitqueue <strong>wq_head</strong> is woken up.</p>
-<p>wake_up() has to be called after changing any variable that could
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wake_up()</span></code> has to be called after changing any variable that could
 change the result of the wait condition.</p>
 </div>
 <dl class="c macro">
@@ -3603,7 +3602,7 @@ The <strong>condition</strong> is checked each time the waitqueue <strong>wq_hea
 <p>The process is put on the wait queue with an WQ_FLAG_EXCLUSIVE flag
 set thus if other processes wait on the same list, when this
 process is woken further processes are not considered.</p>
-<p>wake_up() has to be called after changing any variable that could
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wake_up()</span></code> has to be called after changing any variable that could
 change the result of the wait condition.</p>
 </div>
 <dl class="c macro">
@@ -3629,7 +3628,7 @@ change the result of the wait condition.</p>
 <p>The process is put to sleep (TASK_IDLE) until the
 <strong>condition</strong> evaluates to true. The <strong>condition</strong> is checked each time
 the waitqueue <strong>wq_head</strong> is woken up.</p>
-<p>wake_up() has to be called after changing any variable that could
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wake_up()</span></code> has to be called after changing any variable that could
 change the result of the wait condition.</p>
 <p><strong>Return</strong></p>
 <p>0 if the <strong>condition</strong> evaluated to <code class="docutils literal notranslate"><span class="pre">false</span></code> after the <strong>timeout</strong> elapsed,
@@ -3663,7 +3662,7 @@ the waitqueue <strong>wq_head</strong> is woken up.</p>
 <p>The process is put on the wait queue with an WQ_FLAG_EXCLUSIVE flag
 set thus if other processes wait on the same list, when this
 process is woken further processes are not considered.</p>
-<p>wake_up() has to be called after changing any variable that could
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wake_up()</span></code> has to be called after changing any variable that could
 change the result of the wait condition.</p>
 <p><strong>Return</strong></p>
 <p>0 if the <strong>condition</strong> evaluated to <code class="docutils literal notranslate"><span class="pre">false</span></code> after the <strong>timeout</strong> elapsed,
@@ -3695,10 +3694,10 @@ The <strong>condition</strong> is checked each time the waitqueue <strong>wq</st
 <p>It must be called with wq.lock being held.  This spinlock is
 unlocked while sleeping but <strong>condition</strong> testing is done while lock
 is held and when this macro exits the lock is held.</p>
-<p>The lock is locked/unlocked using spin_lock()/spin_unlock()
+<p>The lock is locked/unlocked using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_unlock()</span></code>
 functions which must match the way they are locked/unlocked outside
 of this macro.</p>
-<p>wake_up_locked() has to be called after changing any variable that could
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wake_up_locked()</span></code> has to be called after changing any variable that could
 change the result of the wait condition.</p>
 <p>The function will return -ERESTARTSYS if it was interrupted by a
 signal and 0 if <strong>condition</strong> evaluated to true.</p>
@@ -3727,10 +3726,10 @@ The <strong>condition</strong> is checked each time the waitqueue <strong>wq</st
 <p>It must be called with wq.lock being held.  This spinlock is
 unlocked while sleeping but <strong>condition</strong> testing is done while lock
 is held and when this macro exits the lock is held.</p>
-<p>The lock is locked/unlocked using spin_lock_irq()/spin_unlock_irq()
+<p>The lock is locked/unlocked using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_irq()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_unlock_irq()</span></code>
 functions which must match the way they are locked/unlocked outside
 of this macro.</p>
-<p>wake_up_locked() has to be called after changing any variable that could
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wake_up_locked()</span></code> has to be called after changing any variable that could
 change the result of the wait condition.</p>
 <p>The function will return -ERESTARTSYS if it was interrupted by a
 signal and 0 if <strong>condition</strong> evaluated to true.</p>
@@ -3759,13 +3758,13 @@ The <strong>condition</strong> is checked each time the waitqueue <strong>wq</st
 <p>It must be called with wq.lock being held.  This spinlock is
 unlocked while sleeping but <strong>condition</strong> testing is done while lock
 is held and when this macro exits the lock is held.</p>
-<p>The lock is locked/unlocked using spin_lock()/spin_unlock()
+<p>The lock is locked/unlocked using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_unlock()</span></code>
 functions which must match the way they are locked/unlocked outside
 of this macro.</p>
 <p>The process is put on the wait queue with an WQ_FLAG_EXCLUSIVE flag
 set thus when other process waits process on the list if this
 process is awaken further processes are not considered.</p>
-<p>wake_up_locked() has to be called after changing any variable that could
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wake_up_locked()</span></code> has to be called after changing any variable that could
 change the result of the wait condition.</p>
 <p>The function will return -ERESTARTSYS if it was interrupted by a
 signal and 0 if <strong>condition</strong> evaluated to true.</p>
@@ -3794,13 +3793,13 @@ The <strong>condition</strong> is checked each time the waitqueue <strong>wq</st
 <p>It must be called with wq.lock being held.  This spinlock is
 unlocked while sleeping but <strong>condition</strong> testing is done while lock
 is held and when this macro exits the lock is held.</p>
-<p>The lock is locked/unlocked using spin_lock_irq()/spin_unlock_irq()
+<p>The lock is locked/unlocked using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_irq()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_unlock_irq()</span></code>
 functions which must match the way they are locked/unlocked outside
 of this macro.</p>
 <p>The process is put on the wait queue with an WQ_FLAG_EXCLUSIVE flag
 set thus when other process waits process on the list if this
 process is awaken further processes are not considered.</p>
-<p>wake_up_locked() has to be called after changing any variable that could
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wake_up_locked()</span></code> has to be called after changing any variable that could
 change the result of the wait condition.</p>
 <p>The function will return -ERESTARTSYS if it was interrupted by a
 signal and 0 if <strong>condition</strong> evaluated to true.</p>
@@ -3826,7 +3825,7 @@ signal and 0 if <strong>condition</strong> evaluated to true.</p>
 <p>The process is put to sleep (TASK_KILLABLE) until the
 <strong>condition</strong> evaluates to true or a signal is received.
 The <strong>condition</strong> is checked each time the waitqueue <strong>wq_head</strong> is woken up.</p>
-<p>wake_up() has to be called after changing any variable that could
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wake_up()</span></code> has to be called after changing any variable that could
 change the result of the wait condition.</p>
 <p>The function will return -ERESTARTSYS if it was interrupted by a
 signal and 0 if <strong>condition</strong> evaluated to true.</p>
@@ -3854,7 +3853,7 @@ signal and 0 if <strong>condition</strong> evaluated to true.</p>
 <p>The process is put to sleep (<strong>state</strong>) until the <strong>condition</strong> evaluates to true
 or a signal is received (when allowed by <strong>state</strong>).  The <strong>condition</strong> is checked
 each time the waitqueue <strong>wq_head</strong> is woken up.</p>
-<p>wake_up() has to be called after changing any variable that could
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wake_up()</span></code> has to be called after changing any variable that could
 change the result of the wait condition.</p>
 <p>The function will return -ERESTARTSYS if it was interrupted by a signal
 (when allowed by <strong>state</strong>) and 0 if <strong>condition</strong> evaluated to true.</p>
@@ -3882,7 +3881,7 @@ change the result of the wait condition.</p>
 <p>The process is put to sleep (TASK_KILLABLE) until the
 <strong>condition</strong> evaluates to true or a kill signal is received.
 The <strong>condition</strong> is checked each time the waitqueue <strong>wq_head</strong> is woken up.</p>
-<p>wake_up() has to be called after changing any variable that could
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wake_up()</span></code> has to be called after changing any variable that could
 change the result of the wait condition.</p>
 <p>Only kill signals interrupt this process.</p>
 <p><strong>Return</strong></p>
@@ -3909,7 +3908,7 @@ interrupted by a kill signal.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">condition</span></code></dt><dd><p>a C expression for the event to wait for</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">lock</span></code></dt><dd><p>a locked spinlock_t, which will be released before cmd
-and schedule() and reacquired afterwards.</p>
+and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">schedule()</span></code> and reacquired afterwards.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">cmd</span></code></dt><dd><p>a command which is invoked outside the critical section before
 sleep</p>
@@ -3919,7 +3918,7 @@ sleep</p>
 <p>The process is put to sleep (TASK_UNINTERRUPTIBLE) until the
 <strong>condition</strong> evaluates to true. The <strong>condition</strong> is checked each time
 the waitqueue <strong>wq_head</strong> is woken up.</p>
-<p>wake_up() has to be called after changing any variable that could
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wake_up()</span></code> has to be called after changing any variable that could
 change the result of the wait condition.</p>
 <p>This is supposed to be called while holding the lock. The lock is
 dropped before invoking the cmd and going to sleep and is reacquired
@@ -3941,7 +3940,7 @@ afterwards.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">condition</span></code></dt><dd><p>a C expression for the event to wait for</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">lock</span></code></dt><dd><p>a locked spinlock_t, which will be released before schedule()
+<dt><code class="docutils literal notranslate"><span class="pre">lock</span></code></dt><dd><p>a locked spinlock_t, which will be released before <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">schedule()</span></code>
 and reacquired afterwards.</p>
 </dd>
 </dl>
@@ -3949,7 +3948,7 @@ and reacquired afterwards.</p>
 <p>The process is put to sleep (TASK_UNINTERRUPTIBLE) until the
 <strong>condition</strong> evaluates to true. The <strong>condition</strong> is checked each time
 the waitqueue <strong>wq_head</strong> is woken up.</p>
-<p>wake_up() has to be called after changing any variable that could
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wake_up()</span></code> has to be called after changing any variable that could
 change the result of the wait condition.</p>
 <p>This is supposed to be called while holding the lock. The lock is
 dropped before going to sleep and is reacquired afterwards.</p>
@@ -3971,7 +3970,7 @@ dropped before going to sleep and is reacquired afterwards.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">condition</span></code></dt><dd><p>a C expression for the event to wait for</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">lock</span></code></dt><dd><p>a locked spinlock_t, which will be released before cmd and
-schedule() and reacquired afterwards.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">schedule()</span></code> and reacquired afterwards.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">cmd</span></code></dt><dd><p>a command which is invoked outside the critical section before
 sleep</p>
@@ -3981,7 +3980,7 @@ sleep</p>
 <p>The process is put to sleep (TASK_INTERRUPTIBLE) until the
 <strong>condition</strong> evaluates to true or a signal is received. The <strong>condition</strong> is
 checked each time the waitqueue <strong>wq_head</strong> is woken up.</p>
-<p>wake_up() has to be called after changing any variable that could
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wake_up()</span></code> has to be called after changing any variable that could
 change the result of the wait condition.</p>
 <p>This is supposed to be called while holding the lock. The lock is
 dropped before invoking the cmd and going to sleep and is reacquired
@@ -4005,7 +4004,7 @@ and 0 if <strong>condition</strong> evaluated to true.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">condition</span></code></dt><dd><p>a C expression for the event to wait for</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">lock</span></code></dt><dd><p>a locked spinlock_t, which will be released before schedule()
+<dt><code class="docutils literal notranslate"><span class="pre">lock</span></code></dt><dd><p>a locked spinlock_t, which will be released before <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">schedule()</span></code>
 and reacquired afterwards.</p>
 </dd>
 </dl>
@@ -4013,7 +4012,7 @@ and reacquired afterwards.</p>
 <p>The process is put to sleep (TASK_INTERRUPTIBLE) until the
 <strong>condition</strong> evaluates to true or signal is received. The <strong>condition</strong> is
 checked each time the waitqueue <strong>wq_head</strong> is woken up.</p>
-<p>wake_up() has to be called after changing any variable that could
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wake_up()</span></code> has to be called after changing any variable that could
 change the result of the wait condition.</p>
 <p>This is supposed to be called while holding the lock. The lock is
 dropped before going to sleep and is reacquired afterwards.</p>
@@ -4036,7 +4035,7 @@ and 0 if <strong>condition</strong> evaluated to true.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">condition</span></code></dt><dd><p>a C expression for the event to wait for</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">lock</span></code></dt><dd><p>a locked spinlock_t, which will be released before schedule()
+<dt><code class="docutils literal notranslate"><span class="pre">lock</span></code></dt><dd><p>a locked spinlock_t, which will be released before <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">schedule()</span></code>
 and reacquired afterwards.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">timeout</span></code></dt><dd><p>timeout, in jiffies</p>
@@ -4046,7 +4045,7 @@ and reacquired afterwards.</p>
 <p>The process is put to sleep (TASK_INTERRUPTIBLE) until the
 <strong>condition</strong> evaluates to true or signal is received. The <strong>condition</strong> is
 checked each time the waitqueue <strong>wq_head</strong> is woken up.</p>
-<p>wake_up() has to be called after changing any variable that could
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wake_up()</span></code> has to be called after changing any variable that could
 change the result of the wait condition.</p>
 <p>This is supposed to be called while holding the lock. The lock is
 dropped before going to sleep and is reacquired afterwards.</p>
@@ -4166,7 +4165,7 @@ queued.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Handle sys_wait4() work for <code class="docutils literal notranslate"><span class="pre">p</span></code> in state <code class="docutils literal notranslate"><span class="pre">TASK_STOPPED</span></code> or <code class="docutils literal notranslate"><span class="pre">TASK_TRACED</span></code>.</p>
+<p>Handle <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sys_wait4()</span></code> work for <code class="docutils literal notranslate"><span class="pre">p</span></code> in state <code class="docutils literal notranslate"><span class="pre">TASK_STOPPED</span></code> or <code class="docutils literal notranslate"><span class="pre">TASK_TRACED</span></code>.</p>
 <p><strong>Context</strong></p>
 <p>read_lock(<code class="xref c c-type docutils literal notranslate"><span class="pre">tasklist_lock</span></code>), which is released if return value is
 non-zero.  Also, grabs and releases <strong>p-&gt;sighand-&gt;siglock</strong>.</p>
@@ -4591,17 +4590,20 @@ of <strong>pidfd</strong>.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">pid_t</span> <span class="pre">tgid</span></code></dt><dd><p>the thread group ID of the thread</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">pid_t</span> <span class="pre">pid</span></code></dt><dd><p>the PID of the thread</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">sig</span></code></dt><dd><p>signal to be sent</p>
-<p>This syscall also checks the <strong>tgid</strong> and returns -ESRCH even if the PID
-exists but it’s not belonging to the target process anymore. This
-method solves the problem of threads exiting and PIDs getting reused.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This syscall also checks the <strong>tgid</strong> and returns -ESRCH even if the PID
+exists but it’s not belonging to the target process anymore. This
+method solves the problem of threads exiting and PIDs getting reused.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.sys_tkill">
@@ -4611,13 +4613,16 @@ method solves the problem of threads exiting and PIDs getting reused.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">pid_t</span> <span class="pre">pid</span></code></dt><dd><p>the PID of the task</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">sig</span></code></dt><dd><p>signal to be sent</p>
-<p>Send a signal to only one task, even if it’s a CLONE_THREAD task.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Send a signal to only one task, even if it’s a CLONE_THREAD task.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.sys_rt_sigqueueinfo">
@@ -4717,7 +4722,7 @@ others support only sys_rt_sigprocmask.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">threadfn</span></code></dt><dd><p>the function to run in the thread</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">data</span></code></dt><dd><p>data pointer for <strong>threadfn()</strong></p>
+<dt><code class="docutils literal notranslate"><span class="pre">data</span></code></dt><dd><p>data pointer for <strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">threadfn()</span></code></strong></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">namefmt</span></code></dt><dd><p>printf-style format string for the thread name</p>
 </dd>
@@ -4798,7 +4803,7 @@ ERR_PTR(-ENOMEM).</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Convenient wrapper for kthread_create_worker() followed by
+<p>Convenient wrapper for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kthread_create_worker()</span></code> followed by
 <a class="reference internal" href="#c.wake_up_process" title="wake_up_process"><code class="xref c c-func docutils literal notranslate"><span class="pre">wake_up_process()</span></code></a>.  Returns the kthread_worker or ERR_PTR(-ENOMEM).</p>
 </div>
 <dl class="c function">
@@ -4855,7 +4860,7 @@ value will be passed through to <a class="reference internal" href="#c.kthread_s
 <p><strong>Description</strong></p>
 <p>When someone calls <a class="reference internal" href="#c.kthread_park" title="kthread_park"><code class="xref c c-func docutils literal notranslate"><span class="pre">kthread_park()</span></code></a> on your kthread, it will be woken
 and this will return true.  You should then do the necessary
-cleanup and call kthread_parkme()</p>
+cleanup and call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kthread_parkme()</span></code></p>
 <p>Similar to <a class="reference internal" href="#c.kthread_should_stop" title="kthread_should_stop"><code class="xref c c-func docutils literal notranslate"><span class="pre">kthread_should_stop()</span></code></a>, but this keeps the thread alive
 and in a park position. <a class="reference internal" href="#c.kthread_unpark" title="kthread_unpark"><code class="xref c c-func docutils literal notranslate"><span class="pre">kthread_unpark()</span></code></a> “restarts” the thread and
 calls the thread function again.</p>
@@ -4876,7 +4881,7 @@ calls the thread function again.</p>
 <p><a class="reference internal" href="#c.kthread_should_stop" title="kthread_should_stop"><code class="xref c c-func docutils literal notranslate"><span class="pre">kthread_should_stop()</span></code></a> for freezable kthreads, which will enter
 refrigerator if necessary.  This function is safe from <a class="reference internal" href="#c.kthread_stop" title="kthread_stop"><code class="xref c c-func docutils literal notranslate"><span class="pre">kthread_stop()</span></code></a> /
 freezer deadlock and freezable kthreads should use this function instead
-of calling try_to_freeze() directly.</p>
+of calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">try_to_freeze()</span></code> directly.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.kthread_func">
@@ -4975,8 +4980,8 @@ it.  See also <a class="reference internal" href="#c.kthread_run" title="kthread
 is affine to all CPUs.</p>
 <p>If thread is going to be bound on a particular cpu, give its node
 in <strong>node</strong>, to get NUMA affinity for kthread stack, or else give NUMA_NO_NODE.
-When woken, the thread will run <strong>threadfn()</strong> with <strong>data</strong> as its
-argument. <strong>threadfn()</strong> can either return directly if it is a
+When woken, the thread will run <strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">threadfn()</span></code></strong> with <strong>data</strong> as its
+argument. <strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">threadfn()</span></code></strong> can either return directly if it is a
 standalone thread for which no one will call <a class="reference internal" href="#c.kthread_stop" title="kthread_stop"><code class="xref c c-func docutils literal notranslate"><span class="pre">kthread_stop()</span></code></a>, or
 return when ‘<a class="reference internal" href="#c.kthread_should_stop" title="kthread_should_stop"><code class="xref c c-func docutils literal notranslate"><span class="pre">kthread_should_stop()</span></code></a>’ is true (which means
 <a class="reference internal" href="#c.kthread_stop" title="kthread_stop"><code class="xref c c-func docutils literal notranslate"><span class="pre">kthread_stop()</span></code></a> has been called).  The return value should be zero
@@ -4998,7 +5003,7 @@ or a negative error number; it will be passed to <a class="reference internal" h
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This function is equivalent to set_cpus_allowed(),
+<p>This function is equivalent to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_cpus_allowed()</span></code>,
 except that <strong>cpu</strong> doesn’t need to be online, and the thread must be
 stopped (i.e., just returned from <a class="reference internal" href="#c.kthread_create" title="kthread_create"><code class="xref c c-func docutils literal notranslate"><span class="pre">kthread_create()</span></code></a>).</p>
 </div>
@@ -5057,7 +5062,7 @@ bound to the cpu again.</p>
 <p>Sets <a class="reference internal" href="#c.kthread_should_park" title="kthread_should_park"><code class="xref c c-func docutils literal notranslate"><span class="pre">kthread_should_park()</span></code></a> for <strong>k</strong> to return true, wakes it, and
 waits for it to return. This can also be called after <a class="reference internal" href="#c.kthread_create" title="kthread_create"><code class="xref c c-func docutils literal notranslate"><span class="pre">kthread_create()</span></code></a>
 instead of calling <a class="reference internal" href="#c.wake_up_process" title="wake_up_process"><code class="xref c c-func docutils literal notranslate"><span class="pre">wake_up_process()</span></code></a>: the thread will park without
-calling threadfn().</p>
+calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">threadfn()</span></code>.</p>
 <p>Returns 0 if the thread is parked, -ENOSYS if the thread exited.
 If called by the kthread itself just the park bit is set.</p>
 </div>
@@ -5077,10 +5082,10 @@ If called by the kthread itself just the park bit is set.</p>
 <p>Sets <a class="reference internal" href="#c.kthread_should_stop" title="kthread_should_stop"><code class="xref c c-func docutils literal notranslate"><span class="pre">kthread_should_stop()</span></code></a> for <strong>k</strong> to return true, wakes it, and
 waits for it to exit. This can also be called after <a class="reference internal" href="#c.kthread_create" title="kthread_create"><code class="xref c c-func docutils literal notranslate"><span class="pre">kthread_create()</span></code></a>
 instead of calling <a class="reference internal" href="#c.wake_up_process" title="wake_up_process"><code class="xref c c-func docutils literal notranslate"><span class="pre">wake_up_process()</span></code></a>: the thread will exit without
-calling threadfn().</p>
-<p>If threadfn() may call <a class="reference internal" href="#c.kthread_exit" title="kthread_exit"><code class="xref c c-func docutils literal notranslate"><span class="pre">kthread_exit()</span></code></a> itself, the caller must ensure
+calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">threadfn()</span></code>.</p>
+<p>If <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">threadfn()</span></code> may call <a class="reference internal" href="#c.kthread_exit" title="kthread_exit"><code class="xref c c-func docutils literal notranslate"><span class="pre">kthread_exit()</span></code></a> itself, the caller must ensure
 task_struct can’t go away.</p>
-<p>Returns the result of threadfn(), or <code class="docutils literal notranslate"><span class="pre">-EINTR</span></code> if <a class="reference internal" href="#c.wake_up_process" title="wake_up_process"><code class="xref c c-func docutils literal notranslate"><span class="pre">wake_up_process()</span></code></a>
+<p>Returns the result of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">threadfn()</span></code>, or <code class="docutils literal notranslate"><span class="pre">-EINTR</span></code> if <a class="reference internal" href="#c.wake_up_process" title="wake_up_process"><code class="xref c c-func docutils literal notranslate"><span class="pre">wake_up_process()</span></code></a>
 was never called.</p>
 </div>
 <dl class="c function">
@@ -5097,8 +5102,8 @@ was never called.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Stops a thread created by <a class="reference internal" href="#c.kthread_create" title="kthread_create"><code class="xref c c-func docutils literal notranslate"><span class="pre">kthread_create()</span></code></a> and put its task_struct.
-Only use when holding an extra task struct reference obtained by
-calling get_task_struct().</p>
+Only use when holding an extra task <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">reference</span></code> obtained by
+calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_task_struct()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.kthread_worker_fn">
@@ -5204,7 +5209,7 @@ when the caller was killed by a fatal signal.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Queue <strong>work</strong> to work processor <strong>task</strong> for async execution.  <strong>task</strong>
-must have been created with kthread_create_worker().  Returns <code class="docutils literal notranslate"><span class="pre">true</span></code>
+must have been created with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kthread_create_worker()</span></code>.  Returns <code class="docutils literal notranslate"><span class="pre">true</span></code>
 if <strong>work</strong> was successfully queued, <code class="docutils literal notranslate"><span class="pre">false</span></code> if it was already pending.</p>
 <p>Reinitialize the work if it needs to be used by another worker.
 For example, when the worker was stopped and started again.</p>
@@ -5222,7 +5227,7 @@ For example, when the worker was stopped and started again.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>The format of the function is defined by struct timer_list.
+<p>The format of the function is defined by <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">timer_list</span></code>.
 It should have been called from irqsafe timer with irq already off.</p>
 </div>
 <dl class="c function">
@@ -5292,7 +5297,7 @@ win and return <code class="docutils literal notranslate"><span class="pre">true
 counting and the number of queued works stays the same. Anyway, the caller
 is supposed to synchronize these operations a reasonable way.</p>
 <p>This function is safe to call from any context including IRQ handler.
-See __kthread_cancel_work() and <a class="reference internal" href="#c.kthread_delayed_work_timer_fn" title="kthread_delayed_work_timer_fn"><code class="xref c c-func docutils literal notranslate"><span class="pre">kthread_delayed_work_timer_fn()</span></code></a>
+See <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__kthread_cancel_work()</span></code> and <a class="reference internal" href="#c.kthread_delayed_work_timer_fn" title="kthread_delayed_work_timer_fn"><code class="xref c c-func docutils literal notranslate"><span class="pre">kthread_delayed_work_timer_fn()</span></code></a>
 for details.</p>
 <p><strong>Return</strong></p>
 <p><code class="docutils literal notranslate"><span class="pre">false</span></code> if <strong>dwork</strong> was idle and queued, <code class="docutils literal notranslate"><span class="pre">true</span></code> otherwise.</p>
@@ -5639,7 +5644,7 @@ condition.</p>
 ultimately leak on underflow and will fail to decrement when saturated
 at REFCOUNT_SATURATED.</p>
 <p>Provides release memory ordering, such that prior loads and stores are done
-before, and provides an acquire ordering on success such that free()
+before, and provides an acquire ordering on success such that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">free()</span></code>
 must come after.</p>
 <p>Use of this function is not recommended for the normal reference counting
 use case in which references are taken and released one at a time.  In these
@@ -5664,7 +5669,7 @@ decrement a reference count.</p>
 <p>Similar to <a class="reference internal" href="#c.atomic_dec_and_test" title="atomic_dec_and_test"><code class="xref c c-func docutils literal notranslate"><span class="pre">atomic_dec_and_test()</span></code></a>, it will WARN on underflow and fail to
 decrement when saturated at REFCOUNT_SATURATED.</p>
 <p>Provides release memory ordering, such that prior loads and stores are done
-before, and provides an acquire ordering on success such that free()
+before, and provides an acquire ordering on success such that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">free()</span></code>
 must come after.</p>
 <p><strong>Return</strong></p>
 <p>true if the resulting refcount is 0, false otherwise</p>
@@ -5747,13 +5752,11 @@ it will return false.</p>
 <p>Similar to <a class="reference internal" href="../kernel-hacking/locking.html#c.atomic_dec_and_mutex_lock" title="atomic_dec_and_mutex_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">atomic_dec_and_mutex_lock()</span></code></a>, it will WARN on underflow and fail
 to decrement when saturated at REFCOUNT_SATURATED.</p>
 <p>Provides release memory ordering, such that prior loads and stores are done
-before, and provides a control dependency such that free() must come after.
+before, and provides a control dependency such that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">free()</span></code> must come after.
 See the comment on top.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>true and hold mutex if able to decrement refcount to 0, false</dt><dd><p>otherwise</p>
-</dd>
-</dl>
+<p>true and hold mutex if able to decrement refcount to 0, false
+otherwise</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.refcount_dec_and_lock">
@@ -5770,16 +5773,14 @@ See the comment on top.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Similar to atomic_dec_and_lock(), it will WARN on underflow and fail to
+<p>Similar to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">atomic_dec_and_lock()</span></code>, it will WARN on underflow and fail to
 decrement when saturated at REFCOUNT_SATURATED.</p>
 <p>Provides release memory ordering, such that prior loads and stores are done
-before, and provides a control dependency such that free() must come after.
+before, and provides a control dependency such that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">free()</span></code> must come after.
 See the comment on top.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>true and hold spinlock if able to decrement refcount to 0, false</dt><dd><p>otherwise</p>
-</dd>
-</dl>
+<p>true and hold spinlock if able to decrement refcount to 0, false
+otherwise</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.refcount_dec_and_lock_irqsave">
@@ -5801,10 +5802,8 @@ See the comment on top.</p>
 <p>Same as <a class="reference internal" href="#c.refcount_dec_and_lock" title="refcount_dec_and_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">refcount_dec_and_lock()</span></code></a> above except that the spinlock is acquired
 with disabled interrupts.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>true and hold spinlock if able to decrement refcount to 0, false</dt><dd><p>otherwise</p>
-</dd>
-</dl>
+<p>true and hold spinlock if able to decrement refcount to 0, false
+otherwise</p>
 </div>
 </section>
 <section id="atomics">
@@ -15954,7 +15953,7 @@ Otherwise, <strong>v</strong> is not modified and relaxed ordering is provided.<
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kobject</span> <span class="pre">*kobj</span></code></dt><dd><p>struct kobject to set the name of</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kobject</span> <span class="pre">*kobj</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kobject</span></code> to set the name of</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*fmt</span></code></dt><dd><p>format string used to build the name</p>
 </dd>
@@ -16017,19 +16016,19 @@ root of the sysfs tree.</p>
 up all of the necessary sysfs files for the object and then call
 <a class="reference internal" href="#c.kobject_uevent" title="kobject_uevent"><code class="xref c c-func docutils literal notranslate"><span class="pre">kobject_uevent()</span></code></a> with the UEVENT_ADD parameter to ensure that
 userspace is properly notified of this kobject’s creation.</p>
-<p><strong>Return</strong></p>
-<dl>
-<dt>If this function returns an error, kobject_put() must be</dt><dd><p>called to properly clean up the memory associated with the
-object.  Under no instance should the kobject that is passed
-to this function be directly freed with a call to <a class="reference internal" href="../core-api/mm-api.html#c.kfree" title="kfree"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree()</span></code></a>,
-that can leak memory.</p>
-<p>If this function returns success, <a class="reference internal" href="#c.kobject_put" title="kobject_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">kobject_put()</span></code></a> must also be called
+<blockquote>
+<div><p>If this function returns success, <a class="reference internal" href="#c.kobject_put" title="kobject_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">kobject_put()</span></code></a> must also be called
 in order to properly clean up the memory associated with the object.</p>
 <p>In short, once this function is called, <a class="reference internal" href="#c.kobject_put" title="kobject_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">kobject_put()</span></code></a> MUST be called
 when the use of the object is finished in order to properly free
 everything.</p>
-</dd>
-</dl>
+</div></blockquote>
+<p><strong>Return</strong></p>
+<p>If this function returns an error, <a class="reference internal" href="#c.kobject_put" title="kobject_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">kobject_put()</span></code></a> must be
+called to properly clean up the memory associated with the
+object.  Under no instance should the kobject that is passed
+to this function be directly freed with a call to <a class="reference internal" href="../core-api/mm-api.html#c.kfree" title="kfree"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree()</span></code></a>,
+that can leak memory.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.kobject_init_and_add">
@@ -16135,12 +16134,12 @@ successfully added via <a class="reference internal" href="#c.kobject_add" title
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Decrement the refcount, and if 0, call kobject_cleanup().</p>
+<p>Decrement the refcount, and if 0, call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kobject_cleanup()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.kobject_create_and_add">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">kobject</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">kobject_create_and_add</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">name</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">kobject</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">parent</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.kobject_create_and_add" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Create a struct kobject dynamically and register it with sysfs.</p>
+<dd><p>Create a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kobject</span></code> dynamically and register it with sysfs.</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -16171,7 +16170,7 @@ it is no longer being used.</p>
 </dd>
 </dl>
 <p><strong>NOTE</strong></p>
-<p>On error, the kset.kobj.name allocated by() kobj_set_name()
+<p>On error, the kset.kobj.name allocated <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">by()</span></code> <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kobj_set_name()</span></code>
 is freed, it can not be used any more.</p>
 </div>
 <dl class="c function">
@@ -16209,7 +16208,7 @@ take a reference and return the object.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.kset_create_and_add">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">kset</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">kset_create_and_add</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">name</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">kset_uevent_ops</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">uevent_ops</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">kobject</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">parent_kobj</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.kset_create_and_add" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Create a struct kset dynamically and add it to sysfs.</p>
+<dd><p>Create a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kset</span></code> dynamically and add it to sysfs.</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -16217,7 +16216,7 @@ take a reference and return the object.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*name</span></code></dt><dd><p>the name for the kset</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">kset_uevent_ops</span> <span class="pre">*uevent_ops</span></code></dt><dd><p>a struct kset_uevent_ops for the kset</p>
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">kset_uevent_ops</span> <span class="pre">*uevent_ops</span></code></dt><dd><p>a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kset_uevent_ops</span></code> for the kset</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kobject</span> <span class="pre">*parent_kobj</span></code></dt><dd><p>the parent kobject of this kset, if any.</p>
 </dd>
@@ -16238,7 +16237,7 @@ is no longer being used.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kobject</span> <span class="pre">*kobj</span></code></dt><dd><p>struct kobject that the action is happening to</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kobject</span> <span class="pre">*kobj</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kobject</span></code> that the action is happening to</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">enum</span> <span class="pre">kobject_action</span> <span class="pre">action</span></code></dt><dd><p>action that is happening</p>
 </dd>
@@ -16258,7 +16257,7 @@ corresponding error when it fails.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kobject</span> <span class="pre">*kobj</span></code></dt><dd><p>struct kobject that the action is happening to</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kobject</span> <span class="pre">*kobj</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kobject</span></code> that the action is happening to</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">enum</span> <span class="pre">kobject_action</span> <span class="pre">action</span></code></dt><dd><p>action that is happening</p>
 </dd>
@@ -16388,7 +16387,6 @@ issues.</p>
 <dt>__trace_printk is an internal function for trace_printk() and</dt><dd><p>the <strong>ip</strong> is passed in via the <a class="reference internal" href="#c.trace_printk" title="trace_printk"><code class="xref c c-func docutils literal notranslate"><span class="pre">trace_printk()</span></code></a> macro.</p>
 </dd>
 </dl>
-<p><strong>Description</strong></p>
 <p>This function allows a kernel developer to debug fast path sections
 that printk is not appropriate for. By scattering in various
 printk like tracing in the code, a developer can quickly see
@@ -16406,7 +16404,7 @@ whether or not there are args. __stringify((__VA_ARGS__)) will
 turn into “()0” with a size of 3 when there are no args, anything
 else will be bigger. All we need to do is define a string to this,
 and then take its size and compare to 3. If it’s bigger, use
-do_trace_printk() otherwise, optimize it to <a class="reference internal" href="#c.trace_puts" title="trace_puts"><code class="xref c c-func docutils literal notranslate"><span class="pre">trace_puts()</span></code></a>. Then just
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_trace_printk()</span></code> otherwise, optimize it to <a class="reference internal" href="#c.trace_puts" title="trace_puts"><code class="xref c c-func docutils literal notranslate"><span class="pre">trace_puts()</span></code></a>. Then just
 let gcc optimize the rest.</p>
 </div>
 <dl class="c macro">
@@ -16429,7 +16427,6 @@ let gcc optimize the rest.</p>
 <dt>__trace_bputs is an internal function for trace_puts and</dt><dd><p>the <strong>ip</strong> is passed in via the trace_puts macro.</p>
 </dd>
 </dl>
-<p><strong>Description</strong></p>
 <p>This is similar to <a class="reference internal" href="#c.trace_printk" title="trace_printk"><code class="xref c c-func docutils literal notranslate"><span class="pre">trace_printk()</span></code></a> but is made for those really fast
 paths that a developer wants the least amount of “Heisenbug” effects,
 where the processing of the print format is still too much.</p>
@@ -16442,10 +16439,8 @@ Please refrain from leaving trace_puts scattered around in
 your code. (Extra memory is used for special buffers that are
 allocated when <a class="reference internal" href="#c.trace_puts" title="trace_puts"><code class="xref c c-func docutils literal notranslate"><span class="pre">trace_puts()</span></code></a> is used.)</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>0 if nothing was written, positive # if string was.</dt><dd><p>(1 when __trace_bputs is used, strlen(str) when __trace_puts is used)</p>
-</dd>
-</dl>
+<p>0 if nothing was written, positive # if string was.
+(1 when __trace_bputs is used, strlen(str) when __trace_puts is used)</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.console_list_lock">
@@ -16531,7 +16526,7 @@ allocated when <a class="reference internal" href="#c.trace_puts" title="trace_p
 <p>The function checks whether a device with the given <strong>devname</strong> is
 preferred via the console=DEVNAME:0.0 command line option.
 It fills the missing console driver name and console index
-so that a later register_console() call could find (match)
+so that a later <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">register_console()</span></code> call could find (match)
 and enable this device.</p>
 <p>It might be used when a driver subsystem initializes particular
 devices with already known DEVNAME:0.0 style names. And it
@@ -16752,7 +16747,7 @@ read.</p>
 <p><strong>Description</strong></p>
 <p>Reset the dumper’s iterator so that <a class="reference internal" href="#c.kmsg_dump_get_line" title="kmsg_dump_get_line"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmsg_dump_get_line()</span></code></a> and
 <a class="reference internal" href="#c.kmsg_dump_get_buffer" title="kmsg_dump_get_buffer"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmsg_dump_get_buffer()</span></code></a> can be called again and used multiple
-times within the same dumper.dump() callback.</p>
+times within the same dumper.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dump()</span></code> callback.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.__printk_cpu_sync_wait">
@@ -16808,8 +16803,8 @@ lock, this function succeeds immediately.</p>
 <p>Any context. Expects interrupts to be disabled.</p>
 </div>
 <dl class="c function">
-<dt class="sig sig-object c" id="c.panic">
-<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">panic</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">fmt</span></span>, <span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.panic" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.vpanic">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">vpanic</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">fmt</span></span>, <span class="n"><span class="pre">va_list</span></span><span class="w"> </span><span class="n"><span class="pre">args</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.vpanic" title="Link to this definition">¶</a><br /></dt>
 <dd><p>halt the system</p>
 </dd></dl>
 
@@ -16818,7 +16813,7 @@ lock, this function succeeds immediately.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*fmt</span></code></dt><dd><p>The text string to print</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">...</span></code></dt><dd><p>variable arguments</p>
+<dt><code class="docutils literal notranslate"><span class="pre">va_list</span> <span class="pre">args</span></code></dt><dd><p>Arguments for the format string</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -16898,9 +16893,7 @@ other devres_*() functions.</p>
 <p>Call <strong>fn</strong> for each devres of <strong>dev</strong> which is associated with <strong>release</strong>
 and for which <strong>match</strong> returns 1.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p>void</p>
-</div></blockquote>
+<p>void</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.devres_free">
@@ -16915,7 +16908,7 @@ and for which <strong>match</strong> returns 1.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Free devres created with devres_alloc().</p>
+<p>Free devres created with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devres_alloc()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.devres_add">
@@ -16933,7 +16926,7 @@ and for which <strong>match</strong> returns 1.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Register devres <strong>res</strong> to <strong>dev</strong>.  <strong>res</strong> should have been allocated
-using devres_alloc().  On driver detach, the associated release
+using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devres_alloc()</span></code>.  On driver detach, the associated release
 function will be invoked and devres will be freed automatically.</p>
 </div>
 <dl class="c function">
@@ -17186,9 +17179,9 @@ it gets executed as part of standard resource unwinding.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Removes instance of <strong>action</strong> previously added by devm_add_action().
+<p>Removes instance of <strong>action</strong> previously added by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_add_action()</span></code>.
 Both action and data should match one of the existing entries.</p>
-<p>In contrast to devm_remove_action(), this function does not WARN() if no
+<p>In contrast to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_remove_action()</span></code>, this function does not <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">WARN()</span></code> if no
 entry could have been found.</p>
 <p>This should only be used if the action is contained in an object with
 independent lifetime management, e.g. the Devres rust abstraction.</p>
@@ -17215,7 +17208,7 @@ of the devres API.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Releases and removes instance of <strong>action</strong> previously added by
-devm_add_action().  Both action and data should match one of the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_add_action()</span></code>.  Both action and data should match one of the
 existing entries.</p>
 </div>
 <dl class="c function">
@@ -17244,7 +17237,7 @@ resources, guaranteed alignment is unsigned long long.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.devm_krealloc">
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">devm_krealloc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="infrastructure.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ptr</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">new_size</span></span>, <span class="n"><span class="pre">gfp_t</span></span><span class="w"> </span><span class="n"><span class="pre">gfp</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.devm_krealloc" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Resource-managed krealloc()</p>
+<dd><p>Resource-managed <a class="reference internal" href="../core-api/mm-api.html#c.krealloc" title="krealloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">krealloc()</span></code></a></p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -17260,8 +17253,8 @@ resources, guaranteed alignment is unsigned long long.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Managed krealloc(). Resizes the memory chunk allocated with <a class="reference internal" href="#c.devm_kmalloc" title="devm_kmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_kmalloc()</span></code></a>.
-Behaves similarly to regular krealloc(): if <strong>ptr</strong> is NULL or ZERO_SIZE_PTR,
+<p>Managed <a class="reference internal" href="../core-api/mm-api.html#c.krealloc" title="krealloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">krealloc()</span></code></a>. Resizes the memory chunk allocated with <a class="reference internal" href="#c.devm_kmalloc" title="devm_kmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_kmalloc()</span></code></a>.
+Behaves similarly to regular <a class="reference internal" href="../core-api/mm-api.html#c.krealloc" title="krealloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">krealloc()</span></code></a>: if <strong>ptr</strong> is NULL or ZERO_SIZE_PTR,
 it’s the equivalent of <a class="reference internal" href="#c.devm_kmalloc" title="devm_kmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_kmalloc()</span></code></a>. If new_size is zero, it frees the
 previously allocated memory and returns ZERO_SIZE_PTR. This function doesn’t
 change the order in which the release callback for the re-alloc’ed devres
@@ -17326,7 +17319,7 @@ devm_kstrdup.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">gfp_t</span> <span class="pre">gfp</span></code></dt><dd><p>the GFP mask used in the <a class="reference internal" href="#c.devm_kmalloc" title="devm_kmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_kmalloc()</span></code></a> call when
 allocating memory</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*fmt</span></code></dt><dd><p>The printf()-style format string</p>
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*fmt</span></code></dt><dd><p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">printf()</span></code>-style format string</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">va_list</span> <span class="pre">ap</span></code></dt><dd><p>Arguments for the format string</p>
 </dd>
@@ -17348,7 +17341,7 @@ allocating memory</p>
 <dt><code class="docutils literal notranslate"><span class="pre">gfp_t</span> <span class="pre">gfp</span></code></dt><dd><p>the GFP mask used in the <a class="reference internal" href="#c.devm_kmalloc" title="devm_kmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_kmalloc()</span></code></a> call when
 allocating memory</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*fmt</span></code></dt><dd><p>The printf()-style format string</p>
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*fmt</span></code></dt><dd><p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">printf()</span></code>-style format string</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">...</span></code></dt><dd><p>Arguments for the format string</p>
 </dd>

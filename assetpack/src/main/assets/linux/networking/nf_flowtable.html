@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -158,7 +158,7 @@ path, from the second packet on, you might decide to offload the flow to the
 flowtable through your ruleset. The flowtable infrastructure provides a rule
 action that allows you to specify when to add a flow to the flowtable.</p>
 <p>A packet that finds a matching entry in the flowtable (ie. flowtable hit) is
-transmitted to the output netdevice via neigh_xmit(), hence, packets bypass the
+transmitted to the output netdevice via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">neigh_xmit()</span></code>, hence, packets bypass the
 classic IP forwarding path (the visible effect is that you do not see these
 packets from any of the Netfilter hooks coming after ingress). In case that
 there is no matching entry in the flowtable (ie. flowtable miss), the packet
@@ -206,7 +206,7 @@ forwarding path including the Netfilter hooks and the flowtable fastpath bypass.
 </div>
 <p>The flowtable entry also stores the NAT configuration, so all packets are
 mangled according to the NAT policy that is specified from the classic IP
-forwarding path. The TTL is decremented before calling neigh_xmit(). Fragmented
+forwarding path. The TTL is decremented before calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">neigh_xmit()</span></code>. Fragmented
 traffic is passed up to follow the classic IP forwarding path given that the
 transport header is missing, in this case, flowtable lookups are not possible.
 TCP RST and FIN packets are also passed up to the classic IP forwarding path to

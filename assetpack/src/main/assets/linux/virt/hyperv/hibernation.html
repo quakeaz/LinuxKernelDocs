@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -239,7 +239,7 @@ prioritizes Linux hibernation in the VM over hot-add, so the Hyper-V
 balloon driver in Linux disables hot-add. Enablement is indicated if
 the contents of /sys/power/disk contains “platform” as an option. The
 enablement is also visible in /sys/bus/vmbus/hibernation. See function
-hv_is_hibernation_supported().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hv_is_hibernation_supported()</span></code>.</p>
 <p>Linux supports ACPI sleep states on x86, but not on arm64. So Linux
 guest VM hibernation is not available on Hyper-V for arm64.</p>
 </section>
@@ -252,7 +252,7 @@ call. As an additional layer, Linux guests on Hyper-V support the
 tell a Linux VM to hibernate using a command outside the VM. The
 command generates a request to the Hyper-V shutdown driver in Linux,
 which sends the uevent “EVENT=hibernate”. See kernel functions
-shutdown_onchannelcallback() and send_hibernate_uevent(). A udev rule
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shutdown_onchannelcallback()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">send_hibernate_uevent()</span></code>. A udev rule
 must be provided in the VM that handles this event and initiates
 hibernation.</p>
 </section>

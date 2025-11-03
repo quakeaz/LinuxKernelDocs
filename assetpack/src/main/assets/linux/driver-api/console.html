@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -224,7 +224,7 @@ it may become inactive.</p>
 any time with each driver sharing the console with other drivers including
 the system driver. However, modular drivers cannot take over the console
 that is currently occupied by another modular driver. (Exception: Drivers that
-call do_take_over_console() will succeed in the takeover regardless of the type
+call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_take_over_console()</span></code> will succeed in the takeover regardless of the type
 of driver occupying the consoles.) They can only take over the console that is
 occupied by the system driver. In the same token, if the modular driver is
 released by the console, the system driver will take over.</p>
@@ -317,12 +317,12 @@ this possible. (NOTE NOTE NOTE: Please read fbcon.txt under Documentation/fb
 for more details.)</p>
 <section id="notes-for-developers">
 <h2>Notes for developers<a class="headerlink" href="#notes-for-developers" title="Link to this heading">¶</a></h2>
-<p>do_take_over_console() is now broken up into:</p>
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_take_over_console()</span></code> is now broken up into:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>do_register_con_driver()
 do_bind_con_driver() - private function
 </pre></div>
 </div>
-<p>give_up_console() is a wrapper to <a class="reference internal" href="tty/console.html#c.do_unregister_con_driver" title="do_unregister_con_driver"><code class="xref c c-func docutils literal notranslate"><span class="pre">do_unregister_con_driver()</span></code></a>, and a driver must
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">give_up_console()</span></code> is a wrapper to <a class="reference internal" href="tty/console.html#c.do_unregister_con_driver" title="do_unregister_con_driver"><code class="xref c c-func docutils literal notranslate"><span class="pre">do_unregister_con_driver()</span></code></a>, and a driver must
 be fully unbound for this call to succeed. <a class="reference internal" href="tty/console.html#c.con_is_bound" title="con_is_bound"><code class="xref c c-func docutils literal notranslate"><span class="pre">con_is_bound()</span></code></a> will check if the
 driver is bound or not.</p>
 </section>
@@ -331,24 +331,24 @@ driver is bound or not.</p>
 <p>In order for binding to and unbinding from the console to properly work,
 console drivers must follow these guidelines:</p>
 <ol class="arabic simple">
-<li><p>All drivers, except system drivers, must call either do_register_con_driver()
-or do_take_over_console(). do_register_con_driver() will just add the driver
+<li><p>All drivers, except system drivers, must call either <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_register_con_driver()</span></code>
+or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_take_over_console()</span></code>. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_register_con_driver()</span></code> will just add the driver
 to the console’s internal list. It won’t take over the
-console. do_take_over_console(), as it name implies, will also take over (or
+console. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_take_over_console()</span></code>, as it name implies, will also take over (or
 bind to) the console.</p></li>
-<li><p>All resources allocated during con-&gt;con_init() must be released in
-con-&gt;con_deinit().</p></li>
-<li><p>All resources allocated in con-&gt;con_startup() must be released when the
+<li><p>All resources allocated during con-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">con_init()</span></code> must be released in
+con-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">con_deinit()</span></code>.</p></li>
+<li><p>All resources allocated in con-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">con_startup()</span></code> must be released when the
 driver, which was previously bound, becomes unbound.  The console layer
-does not have a complementary call to con-&gt;con_startup() so it’s up to the
+does not have a complementary call to con-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">con_startup()</span></code> so it’s up to the
 driver to check when it’s legal to release these resources. Calling
-<a class="reference internal" href="tty/console.html#c.con_is_bound" title="con_is_bound"><code class="xref c c-func docutils literal notranslate"><span class="pre">con_is_bound()</span></code></a> in con-&gt;con_deinit() will help.  If the call returned
-false(), then it’s safe to release the resources.  This balance has to be
-ensured because con-&gt;con_startup() can be called again when a request to
+<a class="reference internal" href="tty/console.html#c.con_is_bound" title="con_is_bound"><code class="xref c c-func docutils literal notranslate"><span class="pre">con_is_bound()</span></code></a> in con-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">con_deinit()</span></code> will help.  If the call returned
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">false()</span></code>, then it’s safe to release the resources.  This balance has to be
+ensured because con-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">con_startup()</span></code> can be called again when a request to
 rebind the driver to the console arrives.</p></li>
 <li><p>Upon exit of the driver, ensure that the driver is totally unbound. If the
 condition is satisfied, then the driver must call <a class="reference internal" href="tty/console.html#c.do_unregister_con_driver" title="do_unregister_con_driver"><code class="xref c c-func docutils literal notranslate"><span class="pre">do_unregister_con_driver()</span></code></a>
-or give_up_console().</p></li>
+or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">give_up_console()</span></code>.</p></li>
 <li><p><a class="reference internal" href="tty/console.html#c.do_unregister_con_driver" title="do_unregister_con_driver"><code class="xref c c-func docutils literal notranslate"><span class="pre">do_unregister_con_driver()</span></code></a> can also be called on conditions which make it
 impossible for the driver to service console requests.  This can happen
 with the framebuffer console that suddenly lost all of its drivers.</p></li>

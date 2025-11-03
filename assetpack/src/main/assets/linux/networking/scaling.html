@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -312,7 +312,7 @@ introduce inter-processor interrupts (IPIs))</p></li>
 </ol>
 <p>RPS is called during bottom half of the receive interrupt handler, when
 a driver sends a packet up the network stack with <a class="reference internal" href="kapi.html#c.netif_rx" title="netif_rx"><code class="xref c c-func docutils literal notranslate"><span class="pre">netif_rx()</span></code></a> or
-<a class="reference internal" href="kapi.html#c.netif_receive_skb" title="netif_receive_skb"><code class="xref c c-func docutils literal notranslate"><span class="pre">netif_receive_skb()</span></code></a>. These call the get_rps_cpu() function, which
+<a class="reference internal" href="kapi.html#c.netif_receive_skb" title="netif_receive_skb"><code class="xref c c-func docutils literal notranslate"><span class="pre">netif_receive_skb()</span></code></a>. These call the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_rps_cpu()</span></code> function, which
 selects the queue that should process a packet.</p>
 <p>The first step in determining the target CPU for RPS is to calculate a
 flow hash over the packet’s addresses or ports (2-tuple or 4-tuple hash
@@ -438,8 +438,8 @@ a single application thread handles flows with many different flow hashes.</p>
 <p>rps_sock_flow_table is a global flow table that contains the <em>desired</em> CPU
 for flows: the CPU that is currently processing the flow in userspace.
 Each table value is a CPU index that is updated during calls to recvmsg
-and sendmsg (specifically, inet_recvmsg(), inet_sendmsg() and
-tcp_splice_read()).</p>
+and sendmsg (specifically, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">inet_recvmsg()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">inet_sendmsg()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">tcp_splice_read()</span></code>).</p>
 <p>When the scheduler moves a thread to a new CPU while it has outstanding
 receive packets on the old CPU, packets may arrive out of order. To
 avoid this, RFS uses a second flow table to track outstanding packets
@@ -460,7 +460,7 @@ been enqueued onto the currently designated CPU for flow i (of course,
 entry i is actually selected by hash and multiple flows may hash to the
 same entry i).</p>
 <p>And now the trick for avoiding out of order packets: when selecting the
-CPU for packet processing (from get_rps_cpu()) the rps_sock_flow table
+CPU for packet processing (from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_rps_cpu()</span></code>) the rps_sock_flow table
 and the rps_dev_flow table of the queue that the packet was received on
 are compared. If the desired CPU for the flow (found in the
 rps_sock_flow table) matches the current CPU (found in the rps_dev_flow
@@ -531,7 +531,7 @@ is maintained by the NIC driver. This is an auto-generated reverse map of
 the IRQ affinity table shown by /proc/interrupts. Drivers can use
 functions in the cpu_rmap (“CPU affinity reverse map”) kernel library
 to populate the map. Alternatively, drivers can delegate the cpu_rmap
-management to the Kernel by calling netif_enable_cpu_rmap(). For each CPU,
+management to the Kernel by calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">netif_enable_cpu_rmap()</span></code>. For each CPU,
 the corresponding queue in the map is set to be one whose processing CPU is
 closest in cache locality.</p>
 <section id="accelerated-rfs-configuration">
@@ -592,7 +592,7 @@ reduced latency.</p>
 CPUs/receive-queues that may use that queue to transmit. The reverse
 mapping, from CPUs to transmit queues or from receive-queues to transmit
 queues, is computed and maintained for each network device. When
-transmitting the first packet in a flow, the function get_xps_queue() is
+transmitting the first packet in a flow, the function <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_xps_queue()</span></code> is
 called to select a queue. This function uses the ID of the receive queue
 for the socket connection for a match in the receive queue-to-transmit queue
 lookup table. Alternatively, this function can also use the ID of the
@@ -606,7 +606,7 @@ requires expensive lookup operation in the datapath.</p>
 corresponding socket structure for the flow (e.g. a TCP connection).
 This transmit queue is used for subsequent packets sent on the flow to
 prevent out of order (ooo) packets. The choice also amortizes the cost
-of calling get_xps_queues() over all packets in the flow. To avoid
+of calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_xps_queues()</span></code> over all packets in the flow. To avoid
 ooo packets, the queue for a flow can subsequently only be changed if
 skb-&gt;ooo_okay is set for a packet in the flow. This flag indicates that
 there are no outstanding packets in the flow, so the transmit queue can

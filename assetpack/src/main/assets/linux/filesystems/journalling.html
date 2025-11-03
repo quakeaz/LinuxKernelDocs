@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -158,7 +158,7 @@ how you decide to allocate the physical media on which the journal
 resides. The <a class="reference internal" href="#c.jbd2_journal_init_inode" title="jbd2_journal_init_inode"><code class="xref c c-func docutils literal notranslate"><span class="pre">jbd2_journal_init_inode()</span></code></a> call is for journals stored in
 filesystem inodes, or the <a class="reference internal" href="#c.jbd2_journal_init_dev" title="jbd2_journal_init_dev"><code class="xref c c-func docutils literal notranslate"><span class="pre">jbd2_journal_init_dev()</span></code></a> call can be used
 for journal stored on a raw device (in a continuous range of blocks). A
-journal_t is a typedef for a struct pointer, so when you are finally
+journal_t is a typedef for a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pointer</span></code>, so when you are finally
 finished make sure you call <a class="reference internal" href="#c.jbd2_journal_destroy" title="jbd2_journal_destroy"><code class="xref c c-func docutils literal notranslate"><span class="pre">jbd2_journal_destroy()</span></code></a> on it to free up
 any used kernel memory.</p>
 <p>Once you have got your journal_t object you need to ‘mount’ or load the
@@ -173,7 +173,7 @@ calling <a class="reference internal" href="#c.jbd2_journal_load" title="jbd2_jo
 <a class="reference internal" href="#c.jbd2_journal_skip_recovery" title="jbd2_journal_skip_recovery"><code class="xref c c-func docutils literal notranslate"><span class="pre">jbd2_journal_skip_recovery()</span></code></a> for you if it detects any outstanding
 transactions in the journal and similarly <a class="reference internal" href="#c.jbd2_journal_load" title="jbd2_journal_load"><code class="xref c c-func docutils literal notranslate"><span class="pre">jbd2_journal_load()</span></code></a> will
 call <a class="reference internal" href="#c.jbd2_journal_recover" title="jbd2_journal_recover"><code class="xref c c-func docutils literal notranslate"><span class="pre">jbd2_journal_recover()</span></code></a> if necessary. I would advise reading
-ext4_load_journal() in fs/ext4/super.c for examples on this stage.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ext4_load_journal()</span></code> in fs/ext4/super.c for examples on this stage.</p>
 <p>Now you can go ahead and start modifying the underlying filesystem.
 Almost.</p>
 <p>You still need to actually journal your filesystem changes, this is done
@@ -203,7 +203,7 @@ device you can call <a class="reference internal" href="#c.jbd2_journal_forget" 
 might have used <a class="reference internal" href="buffer.html#c.bforget" title="bforget"><code class="xref c c-func docutils literal notranslate"><span class="pre">bforget()</span></code></a> in the past.</p>
 <p>A <a class="reference internal" href="#c.jbd2_journal_flush" title="jbd2_journal_flush"><code class="xref c c-func docutils literal notranslate"><span class="pre">jbd2_journal_flush()</span></code></a> may be called at any time to commit and
 checkpoint all your transactions.</p>
-<p>Then at umount time , in your put_super() you can then call
+<p>Then at umount time , in your <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">put_super()</span></code> you can then call
 <a class="reference internal" href="#c.jbd2_journal_destroy" title="jbd2_journal_destroy"><code class="xref c c-func docutils literal notranslate"><span class="pre">jbd2_journal_destroy()</span></code></a> to clean up your in-core journal object.</p>
 <p>Unfortunately there a couple of ways the journal layer can cause a
 deadlock. The first thing to note is that each task can only have a
@@ -522,7 +522,7 @@ journal. These are dirty buffers and revoke descriptor blocks.</p>
     struct lockdep_map      j_trans_commit_map;
 #endif;
     void (*j_fc_cleanup_callback)(struct journal_s *journal, int full, tid_t tid);
-    int (*j_fc_replay_callback)(struct journal_s *journal,struct buffer_head *bh,enum passtype pass, int off, tid_t expected_commit_id);
+    int (*j_fc_replay_callback)(struct journal_s *journal, struct buffer_head *bh, enum passtype pass, int off, tid_t expected_commit_id);
     int (*j_bmap)(struct journal_s *journal, sector_t *block);
 };
 </pre></div>
@@ -574,7 +574,7 @@ or for a barrier lock to be released.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">j_checkpoint_mutex</span></code></dt><dd><p>Semaphore for locking against concurrent checkpoints.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">j_chkpt_bhs</span></code></dt><dd><p>List of buffer heads used by the checkpoint routine.  This
-was moved from jbd2_log_do_checkpoint() to reduce stack
+was moved from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">jbd2_log_do_checkpoint()</span></code> to reduce stack
 usage.  Access to this array is controlled by the
 <strong>j_checkpoint_mutex</strong>.  [j_checkpoint_mutex]</p>
 </dd>
@@ -800,6 +800,7 @@ if we don’t have an active handle, otherwise, we will deadlock.</p>
 </dl>
 <p><strong>Return</strong></p>
 <p>a newly created journal_t *</p>
+<p><strong>Description</strong></p>
 <blockquote>
 <div><p>jbd2_journal_init_dev creates a journal which maps a fixed contiguous
 range of blocks on an arbitrary block device.</p>
@@ -1167,7 +1168,7 @@ on failure.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Start handle that has been previously reserved with jbd2_journal_reserve().
+<p>Start handle that has been previously reserved with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">jbd2_journal_reserve()</span></code>.
 This attaches <strong>handle</strong> to the running transaction (or creates one if there’s
 not transaction running). Unlike <a class="reference internal" href="#c.jbd2_journal_start" title="jbd2_journal_start"><code class="xref c c-func docutils literal notranslate"><span class="pre">jbd2_journal_start()</span></code></a> this function cannot
 block on journal commit, checkpointing, or similar stuff. It can block on
@@ -1345,7 +1346,7 @@ we can discard the old committed data pointer.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">buffer_head</span> <span class="pre">*bh</span></code></dt><dd><p>buffer to trigger on</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">jbd2_buffer_trigger_type</span> <span class="pre">*type</span></code></dt><dd><p>struct jbd2_buffer_trigger_type containing the trigger(s).</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">jbd2_buffer_trigger_type</span> <span class="pre">*type</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">jbd2_buffer_trigger_type</span></code> containing the trigger(s).</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -1458,12 +1459,12 @@ running transaction’s -&gt;t_datalist via __jbd2_journal_unfile_buffer.</p>
 <p>This may <em>change</em> the value of transaction_t-&gt;t_datalist, so anyone
 who looks at t_datalist needs to lock against this function.</p>
 <p>Even worse, someone may be doing a jbd2_journal_dirty_data on this
-buffer.  So we need to lock against that.  jbd2_journal_dirty_data()
+buffer.  So we need to lock against that.  <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">jbd2_journal_dirty_data()</span></code>
 will come out of the lock with the buffer dirty, which makes it
 ineligible for release here.</p>
 <p>Who else is affected by this?  hmm...  Really the only contender
-is do_get_write_access() - it could be looking at the buffer while
-journal_try_to_free_buffer() is changing its state.  But that
+is <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_get_write_access()</span></code> - it could be looking at the buffer while
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">journal_try_to_free_buffer()</span></code> is changing its state.  But that
 cannot happen because we never reallocate freed data as metadata
 while the data is part of a transaction.  Yes?</p>
 <p>Return false on failure, true on success</p>

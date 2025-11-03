@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -328,7 +328,7 @@ Returns 0 if the request is complete without error</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Call iwpm_register_pid() to register a client
+<p>Call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">iwpm_register_pid()</span></code> to register a client
 Returns true if the client registration matches reg,
 otherwise returns false</p>
 </div>
@@ -893,6 +893,23 @@ When the rdma device is exclusive to a net namespace, rdma device net
 namespace is checked against the specified one.</p>
 </div>
 <dl class="c function">
+<dt class="sig sig-object c" id="c.rdma_dev_has_raw_cap">
+<span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rdma_dev_has_raw_cap</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">ib_device</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.rdma_dev_has_raw_cap" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Returns whether a specified rdma device has CAP_NET_RAW capability or not.</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">ib_device</span> <span class="pre">*dev</span></code></dt><dd><p>Pointer to rdma device whose capability to be checked</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>Returns true if a rdma device’s owning user namespace has CAP_NET_RAW
+capability, otherwise false. When rdma subsystem is in legacy shared network,
+namespace mode, the default net namespace is considered.</p>
+</div>
+<dl class="c function">
 <dt class="sig sig-object c" id="c.ib_device_put">
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ib_device_put</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">ib_device</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">device</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ib_device_put" title="Link to this definition">¶</a><br /></dt>
 <dd><p>Release IB device reference</p>
@@ -928,7 +945,7 @@ unregistered and eventually free.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c._ib_alloc_device">
-<span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">ib_device</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">_ib_alloc_device</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c._ib_alloc_device" title="Link to this definition">¶</a><br /></dt>
+<span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">ib_device</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">_ib_alloc_device</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c._ib_alloc_device" title="net"><span class="n"><span class="pre">net</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">net</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c._ib_alloc_device" title="Link to this definition">¶</a><br /></dt>
 <dd><p>allocate an IB device struct</p>
 </dd></dl>
 
@@ -937,13 +954,16 @@ unregistered and eventually free.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">size</span></code></dt><dd><p>size of structure to allocate</p>
 </dd>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">net</span> <span class="pre">*net</span></code></dt><dd><p>network namespace device should be located in, namespace
+must stay valid until <a class="reference internal" href="#c.ib_register_device" title="ib_register_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">ib_register_device()</span></code></a> is completed.</p>
+</dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Low-level drivers should use ib_alloc_device() to allocate <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span>
+<p>Low-level drivers should use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ib_alloc_device()</span></code> to allocate <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span>
 <span class="pre">ib_device</span></code>.  <strong>size</strong> is the size of the structure to be allocated,
 including any private data used by the low-level driver.
 <a class="reference internal" href="#c.ib_dealloc_device" title="ib_dealloc_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">ib_dealloc_device()</span></code></a> must be used to free structures allocated with
-ib_alloc_device().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ib_alloc_device()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ib_dealloc_device">
@@ -958,7 +978,7 @@ ib_alloc_device().</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Free a structure allocated with ib_alloc_device().</p>
+<p>Free a structure allocated with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ib_alloc_device()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ib_port_immutable_read">
@@ -972,7 +992,7 @@ ib_alloc_device().</p>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ib_device</span> <span class="pre">*dev</span></code></dt><dd><p>IB device</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">port</span></code></dt><dd><p>port number whose immutable data to read. It starts with index 1 and
-valid upto including rdma_end_port().</p>
+valid upto including <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rdma_end_port()</span></code>.</p>
 </dd>
 </dl>
 </div>
@@ -999,7 +1019,7 @@ setup the ibdev for DMA. This usually means using dma_virt_ops.</p>
 <p>Low-level drivers use <a class="reference internal" href="#c.ib_register_device" title="ib_register_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">ib_register_device()</span></code></a> to register their
 devices with the IB core.  All registered clients will receive a
 callback for each device that is added. <strong>device</strong> must be allocated
-with ib_alloc_device().</p>
+with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ib_alloc_device()</span></code>.</p>
 <p>If the driver uses ops.dealloc_driver and calls any <a class="reference internal" href="#c.ib_unregister_device" title="ib_unregister_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">ib_unregister_device()</span></code></a>
 asynchronously then the device pointer may become freed as soon as this
 function returns.</p>
@@ -1145,8 +1165,8 @@ or are running in another thread.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p><a class="reference internal" href="#c.ib_set_client_data" title="ib_set_client_data"><code class="xref c c-func docutils literal notranslate"><span class="pre">ib_set_client_data()</span></code></a> sets client context data that can be retrieved with
-ib_get_client_data(). This can only be called while the client is
-registered to the device, once the ib_client remove() callback returns this
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ib_get_client_data()</span></code>. This can only be called while the client is
+registered to the device, once the ib_client <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove()</span></code> callback returns this
 cannot be called.</p>
 </div>
 <dl class="c function">
@@ -1500,7 +1520,7 @@ ah_attr is taken.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rdma_ah_attr</span> <span class="pre">*ah_attr</span></code></dt><dd><p>The attributes of the address vector.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">u32</span> <span class="pre">flags</span></code></dt><dd><p>Create address handle flags (see enum rdma_create_ah_flags).</p>
+<dt><code class="docutils literal notranslate"><span class="pre">u32</span> <span class="pre">flags</span></code></dt><dd><p>Create address handle flags (see <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">rdma_create_ah_flags</span></code>).</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -1597,7 +1617,7 @@ the actual capabilities of the created SRQ.</p>
 <p><strong>Description</strong></p>
 <p>srq_attr-&gt;max_wr and srq_attr-&gt;max_sge are read the determine the
 requested size of the SRQ, and set to the actual values allocated
-on return.  If ib_create_srq() succeeds, then max_wr and max_sge
+on return.  If <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ib_create_srq()</span></code> succeeds, then max_wr and max_sge
 will always be at least as large as the requested values.</p>
 </div>
 <dl class="c function">
@@ -1885,11 +1905,11 @@ a page vector.</p>
 <p><strong>Description</strong></p>
 <p>If the device has a provider-specific drain function, then
 call that.  Otherwise call the generic drain function
-__ib_drain_sq().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__ib_drain_sq()</span></code>.</p>
 <p>The caller must:</p>
 <p>ensure there is room in the CQ and SQ for the drain work request and
 completion.</p>
-<p>allocate the CQ using ib_alloc_cq().</p>
+<p>allocate the CQ using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ib_alloc_cq()</span></code>.</p>
 <p>ensure that there are no other contexts that are posting WRs concurrently.
 Otherwise the drain is not guaranteed.</p>
 </div>
@@ -1908,11 +1928,11 @@ Otherwise the drain is not guaranteed.</p>
 <p><strong>Description</strong></p>
 <p>If the device has a provider-specific drain function, then
 call that.  Otherwise call the generic drain function
-__ib_drain_rq().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__ib_drain_rq()</span></code>.</p>
 <p>The caller must:</p>
 <p>ensure there is room in the CQ and RQ for the drain work request and
 completion.</p>
-<p>allocate the CQ using ib_alloc_cq().</p>
+<p>allocate the CQ using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ib_alloc_cq()</span></code>.</p>
 <p>ensure that there are no other contexts that are posting WRs concurrently.
 Otherwise the drain is not guaranteed.</p>
 </div>
@@ -1932,7 +1952,7 @@ Otherwise the drain is not guaranteed.</p>
 <p>The caller must:</p>
 <p>ensure there is room in the CQ(s), SQ, and RQ for drain work requests
 and completions.</p>
-<p>allocate the CQs using ib_alloc_cq().</p>
+<p>allocate the CQs using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ib_alloc_cq()</span></code>.</p>
 <p>ensure that there are no other contexts that are posting WRs concurrently.
 Otherwise the drain is not guaranteed.</p>
 </div>
@@ -2131,7 +2151,7 @@ the query.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ib_ud_header_pack">
 <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ib_ud_header_pack</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">ib_ud_header</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">header</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ib_ud_header_pack" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Pack UD header struct into wire format</p>
+<dd><p>Pack UD header <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">into</span></code> wire format</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -2197,7 +2217,7 @@ or smaller will never see a 0 result.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ib_umem</span> <span class="pre">*umem</span></code></dt><dd><p>umem struct to release</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ib_umem</span> <span class="pre">*umem</span></code></dt><dd><p>umem <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">to</span></code> release</p>
 </dd>
 </dl>
 </div>
@@ -2230,7 +2250,7 @@ children umems.</p>
 <p><strong>Parameters</strong></p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ib_umem_odp</span> <span class="pre">*root</span></code></dt><dd><p>The parent umem enclosing the child. This must be allocated using
-ib_alloc_implicit_odp_umem()</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ib_alloc_implicit_odp_umem()</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">addr</span></code></dt><dd><p>The starting userspace VA</p>
 </dd>
@@ -2249,7 +2269,7 @@ ib_alloc_implicit_odp_umem()</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ib_device</span> <span class="pre">*device</span></code></dt><dd><p>IB device struct to get UMEM</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ib_device</span> <span class="pre">*device</span></code></dt><dd><p>IB device <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">to</span></code> get UMEM</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">addr</span></code></dt><dd><p>userspace virtual address to start at</p>
 </dd>
@@ -2782,9 +2802,9 @@ non seq_file use cases.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This is called from rvt_do_send() to forward a WQE addressed to the same HFI
+<p>This is called from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rvt_do_send()</span></code> to forward a WQE addressed to the same HFI
 Note that although we are single threaded due to the send engine, we still
-have to protect against post_send().  We don’t have to worry about
+have to protect against <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">post_send()</span></code>.  We don’t have to worry about
 receive interrupts since this is a connected protocol and all packets
 will pass through here.</p>
 </div>
@@ -3345,10 +3365,8 @@ may have already been terminated.</p>
 <p><strong>Description</strong></p>
 <p>Initialize the task for the scsi command or mgmt command.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Returns zero on success or -ENOMEM when failing</dt><dd><p>to init task headers (dma mapping error).</p>
-</dd>
-</dl>
+<p>Returns zero on success or -ENOMEM when failing
+to init task headers (dma mapping error).</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.iscsi_iser_mtask_xmit">
@@ -3420,13 +3438,14 @@ without doing dma unmapping.</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<dl>
-<dt>zero if no data-integrity errors have occurred</dt><dd><p>0x1: data-integrity error occurred in the guard-block
+<p>zero if no data-integrity errors have occurred
+0x1: data-integrity error occurred in the guard-block
 0x2: data-integrity error occurred in the reference tag
 0x3: data-integrity error occurred in the application tag</p>
-<p>In addition the error sector is marked.</p>
-</dd>
-</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>In addition the error sector is marked.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.iscsi_iser_conn_create">
@@ -3443,10 +3462,8 @@ without doing dma unmapping.</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>iscsi_cls_conn when iscsi_conn_setup succeeds or NULL</dt><dd><p>otherwise.</p>
-</dd>
-</dl>
+<p>iscsi_cls_conn when iscsi_conn_setup succeeds or NULL
+otherwise.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.iscsi_iser_conn_bind">
@@ -3467,11 +3484,9 @@ without doing dma unmapping.</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>zero on success, $error if iscsi_conn_bind fails and</dt><dd><p>-EINVAL in case end-point doesn’t exists anymore or iser connection
+<p>zero on success, $error if iscsi_conn_bind fails and
+-EINVAL in case end-point doesn’t exists anymore or iser connection
 state is not UP (teardown already started).</p>
-</dd>
-</dl>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.iscsi_iser_conn_start">
@@ -3574,10 +3589,8 @@ don’t allocate iser_conn embedded in iscsi_endpoint since in teardown
 the endpoint will be destroyed at ep_disconnect while iser_conn will
 cleanup its resources asynchronuously.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>iscsi_endpoint created by iscsi layer or ERR_PTR(error)</dt><dd><p>if fails.</p>
-</dd>
-</dl>
+<p>iscsi_endpoint created by iscsi layer or ERR_PTR(error)
+if fails.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.iscsi_iser_ep_poll">
@@ -3597,12 +3610,10 @@ cleanup its resources asynchronuously.</p>
 <p>This routine boils down to waiting for up_completion signaling
 that cma_id got CONNECTED event.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>1 if succeeded in connection establishment, 0 if timeout expired</dt><dd><p>(libiscsi will retry will kick in) or -1 if interrupted by signal
+<p>1 if succeeded in connection establishment, 0 if timeout expired
+(libiscsi will retry will kick in) or -1 if interrupted by signal
 or more likely iser connection state transitioned to TEMINATING or
 DOWN during the wait period.</p>
-</dd>
-</dl>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.iscsi_iser_ep_disconnect">
@@ -4066,7 +4077,7 @@ to a different virtual ethernet switches.</p>
 <p>On the host each virtual ethernet port will have
 a forwarding table. These tables are used to
 map a MAC to a LID and other data. For more
-details see struct opa_veswport_mactable_entries.
+details see <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">opa_veswport_mactable_entries</span></code>.
 This is the structure of a single mactable entry</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.opa_veswport_mactable">
@@ -4762,7 +4773,7 @@ unicast addresses in the adapter.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">opa_vnic_vema_mad</span> <span class="pre">*recvd_mad</span></code></dt><dd><p>received mad</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">opa_vnic_vema_port</span> <span class="pre">*port</span></code></dt><dd><p>ptr to port struct on which MAD was recvd</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">opa_vnic_vema_port</span> <span class="pre">*port</span></code></dt><dd><p>ptr to port <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">on</span></code> which MAD was recvd</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
@@ -5121,10 +5132,8 @@ for the response MAD.</p>
 the opa_vnic_vema port structure that is associated
 with the OPA port number</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>ptr to requested opa_vnic_vema_port strucure</dt><dd><p>if success, NULL if not</p>
-</dd>
-</dl>
+<p>ptr to requested opa_vnic_vema_port strucure
+if success, NULL if not</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.opa_vnic_vema_send_trap">
@@ -5535,7 +5544,7 @@ against concurrent modification by the cm_id spinlock.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">sess_name</span></code></dt><dd><p>Session name.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">release_work</span></code></dt><dd><p>Allows scheduling of srpt_release_channel().</p>
+<dt><code class="docutils literal notranslate"><span class="pre">release_work</span></code></dt><dd><p>Allows scheduling of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">srpt_release_channel()</span></code>.</p>
 </dd>
 </dl>
 </div>
@@ -5754,7 +5763,7 @@ data structure represents a single (port, name) pair.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">refcnt</span></code></dt><dd><p>Reference count for this device.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">device</span></code></dt><dd><p>Backpointer to the struct ib_device managed by the IB core.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">device</span></code></dt><dd><p>Backpointer to the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ib_device</span></code> managed by the IB core.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">pd</span></code></dt><dd><p>IB protection domain.</p>
 </dd>
@@ -5955,7 +5964,7 @@ Specification. See also section B.7, table B.8 in the SRP r16a document.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ib_mad_agent</span> <span class="pre">*mad_agent</span></code></dt><dd><p>Return value of ib_register_mad_agent().</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ib_mad_agent</span> <span class="pre">*mad_agent</span></code></dt><dd><p>Return value of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ib_register_mad_agent()</span></code>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ib_mad_send_wc</span> <span class="pre">*mad_wc</span></code></dt><dd><p>Work completion reporting that the MAD has been sent.</p>
 </dd>
@@ -5970,7 +5979,7 @@ Specification. See also section B.7, table B.8 in the SRP r16a document.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ib_mad_agent</span> <span class="pre">*mad_agent</span></code></dt><dd><p>Return value of ib_register_mad_agent().</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ib_mad_agent</span> <span class="pre">*mad_agent</span></code></dt><dd><p>Return value of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ib_register_mad_agent()</span></code>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ib_mad_send_buf</span> <span class="pre">*send_buf</span></code></dt><dd><p>Not used.</p>
 </dd>
@@ -6238,7 +6247,7 @@ remote read and remote write. Also transitions ‘qp’ to state IB_QPS_INIT.</p
 <p><strong>Description</strong></p>
 <p>Returns zero upon success and a negative value upon failure.</p>
 <p><strong>Note</strong></p>
-<p>currently a struct ib_qp_attr takes 136 bytes on a 64-bit system.
+<p>currently a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ib_qp_attr</span></code> takes 136 bytes on a 64-bit system.
 If this structure ever becomes larger, it might be necessary to allocate
 it dynamically instead of on the stack.</p>
 </div>
@@ -6259,7 +6268,7 @@ it dynamically instead of on the stack.</p>
 <p><strong>Description</strong></p>
 <p>Returns zero upon success and a negative value upon failure.</p>
 <p><strong>Note</strong></p>
-<p>currently a struct ib_qp_attr takes 136 bytes on a 64-bit system.
+<p>currently a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ib_qp_attr</span></code> takes 136 bytes on a 64-bit system.
 If this structure ever becomes larger, it might be necessary to allocate
 it dynamically instead of on the stack.</p>
 </div>
@@ -6319,7 +6328,7 @@ it dynamically instead of on the stack.</p>
 <p><strong>Description</strong></p>
 <p>XXX: what is now target_execute_cmd used to be asynchronous, and unmapping
 the data that has been transferred via IB RDMA had to be postponed until the
-check_stop_free() callback.  None of this is necessary anymore and needs to
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">check_stop_free()</span></code> callback.  None of this is necessary anymore and needs to
 be cleaned up.</p>
 </div>
 <dl class="c function">
@@ -6446,7 +6455,7 @@ theory it is possible that the <a class="reference internal" href="#c.srpt_get_s
 value in each response is set to one, and it is possible that this response
 makes the initiator send a new request before the send completion for that
 response has been processed. This could e.g. happen if the call to
-srpt_put_send_iotcx() is delayed because of a higher priority interrupt or
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">srpt_put_send_iotcx()</span></code> is delayed because of a higher priority interrupt or
 if IB retransmission causes generation of the send completion to be
 delayed. Incoming information units for which <a class="reference internal" href="#c.srpt_get_send_ioctx" title="srpt_get_send_ioctx"><code class="xref c c-func docutils literal notranslate"><span class="pre">srpt_get_send_ioctx()</span></code></a> fails
 are queued on cmd_wait_list. The code below processes these delayed
@@ -6548,7 +6557,7 @@ established and that the recipient may begin transmitting.</p>
 <p><a class="reference internal" href="#c.srpt_cm_handler" title="srpt_cm_handler"><code class="xref c c-func docutils literal notranslate"><span class="pre">srpt_cm_handler()</span></code></a> must only return a non-zero value when transferring
 ownership of the cm_id to a channel by <a class="reference internal" href="#c.srpt_cm_req_recv" title="srpt_cm_req_recv"><code class="xref c c-func docutils literal notranslate"><span class="pre">srpt_cm_req_recv()</span></code></a> failed. Returning
 a non-zero value in any other case will trigger a race with the
-ib_destroy_cm_id() call in srpt_release_channel().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ib_destroy_cm_id()</span></code> call in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">srpt_release_channel()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.srpt_queue_response">
@@ -6593,7 +6602,7 @@ invoked on the context of the IB completion handler.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Increments the RDMA port reference count if an RDMA port pointer is returned.
-The caller must drop that reference count by calling srpt_port_put_ref().</p>
+The caller must drop that reference count by calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">srpt_port_put_ref()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.srpt_add_one">
@@ -6750,7 +6759,6 @@ functions, this driver must be registered with the target core before
 <p>In case the connection state is BOUND, move state
 to TEMINATING and start teardown sequence (rdma_disconnect).
 In case the connection state is UP, complete flush as well.</p>
-<p><strong>Description</strong></p>
 <p>This routine must be called with mutex held. Thus it is
 safe to call multiple times.</p>
 </div>

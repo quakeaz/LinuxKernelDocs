@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -170,7 +170,35 @@ include/scsi/scsi_bsg_fc.h
 </section>
 <section id="fc-remote-ports-rports">
 <h2>FC Remote Ports (rports)<a class="headerlink" href="#fc-remote-ports-rports" title="Link to this heading">¶</a></h2>
-<p>&lt;&lt; To Be Supplied &gt;&gt;</p>
+<blockquote>
+<div><p>In the Fibre Channel (FC) subsystem, a remote port (rport) refers to a
+remote Fibre Channel node that the local port can communicate with.
+These are typically storage targets (e.g., arrays, tapes) that respond
+to SCSI commands over FC transport.</p>
+<p>In Linux, rports are managed by the FC transport class and are
+represented in sysfs under:</p>
+<blockquote>
+<div><p>/sys/class/fc_remote_ports/</p>
+</div></blockquote>
+<p>Each rport directory contains attributes describing the remote port,
+such as port ID, node name, port state, and link speed.</p>
+<p>rports are typically created by the FC transport when a new device is
+discovered during a fabric login or scan, and they persist until the
+device is removed or the link is lost.</p>
+<p>Common attributes:
+- node_name: World Wide Node Name (WWNN).
+- port_name: World Wide Port Name (WWPN).
+- port_id: FC address of the remote port.
+- roles: Indicates if the port is an initiator, target, or both.
+- port_state: Shows the current operational state.</p>
+<p>After discovering a remote port, the driver typically populates a
+fc_rport_identifiers structure and invokes <a class="reference internal" href="../driver-api/scsi.html#c.fc_remote_port_add" title="fc_remote_port_add"><code class="xref c c-func docutils literal notranslate"><span class="pre">fc_remote_port_add()</span></code></a> to
+create and register the remote port with the SCSI subsystem via the
+Fibre Channel (FC) transport class.</p>
+<p>rports are also visible via sysfs as children of the FC host adapter.</p>
+<p>For developers: use <a class="reference internal" href="../driver-api/scsi.html#c.fc_remote_port_add" title="fc_remote_port_add"><code class="xref c c-func docutils literal notranslate"><span class="pre">fc_remote_port_add()</span></code></a> and <a class="reference internal" href="../driver-api/scsi.html#c.fc_remote_port_delete" title="fc_remote_port_delete"><code class="xref c c-func docutils literal notranslate"><span class="pre">fc_remote_port_delete()</span></code></a> when
+implementing a driver that interacts with the FC transport class.</p>
+</div></blockquote>
 </section>
 <section id="fc-virtual-ports-vports">
 <h2>FC Virtual Ports (vports)<a class="headerlink" href="#fc-virtual-ports-vports" title="Link to this heading">¶</a></h2>
@@ -496,7 +524,7 @@ Vport Failed:
 <h3>Transport &lt;-&gt; LLDD Interfaces<a class="headerlink" href="#transport-lldd-interfaces" title="Link to this heading">¶</a></h3>
 <p>Vport support by LLDD:</p>
 <blockquote>
-<div><p>The LLDD indicates support for vports by supplying a vport_create()
+<div><p>The LLDD indicates support for vports by supplying a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vport_create()</span></code>
 function in the transport template.  The presence of this function will
 cause the creation of the new attributes on the fc_host.  As part of
 the physical port completing its initialization relative to the
@@ -505,7 +533,7 @@ maximum number of vports the driver and/or adapter supports.</p>
 </div></blockquote>
 <p>Vport Creation:</p>
 <blockquote>
-<div><p>The LLDD vport_create() syntax is:</p>
+<div><p>The LLDD <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vport_create()</span></code> syntax is:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int vport_create(struct fc_vport *vport, bool disable)
 </pre></div>
 </div>
@@ -528,7 +556,7 @@ vport_create fc_host attribute), the transport will validate that the LLDD
 can support another vport (e.g. max_npiv_vports &gt; npiv_vports_inuse).
 If not, the create request will be failed.  If space remains, the transport
 will increment the vport count, create the vport object, and then call the
-LLDD’s vport_create() function with the newly allocated vport object.</p>
+LLDD’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vport_create()</span></code> function with the newly allocated vport object.</p>
 <p>As mentioned above, vport creation is divided into two parts:</p>
 <blockquote>
 <div><ul class="simple">
@@ -540,11 +568,11 @@ independent of the adapter’s link state.</p></li>
 This is equivalent to a “link up” and successful link initialization.</p></li>
 </ul>
 </div></blockquote>
-<p>The LLDD’s vport_create() function will not synchronously wait for both
+<p>The LLDD’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vport_create()</span></code> function will not synchronously wait for both
 parts to be fully completed before returning. It must validate that the
 infrastructure exists to support NPIV, and complete the first part of
 vport creation (data structure build up) before returning.  We do not
-hinge vport_create() on the link-side operation mainly because:</p>
+hinge <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vport_create()</span></code> on the link-side operation mainly because:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>The link may be down. It is not a failure if it is. It simply
@@ -561,7 +589,7 @@ to the adapter, which is independent of link state.</p></li>
 <p>special error codes have been defined to delineate infrastructure
 failure cases for quicker resolution.</p>
 </div>
-<p>The expected behavior for the LLDD’s vport_create() function is:</p>
+<p>The expected behavior for the LLDD’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vport_create()</span></code> function is:</p>
 <blockquote>
 <div><ul>
 <li><p>Validate Infrastructure:</p>
@@ -623,7 +651,7 @@ ensures that the attributes are applicable to the respective scsi_host.</p></li>
 </div></blockquote>
 <p>Vport Disable/Enable:</p>
 <blockquote>
-<div><p>The LLDD vport_disable() syntax is:</p>
+<div><p>The LLDD <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vport_disable()</span></code> syntax is:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int vport_disable(struct fc_vport *vport, bool disable)
 </pre></div>
 </div>
@@ -658,7 +686,7 @@ above).</p>
 </div></blockquote>
 <p>Vport Deletion:</p>
 <blockquote>
-<div><p>The LLDD vport_delete() syntax is:</p>
+<div><p>The LLDD <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vport_delete()</span></code> syntax is:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int vport_delete(struct fc_vport *vport)
 </pre></div>
 </div>

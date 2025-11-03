@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -167,9 +167,9 @@ reading of the function description before usage!</p>
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"></th>
-<th class="head"><p><cite>*delay()</cite></p></th>
+<th class="head"><p><cite>*<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">delay()</span></code></cite></p></th>
 <th class="head"><p><cite>usleep_range*()</cite></p></th>
-<th class="head"><p><cite>*sleep()</cite></p></th>
+<th class="head"><p><cite>*<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sleep()</span></code></cite></p></th>
 <th class="head"><p><cite><a class="reference internal" href="#c.fsleep" title="fsleep"><code class="xref c c-func docutils literal notranslate"><span class="pre">fsleep()</span></code></a></cite></p></th>
 </tr>
 <tr class="row-even"><th class="head"></th>
@@ -210,9 +210,9 @@ reading of the function description before usage!</p>
 <ol class="arabic simple">
 <li><p>Use <cite><a class="reference internal" href="#c.fsleep" title="fsleep"><code class="xref c c-func docutils literal notranslate"><span class="pre">fsleep()</span></code></a></cite> whenever unsure (as it combines all the advantages of the
 others)</p></li>
-<li><p>Use <cite>*sleep()</cite> whenever possible</p></li>
-<li><p>Use <cite>usleep_range*()</cite> whenever accuracy of <cite>*sleep()</cite> is not sufficient</p></li>
-<li><p>Use <cite>*delay()</cite> for very, very short delays</p></li>
+<li><p>Use <cite>*<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sleep()</span></code></cite> whenever possible</p></li>
+<li><p>Use <cite>usleep_range*()</cite> whenever accuracy of <cite>*<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sleep()</span></code></cite> is not sufficient</p></li>
+<li><p>Use <cite>*<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">delay()</span></code></cite> for very, very short delays</p></li>
 </ol>
 <p>Find some more detailed information about the function ‘families’ in the next
 sections.</p>
@@ -308,8 +308,8 @@ timer which means real hardware has to be programmed</p></li>
 <ol class="arabic simple">
 <li><p>Use <cite><a class="reference internal" href="#c.fsleep" title="fsleep"><code class="xref c c-func docutils literal notranslate"><span class="pre">fsleep()</span></code></a></cite> whenever unsure (as it combines all the advantages of the
 others)</p></li>
-<li><p>Use <cite>*sleep()</cite> whenever possible</p></li>
-<li><p>Use <cite>usleep_range*()</cite> whenever accuracy of <cite>*sleep()</cite> is not sufficient</p></li>
+<li><p>Use <cite>*<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sleep()</span></code></cite> whenever possible</p></li>
+<li><p>Use <cite>usleep_range*()</cite> whenever accuracy of <cite>*<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sleep()</span></code></cite> is not sufficient</p></li>
 </ol>
 <p>First check <a class="reference internal" href="#c.fsleep" title="fsleep"><code class="xref c c-func docutils literal notranslate"><span class="pre">fsleep()</span></code></a> function description and to learn more about accuracy,
 please check <a class="reference internal" href="#c.msleep" title="msleep"><code class="xref c c-func docutils literal notranslate"><span class="pre">msleep()</span></code></a> function description.</p>
@@ -439,7 +439,7 @@ all sleep durations greater or equal 32ms will meet the constraints.</p></li>
 could be interrupted by a signal delivery and then returns early.</p>
 <p><strong>Return</strong></p>
 <p>The remaining time of the sleep duration transformed to msecs (see
-schedule_timeout() for details).</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">schedule_timeout()</span></code> for details).</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ssleep">
@@ -469,7 +469,7 @@ schedule_timeout() for details).</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>flseep() selects the best mechanism that will provide maximum 25% slack
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">flseep()</span></code> selects the best mechanism that will provide maximum 25% slack
 to the requested sleep duration. Therefore it uses:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#c.udelay" title="udelay"><code class="xref c c-func docutils literal notranslate"><span class="pre">udelay()</span></code></a> loop for sleep durations &lt;= 10 microseconds to avoid hrtimer

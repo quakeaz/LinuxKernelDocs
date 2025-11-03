@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -227,23 +227,23 @@ LSM框架是可选的，要求开启 <cite>CONFIG_SECURITY</cite> 配置。权�
 <p>LSM安全域只是 <code class="docutils literal notranslate"><span class="pre">void*</span></code> 指针。数据被称为blob，这些数据可以由框架或使用
 它的各个安全模块进行管理。多个安全模块共同使用的安全blob通常由框架管理。
 对于进程和程序执行的安全信息，安全域包含在  :c:type:
-<cite>struct task_struct &lt;task_struct&gt;</cite> 和 :c:type: <cite>struct cred &lt;cred&gt;</cite> 中。
+<cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">task_struct</span></code> &lt;task_struct&gt;</cite> 和 :c:type: <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cred</span></code> &lt;cred&gt;</cite> 中。
 对于文件系统的安全信息，安全域包含在 :c:type:
-<cite>struct super_block &lt;super_block&gt;</cite> 中。对于管道、文件和套接字的安全信息，
-安全域包含在 :c:type: <cite>struct inode &lt;inode&gt;</cite> 和 :c:type: <cite><a class="reference internal" href="../../../filesystems/api-summary.html#c.file" title="file"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file</span></code></a> &lt;file&gt;</cite>
+<cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">super_block</span></code> &lt;super_block&gt;</cite> 中。对于管道、文件和套接字的安全信息，
+安全域包含在 :c:type: <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">inode</span></code> &lt;inode&gt;</cite> 和 :c:type: <cite><a class="reference internal" href="../../../filesystems/api-summary.html#c.file" title="file"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file</span></code></a> &lt;file&gt;</cite>
 中。对于System V IPC的安全信息，安全域被添加到 :c:type:
-<cite>struct kern_ipc_perm &lt;kern_ipc_perm&gt;</cite> 和 :c:type: <cite>struct msg_msg &lt;msg_msg&gt;</cite>
-中；另外，:c:type: <cite>struct msg_msg &lt;msg_msg&gt;</cite> 、struct msg_queue和
-struct shmid_kernel的定义被移动到头文件中（ <code class="docutils literal notranslate"><span class="pre">include/linux/msg.h</span></code> 和
+<cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kern_ipc_perm</span></code> &lt;kern_ipc_perm&gt;</cite> 和 :c:type: <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">msg_msg</span></code> &lt;msg_msg&gt;</cite>
+中；另外，:c:type: <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">msg_msg</span></code> &lt;msg_msg&gt;</cite> 、<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">msg_queue</span></code>和
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">shmid_kernel</span></code>的定义被移动到头文件中（ <code class="docutils literal notranslate"><span class="pre">include/linux/msg.h</span></code> 和
 <code class="docutils literal notranslate"><span class="pre">include/linux/shm.h</span></code> 视情况而定），以允许安全模块使用这些定义。</p>
 <p>对于数据包和网络设备的安全信息，安全域被添加到 :c:type:
-<cite><a class="reference internal" href="../../../networking/kapi.html#c.sk_buff" title="sk_buff"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">sk_buff</span></code></a> &lt;sk_buff&gt;</cite> 和 :c:type: <cite>struct scm_cookie &lt;scm_cookie&gt;</cite> 中。
+<cite><a class="reference internal" href="../../../networking/kapi.html#c.sk_buff" title="sk_buff"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">sk_buff</span></code></a> &lt;sk_buff&gt;</cite> 和 :c:type: <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scm_cookie</span></code> &lt;scm_cookie&gt;</cite> 中。
 与其他安全模块数据不同，这里使用的数据是一个32位整数。安全模块需要将这些值
 进行映射或关联到真正的安全属性。</p>
 <p>LSM钩子被维护在链表中。每个钩子函数都维护一个链表，这些钩子按照CONFIG_LSM中
 指定的顺序被调用。每个钩子的详细文档都包含在 <cite>security/security.c</cite> 源文件中。</p>
 <p>LSM框架提供了一种近似通用的安全模块堆栈。它定义了<a class="reference internal" href="../../../core-api/kernel-api.html#c.security_add_hooks" title="security_add_hooks"><code class="xref c c-func docutils literal notranslate"><span class="pre">security_add_hooks()</span></code></a>，每个安
-全模块向它传递一个 :c:type: <cite>struct security_hooks_list &lt;security_hooks_list&gt;</cite>
+全模块向它传递一个 :c:type: <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">security_hooks_list</span></code> &lt;security_hooks_list&gt;</cite>
 ，该结构会被添加到链表中。LSM框架没有提供移除已注册钩子的机制。SELinux安全
 模块已经实现了一种移除自身的方法，然而该特性已被弃用。</p>
 <p>这些钩子可以分为两大类：用于管理安全域的钩子和用于执行访问控制的钩子。

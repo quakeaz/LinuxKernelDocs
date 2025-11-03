@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -162,7 +162,7 @@ to include:</p>
 </div></blockquote>
 <p>In most cases, (un)patch callbacks will need to be used in conjunction
 with memory barriers and kernel synchronization primitives, like
-mutexes/spinlocks, or even stop_machine(), to avoid concurrency issues.</p>
+mutexes/spinlocks, or even <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">stop_machine()</span></code>, to avoid concurrency issues.</p>
 <section id="motivation">
 <h2>1. Motivation<a class="headerlink" href="#motivation" title="Link to this heading">¶</a></h2>
 <p>Callbacks differ from existing kernel facilities:</p>
@@ -269,11 +269,11 @@ kselftests and can be found in the lib/livepatch directory.</p>
 <h3>Global data update<a class="headerlink" href="#global-data-update" title="Link to this heading">¶</a></h3>
 <p>A pre-patch callback can be useful to update a global variable.  For
 example, <a class="reference external" href="https://git.kernel.org/torvalds/c/75ff39ccc1bd">commit 75ff39ccc1bd</a> (“tcp: make challenge acks less predictable”)
-changes a global sysctl, as well as patches the tcp_send_challenge_ack()
+changes a global sysctl, as well as patches the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">tcp_send_challenge_ack()</span></code>
 function.</p>
 <p>In this case, if we’re being super paranoid, it might make sense to
 patch the data <em>after</em> patching is complete with a post-patch callback,
-so that tcp_send_challenge_ack() could first be changed to read
+so that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">tcp_send_challenge_ack()</span></code> could first be changed to read
 sysctl_tcp_challenge_ack_limit with READ_ONCE.</p>
 </section>
 <section id="init-and-probe-function-patches-support">
@@ -282,7 +282,7 @@ sysctl_tcp_challenge_ack_limit with READ_ONCE.</p>
 may be possible to implement similar updates via pre/post-patch
 callbacks.</p>
 <p>The <a class="reference external" href="https://git.kernel.org/torvalds/c/48900cb6af42">commit 48900cb6af42</a> (“virtio-net: drop NETIF_F_FRAGLIST”) change the way that
-virtnet_probe() initialized its driver’s net_device features.  A
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">virtnet_probe()</span></code> initialized its driver’s net_device features.  A
 pre/post-patch callback could iterate over all such devices, making a
 similar change to their hw_features value.  (Client functions of the
 value may need to be updated accordingly.)</p>

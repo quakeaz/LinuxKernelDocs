@@ -34,7 +34,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -297,6 +297,7 @@ information. It is a hint only.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">v4l2_ctrl_handler_free</span><span class="p">(</span><span class="o">&amp;</span><span class="n">foo</span><span class="o">-&gt;</span><span class="n">ctrl_handler</span><span class="p">);</span>
 </pre></div>
 </div>
+<p><a class="reference internal" href="#c.v4l2_ctrl_handler_free" title="v4l2_ctrl_handler_free"><code class="xref c c-func docutils literal notranslate"><span class="pre">v4l2_ctrl_handler_free()</span></code></a> does not touch the handler’s <code class="docutils literal notranslate"><span class="pre">error</span></code> field.</p>
 <ol class="arabic simple" start="2">
 <li><p>Add controls:</p></li>
 </ol>
@@ -365,12 +366,8 @@ information. It is a hint only.</p>
 <span class="w">                </span><span class="n">V4L2_CID_TEST_PATTERN</span><span class="p">,</span><span class="w"> </span><span class="n">ARRAY_SIZE</span><span class="p">(</span><span class="n">test_pattern</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
 <span class="w">                </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">test_pattern</span><span class="p">);</span>
 <span class="p">...</span>
-<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">foo</span><span class="o">-&gt;</span><span class="n">ctrl_handler</span><span class="p">.</span><span class="n">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">foo</span><span class="o">-&gt;</span><span class="n">ctrl_handler</span><span class="p">.</span><span class="n">error</span><span class="p">;</span>
-
-<span class="w">        </span><span class="n">v4l2_ctrl_handler_free</span><span class="p">(</span><span class="o">&amp;</span><span class="n">foo</span><span class="o">-&gt;</span><span class="n">ctrl_handler</span><span class="p">);</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">err</span><span class="p">;</span>
-<span class="p">}</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">foo</span><span class="o">-&gt;</span><span class="n">ctrl_handler</span><span class="p">.</span><span class="n">error</span><span class="p">)</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">v4l2_ctrl_handler_free</span><span class="p">(</span><span class="o">&amp;</span><span class="n">foo</span><span class="o">-&gt;</span><span class="n">ctrl_handler</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>The <a class="reference internal" href="#c.v4l2_ctrl_new_std" title="v4l2_ctrl_new_std"><code class="xref c c-func docutils literal notranslate"><span class="pre">v4l2_ctrl_new_std()</span></code></a> function returns the v4l2_ctrl pointer to
@@ -466,7 +463,7 @@ of v4l2_device.</p>
 </section>
 <section id="accessing-control-values">
 <h2><span class="section-number">2.15.5. </span>Accessing Control Values<a class="headerlink" href="#accessing-control-values" title="Link to this heading">¶</a></h2>
-<p>The following union is used inside the control framework to access control
+<p>The following <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">is</span></code> used inside the control framework to access control
 values:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">union</span><span class="w"> </span><span class="nc">v4l2_ctrl_ptr</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="n">s32</span><span class="w"> </span><span class="o">*</span><span class="n">p_s32</span><span class="p">;</span>
@@ -476,7 +473,7 @@ values:</p>
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>The v4l2_ctrl struct contains these fields that can be used to access both
+<p>The v4l2_ctrl <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">contains</span></code> these fields that can be used to access both
 current and new values:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">s32</span><span class="w"> </span><span class="n">val</span><span class="p">;</span>
 <span class="k">struct</span><span class="w"> </span><span class="p">{</span>
@@ -504,7 +501,7 @@ identical to the default value. After calling <a class="reference internal" href
 value is passed to the hardware. It is generally a good idea to call this
 function.</p>
 <p>Whenever a new value is set that new value is automatically cached. This means
-that most drivers do not need to implement the g_volatile_ctrl() op. The
+that most drivers do not need to implement the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">g_volatile_ctrl()</span></code> op. The
 exception is for controls that return a volatile register such as a signal
 strength read-out that changes continuously. In that case you will need to
 implement g_volatile_ctrl like this:</p>
@@ -518,7 +515,7 @@ implement g_volatile_ctrl like this:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Note that you use the ‘new value’ union as well in g_volatile_ctrl. In general
+<p>Note that you use the ‘new value’ <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">as</span></code> well in g_volatile_ctrl. In general
 controls that need to implement g_volatile_ctrl are read-only controls. If they
 are not, a V4L2_EVENT_CTRL_CH_VALUE will not be generated when the control
 changes.</p>
@@ -529,8 +526,8 @@ changes.</p>
 </pre></div>
 </div>
 <p>For try/s_ctrl the new values (i.e. as passed by the user) are filled in and
-you can modify them in try_ctrl or set them in s_ctrl. The ‘cur’ union
-contains the current value, which you can use (but not change!) as well.</p>
+you can modify them in try_ctrl or set them in s_ctrl. The ‘cur’ <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span>
+<span class="pre">contains</span></code> the current value, which you can use (but not change!) as well.</p>
 <p>If s_ctrl returns 0 (OK), then the control framework will copy the new final
 values to the ‘cur’ union.</p>
 <p>While in g_volatile/s/try_ctrl you can access the value of all controls owned
@@ -556,7 +553,7 @@ will result in a deadlock since these helpers lock the handler as well.</p>
 </section>
 <section id="menu-controls">
 <h2><span class="section-number">2.15.6. </span>Menu Controls<a class="headerlink" href="#menu-controls" title="Link to this heading">¶</a></h2>
-<p>The v4l2_ctrl struct contains this union:</p>
+<p>The v4l2_ctrl <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">contains</span></code> this union:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">union</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="n">u32</span><span class="w"> </span><span class="n">step</span><span class="p">;</span>
 <span class="w">        </span><span class="n">u32</span><span class="w"> </span><span class="n">menu_skip_mask</span><span class="p">;</span>
@@ -594,7 +591,7 @@ control, or by calling <a class="reference internal" href="#c.v4l2_ctrl_new_std_
 </div>
 <p>The last argument is the priv pointer which can be set to driver-specific
 private data.</p>
-<p>The v4l2_ctrl_config struct also has a field to set the is_private flag.</p>
+<p>The v4l2_ctrl_config <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">also</span></code> has a field to set the is_private flag.</p>
 <p>If the name field is not set, then the framework will assume this is a standard
 control and will fill in the name, type and flags fields accordingly.</p>
 </section>
@@ -676,7 +673,7 @@ the following equivalent method is used:</p>
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>The anonymous struct is used to clearly ‘cluster’ these two control pointers,
+<p>The anonymous <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> used to clearly ‘cluster’ these two control pointers,
 but it serves no other purpose. The effect is the same as creating an
 array with two control pointers. So you can just do:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">state</span><span class="o">-&gt;</span><span class="n">volume</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v4l2_ctrl_new_std</span><span class="p">(</span><span class="o">&amp;</span><span class="n">state</span><span class="o">-&gt;</span><span class="n">ctrl_handler</span><span class="p">,</span><span class="w"> </span><span class="p">...);</span>
@@ -692,7 +689,7 @@ cluster of 2 controls, of which only 1 is actually instantiated. The
 only restriction is that the first control of the cluster must always be
 present, since that is the ‘master’ control of the cluster. The master
 control is the one that identifies the cluster and that provides the
-pointer to the v4l2_ctrl_ops struct that is used for that cluster.</p>
+pointer to the v4l2_ctrl_ops <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">that</span></code> is used for that cluster.</p>
 <p>Obviously, all controls in the cluster array must be initialized to either
 a valid control or to NULL.</p>
 <p>In rare cases you might want to know which controls of a cluster actually
@@ -1085,7 +1082,7 @@ Return 0 on success and a negative value otherwise.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This typedef definition is used as an argument to <a class="reference internal" href="#c.v4l2_ctrl_notify" title="v4l2_ctrl_notify"><code class="xref c c-func docutils literal notranslate"><span class="pre">v4l2_ctrl_notify()</span></code></a>
+<p>This <code class="xref c c-type broken_xref docutils literal notranslate"><span class="pre">typedef</span> <span class="pre">definition</span></code> is used as an argument to <a class="reference internal" href="#c.v4l2_ctrl_notify" title="v4l2_ctrl_notify"><code class="xref c c-func docutils literal notranslate"><span class="pre">v4l2_ctrl_notify()</span></code></a>
 and as an argument at struct <a class="reference internal" href="#c.v4l2_ctrl_handler" title="v4l2_ctrl_handler"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_ctrl_handler</span></code></a>.</p>
 </div>
 <dl class="c struct">
@@ -1281,23 +1278,23 @@ sized for 2 * <strong>p_array_alloc_elems</strong> * <strong>elem_size</strong>.
 <dt><code class="docutils literal notranslate"><span class="pre">cur.val</span></code></dt><dd><p>The control’s current value, if the <strong>type</strong> is represented via
 a u32 integer (see <code class="xref c c-type docutils literal notranslate"><span class="pre">enum</span> <span class="pre">v4l2_ctrl_type</span></code>).</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">p_def</span></code></dt><dd><p>The control’s default value represented via a union which
+<dt><code class="docutils literal notranslate"><span class="pre">p_def</span></code></dt><dd><p>The control’s default value represented via a <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">which</span></code>
 provides a standard way of accessing control types
 through a pointer (for compound controls only).</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">p_min</span></code></dt><dd><p>The control’s minimum value represented via a union which
+<dt><code class="docutils literal notranslate"><span class="pre">p_min</span></code></dt><dd><p>The control’s minimum value represented via a <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">which</span></code>
 provides a standard way of accessing control types
 through a pointer (for compound controls only).</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">p_max</span></code></dt><dd><p>The control’s maximum value represented via a union which
+<dt><code class="docutils literal notranslate"><span class="pre">p_max</span></code></dt><dd><p>The control’s maximum value represented via a <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">which</span></code>
 provides a standard way of accessing control types
 through a pointer (for compound controls only).</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">p_new</span></code></dt><dd><p>The control’s new value represented via a union which provides
+<dt><code class="docutils literal notranslate"><span class="pre">p_new</span></code></dt><dd><p>The control’s new value represented via a <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">which</span></code> provides
 a standard way of accessing control types
 through a pointer.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">p_cur</span></code></dt><dd><p>The control’s current value represented via a union which
+<dt><code class="docutils literal notranslate"><span class="pre">p_cur</span></code></dt><dd><p>The control’s current value represented via a <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">which</span></code>
 provides a standard way of accessing control types
 through a pointer.</p>
 </dd>
@@ -1634,7 +1631,7 @@ validador.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.v4l2_ctrl_handler_free">
-<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">v4l2_ctrl_handler_free</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.v4l2_ctrl_handler" title="v4l2_ctrl_handler"><span class="n"><span class="pre">v4l2_ctrl_handler</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">hdl</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.v4l2_ctrl_handler_free" title="Link to this definition">¶</a><br /></dt>
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">v4l2_ctrl_handler_free</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.v4l2_ctrl_handler" title="v4l2_ctrl_handler"><span class="n"><span class="pre">v4l2_ctrl_handler</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">hdl</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.v4l2_ctrl_handler_free" title="Link to this definition">¶</a><br /></dt>
 <dd><p>Free all controls owned by the handler and free the control list.</p>
 </dd></dl>
 
@@ -1646,6 +1643,8 @@ validador.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Does nothing if <strong>hdl</strong> == NULL.</p>
+<p><strong>Return</strong></p>
+<p><strong>hdl</strong>’s error field or 0 if <strong>hdl</strong> is NULL.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.v4l2_ctrl_lock">
@@ -1743,7 +1742,7 @@ used.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>If the <a class="reference internal" href="#c.v4l2_ctrl" title="v4l2_ctrl"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_ctrl</span></code></a> struct could not be allocated then NULL is returned
+<p>If the <a class="reference internal" href="#c.v4l2_ctrl" title="v4l2_ctrl"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_ctrl</span></code></a> <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">could</span></code> not be allocated then NULL is returned
 and <strong>hdl-&gt;error</strong> is set to the error code (if it wasn’t set already).</p>
 </div>
 <dl class="c function">
@@ -1771,7 +1770,7 @@ and <strong>hdl-&gt;error</strong> is set to the error code (if it wasn’t set 
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>If the <a class="reference internal" href="#c.v4l2_ctrl" title="v4l2_ctrl"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_ctrl</span></code></a> struct could not be allocated, or the control
+<p>If the <a class="reference internal" href="#c.v4l2_ctrl" title="v4l2_ctrl"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_ctrl</span></code></a> <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">could</span></code> not be allocated, or the control
 ID is not known, then NULL is returned and <strong>hdl-&gt;error</strong> is set to the
 appropriate error code (if it wasn’t set already).</p>
 <p>If <strong>id</strong> refers to a menu control, then this function will return NULL.</p>
@@ -2486,7 +2485,7 @@ cannot be used from within the <a class="reference internal" href="#c.v4l2_ctrl_
 <dl class="c function">
 <dt class="sig sig-object c" id="c.v4l2_ctrl_replace">
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">v4l2_ctrl_replace</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">v4l2_event</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">old</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">v4l2_event</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">new</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.v4l2_ctrl_replace" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Function to be used as a callback to <a class="reference internal" href="v4l2-event.html#c.v4l2_subscribed_event_ops" title="v4l2_subscribed_event_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_subscribed_event_ops</span></code></a> replace()</p>
+<dd><p>Function to be used as a callback to <a class="reference internal" href="v4l2-event.html#c.v4l2_subscribed_event_ops" title="v4l2_subscribed_event_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_subscribed_event_ops</span></code></a> <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">replace()</span></code></p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -2503,7 +2502,7 @@ event;</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.v4l2_ctrl_merge">
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">v4l2_ctrl_merge</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">v4l2_event</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">old</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">v4l2_event</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">new</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.v4l2_ctrl_merge" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Function to be used as a callback to <a class="reference internal" href="v4l2-event.html#c.v4l2_subscribed_event_ops" title="v4l2_subscribed_event_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_subscribed_event_ops</span></code></a> merge()</p>
+<dd><p>Function to be used as a callback to <a class="reference internal" href="v4l2-event.html#c.v4l2_subscribed_event_ops" title="v4l2_subscribed_event_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_subscribed_event_ops</span></code></a> <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">merge()</span></code></p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -2565,7 +2564,7 @@ control events.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file</span> <span class="pre">*file</span></code></dt><dd><p>pointer to <a class="reference internal" href="../../filesystems/api-summary.html#c.file" title="file"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file</span></code></a></p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">poll_table_struct</span> <span class="pre">*wait</span></code></dt><dd><p>pointer to struct poll_table_struct</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">poll_table_struct</span> <span class="pre">*wait</span></code></dt><dd><p>pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">poll_table_struct</span></code></p>
 </dd>
 </dl>
 </div>

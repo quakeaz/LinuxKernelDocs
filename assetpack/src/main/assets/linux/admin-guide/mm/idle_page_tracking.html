@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -220,7 +220,7 @@ their idle flag cleared in the interim.</p>
 reclaim unreferenced pages first on memory shortage conditions. A page is
 considered referenced if it has been recently accessed via a process address
 space, in which case one or more PTEs it is mapped to will have the Accessed bit
-set, or marked accessed explicitly by the kernel (see mark_page_accessed()). The
+set, or marked accessed explicitly by the kernel (see <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mark_page_accessed()</span></code>). The
 latter happens when:</p>
 <blockquote>
 <div><ul class="simple">
@@ -229,7 +229,7 @@ or write(2))</p></li>
 <li><p>a page that is used for storing filesystem buffers is read or written,
 because a process needs filesystem metadata stored in it (e.g. lists a
 directory tree)</p></li>
-<li><p>a page is accessed by a device driver using get_user_pages()</p></li>
+<li><p>a page is accessed by a device driver using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_user_pages()</span></code></p></li>
 </ul>
 </div></blockquote>
 <p>When a dirty page is written to swap or disk as a result of memory reclaim or

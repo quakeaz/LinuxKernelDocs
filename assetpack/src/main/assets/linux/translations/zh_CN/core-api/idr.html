@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -214,11 +214,11 @@ Chinese (Simplified)
 <p>要对IDR使用的所有指针进行操作，您可以使用基于回调的<a class="reference internal" href="../../../core-api/idr.html#c.idr_for_each" title="idr_for_each"><code class="xref c c-func docutils literal notranslate"><span class="pre">idr_for_each()</span></code></a>或迭代器样式的
 <a class="reference internal" href="../../../core-api/idr.html#c.idr_for_each_entry" title="idr_for_each_entry"><code class="xref c c-func docutils literal notranslate"><span class="pre">idr_for_each_entry()</span></code></a>。您可能需要使用<a class="reference internal" href="../../../core-api/idr.html#c.idr_for_each_entry_continue" title="idr_for_each_entry_continue"><code class="xref c c-func docutils literal notranslate"><span class="pre">idr_for_each_entry_continue()</span></code></a>来继续迭代。如果
 迭代器不符合您的需求，您也可以使用<a class="reference internal" href="../../../core-api/idr.html#c.idr_get_next" title="idr_get_next"><code class="xref c c-func docutils literal notranslate"><span class="pre">idr_get_next()</span></code></a>。</p>
-<p>当使用完IDR后，您可以调用idr_destroy()来释放IDR占用的内存。这并不会释放IDR指向的
+<p>当使用完IDR后，您可以调用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">idr_destroy()</span></code>来释放IDR占用的内存。这并不会释放IDR指向的
 对象；如果您想这样做，请使用其中一个迭代器来执行此操作。</p>
 <p>您可以使用<a class="reference internal" href="../../../core-api/idr.html#c.idr_is_empty" title="idr_is_empty"><code class="xref c c-func docutils literal notranslate"><span class="pre">idr_is_empty()</span></code></a>来查看当前是否分配了任何ID。</p>
 <p>如果在从IDR分配一个新ID时需要带锁，您可能需要传递一组限制性的GFP标志，但这可能导
-致IDR无法分配内存。为了解决该问题，您可以在获取锁之前调用idr_preload()，然后在分
+致IDR无法分配内存。为了解决该问题，您可以在获取锁之前调用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">idr_preload()</span></code>，然后在分
 配之后调用<a class="reference internal" href="../../../core-api/idr.html#c.idr_preload_end" title="idr_preload_end"><code class="xref c c-func docutils literal notranslate"><span class="pre">idr_preload_end()</span></code></a>。</p>
 <p>IDR同步的相关内容请见include/linux/idr.h文件中的“DOC: idr sync”。</p>
 </section>

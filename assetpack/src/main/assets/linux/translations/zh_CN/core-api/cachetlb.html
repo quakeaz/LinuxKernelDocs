@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -195,7 +195,7 @@ Chinese (Simplified)
 为SMP，则只需将定义简单地扩展一下，使发生在某个特定接口的副作用扩展到系
 统的所有处理器上。不要被这句话吓到，以为SMP的缓存/tlb刷新一定是很低
 效的，事实上，这是一个可以进行很多优化的领域。例如，如果可以证明一个用
-户地址空间从未在某个cpu上执行过（见mm_cpumask()），那么就不需要在该
+户地址空间从未在某个cpu上执行过（见<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mm_cpumask()</span></code>），那么就不需要在该
 cpu上对这个地址空间进行刷新。</p>
 <p>首先是TLB刷新接口，因为它们是最简单的。在Linux下，TLB被抽象为cpu
 用来缓存从软件页表获得的虚拟-&gt;物理地址转换的东西。这意味着，如果软件页
@@ -224,7 +224,7 @@ cpu上对这个地址空间进行刷新。</p>
 这个接口必须确保以前对‘start’到‘end-1’范围内的地址空间‘vma-&gt;vm_mm’
 的任何页表修改对cpu来说是可见的。也就是说，在运行后，TLB中不会有
 ‘mm’的页表项用于‘start’到‘end-1’范围内的虚拟地址。</p>
-<p>“vma”是用于该区域的备份存储。主要是用于munmap()类型的操作。</p>
+<p>“vma”是用于该区域的备份存储。主要是用于<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">munmap()</span></code>类型的操作。</p>
 <p>提供这个接口是希望端口能够找到一个合适的有效方法来从TLB中删除多
 个页面大小的转换，而不是让内核为每个可能被修改的页表项调用
 flush_tlb_page(见下文)。</p>
@@ -302,7 +302,7 @@ HyperSparc cpu就是这样一个具有这种属性的cpu。</p>
 <div><p>在这里，我们要从缓存中刷新一个特定范围的（用户）虚拟地址。运行
 后，在“start”到“end-1”范围内的虚拟地址的“vma-&gt;vm_mm”的缓存中
 将没有页表项。</p>
-<p>“vma”是被用于该区域的备份存储。主要是用于munmap()类型的操作。</p>
+<p>“vma”是被用于该区域的备份存储。主要是用于<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">munmap()</span></code>类型的操作。</p>
 <p>提供这个接口是希望端口能够找到一个合适的有效方法来从缓存中删
 除多个页面大小的区域， 而不是让内核为每个可能被修改的页表项调
 用 flush_cache_page (见下文)。</p>
@@ -337,8 +337,8 @@ kmaps失效之前被调用。</p>
 <div><p>在这里，在这两个接口中，我们从缓存中刷新一个特定范围的（内核）
 虚拟地址。运行后，在“start”到“end-1”范围内的虚拟地址的内核地
 址空间的缓存中不会有页表项。</p>
-<p>这两个程序中的第一个是在vmap_range()安装了页表项之后调用的。
-第二个是在vunmap_range()删除页表项之前调用的。</p>
+<p>这两个程序中的第一个是在<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vmap_range()</span></code>安装了页表项之后调用的。
+第二个是在<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vunmap_range()</span></code>删除页表项之前调用的。</p>
 </div></blockquote>
 </li>
 </ol>
@@ -414,8 +414,8 @@ memcpy/memset而不做其他事情。</p>
 页面，它允许我们“推迟”（也许是无限期）实际的刷新过程。请看
 sparc64的flush_dcache_page和update_mmu_cache实现，以了解如
 何做到这一点。</p>
-<p>这个想法是，首先在flush_dcache_page()时，如果page-&gt;mapping-&gt;i_mmap
-是一个空树，只需标记架构私有页标志位。之后，在update_mmu_cache()
+<p>这个想法是，首先在<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">flush_dcache_page()</span></code>时，如果page-&gt;mapping-&gt;i_mmap
+是一个空树，只需标记架构私有页标志位。之后，在<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">update_mmu_cache()</span></code>
 中，会对这个标志位进行检查，如果设置了，就进行刷新，并清除标志位。</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
@@ -426,7 +426,7 @@ sparc64关于如何处理这个问题的例子。</p>
 </div></blockquote>
 <p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">flush_dcache_folio(struct</span> <span class="pre">folio</span> <span class="pre">*folio)</span></code></p>
 <blockquote>
-<div><p>该函数的调用情形与flush_dcache_page()相同。它允许架构针对刷新整个
+<div><p>该函数的调用情形与<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">flush_dcache_page()</span></code>相同。它允许架构针对刷新整个
 folio页面进行优化，而不是一次刷新一页。</p>
 </div></blockquote>
 <p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">copy_to_user_page(struct</span> <span class="pre">vm_area_struct</span> <span class="pre">*vma,</span> <span class="pre">struct</span> <span class="pre">page</span> <span class="pre">*page,</span>
@@ -434,17 +434,17 @@ folio页面进行优化，而不是一次刷新一页。</p>
 <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">copy_from_user_page(struct</span> <span class="pre">vm_area_struct</span> <span class="pre">*vma,</span> <span class="pre">struct</span> <span class="pre">page</span> <span class="pre">*page,</span>
 <span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">user_vaddr,</span> <span class="pre">void</span> <span class="pre">*dst,</span> <span class="pre">void</span> <span class="pre">*src,</span> <span class="pre">int</span> <span class="pre">len)</span></code></p>
 <blockquote>
-<div><p>当内核需要复制任意的数据进出任意的用户页时（比如ptrace()），它将使
+<div><p>当内核需要复制任意的数据进出任意的用户页时（比如<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ptrace()</span></code>），它将使
 用这两个程序。</p>
 <p>任何必要的缓存刷新或其他需要发生的一致性操作都应该在这里发生。如果
 处理器的指令缓存没有对cpu存储进行窥探，那么你很可能需要为
-copy_to_user_page()刷新指令缓存。</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">copy_to_user_page()</span></code>刷新指令缓存。</p>
 </div></blockquote>
 <p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">flush_anon_page(struct</span> <span class="pre">vm_area_struct</span> <span class="pre">*vma,</span> <span class="pre">struct</span> <span class="pre">page</span> <span class="pre">*page,</span>
 <span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">vmaddr)</span></code></p>
 <blockquote>
 <div><p>当内核需要访问一个匿名页的内容时，它会调用这个函数（目前只有
-get_user_pages()）。注意：flush_dcache_page()故意对匿名页不起作
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_user_pages()</span></code>）。注意：<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">flush_dcache_page()</span></code>故意对匿名页不起作
 用。默认的实现是nop（对于所有相干的架构应该保持这样）。对于不一致性
 的架构，它应该刷新vmaddr处的页面缓存。</p>
 </div></blockquote>

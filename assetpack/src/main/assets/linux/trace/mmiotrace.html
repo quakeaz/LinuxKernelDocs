@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -253,10 +253,10 @@ under investigation and your nickname.</p>
 <h2>How Mmiotrace Works<a class="headerlink" href="#how-mmiotrace-works" title="Link to this heading">¶</a></h2>
 <p>Access to hardware IO-memory is gained by mapping addresses from PCI bus by
 calling one of the ioremap_*() functions. Mmiotrace is hooked into the
-__ioremap() function and gets called whenever a mapping is created. Mapping is
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__ioremap()</span></code> function and gets called whenever a mapping is created. Mapping is
 an event that is recorded into the trace log. Note that ISA range mappings
 are not caught, since the mapping always exists and is returned directly.</p>
-<p>MMIO accesses are recorded via page faults. Just before __ioremap() returns,
+<p>MMIO accesses are recorded via page faults. Just before <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__ioremap()</span></code> returns,
 the mapped pages are marked as not present. Any access to the pages causes a
 fault. The page fault handler calls mmiotrace to handle the fault. Mmiotrace
 marks the page present, sets TF flag to achieve single stepping and exits the

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -259,9 +259,9 @@ proceeding to the next folio for you.</p>
 <p><strong>Description</strong></p>
 <p>Starts I/O against the buffers at mapping-&gt;i_private_list, and waits upon
 that I/O.</p>
-<p>Basically, this is a convenience function for fsync().
+<p>Basically, this is a convenience function for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fsync()</span></code>.
 <strong>mapping</strong> is a file or directory which needs those buffers to be written for
-a successful fsync().</p>
+a successful <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fsync()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.generic_buffers_fsync_noflush">
@@ -446,7 +446,7 @@ caller can bring it uptodate either by reading it or overwriting it.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>You are not expected to call this function.  You should use one of
-sb_bread(), sb_bread_unmovable() or <a class="reference internal" href="#c.__bread" title="__bread"><code class="xref c c-func docutils literal notranslate"><span class="pre">__bread()</span></code></a>.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sb_bread()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sb_bread_unmovable()</span></code> or <a class="reference internal" href="#c.__bread" title="__bread"><code class="xref c c-func docutils literal notranslate"><span class="pre">__bread()</span></code></a>.</p>
 <p>Read a specified block, and return the buffer head that refers to it.
 If <strong>gfp</strong> is 0, the memory will be allocated using the block device’s
 default GFP flags.  If <strong>gfp</strong> is __GFP_MOVABLE, the memory may be
@@ -506,9 +506,9 @@ buffer-cache aliases starting from return from this function and until the
 moment when something will explicitly mark the buffer dirty (hopefully that
 will not happen until we will free that block ;-) We don’t even need to mark
 it not-uptodate - nobody can expect anything from a newly allocated buffer
-anyway. We used to use unmap_buffer() for such invalidation, but that was
+anyway. We used to use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unmap_buffer()</span></code> for such invalidation, but that was
 wrong. We definitely don’t want to mark the alias unmapped, for example - it
-would confuse anyone who might pick it with bread() afterwards...</p>
+would confuse anyone who might pick it with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bread()</span></code> afterwards...</p>
 <p>Also..  Note that <a class="reference internal" href="#c.bforget" title="bforget"><code class="xref c c-func docutils literal notranslate"><span class="pre">bforget()</span></code></a> doesn’t lock the buffer.  So there can be
 writeout I/O going on against recently-freed buffers.  We don’t wait on that
 I/O in <a class="reference internal" href="#c.bforget" title="bforget"><code class="xref c c-func docutils literal notranslate"><span class="pre">bforget()</span></code></a> - it’s more efficient to wait on the I/O only if we really
@@ -554,7 +554,7 @@ locking the folio or by holding its mapping’s i_private_lock.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">buffer_head</span> <span class="pre">*bh</span></code></dt><dd><p>struct buffer_head</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">buffer_head</span> <span class="pre">*bh</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">buffer_head</span></code></p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -570,7 +570,7 @@ with the buffer locked, if not.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">buffer_head</span> <span class="pre">*bh</span></code></dt><dd><p>struct buffer_head</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">buffer_head</span> <span class="pre">*bh</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">buffer_head</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">blk_opf_t</span> <span class="pre">op_flags</span></code></dt><dd><p>appending REQ_OP_* flags besides REQ_OP_READ</p>
 </dd>
@@ -591,7 +591,7 @@ with the buffer locked, if not.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">nr</span></code></dt><dd><p>entry number of the buffer batch</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">buffer_head</span> <span class="pre">*bhs[]</span></code></dt><dd><p>a batch of struct buffer_head</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">buffer_head</span> <span class="pre">*bhs[]</span></code></dt><dd><p>a batch of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">buffer_head</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">blk_opf_t</span> <span class="pre">op_flags</span></code></dt><dd><p>appending REQ_OP_* flags besides REQ_OP_READ</p>
 </dd>

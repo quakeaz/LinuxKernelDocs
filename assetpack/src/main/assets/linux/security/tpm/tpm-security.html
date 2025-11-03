@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -322,7 +322,7 @@ template from the <a class="reference external" href="https://trustedcomputinggr
 of the generated primary key against the one in the certificate (the
 public key must match).  Note that generation of the EK primary
 requires the EK hierarchy password, but a pre-generated version of the
-EC primary should exist at 81010002 and a TPM2_ReadPublic() may be
+EC primary should exist at 81010002 and a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">TPM2_ReadPublic()</span></code> may be
 performed on this without needing the key authority.  Next, the
 certificate itself must be verified to chain back to the manufacturer
 root (which should be published on the manufacturer website).  Once
@@ -341,7 +341,7 @@ attestation is done by the TPM owner who thus has access to only the
 owner hierarchy.  The owner creates an external public/private key
 pair (assume elliptic curve in this case) and wraps the private key
 for import using an inner wrapping process and parented to the EC
-derived storage primary.  The TPM2_Import() is done using a parameter
+derived storage primary.  The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">TPM2_Import()</span></code> is done using a parameter
 decryption HMAC session salted to the EK primary (which also does not
 require the EK key authority) meaning that the inner wrapping key is
 the encrypted parameter and thus the TPM will not be able to perform
@@ -355,7 +355,7 @@ outlined in the <a class="reference external" href="https://trustedcomputinggrou
 this key (the hash of the public area) is computed and compared to the
 null seed name presented by the kernel in
 /sys/class/tpm/tpm0/null_name.  If the names do not match, the TPM is
-compromised.  If the names match, the user performs a TPM2_Certify()
+compromised.  If the names match, the user performs a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">TPM2_Certify()</span></code>
 using the null primary as the object handle and the loaded private key
 as the sign handle and providing randomized qualifying data.  The
 signature of the returned certifyInfo is verified against the public

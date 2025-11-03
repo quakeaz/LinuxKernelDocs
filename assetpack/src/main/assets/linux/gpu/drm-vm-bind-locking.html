@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -183,7 +183,7 @@ is anonymous or page-cache pages as described above.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">revalidating</span></code>: Revalidating a gpu_vma means making the latest version
 of the backing store resident and making sure the gpu_vma’s
 page-table entries point to that backing store.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">dma_fence</span></code>: A <a class="reference internal" href="../driver-api/dma-buf.html#c.dma_fence" title="dma_fence"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dma_fence</span></code></a> that is similar to a struct completion
+<li><p><code class="docutils literal notranslate"><span class="pre">dma_fence</span></code>: A <a class="reference internal" href="../driver-api/dma-buf.html#c.dma_fence" title="dma_fence"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dma_fence</span></code></a> that is similar to a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">completion</span></code>
 and which tracks GPU activity. When the GPU activity is finished,
 the dma_fence signals. Please refer to the <code class="docutils literal notranslate"><span class="pre">DMA</span> <span class="pre">Fences</span></code> section of
 the <a class="reference internal" href="../driver-api/dma-buf.html"><span class="doc">dma-buf doc</span></a>.</p></li>
@@ -476,7 +476,7 @@ concurrently with list iteration.</p>
 GPU virtual address range, directly maps a CPU mm range of anonymous-
 or file page-cache pages.
 A very simple approach would be to just pin the pages using
-pin_user_pages() at bind time and unpin them at unbind time, but this
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pin_user_pages()</span></code> at bind time and unpin them at unbind time, but this
 creates a Denial-Of-Service vector since a single user-space process
 would be able to pin down all of system memory, which is not
 desirable. (For special use-cases and assuming proper accounting pinning might
@@ -498,8 +498,8 @@ need to care about, but so far it has proven difficult to exclude
 certain notifications.</p>
 <p>Using a MMU notifier for device DMA (and other methods) is described in
 <a class="reference internal" href="../core-api/pin_user_pages.html#mmu-notifier-registration-case"><span class="std std-ref">the pin_user_pages() documentation</span></a>.</p>
-<p>Now, the method of obtaining struct page references using
-get_user_pages() unfortunately can’t be used under a dma_resv lock
+<p>Now, the method of obtaining <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code> references using
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_user_pages()</span></code> unfortunately can’t be used under a dma_resv lock
 since that would violate the locking order of the dma_resv lock vs the
 mmap_lock that is grabbed when resolving a CPU pagefault. This means
 the gpu_vm’s list of userptr gpu_vmas needs to be protected by an

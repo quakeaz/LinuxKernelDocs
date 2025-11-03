@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -263,16 +263,15 @@ copies of the master key(s) it makes as well; normally this should
 be done immediately after FS_IOC_ADD_ENCRYPTION_KEY, without waiting
 for FS_IOC_REMOVE_ENCRYPTION_KEY.  Naturally, the same also applies
 to all higher levels in the key hierarchy.  Userspace should also
-follow other security precautions such as mlock()ing memory
+follow other security precautions such as <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock()</span></code>ing memory
 containing keys to prevent it from being swapped out.</p></li>
 <li><p>In general, decrypted contents and filenames in the kernel VFS
 caches are freed but not wiped.  Therefore, portions thereof may be
 recoverable from freed memory, even after the corresponding key(s)
 were wiped.  To partially solve this, you can add init_on_free=1 to
 your kernel command line.  However, this has a performance cost.</p></li>
-<li><p>Secret keys might still exist in CPU registers, in crypto
-accelerator hardware (if used by the crypto API to implement any of
-the algorithms), or in other places not explicitly considered here.</p></li>
+<li><p>Secret keys might still exist in CPU registers or in other places
+not explicitly considered here.</p></li>
 </ul>
 </section>
 <section id="full-system-compromise">
@@ -496,9 +495,12 @@ that uses XChaCha12 and AES-256 as its underlying components.  Most of
 the work is done by XChaCha12, which is much faster than AES when AES
 acceleration is unavailable.  For more information about Adiantum, see
 <a class="reference external" href="https://eprint.iacr.org/2018/720.pdf">the Adiantum paper</a>.</p>
-<p>The (AES-128-CBC-ESSIV, AES-128-CBC-CTS) pair exists only to support
-systems whose only form of AES acceleration is an off-CPU crypto
-accelerator such as CAAM or CESA that does not support XTS.</p>
+<p>The (AES-128-CBC-ESSIV, AES-128-CBC-CTS) pair was added to try to
+provide a more efficient option for systems that lack AES instructions
+in the CPU but do have a non-inline crypto engine such as CAAM or CESA
+that supports AES-CBC (and not AES-XTS).  This is deprecated.  It has
+been shown that just doing AES on the CPU is actually faster.
+Moreover, Adiantum is faster still and is recommended on such systems.</p>
 <p>The remaining mode pairs are the “national pride ciphers”:</p>
 <ul class="simple">
 <li><p>(SM4-XTS, SM4-CBC-CTS)</p></li>
@@ -607,24 +609,6 @@ API, but the filenames mode still does.</p>
 </dl>
 </li>
 </ul>
-<p>fscrypt also uses HMAC-SHA512 for key derivation, so enabling SHA-512
-acceleration is recommended:</p>
-<ul class="simple">
-<li><dl class="simple">
-<dt>SHA-512</dt><dd><ul>
-<li><dl class="simple">
-<dt>Recommended:</dt><dd><ul>
-<li><p>arm64: CONFIG_CRYPTO_SHA512_ARM64_CE</p></li>
-<li><p>x86: CONFIG_CRYPTO_SHA512_SSSE3</p></li>
-</ul>
-</dd>
-</dl>
-</li>
-</ul>
-</dd>
-</dl>
-</li>
-</ul>
 </section>
 <section id="contents-encryption">
 <h3>Contents encryption<a class="headerlink" href="#contents-encryption" title="Link to this heading">¶</a></h3>
@@ -717,7 +701,7 @@ that IV reuse is not a problem as each symlink has its own inode.</p>
 <p>The FS_IOC_SET_ENCRYPTION_POLICY ioctl sets an encryption policy on an
 empty directory or verifies that a directory or regular file already
 has the specified encryption policy.  It takes in a pointer to
-struct fscrypt_policy_v1 or struct fscrypt_policy_v2, defined as
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fscrypt_policy_v1</span></code> or <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fscrypt_policy_v2</span></code>, defined as
 follows:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>#define FSCRYPT_POLICY_V1               0
 #define FSCRYPT_KEY_DESCRIPTOR_SIZE     8
@@ -746,8 +730,8 @@ struct fscrypt_policy_v2 {
 <p>This structure must be initialized as follows:</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">version</span></code> must be FSCRYPT_POLICY_V1 (0) if
-struct fscrypt_policy_v1 is used or FSCRYPT_POLICY_V2 (2) if
-struct fscrypt_policy_v2 is used. (Note: we refer to the original
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fscrypt_policy_v1</span></code> is used or FSCRYPT_POLICY_V2 (2) if
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fscrypt_policy_v2</span></code> is used. (Note: we refer to the original
 policy version as “v1”, though its version code is really 0.)
 For new encrypted directories, use v2 policies.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">contents_encryption_mode</span></code> and <code class="docutils literal notranslate"><span class="pre">filenames_encryption_mode</span></code> must
@@ -811,9 +795,9 @@ before any files can be created in the encrypted directory.</p>
 replaced with <code class="docutils literal notranslate"><span class="pre">master_key_identifier</span></code>, which is longer and cannot
 be arbitrarily chosen.  Instead, the key must first be added using
 <a class="reference internal" href="#fs-ioc-add-encryption-key">FS_IOC_ADD_ENCRYPTION_KEY</a>.  Then, the <code class="docutils literal notranslate"><span class="pre">key_spec.u.identifier</span></code>
-the kernel returned in the struct fscrypt_add_key_arg must
+the kernel returned in the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fscrypt_add_key_arg</span></code> must
 be used as the <code class="docutils literal notranslate"><span class="pre">master_key_identifier</span></code> in
-struct fscrypt_policy_v2.</p>
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fscrypt_policy_v2</span></code>.</p>
 </li>
 </ul>
 <p>If the file is not yet encrypted, then FS_IOC_SET_ENCRYPTION_POLICY
@@ -889,7 +873,7 @@ version.</p>
 <p>The FS_IOC_GET_ENCRYPTION_POLICY_EX ioctl retrieves the encryption
 policy, if any, for a directory or regular file.  No additional
 permissions are required beyond the ability to open the file.  It
-takes in a pointer to struct fscrypt_get_policy_ex_arg,
+takes in a pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fscrypt_get_policy_ex_arg</span></code>,
 defined as follows:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct fscrypt_get_policy_ex_arg {
         __u64 policy_size; /* input/output */
@@ -903,7 +887,7 @@ defined as follows:</p>
 </div>
 <p>The caller must initialize <code class="docutils literal notranslate"><span class="pre">policy_size</span></code> to the size available for
 the policy struct, i.e. <code class="docutils literal notranslate"><span class="pre">sizeof(arg.policy)</span></code>.</p>
-<p>On success, the policy struct is returned in <code class="docutils literal notranslate"><span class="pre">policy</span></code>, and its
+<p>On success, the policy <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> returned in <code class="docutils literal notranslate"><span class="pre">policy</span></code>, and its
 actual size is returned in <code class="docutils literal notranslate"><span class="pre">policy_size</span></code>.  <code class="docutils literal notranslate"><span class="pre">policy.version</span></code> should
 be checked to determine the version of policy returned.  Note that the
 version code for the “v1” policy is actually 0 (FSCRYPT_POLICY_V1).</p>
@@ -919,12 +903,12 @@ or this kernel is too old to support FS_IOC_GET_ENCRYPTION_POLICY_EX
 support for this filesystem, or the filesystem superblock has not
 had encryption enabled on it</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">EOVERFLOW</span></code>: the file is encrypted and uses a recognized
-encryption policy version, but the policy struct does not fit into
+encryption policy version, but the policy <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">does</span></code> not fit into
 the provided buffer</p></li>
 </ul>
 <p>Note: if you only need to know whether a file is encrypted or not, on
 most filesystems it is also possible to use the FS_IOC_GETFLAGS ioctl
-and check for FS_ENCRYPT_FL, or to use the statx() system call and
+and check for FS_ENCRYPT_FL, or to use the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">statx()</span></code> system call and
 check for STATX_ATTR_ENCRYPTED in stx_attributes.</p>
 </section>
 <section id="fs-ioc-get-encryption-policy">
@@ -933,8 +917,8 @@ check for STATX_ATTR_ENCRYPTED in stx_attributes.</p>
 encryption policy, if any, for a directory or regular file.  However,
 unlike <a class="reference internal" href="#fs-ioc-get-encryption-policy-ex">FS_IOC_GET_ENCRYPTION_POLICY_EX</a>,
 FS_IOC_GET_ENCRYPTION_POLICY only supports the original policy
-version.  It takes in a pointer directly to struct fscrypt_policy_v1
-rather than struct fscrypt_get_policy_ex_arg.</p>
+version.  It takes in a pointer directly to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fscrypt_policy_v1</span></code>
+rather than <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fscrypt_get_policy_ex_arg</span></code>.</p>
 <p>The error codes for FS_IOC_GET_ENCRYPTION_POLICY are the same as those
 for FS_IOC_GET_ENCRYPTION_POLICY_EX, except that
 FS_IOC_GET_ENCRYPTION_POLICY also returns <code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> if the file is
@@ -969,7 +953,7 @@ the filesystem, making all files on the filesystem which were
 encrypted using that key appear “unlocked”, i.e. in plaintext form.
 It can be executed on any file or directory on the target filesystem,
 but using the filesystem’s root directory is recommended.  It takes in
-a pointer to struct fscrypt_add_key_arg, defined as follows:</p>
+a pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fscrypt_add_key_arg</span></code>, defined as follows:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct fscrypt_add_key_arg {
         struct fscrypt_key_specifier key_spec;
         __u32 raw_size;
@@ -1000,14 +984,14 @@ struct fscrypt_provisioning_key_payload {
 };
 </pre></div>
 </div>
-<p>struct fscrypt_add_key_arg must be zeroed, then initialized
+<p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fscrypt_add_key_arg</span></code> must be zeroed, then initialized
 as follows:</p>
 <ul>
 <li><p>If the key is being added for use by v1 encryption policies, then
 <code class="docutils literal notranslate"><span class="pre">key_spec.type</span></code> must contain FSCRYPT_KEY_SPEC_TYPE_DESCRIPTOR, and
 <code class="docutils literal notranslate"><span class="pre">key_spec.u.descriptor</span></code> must contain the descriptor of the key
 being added, corresponding to the value in the
-<code class="docutils literal notranslate"><span class="pre">master_key_descriptor</span></code> field of struct fscrypt_policy_v1.
+<code class="docutils literal notranslate"><span class="pre">master_key_descriptor</span></code> field of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fscrypt_policy_v1</span></code>.
 To add this type of key, the calling process must have the
 CAP_SYS_ADMIN capability in the initial user namespace.</p>
 <p>Alternatively, if the key is being added for use by v2 encryption
@@ -1024,8 +1008,8 @@ Alternatively, if <code class="docutils literal notranslate"><span class="pre">k
 in that case the size is implied by the specified Linux keyring key.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">key_id</span></code> is 0 if the key is given directly in the <code class="docutils literal notranslate"><span class="pre">raw</span></code> field.
 Otherwise <code class="docutils literal notranslate"><span class="pre">key_id</span></code> is the ID of a Linux keyring key of type
-“fscrypt-provisioning” whose payload is struct
-fscrypt_provisioning_key_payload whose <code class="docutils literal notranslate"><span class="pre">raw</span></code> field contains the
+“fscrypt-provisioning” whose payload is <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">fscrypt_provisioning_key_payload</span></code> whose <code class="docutils literal notranslate"><span class="pre">raw</span></code> field contains the
 key, whose <code class="docutils literal notranslate"><span class="pre">type</span></code> field matches <code class="docutils literal notranslate"><span class="pre">key_spec.type</span></code>, and whose
 <code class="docutils literal notranslate"><span class="pre">flags</span></code> field matches <code class="docutils literal notranslate"><span class="pre">flags</span></code>.  Since <code class="docutils literal notranslate"><span class="pre">raw</span></code> is
 variable-length, the total size of this key’s payload must be
@@ -1094,7 +1078,7 @@ into the session keyring.</p>
 <p>This method is deprecated (and not supported for v2 encryption
 policies) for several reasons.  First, it cannot be used in
 combination with FS_IOC_REMOVE_ENCRYPTION_KEY (see <a class="reference internal" href="#removing-keys">Removing keys</a>),
-so for removing a key a workaround such as keyctl_unlink() in
+so for removing a key a workaround such as <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">keyctl_unlink()</span></code> in
 combination with <code class="docutils literal notranslate"><span class="pre">sync;</span> <span class="pre">echo</span> <span class="pre">2</span> <span class="pre">&gt;</span> <span class="pre">/proc/sys/vm/drop_caches</span></code> would
 have to be used.  Second, it doesn’t match the fact that the
 locked/unlocked status of encrypted files (i.e. whether they appear to
@@ -1103,7 +1087,7 @@ has caused much confusion as well as real problems when processes
 running under different UIDs, such as a <code class="docutils literal notranslate"><span class="pre">sudo</span></code> command, need to
 access encrypted files.</p>
 <p>Nevertheless, to add a key to one of the process-subscribed keyrings,
-the add_key() system call can be used (see:
+the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">add_key()</span></code> system call can be used (see:
 <code class="docutils literal notranslate"><span class="pre">Documentation/security/keys/core.rst</span></code>).  The key type must be
 “logon”; keys of this type are kept in kernel memory and cannot be
 read back by userspace.  The key description must be “fscrypt:”
@@ -1148,7 +1132,7 @@ discussion of the security goals and limitations of these ioctls.</p>
 encryption key from the filesystem, and possibly removes the key
 itself.  It can be executed on any file or directory on the target
 filesystem, but using the filesystem’s root directory is recommended.
-It takes in a pointer to struct fscrypt_remove_key_arg, defined
+It takes in a pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fscrypt_remove_key_arg</span></code>, defined
 as follows:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct fscrypt_remove_key_arg {
         struct fscrypt_key_specifier key_spec;
@@ -1243,7 +1227,7 @@ namespace.  Otherwise it will fail with EACCES.</p>
 master encryption key.  It can be executed on any file or directory on
 the target filesystem, but using the filesystem’s root directory is
 recommended.  It takes in a pointer to
-struct fscrypt_get_key_status_arg, defined as follows:</p>
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fscrypt_get_key_status_arg</span></code>, defined as follows:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct fscrypt_get_key_status_arg {
         /* input */
         struct fscrypt_key_specifier key_spec;
@@ -1362,7 +1346,7 @@ for an encrypted file contains the plaintext, not the ciphertext.</p>
 files, directories, and symlinks even before their encryption key has
 been added, or after their encryption key has been removed:</p>
 <ul>
-<li><p>File metadata may be read, e.g. using stat().</p></li>
+<li><p>File metadata may be read, e.g. using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">stat()</span></code>.</p></li>
 <li><p>Directories may be listed, in which case the filenames will be
 listed in an encoded form derived from their ciphertext.  The
 current encoding algorithm is described in <a class="reference internal" href="#filename-hashing-and-encoding">Filename hashing and
@@ -1374,8 +1358,8 @@ will uniquely identify directory entries.</p>
 present and are not encrypted or encoded.</p>
 </li>
 <li><p>Files may be deleted.  That is, nondirectory files may be deleted
-with unlink() as usual, and empty directories may be deleted with
-rmdir() as usual.  Therefore, <code class="docutils literal notranslate"><span class="pre">rm</span></code> and <code class="docutils literal notranslate"><span class="pre">rm</span> <span class="pre">-r</span></code> will work as
+with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unlink()</span></code> as usual, and empty directories may be deleted with
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rmdir()</span></code> as usual.  Therefore, <code class="docutils literal notranslate"><span class="pre">rm</span></code> and <code class="docutils literal notranslate"><span class="pre">rm</span> <span class="pre">-r</span></code> will work as
 expected.</p></li>
 <li><p>Symlink targets may be read and followed, but they will be presented
 in encrypted form, similar to filenames in directories.  Hence, they
@@ -1384,7 +1368,7 @@ are unlikely to point to anywhere useful.</p></li>
 <p>Without the key, regular files cannot be opened or truncated.
 Attempts to do so will fail with ENOKEY.  This implies that any
 regular file operations that require a file descriptor, such as
-read(), write(), mmap(), fallocate(), and ioctl(), are also forbidden.</p>
+read(), write(), mmap(), <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fallocate()</span></code>, and ioctl(), are also forbidden.</p>
 <p>Also without the key, files of any type (including directories) cannot
 be created or linked into an encrypted directory, nor can a name in an
 encrypted directory be the source or target of a rename, nor can an
@@ -1406,7 +1390,7 @@ not be encrypted.</p>
 files, or files encrypted with a different encryption policy, in an
 encrypted directory tree.  Attempts to link or rename such a file into
 an encrypted directory will fail with EXDEV.  This is also enforced
-during -&gt;lookup() to provide limited protection against offline
+during -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lookup()</span></code> to provide limited protection against offline
 attacks that try to disable or downgrade encryption in known locations
 where applications may later write sensitive data.  It is recommended
 that systems implementing a form of “verified boot” take advantage of
@@ -1414,21 +1398,13 @@ this by validating all top-level encryption policies prior to access.</p>
 </section>
 <section id="inline-encryption-support">
 <h2>Inline encryption support<a class="headerlink" href="#inline-encryption-support" title="Link to this heading">¶</a></h2>
-<p>By default, fscrypt uses the kernel crypto API for all cryptographic
-operations (other than HKDF, which fscrypt partially implements
-itself).  The kernel crypto API supports hardware crypto accelerators,
-but only ones that work in the traditional way where all inputs and
-outputs (e.g. plaintexts and ciphertexts) are in memory.  fscrypt can
-take advantage of such hardware, but the traditional acceleration
-model isn’t particularly efficient and fscrypt hasn’t been optimized
-for it.</p>
-<p>Instead, many newer systems (especially mobile SoCs) have <em>inline
-encryption hardware</em> that can encrypt/decrypt data while it is on its
-way to/from the storage device.  Linux supports inline encryption
-through a set of extensions to the block layer called <em>blk-crypto</em>.
-blk-crypto allows filesystems to attach encryption contexts to bios
-(I/O requests) to specify how the data will be encrypted or decrypted
-in-line.  For more information about blk-crypto, see
+<p>Many newer systems (especially mobile SoCs) have <em>inline encryption
+hardware</em> that can encrypt/decrypt data while it is on its way to/from
+the storage device.  Linux supports inline encryption through a set of
+extensions to the block layer called <em>blk-crypto</em>.  blk-crypto allows
+filesystems to attach encryption contexts to bios (I/O requests) to
+specify how the data will be encrypted or decrypted in-line.  For more
+information about blk-crypto, see
 <a class="reference internal" href="../block/inline-encryption.html#inline-encryption"><span class="std std-ref">Documentation/block/inline-encryption.rst</span></a>.</p>
 <p>On supported filesystems (currently ext4 and f2fs), fscrypt can use
 blk-crypto instead of the kernel crypto API to encrypt/decrypt file
@@ -1474,8 +1450,8 @@ the details of how fscrypt can use hardware-wrapped keys.</p>
 keys to be hardware-wrapped keys as an alternative to raw keys.  To
 add a hardware-wrapped key with <a class="reference internal" href="#fs-ioc-add-encryption-key">FS_IOC_ADD_ENCRYPTION_KEY</a>,
 userspace must specify FSCRYPT_ADD_KEY_FLAG_HW_WRAPPED in the
-<code class="docutils literal notranslate"><span class="pre">flags</span></code> field of struct fscrypt_add_key_arg and also in the
-<code class="docutils literal notranslate"><span class="pre">flags</span></code> field of struct fscrypt_provisioning_key_payload when
+<code class="docutils literal notranslate"><span class="pre">flags</span></code> field of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fscrypt_add_key_arg</span></code> and also in the
+<code class="docutils literal notranslate"><span class="pre">flags</span></code> field of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fscrypt_provisioning_key_payload</span></code> when
 applicable.  The key must be in ephemerally-wrapped form, not
 long-term wrapped form.</p>
 <p>Some limitations apply.  First, files protected by a hardware-wrapped
@@ -1536,11 +1512,11 @@ encrypted file will fall back to buffered I/O.</p>
 <section id="encryption-context">
 <h3>Encryption context<a class="headerlink" href="#encryption-context" title="Link to this heading">¶</a></h3>
 <p>An encryption policy is represented on-disk by
-struct fscrypt_context_v1 or struct fscrypt_context_v2.  It is up to
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fscrypt_context_v1</span></code> or <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fscrypt_context_v2</span></code>.  It is up to
 individual filesystems to decide where to store it, but normally it
 would be stored in a hidden extended attribute.  It should <em>not</em> be
-exposed by the xattr-related system calls such as getxattr() and
-setxattr() because of the special semantics of the encryption xattr.
+exposed by the xattr-related system calls such as <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">getxattr()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setxattr()</span></code> because of the special semantics of the encryption xattr.
 (In particular, there would be much confusion if an encryption policy
 were to be added to or removed from anything other than an empty
 directory.)  These structs are defined as follows:</p>
@@ -1583,11 +1559,11 @@ encryption contexts with bios to specify how the block layer or the
 inline encryption hardware will encrypt/decrypt the file contents.</p>
 <p>When inline encryption isn’t used, filesystems must encrypt/decrypt
 the file contents themselves, as described below:</p>
-<p>For the read path (-&gt;read_folio()) of regular files, filesystems can
+<p>For the read path (-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">read_folio()</span></code>) of regular files, filesystems can
 read the ciphertext into the page cache and decrypt it in-place.  The
 folio lock must be held until decryption has finished, to prevent the
 folio from becoming visible to userspace prematurely.</p>
-<p>For the write path (-&gt;writepages()) of regular files, filesystems
+<p>For the write path (-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">writepages()</span></code>) of regular files, filesystems
 cannot encrypt data in-place in the page cache, since the cached
 plaintext must be preserved.  Instead, filesystems must encrypt into a
 temporary buffer or “bounce page”, then write out the temporary
@@ -1599,7 +1575,7 @@ F2FS, have to allocate bounce pages specially for encryption.</p>
 <h3>Filename hashing and encoding<a class="headerlink" href="#filename-hashing-and-encoding" title="Link to this heading">¶</a></h3>
 <p>Modern filesystems accelerate directory lookups by using indexed
 directories.  An indexed directory is organized as a tree keyed by
-filename hashes.  When a -&gt;lookup() is requested, the filesystem
+filename hashes.  When a -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lookup()</span></code> is requested, the filesystem
 normally hashes the filename being looked up so that it can quickly
 find the corresponding directory entry, if any.</p>
 <p>With encryption, lookups must be supported and efficient both with and
@@ -1609,23 +1585,23 @@ without the key.  (Hashing the plaintext filenames would also make it
 impossible for the filesystem’s fsck tool to optimize encrypted
 directories.)  Instead, filesystems hash the ciphertext filenames,
 i.e. the bytes actually stored on-disk in the directory entries.  When
-asked to do a -&gt;lookup() with the key, the filesystem just encrypts
+asked to do a -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lookup()</span></code> with the key, the filesystem just encrypts
 the user-supplied name to get the ciphertext.</p>
 <p>Lookups without the key are more complicated.  The raw ciphertext may
 contain the <code class="docutils literal notranslate"><span class="pre">\0</span></code> and <code class="docutils literal notranslate"><span class="pre">/</span></code> characters, which are illegal in
-filenames.  Therefore, readdir() must base64url-encode the ciphertext
-for presentation.  For most filenames, this works fine; on -&gt;lookup(),
+filenames.  Therefore, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">readdir()</span></code> must base64url-encode the ciphertext
+for presentation.  For most filenames, this works fine; on -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lookup()</span></code>,
 the filesystem just base64url-decodes the user-supplied name to get
 back to the raw ciphertext.</p>
 <p>However, for very long filenames, base64url encoding would cause the
-filename length to exceed NAME_MAX.  To prevent this, readdir()
+filename length to exceed NAME_MAX.  To prevent this, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">readdir()</span></code>
 actually presents long filenames in an abbreviated form which encodes
 a strong “hash” of the ciphertext filename, along with the optional
 filesystem-specific hash(es) needed for directory lookups.  This
 allows the filesystem to still, with a high degree of confidence, map
-the filename given in -&gt;lookup() back to a particular directory entry
-that was previously listed by readdir().  See
-struct fscrypt_nokey_name in the source for more details.</p>
+the filename given in -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lookup()</span></code> back to a particular directory entry
+that was previously listed by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">readdir()</span></code>.  See
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fscrypt_nokey_name</span></code> in the source for more details.</p>
 <p>Note that the precise way that filenames are presented to userspace
 without the key is subject to change in the future.  It is only meant
 as a way to temporarily present valid filenames so that commands like

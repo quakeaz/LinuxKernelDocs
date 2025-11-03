@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -205,7 +205,7 @@ structure.</p>
 <h3>On-disk metadata<a class="headerlink" href="#on-disk-metadata" title="Link to this heading">¶</a></h3>
 <p>zonefs on-disk metadata is reduced to an immutable super block which
 persistently stores a magic number and optional feature flags and values. On
-mount, zonefs uses blkdev_report_zones() to obtain the device zone configuration
+mount, zonefs uses <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">blkdev_report_zones()</span></code> to obtain the device zone configuration
 and populates the mount point with a static file tree solely based on this
 information. File sizes come from the device zone type and write pointer
 position managed by the device itself.</p>
@@ -228,8 +228,8 @@ such devices, the “cnv” sub-directory will not be created.</p>
 <p>These two directories are the only directories that exist in zonefs. Users
 cannot create other directories and cannot rename nor delete the “cnv” and
 “seq” sub-directories.</p>
-<p>The size of the directories indicated by the st_size field of struct stat,
-obtained with the stat() or fstat() system calls, indicates the number of files
+<p>The size of the directories indicated by the st_size field of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">stat</span></code>,
+obtained with the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">stat()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fstat()</span></code> system calls, indicates the number of files
 existing under the directory.</p>
 </section>
 <section id="zone-files">
@@ -243,7 +243,7 @@ maximum size, that is, beyond the zone capacity. Any access exceeding the zone
 capacity is failed with the -EFBIG error.</p>
 <p>Creating, deleting, renaming or modifying any attribute of files and
 sub-directories is not allowed.</p>
-<p>The number of blocks of a file as reported by stat() and fstat() indicates the
+<p>The number of blocks of a file as reported by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">stat()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fstat()</span></code> indicates the
 capacity of the zone file, or in other words, the maximum file size.</p>
 </section>
 <section id="conventional-zone-files">
@@ -323,7 +323,7 @@ issued to the device fails, all write requests queued after it will
 become unaligned and fail.</p></li>
 <li><p>Delayed write errors: similarly to regular block devices, if the device side
 write cache is enabled, write errors may occur in ranges of previously
-completed writes when the device write cache is flushed, e.g. on fsync().
+completed writes when the device write cache is flushed, e.g. on <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fsync()</span></code>.
 Similarly to the previous immediate unaligned write error case, delayed write
 errors can propagate through a stream of cached sequential data for a zone
 causing all data to be dropped after the sector that caused the error.</p></li>
@@ -355,7 +355,7 @@ case, the file inode size must be advanced to reflect the zone write pointer
 change and eventually allow the user to restart writing at the end of the
 file.
 A file size may also be reduced to reflect a delayed write error detected on
-fsync(): in this case, the amount of data effectively written in the zone may
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fsync()</span></code>: in this case, the amount of data effectively written in the zone may
 be less than originally indicated by the file inode size. After such I/O
 error, zonefs always fixes the file inode size to reflect the amount of data
 persistently stored in the file zone.</p></li>
@@ -570,7 +570,7 @@ append-writes to the file:</p>
 </pre></div>
 </div>
 <p>Since files are statically mapped to zones on the disk, the number of blocks
-of a file as reported by stat() and fstat() indicates the capacity of the file
+of a file as reported by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">stat()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fstat()</span></code> indicates the capacity of the file
 zone:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span># stat /mnt/seq/0
 File: /mnt/seq/0

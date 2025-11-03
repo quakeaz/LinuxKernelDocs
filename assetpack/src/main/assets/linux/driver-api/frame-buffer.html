@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -246,12 +246,15 @@ kernels 2.5.x.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fb_info</span> <span class="pre">*fb_info</span></code></dt><dd><p>frame buffer info structure</p>
-<p>Registers a frame buffer device <strong>fb_info</strong>.</p>
-<p>Returns negative errno on error, or zero for success.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Registers a frame buffer device <strong>fb_info</strong>.</p>
+<p>Returns negative errno on error, or zero for success.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.unregister_framebuffer">
@@ -261,18 +264,21 @@ kernels 2.5.x.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fb_info</span> <span class="pre">*fb_info</span></code></dt><dd><p>frame buffer info structure</p>
-<p>Unregisters a frame buffer device <strong>fb_info</strong>.</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Unregisters a frame buffer device <strong>fb_info</strong>.</p>
 <p>Returns negative errno on error, or zero for success.</p>
 <p>This function will also notify the framebuffer console
 to release the driver.</p>
 <p>This is meant to be called within a driver’s <a class="reference internal" href="basics.html#c.module_exit" title="module_exit"><code class="xref c c-func docutils literal notranslate"><span class="pre">module_exit()</span></code></a>
 function. If this is called outside <a class="reference internal" href="basics.html#c.module_exit" title="module_exit"><code class="xref c c-func docutils literal notranslate"><span class="pre">module_exit()</span></code></a>, ensure
-that the driver implements fb_open() and fb_release() to
+that the driver implements <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fb_open()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fb_release()</span></code> to
 check that no processes are using the device.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.devm_register_framebuffer">
@@ -282,14 +288,17 @@ check that no processes are using the device.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span> <span class="pre">*dev</span></code></dt><dd><p>device the framebuffer belongs to</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fb_info</span> <span class="pre">*fb_info</span></code></dt><dd><p>frame buffer info structure</p>
-<p>Registers a frame buffer device <strong>fb_info</strong> to device <strong>dev</strong>.</p>
-<p>Returns negative errno on error, or zero for success.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Registers a frame buffer device <strong>fb_info</strong> to device <strong>dev</strong>.</p>
+<p>Returns negative errno on error, or zero for success.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.fb_set_suspend">
@@ -299,15 +308,18 @@ check that no processes are using the device.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fb_info</span> <span class="pre">*info</span></code></dt><dd><p>framebuffer affected</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">state</span></code></dt><dd><p>0 = resuming, !=0 = suspending</p>
-<p>This is meant to be used by low level drivers to
-signal suspend/resume to the core &amp; clients.
-It must be called with the console semaphore held</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This is meant to be used by low level drivers to
+signal suspend/resume to the core &amp; clients.
+It must be called with the console semaphore held</p>
+</div></blockquote>
 </div>
 </section>
 <section id="frame-buffer-colormap">
@@ -320,12 +332,15 @@ It must be called with the console semaphore held</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fb_cmap</span> <span class="pre">*cmap</span></code></dt><dd><p>frame buffer colormap structure</p>
-<p>Deallocates a colormap that was previously allocated with
-fb_alloc_cmap().</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Deallocates a colormap that was previously allocated with
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fb_alloc_cmap()</span></code>.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.fb_copy_cmap">
@@ -335,13 +350,16 @@ fb_alloc_cmap().</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">fb_cmap</span> <span class="pre">*from</span></code></dt><dd><p>frame buffer colormap structure</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fb_cmap</span> <span class="pre">*to</span></code></dt><dd><p>frame buffer colormap structure</p>
-<p>Copy contents of colormap from <strong>from</strong> to <strong>to</strong>.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Copy contents of colormap from <strong>from</strong> to <strong>to</strong>.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.fb_set_cmap">
@@ -351,14 +369,17 @@ fb_alloc_cmap().</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fb_cmap</span> <span class="pre">*cmap</span></code></dt><dd><p>frame buffer colormap structure</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fb_info</span> <span class="pre">*info</span></code></dt><dd><p>frame buffer info structure</p>
-<p>Sets the colormap <strong>cmap</strong> for a screen of device <strong>info</strong>.</p>
-<p>Returns negative errno on error, or zero on success.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Sets the colormap <strong>cmap</strong> for a screen of device <strong>info</strong>.</p>
+<p>Returns negative errno on error, or zero on success.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.fb_default_cmap">
@@ -368,13 +389,16 @@ fb_alloc_cmap().</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">len</span></code></dt><dd><p>size of palette for a depth</p>
-<p>Gets the default colormap for a specific screen depth.  <strong>len</strong>
-is the size of the palette for a particular screen depth.</p>
-<p>Returns pointer to a frame buffer colormap structure.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Gets the default colormap for a specific screen depth.  <strong>len</strong>
+is the size of the palette for a particular screen depth.</p>
+<p>Returns pointer to a frame buffer colormap structure.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.fb_invert_cmaps">
@@ -404,7 +428,7 @@ is the size of the palette for a particular screen depth.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fb_var_screeninfo</span> <span class="pre">*var</span></code></dt><dd><p>frame buffer user defined part of display</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fb_info</span> <span class="pre">*info</span></code></dt><dd><p>frame buffer info structure</p>
@@ -412,10 +436,13 @@ is the size of the palette for a particular screen depth.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">fb_videomode</span> <span class="pre">*mode</span></code></dt><dd><p>frame buffer video mode structure</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">bpp</span></code></dt><dd><p>color depth in bits per pixel</p>
-<p>Tries a video mode to test it’s validity for device <strong>info</strong>.</p>
-<p>Returns 1 on success.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Tries a video mode to test it’s validity for device <strong>info</strong>.</p>
+<p>Returns 1 on success.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.fb_delete_videomode">
@@ -428,7 +455,7 @@ is the size of the palette for a particular screen depth.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">fb_videomode</span> <span class="pre">*mode</span></code></dt><dd><p>videomode to remove</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">list_head</span> <span class="pre">*head</span></code></dt><dd><p>struct list_head of modelist</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">list_head</span> <span class="pre">*head</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">list_head</span></code> of modelist</p>
 </dd>
 </dl>
 <p><strong>NOTES</strong></p>
@@ -483,12 +510,12 @@ to 1.8% of xres rounded down to 8 pixels, and 1.8% of yres. The char
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>1024x768MR-8@60m - Reduced blank with margins at 60Hz.
 </pre></div>
 </div>
-<p>Returns zero for failure, 1 if using specified <strong>mode_option</strong>,
-2 if using specified <strong>mode_option</strong> with an ignored refresh rate,
-3 if default mode is used, 4 if fall back to any valid mode.</p>
 <p><strong>NOTE</strong></p>
 <p>The passed struct <strong>var</strong> is _not_ cleared!  This allows you
 to supply values for e.g. the grayscale and accel_flags fields.</p>
+<p>Returns zero for failure, 1 if using specified <strong>mode_option</strong>,
+2 if using specified <strong>mode_option</strong> with an ignored refresh rate,
+3 if default mode is used, 4 if fall back to any valid mode.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.fb_var_to_videomode">
@@ -499,9 +526,9 @@ to supply values for e.g. the grayscale and accel_flags fields.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fb_videomode</span> <span class="pre">*mode</span></code></dt><dd><p>pointer to struct fb_videomode</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fb_videomode</span> <span class="pre">*mode</span></code></dt><dd><p>pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fb_videomode</span></code></p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">fb_var_screeninfo</span> <span class="pre">*var</span></code></dt><dd><p>pointer to struct fb_var_screeninfo</p>
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">fb_var_screeninfo</span> <span class="pre">*var</span></code></dt><dd><p>pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fb_var_screeninfo</span></code></p>
 </dd>
 </dl>
 </div>
@@ -514,9 +541,9 @@ to supply values for e.g. the grayscale and accel_flags fields.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fb_var_screeninfo</span> <span class="pre">*var</span></code></dt><dd><p>pointer to struct fb_var_screeninfo</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fb_var_screeninfo</span> <span class="pre">*var</span></code></dt><dd><p>pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fb_var_screeninfo</span></code></p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">fb_videomode</span> <span class="pre">*mode</span></code></dt><dd><p>pointer to struct fb_videomode</p>
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">fb_videomode</span> <span class="pre">*mode</span></code></dt><dd><p>pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fb_videomode</span></code></p>
 </dd>
 </dl>
 </div>
@@ -546,13 +573,13 @@ to supply values for e.g. the grayscale and accel_flags fields.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">fb_var_screeninfo</span> <span class="pre">*var</span></code></dt><dd><p>pointer to struct fb_var_screeninfo</p>
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">fb_var_screeninfo</span> <span class="pre">*var</span></code></dt><dd><p>pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fb_var_screeninfo</span></code></p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">list_head</span> <span class="pre">*head</span></code></dt><dd><p>pointer to struct list_head of modelist</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">list_head</span> <span class="pre">*head</span></code></dt><dd><p>pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">list_head</span></code> of modelist</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<p>struct fb_videomode, NULL if none found</p>
+<p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fb_videomode</span></code>, NULL if none found</p>
 <p><strong>Description</strong></p>
 <p>IMPORTANT:
 This function assumes that all modelist entries in
@@ -571,7 +598,7 @@ the videomode with the highest refresh rate</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">fb_videomode</span> <span class="pre">*mode</span></code></dt><dd><p>pointer to struct fb_videomode</p>
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">fb_videomode</span> <span class="pre">*mode</span></code></dt><dd><p>pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fb_videomode</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">list_head</span> <span class="pre">*head</span></code></dt><dd><p>pointer to modelist</p>
 </dd>
@@ -590,13 +617,13 @@ the closest refresh rate.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">fb_var_screeninfo</span> <span class="pre">*var</span></code></dt><dd><p>pointer to struct fb_var_screeninfo</p>
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">fb_var_screeninfo</span> <span class="pre">*var</span></code></dt><dd><p>pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fb_var_screeninfo</span></code></p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">list_head</span> <span class="pre">*head</span></code></dt><dd><p>pointer to struct list_head of modelist</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">list_head</span> <span class="pre">*head</span></code></dt><dd><p>pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">list_head</span></code> of modelist</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<p>struct fb_videomode, NULL if none found</p>
+<p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fb_videomode</span></code>, NULL if none found</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.fb_add_videomode">
@@ -609,7 +636,7 @@ the closest refresh rate.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">fb_videomode</span> <span class="pre">*mode</span></code></dt><dd><p>videomode to add</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">list_head</span> <span class="pre">*head</span></code></dt><dd><p>struct list_head of modelist</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">list_head</span> <span class="pre">*head</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">list_head</span></code> of modelist</p>
 </dd>
 </dl>
 <p><strong>NOTES</strong></p>
@@ -624,7 +651,7 @@ the closest refresh rate.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">list_head</span> <span class="pre">*head</span></code></dt><dd><p>struct list_head of modelist</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">list_head</span> <span class="pre">*head</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">list_head</span></code> of modelist</p>
 </dd>
 </dl>
 </div>
@@ -637,11 +664,11 @@ the closest refresh rate.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">fb_videomode</span> <span class="pre">*modedb</span></code></dt><dd><p>array of struct fb_videomode</p>
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">fb_videomode</span> <span class="pre">*modedb</span></code></dt><dd><p>array of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fb_videomode</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">num</span></code></dt><dd><p>number of entries in array</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">list_head</span> <span class="pre">*head</span></code></dt><dd><p>struct list_head of modelist</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">list_head</span> <span class="pre">*head</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">list_head</span></code> of modelist</p>
 </dd>
 </dl>
 </div>
@@ -656,17 +683,20 @@ the closest refresh rate.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">vmode</span></code></dt><dd><p>MacOS video mode</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">cmode</span></code></dt><dd><p>MacOS color mode</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fb_var_screeninfo</span> <span class="pre">*var</span></code></dt><dd><p>frame buffer video mode structure</p>
-<p>Converts a MacOS vmode/cmode pair to a frame buffer video
-mode structure.</p>
-<p>Returns negative errno on error, or zero for success.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Converts a MacOS vmode/cmode pair to a frame buffer video
+mode structure.</p>
+<p>Returns negative errno on error, or zero for success.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mac_map_monitor_sense">
@@ -676,13 +706,16 @@ mode structure.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">sense</span></code></dt><dd><p>Macintosh monitor sense number</p>
-<p>Converts a Macintosh monitor sense number to a MacOS
-vmode number.</p>
-<p>Returns MacOS vmode video mode number.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Converts a Macintosh monitor sense number to a MacOS
+vmode number.</p>
+<p>Returns MacOS vmode video mode number.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mac_find_mode">
@@ -692,7 +725,7 @@ vmode number.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fb_var_screeninfo</span> <span class="pre">*var</span></code></dt><dd><p>frame buffer user defined part of display</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fb_info</span> <span class="pre">*info</span></code></dt><dd><p>frame buffer info structure</p>
@@ -700,12 +733,15 @@ vmode number.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*mode_option</span></code></dt><dd><p>video mode name (see mac_modedb[])</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">default_bpp</span></code></dt><dd><p>default color depth in bits per pixel</p>
-<p>Finds a suitable video mode.  Tries to set mode specified
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Finds a suitable video mode.  Tries to set mode specified
 by <strong>mode_option</strong>.  If the name of the wanted mode begins with
 ‘mac’, the Mac video mode database will be used, otherwise it
 will fall back to the standard video mode database.</p>
-</dd>
-</dl>
+</div></blockquote>
 <p><strong>Note</strong></p>
 <dl>
 <dt>Function marked as __init and can only be used during</dt><dd><p>system boot.</p>

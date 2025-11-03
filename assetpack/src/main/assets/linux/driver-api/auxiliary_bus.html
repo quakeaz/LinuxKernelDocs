@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -178,7 +178,7 @@ an auxiliary_device within other domain-specific structures and the use of
 the use of a communication channel with the parent is domain-specific.</p>
 <p>Note that ops are intended as a way to augment instance behavior within a
 class of auxiliary devices, it is not the mechanism for exporting common
-infrastructure from the parent. Consider EXPORT_SYMBOL_NS() to convey
+infrastructure from the parent. Consider <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">EXPORT_SYMBOL_NS()</span></code> to convey
 infrastructure from the parent module to the auxiliary module(s).</p>
 <section id="when-should-the-auxiliary-bus-be-used">
 <h2>When Should the Auxiliary Bus Be Used<a class="headerlink" href="#when-should-the-auxiliary-bus-be-used" title="Link to this heading">¶</a></h2>
@@ -200,7 +200,7 @@ the parent PCI device/driver to the RDMA auxiliary_driver.</p>
 functions.  For each sub function an auxiliary_device is created.  A PCI sub
 function driver binds to such devices that creates its own one or more class
 devices.  A PCI sub function auxiliary device is likely to be contained in a
-struct with additional attributes such as user defined sub function number
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">with</span></code> additional attributes such as user defined sub function number
 and optional attributes such as resources and a link to the parent device.
 These attributes could be used by systemd/udev; and hence should be
 initialized before a driver binds to an auxiliary_device.</p>
@@ -243,7 +243,7 @@ in</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">id</span></code></dt><dd><p>unique identitier if multiple devices of the same name are exported,</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">sysfs</span></code></dt><dd><p>embedded struct which hold all sysfs related fields,</p>
+<dt><code class="docutils literal notranslate"><span class="pre">sysfs</span></code></dt><dd><p>embedded <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">which</span></code> hold all sysfs related fields,</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">sysfs.irqs</span></code></dt><dd><p>irqs xarray contains irq indices which are used by the device,</p>
 </dd>
@@ -280,11 +280,11 @@ this data.</p>
 <p>The auxiliary_device.dev.parent should be set.  Typically to the registering
 drivers device.</p>
 <p>Second, call <a class="reference internal" href="#c.auxiliary_device_init" title="auxiliary_device_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">auxiliary_device_init()</span></code></a>, which checks several aspects of the
-auxiliary_device struct and performs a <a class="reference internal" href="infrastructure.html#c.device_initialize" title="device_initialize"><code class="xref c c-func docutils literal notranslate"><span class="pre">device_initialize()</span></code></a>.  After this step
-completes, any error state must have a call to auxiliary_device_uninit() in
+auxiliary_device <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">and</span></code> performs a <a class="reference internal" href="infrastructure.html#c.device_initialize" title="device_initialize"><code class="xref c c-func docutils literal notranslate"><span class="pre">device_initialize()</span></code></a>.  After this step
+completes, any error state must have a call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">auxiliary_device_uninit()</span></code> in
 its resolution path.</p>
 <p>The third and final step in registering an auxiliary_device is to perform a
-call to auxiliary_device_add(), which sets the name of the device and adds
+call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">auxiliary_device_add()</span></code>, which sets the name of the device and adds
 the device to the bus.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define MY_DEVICE_NAME &quot;foo_dev&quot;</span>
 
@@ -312,8 +312,8 @@ the device to the bus.</p>
 </pre></div>
 </div>
 <p>Unregistering an auxiliary_device is a two-step process to mirror the
-register process.  First call auxiliary_device_delete(), then call
-auxiliary_device_uninit().</p>
+register process.  First call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">auxiliary_device_delete()</span></code>, then call
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">auxiliary_device_uninit()</span></code>.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">auxiliary_device_delete</span><span class="p">(</span><span class="n">my_dev</span><span class="o">-&gt;</span><span class="n">my_aux_dev</span><span class="p">);</span>
 <span class="n">auxiliary_device_uninit</span><span class="p">(</span><span class="n">my_dev</span><span class="o">-&gt;</span><span class="n">my_aux_dev</span><span class="p">);</span>
 </pre></div>
@@ -338,7 +338,7 @@ auxiliary_device.</p>
 memory allocated for the auxiliary_device in the error path directly.</p>
 <p>It returns 0 on success.  On success, the device_initialize has been
 performed.  After this point any error unwinding will need to include a call
-to auxiliary_device_uninit().  In this post-initialize error scenario, a call
+to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">auxiliary_device_uninit()</span></code>.  In this post-initialize error scenario, a call
 to the device’s .release callback will be triggered, and all memory clean-up
 is expected to be handled there.</p>
 </div>
@@ -362,7 +362,7 @@ auxiliary_device.</p>
 <p>This function must be called after a successful call to
 <a class="reference internal" href="#c.auxiliary_device_init" title="auxiliary_device_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">auxiliary_device_init()</span></code></a>, which will perform the device_initialize.  This
 means that if this returns an error code, then a call to
-auxiliary_device_uninit() must be performed so that the .release callback
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">auxiliary_device_uninit()</span></code> must be performed so that the .release callback
 will be triggered to free the memory associated with the auxiliary_device.</p>
 <p>The expectation is that users will call the “auxiliary_device_add” macro so
 that the caller’s KBUILD_MODNAME is automatically inserted for the modname
@@ -375,16 +375,16 @@ called directly.</p>
 auxiliary_device and registers it on the auxiliary bus.  It is important to
 note that, as opposed to the platform bus, the registering driver is wholly
 responsible for the management of the memory used for the device object.</p>
-<p>To be clear the memory for the auxiliary_device is freed in the release()
+<p>To be clear the memory for the auxiliary_device is freed in the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">release()</span></code>
 callback defined by the registering driver.  The registering driver should
-only call auxiliary_device_delete() and then auxiliary_device_uninit() when
-it is done with the device.  The release() function is then automatically
+only call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">auxiliary_device_delete()</span></code> and then <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">auxiliary_device_uninit()</span></code> when
+it is done with the device.  The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">release()</span></code> function is then automatically
 called if and when other code releases their reference to the devices.</p>
 <p>A parent object, defined in the shared header file, contains the
 auxiliary_device.  It also contains a pointer to the shared object(s), which
 also is defined in the shared header.  Both the parent object and the shared
 object(s) are allocated by the registering driver.  This layout allows the
-auxiliary_driver’s registering module to perform a container_of() call to go
+auxiliary_driver’s registering module to perform a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">container_of()</span></code> call to go
 from the pointer to the auxiliary_device, that is passed during the call to
 the auxiliary_driver’s probe function, up to the parent object, and then
 have access to the shared object(s).</p>
@@ -395,8 +395,8 @@ long as the auxiliary_device is still registered on the auxiliary bus.  It
 is up to the registering driver to manage (e.g. free or keep available) the
 memory for the shared object beyond the life of the auxiliary_device.</p>
 <p>The registering driver must unregister all auxiliary devices before its own
-driver.remove() is completed.  An easy way to ensure this is to use the
-devm_add_action_or_reset() call to register a function against the parent
+driver.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove()</span></code> is completed.  An easy way to ensure this is to use the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_add_action_or_reset()</span></code> call to register a function against the parent
 device which unregisters the auxiliary device object(s).</p>
 <p>Finally, any operations which operate on the auxiliary devices must continue
 to function (if only to return an error) after the registering driver
@@ -447,11 +447,11 @@ unregisters the auxiliary device.</p>
 </div>
 <p><strong>Description</strong></p>
 <p>Auxiliary drivers follow the standard driver model convention, where
-discovery/enumeration is handled by the core, and drivers provide probe()
-and remove() methods. They support power management and shutdown
+discovery/enumeration is handled by the core, and drivers provide <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code>
+and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove()</span></code> methods. They support power management and shutdown
 notifications using the standard conventions.</p>
 <p>Auxiliary drivers register themselves with the bus by calling
-auxiliary_driver_register(). The id_table contains the match_names of
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">auxiliary_driver_register()</span></code>. The id_table contains the match_names of
 auxiliary devices that a driver can bind with.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">auxiliary_device_id</span><span class="w"> </span><span class="n">my_auxiliary_id_table</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;foo_mod.foo_dev&quot;</span><span class="w"> </span><span class="p">},</span>
@@ -545,12 +545,12 @@ needed to establish the connection with the parent.</p>
 </pre></div>
 </div>
 <p>The parent device then registers the auxiliary_device by calling
-<a class="reference internal" href="#c.auxiliary_device_init" title="auxiliary_device_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">auxiliary_device_init()</span></code></a>, and then auxiliary_device_add(), with the pointer
+<a class="reference internal" href="#c.auxiliary_device_init" title="auxiliary_device_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">auxiliary_device_init()</span></code></a>, and then <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">auxiliary_device_add()</span></code>, with the pointer
 to the auxdev member of the above structure. The parent provides a name for
 the auxiliary_device that, combined with the parent’s KBUILD_MODNAME,
 creates a match_name that is be used for matching and binding with a driver.</p>
 <p>Whenever an auxiliary_driver is registered, based on the match_name, the
-auxiliary_driver’s probe() is invoked for the matching devices.  The
+auxiliary_driver’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> is invoked for the matching devices.  The
 auxiliary_driver can also be encapsulated inside custom drivers that make
 the core device’s functionality extensible by adding additional
 domain-specific ops as follows:</p>

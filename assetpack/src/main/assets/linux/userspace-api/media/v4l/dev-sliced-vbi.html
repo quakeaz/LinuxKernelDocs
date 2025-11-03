@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -188,7 +188,7 @@ The <a class="reference internal" href="standard.html#standard"><span class="std
 to program a sliced VBI device, therefore must be supported.</p>
 </section>
 <section id="sliced-vbi-format-negotiation">
-<span id="sliced-vbi-format-negotitation"></span><h2><span class="section-number">4.7.3. </span>Sliced VBI Format Negotiation<a class="headerlink" href="#sliced-vbi-format-negotiation" title="Link to this heading">¶</a></h2>
+<span id="id1"></span><h2><span class="section-number">4.7.3. </span>Sliced VBI Format Negotiation<a class="headerlink" href="#sliced-vbi-format-negotiation" title="Link to this heading">¶</a></h2>
 <p>To find out which data services are supported by the hardware
 applications can call the
 <a class="reference internal" href="vidioc-g-sliced-vbi-cap.html#vidioc-g-sliced-vbi-cap"><span class="std std-ref">VIDIOC_G_SLICED_VBI_CAP</span></a> ioctl.
@@ -247,10 +247,10 @@ array will be filled by the driver according to the services
 specified in this field. For example, if <code class="docutils literal notranslate"><span class="pre">service_set</span></code> is
 initialized with <code class="docutils literal notranslate"><span class="pre">V4L2_SLICED_TELETEXT_B</span> <span class="pre">|</span> <span class="pre">V4L2_SLICED_WSS_625</span></code>,
 a driver for the cx25840 video decoder sets lines 7-22 of both
-fields <a class="footnote-reference brackets" href="#f1" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> to <code class="docutils literal notranslate"><span class="pre">V4L2_SLICED_TELETEXT_B</span></code> and line 23 of the first
+fields <a class="footnote-reference brackets" href="#f1" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> to <code class="docutils literal notranslate"><span class="pre">V4L2_SLICED_TELETEXT_B</span></code> and line 23 of the first
 field to <code class="docutils literal notranslate"><span class="pre">V4L2_SLICED_WSS_625</span></code>. If <code class="docutils literal notranslate"><span class="pre">service_set</span></code> is set to
 zero, then the values of <code class="docutils literal notranslate"><span class="pre">service_lines</span></code> will be used instead.</p>
-<p>On return the driver sets this field to the union of all elements
+<p>On return the driver sets this field to the <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">of</span></code> all elements
 of the returned <code class="docutils literal notranslate"><span class="pre">service_lines</span></code> array. It may contain less
 services than requested, perhaps just one, if the hardware cannot
 handle more services simultaneously. It may be empty (zero) if
@@ -268,7 +268,7 @@ When the hardware cannot handle multiple services on the same line
 the driver shall choose one. No assumptions can be made on which
 service the driver chooses.</p>
 <p>Data services are defined in <a class="reference internal" href="#vbi-services2"><span class="std std-ref">Sliced VBI services</span></a>. Array indices
-map to ITU-R line numbers<a class="footnote-reference brackets" href="#f2" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> as follows:</p>
+map to ITU-R line numbers<a class="footnote-reference brackets" href="#f2" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> as follows:</p>
 </td>
 </tr>
 <tr class="row-odd"><td></td>
@@ -396,7 +396,7 @@ format while i/o is in progress (between a
 <a class="reference internal" href="vidioc-streamon.html#vidioc-streamon"><span class="std std-ref">VIDIOC_STREAMOFF</span></a> call, and after the first
 <a class="reference internal" href="func-read.html#c.V4L.read" title="read"><code class="xref c c-func docutils literal notranslate"><span class="pre">read()</span></code></a> or <a class="reference internal" href="func-write.html#c.V4L.write" title="write"><code class="xref c c-func docutils literal notranslate"><span class="pre">write()</span></code></a> call).</p>
 <section id="v4l2-sliced-wss-625-payload">
-<span id="id3"></span><h4><span class="section-number">4.7.3.2.1. </span>V4L2_SLICED_WSS_625 payload<a class="headerlink" href="#v4l2-sliced-wss-625-payload" title="Link to this heading">¶</a></h4>
+<span id="id4"></span><h4><span class="section-number">4.7.3.2.1. </span>V4L2_SLICED_WSS_625 payload<a class="headerlink" href="#v4l2-sliced-wss-625-payload" title="Link to this heading">¶</a></h4>
 <p>The payload for <code class="docutils literal notranslate"><span class="pre">V4L2_SLICED_WSS_625</span></code> is:</p>
 <blockquote>
 <div><table class="docutils align-default">
@@ -519,7 +519,7 @@ synchronizing video and VBI data by using buffer timestamps.</p>
 <h2><span class="section-number">4.7.5. </span>Sliced VBI Data in MPEG Streams<a class="headerlink" href="#sliced-vbi-data-in-mpeg-streams" title="Link to this heading">¶</a></h2>
 <p>If a device can produce an MPEG output stream, it may be capable of
 providing
-<a class="reference internal" href="#sliced-vbi-format-negotitation"><span class="std std-ref">negotiated sliced VBI services</span></a>
+<a class="reference internal" href="#sliced-vbi-format-negotiation"><span class="std std-ref">negotiated sliced VBI services</span></a>
 as data embedded in the MPEG stream. Users or applications control this
 sliced VBI data insertion with the
 <a class="reference internal" href="ext-ctrls-codec.html#v4l2-mpeg-stream-vbi-fmt"><span class="std std-ref">V4L2_CID_MPEG_STREAM_VBI_FMT</span></a>
@@ -641,13 +641,13 @@ implicitly set.</p></td>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">V4L2_MPEG_VBI_IVTV_MAGIC0</span></code></p></td>
 <td><p>“itv0”</p></td>
-<td><p>Indicates the <code class="docutils literal notranslate"><span class="pre">itv0</span></code> member of the union in struct
+<td><p>Indicates the <code class="docutils literal notranslate"><span class="pre">itv0</span></code> member of the <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">in</span></code> struct
 <a class="reference internal" href="#c.V4L.v4l2_mpeg_vbi_fmt_ivtv" title="v4l2_mpeg_vbi_fmt_ivtv"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_mpeg_vbi_fmt_ivtv</span></code></a> is
 valid.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">V4L2_MPEG_VBI_IVTV_MAGIC1</span></code></p></td>
 <td><p>“ITV0”</p></td>
-<td><p>Indicates the <code class="docutils literal notranslate"><span class="pre">ITV0</span></code> member of the union in struct
+<td><p>Indicates the <code class="docutils literal notranslate"><span class="pre">ITV0</span></code> member of the <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">in</span></code> struct
 <a class="reference internal" href="#c.V4L.v4l2_mpeg_vbi_fmt_ivtv" title="v4l2_mpeg_vbi_fmt_ivtv"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_mpeg_vbi_fmt_ivtv</span></code></a> is
 valid and that 36 lines of sliced VBI data are present.</p></td>
 </tr>
@@ -776,12 +776,12 @@ description of the line payload.</p></td>
 </table>
 <aside class="footnote-list brackets">
 <aside class="footnote brackets" id="f1" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">1</a><span class="fn-bracket">]</span></span>
 <p>According to <a class="reference internal" href="biblio.html#ets300706"><span class="std std-ref">ETS 300 706</span></a> lines 6-22 of the first
 field and lines 5-22 of the second field may carry Teletext data.</p>
 </aside>
 <aside class="footnote brackets" id="f2" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">2</a><span class="fn-bracket">]</span></span>
 <p>See also <a class="reference internal" href="dev-raw-vbi.html#vbi-525"><span class="std std-ref">Figure 4.2. ITU-R 525 line numbering (M/NTSC and M/PAL)</span></a> and <a class="reference internal" href="dev-raw-vbi.html#vbi-625"><span class="std std-ref">Figure 4.3. ITU-R 625 line numbering</span></a>.</p>
 </aside>
 </aside>

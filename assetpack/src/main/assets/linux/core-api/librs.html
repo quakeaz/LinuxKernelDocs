@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -371,14 +371,14 @@ developer.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">codec</span></code></dt><dd><p>The codec used for this instance</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">buffers</span></code></dt><dd><p>Internal scratch buffers used in calls to decode_rs()</p>
+<dt><code class="docutils literal notranslate"><span class="pre">buffers</span></code></dt><dd><p>Internal scratch buffers used in calls to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">decode_rs()</span></code></p>
 </dd>
 </dl>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.init_rs">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.rs_control" title="rs_control"><span class="n"><span class="pre">rs_control</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">init_rs</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">symsize</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">gfpoly</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">fcr</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">prim</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">nroots</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.init_rs" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Create a RS control struct and initialize it</p>
+<dd><p>Create a RS control <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">and</span></code> initialize it</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -426,7 +426,7 @@ codec, free the codec as well.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.init_rs_gfp">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.rs_control" title="rs_control"><span class="n"><span class="pre">rs_control</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">init_rs_gfp</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">symsize</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">gfpoly</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">fcr</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">prim</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">nroots</span></span>, <span class="n"><span class="pre">gfp_t</span></span><span class="w"> </span><span class="n"><span class="pre">gfp</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.init_rs_gfp" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Create a RS control struct and initialize it</p>
+<dd><p>Create a RS control <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">and</span></code> initialize it</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -481,7 +481,7 @@ in index form</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rs_control</span> <span class="pre">*rsc</span></code></dt><dd><p>the rs control structure</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">uint8_t</span> <span class="pre">*data</span></code></dt><dd><p>data field of a given type</p>
@@ -491,11 +491,14 @@ in index form</p>
 <dt><code class="docutils literal notranslate"><span class="pre">uint16_t</span> <span class="pre">*par</span></code></dt><dd><p>parity data, must be initialized by caller (usually all 0)</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">uint16_t</span> <span class="pre">invmsk</span></code></dt><dd><p>invert data mask (will be xored on data)</p>
-<p>The parity uses a uint16_t data type to enable
-symbol size &gt; 8. The calling code must take care of encoding of the
-syndrome result for storage itself.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>The parity uses a uint16_t data type to enable
+symbol size &gt; 8. The calling code must take care of encoding of the
+syndrome result for storage itself.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.decode_rs8">
@@ -505,7 +508,7 @@ syndrome result for storage itself.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rs_control</span> <span class="pre">*rsc</span></code></dt><dd><p>the rs control structure</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">uint8_t</span> <span class="pre">*data</span></code></dt><dd><p>data field of a given type</p>
@@ -524,11 +527,14 @@ syndrome result for storage itself.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">uint16_t</span> <span class="pre">invmsk</span></code></dt><dd><p>invert data mask (will be xored on data, not on parity!)</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">uint16_t</span> <span class="pre">*corr</span></code></dt><dd><p>buffer to store correction bitmask on eras_pos</p>
-<p>The syndrome and parity uses a uint16_t data type to enable
-symbol size &gt; 8. The calling code must take care of decoding of the
-syndrome result and the received parity before calling this code.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>The syndrome and parity uses a uint16_t data type to enable
+symbol size &gt; 8. The calling code must take care of decoding of the
+syndrome result and the received parity before calling this code.</p>
+</div></blockquote>
 <p><strong>Note</strong></p>
 <dl>
 <dt>The rs_control struct <strong>rsc</strong> contains buffers which are used for</dt><dd><p>decoding, so the caller has to ensure that decoder invocations are
@@ -546,7 +552,7 @@ errors. The count includes errors in the parity.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rs_control</span> <span class="pre">*rsc</span></code></dt><dd><p>the rs control structure</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">uint16_t</span> <span class="pre">*data</span></code></dt><dd><p>data field of a given type</p>
@@ -556,9 +562,12 @@ errors. The count includes errors in the parity.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">uint16_t</span> <span class="pre">*par</span></code></dt><dd><p>parity data, must be initialized by caller (usually all 0)</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">uint16_t</span> <span class="pre">invmsk</span></code></dt><dd><p>invert data mask (will be xored on data, not on parity!)</p>
-<p>Each field in the data array contains up to symbol size bits of valid data.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Each field in the data array contains up to symbol size bits of valid data.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.decode_rs16">
@@ -568,7 +577,7 @@ errors. The count includes errors in the parity.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rs_control</span> <span class="pre">*rsc</span></code></dt><dd><p>the rs control structure</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">uint16_t</span> <span class="pre">*data</span></code></dt><dd><p>data field of a given type</p>
@@ -587,9 +596,12 @@ errors. The count includes errors in the parity.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">uint16_t</span> <span class="pre">invmsk</span></code></dt><dd><p>invert data mask (will be xored on data, not on parity!)</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">uint16_t</span> <span class="pre">*corr</span></code></dt><dd><p>buffer to store correction bitmask on eras_pos</p>
-<p>Each field in the data array contains up to symbol size bits of valid data.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Each field in the data array contains up to symbol size bits of valid data.</p>
+</div></blockquote>
 <p><strong>Note</strong></p>
 <dl>
 <dt>The rc_control struct <strong>rsc</strong> contains buffers which are used for</dt><dd><p>decoding, so the caller has to ensure that decoder invocations are

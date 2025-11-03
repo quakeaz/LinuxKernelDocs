@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -385,29 +385,29 @@ fiemap request:</p>
 structure directly. Filesystem handlers should be tolerant to signals and return
 EINTR once fatal signal received.</p>
 <p>Flag checking should be done at the beginning of the -&gt;fiemap callback via the
-fiemap_prep() helper:</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fiemap_prep()</span></code> helper:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int fiemap_prep(struct inode *inode, struct fiemap_extent_info *fieinfo,
                 u64 start, u64 *len, u32 supported_flags);
 </pre></div>
 </div>
-<p>The struct fieinfo should be passed in as received from ioctl_fiemap(). The
+<p>The <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fieinfo</span></code> should be passed in as received from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ioctl_fiemap()</span></code>. The
 set of fiemap flags which the fs understands should be passed via fs_flags. If
 fiemap_prep finds invalid user flags, it will place the bad values in
 fieinfo-&gt;fi_flags and return -EBADR. If the file system gets -EBADR, from
-fiemap_prep(), it should immediately exit, returning that error back to
-ioctl_fiemap().  Additionally the range is validate against the supported
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fiemap_prep()</span></code>, it should immediately exit, returning that error back to
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ioctl_fiemap()</span></code>.  Additionally the range is validate against the supported
 maximum file size.</p>
 <p>For each extent in the request range, the file system should call
-the helper function, fiemap_fill_next_extent():</p>
+the helper function, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fiemap_fill_next_extent()</span></code>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int fiemap_fill_next_extent(struct fiemap_extent_info *info, u64 logical,
                             u64 phys, u64 len, u32 flags, u32 dev);
 </pre></div>
 </div>
-<p>fiemap_fill_next_extent() will use the passed values to populate the
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fiemap_fill_next_extent()</span></code> will use the passed values to populate the
 next free extent in the fm_extents array. ‘General’ extent flags will
 automatically be set from specific flags on behalf of the calling file
 system so that the userspace API is not broken.</p>
-<p>fiemap_fill_next_extent() returns 0 on success, and 1 when the
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fiemap_fill_next_extent()</span></code> returns 0 on success, and 1 when the
 user-supplied fm_extents array is full. If an error is encountered
 while copying the extent to user memory, -EFAULT will be returned.</p>
 </section>

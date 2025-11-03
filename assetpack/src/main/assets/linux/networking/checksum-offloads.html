@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -196,12 +196,12 @@ which only advertises NETIF_F_IP[V6]_CSUM must still obey the csum_start and
 csum_offset given in the SKB; if it tries to deduce these itself in hardware
 (as some NICs do) the driver should check that the values in the SKB match
 those which the hardware will deduce, and if not, fall back to checksumming in
-software instead (with skb_csum_hwoffload_help() or one of the
-skb_checksum_help() / skb_crc32c_csum_help functions, as mentioned in
+software instead (with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">skb_csum_hwoffload_help()</span></code> or one of the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">skb_checksum_help()</span></code> / skb_crc32c_csum_help functions, as mentioned in
 include/linux/skbuff.h).</p>
 <p>The stack should, for the most part, assume that checksum offload is supported
 by the underlying device.  The only place that should check is
-validate_xmit_skb(), and the functions it calls directly or indirectly.  That
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">validate_xmit_skb()</span></code>, and the functions it calls directly or indirectly.  That
 function compares the offload features requested by the SKB (which may include
 other offloads besides TX Checksum Offload) and, if they are not supported or
 enabled on the device (determined by netdev-&gt;features), performs the
@@ -226,17 +226,17 @@ compute the outer checksum without looking at the payload: we simply stop
 summing when we get to csum_start, then add the complement of the 16-bit word
 at (csum_start + csum_offset).</p>
 <p>Then, when the true inner checksum is filled in (either by hardware or by
-skb_checksum_help()), the outer checksum will become correct by virtue of the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">skb_checksum_help()</span></code>), the outer checksum will become correct by virtue of the
 arithmetic.</p>
 <p>LCO is performed by the stack when constructing an outer UDP header for an
-encapsulation such as VXLAN or GENEVE, in udp_set_csum().  Similarly for the
-IPv6 equivalents, in udp6_set_csum().</p>
+encapsulation such as VXLAN or GENEVE, in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">udp_set_csum()</span></code>.  Similarly for the
+IPv6 equivalents, in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">udp6_set_csum()</span></code>.</p>
 <p>It is also performed when constructing an IPv4 GRE header, in
-net/ipv4/ip_gre.c:build_header().  It is <em>not</em> currently performed when
+net/ipv4/ip_gre.c:<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">build_header()</span></code>.  It is <em>not</em> currently performed when
 constructing an IPv6 GRE header; the GRE checksum is computed over the whole
-packet in net/ipv6/ip6_gre.c:ip6gre_xmit2(), but it should be possible to use
+packet in net/ipv6/ip6_gre.c:<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ip6gre_xmit2()</span></code>, but it should be possible to use
 LCO here as IPv6 GRE still uses an IP-style checksum.</p>
-<p>All of the LCO implementations use a helper function lco_csum(), in
+<p>All of the LCO implementations use a helper function <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lco_csum()</span></code>, in
 include/linux/skbuff.h.</p>
 <p>LCO can safely be used for nested encapsulations; in this case, the outer
 encapsulation layer will sum over both its own header and the ‘middle’ header.
@@ -257,7 +257,7 @@ For this reason, it is disabled by default.</p>
 </ul>
 <p>In Linux, RCO is implemented individually in each encapsulation protocol, and
 most tunnel types have flags controlling its use.  For instance, VXLAN has the
-flag VXLAN_F_REMCSUM_TX (per struct vxlan_rdst) to indicate that RCO should be
+flag VXLAN_F_REMCSUM_TX (per <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">vxlan_rdst</span></code>) to indicate that RCO should be
 used when transmitting to a given remote destination.</p>
 </section>
 </section>

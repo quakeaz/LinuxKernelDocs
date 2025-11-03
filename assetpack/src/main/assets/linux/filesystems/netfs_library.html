@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -293,7 +293,7 @@ structure is defined:</p>
 </pre></div>
 </div>
 <p>A network filesystem that wants to use netfslib must place one of these in its
-inode wrapper struct instead of the VFS <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">inode</span></code>.  This can be done in
+inode wrapper <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">instead</span></code> of the VFS <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">inode</span></code>.  This can be done in
 a way similar to the following:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct my_inode {
         struct netfs_inode netfs; /* Netfslib context and vfs inode */
@@ -607,7 +607,7 @@ to the helper functions or set during the request.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">start</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">len</span></code></p>
 <p>The file position of the start of the read request and the length.  These
-may be altered by the -&gt;expand_readahead() op.</p>
+may be altered by the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">expand_readahead()</span></code> op.</p>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">i_size</span></code></p>
 <p>The size of the file at the start of the request.</p>
@@ -653,9 +653,9 @@ aimed at a different target.</p>
 subrequests aimed at different sources.  For write requests, stream 0 is used
 for the server and stream 1 is used for the cache.  For buffered writeback,
 stream 0 is not enabled unless a normal dirty folio is encountered, at which
-point -&gt;begin_writeback() will be invoked and the filesystem can mark the
+point -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">begin_writeback()</span></code> will be invoked and the filesystem can mark the
 stream available.</p>
-<p>The stream struct looks like:</p>
+<p>The stream <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">looks</span></code> like:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct netfs_io_stream {
         unsigned char           stream_nr;
         bool                    avail;
@@ -674,12 +674,12 @@ stream available.</p>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">avail</span></code></p>
 <p>True if the stream is available for use.  The filesystem should set this on
-stream zero if in -&gt;begin_writeback().</p>
+stream zero if in -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">begin_writeback()</span></code>.</p>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">sreq_max_len</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">sreq_max_segs</span></code></p>
-<p>These are set by the filesystem or the cache in -&gt;prepare_read() or
--&gt;prepare_write() for each subrequest to indicate the maximum number of
+<p>These are set by the filesystem or the cache in -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prepare_read()</span></code> or
+-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prepare_write()</span></code> for each subrequest to indicate the maximum number of
 bytes and, optionally, the maximum number of segments (if not 0) that that
 subrequest can support.</p>
 </li>
@@ -929,12 +929,12 @@ synchronously:</p>
 <blockquote>
 <div><ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">netfs_prepare_write_failed(struct</span> <span class="pre">netfs_io_subrequest</span> <span class="pre">*subreq);</span></code></p>
-<p>Indicate that the -&gt;prepare_write() call failed.  The <code class="docutils literal notranslate"><span class="pre">error</span></code> field should
+<p>Indicate that the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prepare_write()</span></code> call failed.  The <code class="docutils literal notranslate"><span class="pre">error</span></code> field should
 have been updated.</p>
 </li>
 </ul>
 </div></blockquote>
-<p>Note that -&gt;prepare_read() can return an error as a read can simply be aborted.
+<p>Note that -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prepare_read()</span></code> can return an error as a read can simply be aborted.
 Dealing with writeback failure is trickier.</p>
 <p>The other functions are used for subrequests that got as far as being issued:</p>
 <blockquote>
@@ -1100,7 +1100,7 @@ second write before the first one finishes is not allowed.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Get the netfs lib inode context from the network filesystem’s inode.  The
-context struct is expected to directly follow on from the VFS inode struct.</p>
+context <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> expected to directly follow on from the VFS inode struct.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.netfs_inode_init">
@@ -1248,7 +1248,7 @@ possible, or the netfs if not.  Space beyond the EOF is zero-filled.
 Multiple I/O requests from different sources will get munged together.</p>
 <p>The calling netfs must provide a table of operations, only one of which,
 issue_read, is mandatory.</p>
-<p>The check_write_begin() operation can be provided to check for and flush
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">check_write_begin()</span></code> operation can be provided to check for and flush
 conflicting writes once the folio is grabbed and locked.  It is passed a
 pointer to the fsdata cookie that gets returned to the VM to be passed to
 write_end.  It is permitted to sleep.  It should return 0 if the request
@@ -1258,7 +1258,7 @@ will cause the folio to be re-got and the process to be retried.</p>
 <p>The calling netfs must initialise a netfs context contiguous to the vfs
 inode before calling this.</p>
 <p>This is usable whether or not caching is enabled.</p>
-<p>Note that this should be considered deprecated and netfs_perform_write()
+<p>Note that this should be considered deprecated and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">netfs_perform_write()</span></code>
 used instead.</p>
 </div>
 <dl class="c function">
@@ -1276,7 +1276,7 @@ used instead.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This is the -&gt;read_iter() routine for all filesystems that can use the page
+<p>This is the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">read_iter()</span></code> routine for all filesystems that can use the page
 cache directly.</p>
 <p>The IOCB_NOWAIT flag in iocb-&gt;ki_flags indicates that -EAGAIN shall be
 returned when no data can be read without waiting for I/O requests to
@@ -1306,7 +1306,7 @@ possibly empty read shall be returned.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This is the -&gt;read_iter() routine for all filesystems that can use the page
+<p>This is the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">read_iter()</span></code> routine for all filesystems that can use the page
 cache directly.</p>
 <p>The IOCB_NOWAIT flag in iocb-&gt;ki_flags indicates that -EAGAIN shall be
 returned when no data can be read without waiting for I/O requests to

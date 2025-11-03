@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -405,6 +405,41 @@ the most current value, and those of the other structures are compared
 in order to detect the beginnings and ends of grace periods in a
 distributed fashion. The values flow from <code class="docutils literal notranslate"><span class="pre">rcu_state</span></code> to <code class="docutils literal notranslate"><span class="pre">rcu_node</span></code>
 (down the tree from the root to the leaves) to <code class="docutils literal notranslate"><span class="pre">rcu_data</span></code>.</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><strong>Quick Quiz</strong>:</p></td>
+</tr>
+<tr class="row-even"><td><p>Given that the root rcu_node structure has a gp_seq field,
+why does RCU maintain a separate gp_seq in the rcu_state structure?
+Why not just use the root rcu_node’s gp_seq as the official record
+and update it directly when starting a new grace period?</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Answer</strong>:</p></td>
+</tr>
+<tr class="row-even"><td><p>On single-node RCU trees (where the root node is also a leaf),
+updating the root node’s gp_seq immediately would create unnecessary
+lock contention. Here’s why:</p>
+<p>If we did <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_seq_start()</span></code> directly on the root node’s gp_seq:</p>
+<ol class="arabic simple">
+<li><p>All CPUs would immediately see their node’s gp_seq from their rdp’s
+gp_seq, in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_pending()</span></code>. They would all then invoke the RCU-core.</p></li>
+<li><p>Which calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">note_gp_changes()</span></code> and try to acquire the node lock.</p></li>
+<li><p>But rnp-&gt;qsmask isn’t initialized yet (happens later in
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_gp_init()</span></code>)</p></li>
+<li><p>So each CPU would acquire the lock, find it can’t determine if it
+needs to report quiescent state (no qsmask), update rdp-&gt;gp_seq,
+and release the lock.</p></li>
+<li><p>Result: Lots of lock acquisitions with no grace period progress</p></li>
+</ol>
+<p>By having a separate rcu_state.gp_seq, we can increment the official
+grace period counter without immediately affecting what CPUs see in
+their nodes. The hierarchical propagation in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_gp_init()</span></code> then
+updates the root node’s gp_seq and qsmask together under the same lock
+acquisition, avoiding this useless contention.</p>
+</td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="miscellaneous">
 <h4>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Link to this heading">¶</a></h4>

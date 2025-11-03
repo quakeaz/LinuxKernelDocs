@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -156,7 +156,7 @@ not, the Cilium project has an excellent reference guide at
 <a class="reference external" href="http://cilium.readthedocs.io/en/latest/bpf/">http://cilium.readthedocs.io/en/latest/bpf/</a>.</p>
 <p>Using the XDP_REDIRECT action from an XDP program, the program can
 redirect ingress frames to other XDP enabled netdevs, using the
-bpf_redirect_map() function. AF_XDP sockets enable the possibility for
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bpf_redirect_map()</span></code> function. AF_XDP sockets enable the possibility for
 XDP programs to redirect frames to a memory buffer in a user-space
 application.</p>
 <p>An AF_XDP socket (XSK) is created with the normal socket()
@@ -187,7 +187,7 @@ space, for either TX or RX. Thus, the frame addrs appearing in the
 COMPLETION ring are addrs that were previously transmitted using the
 TX ring. In summary, the RX and FILL rings are used for the RX path
 and the TX and COMPLETION rings are used for the TX path.</p>
-<p>The socket is then finally bound with a bind() call to a device and a
+<p>The socket is then finally bound with a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code> call to a device and a
 specific queue id on that device, and it is not until bind is
 completed that traffic starts to flow.</p>
 <p>The UMEM can be shared between processes, if desired. If a process
@@ -239,13 +239,13 @@ with AF_XDP”. It can be found at <a class="reference external" href="https://l
 equal-sized frames. An UMEM is associated to a netdev and a specific
 queue id of that netdev. It is created and configured (chunk size,
 headroom, start address and size) by using the XDP_UMEM_REG setsockopt
-system call. A UMEM is bound to a netdev and queue id, via the bind()
+system call. A UMEM is bound to a netdev and queue id, via the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bind()</span></code>
 system call.</p>
 <p>An AF_XDP is socket linked to a single UMEM, but one UMEM can have
 multiple AF_XDP sockets. To share an UMEM created via one socket A,
 the next socket B can do this by setting the XDP_SHARED_UMEM flag in
-struct sockaddr_xdp member sxdp_flags, and passing the file descriptor
-of A to struct sockaddr_xdp member sxdp_shared_umem_fd.</p>
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">sockaddr_xdp</span></code> member sxdp_flags, and passing the file descriptor
+of A to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">sockaddr_xdp</span></code> member sxdp_shared_umem_fd.</p>
 <p>The UMEM has two single-producer/single-consumer rings that are used
 to transfer ownership of UMEM frames between the kernel and the
 user-space application.</p>
@@ -261,9 +261,9 @@ with the UMEM must have an RX queue, TX queue or both. Say, that there
 is a setup with four sockets (all doing TX and RX). Then there will be
 one FILL ring, one COMPLETION ring, four TX rings and four RX rings.</p>
 <p>The rings are head(producer)/tail(consumer) based rings. A producer
-writes the data ring at the index pointed out by struct xdp_ring
+writes the data ring at the index pointed out by <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">xdp_ring</span></code>
 producer member, and increasing the producer index. A consumer reads
-the data ring at the index pointed out by struct xdp_ring consumer
+the data ring at the index pointed out by <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">xdp_ring</span></code> consumer
 member, and increasing the consumer index.</p>
 <p>The rings are configured and created via the _RING setsockopt system
 calls and mmapped to user-space using the appropriate offset to mmap()
@@ -296,20 +296,20 @@ sent (TX ring) and can be used by user-space again.</p>
 <section id="rx-ring">
 <h4>RX Ring<a class="headerlink" href="#rx-ring" title="Link to this heading">¶</a></h4>
 <p>The RX ring is the receiving side of a socket. Each entry in the ring
-is a struct xdp_desc descriptor. The descriptor contains UMEM offset
+is a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">xdp_desc</span></code> descriptor. The descriptor contains UMEM offset
 (addr) and the length of the data (len).</p>
 <p>If no frames have been passed to kernel via the FILL ring, no
 descriptors will (or can) appear on the RX ring.</p>
-<p>The user application consumes struct xdp_desc descriptors from this
+<p>The user application consumes <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">xdp_desc</span></code> descriptors from this
 ring.</p>
 </section>
 <section id="tx-ring">
 <h4>TX Ring<a class="headerlink" href="#tx-ring" title="Link to this heading">¶</a></h4>
-<p>The TX ring is used to send frames. The struct xdp_desc descriptor is
+<p>The TX ring is used to send frames. The <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">xdp_desc</span></code> descriptor is
 filled (index, length and offset) and passed into the ring.</p>
-<p>To start the transfer a sendmsg() system call is required. This might
+<p>To start the transfer a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sendmsg()</span></code> system call is required. This might
 be relaxed in the future.</p>
-<p>The user application produces struct xdp_desc descriptors to this
+<p>The user application produces <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">xdp_desc</span></code> descriptors to this
 ring.</p>
 </section>
 </section>
@@ -318,20 +318,17 @@ ring.</p>
 <h2>Libbpf<a class="headerlink" href="#libbpf" title="Link to this heading">¶</a></h2>
 <p>Libbpf is a helper library for eBPF and XDP that makes using these
 technologies a lot simpler. It also contains specific helper functions
-in tools/lib/bpf/xsk.h for facilitating the use of AF_XDP. It
-contains two types of functions: those that can be used to make the
-setup of AF_XDP socket easier and ones that can be used in the data
-plane to access the rings safely and quickly. To see an example on how
-to use this API, please take a look at the sample application in
-samples/bpf/xdpsock_usr.c which uses libbpf for both setup and data
-plane operations.</p>
+in tools/testing/selftests/bpf/xsk.h for facilitating the use of
+AF_XDP. It contains two types of functions: those that can be used to
+make the setup of AF_XDP socket easier and ones that can be used in the
+data plane to access the rings safely and quickly.</p>
 <p>We recommend that you use this library unless you have become a power
 user. It will make your program a lot simpler.</p>
 </section>
 <section id="xskmap-bpf-map-type-xskmap">
 <h2>XSKMAP / BPF_MAP_TYPE_XSKMAP<a class="headerlink" href="#xskmap-bpf-map-type-xskmap" title="Link to this heading">¶</a></h2>
 <p>On XDP side there is a BPF map type BPF_MAP_TYPE_XSKMAP (XSKMAP) that
-is used in conjunction with bpf_redirect_map() to pass the ingress
+is used in conjunction with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bpf_redirect_map()</span></code> to pass the ingress
 frame to a socket.</p>
 <p>The user application inserts the socket into the map, via the <a class="reference internal" href="../bpf/maps.html#c.bpf" title="bpf"><code class="xref c c-func docutils literal notranslate"><span class="pre">bpf()</span></code></a>
 system call.</p>
@@ -429,11 +426,11 @@ device. Instead, use the NIC’s packet steering capabilities to steer
 the packets to the right queue. In the previous example, there is only
 one queue shared among sockets, so the NIC cannot do this steering. It
 can only steer between queues.</p>
-<p>In libbpf, you need to use the xsk_socket__create_shared() API as it
+<p>In libbpf, you need to use the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xsk_socket__create_shared()</span></code> API as it
 takes a reference to a FILL ring and a COMPLETION ring that will be
 created for you and bound to the shared UMEM. You can use this
 function for all the sockets you create, or you can use it for the
-second and following ones and use xsk_socket__create() for the first
+second and following ones and use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xsk_socket__create()</span></code> for the first
 one. Both methods yield the same result.</p>
 <p>Note that a UMEM can be shared between sockets on the same queue id
 and device, as well as between queues on the same device and between
@@ -459,10 +456,9 @@ buffers on the HW ring and start to receive packets.</p>
 <p>If the flag is set for the TX ring, it means that the application
 needs to explicitly notify the kernel to send any packets put on the
 TX ring. This can be accomplished either by a poll() call, as in the
-RX path, or by calling sendto().</p>
-<p>An example of how to use this flag can be found in
-samples/bpf/xdpsock_user.c. An example with the use of libbpf helpers
-would look like this for the TX path:</p>
+RX path, or by calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sendto()</span></code>.</p>
+<p>An example with the use of libbpf helpers would look like this for the
+TX path:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">xsk_ring_prod__needs_wakeup</span><span class="p">(</span><span class="o">&amp;</span><span class="n">my_tx_ring</span><span class="p">))</span>
 <span class="w">    </span><span class="n">sendto</span><span class="p">(</span><span class="n">xsk_socket__fd</span><span class="p">(</span><span class="n">xsk_handle</span><span class="p">),</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">MSG_DONTWAIT</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
 </pre></div>
@@ -520,6 +516,14 @@ socket to a particular network interface.  It is useful when a socket
 is created by a privileged process and passed to a non-privileged one.
 Once the option is set, kernel will refuse attempts to bind that socket
 to a different interface.  Updating the value requires CAP_NET_RAW.</p>
+</section>
+<section id="xdp-max-tx-skb-budget-setsockopt">
+<h3>XDP_MAX_TX_SKB_BUDGET setsockopt<a class="headerlink" href="#xdp-max-tx-skb-budget-setsockopt" title="Link to this heading">¶</a></h3>
+<p>This setsockopt sets the maximum number of descriptors that can be handled
+and passed to the driver at one send syscall. It is applied in the copy
+mode to allow application to tune the per-socket maximum iteration for
+better throughput and less frequency of send syscall.
+Allowed range is [32, xs-&gt;tx-&gt;nentries].</p>
 </section>
 <section id="xdp-statistics-getsockopt">
 <h3>XDP_STATISTICS getsockopt<a class="headerlink" href="#xdp-statistics-getsockopt" title="Link to this heading">¶</a></h3>
@@ -614,11 +618,11 @@ have an enormous batch size or a very small ring size).</p>
 later in this document.</p>
 <section id="usage">
 <h3>Usage<a class="headerlink" href="#usage" title="Link to this heading">¶</a></h3>
-<p>In order to use AF_XDP sockets two parts are needed. The
-user-space application and the XDP program. For a complete setup and
-usage example, please refer to the sample application. The user-space
-side is xdpsock_user.c and the XDP side is part of libbpf.</p>
-<p>The XDP code sample included in tools/lib/bpf/xsk.c is the following:</p>
+<p>In order to use AF_XDP sockets two parts are needed. The user-space
+application and the XDP program. For a complete setup and usage example,
+please refer to the xdp-project at
+<a class="reference external" href="https://github.com/xdp-project/bpf-examples/tree/main/AF_XDP-example">https://github.com/xdp-project/bpf-examples/tree/main/AF_XDP-example</a>.</p>
+<p>The XDP code sample is the following:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">SEC</span><span class="p">(</span><span class="s">&quot;xdp_sock&quot;</span><span class="p">)</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">xdp_sock_prog</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">xdp_md</span><span class="w"> </span><span class="o">*</span><span class="n">ctx</span><span class="p">)</span>
 <span class="p">{</span>
 <span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">rx_queue_index</span><span class="p">;</span>
@@ -805,10 +809,12 @@ to facilitate extending a zero-copy driver with multi-buffer support.</p>
 </section>
 <section id="sample-application">
 <h2>Sample application<a class="headerlink" href="#sample-application" title="Link to this heading">¶</a></h2>
-<p>There is a xdpsock benchmarking/test application included that
-demonstrates how to use AF_XDP sockets with private UMEMs. Say that
-you would like your UDP traffic from port 4242 to end up in queue 16,
-that we will enable AF_XDP on. Here, we use ethtool for this:</p>
+<p>There is a xdpsock benchmarking/test application that can be found at
+<a class="reference external" href="https://github.com/xdp-project/bpf-examples/tree/main/AF_XDP-example">https://github.com/xdp-project/bpf-examples/tree/main/AF_XDP-example</a>
+that demonstrates how to use AF_XDP sockets with private
+UMEMs. Say that you would like your UDP traffic from port 4242 to end
+up in queue 16, that we will enable AF_XDP on. Here, we use ethtool
+for this:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ethtool -N p3p2 rx-flow-hash udp4 fn
 ethtool -N p3p2 flow-type udp4 src-port 4242 dst-port 4242 \
     action 16
@@ -824,7 +830,7 @@ can be displayed with “-h”, as usual.</p>
 <p>This sample application uses libbpf to make the setup and usage of
 AF_XDP simpler. If you want to know how the raw uapi of AF_XDP is
 really used to make something more advanced, take a look at the libbpf
-code in tools/lib/bpf/xsk.[ch].</p>
+code in tools/testing/selftests/bpf/xsk.[ch].</p>
 </section>
 <section id="faq">
 <h2>FAQ<a class="headerlink" href="#faq" title="Link to this heading">¶</a></h2>

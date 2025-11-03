@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -232,7 +232,7 @@ can be simpler and more efficient.</p>
 <p>Timeout values and timestamps should ideally use CLOCK_MONOTONIC time,
 as returned by <a class="reference internal" href="../core-api/timekeeping.html#c.ktime_get_ns" title="ktime_get_ns"><code class="xref c c-func docutils literal notranslate"><span class="pre">ktime_get_ns()</span></code></a> or <a class="reference internal" href="../core-api/timekeeping.html#c.ktime_get_ts64" title="ktime_get_ts64"><code class="xref c c-func docutils literal notranslate"><span class="pre">ktime_get_ts64()</span></code></a>.  Unlike
 CLOCK_REALTIME, this makes the timestamps immune from jumping backwards
-or forwards due to leap second adjustments and clock_settime() calls.</p>
+or forwards due to leap second adjustments and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">clock_settime()</span></code> calls.</p>
 <p><a class="reference internal" href="../core-api/timekeeping.html#c.ktime_get_real_ns" title="ktime_get_real_ns"><code class="xref c c-func docutils literal notranslate"><span class="pre">ktime_get_real_ns()</span></code></a> can be used for CLOCK_REALTIME timestamps that
 need to be persistent across a reboot or between multiple machines.</p>
 </section>
@@ -243,21 +243,21 @@ subsystem or driver that implements an ioctl callback handler must also
 implement the corresponding compat_ioctl handler.</p>
 <p>As long as all the rules for data structures are followed, this is as
 easy as setting the .compat_ioctl pointer to a helper function such as
-compat_ptr_ioctl() or blkdev_compat_ptr_ioctl().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">compat_ptr_ioctl()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">blkdev_compat_ptr_ioctl()</span></code>.</p>
 <section id="compat-ptr">
 <h3>compat_ptr()<a class="headerlink" href="#compat-ptr" title="Link to this heading">¶</a></h3>
 <p>On the s390 architecture, 31-bit user space has ambiguous representations
 for data pointers, with the upper bit being ignored. When running such
-a process in compat mode, the compat_ptr() helper must be used to
+a process in compat mode, the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">compat_ptr()</span></code> helper must be used to
 clear the upper bit of a compat_uptr_t and turn it into a valid 64-bit
 pointer.  On other architectures, this macro only performs a cast to a
 <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">__user</span> <span class="pre">*</span></code> pointer.</p>
-<p>In an compat_ioctl() callback, the last argument is an unsigned long,
+<p>In an <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">compat_ioctl()</span></code> callback, the last argument is an unsigned long,
 which can be interpreted as either a pointer or a scalar depending on
-the command. If it is a scalar, then compat_ptr() must not be used, to
+the command. If it is a scalar, then <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">compat_ptr()</span></code> must not be used, to
 ensure that the 64-bit kernel behaves the same way as a 32-bit kernel
 for arguments with the upper bit set.</p>
-<p>The compat_ptr_ioctl() helper can be used in place of a custom
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">compat_ptr_ioctl()</span></code> helper can be used in place of a custom
 compat_ioctl file operation for drivers that only take arguments that
 are pointers to compatible data structures.</p>
 </section>
@@ -271,9 +271,9 @@ they can be either 32-bit or 64-bit wide and cannot be used in portable
 data structures. Fixed-length replacements are <code class="docutils literal notranslate"><span class="pre">__s32</span></code>, <code class="docutils literal notranslate"><span class="pre">__u32</span></code>,
 <code class="docutils literal notranslate"><span class="pre">__s64</span></code> and <code class="docutils literal notranslate"><span class="pre">__u64</span></code>.</p></li>
 <li><p>Pointers have the same problem, in addition to requiring the
-use of compat_ptr(). The best workaround is to use <code class="docutils literal notranslate"><span class="pre">__u64</span></code>
+use of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">compat_ptr()</span></code>. The best workaround is to use <code class="docutils literal notranslate"><span class="pre">__u64</span></code>
 in place of pointers, which requires a cast to <code class="docutils literal notranslate"><span class="pre">uintptr_t</span></code> in user
-space, and the use of u64_to_user_ptr() in the kernel to convert
+space, and the use of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">u64_to_user_ptr()</span></code> in the kernel to convert
 it back into a user pointer.</p></li>
 <li><p>On the x86-32 (i386) architecture, the alignment of 64-bit variables
 is only 32-bit, but they are naturally aligned on most other
@@ -296,7 +296,7 @@ alignment.</p>
 <li><p>On ARM OABI user space, structures are padded to multiples of 32-bit,
 making some structs incompatible with modern EABI kernels if they
 do not end on a 32-bit boundary.</p></li>
-<li><p>On the m68k architecture, struct members are not guaranteed to have an
+<li><p>On the m68k architecture, <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">members</span></code> are not guaranteed to have an
 alignment greater than 16-bit, which is a problem when relying on
 implicit padding.</p></li>
 <li><p>Bitfields and enums generally work as one would expect them to,

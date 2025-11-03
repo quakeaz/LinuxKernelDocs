@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -214,7 +214,7 @@ effectively bypassing the firmware.</p></li>
 <h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">¶</a></h2>
 <p>At probe time or when a DPNI’s endpoint is dynamically changed, the dpaa2-eth
 is responsible to find out if the peer object is a DPMAC and if this is the
-case, to integrate it with PHYLINK using the dpaa2_mac_connect() API, which
+case, to integrate it with PHYLINK using the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dpaa2_mac_connect()</span></code> API, which
 will do the following:</p>
 <blockquote>
 <div><ul class="simple">
@@ -226,25 +226,25 @@ will do the following:</p>
 <p>The following phylink_mac_ops callback are implemented:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>.validate() will populate the supported linkmodes with the MAC capabilities
+<li><p>.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">validate()</span></code> will populate the supported linkmodes with the MAC capabilities
 only when the phy_interface_t is RGMII_* (at the moment, this is the only
 link type supported by the driver).</p></li>
 <li><p>.<a class="reference internal" href="../../../../kapi.html#c.mac_config" title="mac_config"><code class="xref c c-func docutils literal notranslate"><span class="pre">mac_config()</span></code></a> will configure the MAC in the new configuration using the
-dpmac_set_link_state() MC firmware API.</p></li>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dpmac_set_link_state()</span></code> MC firmware API.</p></li>
 <li><p>.<a class="reference internal" href="../../../../kapi.html#c.mac_link_up" title="mac_link_up"><code class="xref c c-func docutils literal notranslate"><span class="pre">mac_link_up()</span></code></a> / .<a class="reference internal" href="../../../../kapi.html#c.mac_link_down" title="mac_link_down"><code class="xref c c-func docutils literal notranslate"><span class="pre">mac_link_down()</span></code></a> will update the MAC link using the same
 API described above.</p></li>
 </ul>
 </div></blockquote>
-<p>At driver unbind() or when the DPNI object is disconnected from the DPMAC, the
-dpaa2-eth driver calls dpaa2_mac_disconnect() which will, in turn, disconnect
+<p>At driver <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unbind()</span></code> or when the DPNI object is disconnected from the DPMAC, the
+dpaa2-eth driver calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dpaa2_mac_disconnect()</span></code> which will, in turn, disconnect
 from the PHY and destroy the PHYLINK instance.</p>
 <p>In case of a DPNI-DPMAC connection, an ‘ip link set dev eth0 up’ would start
 the following sequence of operations:</p>
 <ol class="arabic simple">
-<li><p><a class="reference internal" href="../../../../kapi.html#c.phylink_start" title="phylink_start"><code class="xref c c-func docutils literal notranslate"><span class="pre">phylink_start()</span></code></a> called from .dev_open().</p></li>
+<li><p><a class="reference internal" href="../../../../kapi.html#c.phylink_start" title="phylink_start"><code class="xref c c-func docutils literal notranslate"><span class="pre">phylink_start()</span></code></a> called from .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_open()</span></code>.</p></li>
 <li><p>The .<a class="reference internal" href="../../../../kapi.html#c.mac_config" title="mac_config"><code class="xref c c-func docutils literal notranslate"><span class="pre">mac_config()</span></code></a> and .<a class="reference internal" href="../../../../kapi.html#c.mac_link_up" title="mac_link_up"><code class="xref c c-func docutils literal notranslate"><span class="pre">mac_link_up()</span></code></a> callbacks are called by PHYLINK.</p></li>
 <li><p>In order to configure the HW MAC, the MC Firmware API
-dpmac_set_link_state() is called.</p></li>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dpmac_set_link_state()</span></code> is called.</p></li>
 <li><p>The firmware will eventually setup the HW MAC in the new configuration.</p></li>
 <li><p>A <a class="reference internal" href="../../../../kapi.html#c.netif_carrier_on" title="netif_carrier_on"><code class="xref c c-func docutils literal notranslate"><span class="pre">netif_carrier_on()</span></code></a> call is made directly from PHYLINK on the associated
 net_device.</p></li>
@@ -280,13 +280,13 @@ enable/disable Rx taildrop based on the pause frame settings.</p></li>
 the following:</p>
 <ol class="arabic simple">
 <li><p>ip link set dev eth0 up</p></li>
-<li><p>The dpni_enable() MC API called on the associated fsl_mc_device.</p></li>
+<li><p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dpni_enable()</span></code> MC API called on the associated fsl_mc_device.</p></li>
 <li><p>ip link set dev eth1 up</p></li>
-<li><p>The dpni_enable() MC API called on the associated fsl_mc_device.</p></li>
+<li><p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dpni_enable()</span></code> MC API called on the associated fsl_mc_device.</p></li>
 <li><p>The LINK_STATE_CHANGED irq is received by both instances of the dpaa2-eth
 driver because now the operational link state is up.</p></li>
 <li><p>The <a class="reference internal" href="../../../../kapi.html#c.netif_carrier_on" title="netif_carrier_on"><code class="xref c c-func docutils literal notranslate"><span class="pre">netif_carrier_on()</span></code></a> is called on the exported net_device from
-link_state_update().</p></li>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">link_state_update()</span></code>.</p></li>
 </ol>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>+---------+               +---------+
 |  eth0   |               |  eth1   |

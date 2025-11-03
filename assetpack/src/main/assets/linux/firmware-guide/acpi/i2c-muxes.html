@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -169,7 +169,7 @@ Device () scope per mux channel.</p>
 +------+   +------+
 </pre></div>
 </div>
-<p>which corresponds to the following ASL:</p>
+<p>which corresponds to the following ASL (in the scope of _SB):</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Device (SMB1)
 {
     Name (_HID, ...)
@@ -178,7 +178,7 @@ Device () scope per mux channel.</p>
         Name (_HID, ...)
         Name (_CRS, ResourceTemplate () {
             I2cSerialBus (0x70, ControllerInitiated, I2C_SPEED,
-                        AddressingMode7Bit, &quot;^SMB1&quot;, 0x00,
+                        AddressingMode7Bit, &quot;\\_SB.SMB1&quot;, 0x00,
                         ResourceConsumer,,)
         }
 
@@ -191,7 +191,7 @@ Device () scope per mux channel.</p>
                 Name (_HID, ...)
                 Name (_CRS, ResourceTemplate () {
                     I2cSerialBus (0x50, ControllerInitiated, I2C_SPEED,
-                                AddressingMode7Bit, &quot;^CH00&quot;, 0x00,
+                                AddressingMode7Bit, &quot;\\_SB.SMB1.CH00&quot;, 0x00,
                                 ResourceConsumer,,)
                 }
             }
@@ -206,7 +206,7 @@ Device () scope per mux channel.</p>
                 Name (_HID, ...)
                 Name (_CRS, ResourceTemplate () {
                     I2cSerialBus (0x50, ControllerInitiated, I2C_SPEED,
-                                AddressingMode7Bit, &quot;^CH01&quot;, 0x00,
+                                AddressingMode7Bit, &quot;\\_SB.SMB1.CH01&quot;, 0x00,
                                 ResourceConsumer,,)
                 }
             }

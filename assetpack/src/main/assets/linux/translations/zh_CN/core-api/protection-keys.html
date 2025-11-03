@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -205,9 +205,9 @@ int pkey_mprotect(unsigned long start, size_t len,
                   unsigned long prot, int pkey);
 </pre></div>
 </div>
-<p>在使用一个pkey之前，必须先用pkey_alloc()分配它。一个应用程序直接调用
+<p>在使用一个pkey之前，必须先用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pkey_alloc()</span></code>分配它。一个应用程序直接调用
 WRPKRU指令，以改变一个密钥覆盖的内存的访问权限。在这个例子中，WRPKRU
-被一个叫做pkey_set()的C函数所封装:</p>
+被一个叫做<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pkey_set()</span></code>的C函数所封装:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int real_prot = PROT_READ|PROT_WRITE;
 pkey = pkey_alloc(0, PKEY_DISABLE_WRITE);
 ptr = mmap(NULL, PAGE_SIZE, PROT_NONE, MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
@@ -229,13 +229,13 @@ pkey_free(pkey);
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>pkey_set()是RDPKRU和WRPKRU指令的一个封装器。在tools/testing/selftests/x86/protection_keys.c中可以找到一个实现实例。
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pkey_set()</span></code>是RDPKRU和WRPKRU指令的一个封装器。在tools/testing/selftests/x86/protection_keys.c中可以找到一个实现实例。
 tools/testing/selftests/x86/protection_keys.c.</p>
 </div>
 </section>
 <section id="id3">
 <h2>行为<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h2>
-<p>内核试图使保护密钥与普通的mprotect()的行为一致。例如，如果你这样做:</p>
+<p>内核试图使保护密钥与普通的<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mprotect()</span></code>的行为一致。例如，如果你这样做:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>mprotect(ptr, size, PROT_NONE);
 something(ptr);
 </pre></div>
@@ -246,7 +246,7 @@ pkey_mprotect(ptr, size, PROT_READ|PROT_WRITE, pkey);
 something(ptr);
 </pre></div>
 </div>
-<p>无论something()是否是对’ptr’的直接访问，这都应该为真。
+<p>无论<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">something()</span></code>是否是对’ptr’的直接访问，这都应该为真。
 如:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>*ptr = foo;
 </pre></div>
@@ -256,7 +256,7 @@ something(ptr);
 </pre></div>
 </div>
 <p>在这两种情况下，内核都会发送一个SIGSEGV，但当违反保护密钥时，si_code
-将被设置为SEGV_PKERR，而当违反普通的mprotect()权限时，则是SEGV_ACCERR。</p>
+将被设置为SEGV_PKERR，而当违反普通的<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mprotect()</span></code>权限时，则是SEGV_ACCERR。</p>
 </section>
 </section>
 

@@ -184,14 +184,14 @@ Get information about NAPI instances configured on the system.
         :attributes: [``id``]
 
     **reply**
-        :attributes: [``id``, ``ifindex``, ``irq``, ``pid``, ``defer-hard-irqs``, ``gro-flush-timeout``, ``irq-suspend-timeout``]
+        :attributes: [``id``, ``ifindex``, ``irq``, ``pid``, ``defer-hard-irqs``, ``gro-flush-timeout``, ``irq-suspend-timeout``, ``threaded``]
 
 :dump:
     **request**
         :attributes: [``ifindex``]
 
     **reply**
-        :attributes: [``id``, ``ifindex``, ``irq``, ``pid``, ``defer-hard-irqs``, ``gro-flush-timeout``, ``irq-suspend-timeout``]
+        :attributes: [``id``, ``ifindex``, ``irq``, ``pid``, ``defer-hard-irqs``, ``gro-flush-timeout``, ``irq-suspend-timeout``, ``threaded``]
 
 
 
@@ -241,7 +241,7 @@ Set configurable NAPI instance settings.
 :flags: [``admin-perm``]
 :do:
     **request**
-        :attributes: [``id``, ``defer-hard-irqs``, ``gro-flush-timeout``, ``irq-suspend-timeout``]
+        :attributes: [``id``, ``defer-hard-irqs``, ``gro-flush-timeout``, ``irq-suspend-timeout``, ``threaded``]
 
 
 
@@ -339,6 +339,18 @@ qstats-scope
 
 :entries:
     - ``queue``
+
+
+.. _netdev-definition-napi-threaded:
+
+napi-threaded
+=============
+:type: enum
+
+
+:entries:
+    - ``disabled``
+    - ``enabled``
 
 
 
@@ -536,6 +548,12 @@ gro-flush-timeout (``uint``)
 irq-suspend-timeout (``uint``)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 :doc: The timeout, in nanoseconds, of how long to suspend irq processing, if event polling finds events
+
+
+threaded (``u32``)
+~~~~~~~~~~~~~~~~~~
+:doc: Whether the NAPI is configured to operate in threaded polling mode. If this is set to enabled then the NAPI context operates in threaded polling mode.
+:enum: :ref:`netdev-definition-napi-threaded`
 
 
 .. _netdev-attribute-set-xsk-info:

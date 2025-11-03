@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -291,7 +291,7 @@ may arrive out of order on retransmission and socket teardown.</p>
 <section id="notification-parsing">
 <h4>Notification Parsing<a class="headerlink" href="#notification-parsing" title="Link to this heading">¶</a></h4>
 <p>The below snippet demonstrates how to parse the control message: the
-read_notification() call in the previous snippet. A notification
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">read_notification()</span></code> call in the previous snippet. A notification
 is encoded in the standard error format, sock_extended_err.</p>
 <p>The level and type fields in the control data are protocol family
 specific, IP_RECVERR or IPV6_RECVERR (for TCP or UDP socket).
@@ -301,7 +301,7 @@ VSOCK_RECVERR.</p>
 as explained before, to avoid blocking read and write system calls on
 the socket.</p>
 <p>The 32-bit notification range is encoded as [ee_info, ee_data]. This
-range is inclusive. Other fields in the struct must be treated as
+range is inclusive. Other fields in the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">must</span></code> be treated as
 undefined, bar for ee_code, as discussed below.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct sock_extended_err *serr;
 struct cmsghdr *cm;

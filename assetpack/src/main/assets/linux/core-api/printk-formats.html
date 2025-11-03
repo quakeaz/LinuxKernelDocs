@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -242,7 +242,7 @@ more information for debugging, use %p and boot the kernel with the
 addresses unmodified. If you <em>really</em> always want the unmodified address, see
 %px below.</p>
 <p>If (and only if) you are printing addresses as a content of a virtual file in
-e.g. procfs or sysfs (using e.g. seq_printf(), not <a class="reference internal" href="printk-basics.html#c.printk" title="printk"><code class="xref c c-func docutils literal notranslate"><span class="pre">printk()</span></code></a>) read by a
+e.g. procfs or sysfs (using e.g. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">seq_printf()</span></code>, not <a class="reference internal" href="printk-basics.html#c.printk" title="printk"><code class="xref c c-func docutils literal notranslate"><span class="pre">printk()</span></code></a>) read by a
 userspace process, use the %pK modifier described below instead of %p or %px.</p>
 </section>
 <section id="error-pointers">
@@ -291,7 +291,7 @@ specifier.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">k</span></code> and <code class="docutils literal notranslate"><span class="pre">u</span></code> specifiers are used for printing prior probed memory from
 either kernel memory (k) or user memory (u). The subsequent <code class="docutils literal notranslate"><span class="pre">s</span></code> specifier
 results in printing a string. For direct use in regular <a class="reference internal" href="kernel-api.html#c.vsnprintf" title="vsnprintf"><code class="xref c c-func docutils literal notranslate"><span class="pre">vsnprintf()</span></code></a> the (k)
-and (u) annotation is ignored, however, when used out of BPF’s bpf_trace_printk(),
+and (u) annotation is ignored, however, when used out of BPF’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bpf_trace_printk()</span></code>,
 for example, it reads the memory it is pointing to without faulting.</p>
 </section>
 <section id="kernel-pointers">
@@ -349,7 +349,7 @@ with no_hash_pointers.</p>
         [mem 0x0000000060000000 pref]
 </pre></div>
 </div>
-<p>For printing struct resources. The <code class="docutils literal notranslate"><span class="pre">R</span></code> and <code class="docutils literal notranslate"><span class="pre">r</span></code> specifiers result in a
+<p>For printing <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">resources</span></code>. The <code class="docutils literal notranslate"><span class="pre">R</span></code> and <code class="docutils literal notranslate"><span class="pre">r</span></code> specifiers result in a
 printed resource with (R) or without (r) a decoded flags member.  If start is
 equal to end only print the start value.</p>
 <p>Passed by reference.</p>
@@ -370,7 +370,7 @@ width of the CPU data path.</p>
         [range 0x0000000060000000]
 </pre></div>
 </div>
-<p>For printing struct range.  struct range holds an arbitrary range of u64
+<p>For printing <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">range</span></code>.  <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">range</span></code> holds an arbitrary range of u64
 values.  If start is equal to end only print the start value.</p>
 <p>Passed by reference.</p>
 </section>
@@ -490,7 +490,7 @@ print a compressed IPv6 address as described by
 </pre></div>
 </div>
 <p>For printing an IP address without the need to distinguish whether it’s of
-type AF_INET or AF_INET6. A pointer to a valid struct sockaddr,
+type AF_INET or AF_INET6. A pointer to a valid <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">sockaddr</span></code>,
 specified through <code class="docutils literal notranslate"><span class="pre">IS</span></code> or <code class="docutils literal notranslate"><span class="pre">iS</span></code>, can be passed to this format specifier.</p>
 <p>The additional <code class="docutils literal notranslate"><span class="pre">p</span></code>, <code class="docutils literal notranslate"><span class="pre">f</span></code>, and <code class="docutils literal notranslate"><span class="pre">s</span></code> specifiers are used to specify port
 (IPv4, IPv6), flowinfo (IPv6) and scope (IPv6). Ports have a <code class="docutils literal notranslate"><span class="pre">:</span></code> prefix,
@@ -551,7 +551,7 @@ last components.  %pD does the same thing for <a class="reference internal" href
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>%pV
 </pre></div>
 </div>
-<p>For printing struct va_format structures. These contain a format string
+<p>For printing <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">va_format</span></code> structures. These contain a format string
 and va_list as follows:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct va_format {
         const char *fmt;
@@ -650,7 +650,7 @@ when date or time is omitted.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>%pC     pll1
 </pre></div>
 </div>
-<p>For printing struct clk structures. %pC prints the name of the clock
+<p>For printing <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">clk</span></code> structures. %pC prints the name of the clock
 (Common Clock Framework) or a unique 32-bit ID (legacy clock framework).</p>
 <p>Passed by reference.</p>
 </section>
@@ -664,7 +664,7 @@ when date or time is omitted.</p>
 %*pb outputs the bitmap with field width as the number of bits and %*pbl
 output the bitmap as range list with field width as the number of bits.</p>
 <p>The field width is passed by value, the bitmap is passed by reference.
-Helper macros cpumask_pr_args() and nodemask_pr_args() are available to ease
+Helper macros <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpumask_pr_args()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nodemask_pr_args()</span></code> are available to ease
 printing cpumask and nodemask.</p>
 </section>
 <section id="flags-bitfields-such-as-page-flags-and-gfp-flags">
@@ -686,7 +686,7 @@ character. Currently supported are:</p>
 </div></blockquote>
 <p>The flag names and print order depends on the particular type.</p>
 <p>Note that this format should not be used directly in the
-<code class="xref c c-func docutils literal notranslate"><span class="pre">TP_printk()</span></code> part of a tracepoint. Instead, use the show_*_flags()
+<code class="xref c c-func docutils literal notranslate"><span class="pre">TP_printk()</span></code> part of a tracepoint. Instead, use the show_*<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_flags()</span></code>
 functions from &lt;trace/events/mmflags.h&gt;.</p>
 <p>Passed by reference.</p>
 </section>

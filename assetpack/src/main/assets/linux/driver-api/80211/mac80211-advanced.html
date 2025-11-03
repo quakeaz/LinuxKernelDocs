@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -373,7 +373,7 @@ configured) or the name of the new trigger.</p>
 <h2>Hardware crypto acceleration<a class="headerlink" href="#hardware-crypto-acceleration" title="Link to this heading">¶</a></h2>
 <p>mac80211 is capable of taking advantage of many hardware
 acceleration designs for encryption and decryption operations.</p>
-<p>The set_key() callback in the <a class="reference internal" href="mac80211.html#c.ieee80211_ops" title="ieee80211_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ieee80211_ops</span></code></a> for a given
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_key()</span></code> callback in the <a class="reference internal" href="mac80211.html#c.ieee80211_ops" title="ieee80211_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ieee80211_ops</span></code></a> for a given
 device is called to enable hardware acceleration of encryption and
 decryption. The callback takes a <strong>sta</strong> parameter that will be NULL
 for default keys or keys used for transmission only, or point to
@@ -382,14 +382,14 @@ Multiple transmission keys with the same key index may be used when
 VLANs are configured for an access point.</p>
 <p>When transmitting, the TX control data will use the <strong>hw_key_idx</strong>
 selected by the driver by modifying the <a class="reference internal" href="#c.ieee80211_key_conf" title="ieee80211_key_conf"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ieee80211_key_conf</span></code></a>
-pointed to by the <strong>key</strong> parameter to the set_key() function.</p>
-<p>The set_key() call for the <code class="docutils literal notranslate"><span class="pre">SET_KEY</span></code> command should return 0 if
+pointed to by the <strong>key</strong> parameter to the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_key()</span></code> function.</p>
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_key()</span></code> call for the <code class="docutils literal notranslate"><span class="pre">SET_KEY</span></code> command should return 0 if
 the key is now in use, -<code class="docutils literal notranslate"><span class="pre">EOPNOTSUPP</span></code> or -<code class="docutils literal notranslate"><span class="pre">ENOSPC</span></code> if it couldn’t be
 added; if you return 0 then hw_key_idx must be assigned to the
 hardware key index. You are free to use the full u8 range.</p>
 <p>Note that in the case that the <strong>IEEE80211_HW_SW_CRYPTO_CONTROL</strong> flag is
 set, mac80211 will not automatically fall back to software crypto if
-enabling hardware crypto failed. The set_key() call may also return the
+enabling hardware crypto failed. The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_key()</span></code> call may also return the
 value 1 to permit this specific key/algorithm to be done in software.</p>
 <p>When the cmd is <code class="docutils literal notranslate"><span class="pre">DISABLE_KEY</span></code> then it must succeed.</p>
 <p>Note that it is permissible to not decrypt a frame even if a key
@@ -397,19 +397,19 @@ for it has been uploaded to hardware. The stack will not make any
 decision based on whether a key has been uploaded or not but rather
 based on the receive flags.</p>
 <p>The <a class="reference internal" href="#c.ieee80211_key_conf" title="ieee80211_key_conf"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ieee80211_key_conf</span></code></a> structure pointed to by the <strong>key</strong>
-parameter is guaranteed to be valid until another call to set_key()
+parameter is guaranteed to be valid until another call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_key()</span></code>
 removes it, but it can only be used as a cookie to differentiate
 keys.</p>
 <p>In TKIP some HW need to be provided a phase 1 key, for RX decryption
 acceleration (i.e. iwlwifi). Those drivers should provide update_tkip_key
 handler.
-The update_tkip_key() call updates the driver with the new phase 1 key.
+The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">update_tkip_key()</span></code> call updates the driver with the new phase 1 key.
 This happens every time the iv16 wraps around (every 65536 packets). The
-set_key() call will happen only once for each key (unless the AP did
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_key()</span></code> call will happen only once for each key (unless the AP did
 rekeying); it will not include a valid phase 1 key. The valid phase 1 key is
 provided by update_tkip_key only. The trigger that makes mac80211 call this
 handler is software decryption with wrap around of iv16.</p>
-<p>The set_default_unicast_key() call updates the default WEP key index
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_default_unicast_key()</span></code> call updates the default WEP key index
 configured to the hardware for WEP encryption type. This is required
 for devices that support offload of data packets (e.g. ARP responses).</p>
 <p>Mac80211 drivers should set the <strong>NL80211_EXT_FEATURE_CAN_REPLACE_PTK0</strong> flag
@@ -537,7 +537,7 @@ data block:
 </div>
 <p><strong>Description</strong></p>
 <p>This key information is given by mac80211 to the driver by
-the set_key() callback in <a class="reference internal" href="mac80211.html#c.ieee80211_ops" title="ieee80211_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ieee80211_ops</span></code></a>.</p>
+the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_key()</span></code> callback in <a class="reference internal" href="mac80211.html#c.ieee80211_ops" title="ieee80211_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ieee80211_ops</span></code></a>.</p>
 <dl class="c enum">
 <dt class="sig sig-object c" id="c.set_key_cmd">
 <span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_key_cmd</span></span></span><a class="headerlink" href="#c.set_key_cmd" title="Link to this definition">¶</a><br /></dt>
@@ -554,7 +554,7 @@ the set_key() callback in <a class="reference internal" href="mac80211.html#c.ie
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>Used with the set_key() callback in <a class="reference internal" href="mac80211.html#c.ieee80211_ops" title="ieee80211_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ieee80211_ops</span></code></a>, this
+<p>Used with the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_key()</span></code> callback in <a class="reference internal" href="mac80211.html#c.ieee80211_ops" title="ieee80211_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ieee80211_ops</span></code></a>, this
 indicates whether a key is being removed or added.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ieee80211_get_tkip_p1k_iv">
@@ -662,7 +662,7 @@ dynamic PS feature in stack and will just keep <code class="docutils literal not
 enabled whenever user has enabled powersave.</p>
 <p>Driver informs U-APSD client support by enabling
 <code class="docutils literal notranslate"><span class="pre">IEEE80211_VIF_SUPPORTS_UAPSD</span></code> flag. The mode is configured through the
-uapsd parameter in conf_tx() operation. Hardware needs to send the QoS
+uapsd parameter in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">conf_tx()</span></code> operation. Hardware needs to send the QoS
 Nullfunc frames and stay awake until the service period has ended. To
 utilize U-APSD, dynamic powersave is disabled for voip AC and all frames
 from that AC are transmitted with powersave enabled.</p>
@@ -967,7 +967,7 @@ then the driver needs to inform mac80211 that there no longer are
 frames buffered. However, when the station wakes up mac80211 assumes
 that all buffered frames will be transmitted and clears this data,
 drivers need to make sure they inform mac80211 about all buffered
-frames on the sleep transition (sta_notify() with <code class="docutils literal notranslate"><span class="pre">STA_NOTIFY_SLEEP</span></code>).</p>
+frames on the sleep transition (<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sta_notify()</span></code> with <code class="docutils literal notranslate"><span class="pre">STA_NOTIFY_SLEEP</span></code>).</p>
 <p>Note that technically mac80211 only needs to know this per AC, not per
 TID, but since driver buffering will inevitably happen per TID (since
 it is related to aggregation) it is easier to make mac80211 map the
@@ -992,9 +992,9 @@ that is not associated with AP MLD).</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>See ieee80211_beacon_get_tim().</p>
+<p>See <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ieee80211_beacon_get_tim()</span></code>.</p>
 <p><strong>Return</strong></p>
-<p>See ieee80211_beacon_get_tim().</p>
+<p>See <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ieee80211_beacon_get_tim()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ieee80211_get_buffered_bc">
@@ -1082,7 +1082,7 @@ woke up while blocked or not.</p>
 mac80211 in the TX status about the EOSP, it must clear the
 <code class="docutils literal notranslate"><span class="pre">IEEE80211_TX_STATUS_EOSP</span></code> bit and call this function instead.
 This applies for PS-Poll as well as uAPSD.</p>
-<p>Note that just like with _tx_status() and _rx() drivers must
+<p>Note that just like with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_tx_status()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_rx()</span></code> drivers must
 not mix calls to irqsafe/non-irqsafe versions, this function
 must not be mixed with those either. Use the all irqsafe, or
 all non-irqsafe, don’t mix!</p>
@@ -1111,7 +1111,7 @@ notes about supporting hw crypto with it.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ieee80211_hw</span> <span class="pre">*hw</span></code></dt><dd><p>the hardware struct of which the interfaces should be iterated over</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ieee80211_hw</span> <span class="pre">*hw</span></code></dt><dd><p>the hardware <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">of</span></code> which the interfaces should be iterated over</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">u32</span> <span class="pre">iter_flags</span></code></dt><dd><p>iteration flags, see <code class="xref c c-type docutils literal notranslate"><span class="pre">enum</span> <span class="pre">ieee80211_interface_iteration_flags</span></code></p>
 </dd>
@@ -1126,7 +1126,7 @@ hardware that are currently active and calls the callback for them.
 This function allows the iterator function to sleep, when the iterator
 function is atomic <strong>ieee80211_iterate_active_interfaces_atomic</strong> can
 be used.
-Does not iterate over a new interface during add_interface().</p>
+Does not iterate over a new interface during <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">add_interface()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ieee80211_iterate_active_interfaces_atomic">
@@ -1137,7 +1137,7 @@ Does not iterate over a new interface during add_interface().</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ieee80211_hw</span> <span class="pre">*hw</span></code></dt><dd><p>the hardware struct of which the interfaces should be iterated over</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ieee80211_hw</span> <span class="pre">*hw</span></code></dt><dd><p>the hardware <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">of</span></code> which the interfaces should be iterated over</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">u32</span> <span class="pre">iter_flags</span></code></dt><dd><p>iteration flags, see <code class="xref c c-type docutils literal notranslate"><span class="pre">enum</span> <span class="pre">ieee80211_interface_iteration_flags</span></code></p>
 </dd>
@@ -1151,7 +1151,7 @@ Does not iterate over a new interface during add_interface().</p>
 hardware that are currently active and calls the callback for them.
 This function requires the iterator callback function to be atomic,
 if that is not desired, use <strong>ieee80211_iterate_active_interfaces</strong> instead.
-Does not iterate over a new interface during add_interface().</p>
+Does not iterate over a new interface during <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">add_interface()</span></code>.</p>
 </div>
 </section>
 <section id="station-handling">
@@ -1230,7 +1230,7 @@ unlimited.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">cur</span></code></dt><dd><p>currently valid data as aggregated from the active links
 For non MLO STA it will point to the deflink data. For MLO STA
-ieee80211_sta_recalc_aggregates() must be called to update it.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ieee80211_sta_recalc_aggregates()</span></code> must be called to update it.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">support_p2p_ps</span></code></dt><dd><p>indicates whether the STA supports P2P PS mechanism or not.</p>
 </dd>
@@ -1282,7 +1282,7 @@ and holds pointers to various link STA’s</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>Used with the sta_notify() callback in <a class="reference internal" href="mac80211.html#c.ieee80211_ops" title="ieee80211_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ieee80211_ops</span></code></a>, this
+<p>Used with the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sta_notify()</span></code> callback in <a class="reference internal" href="mac80211.html#c.ieee80211_ops" title="ieee80211_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ieee80211_ops</span></code></a>, this
 indicates if an associated station made a power state transition.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ieee80211_find_sta">
@@ -1335,7 +1335,6 @@ In this case, the result of this method with localaddr NULL
 is not reliable.</p>
 </dd>
 </dl>
-<p><strong>Description</strong></p>
 <p>DO NOT USE THIS FUNCTION with localaddr NULL if at all possible.</p>
 </div>
 </section>
@@ -1357,7 +1356,7 @@ is not reliable.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>When hardware scan offload is used (i.e. the hw_scan() callback is
+<p>When hardware scan offload is used (i.e. the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hw_scan()</span></code> callback is
 assigned) this function needs to be called by the driver to notify
 mac80211 that the scan finished. This function can be called from
 any context, including hardirq context.</p>
@@ -1453,7 +1452,7 @@ should clean up and drop remaining packets when this is called.</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>These flags are used with the ampdu_action() callback in
+<p>These flags are used with the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ampdu_action()</span></code> callback in
 <a class="reference internal" href="mac80211.html#c.ieee80211_ops" title="ieee80211_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ieee80211_ops</span></code></a> to indicate which action is needed.</p>
 <p>Note that drivers MUST be able to deal with a TX aggregation
 session being stopped even before they OK’ed starting it by
@@ -1477,7 +1476,7 @@ hardware flags.</p>
 defines to be dynamic SMPS in (regular) powersave, and SMPS
 turned off otherwise.</p>
 <p>To support this feature, the driver must set the appropriate
-hardware support flags, and handle the SMPS flag to the config()
+hardware support flags, and handle the SMPS flag to the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">config()</span></code>
 operation. It will then with this mechanism be instructed to
 enter the requested SMPS mode while associated to an HT AP.</p>
 <dl class="c enum">
@@ -1711,7 +1710,7 @@ or HW except by looking into debugfs.</p>
 other parts of mac80211, key references are, just as STA structure
 references, protected by RCU. Note, however, that some things are
 unprotected, namely the key-&gt;sta dereferences within the hardware
-acceleration functions. This means that sta_info_destroy() must
+acceleration functions. This means that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sta_info_destroy()</span></code> must
 remove the key which waits for an RCU grace period.</p>
 </section>
 <section id="more-tbd">
@@ -1820,7 +1819,7 @@ so drop all packets without a key later.</p>
 </div>
 <p><strong>Description</strong></p>
 <p>These flags are used with <a class="reference internal" href="#c.sta_info" title="sta_info"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">sta_info</span></code></a>’s <strong>flags</strong> member, but
-only indirectly with set_sta_flag() and friends.</p>
+only indirectly with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_sta_flag()</span></code> and friends.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.sta_info">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sta_info</span></span></span><a class="headerlink" href="#c.sta_info" title="Link to this definition">¶</a><br /></dt>
@@ -1876,6 +1875,7 @@ only indirectly with set_sta_flag() and friends.</p>
     struct ieee80211_sta_aggregates cur;
     struct link_sta_info deflink;
     struct link_sta_info __rcu *link[IEEE80211_MLD_MAX_NUM_LINKS];
+    struct ieee80211_sta_removed_link_stats rem_link_stats;
     struct ieee80211_sta sta;
 };
 </pre></div>
@@ -1954,7 +1954,7 @@ plus one for non-QoS frames)</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">tid_seq</span></code></dt><dd><p>per-TID sequence numbers for sending to this STA</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">airtime</span></code></dt><dd><p>per-AC struct airtime_info describing airtime statistics for this
+<dt><code class="docutils literal notranslate"><span class="pre">airtime</span></code></dt><dd><p>per-AC <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">airtime_info</span></code> describing airtime statistics for this
 station</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">airtime_weight</span></code></dt><dd><p>station weight for airtime fairness calculation purposes</p>
@@ -1966,12 +1966,6 @@ station</p>
 <dt><code class="docutils literal notranslate"><span class="pre">reserved_tid</span></code></dt><dd><p>reserved TID (if any, otherwise IEEE80211_TID_UNRESERVED)</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">amsdu_mesh_control</span></code></dt><dd><p>track the mesh A-MSDU format used by the peer:</p>
-<ul class="simple">
-<li><p>-1: not yet known</p></li>
-<li><p>0: non-mesh A-MSDU length field</p></li>
-<li><p>1: big-endian mesh A-MSDU length field</p></li>
-<li><p>2: little-endian mesh A-MSDU length field</p></li>
-</ul>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">tdls_chandef</span></code></dt><dd><p>a TDLS peer can have a wider chandef that is compatible to
 the BSS one.</p>
@@ -1994,6 +1988,8 @@ STA, first link STA being added will point its link pointer to
 would be assigned to link[link_id] where link_id is the id assigned
 by the AP.</p>
 </dd>
+<dt><code class="docutils literal notranslate"><span class="pre">rem_link_stats</span></code></dt><dd><p>accumulated removed link stats</p>
+</dd>
 <dt><code class="docutils literal notranslate"><span class="pre">sta</span></code></dt><dd><p>station information we share with the driver</p>
 </dd>
 </dl>
@@ -2001,22 +1997,30 @@ by the AP.</p>
 <p><strong>Description</strong></p>
 <p>This structure collects information about a station that
 mac80211 is communicating with.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>-1: not yet known</p></li>
+<li><p>0: non-mesh A-MSDU length field</p></li>
+<li><p>1: big-endian mesh A-MSDU length field</p></li>
+<li><p>2: little-endian mesh A-MSDU length field</p></li>
+</ul>
+</div></blockquote>
 </section>
 <section id="sta-information-lifetime-rules">
 <h3>STA information lifetime rules<a class="headerlink" href="#sta-information-lifetime-rules" title="Link to this heading">¶</a></h3>
 <p>STA info structures (<a class="reference internal" href="#c.sta_info" title="sta_info"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">sta_info</span></code></a>) are managed in a hash table
 for faster lookup and a list for iteration. They are managed using
 RCU, i.e. access to the list and hash table is protected by RCU.</p>
-<p>Upon allocating a STA info structure with sta_info_alloc(), the caller
+<p>Upon allocating a STA info structure with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sta_info_alloc()</span></code>, the caller
 owns that structure. It must then insert it into the hash table using
-either sta_info_insert() or sta_info_insert_rcu(); only in the latter
+either <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sta_info_insert()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sta_info_insert_rcu()</span></code>; only in the latter
 case (which acquires an rcu read section but must not be called from
 within one) will the pointer still be valid after the call. Note that
 the caller may not do much with the STA info before inserting it; in
 particular, it may not start any mesh peer link management or add
 encryption keys.</p>
-<p>When the insertion fails (sta_info_insert()) returns non-zero), the
-structure will have been freed by sta_info_insert()!</p>
+<p>When the insertion fails (<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sta_info_insert()</span></code>) returns non-zero), the
+structure will have been freed by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sta_info_insert()</span></code>!</p>
 <p>Station entries are added by mac80211 when you establish a link with a
 peer. This means different things for the different type of interfaces
 we support. For a regular station this mean we add the AP sta when we
@@ -2133,7 +2137,7 @@ touching it.</p>
     u16 buf_size;
     u16 timeout;
     u8 tid;
-    u8 auto_seq:1,removed:1, started:1;
+    u8 auto_seq:1, removed:1, started:1;
 };
 </pre></div>
 </div>

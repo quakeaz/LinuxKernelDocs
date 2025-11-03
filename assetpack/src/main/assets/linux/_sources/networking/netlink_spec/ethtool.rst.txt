@@ -712,17 +712,17 @@ Get module EEPROM params.
 :attribute-set: :ref:`ethtool-attribute-set-module-eeprom`
 :do:
     **request**
-        :attributes: [``header``]
+        :attributes: [``header``, ``offset``, ``length``, ``page``, ``bank``, ``i2c-address``]
 
     **reply**
-        :attributes: [``header``, ``offset``, ``length``, ``page``, ``bank``, ``i2c-address``, ``data``]
+        :attributes: [``header``, ``data``]
 
 :dump:
     **request**
-        :attributes: [``header``]
+        :attributes: [``header``, ``offset``, ``length``, ``page``, ``bank``, ``i2c-address``]
 
     **reply**
-        :attributes: [``header``, ``offset``, ``length``, ``page``, ``bank``, ``i2c-address``, ``data``]
+        :attributes: [``header``, ``data``]
 
 
 
@@ -829,14 +829,14 @@ Get Power Sourcing Equipment params.
         :attributes: [``header``]
 
     **reply**
-        :attributes: [``header``, ``podl-pse-admin-state``, ``podl-pse-admin-control``, ``podl-pse-pw-d-status``, ``c33-pse-admin-state``, ``c33-pse-admin-control``, ``c33-pse-pw-d-status``, ``c33-pse-pw-class``, ``c33-pse-actual-pw``, ``c33-pse-ext-state``, ``c33-pse-ext-substate``, ``c33-pse-avail-pw-limit``, ``c33-pse-pw-limit-ranges``]
+        :attributes: [``header``, ``podl-pse-admin-state``, ``podl-pse-admin-control``, ``podl-pse-pw-d-status``, ``c33-pse-admin-state``, ``c33-pse-admin-control``, ``c33-pse-pw-d-status``, ``c33-pse-pw-class``, ``c33-pse-actual-pw``, ``c33-pse-ext-state``, ``c33-pse-ext-substate``, ``c33-pse-avail-pw-limit``, ``c33-pse-pw-limit-ranges``, ``pse-pw-d-id``, ``pse-prio-max``, ``pse-prio``]
 
 :dump:
     **request**
         :attributes: [``header``]
 
     **reply**
-        :attributes: [``header``, ``podl-pse-admin-state``, ``podl-pse-admin-control``, ``podl-pse-pw-d-status``, ``c33-pse-admin-state``, ``c33-pse-admin-control``, ``c33-pse-pw-d-status``, ``c33-pse-pw-class``, ``c33-pse-actual-pw``, ``c33-pse-ext-state``, ``c33-pse-ext-substate``, ``c33-pse-avail-pw-limit``, ``c33-pse-pw-limit-ranges``]
+        :attributes: [``header``, ``podl-pse-admin-state``, ``podl-pse-admin-control``, ``podl-pse-pw-d-status``, ``c33-pse-admin-state``, ``c33-pse-admin-control``, ``c33-pse-pw-d-status``, ``c33-pse-pw-class``, ``c33-pse-actual-pw``, ``c33-pse-ext-state``, ``c33-pse-ext-substate``, ``c33-pse-avail-pw-limit``, ``c33-pse-pw-limit-ranges``, ``pse-pw-d-id``, ``pse-prio-max``, ``pse-prio``]
 
 
 
@@ -849,7 +849,7 @@ Set Power Sourcing Equipment params.
 :attribute-set: :ref:`ethtool-attribute-set-pse`
 :do:
     **request**
-        :attributes: [``header``, ``podl-pse-admin-control``, ``c33-pse-admin-control``, ``c33-pse-avail-pw-limit``]
+        :attributes: [``header``, ``podl-pse-admin-control``, ``c33-pse-admin-control``, ``c33-pse-avail-pw-limit``, ``pse-prio``]
 
 
 
@@ -865,14 +865,14 @@ Get RSS params.
         :attributes: [``header``, ``context``]
 
     **reply**
-        :attributes: [``header``, ``context``, ``hfunc``, ``indir``, ``hkey``, ``input-xfrm``]
+        :attributes: [``header``, ``context``, ``hfunc``, ``indir``, ``hkey``, ``input-xfrm``, ``flow-hash``]
 
 :dump:
     **request**
         :attributes: [``header``, ``start-context``]
 
     **reply**
-        :attributes: [``header``, ``context``, ``hfunc``, ``indir``, ``hkey``, ``input-xfrm``]
+        :attributes: [``header``, ``context``, ``hfunc``, ``indir``, ``hkey``, ``input-xfrm``, ``flow-hash``]
 
 
 
@@ -1083,6 +1083,98 @@ Set hwtstamp config.
 
 
 
+.. _ethtool-operation-pse-ntf:
+
+pse-ntf
+=======
+Notification for PSE events.
+
+:attribute-set: :ref:`ethtool-attribute-set-pse-ntf`
+:event: {'attributes': ['header', 'events']}
+
+
+.. _ethtool-operation-rss-set:
+
+rss-set
+=======
+Set RSS params.
+
+:attribute-set: :ref:`ethtool-attribute-set-rss`
+:do:
+    **request**
+        :attributes: [``header``, ``context``, ``hfunc``, ``indir``, ``hkey``, ``input-xfrm``, ``flow-hash``]
+
+
+
+.. _ethtool-operation-rss-ntf:
+
+rss-ntf
+=======
+Notification for change in RSS configuration.
+For additional contexts only modifications use this notification,
+creation and deletion have dedicated messages.
+
+
+:notify: rss-get
+
+
+.. _ethtool-operation-rss-create-act:
+
+rss-create-act
+==============
+Create an RSS context.
+
+:attribute-set: :ref:`ethtool-attribute-set-rss`
+:do:
+    **request**
+        :attributes: [``header``, ``context``, ``hfunc``, ``indir``, ``hkey``, ``input-xfrm``]
+
+    **reply**
+        :attributes: [``header``, ``context``, ``hfunc``, ``indir``, ``hkey``, ``input-xfrm``]
+
+
+
+.. _ethtool-operation-rss-create-ntf:
+
+rss-create-ntf
+==============
+Notification for creation of an additional RSS context.
+
+
+:notify: rss-create-act
+
+
+.. _ethtool-operation-rss-delete-act:
+
+rss-delete-act
+==============
+Delete an RSS context.
+
+:attribute-set: :ref:`ethtool-attribute-set-rss`
+:do:
+    **request**
+        :attributes: [``header``, ``context``]
+
+
+
+.. _ethtool-operation-rss-delete-ntf:
+
+rss-delete-ntf
+==============
+Notification for deletion of an additional RSS context.
+
+
+:attribute-set: :ref:`ethtool-attribute-set-rss`
+:event: {'attributes': ['header', 'context']}
+
+
+
+----------------
+Multicast groups
+----------------
+
+
+- monitor
 
 -----------
 Definitions
@@ -1150,7 +1242,7 @@ module-fw-flash-status
 
 c33-pse-ext-state
 =================
-:doc: groups of PSE extended states functions. IEEE 802.3-2022 33.2.4.4 Variables
+:doc: "groups of PSE extended states functions. IEEE 802.3-2022 33.2.4.4 Variables"
 :type: enum
 :name-prefix: ethtool-c33-pse-ext-state-
 :header: linux/ethtool.h
@@ -1209,6 +1301,63 @@ hwtstamp-source
 :entries:
     :netdev: Hardware timestamp comes from a MAC or a device which has MAC and PHY integrated
     :phylib: Hardware timestamp comes from one PHY device of the network topology
+
+
+.. _ethtool-definition-pse-event:
+
+pse-event
+=========
+:doc: PSE event list for the PSE controller
+:type: flags
+:name-prefix: ethtool-
+
+
+:entries:
+    :pse-event-over-current: PSE output current is too high
+    :pse-event-over-temp: PSE in over temperature state
+    :c33-pse-event-detection: detection process occur on the PSE. IEEE 802.3-2022 33.2.5 and 145.2.6 PSE detection of PDs. IEEE 802.3-202 30.9.1.1.5 aPSEPowerDetectionStatus
+    :c33-pse-event-classification: classification process occur on the PSE. IEEE 802.3-2022 33.2.6 and 145.2.8 classification of PDs mutual identification. IEEE 802.3-2022 30.9.1.1.8 aPSEPowerClassification.
+    :c33-pse-event-disconnection: PD has been disconnected on the PSE. IEEE 802.3-2022 33.3.8 and 145.3.9 PD Maintain Power Signature. IEEE 802.3-2022 33.5.1.2.9 MPS Absent. IEEE 802.3-2022 30.9.1.1.20 aPSEMPSAbsentCounter.
+    :pse-event-over-budget: PSE turned off due to over budget situation
+    :pse-event-sw-pw-control-error: PSE faced an error managing the power control from software
+
+
+.. _ethtool-definition-input-xfrm:
+
+input-xfrm
+==========
+:doc: RSS hash function transformations.
+:type: flags
+:enum-name: None
+:name-prefix: rxh-xfrm-
+:header: linux/ethtool.h
+
+
+:entries:
+    :sym-xor: XOR the corresponding source and destination fields of each specified protocol. Both copies of the XOR'ed fields are fed into the RSS and RXHASH calculation. Note that this XORing reduces the input set entropy and could be exploited to reduce the RSS queue spread.
+    :sym-or-xor: Similar to SYM_XOR, except that one copy of the XOR'ed fields is replaced by an OR of the same fields.
+
+
+.. _ethtool-definition-rxfh-fields:
+
+rxfh-fields
+===========
+:name-prefix: rxh-
+:enum-name: None
+:header: linux/ethtool.h
+:type: flags
+
+
+:entries:
+    :l2da: 
+    :vlan: 
+    :l3-proto: 
+    :ip-src: 
+    :ip-dst: 
+    :l4-b-0-1: src port in case of TCP/UDP/SCTP
+    :l4-b-2-3: dst port in case of TCP/UDP/SCTP
+    :gtp-teid: 
+    :discard: 
 
 
 
@@ -2789,6 +2938,160 @@ c33-pse-pw-limit-ranges (``nest``)
 :nested-attributes: :ref:`ethtool-attribute-set-c33-pse-pw-limit`
 
 
+pse-pw-d-id (``u32``)
+~~~~~~~~~~~~~~~~~~~~~
+:name-prefix: ethtool-a-
+
+
+pse-prio-max (``u32``)
+~~~~~~~~~~~~~~~~~~~~~~
+:name-prefix: ethtool-a-
+
+
+pse-prio (``u32``)
+~~~~~~~~~~~~~~~~~~
+:name-prefix: ethtool-a-
+
+
+.. _ethtool-attribute-set-flow:
+
+flow
+====
+ether (``uint``)
+~~~~~~~~~~~~~~~~
+:enum: :ref:`ethtool-definition-rxfh-fields`
+
+
+ip4 (``uint``)
+~~~~~~~~~~~~~~
+:enum: :ref:`ethtool-definition-rxfh-fields`
+
+
+ip6 (``uint``)
+~~~~~~~~~~~~~~
+:enum: :ref:`ethtool-definition-rxfh-fields`
+
+
+tcp4 (``uint``)
+~~~~~~~~~~~~~~~
+:enum: :ref:`ethtool-definition-rxfh-fields`
+
+
+tcp6 (``uint``)
+~~~~~~~~~~~~~~~
+:enum: :ref:`ethtool-definition-rxfh-fields`
+
+
+udp4 (``uint``)
+~~~~~~~~~~~~~~~
+:enum: :ref:`ethtool-definition-rxfh-fields`
+
+
+udp6 (``uint``)
+~~~~~~~~~~~~~~~
+:enum: :ref:`ethtool-definition-rxfh-fields`
+
+
+sctp4 (``uint``)
+~~~~~~~~~~~~~~~~
+:enum: :ref:`ethtool-definition-rxfh-fields`
+
+
+sctp6 (``uint``)
+~~~~~~~~~~~~~~~~
+:enum: :ref:`ethtool-definition-rxfh-fields`
+
+
+ah4 (``uint``)
+~~~~~~~~~~~~~~
+:enum: :ref:`ethtool-definition-rxfh-fields`
+
+
+ah6 (``uint``)
+~~~~~~~~~~~~~~
+:enum: :ref:`ethtool-definition-rxfh-fields`
+
+
+esp4 (``uint``)
+~~~~~~~~~~~~~~~
+:enum: :ref:`ethtool-definition-rxfh-fields`
+
+
+esp6 (``uint``)
+~~~~~~~~~~~~~~~
+:enum: :ref:`ethtool-definition-rxfh-fields`
+
+
+ah-esp4 (``uint``)
+~~~~~~~~~~~~~~~~~~
+:enum: :ref:`ethtool-definition-rxfh-fields`
+
+
+ah-esp6 (``uint``)
+~~~~~~~~~~~~~~~~~~
+:enum: :ref:`ethtool-definition-rxfh-fields`
+
+
+gtpu4 (``uint``)
+~~~~~~~~~~~~~~~~
+:enum: :ref:`ethtool-definition-rxfh-fields`
+
+
+gtpu6 (``uint``)
+~~~~~~~~~~~~~~~~
+:enum: :ref:`ethtool-definition-rxfh-fields`
+
+
+gtpc4 (``uint``)
+~~~~~~~~~~~~~~~~
+:enum: :ref:`ethtool-definition-rxfh-fields`
+
+
+gtpc6 (``uint``)
+~~~~~~~~~~~~~~~~
+:enum: :ref:`ethtool-definition-rxfh-fields`
+
+
+gtpc-teid4 (``uint``)
+~~~~~~~~~~~~~~~~~~~~~
+:enum: :ref:`ethtool-definition-rxfh-fields`
+
+
+gtpc-teid6 (``uint``)
+~~~~~~~~~~~~~~~~~~~~~
+:enum: :ref:`ethtool-definition-rxfh-fields`
+
+
+gtpu-eh4 (``uint``)
+~~~~~~~~~~~~~~~~~~~
+:enum: :ref:`ethtool-definition-rxfh-fields`
+
+
+gtpu-eh6 (``uint``)
+~~~~~~~~~~~~~~~~~~~
+:enum: :ref:`ethtool-definition-rxfh-fields`
+
+
+gtpu-ul4 (``uint``)
+~~~~~~~~~~~~~~~~~~~
+:enum: :ref:`ethtool-definition-rxfh-fields`
+
+
+gtpu-ul6 (``uint``)
+~~~~~~~~~~~~~~~~~~~
+:enum: :ref:`ethtool-definition-rxfh-fields`
+
+
+gtpu-dl4 (``uint``)
+~~~~~~~~~~~~~~~~~~~
+:enum: :ref:`ethtool-definition-rxfh-fields`
+
+
+gtpu-dl6 (``uint``)
+~~~~~~~~~~~~~~~~~~~
+:enum: :ref:`ethtool-definition-rxfh-fields`
+
+
 .. _ethtool-attribute-set-rss:
 
 rss
@@ -2822,10 +3125,16 @@ hkey (``binary``)
 
 input-xfrm (``u32``)
 ~~~~~~~~~~~~~~~~~~~~
+:enum: :ref:`ethtool-definition-input-xfrm`
 
 
 start-context (``u32``)
 ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+flow-hash (``nest``)
+~~~~~~~~~~~~~~~~~~~~
+:nested-attributes: :ref:`ethtool-attribute-set-flow`
 
 
 .. _ethtool-attribute-set-plca:
@@ -2988,4 +3297,19 @@ rx-filters (``nest``)
 hwtstamp-flags (``nest``)
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 :nested-attributes: :ref:`ethtool-attribute-set-bitset`
+
+
+.. _ethtool-attribute-set-pse-ntf:
+
+pse-ntf
+=======
+header (``nest``)
+~~~~~~~~~~~~~~~~~
+:nested-attributes: :ref:`ethtool-attribute-set-header`
+
+
+events (``uint``)
+~~~~~~~~~~~~~~~~~
+:enum: :ref:`ethtool-definition-pse-event`
+:doc: List of events reported by the PSE controller
 

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -276,8 +276,8 @@ called to retrieve the details of the action.</p>
 <h3>Submission of an array of CCBs for execution<a class="headerlink" href="#submission-of-an-array-of-ccbs-for-execution" title="Link to this heading">¶</a></h3>
 <p>A write() whose length is a multiple of the CCB size is treated as a
 submit operation. The file offset is treated as the index of the
-completion area to use, and may be set via lseek() or using the
-pwrite() system call. If -1 is returned then errno is set to indicate
+completion area to use, and may be set via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lseek()</span></code> or using the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pwrite()</span></code> system call. If -1 is returned then errno is set to indicate
 the error. Otherwise, the return value is the length of the array that
 was actually accepted by the coprocessor. If the accepted length is
 equal to the requested length, then the submission was completely
@@ -319,12 +319,12 @@ and resumption of execution may be just a few nanoseconds.</p>
 <li><p>open dax device</p></li>
 <li><p>call mmap() to get the completion area address</p></li>
 <li><p>allocate a CCB and fill in the opcode, flags, parameters, addresses, etc.</p></li>
-<li><p>submit CCB via write() or pwrite()</p></li>
+<li><p>submit CCB via write() or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pwrite()</span></code></p></li>
 <li><p>go into a loop executing monitored load + monitored wait and
 terminate when the command status indicates the request is complete
 (CCB_KILL or CCB_INFO may be used any time as necessary)</p></li>
 <li><p>perform a CCB_DEQUEUE</p></li>
-<li><p>call munmap() for completion area</p></li>
+<li><p>call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">munmap()</span></code> for completion area</p></li>
 <li><p>close the dax device</p></li>
 </ul>
 </div></blockquote>
@@ -459,7 +459,7 @@ ccb-&gt;output = (unsigned long) output;   /* output address */
 ccb-&gt;table = 0;        /* table address, unused */
 </pre></div>
 </div>
-<p>The CCB submission is a write() or pwrite() system call to the
+<p>The CCB submission is a write() or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pwrite()</span></code> system call to the
 driver. If the call fails, then a read() must be used to retrieve the
 status:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>if (pwrite(fd, ccb, 64, 0) != 64) {

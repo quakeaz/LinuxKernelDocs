@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -190,7 +190,7 @@ changes between minor versions, applications can call
 DRM_IOCTL_SET_VERSION to select a specific version of the API. If the
 requested major isn’t equal to the driver major, or the requested minor
 is larger than the driver minor, the DRM_IOCTL_SET_VERSION call will
-return an error. Otherwise the driver’s set_version() method will be
+return an error. Otherwise the driver’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_version()</span></code> method will be
 called with the requested version.</p>
 </section>
 <section id="name-and-description">
@@ -208,7 +208,7 @@ the kernel.</p>
 <h3>Module Initialization<a class="headerlink" href="#module-initialization" title="Link to this heading">¶</a></h3>
 <p>This library provides helpers registering DRM drivers during module
 initialization and shutdown. The provided helpers act like bus-specific
-module helpers, such as module_pci_driver(), but respect additional
+module helpers, such as <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">module_pci_driver()</span></code>, but respect additional
 parameters that control DRM driver registration.</p>
 <p>Below is an example of initializing a DRM driver for a device on the
 PCI bus.</p>
@@ -226,7 +226,7 @@ can still use <a class="reference internal" href="../driver-api/basics.html#c.mo
 <h3>Device Instance and Driver Handling<a class="headerlink" href="#device-instance-and-driver-handling" title="Link to this heading">¶</a></h3>
 <p>A device instance for a drm driver is represented by <a class="reference internal" href="#c.drm_device" title="drm_device"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_device</span></code></a>. This
 is allocated and initialized with <a class="reference internal" href="#c.devm_drm_dev_alloc" title="devm_drm_dev_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_drm_dev_alloc()</span></code></a>, usually from
-bus-specific -&gt;probe() callbacks implemented by the driver. The driver then
+bus-specific -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> callbacks implemented by the driver. The driver then
 needs to initialize all the various subsystems for the drm device like memory
 management, vblank handling, modesetting support and initial output
 configuration plus obviously initialize all the corresponding hardware bits.
@@ -252,7 +252,7 @@ paths fully protected by <a class="reference internal" href="#c.drm_dev_enter" t
 <section id="display-driver-example">
 <h4>Display driver example<a class="headerlink" href="#display-driver-example" title="Link to this heading">¶</a></h4>
 <p>The following example shows a typical structure of a DRM display driver.
-The example focus on the probe() function and the other functions that is
+The example focus on the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> function and the other functions that is
 almost always present and serves as a demonstration of <a class="reference internal" href="#c.devm_drm_dev_alloc" title="devm_drm_dev_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_drm_dev_alloc()</span></code></a>.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">driver_device</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">drm_device</span><span class="w"> </span><span class="n">drm</span><span class="p">;</span>
@@ -357,6 +357,28 @@ shortcoming however, <a class="reference internal" href="#c.drm_dev_unplug" titl
 paths are protected, they will not run on regular driver module unload,
 possibly leaving the hardware enabled.</p>
 </section>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.drm_wedge_task_info">
+<span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_wedge_task_info</span></span></span><a class="headerlink" href="#c.drm_wedge_task_info" title="Link to this definition">¶</a><br /></dt>
+<dd><p>information about the guilty task of a wedge dev</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Definition</strong>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct drm_wedge_task_info {
+    pid_t pid;
+    char comm[TASK_COMM_LEN];
+};
+</pre></div>
+</div>
+<p><strong>Members</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">pid</span></code></dt><dd><p>pid of the task</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">comm</span></code></dt><dd><p>command name of the task</p>
+</dd>
+</dl>
+</div>
 <dl class="c enum">
 <dt class="sig sig-object c" id="c.switch_power_state">
 <span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">switch_power_state</span></span></span><a class="headerlink" href="#c.switch_power_state" title="Link to this definition">¶</a><br /></dt>
@@ -641,7 +663,7 @@ cursor plane (e.g. cursor plane has to actually track the mouse
 cursor and the clients are required to set hotspot in order for
 the cursor planes to work correctly).</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">DRIVER_USE_AGP</span></code></dt><dd><p>Set up DRM AGP support, see drm_agp_init(), the DRM core will manage
+<dt><code class="docutils literal notranslate"><span class="pre">DRIVER_USE_AGP</span></code></dt><dd><p>Set up DRM AGP support, see <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_agp_init()</span></code>, the DRM core will manage
 AGP resources. New drivers don’t need this.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">DRIVER_LEGACY</span></code></dt><dd><p>Denote a legacy driver using shadow attach. Do not use.</p>
@@ -684,9 +706,9 @@ for legacy drivers. Do not use.</p>
     int (*prime_handle_to_fd)(struct drm_device *dev, struct drm_file *file_priv, uint32_t handle, uint32_t flags, int *prime_fd);
     int (*prime_fd_to_handle)(struct drm_device *dev, struct drm_file *file_priv, int prime_fd, uint32_t *handle);
     struct drm_gem_object * (*gem_prime_import)(struct drm_device *dev, struct dma_buf *dma_buf);
-    struct drm_gem_object *(*gem_prime_import_sg_table)(struct drm_device *dev,struct dma_buf_attachment *attach, struct sg_table *sgt);
-    int (*dumb_create)(struct drm_file *file_priv,struct drm_device *dev, struct drm_mode_create_dumb *args);
-    int (*dumb_map_offset)(struct drm_file *file_priv,struct drm_device *dev, uint32_t handle, uint64_t *offset);
+    struct drm_gem_object *(*gem_prime_import_sg_table)( struct drm_device *dev, struct dma_buf_attachment *attach, struct sg_table *sgt);
+    int (*dumb_create)(struct drm_file *file_priv, struct drm_device *dev, struct drm_mode_create_dumb *args);
+    int (*dumb_map_offset)(struct drm_file *file_priv, struct drm_device *dev, uint32_t handle, uint64_t *offset);
     int (*fbdev_probe)(struct drm_fb_helper *fbdev_helper, struct drm_fb_helper_surface_size *sizes);
     void (*show_fdinfo)(struct drm_printer *p, struct drm_file *f);
     int major;
@@ -740,7 +762,7 @@ hook, this handler is deprecated and its usage should be
 dropped in favor of an open-coded teardown function at the
 driver layer.  See <a class="reference internal" href="#c.drm_dev_unregister" title="drm_dev_unregister"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_dev_unregister()</span></code></a> and <a class="reference internal" href="#c.drm_dev_put" title="drm_dev_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_dev_put()</span></code></a>
 for the proper way to remove a <a class="reference internal" href="#c.drm_device" title="drm_device"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_device</span></code></a>.</p>
-<p>The unload() hook is called right after unregistering
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unload()</span></code> hook is called right after unregistering
 the device.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">release</span></code></dt><dd><p>Optional callback for destroying device data after the final
@@ -848,7 +870,7 @@ structure for GEM drivers.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">driver</span></code></dt><dd><p>DRM driver</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt><dd><p>the type of the struct which contains struct <a class="reference internal" href="#c.drm_device" title="drm_device"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_device</span></code></a></p>
+<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt><dd><p>the type of the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">which</span></code> contains struct <a class="reference internal" href="#c.drm_device" title="drm_device"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_device</span></code></a></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">member</span></code></dt><dd><p>the name of the <a class="reference internal" href="#c.drm_device" title="drm_device"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_device</span></code></a> within <strong>type</strong>.</p>
 </dd>
@@ -932,7 +954,7 @@ otherwise.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_drv_uses_atomic_modeset">
 <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_drv_uses_atomic_modeset</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_device" title="drm_device"><span class="n"><span class="pre">drm_device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_drv_uses_atomic_modeset" title="Link to this definition">¶</a><br /></dt>
-<dd><p>check if the driver implements atomic_commit()</p>
+<dd><p>check if the driver implements <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">atomic_commit()</span></code></p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -959,7 +981,7 @@ have atomic modesetting internally implemented.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Called at module unload time or when a PCI device is unplugged.</p>
-<p>Cleans up all DRM device, calling drm_lastclose().</p>
+<p>Cleans up all DRM device, calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_lastclose()</span></code>.</p>
 <p><strong>Note</strong></p>
 <p>Use of this function is deprecated. It will eventually go away
 completely.  Please use <a class="reference internal" href="#c.drm_dev_unregister" title="drm_dev_unregister"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_dev_unregister()</span></code></a> and <a class="reference internal" href="#c.drm_dev_put" title="drm_dev_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_dev_put()</span></code></a> explicitly
@@ -1045,7 +1067,7 @@ calling this function, the DRM device holds a reference on
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_dev_wedged_event">
-<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_dev_wedged_event</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_device" title="drm_device"><span class="n"><span class="pre">drm_device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="n"><span class="pre">method</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_dev_wedged_event" title="Link to this definition">¶</a><br /></dt>
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_dev_wedged_event</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_device" title="drm_device"><span class="n"><span class="pre">drm_device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="n"><span class="pre">method</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_wedge_task_info" title="drm_wedge_task_info"><span class="n"><span class="pre">drm_wedge_task_info</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">info</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_dev_wedged_event" title="Link to this definition">¶</a><br /></dt>
 <dd><p>generate a device wedged uevent</p>
 </dd></dl>
 
@@ -1055,6 +1077,8 @@ calling this function, the DRM device holds a reference on
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_device</span> <span class="pre">*dev</span></code></dt><dd><p>DRM device</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">method</span></code></dt><dd><p>method(s) to be used for recovery</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_wedge_task_info</span> <span class="pre">*info</span></code></dt><dd><p>optional information about the guilty task</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -1081,7 +1105,7 @@ details.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">drm_driver</span> <span class="pre">*driver</span></code></dt><dd><p>DRM driver</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">size</span></code></dt><dd><p>the size of the struct which contains <a class="reference internal" href="#c.drm_device" title="drm_device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_device</span></code></a></p>
+<dt><code class="docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">size</span></code></dt><dd><p>the size of the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">which</span></code> contains <a class="reference internal" href="#c.drm_device" title="drm_device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_device</span></code></a></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">offset</span></code></dt><dd><p>the offset of the <a class="reference internal" href="#c.drm_device" title="drm_device"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_device</span></code></a> within the container.</p>
 </dd>
@@ -1184,12 +1208,12 @@ ref-count drops to zero.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_device</span> <span class="pre">*dev</span></code></dt><dd><p>Device to register</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">flags</span></code></dt><dd><p>Flags passed to the driver’s .load() function</p>
+<dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">flags</span></code></dt><dd><p>Flags passed to the driver’s .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">load()</span></code> function</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
 <p>Register the DRM device <strong>dev</strong> with the system, advertise device to user-space
-and start normal device operation. <strong>dev</strong> must be initialized via drm_dev_init()
+and start normal device operation. <strong>dev</strong> must be initialized via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_dev_init()</span></code>
 previously.</p>
 <p>Never call this twice on any device!</p>
 <p><strong>NOTE</strong></p>
@@ -1508,6 +1532,33 @@ memory allocation obtained by <a class="reference internal" href="#c.drmm_kmallo
 <p>This is a <a class="reference internal" href="#c.drm_device" title="drm_device"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_device</span></code></a>-managed version of <a class="reference internal" href="../kernel-hacking/locking.html#c.mutex_init" title="mutex_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">mutex_init()</span></code></a>. The initialized
 lock is automatically destroyed on the final <a class="reference internal" href="#c.drm_dev_put" title="drm_dev_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_dev_put()</span></code></a>.</p>
 </div>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.drmm_alloc_ordered_workqueue">
+<span class="sig-name descname"><span class="n"><span class="pre">drmm_alloc_ordered_workqueue</span></span></span><a class="headerlink" href="#c.drmm_alloc_ordered_workqueue" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<p><code class="docutils literal notranslate"><span class="pre">drmm_alloc_ordered_workqueue</span> <span class="pre">(dev,</span> <span class="pre">fmt,</span> <span class="pre">flags,</span> <span class="pre">args...)</span></code></p>
+<blockquote>
+<div><p><a class="reference internal" href="#c.drm_device" title="drm_device"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_device</span></code></a> managed <a class="reference internal" href="../core-api/workqueue.html#c.alloc_ordered_workqueue" title="alloc_ordered_workqueue"><code class="xref c c-func docutils literal notranslate"><span class="pre">alloc_ordered_workqueue()</span></code></a></p>
+</div></blockquote>
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">dev</span></code></dt><dd><p>DRM device</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">fmt</span></code></dt><dd><p>printf format for the name of the workqueue</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">flags</span></code></dt><dd><p>WQ_* flags (only WQ_FREEZABLE and WQ_MEM_RECLAIM are meaningful)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">args...</span></code></dt><dd><p>args for <strong>fmt</strong></p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>This is a <a class="reference internal" href="#c.drm_device" title="drm_device"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_device</span></code></a>-managed version of <a class="reference internal" href="../core-api/workqueue.html#c.alloc_ordered_workqueue" title="alloc_ordered_workqueue"><code class="xref c c-func docutils literal notranslate"><span class="pre">alloc_ordered_workqueue()</span></code></a>. The
+allocated workqueue is automatically destroyed on the final <a class="reference internal" href="#c.drm_dev_put" title="drm_dev_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_dev_put()</span></code></a>.</p>
+<p><strong>Return</strong></p>
+<p>workqueue on success, negative ERR_PTR otherwise.</p>
+</div>
 </section>
 </section>
 <section id="open-close-file-operations-and-ioctls">
@@ -1669,6 +1720,7 @@ and also the DRM-specific <a class="reference internal" href="drm-uapi.html#c.dr
     struct drm_prime_file_private prime;
     const char *client_name;
     struct mutex client_name_lock;
+    struct dentry *debugfs_client;
 };
 </pre></div>
 </div>
@@ -1786,6 +1838,8 @@ value of 4KB.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">client_name</span></code></dt><dd><p>Userspace-provided name; useful for accounting and debugging.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">client_name_lock</span></code></dt><dd><p>Protects <strong>client_name</strong>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">debugfs_client</span></code></dt><dd><p>debugfs directory for each client under a drm node.</p>
 </dd>
 </dl>
 </div>
@@ -2219,7 +2273,7 @@ process using the GPU.  See also <a class="reference internal" href="#c.drm_driv
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_file</span> <span class="pre">*file_priv</span></code></dt><dd><p>context of interest for process name and pid</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*fmt</span></code></dt><dd><p>printf() like format string</p>
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*fmt</span></code></dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">printf()</span></code> like format string</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">...</span></code></dt><dd><p>variable arguments</p>
 </dd>
@@ -2234,7 +2288,7 @@ as name and pid etc along with user logs.</p>
 <h2>Misc Utilities<a class="headerlink" href="#misc-utilities" title="Link to this heading">¶</a></h2>
 <section id="printer">
 <h3>Printer<a class="headerlink" href="#printer" title="Link to this heading">¶</a></h3>
-<p>A simple wrapper for dev_printk(), seq_printf(), etc.  Allows same
+<p>A simple wrapper for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_printk()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">seq_printf()</span></code>, etc.  Allows same
 debug code to be used for both debugfs and printk logging.</p>
 <p>For example:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>void log_some_info(struct drm_printer *p)
@@ -2293,10 +2347,10 @@ radeon, ... macro.</p>
 </div>
 <p><strong>Description</strong></p>
 <p>Each of the DRM debug logging macros use a specific category, and the logging
-is filtered by the drm.debug module parameter. This enum specifies the values
+is filtered by the drm.debug module parameter. This <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">specifies</span></code> the values
 for the interface.</p>
 <p>Each DRM_DEBUG_&lt;CATEGORY&gt; macro logs to DRM_UT_&lt;CATEGORY&gt; category, except
-DRM_DEBUG() logs to DRM_UT_CORE.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">DRM_DEBUG()</span></code> logs to DRM_UT_CORE.</p>
 <p>Enabling verbose debug messages is done through the drm.debug parameter, each
 category being enabled by a bit:</p>
 <blockquote>
@@ -2328,8 +2382,8 @@ run-time by echoing the debug value in its sysfs node:</p>
 <p><strong>Members</strong></p>
 </div>
 <p><strong>Description</strong></p>
-<p>Do not use struct members directly.  Use drm_printer_seq_file(),
-drm_printer_info(), etc to initialize.  And <a class="reference internal" href="#c.drm_printf" title="drm_printf"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_printf()</span></code></a> for output.</p>
+<p>Do not use <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">members</span></code> directly.  Use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_printer_seq_file()</span></code>,
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_printer_info()</span></code>, etc to initialize.  And <a class="reference internal" href="#c.drm_printf" title="drm_printf"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_printf()</span></code></a> for output.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_vprintf">
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_vprintf</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_printer" title="drm_printer"><span class="n"><span class="pre">drm_printer</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">fmt</span></span>, <span class="n"><span class="pre">va_list</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">va</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_vprintf" title="Link to this definition">¶</a><br /></dt>
@@ -2372,7 +2426,7 @@ drm_printer_info(), etc to initialize.  And <a class="reference internal" href="
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.drm_print_iterator">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_print_iterator</span></span></span><a class="headerlink" href="#c.drm_print_iterator" title="Link to this definition">¶</a><br /></dt>
-<dd><p>local struct used with drm_printer_coredump</p>
+<dd><p>local <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">used</span></code> with drm_printer_coredump</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -2409,7 +2463,7 @@ drm_printer_coredump to determine size of devcoredump</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>This wrapper extends <a class="reference internal" href="#c.drm_printf" title="drm_printf"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_printf()</span></code></a> to work with a <a class="reference internal" href="../process/debugging/driver_development_debugging_guide.html#c.dev_coredumpm" title="dev_coredumpm"><code class="xref c c-func docutils literal notranslate"><span class="pre">dev_coredumpm()</span></code></a> callback
-function. The passed in drm_print_iterator struct contains the buffer
+function. The passed in drm_print_iterator <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">contains</span></code> the buffer
 pointer, size and offset as passed in from devcoredump.</p>
 <p>For example:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>void coredump_read(char *buffer, loff_t offset, size_t count,
@@ -2439,9 +2493,9 @@ void makecoredump(...)
 devcoredump. This is acceptable for small devcoredumps but scales poorly for
 larger ones.</p>
 <p>Another use case for drm_coredump_printer is to capture the devcoredump into
-a saved buffer before the dev_coredump() callback. This involves two passes:
+a saved buffer before the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_coredump()</span></code> callback. This involves two passes:
 one to determine the size of the devcoredump and another to print it to a
-buffer. Then, in dev_coredump(), copy from the saved buffer into the
+buffer. Then, in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_coredump()</span></code>, copy from the saved buffer into the
 devcoredump read buffer.</p>
 <p>For example:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>char *devcoredump_saved_buffer;
@@ -2522,7 +2576,7 @@ printer is full.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_info_printer">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_printer" title="drm_printer"><span class="n"><span class="pre">drm_printer</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_info_printer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../driver-api/infrastructure.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_info_printer" title="Link to this definition">¶</a><br /></dt>
-<dd><p>construct a <a class="reference internal" href="#c.drm_printer" title="drm_printer"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_printer</span></code></a> that outputs to dev_printk()</p>
+<dd><p>construct a <a class="reference internal" href="#c.drm_printer" title="drm_printer"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_printer</span></code></a> that outputs to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_printk()</span></code></p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -2556,7 +2610,7 @@ printer is full.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_err_printer">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_printer" title="drm_printer"><span class="n"><span class="pre">drm_printer</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_err_printer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_device" title="drm_device"><span class="n"><span class="pre">drm_device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">drm</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">prefix</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_err_printer" title="Link to this definition">¶</a><br /></dt>
-<dd><p>construct a <a class="reference internal" href="#c.drm_printer" title="drm_printer"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_printer</span></code></a> that outputs to drm_err()</p>
+<dd><p>construct a <a class="reference internal" href="#c.drm_printer" title="drm_printer"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_printer</span></code></a> that outputs to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_err()</span></code></p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -2640,13 +2694,13 @@ while capturing some crash data.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">dev</span></code></dt><dd><p>device pointer</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">fmt</span></code></dt><dd><p>printf() like format string.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">fmt</span></code></dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">printf()</span></code> like format string.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">...</span></code></dt><dd><p>variable arguments</p>
 </dd>
 </dl>
 <p><strong>NOTE</strong></p>
-<p>this is deprecated in favor of drm_err() or dev_err().</p>
+<p>this is deprecated in favor of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_err()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_err()</span></code>.</p>
 </div>
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.DRM_DEV_ERROR_RATELIMITED">
@@ -2662,16 +2716,16 @@ while capturing some crash data.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">dev</span></code></dt><dd><p>device pointer</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">fmt</span></code></dt><dd><p>printf() like format string.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">fmt</span></code></dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">printf()</span></code> like format string.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">...</span></code></dt><dd><p>variable arguments</p>
 </dd>
 </dl>
 <p><strong>NOTE</strong></p>
-<p>this is deprecated in favor of drm_err_ratelimited() or
-dev_err_ratelimited().</p>
+<p>this is deprecated in favor of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_err_ratelimited()</span></code> or
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_err_ratelimited()</span></code>.</p>
 <p><strong>Description</strong></p>
-<p>Like DRM_ERROR() but won’t flood the log.</p>
+<p>Like <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">DRM_ERROR()</span></code> but won’t flood the log.</p>
 </div>
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.DRM_DEV_DEBUG">
@@ -2687,13 +2741,13 @@ dev_err_ratelimited().</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">dev</span></code></dt><dd><p>device pointer</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">fmt</span></code></dt><dd><p>printf() like format string.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">fmt</span></code></dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">printf()</span></code> like format string.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">...</span></code></dt><dd><p>variable arguments</p>
 </dd>
 </dl>
 <p><strong>NOTE</strong></p>
-<p>this is deprecated in favor of drm_dbg_core().</p>
+<p>this is deprecated in favor of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_dbg_core()</span></code>.</p>
 </div>
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.DRM_DEV_DEBUG_DRIVER">
@@ -2709,13 +2763,13 @@ dev_err_ratelimited().</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">dev</span></code></dt><dd><p>device pointer</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">fmt</span></code></dt><dd><p>printf() like format string.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">fmt</span></code></dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">printf()</span></code> like format string.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">...</span></code></dt><dd><p>variable arguments</p>
 </dd>
 </dl>
 <p><strong>NOTE</strong></p>
-<p>this is deprecated in favor of drm_dbg() or dev_dbg().</p>
+<p>this is deprecated in favor of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_dbg()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_dbg()</span></code>.</p>
 </div>
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.DRM_DEV_DEBUG_KMS">
@@ -2731,13 +2785,13 @@ dev_err_ratelimited().</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">dev</span></code></dt><dd><p>device pointer</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">fmt</span></code></dt><dd><p>printf() like format string.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">fmt</span></code></dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">printf()</span></code> like format string.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">...</span></code></dt><dd><p>variable arguments</p>
 </dd>
 </dl>
 <p><strong>NOTE</strong></p>
-<p>this is deprecated in favor of drm_dbg_kms().</p>
+<p>this is deprecated in favor of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_dbg_kms()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_puts">
@@ -2908,7 +2962,7 @@ drivers.</p>
 <section id="legacy-suspend-resume">
 <h3>Legacy Suspend/Resume<a class="headerlink" href="#legacy-suspend-resume" title="Link to this heading">¶</a></h3>
 <p>The DRM core provides some suspend/resume code, but drivers wanting full
-suspend/resume support should provide save() and restore() functions.
+suspend/resume support should provide <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">save()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">restore()</span></code> functions.
 These are called at suspend, hibernate, or resume time, and should
 perform any state save or restore required by your device across suspend
 or hibernate states.</p>

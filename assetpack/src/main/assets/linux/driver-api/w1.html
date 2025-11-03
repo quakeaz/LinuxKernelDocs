@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -176,9 +176,9 @@
 <p><strong>Definition</strong>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct w1_reg_num {
 #if defined(__LITTLE_ENDIAN_BITFIELD);
-    __u64 family:8,id:48, crc:8;
+    __u64 family:8, id:48, crc:8;
 #elif defined(__BIG_ENDIAN_BITFIELD);
-    __u64 crc:8,id:48, family:8;
+    __u64 crc:8, id:48, family:8;
 #else;
 #error &quot;Please fix &lt;asm/byteorder.h&gt;&quot;;
 #endif;
@@ -298,10 +298,10 @@ touch_bit(1) = write-1 / read cycle
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">write_byte</span></code></dt><dd><p>Writes a byte. Same as 8 touch_bit(x) calls.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">read_block</span></code></dt><dd><p>Same as a series of read_byte() calls
+<dt><code class="docutils literal notranslate"><span class="pre">read_block</span></code></dt><dd><p>Same as a series of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">read_byte()</span></code> calls
 <strong>return</strong> the number of bytes read</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">write_block</span></code></dt><dd><p>Same as a series of write_byte() calls</p>
+<dt><code class="docutils literal notranslate"><span class="pre">write_block</span></code></dt><dd><p>Same as a series of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">write_byte()</span></code> calls</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">triplet</span></code></dt><dd><p>Combines two reads and a smart write for ROM searches
 <strong>return</strong> bit0=Id bit1=comp_id bit2=dir_taken</p>
@@ -459,7 +459,7 @@ reset_bus.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">groups</span></code></dt><dd><p>sysfs group</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">chip_info</span></code></dt><dd><p>pointer to struct hwmon_chip_info</p>
+<dt><code class="docutils literal notranslate"><span class="pre">chip_info</span></code></dt><dd><p>pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hwmon_chip_info</span></code></p>
 </dd>
 </dl>
 </div>
@@ -658,14 +658,14 @@ the callback.  Embed this into the structure with the command details.</p>
 <dl class="c enum">
 <dt class="sig sig-object c" id="c.w1_cn_msg_flags">
 <span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">w1_cn_msg_flags</span></span></span><a class="headerlink" href="#c.w1_cn_msg_flags" title="Link to this definition">¶</a><br /></dt>
-<dd><p>bitfield flags for struct cn_msg.flags</p>
+<dd><p>bitfield flags for <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cn_msg</span></code>.flags</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
 <p><strong>Constants</strong></p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">W1_CN_BUNDLE</span></code></dt><dd><p>Request bundling replies into fewer messagse.  Be prepared
-to handle multiple struct cn_msg, <a class="reference internal" href="#c.w1_netlink_msg" title="w1_netlink_msg"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">w1_netlink_msg</span></code></a>, and
+to handle multiple <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cn_msg</span></code>, <a class="reference internal" href="#c.w1_netlink_msg" title="w1_netlink_msg"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">w1_netlink_msg</span></code></a>, and
 <a class="reference internal" href="#c.w1_netlink_cmd" title="w1_netlink_cmd"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">w1_netlink_cmd</span></code></a> in one packet.</p>
 </dd>
 </dl>
@@ -727,7 +727,7 @@ operation</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">len</span></code></dt><dd><p>length of data following w1_netlink_msg</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">id</span></code></dt><dd><p>union holding bus master id (msg.id) and slave device id (id[8]).</p>
+<dt><code class="docutils literal notranslate"><span class="pre">id</span></code></dt><dd><p><code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">holding</span></code> bus master id (msg.id) and slave device id (id[8]).</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">id.id</span></code></dt><dd><p>Slave ID (8 bytes)</p>
 </dd>
@@ -743,7 +743,7 @@ operation</p>
 </div>
 <p><strong>Description</strong></p>
 <p>The base message structure for w1 messages over netlink.
-The netlink connector data sequence is, <a class="reference internal" href="../userspace-api/netlink/intro.html#c.nlmsghdr" title="nlmsghdr"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">nlmsghdr</span></code></a>, struct cn_msg,
+The netlink connector data sequence is, <a class="reference internal" href="../userspace-api/netlink/intro.html#c.nlmsghdr" title="nlmsghdr"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">nlmsghdr</span></code></a>, <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cn_msg</span></code>,
 then one or more <a class="reference internal" href="#c.w1_netlink_msg" title="w1_netlink_msg"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">w1_netlink_msg</span></code></a> (each with optional data).</p>
 <dl class="c enum">
 <dt class="sig sig-object c" id="c.w1_commands">

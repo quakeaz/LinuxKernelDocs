@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -252,7 +252,7 @@ outstanding allocations.</p>
 </div>
 <p>It’s worth noting that, if there are still allocations outstanding from the
 given pool, this function will take the rather extreme step of invoking
-BUG(), crashing the entire system.  You have been warned.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">BUG()</span></code>, crashing the entire system.  You have been warned.</p>
 <p>A freshly created pool has no memory to allocate.  It is fairly useless in
 that state, so one of the first orders of business is usually to add memory
 to the pool.  That can be done with one of:</p>
@@ -309,7 +309,7 @@ allocated on, or -1</p>
 <p>A call to <a class="reference internal" href="#c.gen_pool_add" title="gen_pool_add"><code class="xref c c-func docutils literal notranslate"><span class="pre">gen_pool_add()</span></code></a> will place the size bytes of memory
 starting at addr (in the kernel’s virtual address space) into the given
 pool, once again using nid as the node ID for ancillary memory allocations.
-The gen_pool_add_virt() variant associates an explicit physical
+The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">gen_pool_add_virt()</span></code> variant associates an explicit physical
 address with the memory; this is only necessary if the pool will be used
 for DMA allocations.</p>
 <p>The functions for allocating memory from the pool (and putting it back)
@@ -385,7 +385,7 @@ NMI-safe cmpxchg implementation.</p>
 from the given pool.  The <a class="reference internal" href="#c.gen_pool_dma_alloc" title="gen_pool_dma_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">gen_pool_dma_alloc()</span></code></a> variant allocates
 memory for use with DMA operations, returning the associated physical
 address in the space pointed to by dma.  This will only work if the memory
-was added with gen_pool_add_virt().  Note that this function
+was added with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">gen_pool_add_virt()</span></code>.  Note that this function
 departs from the usual genpool pattern of using unsigned long values to
 represent kernel addresses; it returns a void * instead.</p>
 <p>That all seems relatively simple; indeed, some developers clearly found it
@@ -440,7 +440,7 @@ NMI-safe cmpxchg implementation.</p>
 If <strong>algo</strong> is NULL use gen_pool_first_fit as default
 memory allocation function.</p>
 </div>
-<p>Allocations with gen_pool_alloc_algo() specify an algorithm to be
+<p>Allocations with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">gen_pool_alloc_algo()</span></code> specify an algorithm to be
 used to choose the memory to be allocated; the default algorithm can be set
 with <a class="reference internal" href="#c.gen_pool_set_algo" title="gen_pool_set_algo"><code class="xref c c-func docutils literal notranslate"><span class="pre">gen_pool_set_algo()</span></code></a>.  The data value is passed to the
 algorithm; most ignore it, but it is occasionally needed.  One can,

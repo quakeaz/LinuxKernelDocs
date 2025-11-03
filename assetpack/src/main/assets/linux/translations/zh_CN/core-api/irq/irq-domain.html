@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -208,7 +208,7 @@ irq_domain_add_*() 或 irq_domain_create_*()函数之一（每个映射方法都
 <p>在大多数情况下，irq_domain在开始时是空的，没有任何hwirq和IRQ号之间的映射。
 通过调用<a class="reference internal" href="../../../../core-api/irq/irq-domain.html#c.irq_create_mapping" title="irq_create_mapping"><code class="xref c c-func docutils literal notranslate"><span class="pre">irq_create_mapping()</span></code></a>将映射添加到irq_domain中，该函数接受
 irq_domain和一个hwirq号作为参数。 如果hwirq的映射还不存在，那么它将分配
-一个新的Linux irq_desc，将其与hwirq关联起来，并调用.map()回调，这样驱动
+一个新的Linux irq_desc，将其与hwirq关联起来，并调用.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">map()</span></code>回调，这样驱动
 程序就可以执行任何必要的硬件设置。</p>
 <p>一旦建立了映射，可以通过多种方法检索或使用它：</p>
 <ul class="simple">
@@ -237,9 +237,9 @@ irq_domain和一个hwirq号作为参数。 如果hwirq的映射还不存在，�
 <p>当最大的hwirq号固定且数量相对较少时，线性图是一个很好的选择（~&lt;256）。 这种
 映射的优点是固定时间查找IRQ号，而且irq_descs只分配给在用的IRQ。 缺点是该表
 必须尽可能大的hwirq号。</p>
-<p>irq_domain_add_linear()和<a class="reference internal" href="../../../../core-api/irq/irq-domain.html#c.irq_domain_create_linear" title="irq_domain_create_linear"><code class="xref c c-func docutils literal notranslate"><span class="pre">irq_domain_create_linear()</span></code></a>在功能上是等价的，
-除了第一个参数不同--前者接受一个Open Firmware特定的 ‘struct device_node’ 而
-后者接受一个更通用的抽象 ‘struct fwnode_handle’ 。</p>
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irq_domain_add_linear()</span></code>和<a class="reference internal" href="../../../../core-api/irq/irq-domain.html#c.irq_domain_create_linear" title="irq_domain_create_linear"><code class="xref c c-func docutils literal notranslate"><span class="pre">irq_domain_create_linear()</span></code></a>在功能上是等价的，
+除了第一个参数不同--前者接受一个Open Firmware特定的 ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device_node</span></code>’ 而
+后者接受一个更通用的抽象 ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fwnode_handle</span></code>’ 。</p>
 <p>大多数驱动应该使用线性映射</p>
 </section>
 <section id="id4">
@@ -251,9 +251,9 @@ irq_domain和一个hwirq号作为参数。 如果hwirq的映射还不存在，�
 一个irq_desc被分配，hwirq被用作radix树的查找键。</p>
 <p>如果hwirq号可以非常大，树状映射是一个很好的选择，因为它不需要分配一个和最大hwirq
 号一样大的表。 缺点是，hwirq到IRQ号的查找取决于表中有多少条目。</p>
-<p>irq_domain_add_tree()和irq_domain_create_tree()在功能上是等价的，除了第一
-个参数不同——前者接受一个Open Firmware特定的 ‘struct device_node’ ，而后者接受
-一个更通用的抽象 ‘struct fwnode_handle’ 。</p>
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irq_domain_add_tree()</span></code>和<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irq_domain_create_tree()</span></code>在功能上是等价的，除了第一
+个参数不同——前者接受一个Open Firmware特定的 ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device_node</span></code>’ ，而后者接受
+一个更通用的抽象 ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fwnode_handle</span></code>’ 。</p>
 <p>很少有驱动应该需要这个映射。</p>
 </section>
 <section id="id5">
@@ -263,7 +263,7 @@ irq_domain和一个hwirq号作为参数。 如果hwirq的映射还不存在，�
 </div>
 <p>当硬件中的hwirq号是可编程的时候，就可以采用无映射类型。 在这种情况下，最好将
 Linux IRQ号编入硬件本身，这样就不需要映射了。 调用<a class="reference internal" href="../../../../core-api/irq/irq-domain.html#c.irq_create_direct_mapping" title="irq_create_direct_mapping"><code class="xref c c-func docutils literal notranslate"><span class="pre">irq_create_direct_mapping()</span></code></a>
-会分配一个Linux IRQ号，并调用.map()回调，这样驱动就可以将Linux IRQ号编入硬件中。</p>
+会分配一个Linux IRQ号，并调用.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">map()</span></code>回调，这样驱动就可以将Linux IRQ号编入硬件中。</p>
 <p>大多数驱动程序无法使用此映射，现在它由CONFIG_IRQ_DOMAIN_NOMAP选项控制。
 请不要引入此API的新用户。</p>
 </section>
@@ -277,26 +277,26 @@ irq_domain_create_legacy()
 序不能立即转换为使用线性映射时，就会使用它。 例如，许多嵌入式系统板卡支持文件使用
 一组用于IRQ号的定义（#define），这些定义被传递给struct设备注册。 在这种情况下，
 不能动态分配Linux IRQ号，应该使用传统映射。</p>
-<p>顾名思义，*_legacy()系列函数已被废弃，只是为了方便对古老平台的支持而存在。
-不应该增加新的用户。当*_simple()系列函数的使用导致遗留行为时，他们也是如此。</p>
+<p>顾名思义，*<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_legacy()</span></code>系列函数已被废弃，只是为了方便对古老平台的支持而存在。
+不应该增加新的用户。当*<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_simple()</span></code>系列函数的使用导致遗留行为时，他们也是如此。</p>
 <p>传统映射假设已经为控制器分配了一个连续的IRQ号范围，并且可以通过向hwirq号添加一
 个固定的偏移来计算IRQ号，反之亦然。 缺点是需要中断控制器管理IRQ分配，并且需要为每
 个hwirq分配一个irq_desc，即使它没有被使用。</p>
 <p>只有在必须支持固定的IRQ映射时，才应使用传统映射。 例如，ISA控制器将使用传统映射来
 映射Linux IRQ 0-15，这样现有的ISA驱动程序就能得到正确的IRQ号。</p>
-<p>大多数使用传统映射的用户应该使用irq_domain_add_simple()或
+<p>大多数使用传统映射的用户应该使用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irq_domain_add_simple()</span></code>或
 <a class="reference internal" href="../../../../core-api/irq/irq-domain.html#c.irq_domain_create_simple" title="irq_domain_create_simple"><code class="xref c c-func docutils literal notranslate"><span class="pre">irq_domain_create_simple()</span></code></a>，只有在系统提供IRQ范围时才会使用传统域，否则将使用
 线性域映射。这个调用的语义是这样的：如果指定了一个IRQ范围，那么 描述符将被即时分配
-给它，如果没有范围被分配，它将不会执行 irq_domain_add_linear() 或
+给它，如果没有范围被分配，它将不会执行 <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irq_domain_add_linear()</span></code> 或
 <a class="reference internal" href="../../../../core-api/irq/irq-domain.html#c.irq_domain_create_linear" title="irq_domain_create_linear"><code class="xref c c-func docutils literal notranslate"><span class="pre">irq_domain_create_linear()</span></code></a>，这意味着 <em>no</em> irq 描述符将被分配。</p>
 <p>一个简单域的典型用例是，irqchip供应商同时支持动态和静态IRQ分配。</p>
 <p>为了避免最终出现使用线性域而没有描述符被分配的情况，确保使用简单域的驱动程序在任何
 <a class="reference internal" href="../../../../core-api/irq/irq-domain.html#c.irq_find_mapping" title="irq_find_mapping"><code class="xref c c-func docutils literal notranslate"><span class="pre">irq_find_mapping()</span></code></a>之前调用<a class="reference internal" href="../../../../core-api/irq/irq-domain.html#c.irq_create_mapping" title="irq_create_mapping"><code class="xref c c-func docutils literal notranslate"><span class="pre">irq_create_mapping()</span></code></a>是非常重要的，因为后者实际上
 将用于静态IRQ分配情况。</p>
-<p>irq_domain_add_simple()和<a class="reference internal" href="../../../../core-api/irq/irq-domain.html#c.irq_domain_create_simple" title="irq_domain_create_simple"><code class="xref c c-func docutils literal notranslate"><span class="pre">irq_domain_create_simple()</span></code></a>以及
-irq_domain_add_legacy()和irq_domain_create_legacy()在功能上是等价的，只
-是第一个参数不同--前者接受Open Firmware特定的 ‘struct device_node’ ，而后者
-接受一个更通用的抽象 ‘struct fwnode_handle’ 。</p>
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irq_domain_add_simple()</span></code>和<a class="reference internal" href="../../../../core-api/irq/irq-domain.html#c.irq_domain_create_simple" title="irq_domain_create_simple"><code class="xref c c-func docutils literal notranslate"><span class="pre">irq_domain_create_simple()</span></code></a>以及
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irq_domain_add_legacy()</span></code>和<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irq_domain_create_legacy()</span></code>在功能上是等价的，只
+是第一个参数不同--前者接受Open Firmware特定的 ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device_node</span></code>’ ，而后者
+接受一个更通用的抽象 ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fwnode_handle</span></code>’ 。</p>
 </section>
 <section id="irq">
 <h3>IRQ域层级结构<a class="headerlink" href="#irq" title="Link to this heading">¶</a></h3>

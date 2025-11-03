@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -195,8 +195,8 @@ device entry setting.</p>
 </dl>
 <p>Below discussion will ignore MST and NON-MST difference as it doesn’t
 impact on jack handling too much.</p>
-<p>Driver uses struct hdmi_pcm pcm[] array in hdmi_spec and snd_jack is
-a member of hdmi_pcm. Each pin has one struct hdmi_pcm * pcm pointer.</p>
+<p>Driver uses <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hdmi_pcm</span></code> pcm[] array in hdmi_spec and snd_jack is
+a member of hdmi_pcm. Each pin has one <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hdmi_pcm</span></code> * pcm pointer.</p>
 <p>For !dyn_pcm_assign, per_pin-&gt;pcm will assigned to spec-&gt;pcm[n] statically.</p>
 <p>For dyn_pcm_assign, per_pin-&gt;pcm will assigned to spec-&gt;pcm[n]
 when monitor is hotplugged.</p>
@@ -219,14 +219,14 @@ when monitor is hotplugged.</p>
 <h3>Monitor Hotplug Event Handling<a class="headerlink" href="#monitor-hotplug-event-handling" title="Link to this heading">¶</a></h3>
 <ul>
 <li><p>acomp</p>
-<p>pin_eld_notify() -&gt; check_presence_and_report() -&gt; hdmi_present_sense() -&gt;
-sync_eld_via_acomp().</p>
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pin_eld_notify()</span></code> -&gt; <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">check_presence_and_report()</span></code> -&gt; <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hdmi_present_sense()</span></code> -&gt;
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sync_eld_via_acomp()</span></code>.</p>
 <p>Use directly <a class="reference internal" href="../kernel-api/alsa-driver-api.html#c.snd_jack_report" title="snd_jack_report"><code class="xref c c-func docutils literal notranslate"><span class="pre">snd_jack_report()</span></code></a> on spec-&gt;pcm_rec[pcm_idx].jack for
 both dyn_pcm_assign and !dyn_pcm_assign</p>
 </li>
 <li><p>!acomp</p>
-<p>hdmi_unsol_event() -&gt; hdmi_intrinsic_event() -&gt; check_presence_and_report() -&gt;
-hdmi_present_sense() -&gt; hdmi_prepsent_sense_via_verbs()</p>
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hdmi_unsol_event()</span></code> -&gt; <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hdmi_intrinsic_event()</span></code> -&gt; <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">check_presence_and_report()</span></code> -&gt;
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hdmi_present_sense()</span></code> -&gt; <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hdmi_prepsent_sense_via_verbs()</span></code></p>
 <p>Use directly <a class="reference internal" href="../kernel-api/alsa-driver-api.html#c.snd_jack_report" title="snd_jack_report"><code class="xref c c-func docutils literal notranslate"><span class="pre">snd_jack_report()</span></code></a> on spec-&gt;pcm_rec[pcm_idx].jack for dyn_pcm_assign.
 Use hda_jack mechanism to handle jack events.</p>
 </li>

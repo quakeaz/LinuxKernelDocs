@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -191,7 +191,7 @@ pthread_mutex_t, or yum is kill -9-ed), then waiters for that lock need
 to be notified that the last owner of the lock exited in some irregular
 way.</p>
 <p>To solve such types of problems, “robust mutex” userspace APIs were
-created: pthread_mutex_lock() returns an error value if the owner exits
+created: <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pthread_mutex_lock()</span></code> returns an error value if the owner exits
 prematurely - and the new owner can decide whether the data protected by
 the lock can be recovered safely.</p>
 <p>There is a big conceptual problem with futex based mutexes though: it is
@@ -207,8 +207,8 @@ bugreports against yum.</p>
 <p>To solve this problem, the traditional approach was to extend the vma
 (virtual memory area descriptor) concept to have a notion of ‘pending
 robust futexes attached to this area’. This approach requires 3 new
-syscall variants to sys_futex(): FUTEX_REGISTER, FUTEX_DEREGISTER and
-FUTEX_RECOVER. At do_exit() time, all vmas are searched to see whether
+syscall variants to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sys_futex()</span></code>: FUTEX_REGISTER, FUTEX_DEREGISTER and
+FUTEX_RECOVER. At <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_exit()</span></code> time, all vmas are searched to see whether
 they have a robust_head set. This approach has two fundamental problems
 left:</p>
 <blockquote>
@@ -216,14 +216,14 @@ left:</p>
 <li><p>it has quite complex locking and race scenarios. The vma-based
 approach had been pending for years, but they are still not completely
 reliable.</p></li>
-<li><p>they have to scan _every_ vma at sys_exit() time, per thread!</p></li>
+<li><p>they have to scan _every_ vma at <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sys_exit()</span></code> time, per thread!</p></li>
 </ul>
 </div></blockquote>
-<p>The second disadvantage is a real killer: pthread_exit() takes around 1
+<p>The second disadvantage is a real killer: <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pthread_exit()</span></code> takes around 1
 microsecond on Linux, but with thousands (or tens of thousands) of vmas
-every pthread_exit() takes a millisecond or more, also totally
+every <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pthread_exit()</span></code> takes a millisecond or more, also totally
 destroying the CPU’s L1 and L2 caches!</p>
-<p>This is very much noticeable even for normal process sys_exit_group()
+<p>This is very much noticeable even for normal process <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sys_exit_group()</span></code>
 calls: the kernel has to do the vma scanning unconditionally! (this is
 because the kernel has no knowledge about how many robust futexes there
 are to be cleaned up, because a robust futex might have been registered
@@ -239,10 +239,10 @@ robust futexes impractical for any type of generic Linux distribution.</p>
 <p>At the heart of this new approach there is a per-thread private list of
 robust locks that userspace is holding (maintained by glibc) - which
 userspace list is registered with the kernel via a new syscall [this
-registration happens at most once per thread lifetime]. At do_exit()
+registration happens at most once per thread lifetime]. At <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_exit()</span></code>
 time, the kernel checks this user-space list: are there any robust futex
 locks to be cleaned up?</p>
-<p>In the common case, at do_exit() time, there is no list registered, so
+<p>In the common case, at <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_exit()</span></code> time, there is no list registered, so
 the cost of robust futexes is just a simple current-&gt;robust_list != NULL
 comparison. If the thread has registered a list, then normally the list
 is empty. If the thread/process crashed or terminated in some incorrect
@@ -250,7 +250,7 @@ way then the list might be non-empty: in this case the kernel carefully
 walks the list [not trusting it], and marks all locks that are owned by
 this thread with the FUTEX_OWNER_DIED bit, and wakes up one waiter (if
 any).</p>
-<p>The list is guaranteed to be private and per-thread at do_exit() time,
+<p>The list is guaranteed to be private and per-thread at <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_exit()</span></code> time,
 so it can be accessed by the kernel in a lockless way.</p>
 <p>There is one race possible though: since adding to and removing from the
 list is done after the futex is acquired by glibc, there is a few
@@ -319,7 +319,7 @@ sys_get_robust_list(int pid, struct robust_list_head __user **head_ptr,
 </div>
 <p>List registration is very fast: the pointer is simply stored in
 current-&gt;robust_list. [Note that in the future, if robust futexes become
-widespread, we could extend sys_clone() to register a robust-list head
+widespread, we could extend <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sys_clone()</span></code> to register a robust-list head
 for new threads, without the need of another syscall.]</p>
 <p>So there is virtually zero overhead for tasks not using robust futexes,
 and even for robust futex users, there is only one extra syscall per
@@ -350,7 +350,7 @@ tested the new glibc code (on x86_64 and i386), and it works for his
 robust-mutex testcases.</p>
 <p>All other architectures should build just fine too - but they won’t have
 the new syscalls yet.</p>
-<p>Architectures need to implement the new futex_atomic_cmpxchg_inatomic()
+<p>Architectures need to implement the new <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">futex_atomic_cmpxchg_inatomic()</span></code>
 inline function before writing up the syscalls.</p>
 </section>
 </section>

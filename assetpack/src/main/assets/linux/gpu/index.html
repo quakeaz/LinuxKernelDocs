@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -455,6 +455,7 @@
 <li class="toctree-l2"><a class="reference internal" href="drm-uapi.html#device-wedging">Device Wedging</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="drm-uapi.html#driver-prerequisites">Driver prerequisites</a></li>
 <li class="toctree-l3"><a class="reference internal" href="drm-uapi.html#recovery">Recovery</a></li>
+<li class="toctree-l3"><a class="reference internal" href="drm-uapi.html#task-information">Task information</a></li>
 <li class="toctree-l3"><a class="reference internal" href="drm-uapi.html#consumer-prerequisites">Consumer prerequisites</a></li>
 <li class="toctree-l3"><a class="reference internal" href="drm-uapi.html#example">Example</a></li>
 <li class="toctree-l3"><a class="reference internal" href="drm-uapi.html#customization">Customization</a></li>
@@ -479,6 +480,10 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="drm-uapi.html#dma-buf-interoperability">dma-buf interoperability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="drm-uapi.html#trace-events">Trace events</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="drm-uapi.html#stable-uapi-events">Stable uAPI events</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="drm-usage-stats.html">DRM client usage stats</a><ul>
@@ -733,6 +738,7 @@
 <li class="toctree-l4"><a class="reference internal" href="amdgpu/debugging.html#gpuvm-debugging">GPUVM Debugging</a></li>
 <li class="toctree-l4"><a class="reference internal" href="amdgpu/debugging.html#decoding-a-gpuvm-page-fault">Decoding a GPUVM Page Fault</a></li>
 <li class="toctree-l4"><a class="reference internal" href="amdgpu/debugging.html#umr">UMR</a></li>
+<li class="toctree-l4"><a class="reference internal" href="amdgpu/debugging.html#debugging-backlight-brightness">Debugging backlight brightness</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="amdgpu/debugfs.html">AMDGPU DebugFS</a><ul>
@@ -804,6 +810,7 @@
 <li class="toctree-l4"><a class="reference internal" href="i915.html#display-refresh-rate-switching-drrs">Display Refresh Rate Switching (DRRS)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="i915.html#dpio">DPIO</a></li>
 <li class="toctree-l4"><a class="reference internal" href="i915.html#dmc-firmware-support">DMC Firmware Support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="i915.html#dmc-flip-queue">DMC Flip Queue</a></li>
 <li class="toctree-l4"><a class="reference internal" href="i915.html#dmc-wakelock-support">DMC wakelock support</a></li>
 <li class="toctree-l4"><a class="reference internal" href="i915.html#video-bios-table-vbt">Video BIOS Table (VBT)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="i915.html#display-clocks">Display clocks</a></li>
@@ -989,6 +996,7 @@
 <li class="toctree-l2"><a class="reference internal" href="vkms.html">drm/vkms Virtual Kernel Modesetting</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="vkms.html#setup">Setup</a></li>
 <li class="toctree-l3"><a class="reference internal" href="vkms.html#testing-with-igt">Testing With IGT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vkms.html#testing-with-kunit">Testing With KUnit</a></li>
 <li class="toctree-l3"><a class="reference internal" href="vkms.html#todo">TODO</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="vkms.html#igt-better-support">IGT better support</a></li>
 <li class="toctree-l4"><a class="reference internal" href="vkms.html#add-plane-features">Add Plane Features</a></li>
@@ -1107,9 +1115,11 @@
 <li class="toctree-l4"><a class="reference internal" href="xe/xe_configfs.html#create-devices">Create devices</a></li>
 <li class="toctree-l4"><a class="reference internal" href="xe/xe_configfs.html#configure-attributes">Configure Attributes</a><ul>
 <li class="toctree-l5"><a class="reference internal" href="xe/xe_configfs.html#survivability-mode">Survivability mode:</a></li>
+<li class="toctree-l5"><a class="reference internal" href="xe/xe_configfs.html#allowed-engines">Allowed engines:</a></li>
 </ul>
 </li>
 <li class="toctree-l4"><a class="reference internal" href="xe/xe_configfs.html#remove-devices">Remove devices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="xe/xe_configfs.html#internal-api">Internal API</a></li>
 </ul>
 </li>
 </ul>
@@ -1192,25 +1202,24 @@
 </li>
 <li class="toctree-l4"><a class="reference internal" href="nova/core/todo.html">Task List</a><ul>
 <li class="toctree-l5"><a class="reference internal" href="nova/core/todo.html#enablement-rust">Enablement (Rust)</a><ul>
-<li class="toctree-l6"><a class="reference internal" href="nova/core/todo.html#fromprimitive-api">FromPrimitive API</a></li>
-<li class="toctree-l6"><a class="reference internal" href="nova/core/todo.html#generic-register-abstraction">Generic register abstraction</a></li>
-<li class="toctree-l6"><a class="reference internal" href="nova/core/todo.html#delay-sleep-abstractions">Delay / Sleep abstractions</a></li>
+<li class="toctree-l6"><a class="reference internal" href="nova/core/todo.html#fromprimitive-api-fpri">FromPrimitive API [FPRI]</a></li>
+<li class="toctree-l6"><a class="reference internal" href="nova/core/todo.html#conversion-from-byte-slices-for-types-implementing-frombytes-trsm">Conversion from byte slices for types implementing FromBytes [TRSM]</a></li>
+<li class="toctree-l6"><a class="reference internal" href="nova/core/todo.html#coherentallocation-improvements-coha">CoherentAllocation improvements [COHA]</a></li>
+<li class="toctree-l6"><a class="reference internal" href="nova/core/todo.html#generic-register-abstraction-rega">Generic register abstraction [REGA]</a></li>
+<li class="toctree-l6"><a class="reference internal" href="nova/core/todo.html#numerical-operations-numm">Numerical operations [NUMM]</a></li>
+<li class="toctree-l6"><a class="reference internal" href="nova/core/todo.html#delay-sleep-abstractions-dlay">Delay / Sleep abstractions [DLAY]</a></li>
 <li class="toctree-l6"><a class="reference internal" href="nova/core/todo.html#irq-abstractions">IRQ abstractions</a></li>
 <li class="toctree-l6"><a class="reference internal" href="nova/core/todo.html#page-abstraction-for-foreign-pages">Page abstraction for foreign pages</a></li>
 <li class="toctree-l6"><a class="reference internal" href="nova/core/todo.html#scatterlist-sg-table-abstractions">Scatterlist / sg_table abstractions</a></li>
-<li class="toctree-l6"><a class="reference internal" href="nova/core/todo.html#elf-utils">ELF utils</a></li>
 <li class="toctree-l6"><a class="reference internal" href="nova/core/todo.html#pci-misc-apis">PCI MISC APIs</a></li>
-<li class="toctree-l6"><a class="reference internal" href="nova/core/todo.html#auxiliary-bus-abstractions">Auxiliary bus abstractions</a></li>
+<li class="toctree-l6"><a class="reference internal" href="nova/core/todo.html#xarray-bindings-xarr">XArray bindings [XARR]</a></li>
 <li class="toctree-l6"><a class="reference internal" href="nova/core/todo.html#debugfs-abstractions">Debugfs abstractions</a></li>
 </ul>
 </li>
 <li class="toctree-l5"><a class="reference internal" href="nova/core/todo.html#gpu-general">GPU (general)</a><ul>
 <li class="toctree-l6"><a class="reference internal" href="nova/core/todo.html#parse-firmware-headers">Parse firmware headers</a></li>
 <li class="toctree-l6"><a class="reference internal" href="nova/core/todo.html#build-radix3-page-table">Build radix3 page table</a></li>
-<li class="toctree-l6"><a class="reference internal" href="nova/core/todo.html#vbios-support">vBIOS support</a></li>
 <li class="toctree-l6"><a class="reference internal" href="nova/core/todo.html#initial-devinit-support">Initial Devinit support</a></li>
-<li class="toctree-l6"><a class="reference internal" href="nova/core/todo.html#boot-falcon-controller">Boot Falcon controller</a></li>
-<li class="toctree-l6"><a class="reference internal" href="nova/core/todo.html#gpu-timer-support">GPU Timer support</a></li>
 <li class="toctree-l6"><a class="reference internal" href="nova/core/todo.html#mmu-pt-management">MMU / PT management</a></li>
 <li class="toctree-l6"><a class="reference internal" href="nova/core/todo.html#vram-memory-allocator">VRAM memory allocator</a></li>
 <li class="toctree-l6"><a class="reference internal" href="nova/core/todo.html#instance-memory">Instance Memory</a></li>
@@ -1239,6 +1248,32 @@
 <li class="toctree-l6"><a class="reference internal" href="nova/core/todo.html#ci-pipeline">CI pipeline</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="nova/core/vbios.html">VBIOS</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="nova/core/vbios.html#vbios-rom-layout">VBIOS ROM Layout</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nova/core/vbios.html#falcon-data-lookup">Falcon data Lookup</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="nova/core/devinit.html">Device Initialization (devinit)</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="nova/core/devinit.html#key-functions-of-devinit">Key Functions of devinit</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nova/core/devinit.html#low-level-firmware-initialization-flow">Low-level Firmware Initialization Flow</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nova/core/devinit.html#runtime-considerations">Runtime Considerations</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nova/core/devinit.html#security-and-access-control">Security and Access Control</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="nova/core/fwsec.html">FWSEC (Firmware Security)</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="nova/core/fwsec.html#fwsec-memory-layout">FWSEC Memory Layout</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="nova/core/falcon.html">Falcon (FAst Logic Controller)</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="nova/core/falcon.html#falcon-security-levels">Falcon security levels</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="nova/core/falcon.html#heavy-secured-hs-also-known-as-privilege-level-3-pl3">Heavy Secured (HS) also known as Privilege Level 3 (PL3)</a></li>
+<li class="toctree-l6"><a class="reference internal" href="nova/core/falcon.html#light-secured-ls-or-pl2-and-non-secured-ns-or-pl0">Light Secured (LS or PL2) and Non Secured (NS or PL0)</a></li>
+<li class="toctree-l6"><a class="reference internal" href="nova/core/falcon.html#root-of-trust-establishment">Root of trust establishment</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="nova/core/falcon.html#falcon-memory-subsystem-and-dma-engine">Falcon memory subsystem and DMA engine</a></li>
 </ul>
 </li>
 </ul>
@@ -1362,7 +1397,8 @@
 <li class="toctree-l2"><a class="reference internal" href="todo.html#request-memory-regions-in-all-fbdev-drivers">Request memory regions in all fbdev drivers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="todo.html#remove-driver-dependencies-on-fb-device">Remove driver dependencies on FB_DEVICE</a></li>
 <li class="toctree-l2"><a class="reference internal" href="todo.html#remove-disable-unprepare-in-remove-shutdown-in-panel-simple-and-panel-edp">Remove disable/unprepare in remove/shutdown in panel-simple and panel-edp</a></li>
-<li class="toctree-l2"><a class="reference internal" href="todo.html#transition-away-from-using-mipi-dsi-write-seq">Transition away from using mipi_dsi_*_write_seq()</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="todo.html#transition-away-from-using-mipi-dsi-write-seq">Transition away from using mipi_dsi_*_write_seq()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="todo.html#remove-devm-drm-put-bridge">Remove devm_drm_put_bridge()</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="todo.html#core-refactorings">Core refactorings</a></li>
 </ul>
 </li>
@@ -1397,6 +1433,7 @@
 <li class="toctree-l2"><a class="reference internal" href="rfc/gpusvm.html">GPU SVM Section</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="rfc/gpusvm.html#agreed-upon-design-principles">Agreed upon design principles</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rfc/gpusvm.html#overview-of-baseline-design">Overview of baseline design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rfc/gpusvm.html#overview-of-drm-pagemap-design">Overview of drm_pagemap design</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rfc/gpusvm.html#possible-future-design-features">Possible future design features</a></li>
 </ul>
 </li>

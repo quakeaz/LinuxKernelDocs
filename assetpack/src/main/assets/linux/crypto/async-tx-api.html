@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -256,7 +256,7 @@ following methods:</p>
 <li><p>setting the ASYNC_TX_ACK flag if no child operations are to be submitted</p></li>
 <li><p>submitting an unacknowledged descriptor as a dependency to another
 async_tx call will implicitly set the acknowledged state.</p></li>
-<li><p>calling async_tx_ack() on the descriptor.</p></li>
+<li><p>calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">async_tx_ack()</span></code> on the descriptor.</p></li>
 </ol>
 </section>
 <section id="when-does-the-operation-execute">
@@ -266,7 +266,7 @@ async_&lt;operation&gt; call.  Offload engine drivers batch operations to
 improve performance by reducing the number of mmio cycles needed to
 manage the channel.  Once a driver-specific threshold is met the driver
 automatically issues pending operations.  An application can force this
-event by calling async_tx_issue_pending_all().  This operates on all
+event by calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">async_tx_issue_pending_all()</span></code>.  This operates on all
 channels since the application has no knowledge of channel to operation
 mapping.</p>
 </section>
@@ -275,7 +275,7 @@ mapping.</p>
 <p>There are two methods for an application to learn about the completion
 of an operation.</p>
 <ol class="arabic simple">
-<li><p>Call dma_wait_for_async_tx().  This call causes the CPU to spin while
+<li><p>Call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_wait_for_async_tx()</span></code>.  This call causes the CPU to spin while
 it polls for the completion of the operation.  It handles dependency
 chains and issuing pending operations.</p></li>
 <li><p>Specify a completion callback.  The callback routine runs in tasklet
@@ -283,7 +283,7 @@ context if the offload engine driver supports interrupts, or it is
 called in application context if the operation is carried out
 synchronously in software.  The callback can be set in the call to
 async_&lt;operation&gt;, or when the application needs to submit a chain of
-unknown length it can use the async_trigger_callback() routine to set a
+unknown length it can use the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">async_trigger_callback()</span></code> routine to set a
 completion interrupt/callback at the end of the chain.</p></li>
 </ol>
 </section>
@@ -354,7 +354,7 @@ accommodate assumptions made by applications using the async_tx API:</p>
 <ol class="arabic simple">
 <li><p>Completion callbacks are expected to happen in tasklet context</p></li>
 <li><p>dma_async_tx_descriptor fields are never manipulated in IRQ context</p></li>
-<li><p>Use async_tx_run_dependencies() in the descriptor clean up path to
+<li><p>Use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">async_tx_run_dependencies()</span></code> in the descriptor clean up path to
 handle submission of dependent operations</p></li>
 </ol>
 </section>
@@ -363,7 +363,7 @@ handle submission of dependent operations</p></li>
 <p>Primarily this requirement arises from cases where a DMA engine driver
 is being used to support device-to-memory operations.  A channel that is
 performing these operations cannot, for many platform specific reasons,
-be shared.  For these cases the dma_request_channel() interface is
+be shared.  For these cases the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_request_channel()</span></code> interface is
 provided.</p>
 <p>The interface is:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct dma_chan *dma_request_channel(dma_cap_mask_t mask,
@@ -383,18 +383,18 @@ disposition the available channels in the system. The filter_fn routine
 is called once for each free channel in the system.  Upon seeing a
 suitable channel filter_fn returns DMA_ACK which flags that channel to
 be the return value from dma_request_channel.  A channel allocated via
-this interface is exclusive to the caller, until dma_release_channel()
+this interface is exclusive to the caller, until <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_release_channel()</span></code>
 is called.</p>
 <p>The DMA_PRIVATE capability flag is used to tag dma devices that should
 not be used by the general-purpose allocator.  It can be set at
 initialization time if it is known that a channel will always be
-private.  Alternatively, it is set when dma_request_channel() finds an
+private.  Alternatively, it is set when <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_request_channel()</span></code> finds an
 unused “public” channel.</p>
 <p>A couple caveats to note when implementing a driver and consumer:</p>
 <ol class="arabic simple">
 <li><p>Once a channel has been privately allocated it will no longer be
 considered by the general-purpose allocator even after a call to
-dma_release_channel().</p></li>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_release_channel()</span></code>.</p></li>
 <li><p>Since capabilities are specified at the device level a dma_device
 with multiple channels will either have all channels public, or all
 channels private.</p></li>

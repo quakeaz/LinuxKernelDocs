@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -460,7 +460,7 @@ della crescita delle funzioni. Vedere il capitolo 6 (funzioni).</p>
 <section id="definizione-di-tipi-typedef">
 <h2>5) Definizione di tipi (typedef)<a class="headerlink" href="#definizione-di-tipi-typedef" title="Link to this heading">¶</a></h2>
 <p>Per favore non usate cose come <code class="docutils literal notranslate"><span class="pre">vps_t</span></code>.
-Usare il typedef per strutture e puntatori è uno <strong>sbaglio</strong>. Quando vedete:</p>
+Usare il <code class="xref c c-type broken_xref docutils literal notranslate"><span class="pre">typedef</span> <span class="pre">per</span></code> strutture e puntatori è uno <strong>sbaglio</strong>. Quando vedete:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">vps_t</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
 </pre></div>
 </div>
@@ -474,7 +474,7 @@ Se, invece, dicesse:</p>
 Non molto. Sono utili per:</p>
 <blockquote>
 <div><ol class="loweralpha">
-<li><p>gli oggetti completamente opachi (dove typedef viene proprio usato allo
+<li><p>gli oggetti completamente opachi (dove <code class="xref c c-type broken_xref docutils literal notranslate"><span class="pre">typedef</span> <span class="pre">viene</span></code> proprio usato allo
 scopo di <strong>nascondere</strong> cosa sia davvero l’oggetto).</p>
 <p>Esempio: <code class="docutils literal notranslate"><span class="pre">pte_t</span></code> eccetera sono oggetti opachi che potete usare solamente
 con le loro funzioni accessorie.</p>
@@ -487,7 +487,7 @@ che davvero non c’è alcuna informazione portabile.</p>
 </li>
 <li><p>i tipi chiaramente interi, dove l’astrazione <strong>aiuta</strong> ad evitare
 confusione sul fatto che siano <code class="docutils literal notranslate"><span class="pre">int</span></code> oppure <code class="docutils literal notranslate"><span class="pre">long</span></code>.</p>
-<p>u8/u16/u32 sono typedef perfettamente accettabili, anche se ricadono
+<p>u8/u16/u32 sono <code class="xref c c-type broken_xref docutils literal notranslate"><span class="pre">typedef</span> <span class="pre">perfettamente</span></code> accettabili, anche se ricadono
 nella categoria (d) piuttosto che in questa.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -943,8 +943,8 @@ l’uso incorretto di abbreviazioni come <code class="docutils literal notransla
 dovrebbero essere evitati.</p>
 <p>Ci sono alcune macro per la diagnostica in &lt;linux/dev_printk.h&gt; che dovreste
 usare per assicurarvi che i messaggi vengano associati correttamente ai
-dispositivi e ai driver, e che siano etichettati correttamente:  dev_err(),
-dev_warn(), dev_info(), e così via.  Per messaggi che non sono associati ad
+dispositivi e ai driver, e che siano etichettati correttamente:  <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_err()</span></code>,
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_warn()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_info()</span></code>, e così via.  Per messaggi che non sono associati ad
 alcun dispositivo, &lt;linux/printk.h&gt; definisce <a class="reference internal" href="../../../core-api/printk-basics.html#c.pr_info" title="pr_info"><code class="xref c c-func docutils literal notranslate"><span class="pre">pr_info()</span></code></a>, <a class="reference internal" href="../../../core-api/printk-basics.html#c.pr_warn" title="pr_warn"><code class="xref c c-func docutils literal notranslate"><span class="pre">pr_warn()</span></code></a>, <a class="reference internal" href="../../../core-api/printk-basics.html#c.pr_err" title="pr_err"><code class="xref c c-func docutils literal notranslate"><span class="pre">pr_err()</span></code></a>,
 eccetera. Quando tutto funziona correttamente, non dovrebbero esserci stampe,
 per cui preferite dev_dbg/pr_debug a meno che non sia qualcosa di sbagliato
@@ -952,10 +952,10 @@ da segnalare.</p>
 <p>Tirar fuori un buon messaggio di debug può essere una vera sfida; e quando
 l’avete può essere d’enorme aiuto per risolvere problemi da remoto.
 Tuttavia, i messaggi di debug sono gestiti differentemente rispetto agli
-altri.  Le funzioni pr_XXX() stampano incondizionatamente ma <a class="reference internal" href="../../../core-api/printk-basics.html#c.pr_debug" title="pr_debug"><code class="xref c c-func docutils literal notranslate"><span class="pre">pr_debug()</span></code></a> no;
+altri.  Le funzioni <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pr_XXX()</span></code> stampano incondizionatamente ma <a class="reference internal" href="../../../core-api/printk-basics.html#c.pr_debug" title="pr_debug"><code class="xref c c-func docutils literal notranslate"><span class="pre">pr_debug()</span></code></a> no;
 essa non viene compilata nella configurazione predefinita, a meno che
 DEBUG o CONFIG_DYNAMIC_DEBUG non vengono impostati.  Questo vale anche per
-dev_dbg() e in aggiunta VERBOSE_DEBUG per aggiungere i messaggi dev_vdbg().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_dbg()</span></code> e in aggiunta VERBOSE_DEBUG per aggiungere i messaggi <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_vdbg()</span></code>.</p>
 <p>Molti sottosistemi hanno delle opzioni di debug in Kconfig che aggiungono
 -DDEBUG nei corrispettivi Makefile, e in altri casi aggiungono #define DEBUG
 in specifici file.  Infine, quando un messaggio di debug dev’essere stampato
@@ -965,7 +965,7 @@ racchiusa in #ifdef, potete usare printk(KERN_DEBUG ...).</p>
 <section id="assegnare-memoria">
 <h2>14) Assegnare memoria<a class="headerlink" href="#assegnare-memoria" title="Link to this heading">¶</a></h2>
 <p>Il kernel fornisce i seguenti assegnatori ad uso generico:
-<a class="reference internal" href="../../../core-api/mm-api.html#c.kmalloc" title="kmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmalloc()</span></code></a>, <a class="reference internal" href="../../../core-api/mm-api.html#c.kzalloc" title="kzalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kzalloc()</span></code></a>, <a class="reference internal" href="../../../core-api/mm-api.html#c.kmalloc_array" title="kmalloc_array"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmalloc_array()</span></code></a>, <a class="reference internal" href="../../../core-api/mm-api.html#c.kcalloc" title="kcalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kcalloc()</span></code></a>, vmalloc(), e vzalloc().
+<a class="reference internal" href="../../../core-api/mm-api.html#c.kmalloc" title="kmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmalloc()</span></code></a>, <a class="reference internal" href="../../../core-api/mm-api.html#c.kzalloc" title="kzalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kzalloc()</span></code></a>, <a class="reference internal" href="../../../core-api/mm-api.html#c.kmalloc_array" title="kmalloc_array"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmalloc_array()</span></code></a>, <a class="reference internal" href="../../../core-api/mm-api.html#c.kcalloc" title="kcalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kcalloc()</span></code></a>, <a class="reference internal" href="../../../core-api/mm-api.html#c.vmalloc" title="vmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">vmalloc()</span></code></a>, e <a class="reference internal" href="../../../core-api/mm-api.html#c.vzalloc" title="vzalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">vzalloc()</span></code></a>.
 Per maggiori informazioni, consultate la documentazione dell’API:
 <a class="reference internal" href="../core-api/memory-allocation.html#it-memory-allocation"><span class="std std-ref">Documentation/translations/it_IT/core-api/memory-allocation.rst</span></a></p>
 <p>Il modo preferito per passare la dimensione di una struttura è il seguente:</p>
@@ -1031,7 +1031,7 @@ essa dovrebbe ritornare un codice di errore intero.  Se il nome
 &quot;successo&quot;
 </pre></div>
 </div>
-<p>Per esempio, <code class="docutils literal notranslate"><span class="pre">add</span> <span class="pre">work</span></code> è un comando, e la funzione add_work() ritorna 0
+<p>Per esempio, <code class="docutils literal notranslate"><span class="pre">add</span> <span class="pre">work</span></code> è un comando, e la funzione <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">add_work()</span></code> ritorna 0
 in caso di successo o -EBUSY in caso di fallimento.  Allo stesso modo,
 <code class="docutils literal notranslate"><span class="pre">PCI</span> <span class="pre">device</span> <span class="pre">present</span></code> è un predicato, e la funzione <a class="reference internal" href="../../../driver-api/pci/pci.html#c.pci_dev_present" title="pci_dev_present"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_dev_present()</span></code></a> ritorna
 1 se trova il dispositivo corrispondente con successo, altrimenti 0.</p>
@@ -1086,7 +1086,7 @@ struttura, usate</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define sizeof_field(t, f) (sizeof(((t*)0)-&gt;f))</span>
 </pre></div>
 </div>
-<p>Ci sono anche le macro min() e max() che, se vi serve, effettuano un controllo
+<p>Ci sono anche le macro <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">min()</span></code> e <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">max()</span></code> che, se vi serve, effettuano un controllo
 rigido sui tipi.  Sentitevi liberi di leggere attentamente questo file
 d’intestazione per scoprire cos’altro è stato definito che non dovreste
 reinventare nel vostro codice.</p>

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -190,7 +190,7 @@ void crypto_unregister_algs(struct crypto_alg *algs, int count);
 </pre></div>
 </div>
 <p>The registration functions return 0 on success, or a negative errno
-value on failure.  crypto_register_algs() succeeds only if it
+value on failure.  <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">crypto_register_algs()</span></code> succeeds only if it
 successfully registered all the given algorithms; if it fails partway
 through, then any changes are rolled back.</p>
 <p>The unregistration functions always succeed, so they don’t have a
@@ -215,7 +215,7 @@ filled in with proper callbacks to implement this transformation.</p>
 <h3>Cipher Definition With struct cipher_alg<a class="headerlink" href="#cipher-definition-with-struct-cipher-alg" title="Link to this heading">¶</a></h3>
 <p>Struct cipher_alg defines a single block cipher.</p>
 <p>Here are schematics of how these functions are called when operated from
-other part of the kernel. Note that the .cia_setkey() call might happen
+other part of the kernel. Note that the .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cia_setkey()</span></code> call might happen
 before or after any of these schematics happen, but must not happen
 during any of these are in-flight.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>KEY ---.    PLAINTEXT ---.
@@ -225,7 +225,7 @@ during any of these are in-flight.</p>
                          &#39;-----&gt; CIPHERTEXT
 </pre></div>
 </div>
-<p>Please note that a pattern where .cia_setkey() is called multiple times
+<p>Please note that a pattern where .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cia_setkey()</span></code> is called multiple times
 is also valid:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>KEY1 --.    PLAINTEXT1 --.         KEY2 --.    PLAINTEXT2 --.
        v                 v                v                 v
@@ -248,7 +248,7 @@ functions. They output the result into a scatterlist of data as well.</p>
 <p>The registration of multi-block cipher algorithms is one of the most
 standard procedures throughout the crypto API.</p>
 <p>Note, if a cipher implementation requires a proper alignment of data,
-the caller should use the functions of crypto_skcipher_alignmask() to
+the caller should use the functions of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">crypto_skcipher_alignmask()</span></code> to
 identify a memory alignment mask. The kernel crypto API is able to
 process requests that are unaligned. This implies, however, additional
 overhead as the kernel crypto API needs to perform the realignment of
@@ -295,10 +295,10 @@ void crypto_unregister_shashes(struct shash_alg *algs, int count);
 <section id="cipher-definition-with-struct-shash-alg-and-ahash-alg">
 <h3>Cipher Definition With struct shash_alg and ahash_alg<a class="headerlink" href="#cipher-definition-with-struct-shash-alg-and-ahash-alg" title="Link to this heading">¶</a></h3>
 <p>Here are schematics of how these functions are called when operated from
-other part of the kernel. Note that the .setkey() call might happen
+other part of the kernel. Note that the .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setkey()</span></code> call might happen
 before or after any of these schematics happen, but must not happen
-during any of these are in-flight. Please note that calling .init()
-followed immediately by .final() is also a perfectly valid
+during any of these are in-flight. Please note that calling .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init()</span></code>
+followed immediately by .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">final()</span></code> is also a perfectly valid
 transformation.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>I)   DATA -----------.
                      v
@@ -319,7 +319,7 @@ III) DATA -----------.
                      &#39;---------------&gt; HASH
 </pre></div>
 </div>
-<p>Here is a schematic of how the .export()/.import() functions are called
+<p>Here is a schematic of how the .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">export()</span></code>/.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">import()</span></code> functions are called
 when used from another part of the kernel.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>KEY--.                 DATA--.
      v                       v                  ! .update() may not be called
@@ -343,11 +343,11 @@ PARTIAL_HASH--.   DATA2-.
 </pre></div>
 </div>
 <p>Note that it is perfectly legal to “abandon” a request object:
-- call .init() and then (as many times) .update()
-- _not_ call any of .final(), .finup() or .export() at any point in future</p>
+- call .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init()</span></code> and then (as many times) .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">update()</span></code>
+- _not_ call any of .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">final()</span></code>, .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">finup()</span></code> or .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">export()</span></code> at any point in future</p>
 <p>In other words implementations should mind the resource allocation and clean-up.
 No resources related to request objects should remain allocated after a call
-to .init() or .update(), since there might be no chance to free them.</p>
+to .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init()</span></code> or .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">update()</span></code>, since there might be no chance to free them.</p>
 </section>
 <section id="specifics-of-asynchronous-hash-transformation">
 <h3>Specifics Of Asynchronous HASH Transformation<a class="headerlink" href="#specifics-of-asynchronous-hash-transformation" title="Link to this heading">¶</a></h3>

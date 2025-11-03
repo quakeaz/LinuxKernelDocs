@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -289,7 +289,7 @@ port by this function. Either indirectly by using <a class="reference internal" 
 </dl>
 <p><strong>Description</strong></p>
 <p>The final put will destroy and free up the <strong>port</strong> using
-<strong>port-&gt;ops-&gt;destruct()</strong> hook, or using <a class="reference internal" href="../../core-api/mm-api.html#c.kfree" title="kfree"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree()</span></code></a> if not provided.</p>
+<strong>port-&gt;ops-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">destruct()</span></code></strong> hook, or using <a class="reference internal" href="../../core-api/mm-api.html#c.kfree" title="kfree"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree()</span></code></a> if not provided.</p>
 </div>
 </section>
 <section id="open-close-hangup-helpers">
@@ -312,7 +312,7 @@ port by this function. Either indirectly by using <a class="reference internal" 
 <p>It is used by <a class="reference internal" href="#c.tty_port_hangup" title="tty_port_hangup"><code class="xref c c-func docutils literal notranslate"><span class="pre">tty_port_hangup()</span></code></a> and <a class="reference internal" href="#c.tty_port_close" title="tty_port_close"><code class="xref c c-func docutils literal notranslate"><span class="pre">tty_port_close()</span></code></a>. Its task is to
 shutdown the device if it was initialized (note consoles remain
 functioning). It lowers DTR/RTS (if <strong>tty</strong> has HUPCL set) and invokes
-<strong>port-&gt;ops-&gt;shutdown()</strong>.</p>
+<strong>port-&gt;ops-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shutdown()</span></code></strong>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.tty_port_hangup">
@@ -528,7 +528,7 @@ to deassociate a port.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.tty_port_tty_hangup">
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tty_port_tty_hangup</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.tty_port" title="tty_port"><span class="n"><span class="pre">tty_port</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">port</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n"><span class="pre">check_clocal</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.tty_port_tty_hangup" title="Link to this definition">¶</a><br /></dt>
-<dd><p>helper to hang up a tty</p>
+<dd><p>helper to hang up a tty asynchronously</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -537,6 +537,19 @@ to deassociate a port.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">tty_port</span> <span class="pre">*port</span></code></dt><dd><p>tty port</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">check_clocal</span></code></dt><dd><p>hang only ttys with <code class="docutils literal notranslate"><span class="pre">CLOCAL</span></code> unset?</p>
+</dd>
+</dl>
+</div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.tty_port_tty_vhangup">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tty_port_tty_vhangup</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.tty_port" title="tty_port"><span class="n"><span class="pre">tty_port</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">port</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.tty_port_tty_vhangup" title="Link to this definition">¶</a><br /></dt>
+<dd><p>helper to hang up a tty synchronously</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">tty_port</span> <span class="pre">*port</span></code></dt><dd><p>tty port</p>
 </dd>
 </dl>
 </div>
@@ -695,7 +708,7 @@ By default, tty_port_default_client_ops is used.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">drain_delay</span></code></dt><dd><p>set to zero if no pure time based drain is needed else set to
 size of fifo</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">kref</span></code></dt><dd><p>references counter. Reaching zero calls <strong>ops-&gt;destruct()</strong> if non-<code class="docutils literal notranslate"><span class="pre">NULL</span></code>
+<dt><code class="docutils literal notranslate"><span class="pre">kref</span></code></dt><dd><p>references counter. Reaching zero calls <strong>ops-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">destruct()</span></code></strong> if non-<code class="docutils literal notranslate"><span class="pre">NULL</span></code>
 or frees the port otherwise.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">client_data</span></code></dt><dd><p>pointer to private data, for <strong>client_ops</strong></p>
@@ -715,7 +728,7 @@ until a hangup so don’t use the wrong path.</p>
 <p>There is a lot of helpers around <a class="reference internal" href="#c.tty_port" title="tty_port"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">tty_port</span></code></a> too. To name the most
 significant ones: <a class="reference internal" href="#c.tty_port_open" title="tty_port_open"><code class="xref c c-func docutils literal notranslate"><span class="pre">tty_port_open()</span></code></a>, <a class="reference internal" href="#c.tty_port_close" title="tty_port_close"><code class="xref c c-func docutils literal notranslate"><span class="pre">tty_port_close()</span></code></a> (or
 <a class="reference internal" href="#c.tty_port_close_start" title="tty_port_close_start"><code class="xref c c-func docutils literal notranslate"><span class="pre">tty_port_close_start()</span></code></a> and <a class="reference internal" href="#c.tty_port_close_end" title="tty_port_close_end"><code class="xref c c-func docutils literal notranslate"><span class="pre">tty_port_close_end()</span></code></a> separately if need be), and
-<a class="reference internal" href="#c.tty_port_hangup" title="tty_port_hangup"><code class="xref c c-func docutils literal notranslate"><span class="pre">tty_port_hangup()</span></code></a>. These call <strong>ops-&gt;activate()</strong> and <strong>ops-&gt;shutdown()</strong> as
+<a class="reference internal" href="#c.tty_port_hangup" title="tty_port_hangup"><code class="xref c c-func docutils literal notranslate"><span class="pre">tty_port_hangup()</span></code></a>. These call <strong>ops-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">activate()</span></code></strong> and <strong>ops-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shutdown()</span></code></strong> as
 needed.</p>
 </section>
 <hr class="docutils" />
@@ -741,7 +754,7 @@ needed.</p>
 </pre></div>
 </div>
 <p><strong>Members</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">carrier_raised</span></code></dt><dd><p>return true if the carrier is raised on <strong>port</strong></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">dtr_rts</span></code></dt><dd><p>raise the DTR line if <strong>active</strong> is true, otherwise lower DTR</p>
@@ -753,14 +766,17 @@ only. Called under the port mutex to serialize against <strong>activate</strong>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">activate</span></code></dt><dd><p>called under the port mutex from <a class="reference internal" href="#c.tty_port_open" title="tty_port_open"><code class="xref c c-func docutils literal notranslate"><span class="pre">tty_port_open()</span></code></a>, serialized using
 the port mutex. Supposed to turn on the device.</p>
-<p>FIXME: long term getting the tty argument <em>out</em> of this would be good
-for consoles.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">destruct</span></code></dt><dd><p>called on the final put of a port. Free resources, possibly incl.
 the port itself.</p>
 </dd>
 </dl>
 </div>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>FIXME: long term getting the tty argument <em>out</em> of this would be good
+for consoles.</p>
+</div></blockquote>
 </section>
 </section>
 

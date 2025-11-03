@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -659,7 +659,7 @@ pixel value.</p>
 </pre></div>
 </div>
 <p><strong>Members</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">y1_coeff_0</span></code></dt><dd><p>filter Y1, structure: 3x11, support both symmetry and
 anti-symmetry type. A12 is center, A1-A11 are neighbours.
 for analyzing low frequency content, used to calculate sum
@@ -731,10 +731,6 @@ of gradients in x direction.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">y_calc</span></code></dt><dd><p>Pre-processing that converts Bayer quad to RGB+Y values to be
 used for building histogram. Range [0, 32], default 8.</p>
-<p>Rule:
-y_gen_rate_gr + y_gen_rate_r + y_gen_rate_b + y_gen_rate_gb = 32
-A single Y is calculated based on sum of Gr/R/B/Gb based on
-their contribution ratio.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">y_calc.y_gen_rate_gr</span></code></dt><dd><p>Contribution ratio Gr for Y</p>
 </dd>
@@ -762,6 +758,13 @@ abs values of the filter coeffs.</p>
 </dd>
 </dl>
 </div>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Rule:
+y_gen_rate_gr + y_gen_rate_r + y_gen_rate_b + y_gen_rate_gb = 32
+A single Y is calculated based on sum of Gr/R/B/Gb based on
+their contribution ratio.</p>
+</div></blockquote>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.ipu3_uapi_af_raw_buffer">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ipu3_uapi_af_raw_buffer</span></span></span><a class="headerlink" href="#c.ipu3_uapi_af_raw_buffer" title="Link to this definition">¶</a><br /></dt>
@@ -2048,6 +2051,10 @@ channels as a function of the pixel location in the sensor.</p>
 </div>
 <p><strong>Description</strong></p>
 <p>Calculate weight for blending directed and non-directed denoise elements</p>
+<p><strong>Note</strong></p>
+<p>Each instance of Config Unit needs X coordinate of n points and
+slope A factor between points calculated by driver based on calibration
+parameters.</p>
 <p>All CU inputs are unsigned, they will be converted to signed when written
 to register, i.e. a01 will be written to 9 bit register in s4.4 format.
 The data precision s4.4 means 4 bits for integer parts and 4 bits for the
@@ -2057,10 +2064,6 @@ the CU slope values should be based on the slope resolution 1/16 (binary
 0.0001 - the minimal interval value), the slope value range is [-256, +255].
 This applies to <a class="reference internal" href="#c.ipu3_uapi_iefd_cux6_ed" title="ipu3_uapi_iefd_cux6_ed"><code class="xref c c-type docutils literal notranslate"><span class="pre">ipu3_uapi_iefd_cux6_ed</span></code></a>, <a class="reference internal" href="#c.ipu3_uapi_iefd_cux2_1" title="ipu3_uapi_iefd_cux2_1"><code class="xref c c-type docutils literal notranslate"><span class="pre">ipu3_uapi_iefd_cux2_1</span></code></a>,
 <a class="reference internal" href="#c.ipu3_uapi_iefd_cux2_1" title="ipu3_uapi_iefd_cux2_1"><code class="xref c c-type docutils literal notranslate"><span class="pre">ipu3_uapi_iefd_cux2_1</span></code></a>, <a class="reference internal" href="#c.ipu3_uapi_iefd_cux4" title="ipu3_uapi_iefd_cux4"><code class="xref c c-type docutils literal notranslate"><span class="pre">ipu3_uapi_iefd_cux4</span></code></a> and <a class="reference internal" href="#c.ipu3_uapi_iefd_cux6_rad" title="ipu3_uapi_iefd_cux6_rad"><code class="xref c c-type docutils literal notranslate"><span class="pre">ipu3_uapi_iefd_cux6_rad</span></code></a>.</p>
-<p><strong>Note</strong></p>
-<p>Each instance of Config Unit needs X coordinate of n points and
-slope A factor between points calculated by driver based on calibration
-parameters.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.ipu3_uapi_iefd_cux6_ed">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ipu3_uapi_iefd_cux6_ed</span></span></span><a class="headerlink" href="#c.ipu3_uapi_iefd_cux6_ed" title="Link to this definition">¶</a><br /></dt>

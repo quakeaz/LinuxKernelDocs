@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -274,6 +274,21 @@ CPU mappings on buffer move. Protected by load/unload sync.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">wq</span></code></dt><dd><p>Work queue structure for the delayed delete workqueue.</p>
 </dd>
 </dl>
+</div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ttm_device_prepare_hibernation">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ttm_device_prepare_hibernation</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.ttm_device" title="ttm_device"><span class="n"><span class="pre">ttm_device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bdev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ttm_device_prepare_hibernation" title="Link to this definition">¶</a><br /></dt>
+<dd><p>move GTT BOs to shmem for hibernation.</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ttm_device</span> <span class="pre">*bdev</span></code></dt><dd><p>A pointer to a <a class="reference internal" href="#c.ttm_device" title="ttm_device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ttm_device</span></code></a> to prepare hibernation for.</p>
+</dd>
+</dl>
+<p><strong>Return</strong></p>
+<p>0 on success, negative number on failure.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ttm_device_init">
@@ -594,7 +609,7 @@ the sublists of <strong>pos</strong>. Protected by the ttm device’s lru_lock.<
 </div>
 <p><strong>Description</strong></p>
 <p>Container for the current bulk move state. Should be used with
-<a class="reference internal" href="#c.ttm_lru_bulk_move_init" title="ttm_lru_bulk_move_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">ttm_lru_bulk_move_init()</span></code></a> and ttm_bo_set_bulk_move().
+<a class="reference internal" href="#c.ttm_lru_bulk_move_init" title="ttm_lru_bulk_move_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">ttm_lru_bulk_move_init()</span></code></a> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ttm_bo_set_bulk_move()</span></code>.
 All BOs in a bulk_move structure need to share the same reservation object to
 ensure that the bulk as a whole is locked for eviction even if only one BO of
 the bulk is evicted.</p>
@@ -642,7 +657,7 @@ This field is valid iff <strong>bulk</strong> != NULL.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.ttm_kmap_iter_iomap">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ttm_kmap_iter_iomap</span></span></span><a class="headerlink" href="#c.ttm_kmap_iter_iomap" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Specialization for a struct io_mapping + struct sg_table backed <a class="reference internal" href="#c.ttm_resource" title="ttm_resource"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ttm_resource</span></code></a>.</p>
+<dd><p>Specialization for a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">io_mapping</span></code> + <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">sg_table</span></code> backed <a class="reference internal" href="#c.ttm_resource" title="ttm_resource"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ttm_resource</span></code></a>.</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -663,9 +678,9 @@ This field is valid iff <strong>bulk</strong> != NULL.</p>
 </div>
 <p><strong>Members</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">base</span></code></dt><dd><p>Embedded struct ttm_kmap_iter providing the usage interface.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">base</span></code></dt><dd><p>Embedded <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ttm_kmap_iter</span></code> providing the usage interface.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">iomap</span></code></dt><dd><p>struct io_mapping representing the underlying linear io_memory.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">iomap</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">io_mapping</span></code> representing the underlying linear io_memory.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">st</span></code></dt><dd><p>sg_table into <strong>iomap</strong>, representing the memory of the <a class="reference internal" href="#c.ttm_resource" title="ttm_resource"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ttm_resource</span></code></a>.</p>
 </dd>
@@ -921,7 +936,7 @@ Counterpart of <a class="reference internal" href="#c.ttm_resource_init" title="
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ttm_kmap_iter_iomap</span> <span class="pre">*iter_io</span></code></dt><dd><p>The <a class="reference internal" href="#c.ttm_kmap_iter_iomap" title="ttm_kmap_iter_iomap"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ttm_kmap_iter_iomap</span></code></a> to initialize.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">io_mapping</span> <span class="pre">*iomap</span></code></dt><dd><p>The struct io_mapping representing the underlying linear io_memory.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">io_mapping</span> <span class="pre">*iomap</span></code></dt><dd><p>The <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">io_mapping</span></code> representing the underlying linear io_memory.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">sg_table</span> <span class="pre">*st</span></code></dt><dd><p>sg_table into <strong>iomap</strong>, representing the memory of the <a class="reference internal" href="#c.ttm_resource" title="ttm_resource"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span>
 <span class="pre">ttm_resource</span></code></a>.</p>
@@ -931,7 +946,7 @@ sg_dma_address(st-&gt;sgl) - <strong>start</strong> == 0 for <strong>iomap</stro
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<p>Pointer to the embedded struct ttm_kmap_iter.</p>
+<p>Pointer to the embedded <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ttm_kmap_iter</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ttm_resource_manager_create_debugfs">
@@ -1000,7 +1015,7 @@ allocation.</p>
 externally, like with dma-buf or userptr. This effectively disables
 TTM swapping out such pages.  Also important is to prevent TTM from
 ever directly mapping these pages.</p>
-<p>Note that enum ttm_bo_type.ttm_bo_type_sg objects will always enable
+<p>Note that <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">ttm_bo_type</span></code>.ttm_bo_type_sg objects will always enable
 this flag.</p>
 <p>TTM_TT_FLAG_EXTERNAL_MAPPABLE: Same behaviour as
 TTM_TT_FLAG_EXTERNAL, but with the reduced restriction that it is
@@ -1063,7 +1078,7 @@ this field.</p>
 </div>
 <p><strong>Members</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">base</span></code></dt><dd><p>Embedded struct ttm_kmap_iter providing the usage interface</p>
+<dt><code class="docutils literal notranslate"><span class="pre">base</span></code></dt><dd><p>Embedded <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ttm_kmap_iter</span></code> providing the usage interface</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">tt</span></code></dt><dd><p>Cached <a class="reference internal" href="#c.ttm_tt" title="ttm_tt"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ttm_tt</span></code></a>.</p>
 </dd>
@@ -1125,7 +1140,7 @@ for example before destroying or re-validating a purged tt.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ttm_buffer_object</span> <span class="pre">*bo</span></code></dt><dd><p>pointer to a struct ttm_buffer_object</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ttm_buffer_object</span> <span class="pre">*bo</span></code></dt><dd><p>pointer to a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ttm_buffer_object</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">zero_alloc</span></code></dt><dd><p>true if allocated pages needs to be zeroed</p>
 </dd>
@@ -1313,7 +1328,7 @@ bind and unbind memory backing a ttm_tt.</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<p>Pointer to the embedded struct ttm_kmap_iter.</p>
+<p>Pointer to the embedded <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ttm_kmap_iter</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ttm_tt_setup_backup">
@@ -1570,7 +1585,7 @@ requested size and store it into the struct <a class="reference internal" href="
 used as either main storage for the object when the graphics hardware
 uses system memory directly or as a backing store otherwise.</p>
 <p>Drivers are responsible for the actual physical pages allocation by
-calling shmem_read_mapping_page_gfp() for each page.
+calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shmem_read_mapping_page_gfp()</span></code> for each page.
 Note that they can decide to allocate pages when initializing the GEM
 object, or to delay allocation until the memory is needed (for instance
 when a page fault occurs as a result of a userspace memory access or
@@ -1799,14 +1814,15 @@ not need to consider this.</p>
 optional hook for printing additional driver specific info.</p>
 <p><a class="reference internal" href="drm-internals.html#c.drm_printf_indent" title="drm_printf_indent"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_printf_indent()</span></code></a> should be used in the callback passing it the
 indent argument.</p>
-<p>This callback is called from drm_gem_print_info().</p>
+<p>This callback is called from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_gem_print_info()</span></code>.</p>
 <p>This callback is optional.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">export</span></code></dt><dd><p>Export backing buffer as a <a class="reference internal" href="../driver-api/dma-buf.html#c.dma_buf" title="dma_buf"><code class="xref c c-type docutils literal notranslate"><span class="pre">dma_buf</span></code></a>.
 If this is not set <a class="reference internal" href="#c.drm_gem_prime_export" title="drm_gem_prime_export"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gem_prime_export()</span></code></a> is used.</p>
 <p>This callback is optional.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">pin</span></code></dt><dd><p>Pin backing buffer in memory. Used by the <a class="reference internal" href="#c.drm_gem_map_attach" title="drm_gem_map_attach"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gem_map_attach()</span></code></a> helper.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">pin</span></code></dt><dd><p>Pin backing buffer in memory, such that dma-buf importers can
+access it. Used by the <a class="reference internal" href="#c.drm_gem_map_attach" title="drm_gem_map_attach"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gem_map_attach()</span></code></a> helper.</p>
 <p>This callback is optional.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unpin</span></code></dt><dd><p>Unpin backing buffer. Used by the <a class="reference internal" href="#c.drm_gem_map_detach" title="drm_gem_map_detach"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gem_map_detach()</span></code></a> helper.</p>
@@ -1814,8 +1830,8 @@ If this is not set <a class="reference internal" href="#c.drm_gem_prime_export" 
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">get_sg_table</span></code></dt><dd><p>Returns a Scatter-Gather table representation of the buffer.
 Used when exporting a buffer by the <a class="reference internal" href="#c.drm_gem_map_dma_buf" title="drm_gem_map_dma_buf"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gem_map_dma_buf()</span></code></a> helper.
-Releasing is done by calling dma_unmap_sg_attrs() and sg_free_table()
-in drm_gem_unmap_buf(), therefore these helpers and this callback
+Releasing is done by calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_unmap_sg_attrs()</span></code> and <a class="reference internal" href="../core-api/dma-api.html#c.sg_free_table" title="sg_free_table"><code class="xref c c-func docutils literal notranslate"><span class="pre">sg_free_table()</span></code></a>
+in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_gem_unmap_buf()</span></code>, therefore these helpers and this callback
 here cannot be used for sg tables pointing at driver private memory
 ranges.</p>
 <p>See also <a class="reference internal" href="#c.drm_prime_pages_to_sg" title="drm_prime_pages_to_sg"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_prime_pages_to_sg()</span></code></a>.</p>
@@ -1836,7 +1852,7 @@ lock.</p>
 <a class="reference internal" href="#c.drm_gem_prime_mmap" title="drm_gem_prime_mmap"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gem_prime_mmap()</span></code></a>.  When <strong>mmap</strong> is present <strong>vm_ops</strong> is not
 used, the <strong>mmap</strong> callback must set vma-&gt;vm_ops instead.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">evict</span></code></dt><dd><p>Evicts gem object out from memory. Used by the drm_gem_object_evict()
+<dt><code class="docutils literal notranslate"><span class="pre">evict</span></code></dt><dd><p>Evicts gem object out from memory. Used by the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_gem_object_evict()</span></code>
 helper. Returns 0 on success, -errno otherwise. Called with a held
 GEM reservation lock.</p>
 <p>This callback is optional.</p>
@@ -1925,7 +1941,7 @@ implementation.</p>
 <p><strong>Members</strong></p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">refcount</span></code></dt><dd><p>Reference count of this object</p>
-<p>Please use <a class="reference internal" href="#c.drm_gem_object_get" title="drm_gem_object_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gem_object_get()</span></code></a> to acquire and drm_gem_object_put_locked()
+<p>Please use <a class="reference internal" href="#c.drm_gem_object_get" title="drm_gem_object_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gem_object_get()</span></code></a> to acquire and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_gem_object_put_locked()</span></code>
 or <a class="reference internal" href="#c.drm_gem_object_put" title="drm_gem_object_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gem_object_put()</span></code></a> to release a reference to a GEM
 buffer object.</p>
 </dd>
@@ -2180,7 +2196,7 @@ dma-resv lock, but with a custom lock.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>This iterator walks over all <a class="reference internal" href="#c.drm_gpuvm_bo" title="drm_gpuvm_bo"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm_bo</span></code></a> structures associated with the
-<a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gem_object</span></code></a>. It is implemented with <a class="reference internal" href="../core-api/kernel-api.html#c.list_for_each_entry_safe" title="list_for_each_entry_safe"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_for_each_entry_safe()</span></code></a>, hence
+<a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gem_object</span></code></a>. It is implemented with <a class="reference internal" href="../core-api/list.html#c.list_for_each_entry_safe" title="list_for_each_entry_safe"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_for_each_entry_safe()</span></code></a>, hence
 it is save against removal of elements.</p>
 </div>
 <dl class="c function">
@@ -2410,12 +2426,12 @@ object. An array of pages is returned. If a page is not allocated or
 swapped-out, this will allocate/swap-in the required pages. Note that the
 whole object is covered by the page-array and pinned in memory.</p>
 <p>Use <a class="reference internal" href="#c.drm_gem_put_pages" title="drm_gem_put_pages"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gem_put_pages()</span></code></a> to release the array and unpin all pages.</p>
-<p>This uses the GFP-mask set on the shmem-mapping (see mapping_set_gfp_mask()).
+<p>This uses the GFP-mask set on the shmem-mapping (see <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mapping_set_gfp_mask()</span></code>).
 If you require other GFP-masks, you have to do those allocations yourself.</p>
 <p>Note that you are not allowed to change gfp-zones during runtime. That is,
-shmem_read_mapping_page_gfp() must be called with the same gfp_zone(gfp) as
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shmem_read_mapping_page_gfp()</span></code> must be called with the same gfp_zone(gfp) as
 set during initialization. If you have special zone constraints, set them
-after <a class="reference internal" href="#c.drm_gem_object_init" title="drm_gem_object_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gem_object_init()</span></code></a> via mapping_set_gfp_mask(). shmem-core takes care
+after <a class="reference internal" href="#c.drm_gem_object_init" title="drm_gem_object_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gem_object_init()</span></code></a> via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mapping_set_gfp_mask()</span></code>. shmem-core takes care
 to keep pages in the required zone during swap-in.</p>
 <p>This function is only valid on objects initialized with
 <a class="reference internal" href="#c.drm_gem_object_init" title="drm_gem_object_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gem_object_init()</span></code></a>, but not for those initialized with
@@ -2641,14 +2657,14 @@ with EACCES. Please see the vma manager for more information.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">count</span></code></dt><dd><p>Number of objects in <strong>objs</strong></p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ww_acquire_ctx</span> <span class="pre">*acquire_ctx</span></code></dt><dd><p>struct ww_acquire_ctx that will be initialized as
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ww_acquire_ctx</span> <span class="pre">*acquire_ctx</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ww_acquire_ctx</span></code> that will be initialized as
 part of tracking this set of locked reservations.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
 <p>Once you’ve locked your reservations, you’ll want to set up space
 for your shared fences (if applicable), submit your job, then
-drm_gem_unlock_reservations().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_gem_unlock_reservations()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_gem_lru_init">
@@ -2718,7 +2734,7 @@ it is in (if any) and moved into this LRU.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_gem_lru_scan">
-<span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_gem_lru_scan</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_gem_lru" title="drm_gem_lru"><span class="n"><span class="pre">drm_gem_lru</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">lru</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">nr_to_scan</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">remaining</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">shrink</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><span class="n"><span class="pre">drm_gem_object</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">)</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_gem_lru_scan" title="Link to this definition">¶</a><br /></dt>
+<span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_gem_lru_scan</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_gem_lru" title="drm_gem_lru"><span class="n"><span class="pre">drm_gem_lru</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">lru</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">nr_to_scan</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">remaining</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">shrink</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><span class="n"><span class="pre">drm_gem_object</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">ww_acquire_ctx</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ticket</span></span><span class="p"><span class="pre">)</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">ww_acquire_ctx</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ticket</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_gem_lru_scan" title="Link to this definition">¶</a><br /></dt>
 <dd><p>helper to implement shrinker.scan_objects</p>
 </dd></dl>
 
@@ -2731,7 +2747,9 @@ it is in (if any) and moved into this LRU.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">*remaining</span></code></dt><dd><p>The number of pages left to reclaim, should be initialized by caller</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">(*shrink)(struct</span> <span class="pre">drm_gem_object</span> <span class="pre">*obj)</span></code></dt><dd><p>Callback to try to shrink/reclaim the object.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">(*shrink)(struct</span> <span class="pre">drm_gem_object</span> <span class="pre">*obj,</span> <span class="pre">struct</span> <span class="pre">ww_acquire_ctx</span> <span class="pre">*ticket)</span></code></dt><dd><p>Callback to try to shrink/reclaim the object.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">ww_acquire_ctx</span> <span class="pre">*ticket</span></code></dt><dd><p>Optional ww_acquire_ctx context to use for locking</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -2769,7 +2787,7 @@ them.</p>
 <p>For other devices then the helpers rely on CMA to provide buffer
 objects that are physically contiguous in memory.</p>
 <p>For GEM callback helpers in struct <a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gem_object</span></code></a> functions, see likewise
-named functions with an _object_ infix (e.g., drm_gem_dma_object_vmap() wraps
+named functions with an _object_ infix (e.g., <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_gem_dma_object_vmap()</span></code> wraps
 <a class="reference internal" href="#c.drm_gem_dma_vmap" title="drm_gem_dma_vmap"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gem_dma_vmap()</span></code></a>). These helpers perform the necessary type conversion.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.drm_gem_dma_object">
@@ -2817,7 +2835,7 @@ DMA addresses.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This function wraps drm_gem_dma_free_object(). Drivers that employ the DMA helpers
+<p>This function wraps <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_gem_dma_free_object()</span></code>. Drivers that employ the DMA helpers
 should use it as their <a class="reference internal" href="#c.drm_gem_object_funcs" title="drm_gem_object_funcs"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gem_object_funcs.free</span></code></a> handler.</p>
 </div>
 <dl class="c function">
@@ -3254,8 +3272,8 @@ error code on failure.</p>
 allocated using anonymous pageable memory.</p>
 <p>Functions that operate on the GEM object receive struct <a class="reference internal" href="#c.drm_gem_shmem_object" title="drm_gem_shmem_object"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gem_shmem_object</span></code></a>.
 For GEM callback helpers in struct <a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gem_object</span></code></a> functions, see likewise
-named functions with an _object_ infix (e.g., drm_gem_shmem_object_vmap() wraps
-drm_gem_shmem_vmap()). These helpers perform the necessary type conversion.</p>
+named functions with an _object_ infix (e.g., <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_gem_shmem_object_vmap()</span></code> wraps
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_gem_shmem_vmap()</span></code>). These helpers perform the necessary type conversion.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.drm_gem_shmem_object">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_gem_shmem_object</span></span></span><a class="headerlink" href="#c.drm_gem_shmem_object" title="Link to this definition">¶</a><br /></dt>
@@ -3434,8 +3452,9 @@ use it as their <a class="reference internal" href="#c.drm_gem_object_funcs" tit
 <div><p>Default shmem GEM operations</p>
 </div></blockquote>
 <p><strong>Description</strong></p>
-<p>This macro provides a shortcut for setting the shmem GEM operations in
-the <a class="reference internal" href="drm-internals.html#c.drm_driver" title="drm_driver"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_driver</span></code></a> structure.</p>
+<p>This macro provides a shortcut for setting the shmem GEM operations
+in the <a class="reference internal" href="drm-internals.html#c.drm_driver" title="drm_driver"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_driver</span></code></a> structure. Drivers that do not require an s/g table
+for imported buffers should use this.</p>
 </div></blockquote>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_gem_shmem_create">
@@ -3658,6 +3677,25 @@ another driver. Drivers that use the shmem helpers should set this as their
 <p>A pointer to a newly created GEM object or an ERR_PTR-encoded negative
 error code on failure.</p>
 </div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.drm_gem_shmem_prime_import_no_map">
+<span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><span class="n"><span class="pre">drm_gem_object</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">drm_gem_shmem_prime_import_no_map</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="drm-internals.html#c.drm_device" title="drm_device"><span class="n"><span class="pre">drm_device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_gem_shmem_prime_import_no_map" title="dma_buf"><span class="n"><span class="pre">dma_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dma_buf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_gem_shmem_prime_import_no_map" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Import dmabuf without mapping its sg_table</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_device</span> <span class="pre">*dev</span></code></dt><dd><p>Device to import into</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dma_buf</span> <span class="pre">*dma_buf</span></code></dt><dd><p>dma-buf object to import</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>Drivers that use the shmem helpers but also wants to import dmabuf without
+mapping its sg_table can use this as their <a class="reference internal" href="drm-internals.html#c.drm_driver" title="drm_driver"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_driver.gem_prime_import</span></code></a>
+implementation.</p>
+</div>
 </section>
 <section id="gem-vram-helper-functions-reference">
 <h3>GEM VRAM Helper Functions Reference<a class="headerlink" href="#gem-vram-helper-functions-reference" title="Link to this heading">¶</a></h3>
@@ -3717,10 +3755,6 @@ to userspace.</p>
 <p>You don’t have to clean up the instance of VRAM MM.
 <a class="reference internal" href="#c.drmm_vram_helper_init" title="drmm_vram_helper_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">drmm_vram_helper_init()</span></code></a> is a managed interface that installs a
 clean-up handler to run during the DRM device’s release.</p>
-<p>For drawing or scanout operations, rsp. buffer objects have to be pinned
-in video RAM. Call <a class="reference internal" href="#c.drm_gem_vram_pin" title="drm_gem_vram_pin"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gem_vram_pin()</span></code></a> with <code class="xref c c-type docutils literal notranslate"><span class="pre">DRM_GEM_VRAM_PL_FLAG_VRAM</span></code> or
-<code class="xref c c-type docutils literal notranslate"><span class="pre">DRM_GEM_VRAM_PL_FLAG_SYSTEM</span></code> to pin a buffer object in video RAM or system
-memory. Call <a class="reference internal" href="#c.drm_gem_vram_unpin" title="drm_gem_vram_unpin"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gem_vram_unpin()</span></code></a> to release the pinned object afterwards.</p>
 <p>A buffer object that is pinned in video RAM has a fixed address within that
 memory region. Call <a class="reference internal" href="#c.drm_gem_vram_offset" title="drm_gem_vram_offset"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gem_vram_offset()</span></code></a> to retrieve this value. Typically
 it’s used to program the hardware’s scanout engine for framebuffers, set
@@ -3770,9 +3804,9 @@ dedicated memory. The buffer object can be evicted to system memory if
 video memory becomes scarce.</p>
 <p>GEM VRAM objects perform reference counting for pin and mapping
 operations. So a buffer object that has been pinned N times with
-<a class="reference internal" href="#c.drm_gem_vram_pin" title="drm_gem_vram_pin"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gem_vram_pin()</span></code></a> must be unpinned N times with
-<a class="reference internal" href="#c.drm_gem_vram_unpin" title="drm_gem_vram_unpin"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gem_vram_unpin()</span></code></a>. The same applies to pairs of
-drm_gem_vram_kmap() and drm_gem_vram_kunmap(), as well as pairs of
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_gem_vram_pin()</span></code> must be unpinned N times with
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_gem_vram_unpin()</span></code>. The same applies to pairs of
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_gem_vram_kmap()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_gem_vram_kunmap()</span></code>, as well as pairs of
 <a class="reference internal" href="#c.drm_gem_vram_vmap" title="drm_gem_vram_vmap"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gem_vram_vmap()</span></code></a> and <a class="reference internal" href="#c.drm_gem_vram_vunmap" title="drm_gem_vram_vunmap"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gem_vram_vunmap()</span></code></a>.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_gem_vram_of_bo">
@@ -3917,7 +3951,7 @@ an <a class="reference internal" href="../core-api/kernel-api.html#c.ERR_PTR" ti
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>See ttm_bo_put() for more information.</p>
+<p>See <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ttm_bo_put()</span></code> for more information.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_gem_vram_offset">
@@ -3937,53 +3971,6 @@ memory. The buffer object has to be pinned to <code class="docutils literal notr
 <p><strong>Return</strong></p>
 <p>The buffer object’s offset in video memory on success, or
 a negative errno code otherwise.</p>
-</div>
-<dl class="c function">
-<dt class="sig sig-object c" id="c.drm_gem_vram_pin">
-<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_gem_vram_pin</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_gem_vram_object" title="drm_gem_vram_object"><span class="n"><span class="pre">drm_gem_vram_object</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">gbo</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="n"><span class="pre">pl_flag</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_gem_vram_pin" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Pins a GEM VRAM object in a region.</p>
-</dd></dl>
-
-<div class="kernelindent docutils container">
-<p><strong>Parameters</strong></p>
-<dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_gem_vram_object</span> <span class="pre">*gbo</span></code></dt><dd><p>the GEM VRAM object</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">pl_flag</span></code></dt><dd><p>a bitmask of possible memory regions</p>
-</dd>
-</dl>
-<p><strong>Description</strong></p>
-<p>Pinning a buffer object ensures that it is not evicted from
-a memory region. A pinned buffer object has to be unpinned before
-it can be pinned to another region. If the pl_flag argument is 0,
-the buffer is pinned at its current location (video RAM or system
-memory).</p>
-<p>Small buffer objects, such as cursor images, can lead to memory
-fragmentation if they are pinned in the middle of video RAM. This
-is especially a problem on devices with only a small amount of
-video RAM. Fragmentation can prevent the primary framebuffer from
-fitting in, even though there’s enough memory overall. The modifier
-DRM_GEM_VRAM_PL_FLAG_TOPDOWN marks the buffer object to be pinned
-at the high end of the memory region to avoid fragmentation.</p>
-<p><strong>Return</strong></p>
-<p>0 on success, or
-a negative error code otherwise.</p>
-</div>
-<dl class="c function">
-<dt class="sig sig-object c" id="c.drm_gem_vram_unpin">
-<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_gem_vram_unpin</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_gem_vram_object" title="drm_gem_vram_object"><span class="n"><span class="pre">drm_gem_vram_object</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">gbo</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_gem_vram_unpin" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Unpins a GEM VRAM object</p>
-</dd></dl>
-
-<div class="kernelindent docutils container">
-<p><strong>Parameters</strong></p>
-<dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_gem_vram_object</span> <span class="pre">*gbo</span></code></dt><dd><p>the GEM VRAM object</p>
-</dd>
-</dl>
-<p><strong>Return</strong></p>
-<p>0 on success, or
-a negative error code otherwise.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_gem_vram_vmap">
@@ -4100,10 +4087,8 @@ a negative error code otherwise.</p>
 pins the GEM VRAM objects of the plane’s new framebuffer to VRAM.
 Call <a class="reference internal" href="#c.drm_gem_vram_plane_helper_cleanup_fb" title="drm_gem_vram_plane_helper_cleanup_fb"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gem_vram_plane_helper_cleanup_fb()</span></code></a> to unpin them.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p>0 on success, or
+<p>0 on success, or
 a negative errno code otherwise.</p>
-</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_gem_vram_plane_helper_cleanup_fb">
@@ -4233,7 +4218,7 @@ callback.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Maps a GEM object with ttm_bo_vmap(). This function can be used as
+<p>Maps a GEM object with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ttm_bo_vmap()</span></code>. This function can be used as
 <a class="reference internal" href="#c.drm_gem_object_funcs" title="drm_gem_object_funcs"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gem_object_funcs.vmap</span></code></a> callback.</p>
 <p><strong>Return</strong></p>
 <p>0 on success, or a negative errno code otherwise.</p>
@@ -4253,7 +4238,7 @@ callback.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Unmaps a GEM object with ttm_bo_vunmap(). This function can be used as
+<p>Unmaps a GEM object with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ttm_bo_vunmap()</span></code>. This function can be used as
 <a class="reference internal" href="#c.drm_gem_object_funcs" title="drm_gem_object_funcs"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gem_object_funcs.vmap</span></code></a> callback.</p>
 </div>
 <dl class="c function">
@@ -4507,7 +4492,7 @@ is not called on this node concurrently.</p>
 <p><strong>Description</strong></p>
 <p>This checks whether <strong>tag</strong> is granted access to <strong>node</strong>. It is the same as
 <a class="reference internal" href="#c.drm_vma_node_is_allowed" title="drm_vma_node_is_allowed"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_vma_node_is_allowed()</span></code></a> but suitable as drop-in helper for TTM
-verify_access() callbacks.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">verify_access()</span></code> callbacks.</p>
 <p><strong>Return</strong></p>
 <p>0 if access is granted, -EACCES otherwise.</p>
 </div>
@@ -4579,6 +4564,7 @@ whole requested area (given the size in number of pages as <strong>pages</strong
 <p>Note that before lookup the vma offset manager lookup lock must be acquired
 with <a class="reference internal" href="#c.drm_vma_offset_lock_lookup" title="drm_vma_offset_lock_lookup"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_vma_offset_lock_lookup()</span></code></a>. See there for an example. This can then be
 used to implement weakly referenced lookups using <a class="reference internal" href="../core-api/kref.html#c.kref_get_unless_zero" title="kref_get_unless_zero"><code class="xref c c-func docutils literal notranslate"><span class="pre">kref_get_unless_zero()</span></code></a>.</p>
+<p><strong>Example</strong></p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>drm_vma_offset_lock_lookup(mgr);
 node = drm_vma_offset_lookup_locked(mgr);
 if (node)
@@ -4586,7 +4572,6 @@ if (node)
 drm_vma_offset_unlock_lookup(mgr);
 </pre></div>
 </div>
-<p><strong>Example</strong></p>
 <p><strong>Return</strong></p>
 <p>Returns NULL if no suitable node can be found. Otherwise, the best match
 is returned. It’s the caller’s responsibility to make sure the node doesn’t
@@ -5170,6 +5155,24 @@ using the PRIME helpers. It is used as the default in
 <a class="reference internal" href="#c.drm_gem_prime_handle_to_fd" title="drm_gem_prime_handle_to_fd"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gem_prime_handle_to_fd()</span></code></a>.</p>
 </div>
 <dl class="c function">
+<dt class="sig sig-object c" id="c.drm_gem_is_prime_exported_dma_buf">
+<span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_gem_is_prime_exported_dma_buf</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="drm-internals.html#c.drm_device" title="drm_device"><span class="n"><span class="pre">drm_device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_gem_is_prime_exported_dma_buf" title="dma_buf"><span class="n"><span class="pre">dma_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dma_buf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_gem_is_prime_exported_dma_buf" title="Link to this definition">¶</a><br /></dt>
+<dd><p>checks if the DMA-BUF was exported from a GEM object belonging to <strong>dev</strong>.</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_device</span> <span class="pre">*dev</span></code></dt><dd><p>drm_device to check against</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dma_buf</span> <span class="pre">*dma_buf</span></code></dt><dd><p>dma-buf object to import</p>
+</dd>
+</dl>
+<p><strong>Return</strong></p>
+<p>true if the DMA-BUF was exported from a GEM object belonging
+to <strong>dev</strong>, false otherwise.</p>
+</div>
+<dl class="c function">
 <dt class="sig sig-object c" id="c.drm_gem_prime_import_dev">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><span class="n"><span class="pre">drm_gem_object</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">drm_gem_prime_import_dev</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="drm-internals.html#c.drm_device" title="drm_device"><span class="n"><span class="pre">drm_device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_gem_prime_import_dev" title="dma_buf"><span class="n"><span class="pre">dma_buf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dma_buf</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../driver-api/infrastructure.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">attach_dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_gem_prime_import_dev" title="Link to this definition">¶</a><br /></dt>
 <dd><p>core implementation of the import callback</p>
@@ -5235,7 +5238,7 @@ implementation in <a class="reference internal" href="#c.drm_gem_prime_fd_to_han
 <p>Exports an sg table into an array of pages.</p>
 <p>This function is deprecated and strongly discouraged to be used.
 The page array is only useful for page faults and those can corrupt fields
-in the struct page if they are not handled by the exporting driver.</p>
+in the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code> if they are not handled by the exporting driver.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_prime_sg_to_dma_addr_array">
@@ -5286,7 +5289,7 @@ implementation.</p>
 resource allocator from the linux core if it suits them, the upside of drm_mm
 is that it’s in the DRM core. Which means that it’s easier to extend for
 some of the crazier special purpose needs of gpus.</p>
-<p>The main data struct is <a class="reference internal" href="#c.drm_mm" title="drm_mm"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_mm</span></code></a>, allocations are tracked in <a class="reference internal" href="#c.drm_mm_node" title="drm_mm_node"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_mm_node</span></code></a>.
+<p>The main data <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> <a class="reference internal" href="#c.drm_mm" title="drm_mm"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_mm</span></code></a>, allocations are tracked in <a class="reference internal" href="#c.drm_mm_node" title="drm_mm_node"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_mm_node</span></code></a>.
 Drivers are free to embed either of them into their own suitable
 datastructures. drm_mm itself will not do any memory allocations of its own,
 so if drivers choose not to embed nodes they need to still allocate them
@@ -5442,7 +5445,7 @@ embedded.</p>
 <div class="kernelindent docutils container">
 <p><strong>Definition</strong>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct drm_mm {
-    void (*color_adjust)(const struct drm_mm_node *node,unsigned long color, u64 *start, u64 *end);
+    void (*color_adjust)(const struct drm_mm_node *node, unsigned long color, u64 *start, u64 *end);
 };
 </pre></div>
 </div>
@@ -5621,7 +5624,7 @@ macros and similar internal functions.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>This iterator walks over all nodes in the range allocator. It is implemented
-with <a class="reference internal" href="../core-api/kernel-api.html#c.list_for_each" title="list_for_each"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_for_each()</span></code></a>, so not save against removal of elements.</p>
+with <a class="reference internal" href="../core-api/list.html#c.list_for_each" title="list_for_each"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_for_each()</span></code></a>, so not save against removal of elements.</p>
 </div>
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.drm_mm_for_each_node_safe">
@@ -5644,7 +5647,7 @@ with <a class="reference internal" href="../core-api/kernel-api.html#c.list_for_
 </dl>
 <p><strong>Description</strong></p>
 <p>This iterator walks over all nodes in the range allocator. It is implemented
-with <a class="reference internal" href="../core-api/kernel-api.html#c.list_for_each_safe" title="list_for_each_safe"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_for_each_safe()</span></code></a>, so save against removal of elements.</p>
+with <a class="reference internal" href="../core-api/list.html#c.list_for_each_safe" title="list_for_each_safe"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_for_each_safe()</span></code></a>, so save against removal of elements.</p>
 </div>
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.drm_mm_for_each_hole">
@@ -5669,7 +5672,7 @@ with <a class="reference internal" href="../core-api/kernel-api.html#c.list_for_
 </dl>
 <p><strong>Description</strong></p>
 <p>This iterator walks over all holes in the range allocator. It is implemented
-with <a class="reference internal" href="../core-api/kernel-api.html#c.list_for_each" title="list_for_each"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_for_each()</span></code></a>, so not save against removal of elements. <strong>entry</strong> is used
+with <a class="reference internal" href="../core-api/list.html#c.list_for_each" title="list_for_each"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_for_each()</span></code></a>, so not save against removal of elements. <strong>entry</strong> is used
 internally and will not reflect a real drm_mm_node for the very first hole.
 Hence users of this iterator may not access it.</p>
 <p>Implementation Note:
@@ -5767,7 +5770,7 @@ allocated in it.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>This iterator walks over all nodes in the range allocator that lie
-between <strong>start</strong> and <strong>end</strong>. It is implemented similarly to <a class="reference internal" href="../core-api/kernel-api.html#c.list_for_each" title="list_for_each"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_for_each()</span></code></a>,
+between <strong>start</strong> and <strong>end</strong>. It is implemented similarly to <a class="reference internal" href="../core-api/list.html#c.list_for_each" title="list_for_each"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_for_each()</span></code></a>,
 but using the internal interval tree to accelerate the search for the
 starting node, and so not safe against removal of elements. It assumes
 that <strong>end</strong> is within (or is the upper limit of) the drm_mm allocator.
@@ -5946,11 +5949,11 @@ hole.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Nodes <strong>must</strong> be removed in exactly the reverse order from the scan list as
-they have been added (e.g. using <a class="reference internal" href="../core-api/kernel-api.html#c.list_add" title="list_add"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_add()</span></code></a> as they are added and then
-<a class="reference internal" href="../core-api/kernel-api.html#c.list_for_each" title="list_for_each"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_for_each()</span></code></a> over that eviction list to remove), otherwise the internal
+they have been added (e.g. using <a class="reference internal" href="../core-api/list.html#c.list_add" title="list_add"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_add()</span></code></a> as they are added and then
+<a class="reference internal" href="../core-api/list.html#c.list_for_each" title="list_for_each"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_for_each()</span></code></a> over that eviction list to remove), otherwise the internal
 state of the memory manager will be corrupted.</p>
 <p>When the scan list is empty, the selected memory nodes can be freed. An
-immediately following drm_mm_insert_node_in_range_generic() or one of the
+immediately following <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_mm_insert_node_in_range_generic()</span></code> or one of the
 simpler versions of that function with !DRM_MM_SEARCH_BEST will then return
 the just freed block (because it’s at the top of the free_stack list).</p>
 <p><strong>Return</strong></p>
@@ -6037,7 +6040,7 @@ GPU’s virtual address (VA) space and manages the corresponding virtual
 mappings represented by <a class="reference internal" href="#c.drm_gpuva" title="drm_gpuva"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuva</span></code></a> objects. It also keeps track of the
 mapping’s backing <a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gem_object</span></code></a> buffers.</p>
 <p><a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gem_object</span></code></a> buffers maintain a list of <a class="reference internal" href="#c.drm_gpuva" title="drm_gpuva"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuva</span></code></a> objects representing
-all existent GPU VA mappings using this <a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gem_object</span></code></a> as backing buffer.</p>
+all existing GPU VA mappings using this <a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gem_object</span></code></a> as backing buffer.</p>
 <p>GPU VAs can be flagged as sparse, such that drivers may use GPU VAs to also
 keep track of sparse PTEs in order to support Vulkan ‘Sparse Resources’.</p>
 <p>The GPU VA manager internally uses a rb-tree to manage the
@@ -6062,7 +6065,7 @@ GPUVM’s shared <a class="reference internal" href="../driver-api/dma-buf.html#
 <a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gem_object</span></code></a>, such as the <a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gem_object</span></code></a> containing the root page table,
 but it can also be a ‘dummy’ object, which can be allocated with
 <a class="reference internal" href="#c.drm_gpuvm_resv_object_alloc" title="drm_gpuvm_resv_object_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gpuvm_resv_object_alloc()</span></code></a>.</p>
-<p>In order to connect a <a class="reference internal" href="#c.drm_gpuva" title="drm_gpuva"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_gpuva</span></code></a> its backing <a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gem_object</span></code></a> each
+<p>In order to connect a <a class="reference internal" href="#c.drm_gpuva" title="drm_gpuva"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_gpuva</span></code></a> to its backing <a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gem_object</span></code></a> each
 <a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gem_object</span></code></a> maintains a list of <a class="reference internal" href="#c.drm_gpuvm_bo" title="drm_gpuvm_bo"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm_bo</span></code></a> structures, and each
 <a class="reference internal" href="#c.drm_gpuvm_bo" title="drm_gpuvm_bo"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm_bo</span></code></a> contains a list of <a class="reference internal" href="#c.drm_gpuva" title="drm_gpuva"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuva</span></code></a> structures.</p>
 <p>A <a class="reference internal" href="#c.drm_gpuvm_bo" title="drm_gpuvm_bo"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm_bo</span></code></a> is an abstraction that represents a combination of a
@@ -6070,7 +6073,7 @@ but it can also be a ‘dummy’ object, which can be allocated with
 This is ensured by the API through <a class="reference internal" href="#c.drm_gpuvm_bo_obtain" title="drm_gpuvm_bo_obtain"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gpuvm_bo_obtain()</span></code></a> and
 <a class="reference internal" href="#c.drm_gpuvm_bo_obtain_prealloc" title="drm_gpuvm_bo_obtain_prealloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gpuvm_bo_obtain_prealloc()</span></code></a> which first look into the corresponding
 <a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gem_object</span></code></a> list of <code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm_bos</span></code> for an existing instance of this
-particular combination. If not existent a new instance is created and linked
+particular combination. If not present, a new instance is created and linked
 to the <a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gem_object</span></code></a>.</p>
 <p><a class="reference internal" href="#c.drm_gpuvm_bo" title="drm_gpuvm_bo"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm_bo</span></code></a> structures, since unique for a given <a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm</span></code></a>, are also used
 as entry for the <a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm</span></code></a>’s lists of external and evicted objects. Those
@@ -6092,7 +6095,7 @@ structure is different than the <a class="reference internal" href="#c.drm_gpuvm
 GPU VA manager also provides functions to let the <a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm</span></code></a> calculate a
 sequence of operations to satisfy a given map or unmap request.</p>
 <p>Therefore the DRM GPU VA manager provides an algorithm implementing splitting
-and merging of existent GPU VA mappings with the ones that are requested to
+and merging of existing GPU VA mappings with the ones that are requested to
 be mapped or unmapped. This feature is required by the Vulkan API to
 implement Vulkan ‘Sparse Memory Bindings’ - drivers UAPIs often refer to this
 as VM BIND.</p>
@@ -6101,7 +6104,7 @@ containing map, unmap and remap operations for a given newly requested
 mapping. The sequence of callbacks represents the set of operations to
 execute in order to integrate the new mapping cleanly into the current state
 of the GPU VA space.</p>
-<p>Depending on how the new GPU VA mapping intersects with the existent mappings
+<p>Depending on how the new GPU VA mapping intersects with the existing mappings
 of the GPU VA space the <a class="reference internal" href="#c.drm_gpuvm_ops" title="drm_gpuvm_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm_ops</span></code></a> callbacks contain an arbitrary amount
 of unmap operations, a maximum of two remap operations and a single map
 operation. The caller might receive no callback at all if no operation is
@@ -6117,15 +6120,15 @@ update the <a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><
 for remap operations. This is possible since <a class="reference internal" href="#c.drm_gpuva_op_remap" title="drm_gpuva_op_remap"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuva_op_remap</span></code></a> consists of
 one unmap operation and one or two map operations, such that drivers can
 derive the page table update delta accordingly.</p>
-<p>Note that there can’t be more than two existent mappings to split up, one at
+<p>Note that there can’t be more than two existing mappings to split up, one at
 the beginning and one at the end of the new mapping, hence there is a
 maximum of two remap operations.</p>
 <p>Analogous to <a class="reference internal" href="#c.drm_gpuvm_sm_map" title="drm_gpuvm_sm_map"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gpuvm_sm_map()</span></code></a> <a class="reference internal" href="#c.drm_gpuvm_sm_unmap" title="drm_gpuvm_sm_unmap"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gpuvm_sm_unmap()</span></code></a> uses <a class="reference internal" href="#c.drm_gpuvm_ops" title="drm_gpuvm_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm_ops</span></code></a> to
 call back into the driver in order to unmap a range of GPU VA space. The
-logic behind this function is way simpler though: For all existent mappings
+logic behind this function is way simpler though: For all existing mappings
 enclosed by the given range unmap operations are created. For mappings which
-are only partically located within the given range, remap operations are
-created such that those mappings are split up and re-mapped partically.</p>
+are only partially located within the given range, remap operations are
+created such that those mappings are split up and re-mapped partially.</p>
 <p>As an alternative to <a class="reference internal" href="#c.drm_gpuvm_sm_map" title="drm_gpuvm_sm_map"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gpuvm_sm_map()</span></code></a> and <a class="reference internal" href="#c.drm_gpuvm_sm_unmap" title="drm_gpuvm_sm_unmap"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gpuvm_sm_unmap()</span></code></a>,
 <a class="reference internal" href="#c.drm_gpuvm_sm_map_ops_create" title="drm_gpuvm_sm_map_ops_create"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gpuvm_sm_map_ops_create()</span></code></a> and <a class="reference internal" href="#c.drm_gpuvm_sm_unmap_ops_create" title="drm_gpuvm_sm_unmap_ops_create"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gpuvm_sm_unmap_ops_create()</span></code></a> can be used
 to directly obtain an instance of <a class="reference internal" href="#c.drm_gpuva_ops" title="drm_gpuva_ops"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_gpuva_ops</span></code></a> containing a list of
@@ -6142,7 +6145,7 @@ dma-fence signalling critical path.</p>
 <a class="reference internal" href="#c.drm_gpuvm_sm_unmap" title="drm_gpuvm_sm_unmap"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gpuvm_sm_unmap()</span></code></a>. However, it might be more convenient to use the
 provided helper functions <a class="reference internal" href="#c.drm_gpuva_map" title="drm_gpuva_map"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gpuva_map()</span></code></a>, <a class="reference internal" href="#c.drm_gpuva_remap" title="drm_gpuva_remap"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gpuva_remap()</span></code></a> and
 <a class="reference internal" href="#c.drm_gpuva_unmap" title="drm_gpuva_unmap"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gpuva_unmap()</span></code></a> instead.</p>
-<p>The following diagram depicts the basic relationships of existent GPU VA
+<p>The following diagram depicts the basic relationships of existing GPU VA
 mappings, a newly requested mapping and the resulting mappings as implemented
 by <a class="reference internal" href="#c.drm_gpuvm_sm_map" title="drm_gpuvm_sm_map"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gpuvm_sm_map()</span></code></a> - it doesn’t cover any arbitrary combinations of these.</p>
 <ol class="arabic">
@@ -6186,7 +6189,7 @@ new: |-----------| (bo_offset=n)
 </div>
 </li>
 <li><p>Existent mapping is a left aligned subset of the requested one, hence
-replace the existent one.</p>
+replace the existing one.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>     0  a  1
 old: |-----|       (bo_offset=n)
 
@@ -6203,9 +6206,9 @@ new: |-----------| (bo_offset=n)
 and/or non-contiguous BO offset.</p>
 </div>
 </li>
-<li><p>Requested mapping’s range is a left aligned subset of the existent one,
+<li><p>Requested mapping’s range is a left aligned subset of the existing one,
 but backed by a different BO. Hence, map the requested mapping and split
-the existent one adjusting its BO offset.</p>
+the existing one adjusting its BO offset.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>     0     a     2
 old: |-----------| (bo_offset=n)
 
@@ -6235,9 +6238,9 @@ new: |-----|-----| (a.bo_offset=n, a&#39;.bo_offset=n+1)
 </pre></div>
 </div>
 </li>
-<li><p>Requested mapping’s range is a right aligned subset of the existent one,
+<li><p>Requested mapping’s range is a right aligned subset of the existing one,
 but backed by a different BO. Hence, map the requested mapping and split
-the existent one, without adjusting the BO offset.</p>
+the existing one, without adjusting the BO offset.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>     0     a     2
 old: |-----------| (bo_offset=n)
 
@@ -6264,7 +6267,7 @@ new: |-----|-----| (a&#39;.bo_offset=n, a.bo_offset=n+1)
 </li>
 <li><p>Existent mapping is overlapped at the end by the requested mapping backed
 by a different BO. Hence, map the requested mapping and split up the
-existent one, without adjusting the BO offset.</p>
+existing one, without adjusting the BO offset.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>     0     a     2
 old: |-----------|       (bo_offset=n)
 
@@ -6290,9 +6293,9 @@ new: |-----|-----------| (a&#39;.bo_offset=n, a.bo_offset=n+1)
 </pre></div>
 </div>
 </li>
-<li><p>Requested mapping’s range is a centered subset of the existent one
+<li><p>Requested mapping’s range is a centered subset of the existing one
 having a different backing BO. Hence, map the requested mapping and split
-up the existent one in two mappings, adjusting the BO offset of the right
+up the existing one in two mappings, adjusting the BO offset of the right
 one accordingly.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>     0        a        3
 old: |-----------------| (bo_offset=n)
@@ -6305,7 +6308,7 @@ new: |-----|-----|-----| (a.bo_offset=n,b.bo_offset=m,a&#39;.bo_offset=n+2)
 </pre></div>
 </div>
 </li>
-<li><p>Requested mapping is a contiguous subset of the existent one. Split it
+<li><p>Requested mapping is a contiguous subset of the existing one. Split it
 up, but indicate that the backing PTEs could be kept.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>     0        a        3
 old: |-----------------| (bo_offset=n)
@@ -6319,7 +6322,7 @@ old: |-----|-----|-----| (a&#39;.bo_offset=n, a.bo_offset=n+1, a&#39;&#39;.bo_of
 </div>
 </li>
 <li><p>Existent mapping is a right aligned subset of the requested one, hence
-replace the existent one.</p>
+replace the existing one.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>           1  a  2
 old:       |-----| (bo_offset=n+1)
 
@@ -6337,7 +6340,7 @@ and/or non-contiguous bo_offset.</p>
 </div>
 </li>
 <li><p>Existent mapping is a centered subset of the requested one, hence
-replace the existent one.</p>
+replace the existing one.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>           1  a  2
 old:       |-----| (bo_offset=n+1)
 
@@ -6356,7 +6359,7 @@ and/or non-contiguous bo_offset.</p>
 </li>
 <li><p>Existent mappings is overlapped at the beginning by the requested mapping
 backed by a different BO. Hence, map the requested mapping and split up
-the existent one, adjusting its BO offset accordingly.</p>
+the existing one, adjusting its BO offset accordingly.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>           1     a     3
 old:       |-----------| (bo_offset=n)
 
@@ -6409,8 +6412,8 @@ hence do not require internal locking.</p>
 <a class="reference internal" href="#c.drm_gpuva_op" title="drm_gpuva_op"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuva_op</span></code></a> in order to satisfy a given map or unmap request and how to
 make use of them.</p>
 <p>The below code is strictly limited to illustrate the generic usage pattern.
-To maintain simplicitly, it doesn’t make use of any abstractions for common
-code, different (asyncronous) stages with fence signalling critical paths,
+To maintain simplicity, it doesn’t make use of any abstractions for common
+code, different (asynchronous) stages with fence signalling critical paths,
 any other helpers or error handling in terms of freeing memory and dropping
 previously taken locks.</p>
 <ol class="arabic">
@@ -6418,7 +6421,7 @@ previously taken locks.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>// Allocates a new &amp;drm_gpuva.
 struct drm_gpuva * driver_gpuva_alloc(void);
 
-// Typically drivers would embedd the &amp;drm_gpuvm and &amp;drm_gpuva
+// Typically drivers would embed the &amp;drm_gpuvm and &amp;drm_gpuva
 // structure in individual driver structures and lock the dma-resv with
 // drm_exec or similar helpers.
 int driver_mapping_create(struct drm_gpuvm *gpuvm,
@@ -6522,7 +6525,7 @@ static const struct drm_gpuvm_ops driver_gpuvm_ops = {
         .sm_step_unmap = driver_gpuva_unmap,
 };
 
-// Typically drivers would embedd the &amp;drm_gpuvm and &amp;drm_gpuva
+// Typically drivers would embed the &amp;drm_gpuvm and &amp;drm_gpuva
 // structure in individual driver structures and lock the dma-resv with
 // drm_exec or similar helpers.
 int driver_mapping_create(struct drm_gpuvm *gpuvm,
@@ -6675,7 +6678,7 @@ int driver_gpuva_unmap(struct drm_gpuva_op *op, void *__ctx)
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">va.addr</span></code></dt><dd><p>the start address</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">gem</span></code></dt><dd><p>structure containing the <a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gem_object</span></code></a> and it’s offset</p>
+<dt><code class="docutils literal notranslate"><span class="pre">gem</span></code></dt><dd><p>structure containing the <a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gem_object</span></code></a> and its offset</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">gem.offset</span></code></dt><dd><p>the offset within the <a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gem_object</span></code></a></p>
 </dd>
@@ -6950,7 +6953,7 @@ overlap)</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>This iterator walks over all <code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvas</span></code> in the <a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm</span></code></a> that lie
-between <strong>start__</strong> and <strong>end__</strong>. It is implemented similarly to <a class="reference internal" href="../core-api/kernel-api.html#c.list_for_each" title="list_for_each"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_for_each()</span></code></a>,
+between <strong>start__</strong> and <strong>end__</strong>. It is implemented similarly to <a class="reference internal" href="../core-api/list.html#c.list_for_each" title="list_for_each"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_for_each()</span></code></a>,
 but is using the <a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm</span></code></a>’s internal interval tree to accelerate
 the search for the starting <a class="reference internal" href="#c.drm_gpuva" title="drm_gpuva"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuva</span></code></a>, and hence isn’t safe against removal
 of elements. It assumes that <strong>end__</strong> is within (or is the upper limit of) the
@@ -6984,7 +6987,7 @@ overlap)</p>
 <p><strong>Description</strong></p>
 <p>This iterator walks over all <code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvas</span></code> in the <a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm</span></code></a> that lie
 between <strong>start__</strong> and <strong>end__</strong>. It is implemented similarly to
-<a class="reference internal" href="../core-api/kernel-api.html#c.list_for_each_safe" title="list_for_each_safe"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_for_each_safe()</span></code></a>, but is using the <a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm</span></code></a>’s internal interval
+<a class="reference internal" href="../core-api/list.html#c.list_for_each_safe" title="list_for_each_safe"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_for_each_safe()</span></code></a>, but is using the <a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm</span></code></a>’s internal interval
 tree to accelerate the search for the starting <a class="reference internal" href="#c.drm_gpuva" title="drm_gpuva"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuva</span></code></a>, and hence is safe
 against removal of elements. It assumes that <strong>end__</strong> is within (or is the
 upper limit of) the <a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm</span></code></a>. This iterator does not skip over the
@@ -7032,7 +7035,7 @@ upper limit of) the <a class="reference internal" href="#c.drm_gpuvm" title="drm
 </dl>
 <p><strong>Description</strong></p>
 <p>This iterator walks over all <a class="reference internal" href="#c.drm_gpuva" title="drm_gpuva"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuva</span></code></a> structures associated with the given
-<a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm</span></code></a>. It is implemented with <a class="reference internal" href="../core-api/kernel-api.html#c.list_for_each_entry_safe" title="list_for_each_entry_safe"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_for_each_entry_safe()</span></code></a>, and
+<a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm</span></code></a>. It is implemented with <a class="reference internal" href="../core-api/list.html#c.list_for_each_entry_safe" title="list_for_each_entry_safe"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_for_each_entry_safe()</span></code></a>, and
 hence safe against the removal of elements.</p>
 </div>
 <dl class="c struct">
@@ -7277,7 +7280,7 @@ call this without already holding a reference. No locks required.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>This iterator walks over all <a class="reference internal" href="#c.drm_gpuva" title="drm_gpuva"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuva</span></code></a> structures associated with the
-<a class="reference internal" href="#c.drm_gpuvm_bo" title="drm_gpuvm_bo"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm_bo</span></code></a>. It is implemented with <a class="reference internal" href="../core-api/kernel-api.html#c.list_for_each_entry_safe" title="list_for_each_entry_safe"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_for_each_entry_safe()</span></code></a>, hence
+<a class="reference internal" href="#c.drm_gpuvm_bo" title="drm_gpuvm_bo"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm_bo</span></code></a>. It is implemented with <a class="reference internal" href="../core-api/list.html#c.list_for_each_entry_safe" title="list_for_each_entry_safe"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_for_each_entry_safe()</span></code></a>, hence
 it is save against removal of elements.</p>
 <p>The caller must hold the GEM’s gpuva lock.</p>
 </div>
@@ -7333,7 +7336,7 @@ operation</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">va.range</span></code></dt><dd><p>the range of the new mapping</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">gem</span></code></dt><dd><p>structure containing the <a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gem_object</span></code></a> and it’s offset</p>
+<dt><code class="docutils literal notranslate"><span class="pre">gem</span></code></dt><dd><p>structure containing the <a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gem_object</span></code></a> and its offset</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">gem.offset</span></code></dt><dd><p>the offset within the <a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gem_object</span></code></a></p>
 </dd>
@@ -7458,7 +7461,7 @@ DRM GPU VA manager.</p>
 </div>
 <p><strong>Members</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">entry</span></code></dt><dd><p>The <code class="xref c c-type docutils literal notranslate"><span class="pre">list_head</span></code> used to distribute instances of this struct within
+<dt><code class="docutils literal notranslate"><span class="pre">entry</span></code></dt><dd><p>The <code class="xref c c-type docutils literal notranslate"><span class="pre">list_head</span></code> used to distribute instances of this <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">within</span></code>
 <a class="reference internal" href="#c.drm_gpuva_ops" title="drm_gpuva_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuva_ops</span></code></a>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">op</span></code></dt><dd><p>the type of the operation</p>
@@ -7538,7 +7541,7 @@ DRM GPU VA manager.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>This iterator walks over all ops within a given list of operations. It is
-implemented with <a class="reference internal" href="../core-api/kernel-api.html#c.list_for_each_safe" title="list_for_each_safe"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_for_each_safe()</span></code></a>, so save against removal of elements.</p>
+implemented with <a class="reference internal" href="../core-api/list.html#c.list_for_each_safe" title="list_for_each_safe"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_for_each_safe()</span></code></a>, so save against removal of elements.</p>
 </div>
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.drm_gpuva_for_each_op_from_reverse">
@@ -7704,7 +7707,7 @@ free the previously allocated memory accordingly.</p>
 <p>Drivers receive this callback for every evicted <a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gem_object</span></code></a> being
 mapped in the corresponding <a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm</span></code></a>.</p>
 <p>Typically, drivers would call their driver specific variant of
-ttm_bo_validate() from within this callback.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ttm_bo_validate()</span></code> from within this callback.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">sm_step_map</span></code></dt><dd><p>called from <a class="reference internal" href="#c.drm_gpuvm_sm_map" title="drm_gpuvm_sm_map"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm_sm_map</span></code></a> to finally insert the
 mapping once all previous steps were completed</p>
@@ -7724,10 +7727,10 @@ mapping is requested.</p>
 used.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">sm_step_unmap</span></code></dt><dd><p>called from <a class="reference internal" href="#c.drm_gpuvm_sm_map" title="drm_gpuvm_sm_map"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm_sm_map</span></code></a> and
-<a class="reference internal" href="#c.drm_gpuvm_sm_unmap" title="drm_gpuvm_sm_unmap"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm_sm_unmap</span></code></a> to unmap an existent mapping</p>
-<p>This callback is called when existent mapping needs to be unmapped.
+<a class="reference internal" href="#c.drm_gpuvm_sm_unmap" title="drm_gpuvm_sm_unmap"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm_sm_unmap</span></code></a> to unmap an existing mapping</p>
+<p>This callback is called when existing mapping needs to be unmapped.
 This is the case when either a newly requested mapping encloses an
-existent mapping or an unmap of an existent mapping is requested.</p>
+existing mapping or an unmap of an existing mapping is requested.</p>
 <p>The <code class="xref c c-type docutils literal notranslate"><span class="pre">priv</span></code> pointer matches the one the driver passed to
 <a class="reference internal" href="#c.drm_gpuvm_sm_map" title="drm_gpuvm_sm_map"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm_sm_map</span></code></a> or <a class="reference internal" href="#c.drm_gpuvm_sm_unmap" title="drm_gpuvm_sm_unmap"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm_sm_unmap</span></code></a>, respectively.</p>
 <p>Can be NULL if neither <a class="reference internal" href="#c.drm_gpuvm_sm_map" title="drm_gpuvm_sm_map"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm_sm_map</span></code></a> nor <a class="reference internal" href="#c.drm_gpuvm_sm_unmap" title="drm_gpuvm_sm_unmap"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm_sm_unmap</span></code></a> is
@@ -7878,7 +7881,7 @@ order to serve as root GEM object providing the <code class="xref c c-type docut
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_gpuvm_prepare_objects">
 <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_gpuvm_prepare_objects</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><span class="n"><span class="pre">drm_gpuvm</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">gpuvm</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_exec" title="drm_exec"><span class="n"><span class="pre">drm_exec</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">exec</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">num_fences</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_gpuvm_prepare_objects" title="Link to this definition">¶</a><br /></dt>
-<dd><p>prepare all assoiciated BOs</p>
+<dd><p>prepare all associated BOs</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -7897,13 +7900,13 @@ order to serve as root GEM object providing the <code class="xref c c-type docut
 is called instead.</p>
 <p>Using this function directly, it is the drivers responsibility to call
 <a class="reference internal" href="#c.drm_exec_init" title="drm_exec_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_exec_init()</span></code></a> and <a class="reference internal" href="#c.drm_exec_fini" title="drm_exec_fini"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_exec_fini()</span></code></a> accordingly.</p>
+<p><strong>Note</strong></p>
+<p>This function is safe against concurrent insertion and removal of
+external objects, however it is not safe against concurrent usage itself.</p>
 <p>Drivers need to make sure to protect this case with either an outer VM lock
 or by calling <a class="reference internal" href="#c.drm_gpuvm_prepare_vm" title="drm_gpuvm_prepare_vm"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gpuvm_prepare_vm()</span></code></a> before this function within the
 <a class="reference internal" href="#c.drm_exec_until_all_locked" title="drm_exec_until_all_locked"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_exec_until_all_locked()</span></code></a> loop, such that the GPUVM’s dma-resv lock ensures
 mutual exclusion.</p>
-<p><strong>Note</strong></p>
-<p>This function is safe against concurrent insertion and removal of
-external objects, however it is not safe against concurrent usage itself.</p>
 <p><strong>Return</strong></p>
 <p>0 on success, negative error code on failure.</p>
 </div>
@@ -7937,7 +7940,7 @@ instead.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_gpuvm_exec_lock">
 <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_gpuvm_exec_lock</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_gpuvm_exec" title="drm_gpuvm_exec"><span class="n"><span class="pre">drm_gpuvm_exec</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">vm_exec</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_gpuvm_exec_lock" title="Link to this definition">¶</a><br /></dt>
-<dd><p>lock all dma-resv of all assoiciated BOs</p>
+<dd><p>lock all dma-resv of all associated BOs</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -7949,7 +7952,7 @@ instead.</p>
 <p><strong>Description</strong></p>
 <p>Acquires all dma-resv locks of all <code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gem_objects</span></code> the given
 <a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm</span></code></a> contains mappings of.</p>
-<p>Addionally, when calling this function with <a class="reference internal" href="#c.drm_gpuvm_exec" title="drm_gpuvm_exec"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_gpuvm_exec</span></code></a>::extra
+<p>Additionally, when calling this function with <a class="reference internal" href="#c.drm_gpuvm_exec" title="drm_gpuvm_exec"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_gpuvm_exec</span></code></a>::extra
 being set the driver receives the given <strong>fn</strong> callback to lock additional
 dma-resv in the context of the <a class="reference internal" href="#c.drm_gpuvm_exec" title="drm_gpuvm_exec"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm_exec</span></code></a> instance. Typically, drivers
 would call <a class="reference internal" href="#c.drm_exec_prepare_obj" title="drm_exec_prepare_obj"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_exec_prepare_obj()</span></code></a> from within this callback.</p>
@@ -7959,7 +7962,7 @@ would call <a class="reference internal" href="#c.drm_exec_prepare_obj" title="d
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_gpuvm_exec_lock_array">
 <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_gpuvm_exec_lock_array</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_gpuvm_exec" title="drm_gpuvm_exec"><span class="n"><span class="pre">drm_gpuvm_exec</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">vm_exec</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><span class="n"><span class="pre">drm_gem_object</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">objs</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">num_objs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_gpuvm_exec_lock_array" title="Link to this definition">¶</a><br /></dt>
-<dd><p>lock all dma-resv of all assoiciated BOs</p>
+<dd><p>lock all dma-resv of all associated BOs</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -8057,7 +8060,7 @@ objects being mapped in the given <a class="reference internal" href="#c.drm_gpu
 </dl>
 <p><strong>Description</strong></p>
 <p>If provided by the driver, this function uses the <a class="reference internal" href="#c.drm_gpuvm_ops" title="drm_gpuvm_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm_ops</span></code></a>
-vm_bo_alloc() callback to allocate.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vm_bo_alloc()</span></code> callback to allocate.</p>
 <p><strong>Return</strong></p>
 <p>a pointer to the <a class="reference internal" href="#c.drm_gpuvm_bo" title="drm_gpuvm_bo"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm_bo</span></code></a> on success, NULL on failure</p>
 </div>
@@ -8107,7 +8110,7 @@ count of the <a class="reference internal" href="#c.drm_gpuvm_bo" title="drm_gpu
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_gpuvm_bo_obtain">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_gpuvm_bo" title="drm_gpuvm_bo"><span class="n"><span class="pre">drm_gpuvm_bo</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">drm_gpuvm_bo_obtain</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><span class="n"><span class="pre">drm_gpuvm</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">gpuvm</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><span class="n"><span class="pre">drm_gem_object</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">obj</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_gpuvm_bo_obtain" title="Link to this definition">¶</a><br /></dt>
-<dd><p>obtains and instance of the <a class="reference internal" href="#c.drm_gpuvm_bo" title="drm_gpuvm_bo"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm_bo</span></code></a> for the given <a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm</span></code></a> and <a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gem_object</span></code></a></p>
+<dd><p>obtains an instance of the <a class="reference internal" href="#c.drm_gpuvm_bo" title="drm_gpuvm_bo"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm_bo</span></code></a> for the given <a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm</span></code></a> and <a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gem_object</span></code></a></p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -8130,7 +8133,7 @@ count of the <a class="reference internal" href="#c.drm_gpuvm_bo" title="drm_gpu
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_gpuvm_bo_obtain_prealloc">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_gpuvm_bo" title="drm_gpuvm_bo"><span class="n"><span class="pre">drm_gpuvm_bo</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">drm_gpuvm_bo_obtain_prealloc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_gpuvm_bo" title="drm_gpuvm_bo"><span class="n"><span class="pre">drm_gpuvm_bo</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">__vm_bo</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_gpuvm_bo_obtain_prealloc" title="Link to this definition">¶</a><br /></dt>
-<dd><p>obtains and instance of the <a class="reference internal" href="#c.drm_gpuvm_bo" title="drm_gpuvm_bo"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm_bo</span></code></a> for the given <a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm</span></code></a> and <a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gem_object</span></code></a></p>
+<dd><p>obtains an instance of the <a class="reference internal" href="#c.drm_gpuvm_bo" title="drm_gpuvm_bo"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm_bo</span></code></a> for the given <a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm</span></code></a> and <a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gem_object</span></code></a></p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -8182,7 +8185,7 @@ actually.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Adds a <a class="reference internal" href="#c.drm_gpuvm_bo" title="drm_gpuvm_bo"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm_bo</span></code></a> to or removes it from the <code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvms</span></code> evicted list.</p>
+<p>Adds a <a class="reference internal" href="#c.drm_gpuvm_bo" title="drm_gpuvm_bo"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm_bo</span></code></a> to or removes it from the <a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm</span></code></a>’s evicted list.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_gpuva_insert">
@@ -8220,7 +8223,7 @@ VA space, such as <a class="reference internal" href="#c.drm_gpuvm_for_each_va_s
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This removes the given <code class="xref c c-type docutils literal notranslate"><span class="pre">va</span></code> from the underlaying tree.</p>
+<p>This removes the given <code class="xref c c-type docutils literal notranslate"><span class="pre">va</span></code> from the underlying tree.</p>
 <p>It is safe to use this function using the safe versions of iterating the GPU
 VA space, such as <a class="reference internal" href="#c.drm_gpuvm_for_each_va_safe" title="drm_gpuvm_for_each_va_safe"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gpuvm_for_each_va_safe()</span></code></a> and
 <a class="reference internal" href="#c.drm_gpuvm_for_each_va_range_safe" title="drm_gpuvm_for_each_va_range_safe"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gpuvm_for_each_va_range_safe()</span></code></a>.</p>
@@ -8428,7 +8431,7 @@ is returned.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_gpuvm_sm_map">
 <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_gpuvm_sm_map</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><span class="n"><span class="pre">drm_gpuvm</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">gpuvm</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">priv</span></span>, <span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="n"><span class="pre">req_addr</span></span>, <span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="n"><span class="pre">req_range</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><span class="n"><span class="pre">drm_gem_object</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">req_obj</span></span>, <span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="n"><span class="pre">req_offset</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_gpuvm_sm_map" title="Link to this definition">¶</a><br /></dt>
-<dd><p>creates the <a class="reference internal" href="#c.drm_gpuva_op" title="drm_gpuva_op"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuva_op</span></code></a> split/merge steps</p>
+<dd><p>calls the <a class="reference internal" href="#c.drm_gpuva_op" title="drm_gpuva_op"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuva_op</span></code></a> split/merge steps</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -8457,7 +8460,7 @@ later processing neither this function nor <a class="reference internal" href="#
 be called before the <a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm</span></code></a>’s view of the GPU VA space was
 updated with the previous set of operations. To update the
 <a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm</span></code></a>’s view of the GPU VA space <a class="reference internal" href="#c.drm_gpuva_insert" title="drm_gpuva_insert"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gpuva_insert()</span></code></a>,
-drm_gpuva_destroy_locked() and/or drm_gpuva_destroy_unlocked() should be
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_gpuva_destroy_locked()</span></code> and/or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_gpuva_destroy_unlocked()</span></code> should be
 used.</p>
 <p>A sequence of callbacks can contain map, unmap and remap operations, but
 the sequence of callbacks might also be empty if no operation is required,
@@ -8471,7 +8474,7 @@ map operation requested by the caller.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_gpuvm_sm_unmap">
 <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_gpuvm_sm_unmap</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><span class="n"><span class="pre">drm_gpuvm</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">gpuvm</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">priv</span></span>, <span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="n"><span class="pre">req_addr</span></span>, <span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="n"><span class="pre">req_range</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_gpuvm_sm_unmap" title="Link to this definition">¶</a><br /></dt>
-<dd><p>creates the <a class="reference internal" href="#c.drm_gpuva_ops" title="drm_gpuva_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuva_ops</span></code></a> to split on unmap</p>
+<dd><p>calls the <a class="reference internal" href="#c.drm_gpuva_ops" title="drm_gpuva_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuva_ops</span></code></a> to split on unmap</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -8489,18 +8492,116 @@ map operation requested by the caller.</p>
 <p><strong>Description</strong></p>
 <p>This function iterates the given range of the GPU VA space. It utilizes the
 <a class="reference internal" href="#c.drm_gpuvm_ops" title="drm_gpuvm_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm_ops</span></code></a> to call back into the driver providing the operations to
-unmap and, if required, split existent mappings.</p>
+unmap and, if required, split existing mappings.</p>
 <p>Drivers may use these callbacks to update the GPU VA space right away within
 the callback. In case the driver decides to copy and store the operations for
 later processing neither this function nor <a class="reference internal" href="#c.drm_gpuvm_sm_map" title="drm_gpuvm_sm_map"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm_sm_map</span></code></a> is allowed to be
 called before the <a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm</span></code></a>’s view of the GPU VA space was updated
 with the previous set of operations. To update the <a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm</span></code></a>’s view
-of the GPU VA space <a class="reference internal" href="#c.drm_gpuva_insert" title="drm_gpuva_insert"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gpuva_insert()</span></code></a>, drm_gpuva_destroy_locked() and/or
-drm_gpuva_destroy_unlocked() should be used.</p>
+of the GPU VA space <a class="reference internal" href="#c.drm_gpuva_insert" title="drm_gpuva_insert"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gpuva_insert()</span></code></a>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_gpuva_destroy_locked()</span></code> and/or
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_gpuva_destroy_unlocked()</span></code> should be used.</p>
 <p>A sequence of callbacks can contain unmap and remap operations, depending on
 whether there are actual overlapping mappings to split.</p>
 <p>There can be an arbitrary amount of unmap operations and a maximum of two
 remap operations.</p>
+<p><strong>Return</strong></p>
+<p>0 on success or a negative error code</p>
+</div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.drm_gpuvm_sm_map_exec_lock">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_gpuvm_sm_map_exec_lock</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><span class="n"><span class="pre">drm_gpuvm</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">gpuvm</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_exec" title="drm_exec"><span class="n"><span class="pre">drm_exec</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">exec</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">num_fences</span></span>, <span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="n"><span class="pre">req_addr</span></span>, <span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="n"><span class="pre">req_range</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><span class="n"><span class="pre">drm_gem_object</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">req_obj</span></span>, <span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="n"><span class="pre">req_offset</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_gpuvm_sm_map_exec_lock" title="Link to this definition">¶</a><br /></dt>
+<dd><p>locks the objects touched by a <a class="reference internal" href="#c.drm_gpuvm_sm_map" title="drm_gpuvm_sm_map"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gpuvm_sm_map()</span></code></a></p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_gpuvm</span> <span class="pre">*gpuvm</span></code></dt><dd><p>the <a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm</span></code></a> representing the GPU VA space</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_exec</span> <span class="pre">*exec</span></code></dt><dd><p>the <a class="reference internal" href="#c.drm_exec" title="drm_exec"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_exec</span></code></a> locking context</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">num_fences</span></code></dt><dd><p>for newly mapped objects, the # of fences to reserve</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">u64</span> <span class="pre">req_addr</span></code></dt><dd><p>the start address of the range to unmap</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">u64</span> <span class="pre">req_range</span></code></dt><dd><p>the range of the mappings to unmap</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_gem_object</span> <span class="pre">*req_obj</span></code></dt><dd><p>the <a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gem_object</span></code></a> to map</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">u64</span> <span class="pre">req_offset</span></code></dt><dd><p>the offset within the <a class="reference internal" href="#c.drm_gem_object" title="drm_gem_object"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gem_object</span></code></a></p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>This function locks (<a class="reference internal" href="#c.drm_exec_lock_obj" title="drm_exec_lock_obj"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_exec_lock_obj()</span></code></a>) objects that will be unmapped/
+remapped, and locks+prepares (<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_exec_prepare_object()</span></code>) objects that
+will be newly mapped.</p>
+<p>The expected usage is:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>vm_bind {
+    struct drm_exec exec;
+
+    // IGNORE_DUPLICATES is required, INTERRUPTIBLE_WAIT is recommended:
+    drm_exec_init(&amp;exec, IGNORE_DUPLICATES | INTERRUPTIBLE_WAIT, 0);
+
+    drm_exec_until_all_locked (&amp;exec) {
+        for_each_vm_bind_operation {
+            switch (op-&gt;op) {
+            case DRIVER_OP_UNMAP:
+                ret = drm_gpuvm_sm_unmap_exec_lock(gpuvm, &amp;exec, op-&gt;addr, op-&gt;range);
+                break;
+            case DRIVER_OP_MAP:
+                ret = drm_gpuvm_sm_map_exec_lock(gpuvm, &amp;exec, num_fences,
+                                                 op-&gt;addr, op-&gt;range,
+                                                 obj, op-&gt;obj_offset);
+                break;
+            }
+
+            drm_exec_retry_on_contention(&amp;exec);
+            if (ret)
+                return ret;
+        }
+    }
+}
+</pre></div>
+</div>
+<p>This enables all locking to be performed before the driver begins modifying
+the VM.  This is safe to do in the case of overlapping DRIVER_VM_BIND_OPs,
+where an earlier op can alter the sequence of steps generated for a later
+op, because the later altered step will involve the same GEM object(s)
+already seen in the earlier locking step.  For example:</p>
+<ol class="arabic simple">
+<li><p>An earlier driver DRIVER_OP_UNMAP op removes the need for a
+DRM_GPUVA_OP_REMAP/UNMAP step.  This is safe because we’ve already
+locked the GEM object in the earlier DRIVER_OP_UNMAP op.</p></li>
+<li><p>An earlier DRIVER_OP_MAP op overlaps with a later DRIVER_OP_MAP/UNMAP
+op, introducing a DRM_GPUVA_OP_REMAP/UNMAP that wouldn’t have been
+required without the earlier DRIVER_OP_MAP.  This is safe because we’ve
+already locked the GEM object in the earlier DRIVER_OP_MAP step.</p></li>
+</ol>
+<p><strong>Return</strong></p>
+<p>0 on success or a negative error code</p>
+</div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.drm_gpuvm_sm_unmap_exec_lock">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_gpuvm_sm_unmap_exec_lock</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><span class="n"><span class="pre">drm_gpuvm</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">gpuvm</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_exec" title="drm_exec"><span class="n"><span class="pre">drm_exec</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">exec</span></span>, <span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="n"><span class="pre">req_addr</span></span>, <span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="n"><span class="pre">req_range</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_gpuvm_sm_unmap_exec_lock" title="Link to this definition">¶</a><br /></dt>
+<dd><p>locks the objects touched by <a class="reference internal" href="#c.drm_gpuvm_sm_unmap" title="drm_gpuvm_sm_unmap"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gpuvm_sm_unmap()</span></code></a></p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_gpuvm</span> <span class="pre">*gpuvm</span></code></dt><dd><p>the <a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm</span></code></a> representing the GPU VA space</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_exec</span> <span class="pre">*exec</span></code></dt><dd><p>the <a class="reference internal" href="#c.drm_exec" title="drm_exec"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_exec</span></code></a> locking context</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">u64</span> <span class="pre">req_addr</span></code></dt><dd><p>the start address of the range to unmap</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">u64</span> <span class="pre">req_range</span></code></dt><dd><p>the range of the mappings to unmap</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>This function locks (<a class="reference internal" href="#c.drm_exec_lock_obj" title="drm_exec_lock_obj"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_exec_lock_obj()</span></code></a>) objects that will be unmapped/
+remapped by <a class="reference internal" href="#c.drm_gpuvm_sm_unmap" title="drm_gpuvm_sm_unmap"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gpuvm_sm_unmap()</span></code></a>.</p>
+<p>See <a class="reference internal" href="#c.drm_gpuvm_sm_map_exec_lock" title="drm_gpuvm_sm_map_exec_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gpuvm_sm_map_exec_lock()</span></code></a> for expected usage.</p>
 <p><strong>Return</strong></p>
 <p>0 on success or a negative error code</p>
 </div>
@@ -8526,11 +8627,11 @@ remap operations.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>This function creates a list of operations to perform splitting and merging
-of existent mapping(s) with the newly requested one.</p>
+of existing mapping(s) with the newly requested one.</p>
 <p>The list can be iterated with <a class="reference internal" href="#c.drm_gpuva_for_each_op" title="drm_gpuva_for_each_op"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuva_for_each_op</span></code></a> and must be processed
 in the given order. It can contain map, unmap and remap operations, but it
 also can be empty if no operation is required, e.g. if the requested mapping
-already exists is the exact same way.</p>
+already exists in the exact same way.</p>
 <p>There can be an arbitrary amount of unmap operations, a maximum of two remap
 operations and a single map operation. The latter one represents the original
 map operation requested by the caller.</p>
@@ -8538,7 +8639,7 @@ map operation requested by the caller.</p>
 is necessary to update the <a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm</span></code></a>’s view of the GPU VA space. The
 previously obtained operations must be either processed or abandoned. To
 update the <a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm</span></code></a>’s view of the GPU VA space <a class="reference internal" href="#c.drm_gpuva_insert" title="drm_gpuva_insert"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gpuva_insert()</span></code></a>,
-drm_gpuva_destroy_locked() and/or drm_gpuva_destroy_unlocked() should be
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_gpuva_destroy_locked()</span></code> and/or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_gpuva_destroy_unlocked()</span></code> should be
 used.</p>
 <p>After the caller finished processing the returned <a class="reference internal" href="#c.drm_gpuva_ops" title="drm_gpuva_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuva_ops</span></code></a>, they must
 be freed with <a class="reference internal" href="#c.drm_gpuva_ops_free" title="drm_gpuva_ops_free"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuva_ops_free</span></code></a>.</p>
@@ -8573,7 +8674,7 @@ remap operations.</p>
 is necessary to update the <a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm</span></code></a>’s view of the GPU VA space. The
 previously obtained operations must be processed or abandoned. To update the
 <a class="reference internal" href="#c.drm_gpuvm" title="drm_gpuvm"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuvm</span></code></a>’s view of the GPU VA space <a class="reference internal" href="#c.drm_gpuva_insert" title="drm_gpuva_insert"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_gpuva_insert()</span></code></a>,
-drm_gpuva_destroy_locked() and/or drm_gpuva_destroy_unlocked() should be
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_gpuva_destroy_locked()</span></code> and/or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_gpuva_destroy_unlocked()</span></code> should be
 used.</p>
 <p>After the caller finished processing the returned <a class="reference internal" href="#c.drm_gpuva_ops" title="drm_gpuva_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuva_ops</span></code></a>, they must
 be freed with <a class="reference internal" href="#c.drm_gpuva_ops_free" title="drm_gpuva_ops_free"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_gpuva_ops_free</span></code></a>.</p>
@@ -8812,9 +8913,9 @@ portions are unused and can be optionally freed with this function</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>alloc_range_bias() called on range limitations, which traverses
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">alloc_range_bias()</span></code> called on range limitations, which traverses
 the tree and returns the desired block.</p>
-<p>alloc_from_freelist() called when <em>no</em> range restrictions
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">alloc_from_freelist()</span></code> called when <em>no</em> range restrictions
 are enforced, which picks the block from the freelist.</p>
 <p><strong>Return</strong></p>
 <p>0 on success, error code on failure.</p>
@@ -8882,7 +8983,7 @@ to a page in the array.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">sg_table</span> <span class="pre">*st</span></code></dt><dd><p>struct sg_table.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">sg_table</span> <span class="pre">*st</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">sg_table</span></code>.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -9375,7 +9476,7 @@ drm_exec_for_each_locked_object(&amp;exec, index, obj) {
 drm_exec_fini(&amp;exec);
 </pre></div>
 </div>
-<p>See struct dma_exec for more details.</p>
+<p>See <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dma_exec</span></code> for more details.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.drm_exec">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_exec</span></span></span><a class="headerlink" href="#c.drm_exec" title="Link to this definition">¶</a><br /></dt>
@@ -9779,7 +9880,7 @@ been set.</p>
 </div>
 <p><strong>Members</strong></p>
 <dl>
-<dt><code class="docutils literal notranslate"><span class="pre">list</span></code></dt><dd><p>Used to append this struct to the list of entities in the runqueue
+<dt><code class="docutils literal notranslate"><span class="pre">list</span></code></dt><dd><p>Used to append this <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">to</span></code> the list of entities in the runqueue
 <strong>rq</strong> under <a class="reference internal" href="#c.drm_sched_rq" title="drm_sched_rq"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_sched_rq.entities</span></code></a>.</p>
 <p>Protected by <a class="reference internal" href="#c.drm_sched_rq" title="drm_sched_rq"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_sched_rq.lock</span></code></a> of <strong>rq</strong>.</p>
 </dd>
@@ -9824,7 +9925,7 @@ this doesn’t need to be atomic.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">guilty</span></code></dt><dd><p>Points to entities’ guilty.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">last_scheduled</span></code></dt><dd><p>Points to the finished fence of the last scheduled job. Only written
-by the scheduler thread, can be accessed locklessly from
+by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drm_sched_entity_pop_job()</span></code>. Can be accessed locklessly from
 <a class="reference internal" href="#c.drm_sched_job_arm" title="drm_sched_job_arm"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_sched_job_arm()</span></code></a> if the queue is empty.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">last_user</span></code></dt><dd><p>last group leader pushing a job into the entity.</p>
@@ -9897,6 +9998,7 @@ the next entity to emit commands from.</p>
     struct drm_gpu_scheduler        *sched;
     spinlock_t lock;
     void *owner;
+    uint64_t drm_client_id;
 };
 </pre></div>
 </div>
@@ -9910,7 +10012,7 @@ when the job is completed.</p>
 <p>When setting up an out fence for the job, you should use
 this, since it’s available immediately upon
 <a class="reference internal" href="#c.drm_sched_job_init" title="drm_sched_job_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_sched_job_init()</span></code></a>, and the fence returned by the driver
-from run_job() won’t be created until the dependencies have
+from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">run_job()</span></code> won’t be created until the dependencies have
 resolved.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">deadline</span></code></dt><dd><p>deadline set on <a class="reference internal" href="#c.drm_sched_fence" title="drm_sched_fence"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_sched_fence.finished</span></code></a> which
@@ -9920,12 +10022,14 @@ potentially needs to be propagated to <a class="reference internal" href="#c.drm
 when scheduling the job on hardware. We signal the
 <a class="reference internal" href="#c.drm_sched_fence" title="drm_sched_fence"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_sched_fence.finished</span></code></a> fence once parent is signalled.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">sched</span></code></dt><dd><p>the scheduler instance to which the job having this struct
-belongs to.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">sched</span></code></dt><dd><p>the scheduler instance to which the job having this <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">belongs</span></code> to.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">lock</span></code></dt><dd><p>the lock used by the scheduled and the finished fences.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">owner</span></code></dt><dd><p>job owner for debugging</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">drm_client_id</span></code></dt><dd><p>The client_id of the drm_file which owns the job.</p>
 </dd>
 </dl>
 </div>
@@ -9938,7 +10042,6 @@ belongs to.</p>
 <div class="kernelindent docutils container">
 <p><strong>Definition</strong>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct drm_sched_job {
-    u64 id;
     ktime_t submit_ts;
     struct drm_gpu_scheduler        *sched;
     struct drm_sched_fence          *s_fence;
@@ -9960,12 +10063,10 @@ belongs to.</p>
 </div>
 <p><strong>Members</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">id</span></code></dt><dd><p>a unique id assigned to each job scheduled on the scheduler.</p>
-</dd>
 <dt><code class="docutils literal notranslate"><span class="pre">submit_ts</span></code></dt><dd><p>When the job was pushed into the entity queue.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">sched</span></code></dt><dd><p>The scheduler this job is or will be scheduled on. Gets set by
-<a class="reference internal" href="#c.drm_sched_job_arm" title="drm_sched_job_arm"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_sched_job_arm()</span></code></a>. Valid until drm_sched_backend_ops.free_job()
+<a class="reference internal" href="#c.drm_sched_job_arm" title="drm_sched_job_arm"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_sched_job_arm()</span></code></a>. Valid until drm_sched_backend_ops.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">free_job()</span></code>
 has finished.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">s_fence</span></code></dt><dd><p>contains the fences for the scheduling of job.</p>
@@ -9982,7 +10083,7 @@ has finished.</p>
 limit of the scheduler then the job is marked guilty and will not
 be scheduled further.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">queue_node</span></code></dt><dd><p>used to append this struct to the queue of jobs in an entity.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">queue_node</span></code></dt><dd><p>used to append this <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">to</span></code> the queue of jobs in an entity.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">list</span></code></dt><dd><p>a job participates in a “pending” and “done” lists.</p>
 </dd>
@@ -10015,9 +10116,12 @@ to schedule the job.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">DRM_GPU_SCHED_STAT_NONE</span></code></dt><dd><p>Reserved. Do not use.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">DRM_GPU_SCHED_STAT_NOMINAL</span></code></dt><dd><p>Operation succeeded.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">DRM_GPU_SCHED_STAT_RESET</span></code></dt><dd><p>The GPU hung and successfully reset.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">DRM_GPU_SCHED_STAT_ENODEV</span></code></dt><dd><p>Error: Device is not available anymore.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DRM_GPU_SCHED_STAT_NO_HANG</span></code></dt><dd><p>Contrary to scheduler’s assumption, the GPU
+did not hang and is still running.</p>
 </dd>
 </dl>
 </div>
@@ -10034,6 +10138,7 @@ to schedule the job.</p>
     struct dma_fence *(*run_job)(struct drm_sched_job *sched_job);
     enum drm_gpu_sched_stat (*timedout_job)(struct drm_sched_job *sched_job);
     void (*free_job)(struct drm_sched_job *sched_job);
+    void (*cancel_job)(struct drm_sched_job *sched_job);
 };
 </pre></div>
 </div>
@@ -10041,7 +10146,7 @@ to schedule the job.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">prepare_job</span></code></dt><dd><p>Called when the scheduler is considering scheduling this job next, to
 get another <a class="reference internal" href="../driver-api/dma-buf.html#c.dma_fence" title="dma_fence"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dma_fence</span></code></a> for this job to block on.  Once it
-returns NULL, run_job() may be called.</p>
+returns NULL, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">run_job()</span></code> may be called.</p>
 <p>Can be NULL if no additional preparation to the dependencies are
 necessary. Skipped when jobs are killed instead of run.</p>
 </dd>
@@ -10115,6 +10220,18 @@ that timeout handlers are executed sequentially.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">free_job</span></code></dt><dd><p>Called once the job’s finished fence has been signaled
 and it’s time to clean it up.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cancel_job</span></code></dt><dd><p>Used by the scheduler to guarantee remaining jobs’ fences
+get signaled in <a class="reference internal" href="#c.drm_sched_fini" title="drm_sched_fini"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_sched_fini()</span></code></a>.</p>
+<p>Used by the scheduler to cancel all jobs that have not been executed
+with <a class="reference internal" href="#c.drm_sched_backend_ops" title="drm_sched_backend_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_sched_backend_ops</span></code></a>.run_job by the time
+<a class="reference internal" href="#c.drm_sched_fini" title="drm_sched_fini"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_sched_fini()</span></code></a> gets invoked.</p>
+<p>Drivers need to signal the passed job’s hardware fence with an
+appropriate error code (e.g., -ECANCELED) in this callback. They
+must not free the job.</p>
+<p>The scheduler will only call this callback once it stopped calling
+all other callbacks forever, with the exception of <a class="reference internal" href="#c.drm_sched_backend_ops" title="drm_sched_backend_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">drm_sched_backend_ops</span></code></a>.free_job.</p>
 </dd>
 </dl>
 </div>
@@ -10346,14 +10463,17 @@ MAX_SCHEDULE_TIMEOUT in this case.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Stop the scheduler and also removes and frees all completed jobs.
-This function is typically used for reset recovery (see the docu of
-drm_sched_backend_ops.timedout_job() for details). Do not call it for
-scheduler teardown, i.e., before calling <a class="reference internal" href="#c.drm_sched_fini" title="drm_sched_fini"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_sched_fini()</span></code></a>.</p>
+<p>Stop the scheduler and also removes and frees all completed jobs.</p>
 <p><strong>Note</strong></p>
 <p>bad job will not be freed as it might be used later and so it’s
 callers responsibility to release it manually if it’s not part of the
 pending list any more.</p>
+<p>This function is typically used for reset recovery (see the docu of
+drm_sched_backend_ops.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">timedout_job()</span></code> for details). Do not call it for
+scheduler teardown, i.e., before calling <a class="reference internal" href="#c.drm_sched_fini" title="drm_sched_fini"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_sched_fini()</span></code></a>.</p>
+<p>As it’s only used for reset recovery, drivers must not call this function
+in their <a class="reference internal" href="#c.drm_sched_backend_ops" title="drm_sched_backend_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_sched_backend_ops</span></code></a>.timedout_job callback when they
+skip a reset using <a class="reference internal" href="#c.drm_gpu_sched_stat" title="drm_gpu_sched_stat"><code class="xref c c-type docutils literal notranslate"><span class="pre">enum</span> <span class="pre">drm_gpu_sched_stat</span></code></a>.DRM_GPU_SCHED_STAT_NO_HANG.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_sched_start">
@@ -10371,9 +10491,12 @@ pending list any more.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>This function is typically used for reset recovery (see the docu of
-drm_sched_backend_ops.timedout_job() for details). Do not call it for
+drm_sched_backend_ops.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">timedout_job()</span></code> for details). Do not call it for
 scheduler startup. The scheduler itself is fully operational after
 <a class="reference internal" href="#c.drm_sched_init" title="drm_sched_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_sched_init()</span></code></a> succeeded.</p>
+<p>As it’s only used for reset recovery, drivers must not call this function
+in their <a class="reference internal" href="#c.drm_sched_backend_ops" title="drm_sched_backend_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_sched_backend_ops</span></code></a>.timedout_job callback when they
+skip a reset using <a class="reference internal" href="#c.drm_gpu_sched_stat" title="drm_gpu_sched_stat"><code class="xref c c-type docutils literal notranslate"><span class="pre">enum</span> <span class="pre">drm_gpu_sched_stat</span></code></a>.DRM_GPU_SCHED_STAT_NO_HANG.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_sched_resubmit_jobs">
@@ -10400,7 +10523,7 @@ interface.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_sched_job_init">
-<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_sched_job_init</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_sched_job" title="drm_sched_job"><span class="n"><span class="pre">drm_sched_job</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">job</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_sched_entity" title="drm_sched_entity"><span class="n"><span class="pre">drm_sched_entity</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">entity</span></span>, <span class="n"><span class="pre">u32</span></span><span class="w"> </span><span class="n"><span class="pre">credits</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">owner</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_sched_job_init" title="Link to this definition">¶</a><br /></dt>
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drm_sched_job_init</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_sched_job" title="drm_sched_job"><span class="n"><span class="pre">drm_sched_job</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">job</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.drm_sched_entity" title="drm_sched_entity"><span class="n"><span class="pre">drm_sched_entity</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">entity</span></span>, <span class="n"><span class="pre">u32</span></span><span class="w"> </span><span class="n"><span class="pre">credits</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">owner</span></span>, <span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="n"><span class="pre">drm_client_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.drm_sched_job_init" title="Link to this definition">¶</a><br /></dt>
 <dd><p>init a scheduler job</p>
 </dd></dl>
 
@@ -10416,15 +10539,18 @@ credit limit</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">*owner</span></code></dt><dd><p>job owner for debugging</p>
 </dd>
+<dt><code class="docutils literal notranslate"><span class="pre">uint64_t</span> <span class="pre">drm_client_id</span></code></dt><dd><p><a class="reference internal" href="drm-internals.html#c.drm_file" title="drm_file"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_file</span></code></a>.client_id of the owner (used by trace
+events)</p>
+</dd>
 </dl>
 <p><strong>Description</strong></p>
 <p>Refer to <a class="reference internal" href="#c.drm_sched_entity_push_job" title="drm_sched_entity_push_job"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_sched_entity_push_job()</span></code></a> documentation
 for locking considerations.</p>
 <p>Drivers must make sure <a class="reference internal" href="#c.drm_sched_job_cleanup" title="drm_sched_job_cleanup"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_sched_job_cleanup()</span></code></a> if this function returns
 successfully, even when <strong>job</strong> is aborted before <a class="reference internal" href="#c.drm_sched_job_arm" title="drm_sched_job_arm"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_sched_job_arm()</span></code></a> is called.</p>
-<p>Note that this function does not assign a valid value to each struct member
+<p>Note that this function does not assign a valid value to each <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">member</span></code>
 of <a class="reference internal" href="#c.drm_sched_job" title="drm_sched_job"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_sched_job</span></code></a>. Take a look at that struct’s documentation to see
-who sets which struct member with what lifetime.</p>
+who sets which <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">member</span></code> with what lifetime.</p>
 <p>WARNING: amdgpu abuses <code class="xref c c-type docutils literal notranslate"><span class="pre">drm_sched.ready</span></code> to signal when the hardware
 has died, which can mean that there’s no valid runqueue for a <strong>entity</strong>.
 This function returns -ENOENT in this case (which probably should be -EIO as
@@ -10630,21 +10756,11 @@ drm_gpu_schedulers are ready</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Tears down and cleans up the scheduler.</p>
-<p>This stops submission of new jobs to the hardware through
-drm_sched_backend_ops.run_job(). Consequently, drm_sched_backend_ops.free_job()
-will not be called for all jobs still in drm_gpu_scheduler.pending_list.
-There is no solution for this currently. Thus, it is up to the driver to make
-sure that:</p>
-<blockquote>
-<div><ol class="loweralpha simple">
-<li><p><a class="reference internal" href="#c.drm_sched_fini" title="drm_sched_fini"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_sched_fini()</span></code></a> is only called after for all submitted jobs
-drm_sched_backend_ops.free_job() has been called or that</p></li>
-<li><p>the jobs for which drm_sched_backend_ops.free_job() has not been called
-after <a class="reference internal" href="#c.drm_sched_fini" title="drm_sched_fini"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_sched_fini()</span></code></a> ran are freed manually.</p></li>
-</ol>
-</div></blockquote>
-<p>FIXME: Take care of the above problem and prevent this function from leaking
-the jobs in drm_gpu_scheduler.pending_list under any circumstances.</p>
+<p>This stops submission of new jobs to the hardware through <a class="reference internal" href="#c.drm_sched_backend_ops" title="drm_sched_backend_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">drm_sched_backend_ops</span></code></a>.run_job. If <a class="reference internal" href="#c.drm_sched_backend_ops" title="drm_sched_backend_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_sched_backend_ops</span></code></a>.cancel_job
+is implemented, all jobs will be canceled through it and afterwards cleaned
+up through <a class="reference internal" href="#c.drm_sched_backend_ops" title="drm_sched_backend_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_sched_backend_ops</span></code></a>.free_job. If cancel_job is not
+implemented, memory could leak.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_sched_increase_karma">
@@ -10692,7 +10808,7 @@ jobs from it will not be scheduled further</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Stops the scheduler from pulling new jobs from entities. It also stops
-freeing jobs automatically through drm_sched_backend_ops.free_job().</p>
+freeing jobs automatically through drm_sched_backend_ops.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">free_job()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.drm_sched_wqueue_start">

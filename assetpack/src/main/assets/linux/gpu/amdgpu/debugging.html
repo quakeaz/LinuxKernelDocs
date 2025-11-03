@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -217,6 +217,23 @@ descriptor state to determine what caused the GPU page fault.</p>
 GPU debugging and diagnostics tool.  Please see the umr
 <a class="reference external" href="https://umr.readthedocs.io/en/main/">documentation</a> for more information
 about its capabilities.</p>
+</section>
+<section id="debugging-backlight-brightness">
+<h2>Debugging backlight brightness<a class="headerlink" href="#debugging-backlight-brightness" title="Link to this heading">¶</a></h2>
+<p>Default backlight brightness is intended to be set via the policy advertised
+by the firmware.  Firmware will often provide different defaults for AC or DC.
+Furthermore, some userspace software will save backlight brightness during
+the previous boot and attempt to restore it.</p>
+<p>Some firmware also has support for a feature called “Custom Backlight Curves”
+where an input value for brightness is mapped along a linearly interpolated
+curve of brightness values that better match display characteristics.</p>
+<p>In the event of problems happening with backlight, there is a trace event
+that can be enabled at bootup to log every brightness change request.
+This can help isolate where the problem is. To enable the trace event add
+the following to the kernel command line:</p>
+<blockquote>
+<div><p>tp_printk trace_event=amdgpu_dm:amdgpu_dm_brightness:mod:amdgpu trace_buf_size=1M</p>
+</div></blockquote>
 </section>
 </section>
 

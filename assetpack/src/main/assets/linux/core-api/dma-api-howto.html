@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -178,7 +178,7 @@ with example pseudo-code.  For a concise description of the API, see
 <p>There are several kinds of addresses involved in the DMA API, and it’s
 important to understand the differences.</p>
 <p>The kernel normally uses virtual addresses.  Any address returned by
-<a class="reference internal" href="mm-api.html#c.kmalloc" title="kmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmalloc()</span></code></a>, vmalloc(), and similar interfaces is a virtual address and can
+<a class="reference internal" href="mm-api.html#c.kmalloc" title="kmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmalloc()</span></code></a>, <a class="reference internal" href="mm-api.html#c.vmalloc" title="vmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">vmalloc()</span></code></a>, and similar interfaces is a virtual address and can
 be stored in a <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">*</span></code>.</p>
 <p>The virtual memory system (TLB, page tables, etc.) translates virtual
 addresses to CPU physical addresses, which are stored as “phys_addr_t” or
@@ -224,7 +224,7 @@ so devices only need to use 32-bit DMA addresses.</p>
 their MMIO space and the host bridges that connect them to the system.  For
 example, if a PCI device has a BAR, the kernel reads the bus address (A)
 from the BAR and converts it to a CPU physical address (B).  The address B
-is stored in a struct resource and usually exposed via /proc/iomem.  When a
+is stored in a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">resource</span></code> and usually exposed via /proc/iomem.  When a
 driver claims a device, it typically uses <a class="reference internal" href="../driver-api/device-io.html#c.ioremap" title="ioremap"><code class="xref c c-func docutils literal notranslate"><span class="pre">ioremap()</span></code></a> to map physical address
 B at a virtual address (C).  It can then use, e.g., ioread32(C), to access
 the device registers at bus address A.</p>
@@ -237,7 +237,7 @@ cannot because DMA doesn’t go through the CPU virtual memory system.</p>
 Y.  But in many others, there is IOMMU hardware that translates DMA
 addresses to physical addresses, e.g., it translates Z to Y.  This is part
 of the reason for the DMA API: the driver can give a virtual address X to
-an interface like dma_map_single(), which sets up any required IOMMU
+an interface like <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_map_single()</span></code>, which sets up any required IOMMU
 mapping and returns the DMA address Z.  The driver then tells the device to
 do DMA to Z, and the IOMMU maps it to the buffer at address Y in system
 RAM.</p>
@@ -270,11 +270,11 @@ write them down.</p>
 (i.e. <a class="reference internal" href="mm-api.html#c.kmalloc" title="kmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmalloc()</span></code></a> or <a class="reference internal" href="mm-api.html#c.kmem_cache_alloc" title="kmem_cache_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmem_cache_alloc()</span></code></a>) then you may DMA to/from
 that memory using the addresses returned from those routines.</p>
 <p>This means specifically that you may _not_ use the memory/addresses
-returned from vmalloc() for DMA.  It is possible to DMA to the
-_underlying_ memory mapped into a vmalloc() area, but this requires
+returned from <a class="reference internal" href="mm-api.html#c.vmalloc" title="vmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">vmalloc()</span></code></a> for DMA.  It is possible to DMA to the
+_underlying_ memory mapped into a <a class="reference internal" href="mm-api.html#c.vmalloc" title="vmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">vmalloc()</span></code></a> area, but this requires
 walking page tables to get the physical addresses, and then
 translating each of those pages back to a kernel address using
-something like __va().  [ EDIT: Update this when we integrate
+something like <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__va()</span></code>.  [ EDIT: Update this when we integrate
 Gerd Knorr’s generic code which does this. ]</p>
 <p>This rule also means that you may use neither kernel image addresses
 (items in data/text/bss segments), nor module image addresses, nor
@@ -286,7 +286,7 @@ sharing problems (data corruption) on CPUs with DMA-incoherent caches.
 (The CPU could write to one word, DMA would write to a different one
 in the same cache line, and one of them could be overwritten.)</p>
 <p>Also, this means that you cannot take the return of a <a class="reference internal" href="../mm/highmem.html#c.kmap" title="kmap"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmap()</span></code></a>
-call and DMA to/from that.  This is similar to vmalloc().</p>
+call and DMA to/from that.  This is similar to <a class="reference internal" href="mm-api.html#c.vmalloc" title="vmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">vmalloc()</span></code></a>.</p>
 <p>What about block I/O and networking buffers?  The block I/O and
 networking subsystems make sure that the buffers they use are valid
 for you to DMA from/to.</p>
@@ -298,11 +298,11 @@ addressing.  For a 64-bit capable device, this needs to be increased, and for
 a device with limitations, it needs to be decreased.</p>
 <p>Special note about PCI: PCI-X specification requires PCI-X devices to support
 64-bit addressing (DAC) for all transactions.  And at least one platform (SGI
-SN2) requires 64-bit consistent allocations to operate correctly when the IO
+SN2) requires 64-bit coherent allocations to operate correctly when the IO
 bus is in PCI-X mode.</p>
 <p>For correct operation, you must set the DMA mask to inform the kernel about
 your devices DMA addressing capabilities.</p>
-<p>This is performed via a call to dma_set_mask_and_coherent():</p>
+<p>This is performed via a call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_set_mask_and_coherent()</span></code>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int dma_set_mask_and_coherent(struct device *dev, u64 mask);
 </pre></div>
 </div>
@@ -311,21 +311,21 @@ have some special requirements, then the following two separate calls can be
 used instead:</p>
 <blockquote>
 <div><p>The setup for streaming mappings is performed via a call to
-dma_set_mask():</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_set_mask()</span></code>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int dma_set_mask(struct device *dev, u64 mask);
 </pre></div>
 </div>
-<p>The setup for consistent allocations is performed via a call
-to dma_set_coherent_mask():</p>
+<p>The setup for coherent allocations is performed via a call
+to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_set_coherent_mask()</span></code>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int dma_set_coherent_mask(struct device *dev, u64 mask);
 </pre></div>
 </div>
 </div></blockquote>
-<p>Here, dev is a pointer to the device struct of your device, and mask is a bit
+<p>Here, dev is a pointer to the device <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">of</span></code> your device, and mask is a bit
 mask describing which bits of an address your device supports.  Often the
-device struct of your device is embedded in the bus-specific device struct of
-your device.  For example, &amp;pdev-&gt;dev is a pointer to the device struct of a
-PCI device (pdev is a pointer to the PCI device struct of your device).</p>
+device <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">of</span></code> your device is embedded in the bus-specific device <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">of</span></code>
+your device.  For example, &amp;pdev-&gt;dev is a pointer to the device <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">of</span></code> a
+PCI device (pdev is a pointer to the PCI device <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">of</span></code> your device).</p>
 <p>These calls usually return zero to indicate your device can perform DMA
 properly on the machine given the address mask you provided, but they might
 return an error if the mask is too small to be supportable on the given
@@ -353,14 +353,14 @@ them for the kernel messages to find out exactly why.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64))
 </pre></div>
 </div>
-<p>dma_set_mask_and_coherent() never return fail when DMA_BIT_MASK(64). Typical
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_set_mask_and_coherent()</span></code> never return fail when DMA_BIT_MASK(64). Typical
 error code like:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>/* Wrong code */
 if (dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64)))
         dma_set_mask_and_coherent(dev, DMA_BIT_MASK(32))
 </pre></div>
 </div>
-<p>dma_set_mask_and_coherent() will never return failure when bigger than 32.
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_set_mask_and_coherent()</span></code> will never return failure when bigger than 32.
 So typical code like:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>/* Recommended code */
 if (support_64bit)
@@ -380,8 +380,8 @@ it would look like this:</p>
 </div>
 <p>The coherent mask will always be able to set the same or a smaller mask as
 the streaming mask. However for the rare case that a device driver only
-uses consistent allocations, one would have to check the return value from
-dma_set_coherent_mask().</p>
+uses coherent allocations, one would have to check the return value from
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_set_coherent_mask()</span></code>.</p>
 <p>Finally, if your device can only drive the low 24-bits of
 address you might do something like:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>if (dma_set_mask(dev, DMA_BIT_MASK(24))) {
@@ -390,7 +390,7 @@ address you might do something like:</p>
 }
 </pre></div>
 </div>
-<p>When dma_set_mask() or dma_set_mask_and_coherent() is successful, and
+<p>When <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_set_mask()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_set_mask_and_coherent()</span></code> is successful, and
 returns zero, the kernel saves away this mask you have provided.  The
 kernel will use this information later when you make DMA mappings.</p>
 <p>There is a case which we are aware of at this time, which is worth
@@ -399,7 +399,7 @@ functions (for example a sound card provides playback and record
 functions) and the various different functions have _different_
 DMA addressing limitations, you may wish to probe each mask and
 only provide the functionality which the machine can handle.  It
-is important that the last call to dma_set_mask() be for the
+is important that the last call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_set_mask()</span></code> be for the
 most specific mask.</p>
 <p>Here is pseudo-code showing how this might be done:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>#define PLAYBACK_ADDRESS_BITS   DMA_BIT_MASK(32)
@@ -433,17 +433,17 @@ and thus retaining the 16MB DMA addressing limitations of ISA.</p>
 <h2>Types of DMA mappings<a class="headerlink" href="#types-of-dma-mappings" title="Link to this heading">¶</a></h2>
 <p>There are two types of DMA mappings:</p>
 <ul>
-<li><p>Consistent DMA mappings which are usually mapped at driver
+<li><p>Coherent DMA mappings which are usually mapped at driver
 initialization, unmapped at the end and for which the hardware should
 guarantee that the device and the CPU can access the data
 in parallel and will see updates made by each other without any
 explicit software flushing.</p>
-<p>Think of “consistent” as “synchronous” or “coherent”.</p>
-<p>The current default is to return consistent memory in the low 32
+<p>Think of “coherent” as “synchronous”.</p>
+<p>The current default is to return coherent memory in the low 32
 bits of the DMA space.  However, for future compatibility you should
-set the consistent mask even if this default is fine for your
+set the coherent mask even if this default is fine for your
 driver.</p>
-<p>Good examples of what to use consistent mappings for are:</p>
+<p>Good examples of what to use coherent mappings for are:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Network card DMA ring descriptors.</p></li>
@@ -454,12 +454,12 @@ main memory.</p></li>
 </div></blockquote>
 <p>The invariant these examples all require is that any CPU store
 to memory is immediately visible to the device, and vice
-versa.  Consistent mappings guarantee this.</p>
+versa.  Coherent mappings guarantee this.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>Consistent DMA memory does not preclude the usage of
+<p>Coherent DMA memory does not preclude the usage of
 proper memory barriers.  The CPU may reorder stores to
-consistent memory just as it may normal memory.  Example:
+coherent memory just as it may normal memory.  Example:
 if it is important for the device to see the first word
 of a descriptor updated before the second, you must do
 something like:</p>
@@ -498,9 +498,9 @@ the underlying bus, although some devices may have such restrictions.
 Also, systems with caches that aren’t DMA-coherent will work better
 when the underlying buffers don’t share cache lines with other data.</p>
 </section>
-<section id="using-consistent-dma-mappings">
-<h2>Using Consistent DMA mappings<a class="headerlink" href="#using-consistent-dma-mappings" title="Link to this heading">¶</a></h2>
-<p>To allocate and map large (PAGE_SIZE or so) consistent DMA regions,
+<section id="using-coherent-dma-mappings">
+<h2>Using Coherent DMA mappings<a class="headerlink" href="#using-coherent-dma-mappings" title="Link to this heading">¶</a></h2>
+<p>To allocate and map large (PAGE_SIZE or so) coherent DMA regions,
 you should do:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dma_addr_t dma_handle;
 
@@ -511,16 +511,16 @@ cpu_addr = dma_alloc_coherent(dev, size, &amp;dma_handle, gfp);
 context with the GFP_ATOMIC flag.</p>
 <p>Size is the length of the region you want to allocate, in bytes.</p>
 <p>This routine will allocate RAM for that region, so it acts similarly to
-__get_free_pages() (but takes size instead of a page order).  If your
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__get_free_pages()</span></code> (but takes size instead of a page order).  If your
 driver needs regions sized smaller than a page, you may prefer using
 the dma_pool interface, described below.</p>
-<p>The consistent DMA mapping interfaces, will by default return a DMA address
+<p>The coherent DMA mapping interfaces, will by default return a DMA address
 which is 32-bit addressable.  Even if the device indicates (via the DMA mask)
-that it may address the upper 32-bits, consistent allocation will only
-return &gt; 32-bit addresses for DMA if the consistent DMA mask has been
-explicitly changed via dma_set_coherent_mask().  This is true of the
+that it may address the upper 32-bits, coherent allocation will only
+return &gt; 32-bit addresses for DMA if the coherent DMA mask has been
+explicitly changed via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_set_coherent_mask()</span></code>.  This is true of the
 dma_pool interface as well.</p>
-<p>dma_alloc_coherent() returns two values: the virtual address which you
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_alloc_coherent()</span></code> returns two values: the virtual address which you
 can use to access it from the CPU and dma_handle which you pass to the
 card.</p>
 <p>The CPU virtual address and the DMA address are both
@@ -534,12 +534,12 @@ buffer you receive will not cross a 64K boundary.</p>
 </pre></div>
 </div>
 <p>where dev, size are the same as in the above call and cpu_addr and
-dma_handle are the values dma_alloc_coherent() returned to you.
+dma_handle are the values <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_alloc_coherent()</span></code> returned to you.
 This function may not be called in interrupt context.</p>
 <p>If your driver needs lots of smaller memory regions, you can write
-custom code to subdivide pages returned by dma_alloc_coherent(),
+custom code to subdivide pages returned by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_alloc_coherent()</span></code>,
 or you can use the dma_pool API to do that.  A dma_pool is like
-a kmem_cache, but it uses dma_alloc_coherent(), not __get_free_pages().
+a kmem_cache, but it uses <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_alloc_coherent()</span></code>, not <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__get_free_pages()</span></code>.
 Also, it understands common hardware constraints for alignment,
 like queue heads needing to be aligned on N byte boundaries.</p>
 <p>Create a dma_pool like this:</p>
@@ -554,26 +554,26 @@ type of data is “align” (which is expressed in bytes, and must be a
 power of two).  If your device has no boundary crossing restrictions,
 pass 0 for boundary; passing 4096 says memory allocated from this pool
 must not cross 4KByte boundaries (but at that time it may be better to
-use dma_alloc_coherent() directly instead).</p>
+use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_alloc_coherent()</span></code> directly instead).</p>
 <p>Allocate memory from a DMA pool like this:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cpu_addr = dma_pool_alloc(pool, flags, &amp;dma_handle);
 </pre></div>
 </div>
 <p>flags are GFP_KERNEL if blocking is permitted (not in_interrupt nor
-holding SMP locks), GFP_ATOMIC otherwise.  Like dma_alloc_coherent(),
+holding SMP locks), GFP_ATOMIC otherwise.  Like <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_alloc_coherent()</span></code>,
 this returns two values, cpu_addr and dma_handle.</p>
 <p>Free memory that was allocated from a dma_pool like this:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dma_pool_free(pool, cpu_addr, dma_handle);
 </pre></div>
 </div>
-<p>where pool is what you passed to <a class="reference internal" href="mm-api.html#c.dma_pool_alloc" title="dma_pool_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">dma_pool_alloc()</span></code></a>, and cpu_addr and
-dma_handle are the values <a class="reference internal" href="mm-api.html#c.dma_pool_alloc" title="dma_pool_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">dma_pool_alloc()</span></code></a> returned. This function
+<p>where pool is what you passed to <a class="reference internal" href="dma-api.html#c.dma_pool_alloc" title="dma_pool_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">dma_pool_alloc()</span></code></a>, and cpu_addr and
+dma_handle are the values <a class="reference internal" href="dma-api.html#c.dma_pool_alloc" title="dma_pool_alloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">dma_pool_alloc()</span></code></a> returned. This function
 may be called in interrupt context.</p>
 <p>Destroy a dma_pool by calling:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dma_pool_destroy(pool);
 </pre></div>
 </div>
-<p>Make sure you’ve called <a class="reference internal" href="mm-api.html#c.dma_pool_free" title="dma_pool_free"><code class="xref c c-func docutils literal notranslate"><span class="pre">dma_pool_free()</span></code></a> for all memory allocated
+<p>Make sure you’ve called <a class="reference internal" href="dma-api.html#c.dma_pool_free" title="dma_pool_free"><code class="xref c c-func docutils literal notranslate"><span class="pre">dma_pool_free()</span></code></a> for all memory allocated
 from a pool before you destroy the pool. This function may not
 be called in interrupt context.</p>
 </section>
@@ -611,7 +611,7 @@ mappings can be marked with, much like page protections in the user
 program address space.  Such platforms can and do report errors in the
 kernel logs when the DMA controller hardware detects violation of the
 permission setting.</p>
-<p>Only streaming mappings specify a direction, consistent mappings
+<p>Only streaming mappings specify a direction, coherent mappings
 implicitly have a direction attribute setting of
 DMA_BIDIRECTIONAL.</p>
 <p>The SCSI subsystem tells you the direction to use in the
@@ -649,17 +649,17 @@ if (dma_mapping_error(dev, dma_handle)) {
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dma_unmap_single(dev, dma_handle, size, direction);
 </pre></div>
 </div>
-<p>You should call dma_mapping_error() as dma_map_single() could fail and return
+<p>You should call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_mapping_error()</span></code> as <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_map_single()</span></code> could fail and return
 error.  Doing so will ensure that the mapping code will work correctly on all
 DMA implementations without any dependency on the specifics of the underlying
 implementation. Using the returned address without checking for errors could
 result in failures ranging from panics to silent data corruption.  The same
-applies to dma_map_page() as well.</p>
-<p>You should call dma_unmap_single() when the DMA activity is finished, e.g.,
+applies to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_map_page()</span></code> as well.</p>
+<p>You should call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_unmap_single()</span></code> when the DMA activity is finished, e.g.,
 from the interrupt which told you that the DMA transfer is done.</p>
 <p>Using CPU pointers like this for single mappings has a disadvantage:
 you cannot reference HIGHMEM memory in this way.  Thus, there is a
-map/unmap interface pair akin to dma_{map,unmap}_single().  These
+map/unmap interface pair akin to dma_{map,unmap}<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_single()</span></code>.  These
 interfaces deal with page/offset pairs instead of CPU pointers.
 Specifically:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct device *dev = &amp;my_dev-&gt;dev;
@@ -684,9 +684,9 @@ dma_unmap_page(dev, dma_handle, size, direction);
 </pre></div>
 </div>
 <p>Here, “offset” means byte offset within the given page.</p>
-<p>You should call dma_mapping_error() as dma_map_page() could fail and return
-error as outlined under the dma_map_single() discussion.</p>
-<p>You should call dma_unmap_page() when the DMA activity is finished, e.g.,
+<p>You should call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_mapping_error()</span></code> as <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_map_page()</span></code> could fail and return
+error as outlined under the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_map_single()</span></code> discussion.</p>
+<p>You should call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_unmap_page()</span></code> when the DMA activity is finished, e.g.,
 from the interrupt which told you that the DMA transfer is done.</p>
 <p>With scatterlists, you map a region gathered from several regions by:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int i, count = dma_map_sg(dev, sglist, nents, direction);
@@ -707,7 +707,7 @@ advantage for cards which either cannot do scatter-gather or have very
 limited number of scatter-gather entries) and returns the actual number
 of sg entries it mapped them to. On failure 0 is returned.</p>
 <p>Then you should loop count times (note: this can be less than nents times)
-and use sg_dma_address() and sg_dma_len() macros where you previously
+and use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sg_dma_address()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sg_dma_len()</span></code> macros where you previously
 accessed sg-&gt;address and sg-&gt;length as shown above.</p>
 <p>To unmap a scatterlist, just call:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dma_unmap_sg(dev, sglist, nents, direction);
@@ -751,10 +751,10 @@ giving the buffer to the hardware call either:</p>
 <p>as appropriate.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The ‘nents’ argument to dma_sync_sg_for_cpu() and
-dma_sync_sg_for_device() must be the same passed to
-dma_map_sg(). It is _NOT_ the count returned by
-dma_map_sg().</p>
+<p>The ‘nents’ argument to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_sync_sg_for_cpu()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_sync_sg_for_device()</span></code> must be the same passed to
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_map_sg()</span></code>. It is _NOT_ the count returned by
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_map_sg()</span></code>.</p>
 </div>
 <p>After the last DMA transfer call one of the DMA unmap routines
 dma_unmap_{single,sg}(). If you don’t touch the data from the first
@@ -829,9 +829,9 @@ my_card_interrupt_handler(int irq, void *devid, struct pt_regs *regs)
 <p>DMA address space is limited on some architectures and an allocation
 failure can be determined by:</p>
 <ul>
-<li><p>checking if dma_alloc_coherent() returns NULL or dma_map_sg returns 0</p></li>
-<li><p>checking the dma_addr_t returned from dma_map_single() and dma_map_page()
-by using dma_mapping_error():</p>
+<li><p>checking if <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_alloc_coherent()</span></code> returns NULL or dma_map_sg returns 0</p></li>
+<li><p>checking the dma_addr_t returned from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_map_single()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_map_page()</span></code>
+by using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_mapping_error()</span></code>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dma_addr_t dma_handle;
 
 dma_handle = dma_map_single(dev, addr, size, direction);
@@ -848,7 +848,7 @@ if (dma_mapping_error(dev, dma_handle)) {
 </li>
 <li><p>unmap pages that are already mapped, when mapping error occurs in the middle
 of a multiple page mapping attempt. These example are applicable to
-dma_map_page() as well.</p></li>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_map_page()</span></code> as well.</p></li>
 </ul>
 <p>Example 1:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dma_addr_t dma_handle1;
@@ -919,7 +919,7 @@ for (i = 0; i &lt; save_index; i++) {
 }
 </pre></div>
 </div>
-<p>Networking drivers must call dev_kfree_skb() to free the socket buffer
+<p>Networking drivers must call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_kfree_skb()</span></code> to free the socket buffer
 and return NETDEV_TX_OK if the DMA mapping fails on the transmit hook
 (ndo_start_xmit). This means that the socket buffer is just dropped in
 the failure case.</p>
@@ -955,7 +955,7 @@ Example, before:</p>
 </pre></div>
 </div>
 </li>
-<li><p>Use dma_unmap_{addr,len}_set() to set these values.
+<li><p>Use dma_unmap_{addr,len}<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_set()</span></code> to set these values.
 Example, before:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ringp-&gt;mapping = FOO;
 ringp-&gt;len = BAR;

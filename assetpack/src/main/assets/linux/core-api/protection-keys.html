@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -207,10 +207,10 @@ int pkey_mprotect(unsigned long start, size_t len,
                   unsigned long prot, int pkey);
 </pre></div>
 </div>
-<p>Before a pkey can be used, it must first be allocated with pkey_alloc().  An
+<p>Before a pkey can be used, it must first be allocated with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pkey_alloc()</span></code>.  An
 application writes to the architecture specific CPU register directly in order
 to change access permissions to memory covered with a key.  In this example
-this is wrapped by a C function called pkey_set().</p>
+this is wrapped by a C function called <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pkey_set()</span></code>.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int real_prot = PROT_READ|PROT_WRITE;
 pkey = pkey_alloc(0, PKEY_DISABLE_WRITE);
 ptr = mmap(NULL, PAGE_SIZE, PROT_NONE, MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
@@ -233,7 +233,7 @@ pkey_free(pkey);
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>pkey_set() is a wrapper around writing to the CPU register.
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pkey_set()</span></code> is a wrapper around writing to the CPU register.
 Example implementations can be found in
 tools/testing/selftests/mm/pkey-{arm64,powerpc,x86}.h</p>
 </div>
@@ -241,7 +241,7 @@ tools/testing/selftests/mm/pkey-{arm64,powerpc,x86}.h</p>
 <section id="behavior">
 <h2>Behavior<a class="headerlink" href="#behavior" title="Link to this heading">¶</a></h2>
 <p>The kernel attempts to make protection keys consistent with the
-behavior of a plain mprotect().  For instance if you do this:</p>
+behavior of a plain <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mprotect()</span></code>.  For instance if you do this:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>mprotect(ptr, size, PROT_NONE);
 something(ptr);
 </pre></div>
@@ -252,7 +252,7 @@ pkey_mprotect(ptr, size, PROT_READ|PROT_WRITE, pkey);
 something(ptr);
 </pre></div>
 </div>
-<p>That should be true whether something() is a direct access to ‘ptr’
+<p>That should be true whether <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">something()</span></code> is a direct access to ‘ptr’
 like:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>*ptr = foo;
 </pre></div>
@@ -264,10 +264,10 @@ with a read():</p>
 </div>
 <p>The kernel will send a SIGSEGV in both cases, but si_code will be set
 to SEGV_PKERR when violating protection keys versus SEGV_ACCERR when
-the plain mprotect() permissions are violated.</p>
+the plain <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mprotect()</span></code> permissions are violated.</p>
 <p>Note that kernel accesses from a kthread (such as io_uring) will use a default
 value for the protection key register and so will not be consistent with
-userspace’s value of the register or mprotect().</p>
+userspace’s value of the register or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mprotect()</span></code>.</p>
 </section>
 </section>
 

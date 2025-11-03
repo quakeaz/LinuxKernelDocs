@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -241,7 +241,7 @@ padata_priv structure, which represents one job:</p>
 <p>This structure will almost certainly be embedded within some larger
 structure specific to the work to be done.  Most of its fields are private to
 padata, but the structure should be zeroed at initialisation time, and the
-parallel() and serial() functions should be provided.  Those functions will
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">parallel()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">serial()</span></code> functions should be provided.  Those functions will
 be called in the process of getting the work done as we will see
 momentarily.</p>
 <p>The submission of the job is done with:</p>
@@ -259,27 +259,27 @@ instance’s CPU mask, while -EINVAL is a complaint about cb_cpu not being in th
 serial cpumask, no online CPUs in the parallel or serial cpumasks, or a stopped
 instance.</p>
 <p>Each job submitted to <a class="reference internal" href="#c.padata_do_parallel" title="padata_do_parallel"><code class="xref c c-func docutils literal notranslate"><span class="pre">padata_do_parallel()</span></code></a> will, in turn, be passed to
-exactly one call to the above-mentioned parallel() function, on one CPU, so
-true parallelism is achieved by submitting multiple jobs.  parallel() runs with
-software interrupts disabled and thus cannot sleep.  The parallel()
+exactly one call to the above-mentioned <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">parallel()</span></code> function, on one CPU, so
+true parallelism is achieved by submitting multiple jobs.  <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">parallel()</span></code> runs with
+software interrupts disabled and thus cannot sleep.  The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">parallel()</span></code>
 function gets the padata_priv structure pointer as its lone parameter;
 information about the actual work to be done is probably obtained by using
-container_of() to find the enclosing structure.</p>
-<p>Note that parallel() has no return value; the padata subsystem assumes that
-parallel() will take responsibility for the job from this point.  The job
-need not be completed during this call, but, if parallel() leaves work
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">container_of()</span></code> to find the enclosing structure.</p>
+<p>Note that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">parallel()</span></code> has no return value; the padata subsystem assumes that
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">parallel()</span></code> will take responsibility for the job from this point.  The job
+need not be completed during this call, but, if <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">parallel()</span></code> leaves work
 outstanding, it should be prepared to be called again with a new job before
 the previous one completes.</p>
 </section>
 <section id="serializing-jobs">
 <h3>Serializing Jobs<a class="headerlink" href="#serializing-jobs" title="Link to this heading">¶</a></h3>
-<p>When a job does complete, parallel() (or whatever function actually finishes
+<p>When a job does complete, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">parallel()</span></code> (or whatever function actually finishes
 the work) should inform padata of the fact with a call to:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>void padata_do_serial(struct padata_priv *padata);
 </pre></div>
 </div>
 <p>At some point in the future, <a class="reference internal" href="#c.padata_do_serial" title="padata_do_serial"><code class="xref c c-func docutils literal notranslate"><span class="pre">padata_do_serial()</span></code></a> will trigger a call to the
-serial() function in the padata_priv structure.  That call will happen on
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">serial()</span></code> function in the padata_priv structure.  That call will happen on
 the CPU requested in the initial call to <a class="reference internal" href="#c.padata_do_parallel" title="padata_do_parallel"><code class="xref c c-func docutils literal notranslate"><span class="pre">padata_do_parallel()</span></code></a>; it, too, is
 run with local software interrupts disabled.
 Note that this call may be deferred for a while since the padata code takes
@@ -439,8 +439,6 @@ typically allocated on the main thread’s stack.  Last, call
     unsigned int                    processed;
     int cpu;
     struct padata_cpumask           cpumask;
-    struct work_struct              reorder_work;
-    spinlock_t lock;
 };
 </pre></div>
 </div>
@@ -461,10 +459,6 @@ typically allocated on the main thread’s stack.  Last, call
 <dt><code class="docutils literal notranslate"><span class="pre">cpu</span></code></dt><dd><p>Next CPU to be processed.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">cpumask</span></code></dt><dd><p>The cpumasks in use for parallel and serial workers.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">reorder_work</span></code></dt><dd><p>work struct for reordering.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">lock</span></code></dt><dd><p>Reorder lock.</p>
 </dd>
 </dl>
 </div>

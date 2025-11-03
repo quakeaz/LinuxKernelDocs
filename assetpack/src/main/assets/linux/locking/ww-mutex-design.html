@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -257,7 +257,7 @@ provided.</p>
 <section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">¶</a></h2>
 <p>The algorithm (Wait-Die vs Wound-Wait) is chosen by using either
-DEFINE_WW_CLASS() (Wound-Wait) or DEFINE_WD_CLASS() (Wait-Die)
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">DEFINE_WW_CLASS()</span></code> (Wound-Wait) or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">DEFINE_WD_CLASS()</span></code> (Wait-Die)
 As a rough rule of thumb, use Wound-Wait iff you
 expect the number of simultaneous competing transactions to be typically small,
 and you want to reduce the number of rollbacks.</p>
@@ -478,7 +478,7 @@ api can be used with a NULL context.</p>
 <section id="design">
 <h3>Design:<a class="headerlink" href="#design" title="Link to this heading">¶</a></h3>
 <blockquote>
-<div><p>ww_mutex currently encapsulates a struct mutex, this means no extra overhead for
+<div><p>ww_mutex currently encapsulates a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">mutex</span></code>, this means no extra overhead for
 normal mutex locks, which are far more common. As such there is only a small
 increase in code size if wait/wound mutexes are not used.</p>
 <p>We maintain the following invariants for the wait list:</p>

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -388,7 +388,7 @@ query the reset line status using <a class="reference internal" href="#c.reset_c
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">id</span></code></dt><dd><p>reset control consumer ID</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">rstc</span></code></dt><dd><p>struct reset_control * to store the associated reset control</p>
+<dt><code class="docutils literal notranslate"><span class="pre">rstc</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">reset_control</span></code> * to store the associated reset control</p>
 </dd>
 </dl>
 </div>
@@ -442,7 +442,7 @@ This structure is used to manage data for these calls.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Returns a struct reset_control or <a class="reference internal" href="../core-api/kernel-api.html#c.IS_ERR" title="IS_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">IS_ERR()</span></code></a> condition containing errno.
+<p>Returns a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">reset_control</span></code> or <a class="reference internal" href="../core-api/kernel-api.html#c.IS_ERR" title="IS_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">IS_ERR()</span></code></a> condition containing errno.
 If this function is called more than once for the same reset_control it will
 return -EBUSY.</p>
 <p>See <a class="reference internal" href="#c.reset_control_get_shared" title="reset_control_get_shared"><code class="xref c c-func docutils literal notranslate"><span class="pre">reset_control_get_shared()</span></code></a> for details on shared references to
@@ -484,7 +484,7 @@ returns 0, or an <a class="reference internal" href="../core-api/kernel-api.html
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Returns a struct reset_control or <a class="reference internal" href="../core-api/kernel-api.html#c.IS_ERR" title="IS_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">IS_ERR()</span></code></a> condition containing errno.
+<p>Returns a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">reset_control</span></code> or <a class="reference internal" href="../core-api/kernel-api.html#c.IS_ERR" title="IS_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">IS_ERR()</span></code></a> condition containing errno.
 reset-controls returned by this function must be acquired via
 <a class="reference internal" href="#c.reset_control_acquire" title="reset_control_acquire"><code class="xref c c-func docutils literal notranslate"><span class="pre">reset_control_acquire()</span></code></a> before they can be used and should be released
 via <a class="reference internal" href="#c.reset_control_release" title="reset_control_release"><code class="xref c c-func docutils literal notranslate"><span class="pre">reset_control_release()</span></code></a> afterwards.</p>
@@ -510,8 +510,8 @@ via <a class="reference internal" href="#c.reset_control_release" title="reset_c
 <p>Fills the rstcs array with pointers to exclusive reset controls and
 returns 0, or an <a class="reference internal" href="../core-api/kernel-api.html#c.IS_ERR" title="IS_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">IS_ERR()</span></code></a> condition containing errno.
 reset-controls returned by this function must be acquired via
-reset_control_bulk_acquire() before they can be used and should be released
-via reset_control_bulk_release() afterwards.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">reset_control_bulk_acquire()</span></code> before they can be used and should be released
+via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">reset_control_bulk_release()</span></code> afterwards.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.reset_control_bulk_get_optional_exclusive_released">
@@ -550,7 +550,7 @@ instead of an error and missing rtsc is set to NULL.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Returns a struct reset_control or <a class="reference internal" href="../core-api/kernel-api.html#c.IS_ERR" title="IS_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">IS_ERR()</span></code></a> condition containing errno.
+<p>Returns a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">reset_control</span></code> or <a class="reference internal" href="../core-api/kernel-api.html#c.IS_ERR" title="IS_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">IS_ERR()</span></code></a> condition containing errno.
 This function is intended for use with reset-controls which are shared
 between hardware blocks.</p>
 <p>When a reset-control is shared, the behavior of reset_control_assert /
@@ -682,7 +682,7 @@ instead of returning an error.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Returns a struct reset_control or <a class="reference internal" href="../core-api/kernel-api.html#c.IS_ERR" title="IS_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">IS_ERR()</span></code></a> condition containing errno.</p>
+<p>Returns a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">reset_control</span></code> or <a class="reference internal" href="../core-api/kernel-api.html#c.IS_ERR" title="IS_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">IS_ERR()</span></code></a> condition containing errno.</p>
 <p>Use of id names is optional.</p>
 </div>
 <dl class="c function">
@@ -703,7 +703,7 @@ instead of returning an error.</p>
 <p>Optional variant of <a class="reference internal" href="#c.of_reset_control_get_exclusive" title="of_reset_control_get_exclusive"><code class="xref c c-func docutils literal notranslate"><span class="pre">of_reset_control_get_exclusive()</span></code></a>. If the requested reset
 is not specified in the device tree, this function returns NULL instead of
 an error.</p>
-<p>Returns a struct reset_control or <a class="reference internal" href="../core-api/kernel-api.html#c.IS_ERR" title="IS_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">IS_ERR()</span></code></a> condition containing errno.</p>
+<p>Returns a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">reset_control</span></code> or <a class="reference internal" href="../core-api/kernel-api.html#c.IS_ERR" title="IS_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">IS_ERR()</span></code></a> condition containing errno.</p>
 <p>Use of id names is optional.</p>
 </div>
 <dl class="c function">
@@ -729,7 +729,7 @@ about shared reset-controls in the reset_control_assert docs.</p>
 <p>Calling reset_control_assert without first calling reset_control_deassert
 is not allowed on a shared reset control. Calling reset_control_reset is
 also not allowed on a shared reset control.
-Returns a struct reset_control or <a class="reference internal" href="../core-api/kernel-api.html#c.IS_ERR" title="IS_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">IS_ERR()</span></code></a> condition containing errno.</p>
+Returns a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">reset_control</span></code> or <a class="reference internal" href="../core-api/kernel-api.html#c.IS_ERR" title="IS_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">IS_ERR()</span></code></a> condition containing errno.</p>
 <p>Use of id names is optional.</p>
 </div>
 <dl class="c function">
@@ -748,7 +748,7 @@ Returns a struct reset_control or <a class="reference internal" href="../core-ap
 </dl>
 <p><strong>Description</strong></p>
 <p>This is to be used to perform a list of resets for a device or power domain
-in whatever order. Returns a struct reset_control or <a class="reference internal" href="../core-api/kernel-api.html#c.IS_ERR" title="IS_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">IS_ERR()</span></code></a> condition
+in whatever order. Returns a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">reset_control</span></code> or <a class="reference internal" href="../core-api/kernel-api.html#c.IS_ERR" title="IS_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">IS_ERR()</span></code></a> condition
 containing errno.</p>
 </div>
 <dl class="c function">
@@ -774,9 +774,9 @@ about shared reset-controls in the reset_control_assert docs.</p>
 <p>Calling reset_control_assert without first calling reset_control_deassert
 is not allowed on a shared reset control. Calling reset_control_reset is
 also not allowed on a shared reset control.
-Returns a struct reset_control or <a class="reference internal" href="../core-api/kernel-api.html#c.IS_ERR" title="IS_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">IS_ERR()</span></code></a> condition containing errno.</p>
+Returns a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">reset_control</span></code> or <a class="reference internal" href="../core-api/kernel-api.html#c.IS_ERR" title="IS_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">IS_ERR()</span></code></a> condition containing errno.</p>
 <p>This is to be used to perform a list of resets for a device or power domain
-in whatever order. Returns a struct reset_control or <a class="reference internal" href="../core-api/kernel-api.html#c.IS_ERR" title="IS_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">IS_ERR()</span></code></a> condition
+in whatever order. Returns a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">reset_control</span></code> or <a class="reference internal" href="../core-api/kernel-api.html#c.IS_ERR" title="IS_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">IS_ERR()</span></code></a> condition
 containing errno.</p>
 </div>
 <dl class="c function">
@@ -886,7 +886,7 @@ driver detach.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.devm_reset_control_get_optional_exclusive_released">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">reset_control</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">devm_reset_control_get_optional_exclusive_released</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="infrastructure.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.devm_reset_control_get_optional_exclusive_released" title="Link to this definition">¶</a><br /></dt>
-<dd><p>resource managed reset_control_get_optional_exclusive_released()</p>
+<dd><p>resource managed <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">reset_control_get_optional_exclusive_released()</span></code></p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -906,7 +906,7 @@ automatically on driver detach.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.devm_reset_control_bulk_get_optional_exclusive_released">
 <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">devm_reset_control_bulk_get_optional_exclusive_released</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="infrastructure.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">num_rstcs</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.reset_control_bulk_data" title="reset_control_bulk_data"><span class="n"><span class="pre">reset_control_bulk_data</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">rstcs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.devm_reset_control_bulk_get_optional_exclusive_released" title="Link to this definition">¶</a><br /></dt>
-<dd><p>resource managed reset_control_bulk_optional_get_exclusive_released()</p>
+<dd><p>resource managed <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">reset_control_bulk_optional_get_exclusive_released()</span></code></p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -920,10 +920,10 @@ automatically on driver detach.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Managed reset_control_bulk_optional_get_exclusive_released(). For reset
+<p>Managed <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">reset_control_bulk_optional_get_exclusive_released()</span></code>. For reset
 controllers returned from this function, <a class="reference internal" href="#c.reset_control_put" title="reset_control_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">reset_control_put()</span></code></a> is called
 automatically on driver detach.</p>
-<p>See reset_control_bulk_optional_get_exclusive_released() for more information.</p>
+<p>See <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">reset_control_bulk_optional_get_exclusive_released()</span></code> for more information.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.devm_reset_control_get_shared">
@@ -989,7 +989,7 @@ detach.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.devm_reset_control_bulk_get_shared_deasserted">
 <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">devm_reset_control_bulk_get_shared_deasserted</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="infrastructure.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">num_rstcs</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.reset_control_bulk_data" title="reset_control_bulk_data"><span class="n"><span class="pre">reset_control_bulk_data</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">rstcs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.devm_reset_control_bulk_get_shared_deasserted" title="Link to this definition">¶</a><br /></dt>
-<dd><p>resource managed <a class="reference internal" href="#c.reset_control_bulk_get_shared" title="reset_control_bulk_get_shared"><code class="xref c c-func docutils literal notranslate"><span class="pre">reset_control_bulk_get_shared()</span></code></a> + reset_control_bulk_deassert()</p>
+<dd><p>resource managed <a class="reference internal" href="#c.reset_control_bulk_get_shared" title="reset_control_bulk_get_shared"><code class="xref c c-func docutils literal notranslate"><span class="pre">reset_control_bulk_get_shared()</span></code></a> + <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">reset_control_bulk_deassert()</span></code></p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -1003,9 +1003,9 @@ detach.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Managed <a class="reference internal" href="#c.reset_control_bulk_get_shared" title="reset_control_bulk_get_shared"><code class="xref c c-func docutils literal notranslate"><span class="pre">reset_control_bulk_get_shared()</span></code></a> + reset_control_bulk_deassert(). For
-reset controllers returned from this function, reset_control_bulk_assert() +
-reset_control_bulk_put() are called automatically on driver detach.</p>
+<p>Managed <a class="reference internal" href="#c.reset_control_bulk_get_shared" title="reset_control_bulk_get_shared"><code class="xref c c-func docutils literal notranslate"><span class="pre">reset_control_bulk_get_shared()</span></code></a> + <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">reset_control_bulk_deassert()</span></code>. For
+reset controllers returned from this function, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">reset_control_bulk_assert()</span></code> +
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">reset_control_bulk_put()</span></code> are called automatically on driver detach.</p>
 <p>See <a class="reference internal" href="#c.devm_reset_control_bulk_get_shared" title="devm_reset_control_bulk_get_shared"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_reset_control_bulk_get_shared()</span></code></a> for more information.</p>
 </div>
 <dl class="c function">

@@ -14,7 +14,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Monitor wip" href="monitor_wip.html" />
-    <link rel="prev" title="Deterministic Automata Monitor Synthesis" href="da_monitor_synthesis.html" />
+    <link rel="prev" title="Runtime Verification Monitor Synthesis" href="monitor_synthesis.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -215,14 +215,14 @@ has the following signature, from include/trace/events/preemptirq.h:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TP_PROTO(unsigned long ip, unsigned long parent_ip)
 </pre></div>
 </div>
-<p>Hence, the handle_preempt_disable() function will look like:</p>
+<p>Hence, the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">handle_preempt_disable()</span></code> function will look like:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>void handle_preempt_disable(void *data, unsigned long ip, unsigned long parent_ip)
 </pre></div>
 </div>
 <p>In this case, the kernel event translates one to one with the automata
 event, and indeed, no other change is required for this function.</p>
-<p>The next handler function, handle_preempt_enable() has the same argument
-list from the handle_preempt_disable(). The difference is that the
+<p>The next handler function, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">handle_preempt_enable()</span></code> has the same argument
+list from the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">handle_preempt_disable()</span></code>. The difference is that the
 preempt_enable event will be used to synchronize the system to the model.</p>
 <p>Initially, the <em>model</em> is placed in the initial state. However, the <em>system</em>
 might or might not be in the initial state. The monitor cannot start
@@ -244,7 +244,7 @@ system and the model at the initialization of the monitoring section.</p>
 }
 </pre></div>
 </div>
-<p>Finally, the “handle_sched_waking()” will look like:</p>
+<p>Finally, the “<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">handle_sched_waking()</span></code>” will look like:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>void handle_sched_waking(void *data, struct task_struct *task)
 {
       da_handle_event_wip(sched_waking_wip);
@@ -277,9 +277,9 @@ disable_wip()
 <h2>Instrumentation helpers<a class="headerlink" href="#instrumentation-helpers" title="Link to this heading">¶</a></h2>
 <p>To complete the instrumentation, the <em>handler functions</em> need to be attached to a
 kernel event, at the monitoring enable phase.</p>
-<p>The RV interface also facilitates this step. For example, the macro “rv_attach_trace_probe()”
+<p>The RV interface also facilitates this step. For example, the macro “<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rv_attach_trace_probe()</span></code>”
 is used to connect the wip model events to the relative kernel event. dot2k automatically
-adds “rv_attach_trace_probe()” function call for each model event in the enable phase, as
+adds “<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rv_attach_trace_probe()</span></code>” function call for each model event in the enable phase, as
 a suggestion.</p>
 <p>For example, from the wip sample model:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>static int enable_wip(void)

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -269,7 +269,7 @@ or get notified that the node has no free memory.  This is usually the case when
 a subsystem allocates per CPU memory resources, for example.</p>
 <p>A typical model for making such an allocation is to obtain the node id of the
 node to which the “current CPU” is attached using one of the kernel’s
-numa_node_id() or CPU_to_node() functions and then request memory from only
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">numa_node_id()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">CPU_to_node()</span></code> functions and then request memory from only
 the node id returned.  When such an allocation fails, the requesting subsystem
 may revert to its own fallback path.  The slab kernel memory allocator is an
 example of this.  Or, the subsystem may choose to disable or not to enable
@@ -279,8 +279,8 @@ this.</p>
 attached to memoryless nodes would always incur the fallback path overhead
 or some subsystems would fail to initialize if they attempted to allocated
 memory exclusively from a node without memory.  To support such
-architectures transparently, kernel subsystems can use the numa_mem_id()
-or cpu_to_mem() function to locate the “local memory node” for the calling or
+architectures transparently, kernel subsystems can use the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">numa_mem_id()</span></code>
+or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpu_to_mem()</span></code> function to locate the “local memory node” for the calling or
 specified CPU.  Again, this is the same node from which default, local page
 allocations will be attempted.</p>
 </section>

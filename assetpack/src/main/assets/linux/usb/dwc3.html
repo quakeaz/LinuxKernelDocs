@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -177,10 +177,10 @@ until the command completes which is bad.</p>
 endpoint. The interrupt numbers are allocated during probe and belong
 to the device. If MSI provides per-endpoint interrupt this dummy
 interrupt chip can be replaced with “real” interrupts.</p></li>
-<li><p>interrupts are requested / allocated on usb_ep_enable() and removed on
-usb_ep_disable(). Worst case are 32 interrupts, the lower limit is two
+<li><p>interrupts are requested / allocated on <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_ep_enable()</span></code> and removed on
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_ep_disable()</span></code>. Worst case are 32 interrupts, the lower limit is two
 for ep0/1.</p></li>
-<li><p><a class="reference internal" href="../driver-api/usb/dwc3.html#c.dwc3_send_gadget_ep_cmd" title="dwc3_send_gadget_ep_cmd"><code class="xref c c-func docutils literal notranslate"><span class="pre">dwc3_send_gadget_ep_cmd()</span></code></a> will sleep in wait_for_completion_timeout()
+<li><p><a class="reference internal" href="../driver-api/usb/dwc3.html#c.dwc3_send_gadget_ep_cmd" title="dwc3_send_gadget_ep_cmd"><code class="xref c c-func docutils literal notranslate"><span class="pre">dwc3_send_gadget_ep_cmd()</span></code></a> will sleep in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wait_for_completion_timeout()</span></code>
 until the command completes.</p></li>
 <li><p>the interrupt handler is split into the following pieces:</p>
 <ul>

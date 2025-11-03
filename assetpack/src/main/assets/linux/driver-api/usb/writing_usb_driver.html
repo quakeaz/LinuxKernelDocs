@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -231,7 +231,7 @@ number and a set of <code class="xref c c-type docutils literal notranslate"><sp
 this user-space interaction. The skeleton driver needs this kind of
 interface, so it provides a minor starting number and a pointer to its
 <code class="xref c c-type docutils literal notranslate"><span class="pre">file_operations</span></code> functions.</p>
-<p>The USB driver is then registered with a call to usb_register(),
+<p>The USB driver is then registered with a call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_register()</span></code>,
 usually in the driver’s init function, as shown here:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>static int __init usb_skel_init(void)
 {
@@ -251,7 +251,7 @@ module_init(usb_skel_init);
 </pre></div>
 </div>
 <p>When the driver is unloaded from the system, it needs to deregister
-itself with the USB subsystem. This is done with usb_deregister()
+itself with the USB subsystem. This is done with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">usb_deregister()</span></code>
 function:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>static void __exit usb_skel_exit(void)
 {

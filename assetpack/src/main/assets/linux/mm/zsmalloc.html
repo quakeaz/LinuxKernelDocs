@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -167,7 +167,7 @@ fail under memory pressure. On the other hand, if we just use single
 any object of size PAGE_SIZE/2 or larger would occupy an entire page.
 This was one of the major issues with its predecessor (xvmalloc).</p>
 <p>To overcome these issues, zsmalloc allocates a bunch of 0-order pages
-and links them together using various ‘struct page’ fields. These linked
+and links them together using various ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code>’ fields. These linked
 pages act as a single higher-order page i.e. an object can span 0-order
 page boundaries. The code refers to these linked pages as a single entity
 called zspage.</p>
@@ -248,7 +248,7 @@ closer the inuse counter is to objs_per_zspage, the better.</p>
 <p>zsmalloc has 255 size classes, each of which can hold a number of zspages.
 Each zspage can contain up to ZSMALLOC_CHAIN_SIZE physical (0-order) pages.
 The optimal zspage chain size for each size class is calculated during the
-creation of the zsmalloc pool (see calculate_zspage_chain_size()).</p>
+creation of the zsmalloc pool (see <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">calculate_zspage_chain_size()</span></code>).</p>
 <p>As an optimization, zsmalloc merges size classes that have similar
 characteristics in terms of the number of pages per zspage and the number
 of objects that each zspage can store.</p>
@@ -268,7 +268,7 @@ need to store an object of size, say, 1568 bytes, we end up using size class
 hold a total of 5 objects. If we need to store 13 objects of size 1568, we
 end up allocating three zspages, or 6 physical pages.</p>
 <p>However, if we take a closer look at size class #96 (which is meant for
-objects of size 1568 bytes) and trace <cite>calculate_zspage_chain_size()</cite>, we
+objects of size 1568 bytes) and trace <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">calculate_zspage_chain_size()</span></code></cite>, we
 find that the most optimal zspage configuration for this class is a chain
 of 5 physical pages::</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>pages per zspage      wasted bytes     used%

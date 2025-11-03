@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -271,7 +271,7 @@ treat the IV as associated data; nevertheless the length passed to
 </div>
 <p><strong>Members</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">setkey</span></code></dt><dd><p>see struct skcipher_alg</p>
+<dt><code class="docutils literal notranslate"><span class="pre">setkey</span></code></dt><dd><p>see <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">skcipher_alg</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">setauthsize</span></code></dt><dd><p>Set authentication size for the AEAD transformation. This
 function is used to specify the consumer requested size of the
@@ -281,9 +281,9 @@ supplied during the decryption operation. This function is also
 responsible for checking the authentication tag size for
 validity.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">encrypt</span></code></dt><dd><p>see struct skcipher_alg</p>
+<dt><code class="docutils literal notranslate"><span class="pre">encrypt</span></code></dt><dd><p>see <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">skcipher_alg</span></code></p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">decrypt</span></code></dt><dd><p>see struct skcipher_alg</p>
+<dt><code class="docutils literal notranslate"><span class="pre">decrypt</span></code></dt><dd><p>see <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">skcipher_alg</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">init</span></code></dt><dd><p>Initialize the cryptographic transformation object. This function
 is used to initialize the cryptographic transformation object.
@@ -298,7 +298,7 @@ in place.</p>
 counterpart to <strong>init</strong>, used to remove various changes set in
 <strong>init</strong>.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">ivsize</span></code></dt><dd><p>see struct skcipher_alg</p>
+<dt><code class="docutils literal notranslate"><span class="pre">ivsize</span></code></dt><dd><p>see <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">skcipher_alg</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">maxauthsize</span></code></dt><dd><p>Set the maximum authentication tag size supported by the
 transformation. A transformation may support smaller tag sizes.
@@ -307,7 +307,7 @@ integrity of the encrypted data, a consumer typically wants the
 largest authentication tag possible as defined by this
 variable.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">chunksize</span></code></dt><dd><p>see struct skcipher_alg</p>
+<dt><code class="docutils literal notranslate"><span class="pre">chunksize</span></code></dt><dd><p>see <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">skcipher_alg</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">base</span></code></dt><dd><p>Definition of a generic crypto cipher algorithm.</p>
 </dd>
@@ -336,14 +336,12 @@ AEAD cipher</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Allocate a cipher handle for an AEAD. The returned struct
-crypto_aead is the cipher handle that is required for any subsequent
+<p>Allocate a cipher handle for an AEAD. The returned <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">crypto_aead</span></code> is the cipher handle that is required for any subsequent
 API invocation for that AEAD.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>allocated cipher handle in case of success; IS_ERR() is true in case</dt><dd><p>of an error, <a class="reference internal" href="../core-api/kernel-api.html#c.PTR_ERR" title="PTR_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">PTR_ERR()</span></code></a> returns the error code.</p>
-</dd>
-</dl>
+<p>allocated cipher handle in case of success; <a class="reference internal" href="../core-api/kernel-api.html#c.IS_ERR" title="IS_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">IS_ERR()</span></code></a> is true in case
+of an error, <a class="reference internal" href="../core-api/kernel-api.html#c.PTR_ERR" title="PTR_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">PTR_ERR()</span></code></a> returns the error code.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.crypto_free_aead">
@@ -516,14 +514,12 @@ invocation.</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>0 if the cipher operation was successful; -EBADMSG: The AEAD</dt><dd><p>cipher operation performs the authentication of the data during the
+<p>0 if the cipher operation was successful; -EBADMSG: The AEAD
+cipher operation performs the authentication of the data during the
 decryption operation. Therefore, the function returns this error if
 the authentication of the ciphertext was unsuccessful (i.e. the
 integrity of the ciphertext or the associated data was violated);
 &lt; 0 if an error occurred.</p>
-</dd>
-</dl>
 </div>
 </section>
 <section id="asynchronous-aead-request-handle">

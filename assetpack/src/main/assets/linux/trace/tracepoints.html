@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -224,7 +224,7 @@ void somefct(void)
 <li><p>eventname is the name of the event to trace.</p></li>
 </ul>
 </li>
-<li><p><cite>TP_PROTO(int firstarg, struct task_struct *p)</cite> is the prototype of the
+<li><p><cite>TP_PROTO(int firstarg, <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">task_struct</span></code> *p)</cite> is the prototype of the
 function called by this tracepoint.</p></li>
 <li><p><cite>TP_ARGS(firstarg, p)</cite> are the parameters names, same as found in the
 prototype.</p></li>
@@ -235,9 +235,9 @@ should appear only in one source file.</p></li>
 </dl>
 <p>Connecting a function (probe) to a tracepoint is done by providing a
 probe (function to call) for the specific tracepoint through
-register_trace_subsys_eventname().  Removing a probe is done through
-unregister_trace_subsys_eventname(); it will remove the probe.</p>
-<p>tracepoint_synchronize_unregister() must be called before the end of
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">register_trace_subsys_eventname()</span></code>.  Removing a probe is done through
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unregister_trace_subsys_eventname()</span></code>; it will remove the probe.</p>
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">tracepoint_synchronize_unregister()</span></code> must be called before the end of
 the module exit function to make sure there is no caller left using
 the probe. This, and the fact that preemption is disabled around the
 probe call, make sure that probe removal and module unload are safe.</p>
@@ -254,7 +254,7 @@ intended to limit collisions. Tracepoint names are global to the
 kernel: they are considered as being the same whether they are in the
 core kernel image or in modules.</p>
 <p>If the tracepoint has to be used in kernel modules, an
-EXPORT_TRACEPOINT_SYMBOL_GPL() or EXPORT_TRACEPOINT_SYMBOL() can be
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">EXPORT_TRACEPOINT_SYMBOL_GPL()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">EXPORT_TRACEPOINT_SYMBOL()</span></code> can be
 used to export the defined tracepoints.</p>
 <p>If you need to do a bit of work for a tracepoint parameter, and
 that work is only used for the tracepoint, that work can be encapsulated
@@ -270,31 +270,31 @@ within an if statement with the following:</p>
 }
 </pre></div>
 </div>
-<p>All trace_&lt;tracepoint&gt;_tp() calls have a matching trace_&lt;tracepoint&gt;_enabled()
+<p>All trace_&lt;tracepoint&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_tp()</span></code> calls have a matching trace_&lt;tracepoint&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_enabled()</span></code>
 function defined that returns true if the tracepoint is enabled and
-false otherwise. The trace_&lt;tracepoint&gt;_tp() should always be within the
-block of the if (trace_&lt;tracepoint&gt;_enabled()) to prevent races between
+false otherwise. The trace_&lt;tracepoint&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_tp()</span></code> should always be within the
+block of the if (trace_&lt;tracepoint&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_enabled()</span></code>) to prevent races between
 the tracepoint being enabled and the check being seen.</p>
-<p>The advantage of using the trace_&lt;tracepoint&gt;_enabled() is that it uses
+<p>The advantage of using the trace_&lt;tracepoint&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_enabled()</span></code> is that it uses
 the static_key of the tracepoint to allow the if statement to be implemented
 with jump labels and avoid conditional branches.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The convenience macro TRACE_EVENT provides an alternative way to
 define tracepoints. Note, DECLARE_TRACE(foo) creates a function
-“trace_foo_tp()” whereas TRACE_EVENT(foo) creates a function
-“trace_foo()”, and also exposes the tracepoint as a trace event in
+“<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">trace_foo_tp()</span></code>” whereas TRACE_EVENT(foo) creates a function
+“<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">trace_foo()</span></code>”, and also exposes the tracepoint as a trace event in
 /sys/kernel/tracing/events directory.  Check <a class="reference external" href="http://lwn.net/Articles/379903">http://lwn.net/Articles/379903</a>,
 <a class="reference external" href="http://lwn.net/Articles/381064">http://lwn.net/Articles/381064</a> and <a class="reference external" href="http://lwn.net/Articles/383362">http://lwn.net/Articles/383362</a>
 for a series of articles with more details.</p>
 </div>
 <p>If you require calling a tracepoint from a header file, it is not
-recommended to call one directly or to use the trace_&lt;tracepoint&gt;_enabled()
+recommended to call one directly or to use the trace_&lt;tracepoint&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_enabled()</span></code>
 function call, as tracepoints in header files can have side effects if a
 header is included from a file that has CREATE_TRACE_POINTS set, as
 well as the trace_&lt;tracepoint&gt;() is not that small of an inline
 and can bloat the kernel if used by other inlined functions. Instead,
-include tracepoint-defs.h and use tracepoint_enabled().</p>
+include tracepoint-defs.h and use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">tracepoint_enabled()</span></code>.</p>
 <p>In a C file:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>void do_trace_foo_bar_wrapper(args)
 {

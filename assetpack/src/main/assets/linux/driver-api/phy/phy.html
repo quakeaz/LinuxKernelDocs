@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -269,7 +269,7 @@ arguments. For the dt boot case, all PHY providers should use one of the above
 <p>Often the device tree nodes associated with a PHY provider will contain a set
 of children that each represent a single PHY. Some bindings may nest the child
 nodes within extra levels for context and extensibility, in which case the low
-level of_phy_provider_register_full() and devm_of_phy_provider_register_full()
+level <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">of_phy_provider_register_full()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_of_phy_provider_register_full()</span></code>
 macros can be used to override the node containing the children.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>#define of_phy_provider_register_full(dev, children, xlate) \
         __of_phy_provider_register(dev, children, THIS_MODULE, xlate)
@@ -302,7 +302,7 @@ the device pointer and phy ops.
 phy_ops is a set of function pointers for performing PHY operations such as
 init, exit, power_on and power_off.</p>
 <p>Inorder to dereference the private data (in phy_ops), the phy provider driver
-can use phy_set_drvdata() after creating the PHY and use phy_get_drvdata() in
+can use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">phy_set_drvdata()</span></code> after creating the PHY and use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">phy_get_drvdata()</span></code> in
 phy_ops to get back the private data.</p>
 </section>
 <section id="getting-a-reference-to-the-phy">
@@ -338,8 +338,8 @@ devm_of_phy_get or devm_of_phy_get_by_index can be used to get a phy
 reference based on name or index.</p>
 <p>It should be noted that NULL is a valid phy reference. All phy
 consumer calls on the NULL phy become NOPs. That is the release calls,
-the phy_init() and phy_exit() calls, and phy_power_on() and
-phy_power_off() calls are all NOP when applied to a NULL phy. The NULL
+the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">phy_init()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">phy_exit()</span></code> calls, and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">phy_power_on()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">phy_power_off()</span></code> calls are all NOP when applied to a NULL phy. The NULL
 phy is useful in devices for handling optional phy devices.</p>
 </section>
 <section id="order-of-api-calls">
@@ -405,7 +405,7 @@ phy_pm_runtime_put and phy_pm_runtime_put_sync for performing PM operations.</p>
 <p>In order to get reference to a PHY without help from DeviceTree, the framework
 offers lookups which can be compared to clkdev that allow clk structures to be
 bound to devices. A lookup can be made during runtime when a handle to the
-struct phy already exists.</p>
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">phy</span></code> already exists.</p>
 <p>The framework offers the following API for registering and unregistering the
 lookups:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int phy_create_lookup(struct phy *phy, const char *con_id,

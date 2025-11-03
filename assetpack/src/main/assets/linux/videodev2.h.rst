@@ -733,7 +733,7 @@ videodev2.h
     \#define \ :ref:`V4L2_PIX_FMT_SGBRG12 <v4l2-pix-fmt-sgbrg12>` v4l2\_fourcc('G', 'B', '1', '2') \/\* 12  GBGB.. RGRG.. \*\/
     \#define \ :ref:`V4L2_PIX_FMT_SGRBG12 <v4l2-pix-fmt-sgrbg12>` v4l2\_fourcc('B', 'A', '1', '2') \/\* 12  GRGR.. BGBG.. \*\/
     \#define \ :ref:`V4L2_PIX_FMT_SRGGB12 <v4l2-pix-fmt-srggb12>` v4l2\_fourcc('R', 'G', '1', '2') \/\* 12  RGRG.. GBGB.. \*\/
-            \/\* 12bit raw bayer packed, 6 bytes for every 4 pixels \*\/
+            \/\* 12bit raw bayer packed, 3 bytes for every 2 pixels \*\/
     \#define \ :ref:`V4L2_PIX_FMT_SBGGR12P <v4l2-pix-fmt-sbggr12p>` v4l2\_fourcc('p', 'B', 'C', 'C')
     \#define \ :ref:`V4L2_PIX_FMT_SGBRG12P <v4l2-pix-fmt-sgbrg12p>` v4l2\_fourcc('p', 'G', 'C', 'C')
     \#define \ :ref:`V4L2_PIX_FMT_SGRBG12P <v4l2-pix-fmt-sgrbg12p>` v4l2\_fourcc('p', 'g', 'C', 'C')
@@ -847,6 +847,12 @@ videodev2.h
     \#define \ :ref:`V4L2_PIX_FMT_PISP_COMP2_BGGR <v4l2-pix-fmt-pisp-comp2-bggr>`    v4l2\_fourcc('P', 'C', '2', 'B') \/\* PiSP 8-bit mode 2 compressed BGGR bayer \*\/
     \#define \ :ref:`V4L2_PIX_FMT_PISP_COMP2_MONO <v4l2-pix-fmt-pisp-comp2-mono>`    v4l2\_fourcc('P', 'C', '2', 'M') \/\* PiSP 8-bit mode 2 compressed monochrome \*\/
 
+    \/\* Renesas RZ\/V2H CRU packed formats. 64-bit units with contiguous pixels \*\/
+    \#define \ :ref:`V4L2_PIX_FMT_RAW_CRU10 <v4l2-pix-fmt-raw-cru10>`  v4l2\_fourcc('C', 'R', '1', '0')
+    \#define \ :ref:`V4L2_PIX_FMT_RAW_CRU12 <v4l2-pix-fmt-raw-cru12>`  v4l2\_fourcc('C', 'R', '1', '2')
+    \#define \ :ref:`V4L2_PIX_FMT_RAW_CRU14 <v4l2-pix-fmt-raw-cru14>`  v4l2\_fourcc('C', 'R', '1', '4')
+    \#define \ :ref:`V4L2_PIX_FMT_RAW_CRU20 <v4l2-pix-fmt-raw-cru20>`  v4l2\_fourcc('C', 'R', '2', '0')
+
     \/\* SDR formats - used only for Software Defined Radio devices \*\/
     \#define \ :ref:`V4L2_SDR_FMT_CU8 <v4l2-sdr-fmt-cu8>`          v4l2\_fourcc('C', 'U', '0', '8') \/\* IQ u8 \*\/
     \#define \ :ref:`V4L2_SDR_FMT_CU16LE <v4l2-sdr-fmt-cu16le>`       v4l2\_fourcc('C', 'U', '1', '6') \/\* IQ u16le \*\/
@@ -868,6 +874,7 @@ videodev2.h
     \#define \ :ref:`V4L2_META_FMT_VSP1_HGT <v4l2-meta-fmt-vsp1-hgt>`    v4l2\_fourcc('V', 'S', 'P', 'T') \/\* R-Car VSP1 2-D Histogram \*\/
     \#define \ :ref:`V4L2_META_FMT_UVC <v4l2-meta-fmt-uvc>`         v4l2\_fourcc('U', 'V', 'C', 'H') \/\* UVC Payload Header metadata \*\/
     \#define \ :ref:`V4L2_META_FMT_D4XX <v4l2-meta-fmt-d4xx>`        v4l2\_fourcc('D', '4', 'X', 'X') \/\* D4XX Payload Header metadata \*\/
+    \#define \ :ref:`V4L2_META_FMT_UVC_MSXU_1_5 <v4l2-meta-fmt-uvc-msxu-1-5>`  v4l2\_fourcc('U', 'V', 'C', 'M') \/\* UVC MSXU metadata \*\/
     \#define \ :ref:`V4L2_META_FMT_VIVID <v4l2-meta-fmt-vivid>`       v4l2\_fourcc('V', 'I', 'V', 'D') \/\* Vivid Metadata \*\/
 
     \/\* Vendor specific - used for RK\_ISP1 camera sub-system \*\/

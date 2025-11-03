@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -294,7 +294,7 @@ spin_unlock(&amp;lock);
 <hr class="docutils" />
 <section id="id5">
 <h2>参考信息<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h2>
-<p>对于动态初始化，使用spin_lock_init()或rwlock_init()是合适的:</p>
+<p>对于动态初始化，使用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_init()</span></code>或<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rwlock_init()</span></code>是合适的:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>spinlock_t xxx_lock;
 rwlock_t xxx_rw_lock;
 
@@ -308,8 +308,8 @@ static int __init xxx_init(void)
 module_init(xxx_init);
 </pre></div>
 </div>
-<p>对于静态初始化，使用DEFINE_SPINLOCK() / DEFINE_RWLOCK()或
-__SPIN_LOCK_UNLOCKED() / __RW_LOCK_UNLOCKED()是合适的。</p>
+<p>对于静态初始化，使用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">DEFINE_SPINLOCK()</span></code> / <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">DEFINE_RWLOCK()</span></code>或
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__SPIN_LOCK_UNLOCKED()</span></code> / <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__RW_LOCK_UNLOCKED()</span></code>是合适的。</p>
 </section>
 </section>
 

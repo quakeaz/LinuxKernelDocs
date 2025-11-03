@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -334,7 +334,7 @@ simultaneously.</p>
 |____________|    \___&lt;|____/    |____________|
 </pre></div>
 </div>
-<p>STM32 DMA-MDMA chaining uses (struct dma_slave_config).peripheral_config to
+<p>STM32 DMA-MDMA chaining uses (<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dma_slave_config</span></code>).peripheral_config to
 exchange the parameters needed to configure MDMA. These parameters are
 gathered into a u32 array with three values:</p>
 <ul class="simple">
@@ -393,7 +393,7 @@ the DMA controller to use is the MDMA controller’s one.</p>
 <p>Concerning STM32 MDMA bindings:</p>
 <p>1. The request line number : whatever the value here, it will be overwritten
 by MDMA driver with the STM32 DMAMUX channel ID passed through
-(struct dma_slave_config).peripheral_config</p>
+(<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dma_slave_config</span></code>).peripheral_config</p>
 <p>2. The priority level : choose Very High (0x3) so that your channel will
 take priority other the other during request arbitration</p>
 <p>3. A 32bit mask specifying the DMA channel configuration : source and
@@ -402,20 +402,20 @@ transfer</p>
 <p>4. The 32bit value specifying the register to be used to acknowledge the
 request: it will be overwritten by MDMA driver, with the DMA channel
 interrupt flag clear register address passed through
-(struct dma_slave_config).peripheral_config</p>
+(<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dma_slave_config</span></code>).peripheral_config</p>
 <p>5. The 32bit mask specifying the value to be written to acknowledge the
 request: it will be overwritten by MDMA driver, with the DMA channel
 Transfer Complete flag passed through
-(struct dma_slave_config).peripheral_config</p>
+(<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dma_slave_config</span></code>).peripheral_config</p>
 </div></blockquote>
 </div></blockquote>
 </section>
 <section id="driver-updates-for-stm32-dma-mdma-chaining-support-in-foo-driver">
 <h2>Driver updates for STM32 DMA-MDMA chaining support in foo driver<a class="headerlink" href="#driver-updates-for-stm32-dma-mdma-chaining-support-in-foo-driver" title="Link to this heading">¶</a></h2>
 <blockquote>
-<div><p><strong>0. (optional) Refactor the original sg_table if dmaengine_prep_slave_sg()</strong></p>
+<div><p><strong>0. (optional) Refactor the original sg_table if <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dmaengine_prep_slave_sg()</span></code></strong></p>
 <blockquote>
-<div><p>In case of dmaengine_prep_slave_sg(), the original sg_table can’t be used as
+<div><p>In case of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dmaengine_prep_slave_sg()</span></code>, the original sg_table can’t be used as
 is. Two new sg_tables must be created from the original one. One for
 STM32 DMA transfer (where memory address targets now the SRAM buffer instead
 of DDR buffer) and one for STM32 MDMA transfer (where memory address targets
@@ -486,28 +486,28 @@ for_each_sg(mdma_sgt.sgl, s, mdma_sgt.nents, i) {
 </pre></div>
 </div>
 <p>Don’t forget to release these new sg_tables after getting the descriptors
-with dmaengine_prep_slave_sg().</p>
+with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dmaengine_prep_slave_sg()</span></code>.</p>
 </div></blockquote>
 <p><strong>1. Set controller specific parameters</strong></p>
 <blockquote>
-<div><p>First, use dmaengine_slave_config() with a struct dma_slave_config to
+<div><p>First, use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dmaengine_slave_config()</span></code> with a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dma_slave_config</span></code> to
 configure STM32 DMA channel. You just have to take care of DMA addresses,
 the memory address (depending on the transfer direction) must point on your
-SRAM buffer, and set (struct dma_slave_config).peripheral_size != 0.</p>
-<p>STM32 DMA driver will check (struct dma_slave_config).peripheral_size to
+SRAM buffer, and set (<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dma_slave_config</span></code>).peripheral_size != 0.</p>
+<p>STM32 DMA driver will check (<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dma_slave_config</span></code>).peripheral_size to
 determine if chaining is being used or not. If it is used, then STM32 DMA
-driver fills (struct dma_slave_config).peripheral_config with an array of
+driver fills (<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dma_slave_config</span></code>).peripheral_config with an array of
 three u32 : the first one containing STM32 DMAMUX channel ID, the second one
 the channel interrupt flag clear register address, and the third one the
 channel Transfer Complete flag mask.</p>
-<p>Then, use dmaengine_slave_config with another struct dma_slave_config to
+<p>Then, use dmaengine_slave_config with another <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dma_slave_config</span></code> to
 configure STM32 MDMA channel. Take care of DMA addresses, the device address
 (depending on the transfer direction) must point on your SRAM buffer, and
 the memory address must point to the buffer originally used for “classic”
-DMA operation. Use the previous (struct dma_slave_config).peripheral_size
+DMA operation. Use the previous (<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dma_slave_config</span></code>).peripheral_size
 and .peripheral_config that have been updated by STM32 DMA driver, to set
-(struct dma_slave_config).peripheral_size and .peripheral_config of the
-struct dma_slave_config to configure STM32 MDMA channel.</p>
+(<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dma_slave_config</span></code>).peripheral_size and .peripheral_config of the
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dma_slave_config</span></code> to configure STM32 MDMA channel.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct dma_slave_config dma_conf;
 struct dma_slave_config mdma_conf;
 
@@ -534,36 +534,36 @@ dmaengine_slave_config(mdma_chan, &amp;mdma_conf);
 <blockquote>
 <div><p>In the same way you get your descriptor for your “classic” DMA operation,
 you just have to replace the original sg_list (in case of
-dmaengine_prep_slave_sg()) with the new sg_list using SRAM buffer, or to
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dmaengine_prep_slave_sg()</span></code>) with the new sg_list using SRAM buffer, or to
 replace the original buffer address, length and period (in case of
-dmaengine_prep_dma_cyclic()) with the new SRAM buffer.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dmaengine_prep_dma_cyclic()</span></code>) with the new SRAM buffer.</p>
 </div></blockquote>
 <p><strong>3. Get a descriptor for STM32 MDMA channel transaction</strong></p>
 <blockquote>
 <div><p>If you previously get descriptor (for STM32 DMA) with</p>
 <ul class="simple">
-<li><p>dmaengine_prep_slave_sg(), then use dmaengine_prep_slave_sg() for
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dmaengine_prep_slave_sg()</span></code>, then use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dmaengine_prep_slave_sg()</span></code> for
 STM32 MDMA;</p></li>
-<li><p>dmaengine_prep_dma_cyclic(), then use dmaengine_prep_dma_cyclic() for
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dmaengine_prep_dma_cyclic()</span></code>, then use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dmaengine_prep_dma_cyclic()</span></code> for
 STM32 MDMA.</p></li>
 </ul>
-<p>Use the new sg_list using SRAM buffer (in case of dmaengine_prep_slave_sg())
+<p>Use the new sg_list using SRAM buffer (in case of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dmaengine_prep_slave_sg()</span></code>)
 or, depending on the transfer direction, either the original DDR buffer (in
 case of DMA_DEV_TO_MEM) or the SRAM buffer (in case of DMA_MEM_TO_DEV), the
-source address being previously set with dmaengine_slave_config().</p>
+source address being previously set with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dmaengine_slave_config()</span></code>.</p>
 </div></blockquote>
 <p><strong>4. Submit both transactions</strong></p>
 <blockquote>
 <div><p>Before submitting your transactions, you may need to define on which
 descriptor you want a callback to be called at the end of the transfer
-(dmaengine_prep_slave_sg()) or the period (dmaengine_prep_dma_cyclic()).
+(<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dmaengine_prep_slave_sg()</span></code>) or the period (<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dmaengine_prep_dma_cyclic()</span></code>).
 Depending on the direction, set the callback on the descriptor that finishes
 the overall transfer:</p>
 <ul class="simple">
 <li><p>DMA_DEV_TO_MEM: set the callback on the “MDMA” descriptor</p></li>
 <li><p>DMA_MEM_TO_DEV: set the callback on the “DMA” descriptor</p></li>
 </ul>
-<p>Then, submit the descriptors whatever the order, with dmaengine_tx_submit().</p>
+<p>Then, submit the descriptors whatever the order, with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dmaengine_tx_submit()</span></code>.</p>
 </div></blockquote>
 <p><strong>5. Issue pending requests (and wait for callback notification)</strong></p>
 <p>As STM32 MDMA channel transfer is triggered by STM32 DMA, you must issue
@@ -582,7 +582,7 @@ SRAM buffer when the STM32 DMA starts to read.</p>
 <p>A trick could be pausing the STM32 DMA channel (that will raise a Transfer
 Complete signal, triggering the STM32 MDMA channel), but the first data read
 by the STM32 DMA could be “wrong”. The proper way is to prepare the first SRAM
-period with dmaengine_prep_dma_memcpy(). Then this first period should be
+period with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dmaengine_prep_dma_memcpy()</span></code>. Then this first period should be
 “removed” from the sg or the cyclic transfer.</p>
 <p>Due to this complexity, rather use the STM32 DMA-MDMA chaining for
 DMA_DEV_TO_MEM and keep the “classic” DMA usage for DMA_MEM_TO_DEV, unless

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -168,23 +168,23 @@
 <h2>1. Acquisition Orders<a class="headerlink" href="#acquisition-orders" title="Link to this heading">¶</a></h2>
 <p>The acquisition orders for mutexes are as follows:</p>
 <ul class="simple">
-<li><p>cpus_read_lock() is taken outside kvm_lock</p></li>
-<li><p>kvm_usage_lock is taken outside cpus_read_lock()</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpus_read_lock()</span></code> is taken outside kvm_lock</p></li>
+<li><p>kvm_usage_lock is taken outside <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpus_read_lock()</span></code></p></li>
 <li><p>kvm-&gt;lock is taken outside vcpu-&gt;mutex</p></li>
 <li><p>kvm-&gt;lock is taken outside kvm-&gt;slots_lock and kvm-&gt;irq_lock</p></li>
 <li><p>kvm-&gt;slots_lock is taken outside kvm-&gt;irq_lock, though acquiring
 them together is quite rare.</p></li>
 <li><p>kvm-&gt;mn_active_invalidate_count ensures that pairs of
-invalidate_range_start() and invalidate_range_end() callbacks
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">invalidate_range_start()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">invalidate_range_end()</span></code> callbacks
 use the same memslots array.  kvm-&gt;slots_lock and kvm-&gt;slots_arch_lock
 are taken on the waiting side when modifying memslots, so MMU notifiers
 must not take either kvm-&gt;slots_lock or kvm-&gt;slots_arch_lock.</p></li>
 </ul>
-<p>cpus_read_lock() vs kvm_lock:</p>
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpus_read_lock()</span></code> vs kvm_lock:</p>
 <ul class="simple">
-<li><p>Taking cpus_read_lock() outside of kvm_lock is problematic, despite that
+<li><p>Taking <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpus_read_lock()</span></code> outside of kvm_lock is problematic, despite that
 being the official ordering, as it is quite easy to unknowingly trigger
-cpus_read_lock() while holding kvm_lock.  Use caution when walking vm_list,
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpus_read_lock()</span></code> while holding kvm_lock.  Use caution when walking vm_list,
 e.g. avoid complex operations when possible.</p></li>
 </ul>
 <p>For SRCU:</p>
@@ -321,7 +321,7 @@ spte.Accessed = 1
 <tr class="row-even"><td><p>CPU 0:</p></td>
 <td><p>CPU 1:</p></td>
 </tr>
-<tr class="row-odd"><td><p>In mmu_spte_update():</p>
+<tr class="row-odd"><td><p>In <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mmu_spte_update()</span></code>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>old_spte = *spte;
 
 
@@ -363,7 +363,7 @@ if (old_spte.Dirty &amp;&amp;
 </table>
 <p>The Dirty bit is lost in this case.</p>
 <p>In order to avoid this kind of issue, we always treat the spte as “volatile”
-if it can be updated out of mmu-lock [see spte_needs_atomic_update()]; it means
+if it can be updated out of mmu-lock [see <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spte_needs_atomic_update()</span></code>]; it means
 the spte is always atomically updated in this case.</p>
 <ol class="arabic simple" start="3">
 <li><p>flush tlbs due to spte updated</p></li>
@@ -373,11 +373,11 @@ otherwise rmap_write_protect will find a read-only spte, even though the
 writable spte might be cached on a CPU’s TLB.</p>
 <p>As mentioned before, the spte can be updated to writable out of mmu-lock on
 fast page fault path. In order to easily audit the path, we see if TLBs needing
-to be flushed caused this reason in mmu_spte_update() since this is a common
+to be flushed caused this reason in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mmu_spte_update()</span></code> since this is a common
 function to update spte (present -&gt; present).</p>
 <p>Since the spte is “volatile” if it can be updated out of mmu-lock, we always
 atomically update the spte and the race caused by fast page fault can be avoided.
-See the comments in spte_needs_atomic_update() and mmu_spte_update().</p>
+See the comments in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spte_needs_atomic_update()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mmu_spte_update()</span></code>.</p>
 <p>Lockless Access Tracking:</p>
 <p>This is used for Intel CPUs that are using EPT but do not support the EPT A/D
 bits. In this case, PTEs are tagged as A/D disabled (using ignored bits), and
@@ -426,7 +426,7 @@ time it will be set using the Dirty tracking mechanism described above.</p>
 </ul>
 </dd>
 <dt class="field-even">Comment<span class="colon">:</span></dt>
-<dd class="field-even"><p>Exists to allow taking cpus_read_lock() while kvm_usage_count is
+<dd class="field-even"><p>Exists to allow taking <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpus_read_lock()</span></code> while kvm_usage_count is
 protected, which simplifies the virtualization enabling logic.</p>
 </dd>
 </dl>
@@ -562,8 +562,8 @@ wakeup.</p>
 </dd>
 <dt class="field-even">Comment<span class="colon">:</span></dt>
 <dd class="field-even"><p>Exists because using kvm_lock leads to deadlock.  kvm_lock is taken
-in notifiers, e.g. __kvmclock_cpufreq_notifier(), that may be invoked while
-cpu_hotplug_lock is held, e.g. from cpufreq_boost_trigger_state(), and many
+in notifiers, e.g. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__kvmclock_cpufreq_notifier()</span></code>, that may be invoked while
+cpu_hotplug_lock is held, e.g. from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpufreq_boost_trigger_state()</span></code>, and many
 operations need to take cpu_hotplug_lock when loading a vendor module, e.g.
 updating static calls.</p>
 </dd>

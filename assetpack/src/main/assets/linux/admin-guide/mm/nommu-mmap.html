@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -159,12 +159,12 @@
 <h1>No-MMU memory mapping support<a class="headerlink" href="#no-mmu-memory-mapping-support" title="Link to this heading">¶</a></h1>
 <p>The kernel has limited support for memory mapping under no-MMU conditions, such
 as are used in uClinux environments. From the userspace point of view, memory
-mapping is made use of in conjunction with the mmap() system call, the shmat()
+mapping is made use of in conjunction with the mmap() system call, the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shmat()</span></code>
 call and the execve() system call. From the kernel’s point of view, execve()
 mapping is actually performed by the binfmt drivers, which call back into the
 mmap() routines to do the actual work.</p>
-<p>Memory mapping behaviour also involves the way fork(), vfork(), clone() and
-ptrace() work. Under uClinux there is no fork(), and clone() must be supplied
+<p>Memory mapping behaviour also involves the way fork(), <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vfork()</span></code>, clone() and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ptrace()</span></code> work. Under uClinux there is no fork(), and clone() must be supplied
 the CLONE_VM flag.</p>
 <p>The behaviour is similar between the MMU and no-MMU cases, but not identical;
 and it’s also much more restricted in the latter case:</p>
@@ -285,14 +285,14 @@ initialize the contents of a page - depending on the write-usage of the
 mapping.</p>
 <p>In the no-MMU case, however, anonymous mappings are backed by physical
 pages, and the entire map is cleared at allocation time.  This can cause
-significant delays during a userspace malloc() as the C library does an
+significant delays during a userspace <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">malloc()</span></code> as the C library does an
 anonymous mapping and the kernel then does a memset for the entire map.</p>
 <p>However, for memory that isn’t required to be precleared - such as that
-returned by malloc() - mmap() can take a MAP_UNINITIALIZED flag to
+returned by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">malloc()</span></code> - mmap() can take a MAP_UNINITIALIZED flag to
 indicate to the kernel that it shouldn’t bother clearing the memory before
 returning it.  Note that CONFIG_MMAP_ALLOW_UNINITIALIZED must be enabled
 to permit this, otherwise the flag will be ignored.</p>
-<p>uClibc uses this to speed up malloc(), and the ELF-FDPIC binfmt uses this
+<p>uClibc uses this to speed up <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">malloc()</span></code>, and the ELF-FDPIC binfmt uses this
 to allocate the brk and stack region.</p>
 </li>
 <li><p>A list of all the private copy and anonymous mappings on the system is
@@ -324,7 +324,7 @@ support futexes (such as an I/O chardev mapping).</p>
 </section>
 <section id="no-mmu-mremap">
 <h2>No-MMU mremap<a class="headerlink" href="#no-mmu-mremap" title="Link to this heading">¶</a></h2>
-<p>The mremap() function is partially supported.  It may change the size of a
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mremap()</span></code> function is partially supported.  It may change the size of a
 mapping, and may move it <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> if MREMAP_MAYMOVE is specified and if the new size
 of the mapping exceeds the size of the slab object currently occupied by the
 memory to which the mapping refers, or if a smaller slab object could be used.</p>
@@ -332,7 +332,7 @@ memory to which the mapping refers, or if a smaller slab object could be used.</
 address and the object does not need to be moved.</p>
 <p>Shared mappings may not be moved.  Shareable mappings may not be moved either,
 even if they are not currently shared.</p>
-<p>The mremap() function must be given an exact match for base address and size of
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mremap()</span></code> function must be given an exact match for base address and size of
 a previously mapped object.  It may not be used to create holes in existing
 mappings, move parts of existing mappings or resize parts of mappings.  It must
 act on a complete mapping.</p>
@@ -346,7 +346,7 @@ act on a complete mapping.</p>
 <section id="providing-shareable-character-device-support">
 <h2>Providing shareable character device support<a class="headerlink" href="#providing-shareable-character-device-support" title="Link to this heading">¶</a></h2>
 <p>To provide shareable character device support, a driver must provide a
-file-&gt;f_op-&gt;get_unmapped_area() operation. The mmap() routines will call this
+file-&gt;f_op-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_unmapped_area()</span></code> operation. The mmap() routines will call this
 to get a proposed address for the mapping. This may return an error if it
 doesn’t wish to honour the mapping because it’s too long, at a weird offset,
 under some unsupported combination of flags or whatever.</p>
@@ -360,7 +360,7 @@ cause the mapping to be copied instead if NOMMU_MAP_COPY is specified.</p>
 <p>The vm_ops-&gt;close() routine will be invoked when the last mapping on a chardev
 is removed. An existing mapping will be shared, partially or not, if possible
 without notifying the driver.</p>
-<p>It is permitted also for the file-&gt;f_op-&gt;get_unmapped_area() operation to
+<p>It is permitted also for the file-&gt;f_op-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_unmapped_area()</span></code> operation to
 return -ENOSYS. This will be taken to mean that this operation just doesn’t
 want to handle it, despite the fact it’s got an operation. For instance, it
 might try directing the call to a secondary driver which turns out not to

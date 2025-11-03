@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -189,7 +189,7 @@ Chinese (Simplified)
 </ul>
 <section id="id2">
 <h2>术语<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
-<p>“pid”、“tid”、“任务”互换使用，用于描述由struct task_struct定义的标准
+<p>“pid”、“tid”、“任务”互换使用，用于描述由<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">task_struct</span></code>定义的标准
 Linux任务。“每pid的统计数据”等价于“每任务的统计数据”。</p>
 <p>“tgid”、“进程”、“线程组”互换使用，用于描述共享mm_struct的任务集，
 也就是传统的Unix进程。尽管使用了tgid这个词，即使一个任务是线程组组长，
@@ -217,7 +217,7 @@ cpu掩码可以限制一个监听者收到的数据，并有助于对netlink接�
 <p>内核用户接口封装在include/linux/taskstats.h。</p>
 <p>为避免本文档随着接口的演进而过期，本文仅给出当前版本的概要。当本文与taskstats.h
 不一致时，以taskstats.h为准。</p>
-<p>struct taskstats是每pid和每tgid数据共用的计数结构体。它是版本化的，可在内核新增
+<p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">taskstats</span></code>是每pid和每tgid数据共用的计数结构体。它是版本化的，可在内核新增
 计数子系统时进行扩展。taskstats.h中定义了各字段及语义。</p>
 <p>用户、内核空间的数据交换是属于NETLINK_GENERIC族的netlink消息，使用netlink属性
 接口。消息格式如下:</p>
@@ -244,7 +244,7 @@ cpu掩码是以ascii码表示，用逗号分隔的cpu范围。例如若需监听
 <ol class="loweralpha simple" start="2">
 <li><p>TASKSTATS_TYPE_PID/TGID：本属性的载荷为pig/tgid，其统计信息将被返回。</p></li>
 </ol>
-<p>c) TASKSTATS_TYPE_STATS：本属性的载荷为一个struct taskstats实例。每pid和
+<p>c) TASKSTATS_TYPE_STATS：本属性的载荷为一个<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">taskstats</span></code>实例。每pid和
 每tgid统计信息共用该结构体。</p>
 <ol class="arabic simple" start="3">
 <li><p>内核会在任务退出时发送新消息。其载荷包含一系列以下类型的属性：</p></li>
@@ -271,7 +271,7 @@ cpu掩码是以ascii码表示，用逗号分隔的cpu范围。例如若需监听
 <section id="taskstats">
 <h2>扩展taskstats<a class="headerlink" href="#taskstats" title="Link to this heading">¶</a></h2>
 <p>有两种方法可在未来修改内核扩展taskstats接口，以导出更多的每任务/进程统计信息：</p>
-<p>1. 在现有struct taskstats末尾增加字段。该结构体中的版本号确保了向后兼容性。
+<p>1. 在现有<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">taskstats</span></code>末尾增加字段。该结构体中的版本号确保了向后兼容性。
 用户空间将仅使用与其版本对应的结构体字段。</p>
 <p>2. 定义单独的统计结构体并使用netlink属性接口返回对应的数据。由于用户空间独立
 处理每个netlink属性，所以总是可以忽略其不理解类型的属性（因为使用了旧版本接口）。</p>

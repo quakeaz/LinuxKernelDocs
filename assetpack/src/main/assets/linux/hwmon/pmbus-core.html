@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -253,7 +253,7 @@ send a virtual command to a chip).</p>
 </section>
 <section id="pmbus-driver-information">
 <h3>PMBus driver information<a class="headerlink" href="#pmbus-driver-information" title="Link to this heading">¶</a></h3>
-<p>PMBus driver information, defined in struct pmbus_driver_info, is the main means
+<p>PMBus driver information, defined in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pmbus_driver_info</span></code>, is the main means
 for device specific drivers to pass information to the core PMBus driver.
 Specifically, it provides the following information.</p>
 <ul class="simple">
@@ -302,8 +302,8 @@ if (command &gt;= PMBUS_VIRT_BASE) /* For word commands/registers only */
 return generic_access();
 </pre></div>
 </div>
-<p>Chip drivers may provide pointers to the following functions in struct
-pmbus_driver_info. All functions are optional.</p>
+<p>Chip drivers may provide pointers to the following functions in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">pmbus_driver_info</span></code>. All functions are optional.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int (*read_byte_data)(struct i2c_client *client, int page, int reg);
 </pre></div>
 </div>
@@ -340,7 +340,7 @@ pre-determined. It is currently only used by the generic pmbus driver
 PMBus registers. Chip drivers may also use direct I2C commands. If direct I2C
 commands are used, the chip driver code must not directly modify the current
 page, since the selected page is cached in the core driver and the core driver
-will assume that it is selected. Using pmbus_set_page() to select a new page
+will assume that it is selected. Using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pmbus_set_page()</span></code> to select a new page
 is mandatory.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int pmbus_set_page(struct i2c_client *client, u8 page, u8 phase);
 </pre></div>
@@ -396,14 +396,14 @@ obtain the chip status. Therefore, it must _not_ be called from that function.</
 </pre></div>
 </div>
 <p>Execute probe function. Similar to standard probe function for other drivers,
-with the pointer to struct pmbus_driver_info as additional argument. Calls
+with the pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pmbus_driver_info</span></code> as additional argument. Calls
 identify function if supported. Must only be called from device probe
 function.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>const struct pmbus_driver_info
       *pmbus_get_driver_info(struct i2c_client *client);
 </pre></div>
 </div>
-<p>Return pointer to struct pmbus_driver_info as passed to pmbus_do_probe().</p>
+<p>Return pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pmbus_driver_info</span></code> as passed to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pmbus_do_probe()</span></code>.</p>
 </section>
 </section>
 <section id="pmbus-driver-platform-data">

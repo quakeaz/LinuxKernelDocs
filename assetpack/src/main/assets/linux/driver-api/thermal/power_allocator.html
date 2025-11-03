@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -307,7 +307,7 @@ will suffice:</p>
 </pre></div>
 </div>
 <p>and then pass <cite>tz_params</cite> as the 5th parameter to
-<cite>thermal_zone_device_register()</cite></p>
+<cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">thermal_zone_device_register()</span></code></cite></p>
 </section>
 <section id="k-po-and-k-pu">
 <h2>k_po and k_pu<a class="headerlink" href="#k-po-and-k-pu" title="Link to this heading">¶</a></h2>
@@ -396,14 +396,14 @@ recommended to leave it as the default: 0.</p>
 </li>
 </ol>
 <dl class="simple">
-<dt>&#64;cdev:</dt><dd><p>The <cite>struct thermal_cooling_device</cite> pointer</p>
+<dt>&#64;cdev:</dt><dd><p>The <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">thermal_cooling_device</span></code></cite> pointer</p>
 </dd>
 <dt>&#64;tz:</dt><dd><p>thermal zone in which we are currently operating</p>
 </dd>
 <dt>&#64;power:</dt><dd><p>pointer in which to store the calculated power</p>
 </dd>
 </dl>
-<p><cite>get_requested_power()</cite> calculates the power requested by the device
+<p><cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_requested_power()</span></code></cite> calculates the power requested by the device
 in milliwatts and stores it in &#64;power .  It should return 0 on
 success, -E* on failure.  This is currently used by the power
 allocator governor to calculate how much power to give to each cooling
@@ -417,7 +417,7 @@ device.</p>
 </li>
 </ol>
 <dl class="simple">
-<dt>&#64;cdev:</dt><dd><p>The <cite>struct thermal_cooling_device</cite> pointer</p>
+<dt>&#64;cdev:</dt><dd><p>The <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">thermal_cooling_device</span></code></cite> pointer</p>
 </dd>
 <dt>&#64;tz:</dt><dd><p>thermal zone in which we are currently operating</p>
 </dd>
@@ -438,7 +438,7 @@ maximum power that an actor can consume.</p>
 </li>
 </ol>
 <dl class="simple">
-<dt>&#64;cdev:</dt><dd><p>The <cite>struct thermal_cooling_device</cite> pointer</p>
+<dt>&#64;cdev:</dt><dd><p>The <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">thermal_cooling_device</span></code></cite> pointer</p>
 </dd>
 <dt>&#64;power:</dt><dd><p>power in milliwatts</p>
 </dd>
@@ -465,7 +465,7 @@ useful in heterogeneous systems where two cooling devices may perform
 the same kind of compute, but with different efficiency.  For example,
 a system with two different types of processors.</p>
 <p>If the thermal zone is registered using
-<cite>thermal_zone_device_register()</cite> (i.e., platform code), then weights
+<cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">thermal_zone_device_register()</span></code></cite> (i.e., platform code), then weights
 are passed as part of the thermal zone’s <cite>thermal_bind_parameters</cite>.
 If the platform is registered using device tree, then they are passed
 as the <cite>contribution</cite> property of each map in the <cite>cooling-maps</cite> node.</p>
@@ -473,10 +473,10 @@ as the <cite>contribution</cite> property of each map in the <cite>cooling-maps<
 <h3>Limitations of the power allocator governor<a class="headerlink" href="#limitations-of-the-power-allocator-governor" title="Link to this heading">¶</a></h3>
 <p>The power allocator governor’s PID controller works best if there is a
 periodic tick.  If you have a driver that calls
-<cite>thermal_zone_device_update()</cite> (or anything that ends up calling the
-governor’s <cite>throttle()</cite> function) repetitively, the governor response
+<cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">thermal_zone_device_update()</span></code></cite> (or anything that ends up calling the
+governor’s <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">throttle()</span></code></cite> function) repetitively, the governor response
 won’t be very good.  Note that this is not particular to this
-governor, step-wise will also misbehave if you call its throttle()
+governor, step-wise will also misbehave if you call its <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">throttle()</span></code>
 faster than the normal thermal framework tick (due to interrupts for
 example) as it will overreact.</p>
 </section>

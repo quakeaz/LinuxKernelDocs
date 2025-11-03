@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -186,7 +186,7 @@ English
 <p>A class of locks is a group of locks that are logically the same with
 respect to locking rules, even if the locks may have multiple (possibly
 tens of thousands of) instantiations. For example a lock in the inode
-struct is one class, while each inode has its own instantiation of that
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> one class, while each inode has its own instantiation of that
 lock class.</p>
 <p>The validator tracks the ‘usage state’ of lock-classes, and it tracks
 the dependencies between different lock-classes. Lock usage indicates
@@ -395,7 +395,7 @@ mutex_lock_nested(&amp;bdev-&gt;bd_contains-&gt;bd_mutex, BD_MUTEX_PARTITION);
 partition.</p>
 <p>The validator treats a lock that is taken in such a nested fashion as a
 separate (sub)class for the purposes of validation.</p>
-<p>Note: When changing code to use the _nested() primitives, be careful and
+<p>Note: When changing code to use the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_nested()</span></code> primitives, be careful and
 check really thoroughly that the hierarchy is correctly mapped; otherwise
 you can get false positives or false negatives.</p>
 </section>
@@ -404,7 +404,7 @@ you can get false positives or false negatives.</p>
 <p>Two constructs can be used to annotate and check where and if certain locks
 must be held: lockdep_assert_held*(&amp;lock) and lockdep_*pin_lock(&amp;lock).</p>
 <p>As the name suggests, lockdep_assert_held* family of macros assert that a
-particular lock is held at a certain time (and generate a WARN() otherwise).
+particular lock is held at a certain time (and generate a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">WARN()</span></code> otherwise).
 This annotation is largely used all over the kernel, e.g. kernel/sched/
 core.c:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>void update_rq_clock(struct rq *rq)
@@ -417,13 +417,13 @@ core.c:</p>
 </pre></div>
 </div>
 <p>where holding rq-&gt;lock is required to safely update a rq’s clock.</p>
-<p>The other family of macros is lockdep_*pin_lock(), which is admittedly only
+<p>The other family of macros is lockdep_*<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pin_lock()</span></code>, which is admittedly only
 used for rq-&gt;lock ATM. Despite their limited adoption these annotations
-generate a WARN() if the lock of interest is “accidentally” unlocked. This turns
+generate a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">WARN()</span></code> if the lock of interest is “accidentally” unlocked. This turns
 out to be especially helpful to debug code with callbacks, where an upper
 layer assumes a lock remains taken, but a lower layer thinks it can maybe drop
-and reacquire the lock (“unwittingly” introducing races). lockdep_pin_lock()
-returns a ‘struct pin_cookie’ that is then used by lockdep_unpin_lock() to check
+and reacquire the lock (“unwittingly” introducing races). <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lockdep_pin_lock()</span></code>
+returns a ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pin_cookie</span></code>’ that is then used by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lockdep_unpin_lock()</span></code> to check
 that nobody tampered with the lock, e.g. kernel/sched/sched.h:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>static inline void rq_pin_lock(struct rq *rq, struct rq_flags *rf)
 {
@@ -519,10 +519,10 @@ locks that are not explicitly initialized.  For example,
 a hash table with 8192 buckets where each bucket has its own
 spinlock_t will consume 8192 lock classes -unless- each spinlock
 is explicitly initialized at runtime, for example, using the
-run-time spin_lock_init() as opposed to compile-time initializers
-such as __SPIN_LOCK_UNLOCKED().  Failure to properly initialize
+run-time <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_init()</span></code> as opposed to compile-time initializers
+such as <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__SPIN_LOCK_UNLOCKED()</span></code>.  Failure to properly initialize
 the per-bucket spinlocks would guarantee lock-class overflow.
-In contrast, a loop that called spin_lock_init() on each lock
+In contrast, a loop that called <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_init()</span></code> on each lock
 would place all 8192 locks into a single lock class.</p>
 <p>The moral of this story is that you should always explicitly
 initialize your locks.</p>
@@ -560,8 +560,8 @@ been omitted.</p>
 <p>The whole of the rest document tries to prove a certain type of cycle is equivalent
 to deadlock possibility.</p>
 <p>There are three types of lockers: writers (i.e. exclusive lockers, like
-spin_lock() or write_lock()), non-recursive readers (i.e. shared lockers, like
-down_read()) and recursive readers (recursive shared lockers, like <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_read_lock" title="rcu_read_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_lock()</span></code></a>).
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">write_lock()</span></code>), non-recursive readers (i.e. shared lockers, like
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">down_read()</span></code>) and recursive readers (recursive shared lockers, like <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_read_lock" title="rcu_read_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_lock()</span></code></a>).
 And we use the following notations of those lockers in the rest of the document:</p>
 <blockquote>
 <div><p>W or E: stands for writers (exclusive lockers).
@@ -588,10 +588,10 @@ read_lock_2(X);
 </pre></div>
 </div>
 <p>Task A gets the reader (no matter whether recursive or non-recursive) on X via
-read_lock() first. And when task B tries to acquire writer on X, it will block
-and become a waiter for writer on X. Now if read_lock_2() is recursive readers,
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">read_lock()</span></code> first. And when task B tries to acquire writer on X, it will block
+and become a waiter for writer on X. Now if <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">read_lock_2()</span></code> is recursive readers,
 task A will make progress, because writer waiters don’t block recursive readers,
-and there is no deadlock. However, if read_lock_2() is non-recursive readers,
+and there is no deadlock. However, if <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">read_lock_2()</span></code> is non-recursive readers,
 it will get blocked by writer waiter B, and cause a self deadlock.</p>
 </section>
 <section id="block-conditions-on-readers-writers-of-the-same-lock-instance">
@@ -646,14 +646,14 @@ read_lock(X);
 </pre></div>
 </div>
 <p>is not a deadlock for recursive read locks, as while the task B is waiting for
-the lock X, the second read_lock() doesn’t need to wait because it’s a recursive
-read lock. However if the read_lock() is non-recursive read lock, then the above
-case is a deadlock, because even if the write_lock() in TASK B cannot get the
-lock, but it can block the second read_lock() in TASK A.</p>
+the lock X, the second <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">read_lock()</span></code> doesn’t need to wait because it’s a recursive
+read lock. However if the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">read_lock()</span></code> is non-recursive read lock, then the above
+case is a deadlock, because even if the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">write_lock()</span></code> in TASK B cannot get the
+lock, but it can block the second <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">read_lock()</span></code> in TASK A.</p>
 <p>Note that a lock can be a write lock (exclusive lock), a non-recursive read
 lock (non-recursive shared lock) or a recursive read lock (recursive shared
 lock), depending on the lock operations used to acquire it (more specifically,
-the value of the ‘read’ parameter for lock_acquire()). In other words, a single
+the value of the ‘read’ parameter for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lock_acquire()</span></code>). In other words, a single
 lock instance has three types of acquisition depending on the acquisition
 functions: exclusive, non-recursive read, and recursive read.</p>
 <p>To be concise, we call that write locks and non-recursive read locks as
@@ -670,8 +670,8 @@ write_lock(Y);
                         write_lock(X);
 </pre></div>
 </div>
-<p>Task A is waiting for task B to read_unlock() Y and task B is waiting for task
-A to read_unlock() X.</p>
+<p>Task A is waiting for task B to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">read_unlock()</span></code> Y and task B is waiting for task
+A to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">read_unlock()</span></code> X.</p>
 </section>
 <section id="dependency-types-and-strong-dependency-paths">
 <h2>Dependency types and strong dependency paths:<a class="headerlink" href="#dependency-types-and-strong-dependency-paths" title="Link to this heading">¶</a></h2>

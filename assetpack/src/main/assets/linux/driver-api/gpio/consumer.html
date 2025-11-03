@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -305,7 +305,7 @@ struct gpio_desc *gpiod_get_index_optional(struct device *dev,
                                            enum gpiod_flags flags)
 </pre></div>
 </div>
-<p>Note that gpio_get*_optional() functions (and their managed variants), unlike
+<p>Note that gpio_get*<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_optional()</span></code> functions (and their managed variants), unlike
 the rest of gpiolib API, also return NULL when gpiolib support is disabled.
 This is helpful to driver authors, since they do not need to special case
 -ENOSYS return codes.  System integrators should however be careful to enable
@@ -316,7 +316,7 @@ gpiolib on systems that need it.</p>
                                    enum gpiod_flags flags)
 </pre></div>
 </div>
-<p>This function returns a struct gpio_descs which contains an array of
+<p>This function returns a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">gpio_descs</span></code> which contains an array of
 descriptors.  It also contains a pointer to a gpiolib private structure which,
 if passed back to get/set array functions, may speed up I/O processing:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct gpio_descs {
@@ -443,7 +443,7 @@ void gpiod_set_value_cansleep(struct gpio_desc *desc, int value)
 </div>
 <p>Accessing such GPIOs requires a context which may sleep, for example a threaded
 IRQ handler, and those accessors must be used instead of spinlock-safe
-accessors without the cansleep() name suffix.</p>
+accessors without the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cansleep()</span></code> name suffix.</p>
 <p>Other than the fact that these accessors might sleep, and will work on GPIOs
 that can’t be accessed from hardIRQ handlers, these calls act the same as the
 spinlock-safe calls.</p>
@@ -451,7 +451,7 @@ spinlock-safe calls.</p>
 <section id="the-active-low-and-open-drain-semantics">
 <span id="active-low-semantics"></span><h3>The active low and open drain semantics<a class="headerlink" href="#the-active-low-and-open-drain-semantics" title="Link to this heading">¶</a></h3>
 <p>As a consumer should not have to care about the physical line level, all of the
-gpiod_set_value_xxx() or gpiod_set_array_value_xxx() functions operate with
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">gpiod_set_value_xxx()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">gpiod_set_array_value_xxx()</span></code> functions operate with
 the <em>logical</em> value. With this they take the active low property into account.
 This means that they check whether the GPIO is configured to be active low,
 and if so, they manipulate the passed value before the physical line level is
@@ -460,11 +460,11 @@ driven.</p>
 actively drive their output high (open drain) or low (open source), they just
 switch their output to a high impedance value. The consumer should not need to
 care. (For details read about open drain in <a class="reference internal" href="driver.html"><span class="doc">GPIO Driver Interface</span></a>.)</p>
-<p>With this, all the gpiod_set_(array)_value_xxx() functions interpret the
+<p>With this, all the gpiod_set_(array)<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_value_xxx()</span></code> functions interpret the
 parameter “value” as “active” (“1”) or “inactive” (“0”). The physical line
 level will be driven accordingly.</p>
 <p>As an example, if the active low property for a dedicated GPIO is set, and the
-gpiod_set_(array)_value_xxx() passes “active” (“1”), the physical line level
+gpiod_set_(array)<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_value_xxx()</span></code> passes “active” (“1”), the physical line level
 will be driven low.</p>
 <p>To summarize:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Function (example)                 line property          physical line
@@ -564,7 +564,7 @@ a bitmap of values to assign to the GPIOs (set)</p></li>
 <p>The descriptor array can be obtained using the <a class="reference internal" href="index.html#c.gpiod_get_array" title="gpiod_get_array"><code class="xref c c-func docutils literal notranslate"><span class="pre">gpiod_get_array()</span></code></a> function
 or one of its variants. If the group of descriptors returned by that function
 matches the desired group of GPIOs, those GPIOs can be accessed by simply using
-the struct gpio_descs returned by <a class="reference internal" href="index.html#c.gpiod_get_array" title="gpiod_get_array"><code class="xref c c-func docutils literal notranslate"><span class="pre">gpiod_get_array()</span></code></a>:</p>
+the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">gpio_descs</span></code> returned by <a class="reference internal" href="index.html#c.gpiod_get_array" title="gpiod_get_array"><code class="xref c c-func docutils literal notranslate"><span class="pre">gpiod_get_array()</span></code></a>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct gpio_descs *my_gpio_descs = gpiod_get_array(...);
 gpiod_set_array_value(my_gpio_descs-&gt;ndescs, my_gpio_descs-&gt;desc,
                       my_gpio_descs-&gt;info, my_gpio_value_bitmap);
@@ -582,7 +582,7 @@ match hardware pin numbers of a single chip.  If an array passed to a get/set
 array function matches the one obtained from <a class="reference internal" href="index.html#c.gpiod_get_array" title="gpiod_get_array"><code class="xref c c-func docutils literal notranslate"><span class="pre">gpiod_get_array()</span></code></a> and array_info
 associated with the array is also passed, the function may take a fast bitmap
 processing path, passing the value_bitmap argument directly to the respective
-.get/set_multiple() callback of the chip.  That allows for utilization of GPIO
+.get/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_multiple()</span></code> callback of the chip.  That allows for utilization of GPIO
 banks as data I/O ports without much loss of performance.</p>
 <p>The return value of <a class="reference internal" href="index.html#c.gpiod_get_array_value" title="gpiod_get_array_value"><code class="xref c c-func docutils literal notranslate"><span class="pre">gpiod_get_array_value()</span></code></a> and its variants is 0 on success
 or negative on error. Note the difference to <a class="reference internal" href="index.html#c.gpiod_get_value" title="gpiod_get_value"><code class="xref c c-func docutils literal notranslate"><span class="pre">gpiod_get_value()</span></code></a>, which returns
@@ -610,15 +610,15 @@ capabilities.</p>
 </section>
 <section id="gpios-and-acpi">
 <h2>GPIOs and ACPI<a class="headerlink" href="#gpios-and-acpi" title="Link to this heading">¶</a></h2>
-<p>On ACPI systems, GPIOs are described by GpioIo()/GpioInt() resources listed by
+<p>On ACPI systems, GPIOs are described by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">GpioIo()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">GpioInt()</span></code> resources listed by
 the _CRS configuration objects of devices.  Those resources do not provide
 connection IDs (names) for GPIOs, so it is necessary to use an additional
 mechanism for this purpose.</p>
 <p>Systems compliant with ACPI 5.1 or newer may provide a _DSD configuration object
 which, among other things, may be used to provide connection IDs for specific
-GPIOs described by the GpioIo()/GpioInt() resources in _CRS.  If that is the
+GPIOs described by the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">GpioIo()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">GpioInt()</span></code> resources in _CRS.  If that is the
 case, it will be handled by the GPIO subsystem automatically.  However, if the
-_DSD is not present, the mappings between GpioIo()/GpioInt() resources and GPIO
+_DSD is not present, the mappings between <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">GpioIo()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">GpioInt()</span></code> resources and GPIO
 connection IDs need to be provided by device drivers.</p>
 <p>For details refer to <a class="reference internal" href="../../firmware-guide/acpi/gpio-properties.html"><span class="doc">_DSD Device Properties Related to GPIO</span></a></p>
 </section>
@@ -636,8 +636,8 @@ struct gpio_desc *gpio_to_desc(unsigned gpio)
 <p>The GPIO number returned by <a class="reference internal" href="index.html#c.desc_to_gpio" title="desc_to_gpio"><code class="xref c c-func docutils literal notranslate"><span class="pre">desc_to_gpio()</span></code></a> can safely be used as a parameter of
 the gpio_*() functions for as long as the GPIO descriptor <cite>desc</cite> is not freed.
 All the same, a GPIO number passed to <a class="reference internal" href="index.html#c.gpio_to_desc" title="gpio_to_desc"><code class="xref c c-func docutils literal notranslate"><span class="pre">gpio_to_desc()</span></code></a> must first be properly
-acquired using e.g. gpio_request_one(), and the returned GPIO descriptor is only
-considered valid until that GPIO number is released using gpio_free().</p>
+acquired using e.g. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">gpio_request_one()</span></code>, and the returned GPIO descriptor is only
+considered valid until that GPIO number is released using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">gpio_free()</span></code>.</p>
 <p>Freeing a GPIO obtained by one API with the other API is forbidden and an
 unchecked error.</p>
 </section>

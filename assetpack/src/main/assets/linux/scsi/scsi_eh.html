@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -155,7 +155,7 @@ information regarding SCSI midlayer.</p>
 <h2>1. How SCSI commands travel through the midlayer and to EH<a class="headerlink" href="#how-scsi-commands-travel-through-the-midlayer-and-to-eh" title="Link to this heading">¶</a></h2>
 <section id="struct-scsi-cmnd">
 <h3>1.1 struct scsi_cmnd<a class="headerlink" href="#struct-scsi-cmnd" title="Link to this heading">¶</a></h3>
-<p>Each SCSI command is represented with struct scsi_cmnd (== scmd).  A
+<p>Each SCSI command is represented with <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_cmnd</span></code> (== scmd).  A
 scmd has two list_head’s to link itself into lists.  The two are
 scmd-&gt;list and scmd-&gt;eh_entry.  The former is used for free list or
 per-device allocated scmd list and not of much interest to this EH
@@ -167,24 +167,24 @@ discussion.</p>
 <h3>1.2 How do scmd’s get completed?<a class="headerlink" href="#how-do-scmd-s-get-completed" title="Link to this heading">¶</a></h3>
 <p>Once LLDD gets hold of a scmd, either the LLDD will complete the
 command by calling scsi_done callback passed from midlayer when
-invoking hostt-&gt;queuecommand() or the block layer will time it out.</p>
+invoking hostt-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">queuecommand()</span></code> or the block layer will time it out.</p>
 <section id="completing-a-scmd-w-scsi-done">
 <h4>1.2.1 Completing a scmd w/ scsi_done<a class="headerlink" href="#completing-a-scmd-w-scsi-done" title="Link to this heading">¶</a></h4>
-<p>For all non-EH commands, scsi_done() is the completion callback.  It
+<p>For all non-EH commands, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_done()</span></code> is the completion callback.  It
 just calls <a class="reference internal" href="../block/blk-mq.html#c.blk_mq_complete_request" title="blk_mq_complete_request"><code class="xref c c-func docutils literal notranslate"><span class="pre">blk_mq_complete_request()</span></code></a> to delete the block layer timer and
 raise BLOCK_SOFTIRQ.</p>
-<p>The BLOCK_SOFTIRQ indirectly calls scsi_complete(), which calls
-scsi_decide_disposition() to determine what to do with the command.
-scsi_decide_disposition() looks at the scmd-&gt;result value and sense
+<p>The BLOCK_SOFTIRQ indirectly calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_complete()</span></code>, which calls
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_decide_disposition()</span></code> to determine what to do with the command.
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_decide_disposition()</span></code> looks at the scmd-&gt;result value and sense
 data to determine what to do with the command.</p>
 <blockquote>
 <div><ul>
 <li><p>SUCCESS</p>
 <blockquote>
-<div><p>scsi_finish_command() is invoked for the command.  The
+<div><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_finish_command()</span></code> is invoked for the command.  The
 function does some maintenance chores and then calls
-scsi_io_completion() to finish the I/O.
-scsi_io_completion() then notifies the block layer on
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_io_completion()</span></code> to finish the I/O.
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_io_completion()</span></code> then notifies the block layer on
 the completed request by calling blk_end_request and
 friends or figures out what to do with the remainder
 of the data in case of an error.</p>
@@ -207,10 +207,10 @@ of the data in case of an error.</p>
 </section>
 <section id="completing-a-scmd-w-timeout">
 <h4>1.2.2 Completing a scmd w/ timeout<a class="headerlink" href="#completing-a-scmd-w-timeout" title="Link to this heading">¶</a></h4>
-<p>The timeout handler is scsi_timeout().  When a timeout occurs, this function</p>
+<p>The timeout handler is <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_timeout()</span></code>.  When a timeout occurs, this function</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li><p>invokes optional hostt-&gt;eh_timed_out() callback.  Return value can
+<li><p>invokes optional hostt-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">eh_timed_out()</span></code> callback.  Return value can
 be one of</p>
 <ul class="simple">
 <li><dl class="simple">
@@ -220,19 +220,19 @@ command.  Timer is restarted.</p>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>SCSI_EH_NOT_HANDLED</dt><dd><p>eh_timed_out() callback did not handle the command.
+<dt>SCSI_EH_NOT_HANDLED</dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">eh_timed_out()</span></code> callback did not handle the command.
 Step #2 is taken.</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>SCSI_EH_DONE</dt><dd><p>eh_timed_out() completed the command.</p>
+<dt>SCSI_EH_DONE</dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">eh_timed_out()</span></code> completed the command.</p>
 </dd>
 </dl>
 </li>
 </ul>
 </li>
-<li><p>scsi_abort_command() is invoked to schedule an asynchronous abort which may
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_abort_command()</span></code> is invoked to schedule an asynchronous abort which may
 issue a retry scmd-&gt;allowed + 1 times.  Asynchronous aborts are not invoked
 for commands for which the SCSI_EH_ABORT_SCHEDULED flag is set (this
 indicates that the command already had been aborted once, and this is a
@@ -248,16 +248,16 @@ command.  See [1-4] for more information.</p></li>
 <h3>1.3 Asynchronous command aborts<a class="headerlink" href="#asynchronous-command-aborts" title="Link to this heading">¶</a></h3>
 <blockquote>
 <div><p>After a timeout occurs a command abort is scheduled from
-scsi_abort_command(). If the abort is successful the command
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_abort_command()</span></code>. If the abort is successful the command
 will either be retried (if the number of retries is not exhausted)
 or terminated with DID_TIME_OUT.</p>
-<p>Otherwise scsi_eh_scmd_add() is invoked for the command.
+<p>Otherwise <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_eh_scmd_add()</span></code> is invoked for the command.
 See [1-4] for more information.</p>
 </div></blockquote>
 </section>
 <section id="how-eh-takes-over">
 <h3>1.4 How EH takes over<a class="headerlink" href="#how-eh-takes-over" title="Link to this heading">¶</a></h3>
-<p>scmds enter EH via scsi_eh_scmd_add(), which does the following.</p>
+<p>scmds enter EH via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_eh_scmd_add()</span></code>, which does the following.</p>
 <blockquote>
 <div><ol class="arabic simple">
 <li><p>Links scmd-&gt;eh_entry to shost-&gt;eh_cmd_q</p></li>
@@ -279,7 +279,7 @@ are linked on shost-&gt;eh_cmd_q.</p>
 <p>Note that this does not mean lower layers are quiescent.  If a LLDD
 completed a scmd with error status, the LLDD and lower layers are
 assumed to forget about the scmd at that point.  However, if a scmd
-has timed out, unless hostt-&gt;eh_timed_out() made lower layers forget
+has timed out, unless hostt-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">eh_timed_out()</span></code> made lower layers forget
 about the scmd, which currently no LLDD does, the command is still
 active as long as lower layers are concerned and completion could
 occur at any time.  Of course, all such completions are ignored as the
@@ -311,7 +311,7 @@ performs during recovery.  This will be discussed in [2-2].</p>
 </ul>
 </div></blockquote>
 <p>Once recovery is complete, SCSI EH resumes normal operation by
-calling scsi_restart_operations(), which</p>
+calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_restart_operations()</span></code>, which</p>
 <blockquote>
 <div><ol class="arabic simple">
 <li><p>Checks if door locking is needed and locks door.</p></li>
@@ -327,7 +327,7 @@ anyway after it reaches blk queue.)</p></li>
 <h3>2.1 EH through fine-grained callbacks<a class="headerlink" href="#eh-through-fine-grained-callbacks" title="Link to this heading">¶</a></h3>
 <section id="overview">
 <h4>2.1.1 Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h4>
-<p>If eh_strategy_handler() is not present, SCSI midlayer takes charge
+<p>If <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">eh_strategy_handler()</span></code> is not present, SCSI midlayer takes charge
 of driving error handling.  EH’s goals are two - make LLDD, host and
 device forget about timed out scmds and make them ready for new
 commands.  A scmd is said to be recovered if the scmd is forgotten by
@@ -381,7 +381,7 @@ scmd-&gt;allowed.</p>
 <li><p>Error completion / time out</p>
 <dl class="field-list simple">
 <dt class="field-odd">ACTION<span class="colon">:</span></dt>
-<dd class="field-odd"><p>scsi_eh_scmd_add() is invoked for scmd</p>
+<dd class="field-odd"><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_eh_scmd_add()</span></code> is invoked for scmd</p>
 <ul class="simple">
 <li><p>add scmd to shost-&gt;eh_cmd_q</p></li>
 <li><p>set SHOST_RECOVERY</p></li>
@@ -432,8 +432,8 @@ manipulate the queue locklessly</p>
 <ul class="simple">
 <li><p>scmd is removed from eh_done_q and scmd-&gt;eh_entry is cleared</p></li>
 <li><p>if retry is necessary, scmd is requeued using
-scsi_queue_insert()</p></li>
-<li><p>otherwise, scsi_finish_command() is invoked for scmd</p></li>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_queue_insert()</span></code></p></li>
+<li><p>otherwise, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_finish_command()</span></code> is invoked for scmd</p></li>
 <li><p>zero shost-&gt;host_failed</p></li>
 </ul>
 </dd>
@@ -448,7 +448,7 @@ scsi_queue_insert()</p></li>
 <section id="flow-of-control">
 <h4>2.1.3 Flow of control<a class="headerlink" href="#flow-of-control" title="Link to this heading">¶</a></h4>
 <blockquote>
-<div><p>EH through fine-grained callbacks start from scsi_unjam_host().</p>
+<div><p>EH through fine-grained callbacks start from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_unjam_host()</span></code>.</p>
 </div></blockquote>
 <p><code class="docutils literal notranslate"><span class="pre">scsi_unjam_host</span></code></p>
 <blockquote>
@@ -468,15 +468,15 @@ performance reasons and as sense information could get out of
 sync between occurrence of CHECK CONDITION and this action.</p>
 <p>Note that if autosense is not supported, scmd-&gt;sense_buffer
 contains invalid sense data when error-completing the scmd
-with scsi_done().  scsi_decide_disposition() always returns
+with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_done()</span></code>.  <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_decide_disposition()</span></code> always returns
 FAILED in such cases thus invoking SCSI EH.  When the scmd
 reaches here, sense data is acquired and
-scsi_decide_disposition() is called again.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_decide_disposition()</span></code> is called again.</p>
 <ol class="arabic simple">
-<li><p>Invoke scsi_request_sense() which issues REQUEST_SENSE
+<li><p>Invoke <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_request_sense()</span></code> which issues REQUEST_SENSE
 command.  If fails, no action.  Note that taking no action
 causes higher-severity recovery to be taken for the scmd.</p></li>
-<li><p>Invoke scsi_decide_disposition() on the scmd</p>
+<li><p>Invoke <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_decide_disposition()</span></code> on the scmd</p>
 <ul class="simple">
 <li><dl class="simple">
 <dt>SUCCESS</dt><dd><p>scmd-&gt;retries is set to scmd-&gt;allowed preventing
@@ -507,7 +507,7 @@ causes higher-severity recovery to be taken for the scmd.</p></li>
 <div><p>This function takes four increasingly more severe measures to
 make failed sdevs ready for new commands.</p>
 <ol class="arabic simple">
-<li><p>Invoke scsi_eh_stu()</p></li>
+<li><p>Invoke <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_eh_stu()</span></code></p></li>
 </ol>
 <p><code class="docutils literal notranslate"><span class="pre">scsi_eh_stu</span></code></p>
 <blockquote>
@@ -520,7 +520,7 @@ reuse it for STU.</p>
 <p>If STU succeeds and the sdev is either offline or ready,
 all failed scmds on the sdev are EH-finished with
 <a class="reference internal" href="../driver-api/scsi.html#c.scsi_eh_finish_cmd" title="scsi_eh_finish_cmd"><code class="xref c c-func docutils literal notranslate"><span class="pre">scsi_eh_finish_cmd()</span></code></a>.</p>
-<p><em>NOTE</em> If hostt-&gt;eh_abort_handler() isn’t implemented or
+<p><em>NOTE</em> If hostt-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">eh_abort_handler()</span></code> isn’t implemented or
 failed, we may still have timed out scmds at this point
 and STU doesn’t make lower layers forget about those
 scmds.  Yet, this function EH-finish all scmds on the sdev
@@ -529,37 +529,37 @@ state.  It seems that STU action should be taken only when
 a sdev has no timed out scmd.</p>
 </div></blockquote>
 <ol class="arabic simple" start="2">
-<li><p>If !list_empty(&amp;eh_work_q), invoke scsi_eh_bus_device_reset().</p></li>
+<li><p>If !list_empty(&amp;eh_work_q), invoke <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_eh_bus_device_reset()</span></code>.</p></li>
 </ol>
 <p><code class="docutils literal notranslate"><span class="pre">scsi_eh_bus_device_reset</span></code></p>
 <blockquote>
-<div><p>This action is very similar to scsi_eh_stu() except that,
-instead of issuing STU, hostt-&gt;eh_device_reset_handler()
+<div><p>This action is very similar to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_eh_stu()</span></code> except that,
+instead of issuing STU, hostt-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">eh_device_reset_handler()</span></code>
 is used.  Also, as we’re not issuing SCSI commands and
 resetting clears all scmds on the sdev, there is no need
 to choose error-completed scmds.</p>
 </div></blockquote>
 <ol class="arabic simple" start="3">
-<li><p>If !list_empty(&amp;eh_work_q), invoke scsi_eh_bus_reset()</p></li>
+<li><p>If !list_empty(&amp;eh_work_q), invoke <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_eh_bus_reset()</span></code></p></li>
 </ol>
 <p><code class="docutils literal notranslate"><span class="pre">scsi_eh_bus_reset</span></code></p>
 <blockquote>
-<div><p>hostt-&gt;eh_bus_reset_handler() is invoked for each channel
+<div><p>hostt-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">eh_bus_reset_handler()</span></code> is invoked for each channel
 with failed scmds.  If bus reset succeeds, all failed
 scmds on all ready or offline sdevs on the channel are
 EH-finished.</p>
 </div></blockquote>
 <ol class="arabic simple" start="4">
-<li><p>If !list_empty(&amp;eh_work_q), invoke scsi_eh_host_reset()</p></li>
+<li><p>If !list_empty(&amp;eh_work_q), invoke <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_eh_host_reset()</span></code></p></li>
 </ol>
 <p><code class="docutils literal notranslate"><span class="pre">scsi_eh_host_reset</span></code></p>
 <blockquote>
-<div><p>This is the last resort.  hostt-&gt;eh_host_reset_handler()
+<div><p>This is the last resort.  hostt-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">eh_host_reset_handler()</span></code>
 is invoked.  If host reset succeeds, all failed scmds on
 all ready or offline sdevs on the host are EH-finished.</p>
 </div></blockquote>
 <ol class="arabic simple" start="5">
-<li><p>If !list_empty(&amp;eh_work_q), invoke scsi_eh_offline_sdevs()</p></li>
+<li><p>If !list_empty(&amp;eh_work_q), invoke <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_eh_offline_sdevs()</span></code></p></li>
 </ol>
 <p><code class="docutils literal notranslate"><span class="pre">scsi_eh_offline_sdevs</span></code></p>
 <blockquote>
@@ -585,13 +585,13 @@ layer of failure of the scmds.</p>
 </section>
 <section id="eh-through-transportt-eh-strategy-handler">
 <h3>2.2 EH through transportt-&gt;eh_strategy_handler()<a class="headerlink" href="#eh-through-transportt-eh-strategy-handler" title="Link to this heading">¶</a></h3>
-<p>transportt-&gt;eh_strategy_handler() is invoked in the place of
-scsi_unjam_host() and it is responsible for whole recovery process.
+<p>transportt-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">eh_strategy_handler()</span></code> is invoked in the place of
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_unjam_host()</span></code> and it is responsible for whole recovery process.
 On completion, the handler should have made lower layers forget about
 all failed scmds and either ready for new commands or offline.  Also,
 it should perform SCSI EH maintenance chores to maintain integrity of
 SCSI midlayer.  IOW, of the steps described in [2-1-2], all steps
-except for #1 must be implemented by eh_strategy_handler().</p>
+except for #1 must be implemented by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">eh_strategy_handler()</span></code>.</p>
 <section id="pre-transportt-eh-strategy-handler-scsi-midlayer-conditions">
 <h4>2.2.1 Pre transportt-&gt;eh_strategy_handler() SCSI midlayer conditions<a class="headerlink" href="#pre-transportt-eh-strategy-handler-scsi-midlayer-conditions" title="Link to this heading">¶</a></h4>
 <blockquote>
@@ -612,7 +612,7 @@ except for #1 must be implemented by eh_strategy_handler().</p>
 <li><p>shost-&gt;host_failed is zero.</p></li>
 <li><p>shost-&gt;eh_cmd_q is cleared.</p></li>
 <li><p>Each scmd-&gt;eh_entry is cleared.</p></li>
-<li><p>Either scsi_queue_insert() or scsi_finish_command() is called on
+<li><p>Either <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_queue_insert()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_finish_command()</span></code> is called on
 each scmd.  Note that the handler is free to use scmd-&gt;retries and
 -&gt;allowed to limit the number of retries.</p></li>
 </ul>

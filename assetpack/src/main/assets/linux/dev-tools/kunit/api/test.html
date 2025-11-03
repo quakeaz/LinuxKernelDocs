@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -189,6 +189,7 @@ function and followed by the suite’s exit function.</p>
 <p>A test case should be static and should only be created with the
 <a class="reference internal" href="#c.KUNIT_CASE" title="KUNIT_CASE"><code class="xref c c-func docutils literal notranslate"><span class="pre">KUNIT_CASE()</span></code></a> macro; additionally, every array of test cases should be
 terminated with an empty test case.</p>
+<p><strong>Example</strong></p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">add_test_basic</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">kunit</span><span class="w"> </span><span class="o">*</span><span class="n">test</span><span class="p">)</span>
 <span class="p">{</span>
 <span class="w">        </span><span class="n">KUNIT_EXPECT_EQ</span><span class="p">(</span><span class="n">test</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">));</span>
@@ -204,7 +205,6 @@ terminated with an empty test case.</p>
 <span class="p">};</span>
 </pre></div>
 </div>
-<p><strong>Example</strong></p>
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.KUNIT_CASE">
 <span class="sig-name descname"><span class="n"><span class="pre">KUNIT_CASE</span></span></span><a class="headerlink" href="#c.KUNIT_CASE" title="Link to this definition">¶</a><br /></dt>
@@ -239,7 +239,7 @@ terminated with an empty test case.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">test_name</span></code></dt><dd><p>a reference to a test case function.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">attributes</span></code></dt><dd><p>a reference to a struct kunit_attributes object containing
+<dt><code class="docutils literal notranslate"><span class="pre">attributes</span></code></dt><dd><p>a reference to a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kunit_attributes</span></code> object containing
 test attributes</p>
 </dd>
 </dl>
@@ -305,7 +305,7 @@ describing the parameter.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">gen_params</span></code></dt><dd><p>a reference to a parameter generator function.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">attributes</span></code></dt><dd><p>a reference to a struct kunit_attributes object containing
+<dt><code class="docutils literal notranslate"><span class="pre">attributes</span></code></dt><dd><p>a reference to a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kunit_attributes</span></code> object containing
 test attributes</p>
 </dd>
 </dl>
@@ -424,11 +424,11 @@ list of suites during init phase.</p>
 <p>This macro also suffixes the array and suite declarations it makes with
 _probe; so that modpost suppresses warnings about referencing init data
 for symbols named in this manner.</p>
-<p>Also, do not mark the suite or test case structs with __initdata because
-they will be used after the init phase with debugfs.</p>
 <p><strong>Note</strong></p>
 <p>these init tests are not able to be run after boot so there is no
 “run” debugfs file generated for these tests.</p>
+<p>Also, do not mark the suite or test case structs with __initdata because
+they will be used after the init phase with debugfs.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.kunit_kmalloc_array">
@@ -590,9 +590,29 @@ See <a class="reference internal" href="#c.kunit_kstrdup_const" title="kunit_kst
 See <a class="reference internal" href="../../../core-api/kernel-api.html#c.kstrdup_const" title="kstrdup_const"><code class="xref c c-func docutils literal notranslate"><span class="pre">kstrdup_const()</span></code></a> and <a class="reference internal" href="#c.kunit_kmalloc_array" title="kunit_kmalloc_array"><code class="xref c c-func docutils literal notranslate"><span class="pre">kunit_kmalloc_array()</span></code></a> for more information.</p>
 </div>
 <dl class="c function">
+<dt class="sig sig-object c" id="c.kunit_attach_mm">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">kunit_attach_mm</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.kunit_attach_mm" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Create and attach a new mm if it doesn’t already exist.</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">void</span></code></dt><dd><p>no arguments</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>Allocates a <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">mm_struct</span></code> and attaches it to <strong>current</strong>. In most cases, call
+<a class="reference internal" href="#c.kunit_vm_mmap" title="kunit_vm_mmap"><code class="xref c c-func docutils literal notranslate"><span class="pre">kunit_vm_mmap()</span></code></a> without calling <a class="reference internal" href="#c.kunit_attach_mm" title="kunit_attach_mm"><code class="xref c c-func docutils literal notranslate"><span class="pre">kunit_attach_mm()</span></code></a> directly. Only necessary when
+code under test accesses the mm before executing the mmap (e.g., to perform
+additional initialization beforehand).</p>
+<p><strong>Return</strong></p>
+<p>0 on success, -errno on failure.</p>
+</div>
+<dl class="c function">
 <dt class="sig sig-object c" id="c.kunit_vm_mmap">
 <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">kunit_vm_mmap</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.kunit" title="kunit"><span class="n"><span class="pre">kunit</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">test</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.kunit_vm_mmap" title="file"><span class="n"><span class="pre">file</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">file</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="n"><span class="pre">addr</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="n"><span class="pre">prot</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="n"><span class="pre">flag</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="n"><span class="pre">offset</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.kunit_vm_mmap" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Allocate KUnit-tracked vm_mmap() area</p>
+<dd><p>Allocate KUnit-tracked <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vm_mmap()</span></code> area</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -614,7 +634,7 @@ See <a class="reference internal" href="../../../core-api/kernel-api.html#c.kstr
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>See vm_mmap() for more information.</p>
+<p>See <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vm_mmap()</span></code> for more information.</p>
 </div>
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.kunit_mark_skipped">

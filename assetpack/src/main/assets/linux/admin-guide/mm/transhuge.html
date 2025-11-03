@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -248,7 +248,7 @@ madvise(MADV_HUGEPAGE) on their critical mmapped regions.</p>
 <span id="thp-sysfs"></span><h2>sysfs<a class="headerlink" href="#sysfs" title="Link to this heading">¶</a></h2>
 <section id="global-thp-controls">
 <h3>Global THP controls<a class="headerlink" href="#global-thp-controls" title="Link to this heading">¶</a></h3>
-<p>Transparent Hugepage Support for anonymous memory can be entirely disabled
+<p>Transparent Hugepage Support for anonymous memory can be disabled
 (mostly for debugging purposes) or only enabled inside MADV_HUGEPAGE
 regions (to avoid the risk of consuming more memory resources) or enabled
 system wide. This can be achieved per-supported-THP-size with one of:</p>
@@ -259,6 +259,13 @@ echo never &gt;/sys/kernel/mm/transparent_hugepage/hugepages-&lt;size&gt;kB/enab
 </div>
 <p>where &lt;size&gt; is the hugepage size being addressed, the available sizes
 for which vary by system.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Setting “never” in all sysfs THP controls does <strong>not</strong> disable
+Transparent Huge Pages globally. This is because <code class="docutils literal notranslate"><span class="pre">madvise(...,</span>
+<span class="pre">MADV_COLLAPSE)</span></code> ignores these settings and collapses ranges to
+PMD-sized huge pages unconditionally.</p>
+</div>
 <p>For example:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>echo always &gt;/sys/kernel/mm/transparent_hugepage/hugepages-2048kB/enabled
 </pre></div>
@@ -320,7 +327,9 @@ available in the near future.</p>
 that are have used madvise(MADV_HUGEPAGE). This is the default
 behaviour.</p>
 </dd>
-<dt>never</dt><dd><p>should be self-explanatory.</p>
+<dt>never</dt><dd><p>should be self-explanatory. Note that <code class="docutils literal notranslate"><span class="pre">madvise(...,</span>
+<span class="pre">MADV_COLLAPSE)</span></code> can still cause transparent huge pages to be
+obtained even if this mode is specified everywhere.</p>
 </dd>
 </dl>
 <p>By default kernel tries to use huge, PMD-mappable zero page on read
@@ -496,12 +505,14 @@ option: <code class="docutils literal notranslate"><span class="pre">huge=</span
 <dl class="simple">
 <dt>always</dt><dd><p>Attempt to allocate huge pages every time we need a new page;</p>
 </dd>
-<dt>never</dt><dd><p>Do not allocate huge pages;</p>
+<dt>never</dt><dd><p>Do not allocate huge pages. Note that <code class="docutils literal notranslate"><span class="pre">madvise(...,</span> <span class="pre">MADV_COLLAPSE)</span></code>
+can still cause transparent huge pages to be obtained even if this mode
+is specified everywhere;</p>
 </dd>
 <dt>within_size</dt><dd><p>Only allocate huge page if it will be fully within i_size.
-Also respect madvise() hints;</p>
+Also respect <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">madvise()</span></code> hints;</p>
 </dd>
-<dt>advise</dt><dd><p>Only allocate huge pages if requested with madvise();</p>
+<dt>advise</dt><dd><p>Only allocate huge pages if requested with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">madvise()</span></code>;</p>
 </dd>
 </dl>
 <p>Remember, that the kernel may use huge pages of all available sizes, and
@@ -543,12 +554,14 @@ are rather testing artifacts from the old ages.</p>
 <dt>inherit</dt><dd><p>Inherit the top-level “shmem_enabled” value. By default, PMD-sized hugepages
 have enabled=”inherit” and all other hugepage sizes have enabled=”never”;</p>
 </dd>
-<dt>never</dt><dd><p>Do not allocate &lt;size&gt; huge pages;</p>
+<dt>never</dt><dd><p>Do not allocate &lt;size&gt; huge pages. Note that <code class="docutils literal notranslate"><span class="pre">madvise(...,</span>
+<span class="pre">MADV_COLLAPSE)</span></code> can still cause transparent huge pages to be obtained
+even if this mode is specified everywhere;</p>
 </dd>
 <dt>within_size</dt><dd><p>Only allocate &lt;size&gt; huge page if it will be fully within i_size.
-Also respect madvise() hints;</p>
+Also respect <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">madvise()</span></code> hints;</p>
 </dd>
-<dt>advise</dt><dd><p>Only allocate &lt;size&gt; huge pages if requested with madvise();</p>
+<dt>advise</dt><dd><p>Only allocate &lt;size&gt; huge pages if requested with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">madvise()</span></code>;</p>
 </dd>
 </dl>
 </section>
@@ -633,8 +646,8 @@ zero pages in the THP is above a certain threshold
 (/sys/kernel/mm/transparent_hugepage/khugepaged/max_ptes_none).</p>
 </dd>
 <dt>thp_split_pmd</dt><dd><p>is incremented every time a PMD split into table of PTEs.
-This can happen, for instance, when application calls mprotect() or
-munmap() on part of huge page. It doesn’t split huge page, only
+This can happen, for instance, when application calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mprotect()</span></code> or
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">munmap()</span></code> on part of huge page. It doesn’t split huge page, only
 page table entry.</p>
 </dd>
 <dt>thp_zero_page_alloc</dt><dd><p>is incremented every time a huge zero page used for thp is
@@ -738,7 +751,7 @@ but failed.</p>
 </dd>
 </dl>
 <p>It is possible to establish how long the stalls were using the function
-tracer to record how long was spent in __alloc_pages() and
+tracer to record how long was spent in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__alloc_pages()</span></code> and
 using the mm_page_alloc tracepoint to identify which allocations were
 for huge pages.</p>
 </section>
@@ -746,7 +759,7 @@ for huge pages.</p>
 <h2>Optimizing the applications<a class="headerlink" href="#optimizing-the-applications" title="Link to this heading">¶</a></h2>
 <p>To be guaranteed that the kernel will map a THP immediately in any
 memory region, the mmap region has to be hugepage naturally
-aligned. posix_memalign() can provide that guarantee.</p>
+aligned. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">posix_memalign()</span></code> can provide that guarantee.</p>
 </section>
 <section id="hugetlbfs">
 <h2>Hugetlbfs<a class="headerlink" href="#hugetlbfs" title="Link to this heading">¶</a></h2>

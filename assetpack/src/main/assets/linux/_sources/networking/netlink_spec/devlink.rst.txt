@@ -811,7 +811,9 @@ Set port param instances.
 
 info-get
 ========
-Get device information, like driver name, hardware and firmware versions etc.
+Get device information, like driver name, hardware and firmware versions
+etc.
+
 
 :attribute-set: :ref:`devlink-attribute-set-devlink`
 :dont-validate: ['strict', 'dump']
@@ -1208,7 +1210,7 @@ Set rate instances.
         devlink-nl-post-doit
 
     **request**
-        :attributes: [``bus-name``, ``dev-name``, ``rate-node-name``, ``rate-tx-share``, ``rate-tx-max``, ``rate-tx-priority``, ``rate-tx-weight``, ``rate-parent-node-name``]
+        :attributes: [``bus-name``, ``dev-name``, ``rate-node-name``, ``rate-tx-share``, ``rate-tx-max``, ``rate-tx-priority``, ``rate-tx-weight``, ``rate-parent-node-name``, ``rate-tc-bws``]
 
 
 
@@ -1229,7 +1231,7 @@ Create rate instances.
         devlink-nl-post-doit
 
     **request**
-        :attributes: [``bus-name``, ``dev-name``, ``rate-node-name``, ``rate-tx-share``, ``rate-tx-max``, ``rate-tx-priority``, ``rate-tx-weight``, ``rate-parent-node-name``]
+        :attributes: [``bus-name``, ``dev-name``, ``rate-node-name``, ``rate-tx-share``, ``rate-tx-max``, ``rate-tx-priority``, ``rate-tx-weight``, ``rate-parent-node-name``, ``rate-tc-bws``]
 
 
 
@@ -1653,6 +1655,14 @@ var-attr-type
     :flag: 
     :nul-string: 
     :binary: 
+
+
+.. _devlink-definition-rate-tc-index-max:
+
+rate-tc-index-max
+=================
+:type: const
+:value: 7
 
 
 
@@ -2444,6 +2454,12 @@ region-direct (``flag``)
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 
+rate-tc-bws (``nest``)
+~~~~~~~~~~~~~~~~~~~~~~
+:multi-attr: True
+:nested-attributes: :ref:`devlink-attribute-set-dl-rate-tc-bws`
+
+
 .. _devlink-attribute-set-dl-dev-stats:
 
 dl-dev-stats
@@ -2998,4 +3014,17 @@ dl-selftest-id
 ==============
 flash (``flag``)
 ~~~~~~~~~~~~~~~~
+
+
+.. _devlink-attribute-set-dl-rate-tc-bws:
+
+dl-rate-tc-bws
+==============
+index (``u8``)
+~~~~~~~~~~~~~~
+
+
+bw (``u32``)
+~~~~~~~~~~~~
+:doc: Specifies the bandwidth share assigned to the Traffic Class. The bandwidth for the traffic class is determined in proportion to the sum of the shares of all configured classes.
 

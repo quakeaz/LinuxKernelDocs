@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -407,7 +407,7 @@ keyboard traffic.</p>
 events contain no data, so if this call returns zero, it does not mean that
 no events are available.</p>
 <blockquote>
-<div><p>MON_IOCG_STATS, defined as _IOR(MON_IOC_MAGIC, 3, struct mon_bin_stats)</p>
+<div><p>MON_IOCG_STATS, defined as _IOR(MON_IOC_MAGIC, 3, <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">mon_bin_stats</span></code>)</p>
 </div></blockquote>
 <p>The argument is a pointer to the following structure:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct mon_bin_stats {
@@ -432,8 +432,8 @@ size is out of [unspecified] bounds for this kernel, the call fails with
 </div></blockquote>
 <p>This call returns the current size of the buffer in bytes.</p>
 <blockquote>
-<div><p>MON_IOCX_GET, defined as _IOW(MON_IOC_MAGIC, 6, struct mon_get_arg)
-MON_IOCX_GETX, defined as _IOW(MON_IOC_MAGIC, 10, struct mon_get_arg)</p>
+<div><p>MON_IOCX_GET, defined as _IOW(MON_IOC_MAGIC, 6, <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">mon_get_arg</span></code>)
+MON_IOCX_GETX, defined as _IOW(MON_IOC_MAGIC, 10, <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">mon_get_arg</span></code>)</p>
 </div></blockquote>
 <p>These calls wait for events to arrive if none were in the kernel buffer,
 then return the first event. The argument is a pointer to the following
@@ -450,7 +450,7 @@ pointed by hdr contains the next event structure, and the data buffer contains
 the data, if any. The event is removed from the kernel buffer.</p>
 <p>The MON_IOCX_GET copies 48 bytes to hdr area, MON_IOCX_GETX copies 64 bytes.</p>
 <blockquote>
-<div><p>MON_IOCX_MFETCH, defined as _IOWR(MON_IOC_MAGIC, 7, struct mon_mfetch_arg)</p>
+<div><p>MON_IOCX_MFETCH, defined as _IOWR(MON_IOC_MAGIC, 7, <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">mon_mfetch_arg</span></code>)</p>
 </div></blockquote>
 <p>This ioctl is primarily used when the application accesses the buffer
 with mmap(2). Its argument is a pointer to the following structure:</p>

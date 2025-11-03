@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -169,8 +169,8 @@ as it would consume too much of the kernel address space.</p>
 mappable, while ‘size’ indicates how large a mapping region to
 enable. Both are in bytes.</p>
 <p>This _wc variant provides a mapping which may only be used with
-io_mapping_map_atomic_wc(), io_mapping_map_local_wc() or
-io_mapping_map_wc().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">io_mapping_map_atomic_wc()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">io_mapping_map_local_wc()</span></code> or
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">io_mapping_map_wc()</span></code>.</p>
 <p>With this mapping object, individual pages can be mapped either temporarily
 or long term, depending on the requirements. Of course, temporary maps are
 more efficient. They come in two flavours:</p>
@@ -187,14 +187,14 @@ undefined results. Using an offset which is not page aligned yields an
 undefined result. The return value points to a single page in CPU address
 space.</p>
 <p>This _wc variant returns a write-combining map to the page and may only be
-used with mappings created by io_mapping_create_wc()</p>
+used with mappings created by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">io_mapping_create_wc()</span></code></p>
 <p>Temporary mappings are only valid in the context of the caller. The mapping
 is not guaranteed to be globally visible.</p>
-<p>io_mapping_map_local_wc() has a side effect on X86 32bit as it disables
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">io_mapping_map_local_wc()</span></code> has a side effect on X86 32bit as it disables
 migration to make the mapping code work. No caller can rely on this side
 effect.</p>
-<p>io_mapping_map_atomic_wc() has the side effect of disabling preemption and
-pagefaults. Don’t use in new code. Use io_mapping_map_local_wc() instead.</p>
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">io_mapping_map_atomic_wc()</span></code> has the side effect of disabling preemption and
+pagefaults. Don’t use in new code. Use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">io_mapping_map_local_wc()</span></code> instead.</p>
 <p>Nested mappings need to be undone in reverse order because the mapping
 code uses a stack for keeping track of them:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>addr1 = io_mapping_map_local_wc(map1, offset1);
@@ -209,8 +209,8 @@ io_mapping_unmap_local(addr1);
 void io_mapping_unmap_atomic(void *vaddr)
 </pre></div>
 </div>
-<p>‘vaddr’ must be the value returned by the last io_mapping_map_local_wc() or
-io_mapping_map_atomic_wc() call. This unmaps the specified mapping and
+<p>‘vaddr’ must be the value returned by the last <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">io_mapping_map_local_wc()</span></code> or
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">io_mapping_map_atomic_wc()</span></code> call. This unmaps the specified mapping and
 undoes the side effects of the mapping functions.</p>
 <p>If you need to sleep while holding a mapping, you can use the regular
 variant, although this may be significantly slower:</p>
@@ -218,13 +218,13 @@ variant, although this may be significantly slower:</p>
                         unsigned long offset)
 </pre></div>
 </div>
-<p>This works like io_mapping_map_atomic/local_wc() except it has no side
+<p>This works like io_mapping_map_atomic/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">local_wc()</span></code> except it has no side
 effects and the pointer is globally visible.</p>
 <p>The mappings are released with:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>void io_mapping_unmap(void *vaddr)
 </pre></div>
 </div>
-<p>Use for pages mapped with io_mapping_map_wc().</p>
+<p>Use for pages mapped with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">io_mapping_map_wc()</span></code>.</p>
 <p>At driver close time, the io_mapping object must be freed:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>void io_mapping_free(struct io_mapping *mapping)
 </pre></div>

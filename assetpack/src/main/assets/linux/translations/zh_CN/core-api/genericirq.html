@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -201,7 +201,7 @@ Chinese (Simplified)
 </section>
 <section id="id2">
 <h2>理论依据<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
-<p>Linux中中断处理的原始实现使用__do_IRQ()超级处理程序，它能够处理每种类型的
+<p>Linux中中断处理的原始实现使用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__do_IRQ()</span></code>超级处理程序，它能够处理每种类型的
 中断逻辑。</p>
 <p>最初，Russell King确定了不同类型的处理程序，以便为Linux 2.5/2.6中的ARM中
 断处理程序实现建立一个相当通用的集合。他区分了以下几种类型:</p>
@@ -214,7 +214,7 @@ Chinese (Simplified)
 <ul class="simple">
 <li><p>响应EOI（end of interrupt）型</p></li>
 </ul>
-<p>在SMP的__do_IRQ()超级处理程序中，还需定义一种类型：</p>
+<p>在SMP的<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__do_IRQ()</span></code>超级处理程序中，还需定义一种类型：</p>
 <ul class="simple">
 <li><p> 每cpu型（针对CPU SMP）</p></li>
 </ul>
@@ -233,7 +233,7 @@ Chinese (Simplified)
 构的嵌入式平台上找到。)</p>
 <p>这种分离使得通用中断处理层更加灵活和可扩展。例如，一个（子）架构可以使用通用
 的IRQ流实现“电平触发型”中断，并添加一个（子）架构特定的“边沿型”实现。</p>
-<p>为了使向新模型的过渡更容易，并防止破坏现有实现，__do_IRQ()超级处理程序仍然
+<p>为了使向新模型的过渡更容易，并防止破坏现有实现，<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__do_IRQ()</span></code>超级处理程序仍然
 可用。这导致了一种暂时的双重性。随着时间的推移，新的模型应该在越来越多的架构中
 被使用，因为它能使IRQ子系统更小更干净。它已经被废弃三年了，即将被删除。</p>
 </section>
@@ -254,7 +254,7 @@ Chinese (Simplified)
 <p>每个中断都由一个中断描述符结构体irq_desc来描述。中断是由一个“无符号整型”的数值来
 引用的，它在描述符结构体数组中选择相应的中断描述符结构体。描述符结构体包含状态
 信息和指向中断流方法和中断芯片结构的指针，这些都是分配给这个中断的。</p>
-<p>每当中断触发时，低级架构代码通过调用desc-&gt;handle_irq()调用到通用中断代码中。
+<p>每当中断触发时，低级架构代码通过调用desc-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">handle_irq()</span></code>调用到通用中断代码中。
 这个高层IRQ处理函数只使用由分配的芯片描述符结构体引用的desc-&gt;irq_data.chip
 基元。</p>
 </section>
@@ -291,7 +291,7 @@ Chinese (Simplified)
 <li><p><a class="reference internal" href="../../../core-api/genericirq.html#c.handle_fasteoi_irq" title="handle_fasteoi_irq"><code class="xref c c-func docutils literal notranslate"><span class="pre">handle_fasteoi_irq()</span></code></a></p></li>
 <li><p><a class="reference internal" href="../../../core-api/genericirq.html#c.handle_simple_irq" title="handle_simple_irq"><code class="xref c c-func docutils literal notranslate"><span class="pre">handle_simple_irq()</span></code></a></p></li>
 <li><p><a class="reference internal" href="../../../core-api/genericirq.html#c.handle_percpu_irq" title="handle_percpu_irq"><code class="xref c c-func docutils literal notranslate"><span class="pre">handle_percpu_irq()</span></code></a></p></li>
-<li><p>handle_edge_eoi_irq()</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">handle_edge_eoi_irq()</span></code></p></li>
 <li><p><a class="reference internal" href="../../../core-api/genericirq.html#c.handle_bad_irq" title="handle_bad_irq"><code class="xref c c-func docutils literal notranslate"><span class="pre">handle_bad_irq()</span></code></a></p></li>
 </ul>
 <p>中断流处理程序（无论是预定义的还是架构特定的）由架构在启动期间或设备初始化期间分配给
@@ -449,7 +449,7 @@ IRQ_PENDING位被设置。当中断被<a class="reference internal" href="../../
 </section>
 <section id="do-irq">
 <h2>__do_IRQ入口点<a class="headerlink" href="#do-irq" title="Link to this heading">¶</a></h2>
-<p>最初的实现__do_IRQ()是所有类型中断的替代入口点。它已经不存在了。</p>
+<p>最初的实现<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__do_IRQ()</span></code>是所有类型中断的替代入口点。它已经不存在了。</p>
 <p>这个处理程序被证明不适合所有的中断硬件，因此被重新实现了边沿/级别/简单/超高速中断
 的拆分功能。这不仅是一个功能优化。它也缩短了中断的代码路径。</p>
 </section>

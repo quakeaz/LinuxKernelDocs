@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -236,7 +236,7 @@ HDMI 1.3a specification is sufficient:</p>
 </section>
 <section id="cec-adapter-interface">
 <h2><span class="section-number">6.2. </span>CEC Adapter Interface<a class="headerlink" href="#cec-adapter-interface" title="Link to this heading">¶</a></h2>
-<p>The struct cec_adapter represents the CEC adapter hardware. It is created by
+<p>The <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cec_adapter</span></code> represents the CEC adapter hardware. It is created by
 calling <a class="reference internal" href="#c.cec_allocate_adapter" title="cec_allocate_adapter"><code class="xref c c-func docutils literal notranslate"><span class="pre">cec_allocate_adapter()</span></code></a> and deleted by calling <a class="reference internal" href="#c.cec_delete_adapter" title="cec_delete_adapter"><code class="xref c c-func docutils literal notranslate"><span class="pre">cec_delete_adapter()</span></code></a>:</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.cec_allocate_adapter">
@@ -462,9 +462,9 @@ times, or fill in the correct values as reported by the hardware.</p>
 <p>Be aware that calling these functions can immediately start a new transmit
 if there is one pending in the queue. So make sure that the hardware is in
 a state where new transmits can be started <em>before</em> calling these functions.</p>
-<p>The cec_transmit_attempt_done() function is a helper for cases where the
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cec_transmit_attempt_done()</span></code> function is a helper for cases where the
 hardware never retries, so the transmit is always for just a single
-attempt. It will call cec_transmit_done() in turn, filling in 1 for the
+attempt. It will call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cec_transmit_done()</span></code> in turn, filling in 1 for the
 count argument corresponding to the status. Or all 0 if the status was OK.</p>
 <p>When a CEC message was received:</p>
 <dl class="c function">
@@ -560,7 +560,7 @@ mutex being held. The following high-level callbacks are available:</p>
 <p>The adapter is fully configured, i.e. all logical addresses have been
 successfully claimed. If the driver has to take specific actions after
 configuration, then that can be done through this optional callback.</p>
-<p>The received() callback allows the driver to optionally handle a newly
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">received()</span></code> callback allows the driver to optionally handle a newly
 received CEC message:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int (*received)(struct cec_adapter *adap, struct cec_msg *msg);
 </pre></div>
@@ -600,8 +600,8 @@ address to CEC_PHYS_ADDR_INVALID before enabling the new physical address.</p>
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cec_s_phys_addr_from_edid</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">cec_adapter</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">adap</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.cec_s_phys_addr_from_edid" title="edid"><span class="n"><span class="pre">edid</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">edid</span></span><span class="sig-paren">)</span><span class="p"><span class="pre">;</span></span><a class="headerlink" href="#c.cec_s_phys_addr_from_edid" title="Link to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<p>A helper function that extracts the physical address from the edid struct
-and calls <a class="reference internal" href="#c.cec_s_phys_addr" title="cec_s_phys_addr"><code class="xref c c-func docutils literal notranslate"><span class="pre">cec_s_phys_addr()</span></code></a> with that address, or CEC_PHYS_ADDR_INVALID
+<p>A helper function that extracts the physical address from the edid <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">and</span></code> calls <a class="reference internal" href="#c.cec_s_phys_addr" title="cec_s_phys_addr"><code class="xref c c-func docutils literal notranslate"><span class="pre">cec_s_phys_addr()</span></code></a> with that address, or CEC_PHYS_ADDR_INVALID
 if the EDID did not contain a physical address or edid was a NULL pointer.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.cec_s_log_addrs">
@@ -757,7 +757,7 @@ if there is always only one HDMI connector created by the HDMI device.</p>
 <p><strong>Description</strong></p>
 <p>If a notifier for device <strong>dev</strong> and connector <strong>port_name</strong> already exists, then
 increase the refcount and return that notifier.</p>
-<p>If it doesn’t exist, then allocate a new notifier struct and return a
+<p>If it doesn’t exist, then allocate a new notifier <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">and</span></code> return a
 pointer to that new struct.</p>
 <p>Return NULL if the memory could not be allocated.</p>
 </div>
@@ -794,7 +794,7 @@ if there is always only one HDMI connector created by the HDMI device.</p>
 <p><strong>Description</strong></p>
 <p>If a notifier for device <strong>dev</strong> and connector <strong>port_name</strong> already exists, then
 increase the refcount and return that notifier.</p>
-<p>If it doesn’t exist, then allocate a new notifier struct and return a
+<p>If it doesn’t exist, then allocate a new notifier <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">and</span></code> return a
 pointer to that new struct.</p>
 <p>Return NULL if the memory could not be allocated.</p>
 </div>
@@ -842,7 +842,7 @@ Does nothing if <strong>n</strong> == NULL.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cec_notifier</span> <span class="pre">*n</span></code></dt><dd><p>the CEC notifier</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">edid</span> <span class="pre">*edid</span></code></dt><dd><p>the struct edid pointer</p>
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">edid</span> <span class="pre">*edid</span></code></dt><dd><p>the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">edid</span></code> pointer</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>

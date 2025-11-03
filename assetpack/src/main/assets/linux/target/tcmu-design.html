@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -231,7 +231,7 @@ mechanisms in both directions.</p>
 expressed as an offset from the region’s starting address. This allows
 the ring to still work if the user process dies and is restarted with
 the region mapped at a different virtual address.</p>
-<p>See target_core_user.h for the struct definitions.</p>
+<p>See target_core_user.h for the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">definitions</span></code>.</p>
 </section>
 <section id="the-mailbox">
 <h3>The Mailbox<a class="headerlink" href="#the-mailbox" title="Link to this heading">¶</a></h3>
@@ -280,8 +280,8 @@ the opcode in the lowest unused bits. It also contains cmd_id and
 flags fields for setting by the kernel (kflags) and userspace
 (uflags).</p>
 <p>Currently only two opcodes are defined, TCMU_OP_CMD and TCMU_OP_PAD.</p>
-<p>When the opcode is CMD, the entry in the command ring is a struct
-tcmu_cmd_entry. Userspace finds the SCSI CDB (Command Data Block) via
+<p>When the opcode is CMD, the entry in the command ring is a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">tcmu_cmd_entry</span></code>. Userspace finds the SCSI CDB (Command Data Block) via
 tcmu_cmd_entry.req.cdb_off. This is an offset from the start of the
 overall shared memory region, not the entry. The data in/out buffers
 are accessible via the req.iov[] array. iov_cnt contains the number of

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -201,10 +201,8 @@ compatible property.</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>True if the status property is absent or set to “okay” or “ok”,</dt><dd><p>false otherwise</p>
-</dd>
-</dl>
+<p>True if the status property is absent or set to “okay” or “ok”,
+false otherwise</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.of_device_is_big_endian">
@@ -219,13 +217,14 @@ compatible property.</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<dl>
-<dt>True if the device has a “big-endian” property, or if the kernel</dt><dd><p>was compiled for BE <em>and</em> the device has a “native-endian” property.
+<p>True if the device has a “big-endian” property, or if the kernel
+was compiled for BE <em>and</em> the device has a “native-endian” property.
 Returns false otherwise.</p>
-<p>Callers would nominally use ioread32be/iowrite32be if
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Callers would nominally use ioread32be/iowrite32be if
 <a class="reference internal" href="#c.of_device_is_big_endian" title="of_device_is_big_endian"><code class="xref c c-func docutils literal notranslate"><span class="pre">of_device_is_big_endian()</span></code></a> == true, or readl/writel otherwise.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.of_get_parent">
@@ -849,8 +848,8 @@ the first matching target phandle, with a reference held.</p>
 <p>On return the device_node refcount is set to one.  Use <a class="reference internal" href="#c.of_node_put" title="of_node_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">of_node_put()</span></code></a>
 on <strong>node</strong> when done to free the memory allocated for it.  If the node
 is NOT a dynamic node the memory will not be freed. The decision of
-whether to free the memory will be done by node-&gt;release(), which is
-of_node_release().</p>
+whether to free the memory will be done by node-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">release()</span></code>, which is
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">of_node_release()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.of_machine_is_compatible">
@@ -1907,10 +1906,8 @@ ignored when they are -1. Use <a class="reference internal" href="#c.of_node_put
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Remote endpoint node associated with remote endpoint node linked</dt><dd><p>to <strong>node</strong>. Use <a class="reference internal" href="#c.of_node_put" title="of_node_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">of_node_put()</span></code></a> on it when done.</p>
-</dd>
-</dl>
+<p>Remote endpoint node associated with remote endpoint node linked
+to <strong>node</strong>. Use <a class="reference internal" href="#c.of_node_put" title="of_node_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">of_node_put()</span></code></a> on it when done.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.of_graph_get_port_parent">
@@ -1925,10 +1922,8 @@ ignored when they are -1. Use <a class="reference internal" href="#c.of_node_put
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>device node associated with endpoint node linked</dt><dd><p>to <strong>node</strong>. Use <a class="reference internal" href="#c.of_node_put" title="of_node_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">of_node_put()</span></code></a> on it when done.</p>
-</dd>
-</dl>
+<p>device node associated with endpoint node linked
+to <strong>node</strong>. Use <a class="reference internal" href="#c.of_node_put" title="of_node_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">of_node_put()</span></code></a> on it when done.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.of_graph_get_remote_port_parent">
@@ -1943,10 +1938,8 @@ ignored when they are -1. Use <a class="reference internal" href="#c.of_node_put
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Remote device node associated with remote endpoint node linked</dt><dd><p>to <strong>node</strong>. Use <a class="reference internal" href="#c.of_node_put" title="of_node_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">of_node_put()</span></code></a> on it when done.</p>
-</dd>
-</dl>
+<p>Remote device node associated with remote endpoint node linked
+to <strong>node</strong>. Use <a class="reference internal" href="#c.of_node_put" title="of_node_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">of_node_put()</span></code></a> on it when done.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.of_graph_get_remote_port">
@@ -2078,7 +2071,7 @@ to <strong>node</strong>. Use <a class="reference internal" href="#c.of_node_put
 </dl>
 <p><strong>Description</strong></p>
 <p>When breaking out of the loop, and continue to use the <strong>child</strong>, you need to
-use return_ptr(<strong>child</strong>) or no_free_ptr(<strong>child</strong>) not to call __free() for it.</p>
+use return_ptr(<strong>child</strong>) or no_free_ptr(<strong>child</strong>) not to call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__free()</span></code> for it.</p>
 </div>
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.for_each_of_graph_port_endpoint">
@@ -2099,7 +2092,7 @@ use return_ptr(<strong>child</strong>) or no_free_ptr(<strong>child</strong>) no
 </dl>
 <p><strong>Description</strong></p>
 <p>When breaking out of the loop, and continue to use the <strong>child</strong>, you need to
-use return_ptr(<strong>child</strong>) or no_free_ptr(<strong>child</strong>) not to call __free() for it.</p>
+use return_ptr(<strong>child</strong>) or no_free_ptr(<strong>child</strong>) not to call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__free()</span></code> for it.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.of_translate_dma_region">
@@ -2182,7 +2175,7 @@ default for OF devices on the current platform and no
 <p>Returns -EINVAL if the range cannot be converted to resource.</p>
 <p>Note that if your address is a PIO address, the conversion will fail if
 the physical address can’t be internally converted to an IO token with
-pci_address_to_pio(), that is because it’s either called too early or it
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_address_to_pio()</span></code>, that is because it’s either called too early or it
 can’t be matched to any host bridge IO space</p>
 </div>
 <dl class="c function">
@@ -2218,7 +2211,7 @@ can’t be matched to any host bridge IO space</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>This function is a wrapper that chains <a class="reference internal" href="#c.of_irq_parse_one" title="of_irq_parse_one"><code class="xref c c-func docutils literal notranslate"><span class="pre">of_irq_parse_one()</span></code></a> and
-irq_create_of_mapping() to make things easier to callers</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">irq_create_of_mapping()</span></code> to make things easier to callers</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.of_irq_find_parent">
@@ -2413,7 +2406,7 @@ of any other failure.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>unflattens the device-tree passed by the firmware, creating the
-tree of struct device_node. It also fills the “name” and “type”
+tree of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device_node</span></code>. It also fills the “name” and “type”
 pointers of the nodes so the normal device-tree walking functions
 can be used.</p>
 <p><strong>Return</strong></p>
@@ -2447,9 +2440,9 @@ device tree on success.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">of_device_id</span> <span class="pre">*matches</span></code></dt><dd><p>array of of device match structures to search in</p>
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">of_device_id</span> <span class="pre">*matches</span></code></dt><dd><p>array of of_device_id match structures to search in</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">device</span> <span class="pre">*dev</span></code></dt><dd><p>the of device structure to match against</p>
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">device</span> <span class="pre">*dev</span></code></dt><dd><p>the OF device structure to match against</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -2469,7 +2462,7 @@ system is in its list of supported devices.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device_node</span> <span class="pre">*np</span></code></dt><dd><p>Pointer to OF node having DMA configuration</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">force_dma</span></code></dt><dd><p>Whether device is to be set up by of_dma_configure() even if
+<dt><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">force_dma</span></code></dt><dd><p>Whether device is to be set up by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">of_dma_configure()</span></code> even if
 DMA capability is not explicitly described by firmware.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">u32</span> <span class="pre">*id</span></code></dt><dd><p>Optional const pointer value input id</p>
@@ -2753,9 +2746,9 @@ does not conflict with the live expanded devicetree.  Update references
 to the local phandles in <strong>overlay</strong>.  Update (resolve) phandle references
 in <strong>overlay</strong> that refer to the live expanded devicetree.</p>
 <p>Phandle values in the live tree are in the range of
-1 .. live_tree_max_phandle().  The range of phandle values in the overlay
+1 .. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">live_tree_max_phandle()</span></code>.  The range of phandle values in the overlay
 also begin with at 1.  Adjust the phandle values in the overlay to begin
-at live_tree_max_phandle() + 1.  Update references to the phandles to
+at <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">live_tree_max_phandle()</span></code> + 1.  Update references to the phandles to
 the adjusted phandle values.</p>
 <p>The name of each property in the “__fixups__” node in the overlay matches
 the name of a symbol (a label) in the live tree.  The values of each
@@ -3104,7 +3097,7 @@ respective node it received.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Creates and applies an overlay changeset.</p>
-<p>See of_overlay_apply() for important behavior information.</p>
+<p>See <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">of_overlay_apply()</span></code> for important behavior information.</p>
 <p>On error return, the changeset may be partially applied.  This is especially
 likely if an OF_OVERLAY_POST_APPLY notifier returns an error.  In this case
 the caller should call <a class="reference internal" href="#c.of_overlay_remove" title="of_overlay_remove"><code class="xref c c-func docutils literal notranslate"><span class="pre">of_overlay_remove()</span></code></a> with the value in <strong>*ret_ovcs_id</strong>.</p>

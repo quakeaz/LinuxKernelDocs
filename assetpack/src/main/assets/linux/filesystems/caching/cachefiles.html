@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -179,7 +179,7 @@ available in the system and in the cache filesystem:</p>
 <div><ul class="simple">
 <li><p>dnotify.</p></li>
 <li><p>extended attributes (xattrs).</p></li>
-<li><p>openat() and friends.</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">openat()</span></code> and friends.</p></li>
 <li><p><a class="reference internal" href="../api-summary.html#c.bmap" title="bmap"><code class="xref c c-func docutils literal notranslate"><span class="pre">bmap()</span></code></a> support on files in the filesystem (FIBMAP ioctl).</p></li>
 <li><p>The use of <a class="reference internal" href="../api-summary.html#c.bmap" title="bmap"><code class="xref c c-func docutils literal notranslate"><span class="pre">bmap()</span></code></a> to detect a partial page at the end of the file.</p></li>
 </ul>
@@ -210,13 +210,13 @@ OR’d into the mask to collect various information:</p>
 <div><table class="docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p>1</p></td>
-<td><p>Turn on trace of function entry (_enter() macros)</p></td>
+<td><p>Turn on trace of function entry (<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_enter()</span></code> macros)</p></td>
 </tr>
 <tr class="row-even"><td><p>2</p></td>
-<td><p>Turn on trace of function exit (_leave() macros)</p></td>
+<td><p>Turn on trace of function exit (<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_leave()</span></code> macros)</p></td>
 </tr>
 <tr class="row-odd"><td><p>4</p></td>
-<td><p>Turn on trace of internal debug points (_debug())</p></td>
+<td><p>Turn on trace of internal debug points (<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_debug()</span></code>)</p></td>
 </tr>
 </tbody>
 </table>
@@ -684,7 +684,7 @@ fetch the data and write it to the cache file in the background, even when
 kernel has not triggered a cache miss yet.</p>
 <p>Be noted that each cache file has a unique object_id, while it may have multiple
 anonymous fds.  The user daemon may duplicate anonymous fds from the initial
-anonymous fd indicated by the &#64;fd field through dup().  Thus each object_id can
+anonymous fd indicated by the &#64;fd field through <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dup()</span></code>.  Thus each object_id can
 be mapped to multiple anonymous fds, while the usr daemon itself needs to
 maintain the mapping.</p>
 <p>When implementing a user daemon, please be careful of RLIMIT_NOFILE,

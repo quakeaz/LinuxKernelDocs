@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -330,7 +330,7 @@ requests into DC requests, and DC responses into DRM responses.</p>
 </div>
 <p><strong>Members</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">ext_caps</span></code></dt><dd><p>Keep the data struct with all the information about the
+<dt><code class="docutils literal notranslate"><span class="pre">ext_caps</span></code></dt><dd><p>Keep the data <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">with</span></code> all the information about the
 display support for HDR.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">aux_min_input_signal</span></code></dt><dd><p>Min brightness value supported by the display</p>
@@ -513,10 +513,11 @@ ready event when we’re already handling mst message ready event</p>
     struct workqueue_struct *delayed_hpd_wq;
     u32 brightness[AMDGPU_DM_MAX_NUM_EDP];
     u32 actual_brightness[AMDGPU_DM_MAX_NUM_EDP];
+    bool restore_backlight;
     bool aux_hpd_discon_quirk;
     bool edp0_on_dp1_quirk;
     struct mutex dpia_aux_lock;
-    struct dml2_soc_bb *bb_from_dmub;
+    void *bb_from_dmub;
     struct amdgpu_i2c_adapter *oem_i2c;
     struct fused_io_sync {
         struct completion replied;
@@ -630,7 +631,7 @@ triggered.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">dmcu_fw_version</span></code></dt><dd><p>Version of the DMCU firmware</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">soc_bounding_box</span></code></dt><dd><p>gpu_info FW provided soc bounding box struct or 0 if not
+<dt><code class="docutils literal notranslate"><span class="pre">soc_bounding_box</span></code></dt><dd><p>gpu_info FW provided soc bounding box <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">or</span></code> 0 if not
 available in FW</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">active_vblank_irq_count</span></code></dt><dd><p>number of currently active vblank irqs</p>
@@ -652,7 +653,7 @@ driver when true</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">da_list</span></code></dt><dd><p>DAL fb memory allocation list, for communication with SMU.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">dmub_aux_transfer_done</span></code></dt><dd><p>struct completion used to indicate when DMUB
+<dt><code class="docutils literal notranslate"><span class="pre">dmub_aux_transfer_done</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">completion</span></code> used to indicate when DMUB
 transfers are done</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">delayed_hpd_wq</span></code></dt><dd><p>work queue used to delay DMUB HPD work</p>
@@ -661,6 +662,8 @@ transfers are done</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">actual_brightness</span></code></dt><dd><p>last successfully applied backlight values.</p>
 </dd>
+<dt><code class="docutils literal notranslate"><span class="pre">restore_backlight</span></code></dt><dd><p>Flag to indicate whether to restore backlight after modeset.</p>
+</dd>
 <dt><code class="docutils literal notranslate"><span class="pre">aux_hpd_discon_quirk</span></code></dt><dd><p>quirk for hpd discon while aux is on-going.
 occurred on certain intel platform</p>
 </dd>
@@ -668,7 +671,8 @@ occurred on certain intel platform</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">dpia_aux_lock</span></code></dt><dd><p>Guards access to DPIA AUX</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">bb_from_dmub</span></code></dt><dd><p>Bounding box data read from dmub during early initialization for DCN4+</p>
+<dt><code class="docutils literal notranslate"><span class="pre">bb_from_dmub</span></code></dt><dd><p>Bounding box data read from dmub during early initialization for DCN4+
+Data is stored as a byte array that should be casted to the appropriate bb struct</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">oem_i2c</span></code></dt><dd><p>OEM i2c bus</p>
 </dd>
@@ -710,7 +714,7 @@ used to determine which Vendor Specific InfoFrame (VSIF) to send.</p>
 </div>
 <p><strong>Description</strong></p>
 <p>AMDGPU supports FreeSync over HDMI by using the VSDB section, and this
-struct is useful to keep track of the display-specific information about
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> useful to keep track of the display-specific information about
 FreeSync.</p>
 <section id="lifecycle">
 <h2><a class="toc-backref" href="#id2" role="doc-backlink">Lifecycle</a><a class="headerlink" href="#lifecycle" title="Link to this heading">¶</a></h2>
@@ -732,7 +736,7 @@ the base driver’s device list to be initialized and torn down accordingly.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Initialize the <a class="reference internal" href="#c.amdgpu_display_manager" title="amdgpu_display_manager"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">amdgpu_display_manager</span></code></a> device. This involves calling
-the initializers of each DM component, then populating the struct with them.</p>
+the initializers of each DM component, then populating the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">with</span></code> them.</p>
 <p>Although the function implies hardware initialization, both hardware and
 software are initialized here. Splitting them out to their relevant init
 hooks is a future TODO item.</p>
@@ -785,7 +789,7 @@ in the hooks that DM provides for <code class="xref c c-type docutils literal no
 are all set to the DM generic handler <a class="reference internal" href="#c.amdgpu_dm_irq_handler" title="amdgpu_dm_irq_handler"><code class="xref c c-func docutils literal notranslate"><span class="pre">amdgpu_dm_irq_handler()</span></code></a>, which looks up
 DM’s IRQ tables. However, in order for base driver to recognize this hook, DM
 still needs to register the IRQ with the base driver. See
-dce110_register_irq_handlers() and dcn10_register_irq_handlers().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dce110_register_irq_handlers()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dcn10_register_irq_handlers()</span></code>.</p>
 <p>To expose DC’s hardware interrupt toggle to the base driver, DM implements
 <code class="xref c c-type docutils literal notranslate"><span class="pre">amdgpu_irq_src_funcs.set</span></code> hooks. Base driver calls it through
 <a class="reference internal" href="../driver-core.html#c.amdgpu_irq_update" title="amdgpu_irq_update"><code class="xref c c-func docutils literal notranslate"><span class="pre">amdgpu_irq_update()</span></code></a> to enable or disable the interrupt.</p>
@@ -877,10 +881,8 @@ workqueue, thereby allowing operations that sleep.</p>
 <p>Registered handlers are called in a FIFO manner, i.e. the most recently
 registered handler will be called first.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Handler data <a class="reference internal" href="#c.amdgpu_dm_irq_handler_data" title="amdgpu_dm_irq_handler_data"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">amdgpu_dm_irq_handler_data</span></code></a> containing the IRQ</dt><dd><p>source, handler function, and args</p>
-</dd>
-</dl>
+<p>Handler data <a class="reference internal" href="#c.amdgpu_dm_irq_handler_data" title="amdgpu_dm_irq_handler_data"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">amdgpu_dm_irq_handler_data</span></code></a> containing the IRQ
+source, handler function, and args</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.amdgpu_dm_irq_unregister_interrupt">
@@ -1507,8 +1509,12 @@ with MPC by setting mpc:shared_3d_lut flag</p>
     uint16_t ogam_ram : 1;
     uint16_t ocsc : 1;
     uint16_t num_3dluts : 3;
+    uint16_t num_rmcm_3dluts : 3;
     uint16_t shared_3d_lut:1;
     struct rom_curve_caps ogam_rom_caps;
+    struct lut3d_caps mcm_3d_lut_caps;
+    struct lut3d_caps rmcm_3d_lut_caps;
+    bool preblend;
 };
 </pre></div>
 </div>
@@ -1526,6 +1532,12 @@ with MPC by setting mpc:shared_3d_lut flag</p>
 instance</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">ogam_rom_caps</span></code></dt><dd><p>pre-definied curve caps for regamma 1D LUT</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">mcm_3d_lut_caps</span></code></dt><dd><p>HW support cap for MCM LUT memory</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">rmcm_3d_lut_caps</span></code></dt><dd><p>HW support cap for RMCM LUT memory</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">preblend</span></code></dt><dd><p>whether color manager supports preblend with MPC</p>
 </dd>
 </dl>
 </div>
@@ -1574,7 +1586,7 @@ user connects to a second display, DC will avoid pipe split.</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This enum is used to define the pipe split policy supported by DCN. By
+<p>This <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">is</span></code> used to define the pipe split policy supported by DCN. By
 default, DC favors MPC_SPLIT_DYNAMIC.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.dc_validation_set">
@@ -1661,7 +1673,7 @@ multiplied (true/false), being only true for DRM pre-multiplied blend mode.
 <code class="xref c c-type docutils literal notranslate"><span class="pre">mpcc_alpha_blend_mode</span></code> defines the alpha blend mode regarding pixel
 alpha and plane alpha values. It sets one of the three modes for
 <code class="xref c c-type docutils literal notranslate"><span class="pre">MPCC_ALPHA_BLND_MODE</span></code>, as described below.</p>
-<p>DM then maps the elements of <cite>enum mpcc_alpha_blend_mode</cite> to those in the DRM
+<p>DM then maps the elements of <cite><code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">mpcc_alpha_blend_mode</span></code></cite> to those in the DRM
 blend formula, as follows:</p>
 <ul class="simple">
 <li><p><em>MPC pixel alpha</em> matches <em>DRM fg.alpha</em> as the alpha component value
@@ -1685,7 +1697,7 @@ following path:</p>
 <li><p>When updating a <a class="reference internal" href="../../drm-kms.html#c.drm_plane_state" title="drm_plane_state"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_plane_state</span></code></a>, DM calls
 <code class="xref c c-type docutils literal notranslate"><span class="pre">amdgpu_dm_plane_fill_blending_from_plane_state()</span></code> that maps
 <a class="reference internal" href="../../drm-kms.html#c.drm_plane_state" title="drm_plane_state"><code class="xref c c-type docutils literal notranslate"><span class="pre">drm_plane_state</span></code></a> attributes to
-<code class="xref c c-type docutils literal notranslate"><span class="pre">dc_plane_info</span></code> struct to be handled in the
+<code class="xref c c-type docutils literal notranslate"><span class="pre">dc_plane_info</span></code> <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">to</span></code> be handled in the
 OS-agnostic component (DC).</p></li>
 <li><p>On DC interface, <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">mpcc_blnd_cfg</span></code> programs the
 MPCC blend configuration considering the <code class="xref c c-type docutils literal notranslate"><span class="pre">dc_plane_info</span></code> input from DPP.</p></li>

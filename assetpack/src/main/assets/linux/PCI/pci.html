@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -198,14 +198,14 @@ Refer to the source code if things are not working as described here.</p>
 “Linux PCI” &lt;<a class="reference external" href="mailto:linux-pci&#37;&#52;&#48;atrey&#46;karlin&#46;mff&#46;cuni&#46;cz">linux-pci<span>&#64;</span>atrey<span>&#46;</span>karlin<span>&#46;</span>mff<span>&#46;</span>cuni<span>&#46;</span>cz</a>&gt; mailing list.</p>
 <section id="structure-of-pci-drivers">
 <h2><span class="section-number">1.1. </span>Structure of PCI drivers<a class="headerlink" href="#structure-of-pci-drivers" title="Link to this heading">¶</a></h2>
-<p>PCI drivers “discover” PCI devices in a system via pci_register_driver().
+<p>PCI drivers “discover” PCI devices in a system via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_register_driver()</span></code>.
 Actually, it’s the other way around. When the PCI generic code discovers
 a new device, the driver with a matching “description” will be notified.
 Details on this below.</p>
-<p>pci_register_driver() leaves most of the probing for devices to
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_register_driver()</span></code> leaves most of the probing for devices to
 the PCI layer and supports online insertion/removal of devices [thus
 supporting hot-pluggable PCI, CardBus, and Express-Card in a single driver].
-pci_register_driver() call requires passing in a table of function
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_register_driver()</span></code> call requires passing in a table of function
 pointers and thus dictates the high level structure of a driver.</p>
 <p>Once the driver knows about a PCI device and takes ownership, the
 driver generally needs to perform the following initialization:</p>
@@ -214,7 +214,7 @@ driver generally needs to perform the following initialization:</p>
 <li><p>Enable the device</p></li>
 <li><p>Request MMIO/IOP resources</p></li>
 <li><p>Set the DMA mask size (for both coherent and streaming DMA)</p></li>
-<li><p>Allocate and initialize shared control data (pci_allocate_coherent())</p></li>
+<li><p>Allocate and initialize shared control data (<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_allocate_coherent()</span></code>)</p></li>
 <li><p>Access device configuration space (if needed)</p></li>
 <li><p>Register IRQ handler (<a class="reference internal" href="../core-api/genericirq.html#c.request_irq" title="request_irq"><code class="xref c c-func docutils literal notranslate"><span class="pre">request_irq()</span></code></a>)</p></li>
 <li><p>Initialize non-PCI (i.e. LAN/SCSI/etc parts of the chip)</p></li>
@@ -283,11 +283,11 @@ interested in.  Most drivers should export this
 table using MODULE_DEVICE_TABLE(pci,...).</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">probe</span></code></dt><dd><p>This probing function gets called (during execution
-of pci_register_driver() for already existing
+of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_register_driver()</span></code> for already existing
 devices or later if a new device gets inserted) for
 all PCI devices which match the ID table and are not
 “owned” by the other drivers yet. This function gets
-passed a “struct pci_dev *” for each device whose
+passed a “<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pci_dev</span></code> *” for each device whose
 entry in the ID table matches the device. The probe
 function returns zero when the driver chooses to
 take “ownership” of the device or an error code
@@ -295,7 +295,7 @@ take “ownership” of the device or an error code
 The probe function always gets called from process
 context, so it can sleep.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">remove</span></code></dt><dd><p>The remove() function gets called whenever a device
+<dt><code class="docutils literal notranslate"><span class="pre">remove</span></code></dt><dd><p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove()</span></code> function gets called whenever a device
 being handled by this driver is removed (either during
 deregistration of the driver or when it’s manually
 pulled out of a hot-pluggable slot).
@@ -453,7 +453,7 @@ Better to not mark the function than mark the function wrong.</p></li>
 <section id="how-to-find-pci-devices-manually">
 <h2><span class="section-number">1.3. </span>How to find PCI devices manually<a class="headerlink" href="#how-to-find-pci-devices-manually" title="Link to this heading">¶</a></h2>
 <p>PCI drivers should have a really good reason for not using the
-pci_register_driver() interface to search for PCI devices.
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_register_driver()</span></code> interface to search for PCI devices.
 The main reason PCI devices are controlled by multiple drivers
 is because one PCI device implements several different HW services.
 E.g. combined serial/parallel port/floppy controller.</p>
@@ -488,7 +488,7 @@ for device initialization:</p>
 <li><p>Enable the device</p></li>
 <li><p>Request MMIO/IOP resources</p></li>
 <li><p>Set the DMA mask size (for both coherent and streaming DMA)</p></li>
-<li><p>Allocate and initialize shared control data (pci_allocate_coherent())</p></li>
+<li><p>Allocate and initialize shared control data (<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_allocate_coherent()</span></code>)</p></li>
 <li><p>Access device configuration space (if needed)</p></li>
 <li><p>Register IRQ handler (<a class="reference internal" href="../core-api/genericirq.html#c.request_irq" title="request_irq"><code class="xref c c-func docutils literal notranslate"><span class="pre">request_irq()</span></code></a>)</p></li>
 <li><p>Initialize non-PCI (i.e. LAN/SCSI/etc parts of the chip)</p></li>
@@ -518,7 +518,7 @@ the PCI device by calling <a class="reference internal" href="../driver-api/pci/
 <p class="admonition-title">Warning</p>
 <p>OS BUG: we don’t check resource allocations before enabling those
 resources. The sequence would make more sense if we called
-pci_request_resources() before calling <a class="reference internal" href="../driver-api/pci/pci.html#c.pci_enable_device" title="pci_enable_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_enable_device()</span></code></a>.
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_request_resources()</span></code> before calling <a class="reference internal" href="../driver-api/pci/pci.html#c.pci_enable_device" title="pci_enable_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_enable_device()</span></code></a>.
 Currently, the device drivers can’t detect the bug when two
 devices have been allocated the same range. This is not a common
 problem and unlikely to get fixed soon.</p>
@@ -557,8 +557,8 @@ The idea is to prevent two devices colliding on the same address range.</p>
 determine MMIO and IO Port resource availability _after_ calling
 <a class="reference internal" href="../driver-api/pci/pci.html#c.pci_enable_device" title="pci_enable_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_enable_device()</span></code></a>.</p>
 </div>
-<p>Generic flavors of <a class="reference internal" href="../driver-api/pci/pci.html#c.pci_request_region" title="pci_request_region"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_request_region()</span></code></a> are request_mem_region()
-(for MMIO ranges) and request_region() (for IO Port ranges).
+<p>Generic flavors of <a class="reference internal" href="../driver-api/pci/pci.html#c.pci_request_region" title="pci_request_region"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_request_region()</span></code></a> are <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">request_mem_region()</span></code>
+(for MMIO ranges) and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">request_region()</span></code> (for IO Port ranges).
 Use these for address resources that are not described by “normal” PCI
 BARs.</p>
 <p>Also see <a class="reference internal" href="../driver-api/pci/pci.html#c.pci_request_selected_regions" title="pci_request_selected_regions"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_request_selected_regions()</span></code></a> below.</p>
@@ -575,14 +575,14 @@ an authoritative source for DMA interfaces.</p>
 <p>While all drivers should explicitly indicate the DMA capability
 (e.g. 32 or 64 bit) of the PCI bus master, devices with more than
 32-bit bus master capability for streaming data need the driver
-to “register” this capability by calling dma_set_mask() with
+to “register” this capability by calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_set_mask()</span></code> with
 appropriate parameters.  In general this allows more efficient DMA
 on systems where System RAM exists above 4G _physical_ address.</p>
 <p>Drivers for all PCI-X and PCIe compliant devices must call
-dma_set_mask() as they are 64-bit DMA devices.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_set_mask()</span></code> as they are 64-bit DMA devices.</p>
 <p>Similarly, drivers must also “register” this capability if the device
 can directly address “coherent memory” in System RAM above 4G physical
-address by calling dma_set_coherent_mask().
+address by calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_set_coherent_mask()</span></code>.
 Again, this includes drivers for all PCI-X and PCIe compliant devices.
 Many 64-bit “PCI” devices (before PCI-X) and some PCI-X devices are
 64-bit DMA capable for payload (“streaming”) data but not control
@@ -714,7 +714,7 @@ the subsystem attempts to call into a driver that has been unloaded.</p>
 </section>
 <section id="disable-device-from-responding-to-mmio-io-port-addresses">
 <h3><span class="section-number">1.5.6. </span>Disable Device from responding to MMIO/IO Port addresses<a class="headerlink" href="#disable-device-from-responding-to-mmio-io-port-addresses" title="Link to this heading">¶</a></h3>
-<p>io_unmap() MMIO or IO Port resources and then call <a class="reference internal" href="../driver-api/pci/pci.html#c.pci_disable_device" title="pci_disable_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_disable_device()</span></code></a>.
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">io_unmap()</span></code> MMIO or IO Port resources and then call <a class="reference internal" href="../driver-api/pci/pci.html#c.pci_disable_device" title="pci_disable_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_disable_device()</span></code></a>.
 This is the symmetric opposite of <a class="reference internal" href="../driver-api/pci/pci.html#c.pci_enable_device" title="pci_enable_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_enable_device()</span></code></a>.
 Do not access device registers after calling <a class="reference internal" href="../driver-api/pci/pci.html#c.pci_disable_device" title="pci_disable_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_disable_device()</span></code></a>.</p>
 </section>
@@ -727,11 +727,11 @@ Failure to do so usually results in the inability to reload the driver.</p>
 <section id="how-to-access-pci-config-space">
 <h2><span class="section-number">1.6. </span>How to access PCI config space<a class="headerlink" href="#how-to-access-pci-config-space" title="Link to this heading">¶</a></h2>
 <p>You can use <cite>pci_(read|write)_config_(byte|word|dword)</cite> to access the config
-space of a device represented by <cite>struct pci_dev *</cite>. All these functions return
+space of a device represented by <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pci_dev</span></code> *</cite>. All these functions return
 0 when successful or an error code (<cite>PCIBIOS_...</cite>) which can be translated to a
 text string by pcibios_strerror. Most drivers expect that accesses to valid PCI
 devices don’t fail.</p>
-<p>If you don’t have a struct pci_dev available, you can call
+<p>If you don’t have a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pci_dev</span></code> available, you can call
 <cite>pci_bus_(read|write)_config_(byte|word|dword)</cite> to access a given device
 and function on that bus.</p>
 <p>If you access fields in the standard portion of the config header, please
@@ -756,19 +756,19 @@ found, its reference count is increased.</p></td>
 <td><p>Find specified capability in device’s capability
 list.</p></td>
 </tr>
-<tr class="row-even"><td><p>pci_resource_start()</p></td>
+<tr class="row-even"><td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_resource_start()</span></code></p></td>
 <td><p>Returns bus start address for a given PCI region</p></td>
 </tr>
-<tr class="row-odd"><td><p>pci_resource_end()</p></td>
+<tr class="row-odd"><td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_resource_end()</span></code></p></td>
 <td><p>Returns bus end address for a given PCI region</p></td>
 </tr>
-<tr class="row-even"><td><p>pci_resource_len()</p></td>
+<tr class="row-even"><td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_resource_len()</span></code></p></td>
 <td><p>Returns the byte length of a PCI region</p></td>
 </tr>
-<tr class="row-odd"><td><p>pci_set_drvdata()</p></td>
+<tr class="row-odd"><td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_set_drvdata()</span></code></p></td>
 <td><p>Set private driver data pointer for a pci_dev</p></td>
 </tr>
-<tr class="row-even"><td><p>pci_get_drvdata()</p></td>
+<tr class="row-even"><td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_get_drvdata()</span></code></p></td>
 <td><p>Return private driver data pointer for a pci_dev</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="../driver-api/pci/pci.html#c.pci_set_mwi" title="pci_set_mwi"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_set_mwi()</span></code></a></p></td>
@@ -811,13 +811,13 @@ in the kernel as they aren’t compatible with hotplug or PCI domains or
 having sane locking.</p>
 <table class="docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p>pci_find_device()</p></td>
+<tr class="row-odd"><td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_find_device()</span></code></p></td>
 <td><p>Superseded by <a class="reference internal" href="../driver-api/pci/pci.html#c.pci_get_device" title="pci_get_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_get_device()</span></code></a></p></td>
 </tr>
-<tr class="row-even"><td><p>pci_find_subsys()</p></td>
+<tr class="row-even"><td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_find_subsys()</span></code></p></td>
 <td><p>Superseded by <a class="reference internal" href="../driver-api/pci/pci.html#c.pci_get_subsys" title="pci_get_subsys"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_get_subsys()</span></code></a></p></td>
 </tr>
-<tr class="row-odd"><td><p>pci_find_slot()</p></td>
+<tr class="row-odd"><td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_find_slot()</span></code></p></td>
 <td><p>Superseded by <a class="reference internal" href="../driver-api/pci/pci.html#c.pci_get_domain_bus_and_slot" title="pci_get_domain_bus_and_slot"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_get_domain_bus_and_slot()</span></code></a></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="../driver-api/pci/pci.html#c.pci_get_slot" title="pci_get_slot"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_get_slot()</span></code></a></p></td>
@@ -838,7 +838,7 @@ device before the CPU can continue. Writes to MMIO space allow the CPU
 to continue before the transaction reaches the PCI device. HW weenies
 call this “Write Posting” because the write completion is “posted” to
 the CPU before the transaction has reached its destination.</p>
-<p>Thus, timing sensitive code should add readl() where the CPU is
+<p>Thus, timing sensitive code should add <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">readl()</span></code> where the CPU is
 expected to wait before doing other work.  The classic “bit banging”
 sequence works fine for I/O Port space:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>for (i = 8; --i; val &gt;&gt;= 1) {
@@ -858,9 +858,9 @@ sequence works fine for I/O Port space:</p>
 <p>It is important that “safe_mmio_reg” not have any side effects that
 interferes with the correct operation of the device.</p>
 <p>Another case to watch out for is when resetting a PCI device. Use PCI
-Configuration space reads to flush the writel(). This will gracefully
+Configuration space reads to flush the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">writel()</span></code>. This will gracefully
 handle the PCI master abort on all platforms if the PCI device is
-expected to not respond to a readl().  Most x86 platforms will allow
+expected to not respond to a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">readl()</span></code>.  Most x86 platforms will allow
 MMIO reads to master abort (a.k.a. “Soft Fail”) and return garbage
 (e.g. ~0). But many RISC platforms will crash (a.k.a.”Hard Fail”).</p>
 </section>

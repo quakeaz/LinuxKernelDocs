@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -90,6 +90,7 @@
 <li class="toctree-l3"><a class="reference internal" href="union_find.html">Union-Find in Linux</a></li>
 <li class="toctree-l3"><a class="reference internal" href="min_heap.html">Min Heap API</a></li>
 <li class="toctree-l3"><a class="reference internal" href="parser.html">Generic parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="list.html">Linked Lists in Linux</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#low-level-entry-and-exit">Low level entry and exit</a></li>
@@ -203,7 +204,7 @@ relatively small at around 256 bytes.</p>
 </section>
 <section id="normal-api">
 <span id="maple-tree-normal-api"></span><h2>Normal API<a class="headerlink" href="#normal-api" title="Link to this heading">¶</a></h2>
-<p>Start by initialising a maple tree, either with DEFINE_MTREE() for statically
+<p>Start by initialising a maple tree, either with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">DEFINE_MTREE()</span></code> for statically
 allocated maple trees or <a class="reference internal" href="#c.mt_init" title="mt_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">mt_init()</span></code></a> for dynamically allocated ones.  A
 freshly-initialised maple tree contains a <code class="docutils literal notranslate"><span class="pre">NULL</span></code> pointer for the range <code class="docutils literal notranslate"><span class="pre">0</span></code>
 - <code class="docutils literal notranslate"><span class="pre">ULONG_MAX</span></code>.  There are currently two types of maple trees supported: the
@@ -269,9 +270,9 @@ for other options.</p>
 </dd>
 </dl>
 <p>If you want to take advantage of the internal lock to protect the data
-structures that you are storing in the Maple Tree, you can call mtree_lock()
+structures that you are storing in the Maple Tree, you can call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mtree_lock()</span></code>
 before calling <a class="reference internal" href="#c.mtree_load" title="mtree_load"><code class="xref c c-func docutils literal notranslate"><span class="pre">mtree_load()</span></code></a>, then take a reference count on the object you
-have found before calling mtree_unlock().  This will prevent stores from
+have found before calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mtree_unlock()</span></code>.  This will prevent stores from
 removing the object from the tree between looking up the object and
 incrementing the refcount.  You can also use RCU to avoid dereferencing
 freed memory, but an explanation of that is beyond the scope of this
@@ -288,7 +289,7 @@ You can mix advanced and normal operations on the same array, as long
 as the locking is compatible.  The <a class="reference internal" href="#maple-tree-normal-api"><span class="std std-ref">Normal API</span></a> is implemented
 in terms of the advanced API.</p>
 <p>The advanced API is based around the ma_state, this is where the ‘mas’
-prefix originates.  The ma_state struct keeps track of tree operations to make
+prefix originates.  The ma_state <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">keeps</span></code> track of tree operations to make
 life easier for both internal and external tree users.</p>
 <p>Initialising the maple tree is the same as in the <a class="reference internal" href="#maple-tree-normal-api"><span class="std std-ref">Normal API</span></a>.
 Please see above.</p>
@@ -320,18 +321,18 @@ the first call, and the previous entry from every subsequent calls.</p>
 <p>If the user needs to yield the lock during an operation, then the maple state
 must be paused using <a class="reference internal" href="#c.mas_pause" title="mas_pause"><code class="xref c c-func docutils literal notranslate"><span class="pre">mas_pause()</span></code></a>.</p>
 <p>There are a few extra interfaces provided when using an allocation tree.
-If you wish to search for a gap within a range, then mas_empty_area()
-or mas_empty_area_rev() can be used.  mas_empty_area() searches for a gap
+If you wish to search for a gap within a range, then <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mas_empty_area()</span></code>
+or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mas_empty_area_rev()</span></code> can be used.  <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mas_empty_area()</span></code> searches for a gap
 starting at the lowest index given up to the maximum of the range.
-mas_empty_area_rev() searches for a gap starting at the highest index given
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mas_empty_area_rev()</span></code> searches for a gap starting at the highest index given
 and continues downward to the lower bound of the range.</p>
 <section id="advanced-allocating-nodes">
 <span id="maple-tree-advanced-alloc"></span><h3>Advanced Allocating Nodes<a class="headerlink" href="#advanced-allocating-nodes" title="Link to this heading">¶</a></h3>
 <p>Allocations are usually handled internally to the tree, however if allocations
-need to occur before a write occurs then calling mas_expected_entries() will
+need to occur before a write occurs then calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mas_expected_entries()</span></code> will
 allocate the worst-case number of needed nodes to insert the provided number of
 ranges.  This also causes the tree to enter mass insertion mode.  Once
-insertions are complete calling mas_destroy() on the maple state will free the
+insertions are complete calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mas_destroy()</span></code> on the maple state will free the
 unused allocations.</p>
 </section>
 <section id="advanced-locking">
@@ -1046,7 +1047,7 @@ May set <strong>mas-&gt;status</strong> to ma_overflow.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mas_find_rev_setup">
 <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mas_find_rev_setup</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">ma_state</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">mas</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="n"><span class="pre">min</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">entry</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.mas_find_rev_setup" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Internal function to set up mas_find_*_rev()</p>
+<dd><p>Internal function to set up mas_find_*<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_rev()</span></code></p>
 </dd></dl>
 
 <div class="kernelindent docutils container">

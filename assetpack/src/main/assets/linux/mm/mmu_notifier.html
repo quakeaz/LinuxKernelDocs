@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -168,9 +168,9 @@ process virtual address space). There is only 2 cases when you need to notify
 those secondary TLB while holding page table lock when clearing a pte/pmd:</p>
 <blockquote>
 <div><ol class="upperalpha simple">
-<li><p>page backing address is free before mmu_notifier_invalidate_range_end()</p></li>
+<li><p>page backing address is free before <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mmu_notifier_invalidate_range_end()</span></code></p></li>
 <li><p>a page table entry is updated to point to a new page (COW, write fault
-on zero page, __replace_page(), ...)</p></li>
+on zero page, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__replace_page()</span></code>, ...)</p></li>
 </ol>
 </div></blockquote>
 <p>Case A is obvious you do not want to take the risk for the device to write to
@@ -180,7 +180,7 @@ happen:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>take page table lock</p></li>
-<li><p>clear page table entry and notify ([pmd/pte]p_huge_clear_flush_notify())</p></li>
+<li><p>clear page table entry and notify ([pmd/pte]<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">p_huge_clear_flush_notify()</span></code>)</p></li>
 <li><p>set page table entry to point to new page</p></li>
 </ul>
 </div></blockquote>
@@ -247,9 +247,9 @@ addrB before seeing the new value for addrA. This break total memory ordering
 for the device.</p>
 <p>When changing a pte to write protect or to point to a new write protected page
 with same content (KSM) it is fine to delay the mmu_notifier_invalidate_range
-call to mmu_notifier_invalidate_range_end() outside the page table lock. This
+call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mmu_notifier_invalidate_range_end()</span></code> outside the page table lock. This
 is true even if the thread doing the page table update is preempted right after
-releasing page table lock but before call mmu_notifier_invalidate_range_end().</p>
+releasing page table lock but before call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mmu_notifier_invalidate_range_end()</span></code>.</p>
 </section>
 
 

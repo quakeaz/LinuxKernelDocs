@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -604,8 +604,8 @@ are provided using conventional syntax.</p>
         int (*xfer_atomic)(struct i2c_adapter *adap, struct i2c_msg *msgs, int num);
         int (*master_xfer_atomic)(struct i2c_adapter *adap, struct i2c_msg *msgs, int num);
     };
-    int (*smbus_xfer)(struct i2c_adapter *adap, u16 addr,unsigned short flags, char read_write, u8 command, int size, union i2c_smbus_data *data);
-    int (*smbus_xfer_atomic)(struct i2c_adapter *adap, u16 addr,unsigned short flags, char read_write, u8 command, int size, union i2c_smbus_data *data);
+    int (*smbus_xfer)(struct i2c_adapter *adap, u16 addr, unsigned short flags, char read_write, u8 command, int size, union i2c_smbus_data *data);
+    int (*smbus_xfer_atomic)(struct i2c_adapter *adap, u16 addr, unsigned short flags, char read_write, u8 command, int size, union i2c_smbus_data *data);
     u32 (*functionality)(struct i2c_adapter *adap);
 #if IS_ENABLED(CONFIG_I2C_SLAVE);
     union {
@@ -764,8 +764,8 @@ analog filter</p>
 </div>
 <p><strong>Members</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">recover_bus</span></code></dt><dd><p>Recover routine. Either pass driver’s recover_bus() routine, or
-i2c_generic_scl_recovery().</p>
+<dt><code class="docutils literal notranslate"><span class="pre">recover_bus</span></code></dt><dd><p>Recover routine. Either pass driver’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recover_bus()</span></code> routine, or
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">i2c_generic_scl_recovery()</span></code>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">get_scl</span></code></dt><dd><p>This gets current value of SCL line. Mandatory for generic SCL
 recovery. Populated internally for generic GPIO recovery.</p>
@@ -773,11 +773,11 @@ recovery. Populated internally for generic GPIO recovery.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">set_scl</span></code></dt><dd><p>This sets/clears the SCL line. Mandatory for generic SCL recovery.
 Populated internally for generic GPIO recovery.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">get_sda</span></code></dt><dd><p>This gets current value of SDA line. This or set_sda() is mandatory
+<dt><code class="docutils literal notranslate"><span class="pre">get_sda</span></code></dt><dd><p>This gets current value of SDA line. This or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_sda()</span></code> is mandatory
 for generic SCL recovery. Populated internally, if sda_gpio is a valid
 GPIO, for generic GPIO recovery.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">set_sda</span></code></dt><dd><p>This sets/clears the SDA line. This or get_sda() is mandatory for
+<dt><code class="docutils literal notranslate"><span class="pre">set_sda</span></code></dt><dd><p>This sets/clears the SDA line. This or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_sda()</span></code> is mandatory for
 generic SCL recovery. Populated internally, if sda_gpio is a valid GPIO,
 for generic GPIO recovery.</p>
 </dd>
@@ -993,7 +993,7 @@ use this macro once, and calling it replaces <a class="reference internal" href=
 <p><strong>Description</strong></p>
 <p>Helper macro for I2C drivers which do not do anything special in their
 init. This eliminates a lot of boilerplate. Each driver may only
-use this macro once, and calling it replaces device_initcall().</p>
+use this macro once, and calling it replaces <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">device_initcall()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.i2c_register_board_info">
@@ -1015,7 +1015,7 @@ the specified bus number.</p>
 <p><strong>Description</strong></p>
 <p>Systems using the Linux I2C driver stack can declare tables of board info
 while they initialize.  This should be done in board-specific init code
-near arch_initcall() time, or equivalent, before any I2C adapter driver is
+near <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">arch_initcall()</span></code> time, or equivalent, before any I2C adapter driver is
 registered.  For example, mainboard init code could define several devices,
 as could the init code for each daughtercard in a board stack.</p>
 <p>The I2C devices will be created later, after the adapter for the relevant
@@ -1062,10 +1062,10 @@ by wrongly treating some non-I2C device as an i2c_client.</p>
 <p>can sleep</p>
 <p><strong>Description</strong></p>
 <p>Create an i2c device. Binding is handled through driver model
-probe()/remove() methods.  A driver may be bound to this device when we
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove()</span></code> methods.  A driver may be bound to this device when we
 return from this function, or any later moment (e.g. maybe hotplugging will
 load the driver module).  This call is not appropriate for use by mainboard
-initialization logic, which usually runs during an arch_initcall() long
+initialization logic, which usually runs during an <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">arch_initcall()</span></code> long
 before any i2c_adapter could exist.</p>
 <p>This returns the new i2c client, which may be saved for later use with
 <a class="reference internal" href="#c.i2c_unregister_device" title="i2c_unregister_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">i2c_unregister_device()</span></code></a>; or an ERR_PTR to describe the error.</p>
@@ -1073,13 +1073,13 @@ before any i2c_adapter could exist.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.i2c_unregister_device">
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i2c_unregister_device</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.i2c_client" title="i2c_client"><span class="n"><span class="pre">i2c_client</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i2c_unregister_device" title="Link to this definition">¶</a><br /></dt>
-<dd><p>reverse effect of i2c_new_*_device()</p>
+<dd><p>reverse effect of i2c_new_*<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_device()</span></code></p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i2c_client</span> <span class="pre">*client</span></code></dt><dd><p>value returned from i2c_new_*_device()</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i2c_client</span> <span class="pre">*client</span></code></dt><dd><p>value returned from i2c_new_*<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_device()</span></code></p>
 </dd>
 </dl>
 <p><strong>Context</strong></p>
@@ -1344,7 +1344,7 @@ If no adapter can be found, or <strong>fwnode</strong> is NULL, this returns NUL
 and increment the adapter module’s use count. If no adapter can be found,
 or <strong>fwnode</strong> is NULL, this returns NULL.</p>
 <p>The user must call i2c_put_adapter(adapter) once done with the i2c adapter.
-Note that this is different from i2c_find_adapter_by_node().</p>
+Note that this is different from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">i2c_find_adapter_by_node()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.i2c_parse_fw_timings">
@@ -1357,7 +1357,7 @@ Note that this is different from i2c_find_adapter_by_node().</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span> <span class="pre">*dev</span></code></dt><dd><p>The device to scan for I2C timing properties</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i2c_timings</span> <span class="pre">*t</span></code></dt><dd><p>the i2c_timings struct to be filled with values</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i2c_timings</span> <span class="pre">*t</span></code></dt><dd><p>the i2c_timings <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">to</span></code> be filled with values</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">use_defaults</span></code></dt><dd><p>bool to use sane defaults derived from the I2C specification
 when properties are not found, otherwise don’t update</p>
@@ -1365,7 +1365,7 @@ when properties are not found, otherwise don’t update</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Scan the device for the generic I2C properties describing timing parameters
-for the signal and fill the given struct with the results. If a property was
+for the signal and fill the given <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">with</span></code> the results. If a property was
 not found and use_defaults was true, then maximum timings are assumed which
 are derived from the I2C specification. If use_defaults is not used, the
 results will be as before, so drivers can apply their own defaults before
@@ -1501,11 +1501,9 @@ Should at least be 1.</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>NULL if a DMA safe buffer was not obtained. Use msg-&gt;buf with PIO.</dt><dd><p>Or a valid pointer to be used with DMA. After use, release it by
+<p>NULL if a DMA safe buffer was not obtained. Use msg-&gt;buf with PIO.
+Or a valid pointer to be used with DMA. After use, release it by
 calling <a class="reference internal" href="#c.i2c_put_dma_safe_msg_buf" title="i2c_put_dma_safe_msg_buf"><code class="xref c c-func docutils literal notranslate"><span class="pre">i2c_put_dma_safe_msg_buf()</span></code></a>.</p>
-</dd>
-</dl>
 <p><strong>Description</strong></p>
 <p>This function must only be called from process context!</p>
 </div>
@@ -1781,7 +1779,7 @@ transfer.</p>
 <p>Handling can be done either through our IRQ handler, or by the
 adapter (from its handler, periodic polling, or whatever).</p>
 <p>This returns the ara client, which should be saved for later use with
-i2c_handle_smbus_alert() and ultimately <a class="reference internal" href="#c.i2c_unregister_device" title="i2c_unregister_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">i2c_unregister_device()</span></code></a>; or an
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">i2c_handle_smbus_alert()</span></code> and ultimately <a class="reference internal" href="#c.i2c_unregister_device" title="i2c_unregister_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">i2c_unregister_device()</span></code></a>; or an
 ERRPTR to indicate an error.</p>
 </div>
 </section>

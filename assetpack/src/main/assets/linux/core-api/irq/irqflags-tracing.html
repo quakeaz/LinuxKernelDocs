@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -189,7 +189,7 @@ code-organizational changes first:</p>
 irq-flags-tracing support:</p>
 <ul class="simple">
 <li><p>in lowlevel entry code add (build-conditional) calls to the
-trace_hardirqs_off()/trace_hardirqs_on() functions. The lock validator
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">trace_hardirqs_off()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">trace_hardirqs_on()</span></code> functions. The lock validator
 closely guards whether the ‘real’ irq-flags matches the ‘virtual’
 irq-flags state, and complains loudly (and turns itself off) if the
 two do not match. Usually most of the time for arch support for
@@ -200,7 +200,7 @@ lockdep complaint in the irq-flags-tracing functions arch support is
 complete.</p></li>
 <li><p>if the architecture has non-maskable interrupts then those need to be
 excluded from the irq-tracing [and lock validation] mechanism via
-lockdep_off()/lockdep_on().</p></li>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lockdep_off()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lockdep_on()</span></code>.</p></li>
 </ul>
 <p>In general there is no risk from having an incomplete irq-flags-tracing
 implementation in an architecture: lockdep will detect that and will

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -204,9 +204,9 @@ They allocate HID device objects and register them with HID core. Transport
 drivers are not required to register themselves with HID core. HID core is never
 aware of which transport drivers are available and is not interested in it. It
 is only interested in devices.</p>
-<p>Transport drivers attach a constant “struct hid_ll_driver” object with each
+<p>Transport drivers attach a constant “<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hid_ll_driver</span></code>” object with each
 device. Once a device is registered with HID core, the callbacks provided via
-this struct are used by HID core to communicate with the device.</p>
+this <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">are</span></code> used by HID core to communicate with the device.</p>
 <p>Transport drivers are responsible for detecting device failures and unplugging.
 HID core will operate a device as long as it is registered regardless of any
 device failures. Once transport drivers detect unplug or failure events, they
@@ -360,14 +360,14 @@ if (ret)
         goto err_&lt;...&gt;;
 </pre></div>
 </div>
-<p>Once hid_add_device() is entered, HID core might use the callbacks provided in
+<p>Once <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hid_add_device()</span></code> is entered, HID core might use the callbacks provided in
 “custom_ll_driver”. Note that fields like “country” can be ignored by underlying
 transport-drivers if not supported.</p>
 <p>To unregister a device, use:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>hid_destroy_device(hid);
 </pre></div>
 </div>
-<p>Once hid_destroy_device() returns, HID core will no longer make use of any
+<p>Once <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hid_destroy_device()</span></code> returns, HID core will no longer make use of any
 driver callbacks.</p>
 </section>
 <section id="hid-ll-driver-operations">
@@ -389,7 +389,7 @@ drivers can free any buffers and deinitialize the device. But note that
 -&gt;<a class="reference internal" href="../networking/ieee802154.html#c.start" title="start"><code class="xref c c-func docutils literal notranslate"><span class="pre">start()</span></code></a> might be called again if another HID device driver is loaded on the
 device.</p>
 <p>Transport drivers are free to ignore it and deinitialize devices after they
-destroyed them via hid_destroy_device().</p>
+destroyed them via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hid_destroy_device()</span></code>.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int (*open) (struct hid_device *hdev)
 </pre></div>
 </div>
@@ -412,7 +412,7 @@ be called again if the device driver is interested in input reports again.</p>
 </div>
 <p>Called once during device setup after -&gt;<a class="reference internal" href="../networking/ieee802154.html#c.start" title="start"><code class="xref c c-func docutils literal notranslate"><span class="pre">start()</span></code></a> has been called. Transport
 drivers must read the HID report-descriptor from the device and tell HID core
-about it via hid_parse_report().</p>
+about it via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hid_parse_report()</span></code>.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int (*power) (struct hid_device *hdev, int level)
 </pre></div>
 </div>
@@ -426,12 +426,12 @@ analogical to the -&gt;open() and -&gt;close() hints and redundant.</p>
 should be sent and “reqtype” the request type. Request-type can be
 HID_REQ_SET_REPORT or HID_REQ_GET_REPORT.</p>
 <p>This callback is optional. If not provided, HID core will assemble a raw
-report following the HID specs and send it via the -&gt;raw_request() callback.
+report following the HID specs and send it via the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">raw_request()</span></code> callback.
 The transport driver is free to implement this asynchronously.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int (*wait) (struct hid_device *hdev)
 </pre></div>
 </div>
-<p>Used by HID core before calling -&gt;request() again. A transport driver can use
+<p>Used by HID core before calling -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">request()</span></code> again. A transport driver can use
 it to wait for any pending requests to complete if only one request is
 allowed at a time.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int (*raw_request) (struct hid_device *hdev, unsigned char reportnum,
@@ -439,8 +439,8 @@ allowed at a time.</p>
                     int reqtype)
 </pre></div>
 </div>
-<p>Same as -&gt;request() but provides the report as raw buffer. This request shall
-be synchronous. A transport driver must not use -&gt;wait() to complete such
+<p>Same as -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">request()</span></code> but provides the report as raw buffer. This request shall
+be synchronous. A transport driver must not use -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wait()</span></code> to complete such
 requests. This request is mandatory and hid core will reject the device if
 it is missing.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int (*output_report) (struct hid_device *hdev, __u8 *buf, size_t len)
@@ -463,12 +463,12 @@ handle any I/O-related state-tracking themselves. HID core does not implement
 protocol handshakes or other management commands which can be required by the
 given HID transport specification.</p>
 <p>Every raw data packet read from a device must be fed into HID core via
-hid_input_report(). You must specify the channel-type (intr or ctrl) and report
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hid_input_report()</span></code>. You must specify the channel-type (intr or ctrl) and report
 type (input/output/feature). Under normal conditions, only input reports are
 provided via this API.</p>
-<p>Responses to GET_REPORT requests via -&gt;request() must also be provided via this
-API. Responses to -&gt;raw_request() are synchronous and must be intercepted by the
-transport driver and not passed to hid_input_report().
+<p>Responses to GET_REPORT requests via -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">request()</span></code> must also be provided via this
+API. Responses to -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">raw_request()</span></code> are synchronous and must be intercepted by the
+transport driver and not passed to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hid_input_report()</span></code>.
 Acknowledgements to SET_REPORT requests are not of interest to HID core.</p>
 <hr class="docutils" />
 <p>Written 2013, David Herrmann &lt;<a class="reference external" href="mailto:dh&#46;herrmann&#37;&#52;&#48;gmail&#46;com">dh<span>&#46;</span>herrmann<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;</p>

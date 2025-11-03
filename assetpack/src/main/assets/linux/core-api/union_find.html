@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -90,6 +90,7 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Union-Find in Linux</a></li>
 <li class="toctree-l3"><a class="reference internal" href="min_heap.html">Min Heap API</a></li>
 <li class="toctree-l3"><a class="reference internal" href="parser.html">Generic parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="list.html">Linked Lists in Linux</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#low-level-entry-and-exit">Low level entry and exit</a></li>
@@ -207,9 +208,9 @@ union-find has applications in symbolic computation, register allocation,
 and more.</p>
 <p>Space Complexity: O(n), where n is the number of nodes.</p>
 <p>Time Complexity: Using path compression can reduce the time complexity of
-the find operation, and using union by rank can reduce the time complexity
-of the union operation. These optimizations reduce the average time
-complexity of each find and union operation to O(α(n)), where α(n) is the
+the find operation, and using <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">by</span></code> rank can reduce the time complexity
+of the <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">operation</span></code>. These optimizations reduce the average time
+complexity of each find and <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">operation</span></code> to O(α(n)), where α(n) is the
 inverse Ackermann function. This can be roughly considered a constant time
 complexity for practical purposes.</p>
 <p>This document covers use of the Linux union-find implementation.  For more
@@ -233,8 +234,8 @@ To use it, “#include &lt;linux/union_find.h&gt;”.</p>
 </pre></div>
 </div>
 <p>In this structure, parent points to the parent node of the current node.
-The rank field represents the height of the current tree. During a union
-operation, the tree with the smaller rank is attached under the tree with the
+The rank field represents the height of the current tree. During a <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span>
+<span class="pre">operation</span></code>, the tree with the smaller rank is attached under the tree with the
 larger rank to maintain balance.</p>
 </section>
 <section id="initializing-union-find">
@@ -270,7 +271,7 @@ else
 </section>
 <section id="union-two-sets-in-union-find">
 <h2>Union Two Sets in union-find<a class="headerlink" href="#union-two-sets-in-union-find" title="Link to this heading">¶</a></h2>
-<p>To union two sets in the union-find, you first find their respective root nodes
+<p>To <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">two</span></code> sets in the union-find, you first find their respective root nodes
 and then link the smaller node to the larger node based on the rank of the root
 nodes.
 Example:</p>

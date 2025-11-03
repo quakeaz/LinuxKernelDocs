@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -224,7 +224,7 @@ features that work together to allow autofs to do its job.</p>
 <p>If a dentry has the DCACHE_NEED_AUTOMOUNT flag set (which gets set if
 the inode has S_AUTOMOUNT set, or can be set directly) then it is
 (potentially) a mount trap.  Any access to this directory beyond a
-“<cite>stat</cite>” will (normally) cause the <cite>d_op-&gt;d_automount()</cite> dentry operation
+“<cite>stat</cite>” will (normally) cause the <cite>d_op-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">d_automount()</span></code></cite> dentry operation
 to be called. The task of this method is to find the filesystem that
 should be mounted on the directory and to return it.  The VFS is
 responsible for actually mounting the root of this filesystem on the
@@ -244,10 +244,10 @@ directory without some way to avoid getting caught in the trap.  For
 that purpose there is another flag.</p>
 <p><strong>DCACHE_MANAGE_TRANSIT</strong></p>
 <p>If a dentry has DCACHE_MANAGE_TRANSIT set then two very different but
-related behaviours are invoked, both using the <cite>d_op-&gt;d_manage()</cite>
+related behaviours are invoked, both using the <cite>d_op-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">d_manage()</span></code></cite>
 dentry operation.</p>
 <p>Firstly, before checking to see if any filesystem is mounted on the
-directory, d_manage() will be called with the <cite>rcu_walk</cite> parameter set
+directory, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">d_manage()</span></code> will be called with the <cite>rcu_walk</cite> parameter set
 to <cite>false</cite>.  It may return one of three things:</p>
 <ul>
 <li><p>A return value of zero indicates that there is nothing special
@@ -258,7 +258,7 @@ expiry (automatic unmounting of the mounted filesystem) to
 complete.  This avoids races.</p>
 </li>
 <li><p>A return value of <cite>-EISDIR</cite> tells the VFS to ignore any mounts
-on the directory and to not consider calling <cite>-&gt;d_automount()</cite>.
+on the directory and to not consider calling <cite>-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">d_automount()</span></code></cite>.
 This effectively disables the <strong>DCACHE_NEED_AUTOMOUNT</strong> flag
 causing the directory not be a mount trap after all.</p>
 <p>autofs returns this if it detects that the process performing the
@@ -298,19 +298,19 @@ to “REF-walk”, which is slower but more robust.</p>
 <p>RCU-walk will never call <cite>-&gt;d_automount</cite>; the filesystems must already
 be mounted or RCU-walk cannot handle the path.
 To determine if a mount-trap is safe for RCU-walk mode it calls
-<cite>-&gt;d_manage()</cite> with <cite>rcu_walk</cite> set to <cite>true</cite>.</p>
-<p>In this case <cite>d_manage()</cite> must avoid blocking and should avoid taking
+<cite>-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">d_manage()</span></code></cite> with <cite>rcu_walk</cite> set to <cite>true</cite>.</p>
+<p>In this case <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">d_manage()</span></code></cite> must avoid blocking and should avoid taking
 spinlocks if at all possible.  Its sole purpose is to determine if it
 would be safe to follow down into any mounted directory and the only
 reason that it might not be is if an expiry of the mount is
 underway.</p>
-<p>In the <cite>rcu_walk</cite> case, <cite>d_manage()</cite> cannot return -EISDIR to tell the
+<p>In the <cite>rcu_walk</cite> case, <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">d_manage()</span></code></cite> cannot return -EISDIR to tell the
 VFS that this is a directory that doesn’t require d_automount.  If
 <cite>rcu_walk</cite> sees a dentry with DCACHE_NEED_AUTOMOUNT set but nothing
-mounted, it <em>will</em> fall back to REF-walk.  <cite>d_manage()</cite> cannot make the
+mounted, it <em>will</em> fall back to REF-walk.  <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">d_manage()</span></code></cite> cannot make the
 VFS remain in RCU-walk mode, but can only tell it to get out of
 RCU-walk mode by returning <cite>-ECHILD</cite>.</p>
-<p>So <cite>d_manage()</cite>, when called with <cite>rcu_walk</cite> set, should either return
+<p>So <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">d_manage()</span></code></cite>, when called with <cite>rcu_walk</cite> set, should either return
 -ECHILD if there is any reason to believe it is unsafe to enter the
 mounted filesystem, otherwise it should return 0.</p>
 <p>autofs will return <cite>-ECHILD</cite> if an expiry of the filesystem has been
@@ -321,7 +321,7 @@ initiated or is being considered, otherwise it returns 0.</p>
 <p>The VFS has a mechanism for automatically expiring unused mounts,
 much as it can expire any unused dentry information from the dcache.
 This is guided by the MNT_SHRINKABLE flag.  This only applies to
-mounts that were created by <cite>d_automount()</cite> returning a filesystem to be
+mounts that were created by <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">d_automount()</span></code></cite> returning a filesystem to be
 mounted.  As autofs doesn’t return such a filesystem but leaves the
 mounting to the automount daemon, it must involve the automount daemon
 in unmounting as well.  This also means that autofs has more control

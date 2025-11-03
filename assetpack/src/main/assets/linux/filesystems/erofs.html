@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -457,7 +457,7 @@ introduce another on-disk field at all.</p>
 been supported since Linux v5.15: Files are split in equal-sized data chunks
 with <code class="docutils literal notranslate"><span class="pre">extents</span></code> area of the inode metadata indicating how to get the chunk
 data: these can be simply as a 4-byte block address array or in the 8-byte
-chunk index form (see struct erofs_inode_chunk_index in erofs_fs.h for more
+chunk index form (see <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">erofs_inode_chunk_index</span></code> in erofs_fs.h for more
 details.)</p>
 <p>By the way, chunk-based files are all uncompressed for now.</p>
 </section>
@@ -484,7 +484,7 @@ offset of long name prefixes in the packed/meta inode.  Note that, long extended
 attribute name prefixes are disabled if xattr_prefix_count is 0.</p>
 <p>Each long name prefix is stored in the format: ALIGN({__le16 len, data}, 4),
 where len represents the total size of the data part.  The data part is actually
-represented by ‘struct erofs_xattr_long_prefix’, where base_index represents the
+represented by ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">erofs_xattr_long_prefix</span></code>’, where base_index represents the
 index of the predefined xattr name prefix, e.g. EROFS_XATTR_INDEX_TRUSTED for
 “trusted.overlay.” long name prefix, while the infix string keeps the string
 after stripping the short prefix, e.g. “overlay.” for the example above.</p>
@@ -529,7 +529,7 @@ starts and blkaddr is used to seek the compressed data. For each NONHEAD
 lcluster, delta0 and delta1 are available instead of blkaddr to indicate the
 distance to its HEAD lcluster and the next HEAD lcluster. A PLAIN lcluster is
 also a HEAD lcluster except that its data is uncompressed. See the comments
-around “struct z_erofs_vle_decompressed_index” in erofs_fs.h for more details.</p>
+around “<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">z_erofs_vle_decompressed_index</span></code>” in erofs_fs.h for more details.</p>
 <p>If big pcluster is enabled, pcluster size in lclusters needs to be recorded as
 well. Let the delta0 of the first NONHEAD lcluster store the compressed block
 count with a special flag as a new called CBLKCNT NONHEAD lcluster. It’s easy

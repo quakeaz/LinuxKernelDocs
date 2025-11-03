@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -169,7 +169,7 @@ multiple URBs.</p>
 <section id="allocation-and-initialisation">
 <h2>Allocation and Initialisation<a class="headerlink" href="#allocation-and-initialisation" title="Link to this heading">¶</a></h2>
 <p>There’s no API to allocate an anchor. It is simply declared
-as struct usb_anchor. <code class="xref c c-func docutils literal notranslate"><span class="pre">init_usb_anchor()</span></code> must be called to
+as <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usb_anchor</span></code>. <code class="xref c c-func docutils literal notranslate"><span class="pre">init_usb_anchor()</span></code> must be called to
 initialise the data structure.</p>
 </section>
 <section id="deallocation">
@@ -193,15 +193,6 @@ Furthermore, disassociation can be made with <a class="reference internal" href=
 <p>This function kills all URBs associated with an anchor. The URBs
 are called in the reverse temporal order they were submitted.
 This way no data can be reordered.</p>
-</section>
-<section id="usb-unlink-anchored-urbs">
-<h3><a class="reference internal" href="usb.html#c.usb_unlink_anchored_urbs" title="usb_unlink_anchored_urbs"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_unlink_anchored_urbs()</span></code></a><a class="headerlink" href="#usb-unlink-anchored-urbs" title="Link to this heading">¶</a></h3>
-<p>This function unlinks all URBs associated with an anchor. The URBs
-are processed in the reverse temporal order they were submitted.
-This is similar to <a class="reference internal" href="usb.html#c.usb_kill_anchored_urbs" title="usb_kill_anchored_urbs"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_kill_anchored_urbs()</span></code></a>, but it will not sleep.
-Therefore no guarantee is made that the URBs have been unlinked when
-the call returns. They may be unlinked later but will be unlinked in
-finite time.</p>
 </section>
 <section id="usb-scuttle-anchored-urbs">
 <h3><a class="reference internal" href="usb.html#c.usb_scuttle_anchored_urbs" title="usb_scuttle_anchored_urbs"><code class="xref c c-func docutils literal notranslate"><span class="pre">usb_scuttle_anchored_urbs()</span></code></a><a class="headerlink" href="#usb-scuttle-anchored-urbs" title="Link to this heading">¶</a></h3>

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -218,13 +218,13 @@ callback routine and a pointer to some context data for the I/O:</p>
 all of the synchronous versions, is a bitset (instead of a simple error value).
 In the case of an write-I/O to multiple regions, this bitset allows dm-io to
 indicate success or failure on each individual region.</p>
-<p>Before using any of the dm-io services, the user should call dm_io_get()
+<p>Before using any of the dm-io services, the user should call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dm_io_get()</span></code>
 and specify the number of pages they expect to perform I/O on concurrently.
 Dm-io will attempt to resize its mempool to make sure enough pages are
 always available in order to avoid unnecessary waiting while performing I/O.</p>
 <p>When the user is finished using the dm-io services, they should call
-dm_io_put() and specify the same number of pages that were given on the
-dm_io_get() call.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dm_io_put()</span></code> and specify the same number of pages that were given on the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dm_io_get()</span></code> call.</p>
 </section>
 
 

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -225,11 +225,11 @@ since is necessary for vmalloc translation.</p>
 </section>
 <section id="mem-map">
 <h3>mem_map<a class="headerlink" href="#mem-map" title="Link to this heading">¶</a></h3>
-<p>Physical addresses are translated to struct pages by treating them as
+<p>Physical addresses are translated to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pages</span></code> by treating them as
 an index into the mem_map array. Right-shifting a physical address
 PAGE_SHIFT bits converts it into a page frame number which is an index
 into that mem_map array.</p>
-<p>Used to map an address to the corresponding struct page.</p>
+<p>Used to map an address to the corresponding <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code>.</p>
 </section>
 <section id="contig-page-data">
 <h3>contig_page_data<a class="headerlink" href="#contig-page-data" title="Link to this heading">¶</a></h3>
@@ -251,7 +251,7 @@ address.</p>
 </section>
 <section id="page">
 <h3>page<a class="headerlink" href="#page" title="Link to this heading">¶</a></h3>
-<p>The size of a page structure. struct page is an important data structure
+<p>The size of a page structure. <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code> is an important data structure
 and it is widely used to compute contiguous memory.</p>
 </section>
 <section id="pglist-data">
@@ -326,7 +326,7 @@ free_area ranges. NR_PAGE_ORDERS is used by the zone buddy allocator.</p>
 </section>
 <section id="prb">
 <h3>prb<a class="headerlink" href="#prb" title="Link to this heading">¶</a></h3>
-<p>A pointer to the printk ringbuffer (struct printk_ringbuffer). This
+<p>A pointer to the printk ringbuffer (<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">printk_ringbuffer</span></code>). This
 may be pointing to the static boot ringbuffer or the dynamically
 allocated ringbuffer, depending on when the core dump occurred.
 Used by user-space tools to read the active kernel log buffer.</p>
@@ -435,13 +435,13 @@ array. Used by tools to compute the number of free pages.</p>
 <p>On linux-2.6.21 or later, the number of free pages is in
 vm_stat[NR_FREE_PAGES]. Used to get the number of free pages.</p>
 </section>
-<section id="pg-lru-pg-private-pg-swapcache-pg-swapbacked-pg-slab-pg-hwpoision-pg-head-mask-pg-hugetlb">
-<h3>PG_lru|PG_private|PG_swapcache|PG_swapbacked|PG_slab|PG_hwpoision|PG_head_mask|PG_hugetlb<a class="headerlink" href="#pg-lru-pg-private-pg-swapcache-pg-swapbacked-pg-slab-pg-hwpoision-pg-head-mask-pg-hugetlb" title="Link to this heading">¶</a></h3>
+<section id="pg-lru-pg-private-pg-swapcache-pg-swapbacked-pg-hwpoison-pg-head-mask">
+<h3>PG_lru|PG_private|PG_swapcache|PG_swapbacked|PG_hwpoison|PG_head_mask<a class="headerlink" href="#pg-lru-pg-private-pg-swapcache-pg-swapbacked-pg-hwpoison-pg-head-mask" title="Link to this heading">¶</a></h3>
 <p>Page attributes. These flags are used to filter various unnecessary for
 dumping pages.</p>
 </section>
-<section id="page-buddy-mapcount-value-pg-buddy-page-offline-mapcount-value-pg-offline-page-offline-mapcount-value-pg-unaccepted">
-<h3>PAGE_BUDDY_MAPCOUNT_VALUE(~PG_buddy)|PAGE_OFFLINE_MAPCOUNT_VALUE(~PG_offline)|PAGE_OFFLINE_MAPCOUNT_VALUE(~PG_unaccepted)<a class="headerlink" href="#page-buddy-mapcount-value-pg-buddy-page-offline-mapcount-value-pg-offline-page-offline-mapcount-value-pg-unaccepted" title="Link to this heading">¶</a></h3>
+<section id="page-slab-mapcount-value-page-buddy-mapcount-value-page-offline-mapcount-value-page-hugetlb-mapcount-value-page-unaccepted-mapcount-value">
+<h3>PAGE_SLAB_MAPCOUNT_VALUE|PAGE_BUDDY_MAPCOUNT_VALUE|PAGE_OFFLINE_MAPCOUNT_VALUE|PAGE_HUGETLB_MAPCOUNT_VALUE|PAGE_UNACCEPTED_MAPCOUNT_VALUE<a class="headerlink" href="#page-slab-mapcount-value-page-buddy-mapcount-value-page-offline-mapcount-value-page-hugetlb-mapcount-value-page-unaccepted-mapcount-value" title="Link to this heading">¶</a></h3>
 <p>More page attributes. These flags are used to filter various unnecessary for
 dumping pages.</p>
 </section>
@@ -466,7 +466,7 @@ paging mode.</p>
 </section>
 <section id="node-data">
 <h3>node_data<a class="headerlink" href="#node-data" title="Link to this heading">¶</a></h3>
-<p>This is a struct pglist_data array and stores all NUMA nodes
+<p>This is a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pglist_data</span></code> array and stores all NUMA nodes
 information. Makedumpfile gets the pglist_data structure from it.</p>
 </section>
 <section id="node-data-max-numnodes">
@@ -552,8 +552,8 @@ more details).</p>
 <h3>MODULES_VADDR|MODULES_END|VMALLOC_START|VMALLOC_END|VMEMMAP_START|VMEMMAP_END<a class="headerlink" href="#modules-vaddr-modules-end-vmalloc-start-vmalloc-end-vmemmap-start-vmemmap-end" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>Used to get the correct ranges:</dt><dd><p>MODULES_VADDR ~ MODULES_END-1 : Kernel module space.
-VMALLOC_START ~ VMALLOC_END-1 : vmalloc() / <a class="reference internal" href="../../driver-api/device-io.html#c.ioremap" title="ioremap"><code class="xref c c-func docutils literal notranslate"><span class="pre">ioremap()</span></code></a> space.
-VMEMMAP_START ~ VMEMMAP_END-1 : vmemmap region, used for struct page array.</p>
+VMALLOC_START ~ VMALLOC_END-1 : <a class="reference internal" href="../../core-api/mm-api.html#c.vmalloc" title="vmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">vmalloc()</span></code></a> / <a class="reference internal" href="../../driver-api/device-io.html#c.ioremap" title="ioremap"><code class="xref c c-func docutils literal notranslate"><span class="pre">ioremap()</span></code></a> space.
+VMEMMAP_START ~ VMEMMAP_END-1 : vmemmap region, used for <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code> array.</p>
 </dd>
 </dl>
 </section>
@@ -611,7 +611,7 @@ it is used to translate vmemmap kernel virtual addresses.</p>
 <section id="vmemmap-backing-vmemmap-backing-list-vmemmap-backing-phys-vmemmap-backing-virt-addr">
 <h3>vmemmap_backing|(vmemmap_backing, list)|(vmemmap_backing, phys)|(vmemmap_backing, virt_addr)<a class="headerlink" href="#vmemmap-backing-vmemmap-backing-list-vmemmap-backing-phys-vmemmap-backing-virt-addr" title="Link to this heading">¶</a></h3>
 <p>The vmemmap virtual address space management does not have a traditional
-page table to track which virtual struct pages are backed by a physical
+page table to track which virtual <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pages</span></code> are backed by a physical
 mapping. The virtual to physical mappings are tracked in a simple linked
 list format.</p>
 <p>User-space tools need to know the offset of list, phys and virt_addr
@@ -619,7 +619,7 @@ when computing the count of vmemmap regions.</p>
 </section>
 <section id="mmu-psize-def-mmu-psize-def-shift">
 <h3>mmu_psize_def|(mmu_psize_def, shift)<a class="headerlink" href="#mmu-psize-def-mmu-psize-def-shift" title="Link to this heading">¶</a></h3>
-<p>The size of a struct mmu_psize_def and the offset of mmu_psize_def’s
+<p>The size of a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">mmu_psize_def</span></code> and the offset of mmu_psize_def’s
 member.</p>
 <p>Used in vtop translations.</p>
 </section>
@@ -656,8 +656,8 @@ virtual memory ranges.</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>MODULES_VADDR ~ MODULES_END : Kernel module space.</p></li>
-<li><p>VMALLOC_START ~ VMALLOC_END : vmalloc() / <a class="reference internal" href="../../driver-api/device-io.html#c.ioremap" title="ioremap"><code class="xref c c-func docutils literal notranslate"><span class="pre">ioremap()</span></code></a> space.</p></li>
-<li><p>VMEMMAP_START ~ VMEMMAP_END : vmemmap space, used for struct page array.</p></li>
+<li><p>VMALLOC_START ~ VMALLOC_END : <a class="reference internal" href="../../core-api/mm-api.html#c.vmalloc" title="vmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">vmalloc()</span></code></a> / <a class="reference internal" href="../../driver-api/device-io.html#c.ioremap" title="ioremap"><code class="xref c c-func docutils literal notranslate"><span class="pre">ioremap()</span></code></a> space.</p></li>
+<li><p>VMEMMAP_START ~ VMEMMAP_END : vmemmap space, used for <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code> array.</p></li>
 <li><p>KERNEL_LINK_ADDR : start address of Kernel link and BPF</p></li>
 </ul>
 </div></blockquote>

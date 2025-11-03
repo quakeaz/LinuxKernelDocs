@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -425,13 +425,12 @@ need to adjust the queue depth on the device.</p>
 </dl>
 <p>Lock Status: None held on entry</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>0 - No change needed, &gt;0 - Adjust queue depth to this new depth,</dt><dd><dl class="simple">
-<dt>-1 - Drop back to untagged operation using host-&gt;cmd_per_lun</dt><dd><p>as the untagged command depth</p>
-</dd>
-</dl>
-</dd>
-</dl>
+<ul class="simple">
+<li><p>0 - No change needed</p></li>
+<li><p>&gt;0 - Adjust queue depth to this new depth,</p></li>
+<li><p>-1 - Drop back to untagged operation using host-&gt;cmd_per_lun as the
+untagged command depth</p></li>
+</ul>
 <p><strong>Notes</strong></p>
 <dl class="simple">
 <dt>Low level drivers may call this at any time and we will do</dt><dd><p>“The Right Thing.”  We are interrupt context safe.</p>
@@ -558,7 +557,7 @@ out of the loop.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_target</span> <span class="pre">*starget</span></code></dt><dd><p>target whose devices we want to iterate over.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">*data</span></code></dt><dd><p>parameter for callback <strong>fn()</strong></p>
+<dt><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">*data</span></code></dt><dd><p>parameter for callback <strong><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fn()</span></code></strong></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">(*fn)(struct</span> <span class="pre">scsi_device</span> <span class="pre">*,</span> <span class="pre">void</span> <span class="pre">*)</span></code></dt><dd><p>callback function that is invoked for each device</p>
 </dd>
@@ -1248,7 +1247,7 @@ a pointer to a <code class="xref c c-type docutils literal notranslate"><span cl
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">ml_retries</span></code></dt><dd><p>number of times SCSI midlayer will retry request</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">scsi_exec_args</span> <span class="pre">*args</span></code></dt><dd><p>Optional args. See struct definition for field descriptions</p>
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">scsi_exec_args</span> <span class="pre">*args</span></code></dt><dd><p>Optional args. See <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">definition</span></code> for field descriptions</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -1354,7 +1353,7 @@ won’t require wholesale changes to drivers that use this feature.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_device</span> <span class="pre">*sdev</span></code></dt><dd><p>SCSI device to be queried</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">pf</span></code></dt><dd><p>Page format bit (1 == standard, 0 == vendor specific)</p>
@@ -1373,10 +1372,13 @@ won’t require wholesale changes to drivers that use this feature.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_sense_hdr</span> <span class="pre">*sshdr</span></code></dt><dd><p>place to put sense data (or NULL if no sense to be collected).
 must be SCSI_SENSE_BUFFERSIZE big.</p>
-<p>Returns zero if successful; negative error number or scsi
-status on error</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Returns zero if successful; negative error number or scsi
+status on error</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.scsi_mode_sense">
@@ -1386,7 +1388,7 @@ status on error</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_device</span> <span class="pre">*sdev</span></code></dt><dd><p>SCSI device to be queried</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">dbd</span></code></dt><dd><p>set to prevent mode sense from returning block descriptors</p>
@@ -1407,9 +1409,12 @@ status on error</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_sense_hdr</span> <span class="pre">*sshdr</span></code></dt><dd><p>place to put sense data (or NULL if no sense to be collected).
 must be SCSI_SENSE_BUFFERSIZE big.</p>
-<p>Returns zero if successful, or a negative error number on failure</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Returns zero if successful, or a negative error number on failure</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.scsi_test_unit_ready">
@@ -1419,7 +1424,7 @@ must be SCSI_SENSE_BUFFERSIZE big.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_device</span> <span class="pre">*sdev</span></code></dt><dd><p>scsi device to change the state of.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">timeout</span></code></dt><dd><p>command timeout</p>
@@ -1427,10 +1432,13 @@ must be SCSI_SENSE_BUFFERSIZE big.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">retries</span></code></dt><dd><p>number of retries before failing</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_sense_hdr</span> <span class="pre">*sshdr</span></code></dt><dd><p>outpout pointer for decoded sense information.</p>
-<p>Returns zero if unsuccessful or an error if TUR failed.  For
-removable media, UNIT_ATTENTION sets -&gt;changed flag.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Returns zero if unsuccessful or an error if TUR failed.  For
+removable media, UNIT_ATTENTION sets -&gt;changed flag.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.scsi_device_set_state">
@@ -1440,14 +1448,17 @@ removable media, UNIT_ATTENTION sets -&gt;changed flag.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_device</span> <span class="pre">*sdev</span></code></dt><dd><p>scsi device to change the state of.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">enum</span> <span class="pre">scsi_device_state</span> <span class="pre">state</span></code></dt><dd><p>state to change to.</p>
-<p>Returns zero if successful or an error if the requested
-transition is illegal.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Returns zero if successful or an error if the requested
+transition is illegal.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.sdev_evt_send">
@@ -1457,13 +1468,16 @@ transition is illegal.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_device</span> <span class="pre">*sdev</span></code></dt><dd><p>scsi_device event occurred on</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_event</span> <span class="pre">*evt</span></code></dt><dd><p>event to send</p>
-<p>Assert scsi device event asynchronously.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Assert scsi device event asynchronously.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.sdev_evt_alloc">
@@ -1473,13 +1487,16 @@ transition is illegal.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">enum</span> <span class="pre">scsi_device_event</span> <span class="pre">evt_type</span></code></dt><dd><p>type of event to allocate</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">gfp_t</span> <span class="pre">gfpflags</span></code></dt><dd><p>GFP flags for allocation</p>
-<p>Allocates and returns a new scsi_event.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Allocates and returns a new scsi_event.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.sdev_evt_send_simple">
@@ -1489,15 +1506,18 @@ transition is illegal.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_device</span> <span class="pre">*sdev</span></code></dt><dd><p>scsi_device event occurred on</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">enum</span> <span class="pre">scsi_device_event</span> <span class="pre">evt_type</span></code></dt><dd><p>type of event to send</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">gfp_t</span> <span class="pre">gfpflags</span></code></dt><dd><p>GFP flags for allocation</p>
-<p>Assert scsi device event asynchronously, given an event type.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Assert scsi device event asynchronously, given an event type.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.scsi_device_quiesce">
@@ -1507,16 +1527,19 @@ transition is illegal.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_device</span> <span class="pre">*sdev</span></code></dt><dd><p>scsi device to quiesce.</p>
-<p>This works by trying to transition to the SDEV_QUIESCE state
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This works by trying to transition to the SDEV_QUIESCE state
 (which must be a legal transition).  When the device is in this
 state, only power management requests will be accepted, all others will
 be deferred.</p>
 <p>Must be called with user context, may sleep.</p>
 <p>Returns zero if unsuccessful or an error if not.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.scsi_device_resume">
@@ -1526,13 +1549,16 @@ be deferred.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_device</span> <span class="pre">*sdev</span></code></dt><dd><p>scsi device to resume.</p>
-<p>Moves the device from quiesced back to running and restarts the
-queues.</p>
-<p>Must be called with user context, may sleep.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Moves the device from quiesced back to running and restarts the
+queues.</p>
+<p>Must be called with user context, may sleep.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.scsi_internal_device_block_nowait">
@@ -1595,7 +1621,7 @@ to goose the queue for this device.</p>
 <p><strong>Description</strong></p>
 <p>Iterate over all children of <strong>dev</strong>, which should be scsi_target devices,
 and switch all subordinate scsi devices to SDEV_BLOCK state. Wait for
-ongoing scsi_queue_rq() calls to finish. May sleep.</p>
+ongoing <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_queue_rq()</span></code> calls to finish. May sleep.</p>
 <p><strong>Note</strong></p>
 <p><strong>dev</strong> must not itself be a scsi_target device.</p>
 </div>
@@ -1613,7 +1639,7 @@ ongoing scsi_queue_rq() calls to finish. May sleep.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Pause SCSI command processing for all logical units associated with the SCSI
-host and wait until pending scsi_queue_rq() calls have finished.</p>
+host and wait until pending <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_queue_rq()</span></code> calls have finished.</p>
 <p>Returns zero if successful or a negative error code upon failure.</p>
 </div>
 <dl class="c function">
@@ -1891,8 +1917,8 @@ and revision.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>called by writing “scsi add-single-device” to /proc/scsi/scsi.</p>
-<p>does <a class="reference internal" href="#c.scsi_host_lookup" title="scsi_host_lookup"><code class="xref c c-func docutils literal notranslate"><span class="pre">scsi_host_lookup()</span></code></a> and either user_scan() if that transport
-type supports it, or else scsi_scan_host_selected()</p>
+<p>does <a class="reference internal" href="#c.scsi_host_lookup" title="scsi_host_lookup"><code class="xref c c-func docutils literal notranslate"><span class="pre">scsi_host_lookup()</span></code></a> and either <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">user_scan()</span></code> if that transport
+type supports it, or else <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_scan_host_selected()</span></code></p>
 <p><strong>Note</strong></p>
 <p>this seems to be aimed exclusively at SCSI parallel busses.</p>
 </div>
@@ -1958,7 +1984,7 @@ provide a unique identifier and nothing more.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">inode</span> <span class="pre">*inode</span></code></dt><dd><p>not used</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file</span> <span class="pre">*file</span></code></dt><dd><p>passed to single_open()</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file</span> <span class="pre">*file</span></code></dt><dd><p>passed to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">single_open()</span></code></p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -2106,7 +2132,7 @@ spaces.</p>
 bus scan when an HBA is added (i.e. <a class="reference internal" href="#c.scsi_scan_host" title="scsi_scan_host"><code class="xref c c-func docutils literal notranslate"><span class="pre">scsi_scan_host()</span></code></a>). So it
 should only be called if the HBA becomes aware of a new SCSI
 device (LU) after <a class="reference internal" href="#c.scsi_scan_host" title="scsi_scan_host"><code class="xref c c-func docutils literal notranslate"><span class="pre">scsi_scan_host()</span></code></a> has completed. If successful
-this call can lead to sdev_init() and sdev_configure() callbacks
+this call can lead to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sdev_init()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sdev_configure()</span></code> callbacks
 into the LLD.</p>
 <p><strong>Return</strong></p>
 <p><code class="docutils literal notranslate"><span class="pre">0</span></code> on success or negative error code on failure</p>
@@ -2155,7 +2181,7 @@ sequential scan of LUNs on the target id.</p>
 </dd>
 </dl>
 <p><strong>Notes</strong></p>
-<p>Should be called after scsi_add_host()</p>
+<p>Should be called after <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_add_host()</span></code></p>
 </div>
 </section>
 <section id="drivers-scsi-scsi-sysctl-c">
@@ -2231,9 +2257,8 @@ removed.</p>
 </dl>
 <p><strong>Note</strong></p>
 <p>You rarely need to worry about this unless you’re in a
-virtualised host environments, so use the simpler scsi_add_host()
+virtualised host environments, so use the simpler <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">scsi_add_host()</span></code>
 function instead.</p>
-<p><strong>Description</strong></p>
 <dl class="simple">
 <dt>Return value:</dt><dd><p>0 on success / != 0 for error</p>
 </dd>
@@ -2259,7 +2284,6 @@ function instead.</p>
 The host is not published to the scsi midlayer until scsi_add_host
 is called.</p>
 </div></blockquote>
-<p><strong>Description</strong></p>
 <dl class="simple">
 <dt>Return value:</dt><dd><p>Pointer to a new Scsi_Host</p>
 </dd>
@@ -2426,12 +2450,12 @@ ithas to be provided by the caller</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_lun</span> <span class="pre">*scsilun</span></code></dt><dd><p>struct scsi_lun to be converted.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_lun</span> <span class="pre">*scsilun</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_lun</span></code> to be converted.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
 <blockquote>
-<div><p>Convert <strong>scsilun</strong> from a struct scsi_lun to a four-byte host byte-ordered
+<div><p>Convert <strong>scsilun</strong> from a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_lun</span></code> to a four-byte host byte-ordered
 integer, and return the result. The caller must check for
 truncation before using this function.</p>
 </div></blockquote>
@@ -2439,7 +2463,7 @@ truncation before using this function.</p>
 <blockquote>
 <div><p>For a description of the LUN format, post SCSI-3 see the SCSI
 Architecture Model, for SCSI-3 see the SCSI Controller Commands.</p>
-<p>Given a struct scsi_lun of: d2 04 0b 03 00 00 00 00, this function
+<p>Given a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_lun</span></code> of: d2 04 0b 03 00 00 00 00, this function
 returns the integer: 0x0b03d204</p>
 <p>This encoding will return a standard integer LUN for LUNs smaller
 than 256, which typically use a single level LUN structure with
@@ -2457,7 +2481,7 @@ addressing method 0.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">u64</span> <span class="pre">lun</span></code></dt><dd><p>integer to be reverted</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_lun</span> <span class="pre">*scsilun</span></code></dt><dd><p>struct scsi_lun to be set.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_lun</span> <span class="pre">*scsilun</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_lun</span></code> to be set.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -2469,7 +2493,7 @@ back into the lun value.</p>
 <p><strong>Notes</strong></p>
 <blockquote>
 <div><p>Given an integer : 0x0b03d204, this function returns a
-struct scsi_lun of: d2 04 0b 03 00 00 00 00</p>
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_lun</span></code> of: d2 04 0b 03 00 00 00 00</p>
 </div></blockquote>
 </div>
 <dl class="c function">
@@ -2496,7 +2520,6 @@ asc, ascq and additional_length (only for descriptor format).</p>
 <p>Typically this function can be called after a device has
 responded to a SCSI command with the CHECK_CONDITION status.</p>
 </div></blockquote>
-<p><strong>Description</strong></p>
 <dl class="simple">
 <dt>Return value:</dt><dd><p>true if valid sense data information found, else false;</p>
 </dd>
@@ -2523,7 +2546,6 @@ responded to a SCSI command with the CHECK_CONDITION status.</p>
 <blockquote>
 <div><p>only valid when sense data is in descriptor format</p>
 </div></blockquote>
-<p><strong>Description</strong></p>
 <dl class="simple">
 <dt>Return value:</dt><dd><p>pointer to start of (first) descriptor if found else NULL</p>
 </dd>
@@ -2639,7 +2661,7 @@ Atomic used to avoid lock/unlock...</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">Scsi_Host</span> <span class="pre">*shost</span></code></dt><dd><p>host the event occurred on</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">u32</span> <span class="pre">event_number</span></code></dt><dd><p>fc event number obtained from get_fc_event_number()</p>
+<dt><code class="docutils literal notranslate"><span class="pre">u32</span> <span class="pre">event_number</span></code></dt><dd><p>fc event number obtained from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_fc_event_number()</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">enum</span> <span class="pre">fc_host_event_code</span> <span class="pre">event_code</span></code></dt><dd><p>fc_host event being posted</p>
 </dd>
@@ -2666,7 +2688,7 @@ Atomic used to avoid lock/unlock...</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">Scsi_Host</span> <span class="pre">*shost</span></code></dt><dd><p>host the event occurred on</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">u32</span> <span class="pre">event_number</span></code></dt><dd><p>fc event number obtained from get_fc_event_number()</p>
+<dt><code class="docutils literal notranslate"><span class="pre">u32</span> <span class="pre">event_number</span></code></dt><dd><p>fc event number obtained from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_fc_event_number()</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">enum</span> <span class="pre">fc_host_event_code</span> <span class="pre">event_code</span></code></dt><dd><p>fc_host event being posted</p>
 </dd>
@@ -2689,7 +2711,7 @@ Atomic used to avoid lock/unlock...</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">Scsi_Host</span> <span class="pre">*shost</span></code></dt><dd><p>host the event occurred on</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">u32</span> <span class="pre">event_number</span></code></dt><dd><p>fc event number obtained from get_fc_event_number()</p>
+<dt><code class="docutils literal notranslate"><span class="pre">u32</span> <span class="pre">event_number</span></code></dt><dd><p>fc event number obtained from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_fc_event_number()</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">u32</span> <span class="pre">data_len</span></code></dt><dd><p>amount, in bytes, of vendor unique data</p>
 </dd>
@@ -2956,11 +2978,9 @@ FC_PORTSTATE_BLOCKED, or the fast_io_fail_tmo fires. This is
 necessary to avoid the scsi_eh failing recovery actions for blocked
 rports which would lead to offlined SCSI devices.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>0 if the fc_rport left the state FC_PORTSTATE_BLOCKED.</dt><dd><p>FAST_IO_FAIL if the fast_io_fail_tmo fired, this should be
+<p>0 if the fc_rport left the state FC_PORTSTATE_BLOCKED.
+FAST_IO_FAIL if the fast_io_fail_tmo fired, this should be
 passed back to scsi_eh.</p>
-</dd>
-</dl>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.fc_block_scsi_eh">
@@ -2981,11 +3001,9 @@ FC_PORTSTATE_BLOCKED, or the fast_io_fail_tmo fires. This is
 necessary to avoid the scsi_eh failing recovery actions for blocked
 rports which would lead to offlined SCSI devices.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>0 if the fc_rport left the state FC_PORTSTATE_BLOCKED.</dt><dd><p>FAST_IO_FAIL if the fast_io_fail_tmo fired, this should be
+<p>0 if the fc_rport left the state FC_PORTSTATE_BLOCKED.
+FAST_IO_FAIL if the fast_io_fail_tmo fired, this should be
 passed back to scsi_eh.</p>
-</dd>
-</dl>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.fc_vport_create">
@@ -3022,7 +3040,7 @@ the virtual port.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Calls the LLDD vport_delete() function, then deallocates and removes
+<p>Calls the LLDD <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vport_delete()</span></code> function, then deallocates and removes
 the vport from the shost and object tree.</p>
 <p><strong>Notes</strong></p>
 <blockquote>
@@ -3071,10 +3089,8 @@ connections.</p>
 <p><strong>Description</strong></p>
 <p>Adds a sysfs entry for the flashnode session attributes</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p>pointer to allocated flashnode sess on success
+<p>pointer to allocated flashnode sess on success
 <code class="docutils literal notranslate"><span class="pre">NULL</span></code> on failure</p>
-</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.iscsi_create_flashnode_conn">
@@ -3097,10 +3113,8 @@ connections.</p>
 <p><strong>Description</strong></p>
 <p>Adds a sysfs entry for the flashnode connection attributes</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p>pointer to allocated flashnode conn on success
+<p>pointer to allocated flashnode conn on success
 <code class="docutils literal notranslate"><span class="pre">NULL</span></code> on failure</p>
-</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.iscsi_find_flashnode_sess">
@@ -3122,10 +3136,8 @@ connections.</p>
 <p>Finds the flashnode session object comparing the data passed using logic
 defined in passed function pointer</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p>pointer to found flashnode session device object on success
+<p>pointer to found flashnode session device object on success
 <code class="docutils literal notranslate"><span class="pre">NULL</span></code> on failure</p>
-</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.iscsi_find_flashnode_conn">
@@ -3143,10 +3155,8 @@ defined in passed function pointer</p>
 <p>Finds the flashnode connection object comparing the data passed using logic
 defined in passed function pointer</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p>pointer to found flashnode connection device object on success
+<p>pointer to found flashnode connection device object on success
 <code class="docutils literal notranslate"><span class="pre">NULL</span></code> on failure</p>
-</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.iscsi_destroy_flashnode_sess">
@@ -3305,8 +3315,8 @@ various sysfs attributes to expose these topologies and management
 interfaces to userspace.</p>
 <p>In addition to the basic SCSI core objects this transport class
 introduces two additional intermediate objects: The SAS PHY as
-represented by struct sas_phy defines an “outgoing” PHY on a SAS HBA or
-Expander, and the SAS remote PHY represented by struct sas_rphy defines
+represented by <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">sas_phy</span></code> defines an “outgoing” PHY on a SAS HBA or
+Expander, and the SAS remote PHY represented by <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">sas_rphy</span></code> defines
 an “incoming” PHY on a SAS Expander or end device. Note that this is
 purely a software concept, the underlying hardware for a PHY and a
 remote PHY is the exactly the same.</p>
@@ -3444,9 +3454,7 @@ this function always returns false for SCSI devices.</p>
 below the device specified by <strong>parent</strong>, which has to be either a Scsi_Host
 or sas_rphy.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p>SAS PHY allocated or <code class="docutils literal notranslate"><span class="pre">NULL</span></code> if the allocation failed.</p>
-</div></blockquote>
+<p>SAS PHY allocated or <code class="docutils literal notranslate"><span class="pre">NULL</span></code> if the allocation failed.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.sas_phy_add">
@@ -3512,9 +3520,7 @@ associated remote PHY it is removed before.</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">1</span></code> if the device represents a SAS PHY, <code class="docutils literal notranslate"><span class="pre">0</span></code> else</p>
-</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">1</span></code> if the device represents a SAS PHY, <code class="docutils literal notranslate"><span class="pre">0</span></code> else</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.sas_port_alloc">
@@ -3622,9 +3628,7 @@ associated phys, unlink them from the port as well.</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">1</span></code> if the device represents a SAS Port, <code class="docutils literal notranslate"><span class="pre">0</span></code> else</p>
-</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">1</span></code> if the device represents a SAS Port, <code class="docutils literal notranslate"><span class="pre">0</span></code> else</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.sas_port_get_phy">
@@ -3694,9 +3698,7 @@ done to every port or wide port before calling sas_port_delete.</p>
 <p><strong>Description</strong></p>
 <p>Allocates an SAS remote PHY structure, connected to <strong>parent</strong>.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p>SAS PHY allocated or <code class="docutils literal notranslate"><span class="pre">NULL</span></code> if the allocation failed.</p>
-</div></blockquote>
+<p>SAS PHY allocated or <code class="docutils literal notranslate"><span class="pre">NULL</span></code> if the allocation failed.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.sas_expander_alloc">
@@ -3715,9 +3717,7 @@ done to every port or wide port before calling sas_port_delete.</p>
 <p><strong>Description</strong></p>
 <p>Allocates an SAS remote PHY structure, connected to <strong>parent</strong>.</p>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p>SAS PHY allocated or <code class="docutils literal notranslate"><span class="pre">NULL</span></code> if the allocation failed.</p>
-</div></blockquote>
+<p>SAS PHY allocated or <code class="docutils literal notranslate"><span class="pre">NULL</span></code> if the allocation failed.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.sas_rphy_add">
@@ -3813,9 +3813,7 @@ PHY that has not successfully been added using
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">1</span></code> if the device represents a SAS remote PHY, <code class="docutils literal notranslate"><span class="pre">0</span></code> else</p>
-</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">1</span></code> if the device represents a SAS remote PHY, <code class="docutils literal notranslate"><span class="pre">0</span></code> else</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.sas_attach_transport">
@@ -3861,15 +3859,18 @@ attributes for traditional (fast/wide/ultra) SCSI busses.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_device</span> <span class="pre">*sdev</span></code></dt><dd><p>scsi device to validate</p>
-<p>Performs the domain validation on the given device in the
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Performs the domain validation on the given device in the
 current execution thread.  Since DV operations may sleep,
 the current thread must have user context.  Also no SCSI
 related locks that would deadlock I/O issued by the DV may
 be held.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.spi_schedule_dv_device">
@@ -3879,14 +3880,17 @@ be held.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">scsi_device</span> <span class="pre">*sdev</span></code></dt><dd><p>The device to validate</p>
-<p>Identical to <a class="reference internal" href="#c.spi_dv_device" title="spi_dv_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">spi_dv_device()</span></code></a> above, except that the DV will be
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Identical to <a class="reference internal" href="#c.spi_dv_device" title="spi_dv_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">spi_dv_device()</span></code></a> above, except that the DV will be
 scheduled to occur in a workqueue later.  All memory allocations
 are atomic, so may be called from any context including those holding
 SCSI locks.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.spi_display_xfer_agreement">
@@ -3984,23 +3988,23 @@ modify a timer that was already started.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Blocks SCSI command queueing before invoking reconnect() such that
-queuecommand() won’t be invoked concurrently with reconnect() from outside
-the SCSI EH. This is important since a reconnect() implementation may
-reallocate resources needed by queuecommand().</p>
+<p>Blocks SCSI command queueing before invoking <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">reconnect()</span></code> such that
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">queuecommand()</span></code> won’t be invoked concurrently with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">reconnect()</span></code> from outside
+the SCSI EH. This is important since a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">reconnect()</span></code> implementation may
+reallocate resources needed by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">queuecommand()</span></code>.</p>
 <p><strong>Notes</strong></p>
 <ul class="simple">
 <li><p>This function neither waits until outstanding requests have finished nor
-tries to abort these. It is the responsibility of the reconnect()
+tries to abort these. It is the responsibility of the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">reconnect()</span></code>
 function to finish outstanding commands before reconnecting to the target
 port.</p></li>
 <li><p>It is the responsibility of the caller to ensure that the resources
-reallocated by the reconnect() function won’t be used while this function
+reallocated by the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">reconnect()</span></code> function won’t be used while this function
 is in progress. One possible strategy is to invoke this function from
 the context of the SCSI EH thread only. Another possible strategy is to
 lock the rport mutex inside each SCSI LLD callback that can be invoked by
 the SCSI EH (the scsi_host_template.eh_*() functions and also the
-scsi_host_template.queuecommand() function).</p></li>
+scsi_host_template.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">queuecommand()</span></code> function).</p></li>
 </ul>
 </div>
 <dl class="c function">

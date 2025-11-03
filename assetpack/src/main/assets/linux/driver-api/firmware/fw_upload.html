@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -295,7 +295,7 @@ static int m10bmc_sec_remove(struct platform_device *pdev)
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">module</span> <span class="pre">*module</span></code></dt><dd><p>kernel module of this device</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span> <span class="pre">*parent</span></code></dt><dd><p>parent device instantiating firmware upload</p>
@@ -305,12 +305,15 @@ static int m10bmc_sec_remove(struct platform_device *pdev)
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">fw_upload_ops</span> <span class="pre">*ops</span></code></dt><dd><p>pointer to structure of firmware upload ops</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">*dd_handle</span></code></dt><dd><p>pointer to parent driver private data</p>
-<p><strong>name</strong> must be unique among all users of firmware upload. The firmware
-sysfs files for this device will be found at /sys/class/firmware/<strong>name</strong>.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p><strong>name</strong> must be unique among all users of firmware upload. The firmware
+sysfs files for this device will be found at /sys/class/firmware/<strong>name</strong>.</p>
+</div></blockquote>
 <p><strong>Return</strong></p>
-<p>struct fw_upload pointer or <a class="reference internal" href="../../core-api/kernel-api.html#c.ERR_PTR" title="ERR_PTR"><code class="xref c c-func docutils literal notranslate"><span class="pre">ERR_PTR()</span></code></a></p>
+<p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fw_upload</span></code> pointer or <a class="reference internal" href="../../core-api/kernel-api.html#c.ERR_PTR" title="ERR_PTR"><code class="xref c c-func docutils literal notranslate"><span class="pre">ERR_PTR()</span></code></a></p>
 </div>
 </section>
 <section id="firmware-upload-unregister">
@@ -324,7 +327,7 @@ sysfs files for this device will be found at /sys/class/firmware/<strong>name</s
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fw_upload</span> <span class="pre">*fw_upload</span></code></dt><dd><p>pointer to struct fw_upload</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fw_upload</span> <span class="pre">*fw_upload</span></code></dt><dd><p>pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fw_upload</span></code></p>
 </dd>
 </dl>
 </div>
@@ -341,7 +344,7 @@ sysfs files for this device will be found at /sys/class/firmware/<strong>name</s
 <p><strong>Definition</strong>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct fw_upload_ops {
     enum fw_upload_err (*prepare)(struct fw_upload *fw_upload, const u8 *data, u32 size);
-    enum fw_upload_err (*write)(struct fw_upload *fw_upload,const u8 *data, u32 offset, u32 size, u32 *written);
+    enum fw_upload_err (*write)(struct fw_upload *fw_upload, const u8 *data, u32 offset, u32 size, u32 *written);
     enum fw_upload_err (*poll_complete)(struct fw_upload *fw_upload);
     void (*cancel)(struct fw_upload *fw_upload);
     void (*cleanup)(struct fw_upload *fw_upload);
@@ -365,7 +368,7 @@ HW authentication/programming process.</p>
 is called from the context of a different kernel
 thread, so race conditions need to be considered.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">cleanup</span></code></dt><dd><p>Optional: Complements the prepare()
+<dt><code class="docutils literal notranslate"><span class="pre">cleanup</span></code></dt><dd><p>Optional: Complements the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prepare()</span></code>
 function and is called at the completion
 of the update, on success or failure, if the
 prepare function succeeded.</p>

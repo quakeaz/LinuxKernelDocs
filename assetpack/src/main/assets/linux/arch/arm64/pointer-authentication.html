@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -219,7 +219,7 @@ virtual address size of 48, the PAC is 7 bits wide.</p>
 with HINT space pointer authentication instructions protecting
 function returns. Kernels built with this option will work on hardware
 with or without pointer authentication support.</p>
-<p>In addition to exec(), keys can also be reinitialized to random values
+<p>In addition to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">exec()</span></code>, keys can also be reinitialized to random values
 using the PR_PAC_RESET_KEYS prctl. A bitmask of PR_PAC_APIAKEY,
 PR_PAC_APIBKEY, PR_PAC_APDAKEY, PR_PAC_APDBKEY and PR_PAC_APGAKEY
 specifies which keys are to be reinitialized; specifying 0 means “all
@@ -229,7 +229,7 @@ keys”.</p>
 <h2>Debugging<a class="headerlink" href="#debugging" title="Link to this heading">¶</a></h2>
 <p>When CONFIG_ARM64_PTR_AUTH is selected, and HW support for address
 authentication is present, the kernel will expose the position of TTBR0
-PAC bits in the NT_ARM_PAC_MASK regset (struct user_pac_mask), which
+PAC bits in the NT_ARM_PAC_MASK regset (<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">user_pac_mask</span></code>), which
 userspace can acquire via PTRACE_GETREGSET.</p>
 <p>The regset is exposed only when HWCAP_PACA is set. Separate masks are
 exposed for data pointers and instruction pointers, as the set of PAC
@@ -237,8 +237,8 @@ bits can vary between the two. Note that the masks apply to TTBR0
 addresses, and are not valid to apply to TTBR1 addresses (e.g. kernel
 pointers).</p>
 <p>Additionally, when CONFIG_CHECKPOINT_RESTORE is also set, the kernel
-will expose the NT_ARM_PACA_KEYS and NT_ARM_PACG_KEYS regsets (struct
-user_pac_address_keys and struct user_pac_generic_keys). These can be
+will expose the NT_ARM_PACA_KEYS and NT_ARM_PACG_KEYS regsets (<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">user_pac_address_keys</span></code> and <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">user_pac_generic_keys</span></code>). These can be
 used to get and set the keys for a thread.</p>
 </section>
 <section id="virtualization">
@@ -283,7 +283,7 @@ pointers.</p>
 prctl very early after establishing that a process may load legacy binaries,
 but before executing any PAC instructions.</p>
 <p>For compatibility with previous kernel versions, processes start up with IA,
-IB, DA and DB enabled, and are reset to this state on exec(). Processes created
+IB, DA and DB enabled, and are reset to this state on <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">exec()</span></code>. Processes created
 via fork() and clone() inherit the key enabled state from the calling process.</p>
 <p>It is recommended to avoid disabling the IA key, as this has higher performance
 overhead than disabling any of the other keys.</p>

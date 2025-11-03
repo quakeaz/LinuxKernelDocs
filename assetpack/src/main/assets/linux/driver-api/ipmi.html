@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -446,7 +446,7 @@ and the user should not have to care what type of SMI is below them.</p>
 if IPMI devices exist.  So you might have to defer your setup until
 the device is detected, or you might be able to do it immediately.
 To handle this, and to allow for discovery, you register an SMI
-watcher with ipmi_smi_watcher_register() to iterate over interfaces
+watcher with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ipmi_smi_watcher_register()</span></code> to iterate over interfaces
 and tell you when they come and go.</p>
 </section>
 <section id="creating-the-user">
@@ -456,20 +456,20 @@ ipmi_create_user.  The interface number specifies which SMI you want
 to connect to, and you must supply callback functions to be called
 when data comes in.  This also allows to you pass in a piece of data,
 the handler_data, that will be passed back to you on all calls.</p>
-<p>Once you are done, call ipmi_destroy_user() to get rid of the user.</p>
+<p>Once you are done, call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ipmi_destroy_user()</span></code> to get rid of the user.</p>
 <p>From userland, opening the device automatically creates a user, and
 closing the device automatically destroys the user.</p>
 </section>
 <section id="messaging">
 <h3>Messaging<a class="headerlink" href="#messaging" title="Link to this heading">¶</a></h3>
-<p>To send a message from kernel-land, the ipmi_request_settime() call does
+<p>To send a message from kernel-land, the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ipmi_request_settime()</span></code> call does
 pretty much all message handling.  Most of the parameter are
 self-explanatory.  However, it takes a “msgid” parameter.  This is NOT
 the sequence number of messages.  It is simply a long value that is
 passed back when the response for the message is returned.  You may
 use it for anything you like.</p>
 <p>Responses come back in the function pointed to by the ipmi_recv_hndl
-field of the “handler” that you passed in to ipmi_create_user().
+field of the “handler” that you passed in to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ipmi_create_user()</span></code>.
 Remember to look at the receive type, too.</p>
 <p>From userland, you fill out an ipmi_req_t structure and use the
 IPMICTL_SEND_COMMAND ioctl.  For incoming stuff, you can use select()
@@ -491,10 +491,10 @@ seconds, it will generate a response automatically saying the command
 timed out.  If an unsolicited response comes in (if it was after 5
 seconds, for instance), that response will be ignored.</p>
 <p>In kernelland, after you receive a message and are done with it, you
-MUST call ipmi_free_recv_msg() on it, or you will leak messages.  Note
+MUST call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ipmi_free_recv_msg()</span></code> on it, or you will leak messages.  Note
 that you should NEVER mess with the “done” field of a message, that is
 required to properly clean up the message.</p>
-<p>Note that when sending, there is an ipmi_request_supply_msgs() call
+<p>Note that when sending, there is an <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ipmi_request_supply_msgs()</span></code> call
 that lets you supply the smi and receive message.  This is useful for
 pieces of code that need to work even if the system is out of buffers
 (the watchdog timer uses this, for instance).  You supply your own
@@ -508,13 +508,13 @@ commands (commands are messages that are not responses, they are
 commands that other things on the IPMB bus have sent you).  To receive
 these, you must register for them, they will not automatically be sent
 to you.</p>
-<p>To receive events, you must call ipmi_set_gets_events() and set the
+<p>To receive events, you must call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ipmi_set_gets_events()</span></code> and set the
 “val” to non-zero.  Any events that have been received by the driver
 since startup will immediately be delivered to the first user that
 registers for events.  After that, if multiple users are registered
 for events, they will all receive all events that come in.</p>
 <p>For receiving commands, you have to individually register commands you
-want to receive.  Call ipmi_register_for_cmd() and supply the netfn
+want to receive.  Call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ipmi_register_for_cmd()</span></code> and supply the netfn
 and command name for each command you want to receive.  You also
 specify a bitmask of the channels you want to receive the command from
 (or use IPMI_CHAN_ALL for all channels if you don’t care).  Only one
@@ -758,7 +758,7 @@ channels being 0-7 and try the IPMB channels.</p>
 the address came from or the raw base device for the IPMI interface.
 You can use the IPMI smi_watcher to catch the IPMI interfaces as they
 come or go, and to grab the information, you can use the function
-ipmi_get_smi_info(), which returns the following structure:</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ipmi_get_smi_info()</span></code>, which returns the following structure:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct ipmi_smi_info {
       enum ipmi_addr_src addr_src;
       struct device *dev;

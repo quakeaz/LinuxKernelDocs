@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -168,7 +168,7 @@ Chinese (Simplified)
 它从未尝试过higher order页面的分配，这在内存压力下很可能会失败。另一方面，如果我们只
 是使用单（0-order）页，它将遭受非常高的碎片化 - 任何大小为PAGE_SIZE/2或更大的对象将
 占据整个页面。这是其前身（xvmalloc）的主要问题之一。</p>
-<p>为了克服这些问题，zsmalloc分配了一堆0-order页面，并使用各种”struct page”字段将它
+<p>为了克服这些问题，zsmalloc分配了一堆0-order页面，并使用各种”<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code>”字段将它
 们链接起来。这些链接的页面作为一个单一的higher order页面，即一个对象可以跨越0-order
 页面的边界。代码将这些链接的页面作为一个实体，称为zspage。</p>
 <p>为了简单起见，zsmalloc只能分配大小不超过PAGE_SIZE的对象，因为这满足了所有当前用户的
@@ -177,8 +177,8 @@ Chinese (Simplified)
 <p>此外，<a class="reference internal" href="../../../mm/zsmalloc.html#c.zs_malloc" title="zs_malloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">zs_malloc()</span></code></a>并不返回一个可重复引用的指针。相反，它返回一个不透明的句柄（无符号
 长），它编码了被分配对象的实际位置。这种间接性的原因是zsmalloc并不保持zspages的永久
 映射，因为这在32位系统上会导致问题，因为内核空间映射的VA区域非常小。因此，在使用分配
-的内存之前，对象必须使用zs_map_object()进行映射以获得一个可用的指针，随后使用
-zs_unmap_object()解除映射。</p>
+的内存之前，对象必须使用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">zs_map_object()</span></code>进行映射以获得一个可用的指针，随后使用
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">zs_unmap_object()</span></code>解除映射。</p>
 <section id="stat">
 <h2>stat<a class="headerlink" href="#stat" title="Link to this heading">¶</a></h2>
 <p>通过CONFIG_ZSMALLOC_STAT，我们可以通过 <code class="docutils literal notranslate"><span class="pre">/sys/kernel/debug/zsmalloc/&lt;user</span> <span class="pre">name&gt;</span></code>

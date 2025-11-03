@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -173,7 +173,7 @@
 <div class="kernelindent docutils container">
 <p><strong>Definition</strong>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct rng_alg {
-    int (*generate)(struct crypto_rng *tfm,const u8 *src, unsigned int slen, u8 *dst, unsigned int dlen);
+    int (*generate)(struct crypto_rng *tfm, const u8 *src, unsigned int slen, u8 *dst, unsigned int dlen);
     int (*seed)(struct crypto_rng *tfm, const u8 *seed, unsigned int slen);
     void (*set_ent)(struct crypto_rng *tfm, const u8 *data, unsigned int len);
     unsigned int seedsize;
@@ -236,19 +236,17 @@ message digest cipher</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Allocate a cipher handle for a random number generator. The returned struct
-crypto_rng is the cipher handle that is required for any subsequent
+<p>Allocate a cipher handle for a random number generator. The returned <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">crypto_rng</span></code> is the cipher handle that is required for any subsequent
 API invocation for that random number generator.</p>
 <p>For all random number generators, this call creates a new private copy of
 the random number generator that does not share a state with other
 instances. The only exception is the “krng” random number generator which
-is a kernel crypto API use case for the get_random_bytes() function of the
+is a kernel crypto API use case for the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_random_bytes()</span></code> function of the
 /dev/random driver.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>allocated cipher handle in case of success; IS_ERR() is true in case</dt><dd><p>of an error, <a class="reference internal" href="../core-api/kernel-api.html#c.PTR_ERR" title="PTR_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">PTR_ERR()</span></code></a> returns the error code.</p>
-</dd>
-</dl>
+<p>allocated cipher handle in case of success; <a class="reference internal" href="../core-api/kernel-api.html#c.IS_ERR" title="IS_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">IS_ERR()</span></code></a> is true in case
+of an error, <a class="reference internal" href="../core-api/kernel-api.html#c.PTR_ERR" title="PTR_ERR"><code class="xref c c-func docutils literal notranslate"><span class="pre">PTR_ERR()</span></code></a> returns the error code.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.crypto_rng_alg">

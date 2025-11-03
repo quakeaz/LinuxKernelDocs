@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -146,173 +146,179 @@
 
 
 <section id="family-tc-netlink-specification">
-<h1><a class="toc-backref" href="#id164" role="doc-backlink">Family <code class="docutils literal notranslate"><span class="pre">tc</span></code> netlink specification</a><a class="headerlink" href="#family-tc-netlink-specification" title="Link to this heading">¶</a></h1>
+<h1><a class="toc-backref" href="#id170" role="doc-backlink">Family <code class="docutils literal notranslate"><span class="pre">tc</span></code> netlink specification</a><a class="headerlink" href="#family-tc-netlink-specification" title="Link to this heading">¶</a></h1>
 <nav class="contents" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#family-tc-netlink-specification" id="id164">Family <code class="docutils literal notranslate"><span class="pre">tc</span></code> netlink specification</a></p>
+<li><p><a class="reference internal" href="#family-tc-netlink-specification" id="id170">Family <code class="docutils literal notranslate"><span class="pre">tc</span></code> netlink specification</a></p>
 <ul>
-<li><p><a class="reference internal" href="#summary" id="id165">Summary</a></p></li>
-<li><p><a class="reference internal" href="#operations" id="id166">Operations</a></p>
+<li><p><a class="reference internal" href="#summary" id="id171">Summary</a></p></li>
+<li><p><a class="reference internal" href="#operations" id="id172">Operations</a></p>
 <ul>
-<li><p><a class="reference internal" href="#newqdisc" id="id167">newqdisc</a></p></li>
-<li><p><a class="reference internal" href="#delqdisc" id="id168">delqdisc</a></p></li>
-<li><p><a class="reference internal" href="#getqdisc" id="id169">getqdisc</a></p></li>
-<li><p><a class="reference internal" href="#newtclass" id="id170">newtclass</a></p></li>
-<li><p><a class="reference internal" href="#deltclass" id="id171">deltclass</a></p></li>
-<li><p><a class="reference internal" href="#gettclass" id="id172">gettclass</a></p></li>
-<li><p><a class="reference internal" href="#newtfilter" id="id173">newtfilter</a></p></li>
-<li><p><a class="reference internal" href="#deltfilter" id="id174">deltfilter</a></p></li>
-<li><p><a class="reference internal" href="#gettfilter" id="id175">gettfilter</a></p></li>
-<li><p><a class="reference internal" href="#newchain" id="id176">newchain</a></p></li>
-<li><p><a class="reference internal" href="#delchain" id="id177">delchain</a></p></li>
-<li><p><a class="reference internal" href="#getchain" id="id178">getchain</a></p></li>
+<li><p><a class="reference internal" href="#newqdisc" id="id173">newqdisc</a></p></li>
+<li><p><a class="reference internal" href="#delqdisc" id="id174">delqdisc</a></p></li>
+<li><p><a class="reference internal" href="#getqdisc" id="id175">getqdisc</a></p></li>
+<li><p><a class="reference internal" href="#newtclass" id="id176">newtclass</a></p></li>
+<li><p><a class="reference internal" href="#deltclass" id="id177">deltclass</a></p></li>
+<li><p><a class="reference internal" href="#gettclass" id="id178">gettclass</a></p></li>
+<li><p><a class="reference internal" href="#newtfilter" id="id179">newtfilter</a></p></li>
+<li><p><a class="reference internal" href="#deltfilter" id="id180">deltfilter</a></p></li>
+<li><p><a class="reference internal" href="#gettfilter" id="id181">gettfilter</a></p></li>
+<li><p><a class="reference internal" href="#newchain" id="id182">newchain</a></p></li>
+<li><p><a class="reference internal" href="#delchain" id="id183">delchain</a></p></li>
+<li><p><a class="reference internal" href="#getchain" id="id184">getchain</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#multicast-groups" id="id179">Multicast groups</a></p></li>
-<li><p><a class="reference internal" href="#definitions" id="id180">Definitions</a></p>
+<li><p><a class="reference internal" href="#multicast-groups" id="id185">Multicast groups</a></p></li>
+<li><p><a class="reference internal" href="#definitions" id="id186">Definitions</a></p>
 <ul>
-<li><p><a class="reference internal" href="#tcmsg" id="id181">tcmsg</a></p></li>
-<li><p><a class="reference internal" href="#cls-flags" id="id182">cls-flags</a></p></li>
-<li><p><a class="reference internal" href="#flower-key-ctrl-flags" id="id183">flower-key-ctrl-flags</a></p></li>
-<li><p><a class="reference internal" href="#tc-stats" id="id184">tc-stats</a></p></li>
-<li><p><a class="reference internal" href="#tc-cbs-qopt" id="id185">tc-cbs-qopt</a></p></li>
-<li><p><a class="reference internal" href="#tc-etf-qopt" id="id186">tc-etf-qopt</a></p></li>
-<li><p><a class="reference internal" href="#tc-fifo-qopt" id="id187">tc-fifo-qopt</a></p></li>
-<li><p><a class="reference internal" href="#tc-htb-opt" id="id188">tc-htb-opt</a></p></li>
-<li><p><a class="reference internal" href="#tc-htb-glob" id="id189">tc-htb-glob</a></p></li>
-<li><p><a class="reference internal" href="#tc-gred-qopt" id="id190">tc-gred-qopt</a></p></li>
-<li><p><a class="reference internal" href="#tc-gred-sopt" id="id191">tc-gred-sopt</a></p></li>
-<li><p><a class="reference internal" href="#tc-hfsc-qopt" id="id192">tc-hfsc-qopt</a></p></li>
-<li><p><a class="reference internal" href="#tc-mqprio-qopt" id="id193">tc-mqprio-qopt</a></p></li>
-<li><p><a class="reference internal" href="#tc-multiq-qopt" id="id194">tc-multiq-qopt</a></p></li>
-<li><p><a class="reference internal" href="#tc-netem-qopt" id="id195">tc-netem-qopt</a></p></li>
-<li><p><a class="reference internal" href="#tc-netem-gimodel" id="id196">tc-netem-gimodel</a></p></li>
-<li><p><a class="reference internal" href="#tc-netem-gemodel" id="id197">tc-netem-gemodel</a></p></li>
-<li><p><a class="reference internal" href="#tc-netem-corr" id="id198">tc-netem-corr</a></p></li>
-<li><p><a class="reference internal" href="#tc-netem-reorder" id="id199">tc-netem-reorder</a></p></li>
-<li><p><a class="reference internal" href="#tc-netem-corrupt" id="id200">tc-netem-corrupt</a></p></li>
-<li><p><a class="reference internal" href="#tc-netem-rate" id="id201">tc-netem-rate</a></p></li>
-<li><p><a class="reference internal" href="#tc-netem-slot" id="id202">tc-netem-slot</a></p></li>
-<li><p><a class="reference internal" href="#tc-plug-qopt" id="id203">tc-plug-qopt</a></p></li>
-<li><p><a class="reference internal" href="#tc-prio-qopt" id="id204">tc-prio-qopt</a></p></li>
-<li><p><a class="reference internal" href="#tc-red-qopt" id="id205">tc-red-qopt</a></p></li>
-<li><p><a class="reference internal" href="#tc-sfb-qopt" id="id206">tc-sfb-qopt</a></p></li>
-<li><p><a class="reference internal" href="#tc-sfq-qopt" id="id207">tc-sfq-qopt</a></p></li>
-<li><p><a class="reference internal" href="#tc-sfqred-stats" id="id208">tc-sfqred-stats</a></p></li>
-<li><p><a class="reference internal" href="#tc-sfq-qopt-v1" id="id209">tc-sfq-qopt-v1</a></p></li>
-<li><p><a class="reference internal" href="#tc-ratespec" id="id210">tc-ratespec</a></p></li>
-<li><p><a class="reference internal" href="#tc-tbf-qopt" id="id211">tc-tbf-qopt</a></p></li>
-<li><p><a class="reference internal" href="#tc-sizespec" id="id212">tc-sizespec</a></p></li>
-<li><p><a class="reference internal" href="#gnet-estimator" id="id213">gnet-estimator</a></p></li>
-<li><p><a class="reference internal" href="#tc-choke-xstats" id="id214">tc-choke-xstats</a></p></li>
-<li><p><a class="reference internal" href="#tc-codel-xstats" id="id215">tc-codel-xstats</a></p></li>
-<li><p><a class="reference internal" href="#tc-fq-codel-xstats" id="id216">tc-fq-codel-xstats</a></p></li>
-<li><p><a class="reference internal" href="#tc-fq-pie-xstats" id="id217">tc-fq-pie-xstats</a></p></li>
-<li><p><a class="reference internal" href="#tc-fq-qd-stats" id="id218">tc-fq-qd-stats</a></p></li>
-<li><p><a class="reference internal" href="#tc-hhf-xstats" id="id219">tc-hhf-xstats</a></p></li>
-<li><p><a class="reference internal" href="#tc-pie-xstats" id="id220">tc-pie-xstats</a></p></li>
-<li><p><a class="reference internal" href="#tc-red-xstats" id="id221">tc-red-xstats</a></p></li>
-<li><p><a class="reference internal" href="#tc-sfb-xstats" id="id222">tc-sfb-xstats</a></p></li>
-<li><p><a class="reference internal" href="#tc-sfq-xstats" id="id223">tc-sfq-xstats</a></p></li>
-<li><p><a class="reference internal" href="#gnet-stats-basic" id="id224">gnet-stats-basic</a></p></li>
-<li><p><a class="reference internal" href="#gnet-stats-rate-est" id="id225">gnet-stats-rate-est</a></p></li>
-<li><p><a class="reference internal" href="#gnet-stats-rate-est64" id="id226">gnet-stats-rate-est64</a></p></li>
-<li><p><a class="reference internal" href="#gnet-stats-queue" id="id227">gnet-stats-queue</a></p></li>
-<li><p><a class="reference internal" href="#tc-u32-key" id="id228">tc-u32-key</a></p></li>
-<li><p><a class="reference internal" href="#tc-u32-mark" id="id229">tc-u32-mark</a></p></li>
-<li><p><a class="reference internal" href="#tc-u32-sel" id="id230">tc-u32-sel</a></p></li>
-<li><p><a class="reference internal" href="#tc-u32-pcnt" id="id231">tc-u32-pcnt</a></p></li>
-<li><p><a class="reference internal" href="#tcf-t" id="id232">tcf-t</a></p></li>
-<li><p><a class="reference internal" href="#tc-gact" id="id233">tc-gact</a></p></li>
-<li><p><a class="reference internal" href="#tc-gact-p" id="id234">tc-gact-p</a></p></li>
-<li><p><a class="reference internal" href="#tcf-ematch-tree-hdr" id="id235">tcf-ematch-tree-hdr</a></p></li>
-<li><p><a class="reference internal" href="#tc-basic-pcnt" id="id236">tc-basic-pcnt</a></p></li>
-<li><p><a class="reference internal" href="#tc-matchall-pcnt" id="id237">tc-matchall-pcnt</a></p></li>
-<li><p><a class="reference internal" href="#tc-mpls" id="id238">tc-mpls</a></p></li>
-<li><p><a class="reference internal" href="#tc-police" id="id239">tc-police</a></p></li>
-<li><p><a class="reference internal" href="#tc-pedit-sel" id="id240">tc-pedit-sel</a></p></li>
-<li><p><a class="reference internal" href="#tc-pedit-key" id="id241">tc-pedit-key</a></p></li>
-<li><p><a class="reference internal" href="#tc-vlan" id="id242">tc-vlan</a></p></li>
+<li><p><a class="reference internal" href="#tcmsg" id="id187">tcmsg</a></p></li>
+<li><p><a class="reference internal" href="#cls-flags" id="id188">cls-flags</a></p></li>
+<li><p><a class="reference internal" href="#flower-key-ctrl-flags" id="id189">flower-key-ctrl-flags</a></p></li>
+<li><p><a class="reference internal" href="#dualpi2-drop-overload" id="id190">dualpi2-drop-overload</a></p></li>
+<li><p><a class="reference internal" href="#dualpi2-drop-early" id="id191">dualpi2-drop-early</a></p></li>
+<li><p><a class="reference internal" href="#dualpi2-ecn-mask" id="id192">dualpi2-ecn-mask</a></p></li>
+<li><p><a class="reference internal" href="#dualpi2-split-gso" id="id193">dualpi2-split-gso</a></p></li>
+<li><p><a class="reference internal" href="#tc-stats" id="id194">tc-stats</a></p></li>
+<li><p><a class="reference internal" href="#tc-cbs-qopt" id="id195">tc-cbs-qopt</a></p></li>
+<li><p><a class="reference internal" href="#tc-etf-qopt" id="id196">tc-etf-qopt</a></p></li>
+<li><p><a class="reference internal" href="#tc-fifo-qopt" id="id197">tc-fifo-qopt</a></p></li>
+<li><p><a class="reference internal" href="#tc-htb-opt" id="id198">tc-htb-opt</a></p></li>
+<li><p><a class="reference internal" href="#tc-htb-glob" id="id199">tc-htb-glob</a></p></li>
+<li><p><a class="reference internal" href="#tc-gred-qopt" id="id200">tc-gred-qopt</a></p></li>
+<li><p><a class="reference internal" href="#tc-gred-sopt" id="id201">tc-gred-sopt</a></p></li>
+<li><p><a class="reference internal" href="#tc-hfsc-qopt" id="id202">tc-hfsc-qopt</a></p></li>
+<li><p><a class="reference internal" href="#tc-mqprio-qopt" id="id203">tc-mqprio-qopt</a></p></li>
+<li><p><a class="reference internal" href="#tc-multiq-qopt" id="id204">tc-multiq-qopt</a></p></li>
+<li><p><a class="reference internal" href="#tc-netem-qopt" id="id205">tc-netem-qopt</a></p></li>
+<li><p><a class="reference internal" href="#tc-netem-gimodel" id="id206">tc-netem-gimodel</a></p></li>
+<li><p><a class="reference internal" href="#tc-netem-gemodel" id="id207">tc-netem-gemodel</a></p></li>
+<li><p><a class="reference internal" href="#tc-netem-corr" id="id208">tc-netem-corr</a></p></li>
+<li><p><a class="reference internal" href="#tc-netem-reorder" id="id209">tc-netem-reorder</a></p></li>
+<li><p><a class="reference internal" href="#tc-netem-corrupt" id="id210">tc-netem-corrupt</a></p></li>
+<li><p><a class="reference internal" href="#tc-netem-rate" id="id211">tc-netem-rate</a></p></li>
+<li><p><a class="reference internal" href="#tc-netem-slot" id="id212">tc-netem-slot</a></p></li>
+<li><p><a class="reference internal" href="#tc-plug-qopt" id="id213">tc-plug-qopt</a></p></li>
+<li><p><a class="reference internal" href="#tc-prio-qopt" id="id214">tc-prio-qopt</a></p></li>
+<li><p><a class="reference internal" href="#tc-red-qopt" id="id215">tc-red-qopt</a></p></li>
+<li><p><a class="reference internal" href="#tc-sfb-qopt" id="id216">tc-sfb-qopt</a></p></li>
+<li><p><a class="reference internal" href="#tc-sfq-qopt" id="id217">tc-sfq-qopt</a></p></li>
+<li><p><a class="reference internal" href="#tc-sfqred-stats" id="id218">tc-sfqred-stats</a></p></li>
+<li><p><a class="reference internal" href="#tc-sfq-qopt-v1" id="id219">tc-sfq-qopt-v1</a></p></li>
+<li><p><a class="reference internal" href="#tc-ratespec" id="id220">tc-ratespec</a></p></li>
+<li><p><a class="reference internal" href="#tc-tbf-qopt" id="id221">tc-tbf-qopt</a></p></li>
+<li><p><a class="reference internal" href="#tc-sizespec" id="id222">tc-sizespec</a></p></li>
+<li><p><a class="reference internal" href="#gnet-estimator" id="id223">gnet-estimator</a></p></li>
+<li><p><a class="reference internal" href="#tc-choke-xstats" id="id224">tc-choke-xstats</a></p></li>
+<li><p><a class="reference internal" href="#tc-codel-xstats" id="id225">tc-codel-xstats</a></p></li>
+<li><p><a class="reference internal" href="#tc-fq-codel-xstats" id="id226">tc-fq-codel-xstats</a></p></li>
+<li><p><a class="reference internal" href="#tc-dualpi2-xstats" id="id227">tc-dualpi2-xstats</a></p></li>
+<li><p><a class="reference internal" href="#tc-fq-pie-xstats" id="id228">tc-fq-pie-xstats</a></p></li>
+<li><p><a class="reference internal" href="#tc-fq-qd-stats" id="id229">tc-fq-qd-stats</a></p></li>
+<li><p><a class="reference internal" href="#tc-hhf-xstats" id="id230">tc-hhf-xstats</a></p></li>
+<li><p><a class="reference internal" href="#tc-pie-xstats" id="id231">tc-pie-xstats</a></p></li>
+<li><p><a class="reference internal" href="#tc-red-xstats" id="id232">tc-red-xstats</a></p></li>
+<li><p><a class="reference internal" href="#tc-sfb-xstats" id="id233">tc-sfb-xstats</a></p></li>
+<li><p><a class="reference internal" href="#tc-sfq-xstats" id="id234">tc-sfq-xstats</a></p></li>
+<li><p><a class="reference internal" href="#gnet-stats-basic" id="id235">gnet-stats-basic</a></p></li>
+<li><p><a class="reference internal" href="#gnet-stats-rate-est" id="id236">gnet-stats-rate-est</a></p></li>
+<li><p><a class="reference internal" href="#gnet-stats-rate-est64" id="id237">gnet-stats-rate-est64</a></p></li>
+<li><p><a class="reference internal" href="#gnet-stats-queue" id="id238">gnet-stats-queue</a></p></li>
+<li><p><a class="reference internal" href="#tc-u32-key" id="id239">tc-u32-key</a></p></li>
+<li><p><a class="reference internal" href="#tc-u32-mark" id="id240">tc-u32-mark</a></p></li>
+<li><p><a class="reference internal" href="#tc-u32-sel" id="id241">tc-u32-sel</a></p></li>
+<li><p><a class="reference internal" href="#tc-u32-pcnt" id="id242">tc-u32-pcnt</a></p></li>
+<li><p><a class="reference internal" href="#tcf-t" id="id243">tcf-t</a></p></li>
+<li><p><a class="reference internal" href="#tc-gact" id="id244">tc-gact</a></p></li>
+<li><p><a class="reference internal" href="#tc-gact-p" id="id245">tc-gact-p</a></p></li>
+<li><p><a class="reference internal" href="#tcf-ematch-tree-hdr" id="id246">tcf-ematch-tree-hdr</a></p></li>
+<li><p><a class="reference internal" href="#tc-basic-pcnt" id="id247">tc-basic-pcnt</a></p></li>
+<li><p><a class="reference internal" href="#tc-matchall-pcnt" id="id248">tc-matchall-pcnt</a></p></li>
+<li><p><a class="reference internal" href="#tc-mpls" id="id249">tc-mpls</a></p></li>
+<li><p><a class="reference internal" href="#tc-police" id="id250">tc-police</a></p></li>
+<li><p><a class="reference internal" href="#tc-pedit-sel" id="id251">tc-pedit-sel</a></p></li>
+<li><p><a class="reference internal" href="#tc-pedit-key" id="id252">tc-pedit-key</a></p></li>
+<li><p><a class="reference internal" href="#tc-vlan" id="id253">tc-vlan</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#attribute-sets" id="id243">Attribute sets</a></p>
+<li><p><a class="reference internal" href="#attribute-sets" id="id254">Attribute sets</a></p>
 <ul>
-<li><p><a class="reference internal" href="#attrs" id="id244">attrs</a></p></li>
-<li><p><a class="reference internal" href="#act-attrs" id="id245">act-attrs</a></p></li>
-<li><p><a class="reference internal" href="#act-bpf-attrs" id="id246">act-bpf-attrs</a></p></li>
-<li><p><a class="reference internal" href="#act-connmark-attrs" id="id247">act-connmark-attrs</a></p></li>
-<li><p><a class="reference internal" href="#act-csum-attrs" id="id248">act-csum-attrs</a></p></li>
-<li><p><a class="reference internal" href="#act-ct-attrs" id="id249">act-ct-attrs</a></p></li>
-<li><p><a class="reference internal" href="#act-ctinfo-attrs" id="id250">act-ctinfo-attrs</a></p></li>
-<li><p><a class="reference internal" href="#act-gate-attrs" id="id251">act-gate-attrs</a></p></li>
-<li><p><a class="reference internal" href="#act-ife-attrs" id="id252">act-ife-attrs</a></p></li>
-<li><p><a class="reference internal" href="#act-mirred-attrs" id="id253">act-mirred-attrs</a></p></li>
-<li><p><a class="reference internal" href="#act-mpls-attrs" id="id254">act-mpls-attrs</a></p></li>
-<li><p><a class="reference internal" href="#act-nat-attrs" id="id255">act-nat-attrs</a></p></li>
-<li><p><a class="reference internal" href="#act-pedit-attrs" id="id256">act-pedit-attrs</a></p></li>
-<li><p><a class="reference internal" href="#act-simple-attrs" id="id257">act-simple-attrs</a></p></li>
-<li><p><a class="reference internal" href="#act-skbedit-attrs" id="id258">act-skbedit-attrs</a></p></li>
-<li><p><a class="reference internal" href="#act-skbmod-attrs" id="id259">act-skbmod-attrs</a></p></li>
-<li><p><a class="reference internal" href="#act-tunnel-key-attrs" id="id260">act-tunnel-key-attrs</a></p></li>
-<li><p><a class="reference internal" href="#act-vlan-attrs" id="id261">act-vlan-attrs</a></p></li>
-<li><p><a class="reference internal" href="#basic-attrs" id="id262">basic-attrs</a></p></li>
-<li><p><a class="reference internal" href="#bpf-attrs" id="id263">bpf-attrs</a></p></li>
-<li><p><a class="reference internal" href="#cake-attrs" id="id264">cake-attrs</a></p></li>
-<li><p><a class="reference internal" href="#cake-stats-attrs" id="id265">cake-stats-attrs</a></p></li>
-<li><p><a class="reference internal" href="#cake-tin-stats-attrs" id="id266">cake-tin-stats-attrs</a></p></li>
-<li><p><a class="reference internal" href="#cbs-attrs" id="id267">cbs-attrs</a></p></li>
-<li><p><a class="reference internal" href="#cgroup-attrs" id="id268">cgroup-attrs</a></p></li>
-<li><p><a class="reference internal" href="#choke-attrs" id="id269">choke-attrs</a></p></li>
-<li><p><a class="reference internal" href="#codel-attrs" id="id270">codel-attrs</a></p></li>
-<li><p><a class="reference internal" href="#drr-attrs" id="id271">drr-attrs</a></p></li>
-<li><p><a class="reference internal" href="#ematch-attrs" id="id272">ematch-attrs</a></p></li>
-<li><p><a class="reference internal" href="#flow-attrs" id="id273">flow-attrs</a></p></li>
-<li><p><a class="reference internal" href="#flower-attrs" id="id274">flower-attrs</a></p></li>
-<li><p><a class="reference internal" href="#flower-key-enc-opts-attrs" id="id275">flower-key-enc-opts-attrs</a></p></li>
-<li><p><a class="reference internal" href="#flower-key-enc-opt-geneve-attrs" id="id276">flower-key-enc-opt-geneve-attrs</a></p></li>
-<li><p><a class="reference internal" href="#flower-key-enc-opt-vxlan-attrs" id="id277">flower-key-enc-opt-vxlan-attrs</a></p></li>
-<li><p><a class="reference internal" href="#flower-key-enc-opt-erspan-attrs" id="id278">flower-key-enc-opt-erspan-attrs</a></p></li>
-<li><p><a class="reference internal" href="#flower-key-enc-opt-gtp-attrs" id="id279">flower-key-enc-opt-gtp-attrs</a></p></li>
-<li><p><a class="reference internal" href="#flower-key-mpls-opt-attrs" id="id280">flower-key-mpls-opt-attrs</a></p></li>
-<li><p><a class="reference internal" href="#flower-key-cfm-attrs" id="id281">flower-key-cfm-attrs</a></p></li>
-<li><p><a class="reference internal" href="#fw-attrs" id="id282">fw-attrs</a></p></li>
-<li><p><a class="reference internal" href="#gred-attrs" id="id283">gred-attrs</a></p></li>
-<li><p><a class="reference internal" href="#tca-gred-vq-list-attrs" id="id284">tca-gred-vq-list-attrs</a></p></li>
-<li><p><a class="reference internal" href="#tca-gred-vq-entry-attrs" id="id285">tca-gred-vq-entry-attrs</a></p></li>
-<li><p><a class="reference internal" href="#hfsc-attrs" id="id286">hfsc-attrs</a></p></li>
-<li><p><a class="reference internal" href="#hhf-attrs" id="id287">hhf-attrs</a></p></li>
-<li><p><a class="reference internal" href="#htb-attrs" id="id288">htb-attrs</a></p></li>
-<li><p><a class="reference internal" href="#matchall-attrs" id="id289">matchall-attrs</a></p></li>
-<li><p><a class="reference internal" href="#etf-attrs" id="id290">etf-attrs</a></p></li>
-<li><p><a class="reference internal" href="#ets-attrs" id="id291">ets-attrs</a></p></li>
-<li><p><a class="reference internal" href="#fq-attrs" id="id292">fq-attrs</a></p></li>
-<li><p><a class="reference internal" href="#fq-codel-attrs" id="id293">fq-codel-attrs</a></p></li>
-<li><p><a class="reference internal" href="#fq-pie-attrs" id="id294">fq-pie-attrs</a></p></li>
-<li><p><a class="reference internal" href="#netem-attrs" id="id295">netem-attrs</a></p></li>
-<li><p><a class="reference internal" href="#netem-loss-attrs" id="id296">netem-loss-attrs</a></p></li>
-<li><p><a class="reference internal" href="#pie-attrs" id="id297">pie-attrs</a></p></li>
-<li><p><a class="reference internal" href="#police-attrs" id="id298">police-attrs</a></p></li>
-<li><p><a class="reference internal" href="#qfq-attrs" id="id299">qfq-attrs</a></p></li>
-<li><p><a class="reference internal" href="#red-attrs" id="id300">red-attrs</a></p></li>
-<li><p><a class="reference internal" href="#route-attrs" id="id301">route-attrs</a></p></li>
-<li><p><a class="reference internal" href="#taprio-attrs" id="id302">taprio-attrs</a></p></li>
-<li><p><a class="reference internal" href="#taprio-sched-entry-list" id="id303">taprio-sched-entry-list</a></p></li>
-<li><p><a class="reference internal" href="#taprio-sched-entry" id="id304">taprio-sched-entry</a></p></li>
-<li><p><a class="reference internal" href="#taprio-tc-entry-attrs" id="id305">taprio-tc-entry-attrs</a></p></li>
-<li><p><a class="reference internal" href="#tbf-attrs" id="id306">tbf-attrs</a></p></li>
-<li><p><a class="reference internal" href="#act-sample-attrs" id="id307">act-sample-attrs</a></p></li>
-<li><p><a class="reference internal" href="#act-gact-attrs" id="id308">act-gact-attrs</a></p></li>
-<li><p><a class="reference internal" href="#tca-stab-attrs" id="id309">tca-stab-attrs</a></p></li>
-<li><p><a class="reference internal" href="#tca-stats-attrs" id="id310">tca-stats-attrs</a></p></li>
-<li><p><a class="reference internal" href="#u32-attrs" id="id311">u32-attrs</a></p></li>
+<li><p><a class="reference internal" href="#attrs" id="id255">attrs</a></p></li>
+<li><p><a class="reference internal" href="#act-attrs" id="id256">act-attrs</a></p></li>
+<li><p><a class="reference internal" href="#act-bpf-attrs" id="id257">act-bpf-attrs</a></p></li>
+<li><p><a class="reference internal" href="#act-connmark-attrs" id="id258">act-connmark-attrs</a></p></li>
+<li><p><a class="reference internal" href="#act-csum-attrs" id="id259">act-csum-attrs</a></p></li>
+<li><p><a class="reference internal" href="#act-ct-attrs" id="id260">act-ct-attrs</a></p></li>
+<li><p><a class="reference internal" href="#act-ctinfo-attrs" id="id261">act-ctinfo-attrs</a></p></li>
+<li><p><a class="reference internal" href="#act-gate-attrs" id="id262">act-gate-attrs</a></p></li>
+<li><p><a class="reference internal" href="#act-ife-attrs" id="id263">act-ife-attrs</a></p></li>
+<li><p><a class="reference internal" href="#act-mirred-attrs" id="id264">act-mirred-attrs</a></p></li>
+<li><p><a class="reference internal" href="#act-mpls-attrs" id="id265">act-mpls-attrs</a></p></li>
+<li><p><a class="reference internal" href="#act-nat-attrs" id="id266">act-nat-attrs</a></p></li>
+<li><p><a class="reference internal" href="#act-pedit-attrs" id="id267">act-pedit-attrs</a></p></li>
+<li><p><a class="reference internal" href="#act-simple-attrs" id="id268">act-simple-attrs</a></p></li>
+<li><p><a class="reference internal" href="#act-skbedit-attrs" id="id269">act-skbedit-attrs</a></p></li>
+<li><p><a class="reference internal" href="#act-skbmod-attrs" id="id270">act-skbmod-attrs</a></p></li>
+<li><p><a class="reference internal" href="#act-tunnel-key-attrs" id="id271">act-tunnel-key-attrs</a></p></li>
+<li><p><a class="reference internal" href="#act-vlan-attrs" id="id272">act-vlan-attrs</a></p></li>
+<li><p><a class="reference internal" href="#basic-attrs" id="id273">basic-attrs</a></p></li>
+<li><p><a class="reference internal" href="#bpf-attrs" id="id274">bpf-attrs</a></p></li>
+<li><p><a class="reference internal" href="#cake-attrs" id="id275">cake-attrs</a></p></li>
+<li><p><a class="reference internal" href="#cake-stats-attrs" id="id276">cake-stats-attrs</a></p></li>
+<li><p><a class="reference internal" href="#cake-tin-stats-attrs" id="id277">cake-tin-stats-attrs</a></p></li>
+<li><p><a class="reference internal" href="#cbs-attrs" id="id278">cbs-attrs</a></p></li>
+<li><p><a class="reference internal" href="#cgroup-attrs" id="id279">cgroup-attrs</a></p></li>
+<li><p><a class="reference internal" href="#choke-attrs" id="id280">choke-attrs</a></p></li>
+<li><p><a class="reference internal" href="#codel-attrs" id="id281">codel-attrs</a></p></li>
+<li><p><a class="reference internal" href="#drr-attrs" id="id282">drr-attrs</a></p></li>
+<li><p><a class="reference internal" href="#dualpi2-attrs" id="id283">dualpi2-attrs</a></p></li>
+<li><p><a class="reference internal" href="#ematch-attrs" id="id284">ematch-attrs</a></p></li>
+<li><p><a class="reference internal" href="#flow-attrs" id="id285">flow-attrs</a></p></li>
+<li><p><a class="reference internal" href="#flower-attrs" id="id286">flower-attrs</a></p></li>
+<li><p><a class="reference internal" href="#flower-key-enc-opts-attrs" id="id287">flower-key-enc-opts-attrs</a></p></li>
+<li><p><a class="reference internal" href="#flower-key-enc-opt-geneve-attrs" id="id288">flower-key-enc-opt-geneve-attrs</a></p></li>
+<li><p><a class="reference internal" href="#flower-key-enc-opt-vxlan-attrs" id="id289">flower-key-enc-opt-vxlan-attrs</a></p></li>
+<li><p><a class="reference internal" href="#flower-key-enc-opt-erspan-attrs" id="id290">flower-key-enc-opt-erspan-attrs</a></p></li>
+<li><p><a class="reference internal" href="#flower-key-enc-opt-gtp-attrs" id="id291">flower-key-enc-opt-gtp-attrs</a></p></li>
+<li><p><a class="reference internal" href="#flower-key-mpls-opt-attrs" id="id292">flower-key-mpls-opt-attrs</a></p></li>
+<li><p><a class="reference internal" href="#flower-key-cfm-attrs" id="id293">flower-key-cfm-attrs</a></p></li>
+<li><p><a class="reference internal" href="#fw-attrs" id="id294">fw-attrs</a></p></li>
+<li><p><a class="reference internal" href="#gred-attrs" id="id295">gred-attrs</a></p></li>
+<li><p><a class="reference internal" href="#tca-gred-vq-list-attrs" id="id296">tca-gred-vq-list-attrs</a></p></li>
+<li><p><a class="reference internal" href="#tca-gred-vq-entry-attrs" id="id297">tca-gred-vq-entry-attrs</a></p></li>
+<li><p><a class="reference internal" href="#hfsc-attrs" id="id298">hfsc-attrs</a></p></li>
+<li><p><a class="reference internal" href="#hhf-attrs" id="id299">hhf-attrs</a></p></li>
+<li><p><a class="reference internal" href="#htb-attrs" id="id300">htb-attrs</a></p></li>
+<li><p><a class="reference internal" href="#matchall-attrs" id="id301">matchall-attrs</a></p></li>
+<li><p><a class="reference internal" href="#etf-attrs" id="id302">etf-attrs</a></p></li>
+<li><p><a class="reference internal" href="#ets-attrs" id="id303">ets-attrs</a></p></li>
+<li><p><a class="reference internal" href="#fq-attrs" id="id304">fq-attrs</a></p></li>
+<li><p><a class="reference internal" href="#fq-codel-attrs" id="id305">fq-codel-attrs</a></p></li>
+<li><p><a class="reference internal" href="#fq-pie-attrs" id="id306">fq-pie-attrs</a></p></li>
+<li><p><a class="reference internal" href="#netem-attrs" id="id307">netem-attrs</a></p></li>
+<li><p><a class="reference internal" href="#netem-loss-attrs" id="id308">netem-loss-attrs</a></p></li>
+<li><p><a class="reference internal" href="#pie-attrs" id="id309">pie-attrs</a></p></li>
+<li><p><a class="reference internal" href="#police-attrs" id="id310">police-attrs</a></p></li>
+<li><p><a class="reference internal" href="#qfq-attrs" id="id311">qfq-attrs</a></p></li>
+<li><p><a class="reference internal" href="#red-attrs" id="id312">red-attrs</a></p></li>
+<li><p><a class="reference internal" href="#route-attrs" id="id313">route-attrs</a></p></li>
+<li><p><a class="reference internal" href="#taprio-attrs" id="id314">taprio-attrs</a></p></li>
+<li><p><a class="reference internal" href="#taprio-sched-entry-list" id="id315">taprio-sched-entry-list</a></p></li>
+<li><p><a class="reference internal" href="#taprio-sched-entry" id="id316">taprio-sched-entry</a></p></li>
+<li><p><a class="reference internal" href="#taprio-tc-entry-attrs" id="id317">taprio-tc-entry-attrs</a></p></li>
+<li><p><a class="reference internal" href="#tbf-attrs" id="id318">tbf-attrs</a></p></li>
+<li><p><a class="reference internal" href="#act-sample-attrs" id="id319">act-sample-attrs</a></p></li>
+<li><p><a class="reference internal" href="#act-gact-attrs" id="id320">act-gact-attrs</a></p></li>
+<li><p><a class="reference internal" href="#tca-stab-attrs" id="id321">tca-stab-attrs</a></p></li>
+<li><p><a class="reference internal" href="#tca-stats-attrs" id="id322">tca-stats-attrs</a></p></li>
+<li><p><a class="reference internal" href="#u32-attrs" id="id323">u32-attrs</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#sub-messages" id="id312">Sub-messages</a></p>
+<li><p><a class="reference internal" href="#sub-messages" id="id324">Sub-messages</a></p>
 <ul>
-<li><p><a class="reference internal" href="#options-msg" id="id313">options-msg</a></p></li>
-<li><p><a class="reference internal" href="#act-options-msg" id="id314">act-options-msg</a></p></li>
-<li><p><a class="reference internal" href="#tca-stats-app-msg" id="id315">tca-stats-app-msg</a></p></li>
+<li><p><a class="reference internal" href="#options-msg" id="id325">options-msg</a></p></li>
+<li><p><a class="reference internal" href="#act-options-msg" id="id326">act-options-msg</a></p></li>
+<li><p><a class="reference internal" href="#tca-stats-app-msg" id="id327">tca-stats-app-msg</a></p></li>
 </ul>
 </li>
 </ul>
@@ -320,13 +326,13 @@
 </ul>
 </nav>
 <section id="summary">
-<h2><a class="toc-backref" href="#id165" role="doc-backlink">Summary</a><a class="headerlink" href="#summary" title="Link to this heading">¶</a></h2>
+<h2><a class="toc-backref" href="#id171" role="doc-backlink">Summary</a><a class="headerlink" href="#summary" title="Link to this heading">¶</a></h2>
 <p>Netlink raw family for tc qdisc, chain, class and filter configuration over rtnetlink.</p>
 </section>
 <section id="operations">
-<h2><a class="toc-backref" href="#id166" role="doc-backlink">Operations</a><a class="headerlink" href="#operations" title="Link to this heading">¶</a></h2>
+<h2><a class="toc-backref" href="#id172" role="doc-backlink">Operations</a><a class="headerlink" href="#operations" title="Link to this heading">¶</a></h2>
 <section id="newqdisc">
-<span id="tc-operation-newqdisc"></span><h3><a class="toc-backref" href="#id167" role="doc-backlink">newqdisc</a><a class="headerlink" href="#newqdisc" title="Link to this heading">¶</a></h3>
+<span id="tc-operation-newqdisc"></span><h3><a class="toc-backref" href="#id173" role="doc-backlink">newqdisc</a><a class="headerlink" href="#newqdisc" title="Link to this heading">¶</a></h3>
 <p>Create new tc qdisc.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -348,7 +354,7 @@
 </dl>
 </section>
 <section id="delqdisc">
-<span id="tc-operation-delqdisc"></span><h3><a class="toc-backref" href="#id168" role="doc-backlink">delqdisc</a><a class="headerlink" href="#delqdisc" title="Link to this heading">¶</a></h3>
+<span id="tc-operation-delqdisc"></span><h3><a class="toc-backref" href="#id174" role="doc-backlink">delqdisc</a><a class="headerlink" href="#delqdisc" title="Link to this heading">¶</a></h3>
 <p>Delete existing tc qdisc.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -363,7 +369,7 @@
 </dl>
 </section>
 <section id="getqdisc">
-<span id="tc-operation-getqdisc"></span><h3><a class="toc-backref" href="#id169" role="doc-backlink">getqdisc</a><a class="headerlink" href="#getqdisc" title="Link to this heading">¶</a></h3>
+<span id="tc-operation-getqdisc"></span><h3><a class="toc-backref" href="#id175" role="doc-backlink">getqdisc</a><a class="headerlink" href="#getqdisc" title="Link to this heading">¶</a></h3>
 <p>Get / dump tc qdisc information.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -407,7 +413,7 @@
 </dl>
 </section>
 <section id="newtclass">
-<span id="tc-operation-newtclass"></span><h3><a class="toc-backref" href="#id170" role="doc-backlink">newtclass</a><a class="headerlink" href="#newtclass" title="Link to this heading">¶</a></h3>
+<span id="tc-operation-newtclass"></span><h3><a class="toc-backref" href="#id176" role="doc-backlink">newtclass</a><a class="headerlink" href="#newtclass" title="Link to this heading">¶</a></h3>
 <p>Get / dump tc traffic class information.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -429,7 +435,7 @@
 </dl>
 </section>
 <section id="deltclass">
-<span id="tc-operation-deltclass"></span><h3><a class="toc-backref" href="#id171" role="doc-backlink">deltclass</a><a class="headerlink" href="#deltclass" title="Link to this heading">¶</a></h3>
+<span id="tc-operation-deltclass"></span><h3><a class="toc-backref" href="#id177" role="doc-backlink">deltclass</a><a class="headerlink" href="#deltclass" title="Link to this heading">¶</a></h3>
 <p>Get / dump tc traffic class information.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -444,7 +450,7 @@
 </dl>
 </section>
 <section id="gettclass">
-<span id="tc-operation-gettclass"></span><h3><a class="toc-backref" href="#id172" role="doc-backlink">gettclass</a><a class="headerlink" href="#gettclass" title="Link to this heading">¶</a></h3>
+<span id="tc-operation-gettclass"></span><h3><a class="toc-backref" href="#id178" role="doc-backlink">gettclass</a><a class="headerlink" href="#gettclass" title="Link to this heading">¶</a></h3>
 <p>Get / dump tc traffic class information.</p>
 <dl class="field-list">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -467,7 +473,7 @@
 </dl>
 </section>
 <section id="newtfilter">
-<span id="tc-operation-newtfilter"></span><h3><a class="toc-backref" href="#id173" role="doc-backlink">newtfilter</a><a class="headerlink" href="#newtfilter" title="Link to this heading">¶</a></h3>
+<span id="tc-operation-newtfilter"></span><h3><a class="toc-backref" href="#id179" role="doc-backlink">newtfilter</a><a class="headerlink" href="#newtfilter" title="Link to this heading">¶</a></h3>
 <p>Get / dump tc filter information.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -489,7 +495,7 @@
 </dl>
 </section>
 <section id="deltfilter">
-<span id="tc-operation-deltfilter"></span><h3><a class="toc-backref" href="#id174" role="doc-backlink">deltfilter</a><a class="headerlink" href="#deltfilter" title="Link to this heading">¶</a></h3>
+<span id="tc-operation-deltfilter"></span><h3><a class="toc-backref" href="#id180" role="doc-backlink">deltfilter</a><a class="headerlink" href="#deltfilter" title="Link to this heading">¶</a></h3>
 <p>Get / dump tc filter information.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -511,7 +517,7 @@
 </dl>
 </section>
 <section id="gettfilter">
-<span id="tc-operation-gettfilter"></span><h3><a class="toc-backref" href="#id175" role="doc-backlink">gettfilter</a><a class="headerlink" href="#gettfilter" title="Link to this heading">¶</a></h3>
+<span id="tc-operation-gettfilter"></span><h3><a class="toc-backref" href="#id181" role="doc-backlink">gettfilter</a><a class="headerlink" href="#gettfilter" title="Link to this heading">¶</a></h3>
 <p>Get / dump tc filter information.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -555,7 +561,7 @@
 </dl>
 </section>
 <section id="newchain">
-<span id="tc-operation-newchain"></span><h3><a class="toc-backref" href="#id176" role="doc-backlink">newchain</a><a class="headerlink" href="#newchain" title="Link to this heading">¶</a></h3>
+<span id="tc-operation-newchain"></span><h3><a class="toc-backref" href="#id182" role="doc-backlink">newchain</a><a class="headerlink" href="#newchain" title="Link to this heading">¶</a></h3>
 <p>Get / dump tc chain information.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -577,7 +583,7 @@
 </dl>
 </section>
 <section id="delchain">
-<span id="tc-operation-delchain"></span><h3><a class="toc-backref" href="#id177" role="doc-backlink">delchain</a><a class="headerlink" href="#delchain" title="Link to this heading">¶</a></h3>
+<span id="tc-operation-delchain"></span><h3><a class="toc-backref" href="#id183" role="doc-backlink">delchain</a><a class="headerlink" href="#delchain" title="Link to this heading">¶</a></h3>
 <p>Get / dump tc chain information.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -599,7 +605,7 @@
 </dl>
 </section>
 <section id="getchain">
-<span id="tc-operation-getchain"></span><h3><a class="toc-backref" href="#id178" role="doc-backlink">getchain</a><a class="headerlink" href="#getchain" title="Link to this heading">¶</a></h3>
+<span id="tc-operation-getchain"></span><h3><a class="toc-backref" href="#id184" role="doc-backlink">getchain</a><a class="headerlink" href="#getchain" title="Link to this heading">¶</a></h3>
 <p>Get / dump tc chain information.</p>
 <dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
@@ -628,15 +634,15 @@
 </section>
 </section>
 <section id="multicast-groups">
-<h2><a class="toc-backref" href="#id179" role="doc-backlink">Multicast groups</a><a class="headerlink" href="#multicast-groups" title="Link to this heading">¶</a></h2>
+<h2><a class="toc-backref" href="#id185" role="doc-backlink">Multicast groups</a><a class="headerlink" href="#multicast-groups" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>rtnlgrp-tc</p></li>
 </ul>
 </section>
 <section id="definitions">
-<h2><a class="toc-backref" href="#id180" role="doc-backlink">Definitions</a><a class="headerlink" href="#definitions" title="Link to this heading">¶</a></h2>
+<h2><a class="toc-backref" href="#id186" role="doc-backlink">Definitions</a><a class="headerlink" href="#definitions" title="Link to this heading">¶</a></h2>
 <section id="tcmsg">
-<span id="tc-definition-tcmsg"></span><h3><a class="toc-backref" href="#id181" role="doc-backlink">tcmsg</a><a class="headerlink" href="#tcmsg" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tcmsg"></span><h3><a class="toc-backref" href="#id187" role="doc-backlink">tcmsg</a><a class="headerlink" href="#tcmsg" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -661,7 +667,7 @@
 </dl>
 </section>
 <section id="cls-flags">
-<span id="tc-definition-cls-flags"></span><h3><a class="toc-backref" href="#id182" role="doc-backlink">cls-flags</a><a class="headerlink" href="#cls-flags" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-cls-flags"></span><h3><a class="toc-backref" href="#id188" role="doc-backlink">cls-flags</a><a class="headerlink" href="#cls-flags" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">enum-name<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
@@ -681,7 +687,7 @@
 </dl>
 </section>
 <section id="flower-key-ctrl-flags">
-<span id="tc-definition-flower-key-ctrl-flags"></span><h3><a class="toc-backref" href="#id183" role="doc-backlink">flower-key-ctrl-flags</a><a class="headerlink" href="#flower-key-ctrl-flags" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-flower-key-ctrl-flags"></span><h3><a class="toc-backref" href="#id189" role="doc-backlink">flower-key-ctrl-flags</a><a class="headerlink" href="#flower-key-ctrl-flags" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">name-prefix<span class="colon">:</span></dt>
 <dd class="field-odd"><p>tca-flower-key-flags-</p>
@@ -704,8 +710,68 @@
 </dd>
 </dl>
 </section>
+<section id="dualpi2-drop-overload">
+<span id="tc-definition-dualpi2-drop-overload"></span><h3><a class="toc-backref" href="#id190" role="doc-backlink">dualpi2-drop-overload</a><a class="headerlink" href="#dualpi2-drop-overload" title="Link to this heading">¶</a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>enum</p>
+</dd>
+<dt class="field-even">entries<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">overflow</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">drop</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="dualpi2-drop-early">
+<span id="tc-definition-dualpi2-drop-early"></span><h3><a class="toc-backref" href="#id191" role="doc-backlink">dualpi2-drop-early</a><a class="headerlink" href="#dualpi2-drop-early" title="Link to this heading">¶</a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>enum</p>
+</dd>
+<dt class="field-even">entries<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">drop-dequeue</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">drop-enqueue</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="dualpi2-ecn-mask">
+<span id="tc-definition-dualpi2-ecn-mask"></span><h3><a class="toc-backref" href="#id192" role="doc-backlink">dualpi2-ecn-mask</a><a class="headerlink" href="#dualpi2-ecn-mask" title="Link to this heading">¶</a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>enum</p>
+</dd>
+<dt class="field-even">value-start<span class="colon">:</span></dt>
+<dd class="field-even"><p>1</p>
+</dd>
+<dt class="field-odd">entries<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">l4s-ect</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cla-ect</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">any-ect</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="dualpi2-split-gso">
+<span id="tc-definition-dualpi2-split-gso"></span><h3><a class="toc-backref" href="#id193" role="doc-backlink">dualpi2-split-gso</a><a class="headerlink" href="#dualpi2-split-gso" title="Link to this heading">¶</a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>enum</p>
+</dd>
+<dt class="field-even">entries<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">no-split-gso</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">split-gso</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</section>
 <section id="tc-stats">
-<span id="tc-definition-tc-stats"></span><h3><a class="toc-backref" href="#id184" role="doc-backlink">tc-stats</a><a class="headerlink" href="#tc-stats" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-stats"></span><h3><a class="toc-backref" href="#id194" role="doc-backlink">tc-stats</a><a class="headerlink" href="#tc-stats" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -739,7 +805,7 @@
 </dl>
 </section>
 <section id="tc-cbs-qopt">
-<span id="tc-definition-tc-cbs-qopt"></span><h3><a class="toc-backref" href="#id185" role="doc-backlink">tc-cbs-qopt</a><a class="headerlink" href="#tc-cbs-qopt" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-cbs-qopt"></span><h3><a class="toc-backref" href="#id195" role="doc-backlink">tc-cbs-qopt</a><a class="headerlink" href="#tc-cbs-qopt" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -761,7 +827,7 @@
 </dl>
 </section>
 <section id="tc-etf-qopt">
-<span id="tc-definition-tc-etf-qopt"></span><h3><a class="toc-backref" href="#id186" role="doc-backlink">tc-etf-qopt</a><a class="headerlink" href="#tc-etf-qopt" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-etf-qopt"></span><h3><a class="toc-backref" href="#id196" role="doc-backlink">tc-etf-qopt</a><a class="headerlink" href="#tc-etf-qopt" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -779,7 +845,7 @@
 </dl>
 </section>
 <section id="tc-fifo-qopt">
-<span id="tc-definition-tc-fifo-qopt"></span><h3><a class="toc-backref" href="#id187" role="doc-backlink">tc-fifo-qopt</a><a class="headerlink" href="#tc-fifo-qopt" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-fifo-qopt"></span><h3><a class="toc-backref" href="#id197" role="doc-backlink">tc-fifo-qopt</a><a class="headerlink" href="#tc-fifo-qopt" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -794,7 +860,7 @@
 </dl>
 </section>
 <section id="tc-htb-opt">
-<span id="tc-definition-tc-htb-opt"></span><h3><a class="toc-backref" href="#id188" role="doc-backlink">tc-htb-opt</a><a class="headerlink" href="#tc-htb-opt" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-htb-opt"></span><h3><a class="toc-backref" href="#id198" role="doc-backlink">tc-htb-opt</a><a class="headerlink" href="#tc-htb-opt" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -820,7 +886,7 @@
 </dl>
 </section>
 <section id="tc-htb-glob">
-<span id="tc-definition-tc-htb-glob"></span><h3><a class="toc-backref" href="#id189" role="doc-backlink">tc-htb-glob</a><a class="headerlink" href="#tc-htb-glob" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-htb-glob"></span><h3><a class="toc-backref" href="#id199" role="doc-backlink">tc-htb-glob</a><a class="headerlink" href="#tc-htb-glob" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -846,7 +912,7 @@
 </dl>
 </section>
 <section id="tc-gred-qopt">
-<span id="tc-definition-tc-gred-qopt"></span><h3><a class="toc-backref" href="#id190" role="doc-backlink">tc-gred-qopt</a><a class="headerlink" href="#tc-gred-qopt" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-gred-qopt"></span><h3><a class="toc-backref" href="#id200" role="doc-backlink">tc-gred-qopt</a><a class="headerlink" href="#tc-gred-qopt" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -898,7 +964,7 @@
 </dl>
 </section>
 <section id="tc-gred-sopt">
-<span id="tc-definition-tc-gred-sopt"></span><h3><a class="toc-backref" href="#id191" role="doc-backlink">tc-gred-sopt</a><a class="headerlink" href="#tc-gred-sopt" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-gred-sopt"></span><h3><a class="toc-backref" href="#id201" role="doc-backlink">tc-gred-sopt</a><a class="headerlink" href="#tc-gred-sopt" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -918,7 +984,7 @@
 </dl>
 </section>
 <section id="tc-hfsc-qopt">
-<span id="tc-definition-tc-hfsc-qopt"></span><h3><a class="toc-backref" href="#id192" role="doc-backlink">tc-hfsc-qopt</a><a class="headerlink" href="#tc-hfsc-qopt" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-hfsc-qopt"></span><h3><a class="toc-backref" href="#id202" role="doc-backlink">tc-hfsc-qopt</a><a class="headerlink" href="#tc-hfsc-qopt" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -932,7 +998,7 @@
 </dl>
 </section>
 <section id="tc-mqprio-qopt">
-<span id="tc-definition-tc-mqprio-qopt"></span><h3><a class="toc-backref" href="#id193" role="doc-backlink">tc-mqprio-qopt</a><a class="headerlink" href="#tc-mqprio-qopt" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-mqprio-qopt"></span><h3><a class="toc-backref" href="#id203" role="doc-backlink">tc-mqprio-qopt</a><a class="headerlink" href="#tc-mqprio-qopt" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -954,7 +1020,7 @@
 </dl>
 </section>
 <section id="tc-multiq-qopt">
-<span id="tc-definition-tc-multiq-qopt"></span><h3><a class="toc-backref" href="#id194" role="doc-backlink">tc-multiq-qopt</a><a class="headerlink" href="#tc-multiq-qopt" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-multiq-qopt"></span><h3><a class="toc-backref" href="#id204" role="doc-backlink">tc-multiq-qopt</a><a class="headerlink" href="#tc-multiq-qopt" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -972,7 +1038,7 @@
 </dl>
 </section>
 <section id="tc-netem-qopt">
-<span id="tc-definition-tc-netem-qopt"></span><h3><a class="toc-backref" href="#id195" role="doc-backlink">tc-netem-qopt</a><a class="headerlink" href="#tc-netem-qopt" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-netem-qopt"></span><h3><a class="toc-backref" href="#id205" role="doc-backlink">tc-netem-qopt</a><a class="headerlink" href="#tc-netem-qopt" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1002,7 +1068,7 @@
 </dl>
 </section>
 <section id="tc-netem-gimodel">
-<span id="tc-definition-tc-netem-gimodel"></span><h3><a class="toc-backref" href="#id196" role="doc-backlink">tc-netem-gimodel</a><a class="headerlink" href="#tc-netem-gimodel" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-netem-gimodel"></span><h3><a class="toc-backref" href="#id206" role="doc-backlink">tc-netem-gimodel</a><a class="headerlink" href="#tc-netem-gimodel" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">doc<span class="colon">:</span></dt>
 <dd class="field-odd"><p>State transition probabilities for 4 state model</p>
@@ -1027,7 +1093,7 @@
 </dl>
 </section>
 <section id="tc-netem-gemodel">
-<span id="tc-definition-tc-netem-gemodel"></span><h3><a class="toc-backref" href="#id197" role="doc-backlink">tc-netem-gemodel</a><a class="headerlink" href="#tc-netem-gemodel" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-netem-gemodel"></span><h3><a class="toc-backref" href="#id207" role="doc-backlink">tc-netem-gemodel</a><a class="headerlink" href="#tc-netem-gemodel" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">doc<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Gilbert-Elliot models</p>
@@ -1050,7 +1116,7 @@
 </dl>
 </section>
 <section id="tc-netem-corr">
-<span id="tc-definition-tc-netem-corr"></span><h3><a class="toc-backref" href="#id198" role="doc-backlink">tc-netem-corr</a><a class="headerlink" href="#tc-netem-corr" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-netem-corr"></span><h3><a class="toc-backref" href="#id208" role="doc-backlink">tc-netem-corr</a><a class="headerlink" href="#tc-netem-corr" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1071,7 +1137,7 @@
 </dl>
 </section>
 <section id="tc-netem-reorder">
-<span id="tc-definition-tc-netem-reorder"></span><h3><a class="toc-backref" href="#id199" role="doc-backlink">tc-netem-reorder</a><a class="headerlink" href="#tc-netem-reorder" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-netem-reorder"></span><h3><a class="toc-backref" href="#id209" role="doc-backlink">tc-netem-reorder</a><a class="headerlink" href="#tc-netem-reorder" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1087,7 +1153,7 @@
 </dl>
 </section>
 <section id="tc-netem-corrupt">
-<span id="tc-definition-tc-netem-corrupt"></span><h3><a class="toc-backref" href="#id200" role="doc-backlink">tc-netem-corrupt</a><a class="headerlink" href="#tc-netem-corrupt" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-netem-corrupt"></span><h3><a class="toc-backref" href="#id210" role="doc-backlink">tc-netem-corrupt</a><a class="headerlink" href="#tc-netem-corrupt" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1103,7 +1169,7 @@
 </dl>
 </section>
 <section id="tc-netem-rate">
-<span id="tc-definition-tc-netem-rate"></span><h3><a class="toc-backref" href="#id201" role="doc-backlink">tc-netem-rate</a><a class="headerlink" href="#tc-netem-rate" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-netem-rate"></span><h3><a class="toc-backref" href="#id211" role="doc-backlink">tc-netem-rate</a><a class="headerlink" href="#tc-netem-rate" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1123,7 +1189,7 @@
 </dl>
 </section>
 <section id="tc-netem-slot">
-<span id="tc-definition-tc-netem-slot"></span><h3><a class="toc-backref" href="#id202" role="doc-backlink">tc-netem-slot</a><a class="headerlink" href="#tc-netem-slot" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-netem-slot"></span><h3><a class="toc-backref" href="#id212" role="doc-backlink">tc-netem-slot</a><a class="headerlink" href="#tc-netem-slot" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1147,7 +1213,7 @@
 </dl>
 </section>
 <section id="tc-plug-qopt">
-<span id="tc-definition-tc-plug-qopt"></span><h3><a class="toc-backref" href="#id203" role="doc-backlink">tc-plug-qopt</a><a class="headerlink" href="#tc-plug-qopt" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-plug-qopt"></span><h3><a class="toc-backref" href="#id213" role="doc-backlink">tc-plug-qopt</a><a class="headerlink" href="#tc-plug-qopt" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1163,7 +1229,7 @@
 </dl>
 </section>
 <section id="tc-prio-qopt">
-<span id="tc-definition-tc-prio-qopt"></span><h3><a class="toc-backref" href="#id204" role="doc-backlink">tc-prio-qopt</a><a class="headerlink" href="#tc-prio-qopt" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-prio-qopt"></span><h3><a class="toc-backref" href="#id214" role="doc-backlink">tc-prio-qopt</a><a class="headerlink" href="#tc-prio-qopt" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1181,7 +1247,7 @@
 </dl>
 </section>
 <section id="tc-red-qopt">
-<span id="tc-definition-tc-red-qopt"></span><h3><a class="toc-backref" href="#id205" role="doc-backlink">tc-red-qopt</a><a class="headerlink" href="#tc-red-qopt" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-red-qopt"></span><h3><a class="toc-backref" href="#id215" role="doc-backlink">tc-red-qopt</a><a class="headerlink" href="#tc-red-qopt" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1213,7 +1279,7 @@
 </dl>
 </section>
 <section id="tc-sfb-qopt">
-<span id="tc-definition-tc-sfb-qopt"></span><h3><a class="toc-backref" href="#id206" role="doc-backlink">tc-sfb-qopt</a><a class="headerlink" href="#tc-sfb-qopt" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-sfb-qopt"></span><h3><a class="toc-backref" href="#id216" role="doc-backlink">tc-sfb-qopt</a><a class="headerlink" href="#tc-sfb-qopt" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1243,7 +1309,7 @@
 </dl>
 </section>
 <section id="tc-sfq-qopt">
-<span id="tc-definition-tc-sfq-qopt"></span><h3><a class="toc-backref" href="#id207" role="doc-backlink">tc-sfq-qopt</a><a class="headerlink" href="#tc-sfq-qopt" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-sfq-qopt"></span><h3><a class="toc-backref" href="#id217" role="doc-backlink">tc-sfq-qopt</a><a class="headerlink" href="#tc-sfq-qopt" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1270,7 +1336,7 @@
 </dl>
 </section>
 <section id="tc-sfqred-stats">
-<span id="tc-definition-tc-sfqred-stats"></span><h3><a class="toc-backref" href="#id208" role="doc-backlink">tc-sfqred-stats</a><a class="headerlink" href="#tc-sfqred-stats" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-sfqred-stats"></span><h3><a class="toc-backref" href="#id218" role="doc-backlink">tc-sfqred-stats</a><a class="headerlink" href="#tc-sfqred-stats" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1300,7 +1366,7 @@
 </dl>
 </section>
 <section id="tc-sfq-qopt-v1">
-<span id="tc-definition-tc-sfq-qopt-v1"></span><h3><a class="toc-backref" href="#id209" role="doc-backlink">tc-sfq-qopt-v1</a><a class="headerlink" href="#tc-sfq-qopt-v1" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-sfq-qopt-v1"></span><h3><a class="toc-backref" href="#id219" role="doc-backlink">tc-sfq-qopt-v1</a><a class="headerlink" href="#tc-sfq-qopt-v1" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1344,7 +1410,7 @@
 </dl>
 </section>
 <section id="tc-ratespec">
-<span id="tc-definition-tc-ratespec"></span><h3><a class="toc-backref" href="#id210" role="doc-backlink">tc-ratespec</a><a class="headerlink" href="#tc-ratespec" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-ratespec"></span><h3><a class="toc-backref" href="#id220" role="doc-backlink">tc-ratespec</a><a class="headerlink" href="#tc-ratespec" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1371,7 +1437,7 @@
 </dl>
 </section>
 <section id="tc-tbf-qopt">
-<span id="tc-definition-tc-tbf-qopt"></span><h3><a class="toc-backref" href="#id211" role="doc-backlink">tc-tbf-qopt</a><a class="headerlink" href="#tc-tbf-qopt" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-tbf-qopt"></span><h3><a class="toc-backref" href="#id221" role="doc-backlink">tc-tbf-qopt</a><a class="headerlink" href="#tc-tbf-qopt" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1393,7 +1459,7 @@
 </dl>
 </section>
 <section id="tc-sizespec">
-<span id="tc-definition-tc-sizespec"></span><h3><a class="toc-backref" href="#id212" role="doc-backlink">tc-sizespec</a><a class="headerlink" href="#tc-sizespec" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-sizespec"></span><h3><a class="toc-backref" href="#id222" role="doc-backlink">tc-sizespec</a><a class="headerlink" href="#tc-sizespec" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1421,7 +1487,7 @@
 </dl>
 </section>
 <section id="gnet-estimator">
-<span id="tc-definition-gnet-estimator"></span><h3><a class="toc-backref" href="#id213" role="doc-backlink">gnet-estimator</a><a class="headerlink" href="#gnet-estimator" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-gnet-estimator"></span><h3><a class="toc-backref" href="#id223" role="doc-backlink">gnet-estimator</a><a class="headerlink" href="#gnet-estimator" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1432,14 +1498,14 @@
 <dd class="field-odd"><p>Sampling period</p>
 </dd>
 <dt class="field-even">ewma-log (<code class="docutils literal notranslate"><span class="pre">u8</span></code>)<span class="colon">:</span></dt>
-<dd class="field-even"><p>The log() of measurement window weight</p>
+<dd class="field-even"><p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">log()</span></code> of measurement window weight</p>
 </dd>
 </dl>
 </dd>
 </dl>
 </section>
 <section id="tc-choke-xstats">
-<span id="tc-definition-tc-choke-xstats"></span><h3><a class="toc-backref" href="#id214" role="doc-backlink">tc-choke-xstats</a><a class="headerlink" href="#tc-choke-xstats" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-choke-xstats"></span><h3><a class="toc-backref" href="#id224" role="doc-backlink">tc-choke-xstats</a><a class="headerlink" href="#tc-choke-xstats" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1453,7 +1519,7 @@
 <dd class="field-even"><p>Drops due to queue limits</p>
 </dd>
 <dt class="field-odd">other (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Drops due to drop() calls</p>
+<dd class="field-odd"><p>Drops due to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drop()</span></code> calls</p>
 </dd>
 <dt class="field-even">marked (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<span class="colon">:</span></dt>
 <dd class="field-even"><p>Marked packets</p>
@@ -1466,7 +1532,7 @@
 </dl>
 </section>
 <section id="tc-codel-xstats">
-<span id="tc-definition-tc-codel-xstats"></span><h3><a class="toc-backref" href="#id215" role="doc-backlink">tc-codel-xstats</a><a class="headerlink" href="#tc-codel-xstats" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-codel-xstats"></span><h3><a class="toc-backref" href="#id225" role="doc-backlink">tc-codel-xstats</a><a class="headerlink" href="#tc-codel-xstats" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1505,7 +1571,7 @@
 </dl>
 </section>
 <section id="tc-fq-codel-xstats">
-<span id="tc-definition-tc-fq-codel-xstats"></span><h3><a class="toc-backref" href="#id216" role="doc-backlink">tc-fq-codel-xstats</a><a class="headerlink" href="#tc-fq-codel-xstats" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-fq-codel-xstats"></span><h3><a class="toc-backref" href="#id226" role="doc-backlink">tc-fq-codel-xstats</a><a class="headerlink" href="#tc-fq-codel-xstats" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1544,8 +1610,56 @@
 </dd>
 </dl>
 </section>
+<section id="tc-dualpi2-xstats">
+<span id="tc-definition-tc-dualpi2-xstats"></span><h3><a class="toc-backref" href="#id227" role="doc-backlink">tc-dualpi2-xstats</a><a class="headerlink" href="#tc-dualpi2-xstats" title="Link to this heading">¶</a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>struct</p>
+</dd>
+<dt class="field-even">members<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">prob (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Current base PI probability</p>
+</dd>
+<dt class="field-even">delay-c (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<span class="colon">:</span></dt>
+<dd class="field-even"><p>Current C-queue delay in microseconds</p>
+</dd>
+<dt class="field-odd">delay-l (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Current L-queue delay in microseconds</p>
+</dd>
+<dt class="field-even">pkts-in-c (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<span class="colon">:</span></dt>
+<dd class="field-even"><p>Number of packets enqueued in the C-queue</p>
+</dd>
+<dt class="field-odd">pkts-in-l (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number of packets enqueued in the L-queue</p>
+</dd>
+<dt class="field-even">maxq (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<span class="colon">:</span></dt>
+<dd class="field-even"><p>Maximum number of packets seen by the DualPI2</p>
+</dd>
+<dt class="field-odd">ecn-mark (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<span class="colon">:</span></dt>
+<dd class="field-odd"><p>All packets marked with ECN</p>
+</dd>
+<dt class="field-even">step-mark (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<span class="colon">:</span></dt>
+<dd class="field-even"><p>Only packets marked with ECN due to L-queue step AQM</p>
+</dd>
+<dt class="field-odd">credit (<code class="docutils literal notranslate"><span class="pre">s32</span></code>)<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Current credit value for WRR</p>
+</dd>
+<dt class="field-even">memory-used (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<span class="colon">:</span></dt>
+<dd class="field-even"><p>Memory used in bytes by the DualPI2</p>
+</dd>
+<dt class="field-odd">max-memory-used (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Maximum memory used in bytes by the DualPI2</p>
+</dd>
+<dt class="field-even">memory-limit (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<span class="colon">:</span></dt>
+<dd class="field-even"><p>Memory limit in bytes</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
 <section id="tc-fq-pie-xstats">
-<span id="tc-definition-tc-fq-pie-xstats"></span><h3><a class="toc-backref" href="#id217" role="doc-backlink">tc-fq-pie-xstats</a><a class="headerlink" href="#tc-fq-pie-xstats" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-fq-pie-xstats"></span><h3><a class="toc-backref" href="#id228" role="doc-backlink">tc-fq-pie-xstats</a><a class="headerlink" href="#tc-fq-pie-xstats" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1565,7 +1679,7 @@
 <dd class="field-even"><p>Dropped due to lack of memory in queue</p>
 </dd>
 <dt class="field-odd">ecn-mark (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Packets marked with ecn</p>
+<dd class="field-odd"><p>Packets marked with ECN</p>
 </dd>
 <dt class="field-even">new-flow-count (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<span class="colon">:</span></dt>
 <dd class="field-even"><p>Count of new flows created by packets</p>
@@ -1584,7 +1698,7 @@
 </dl>
 </section>
 <section id="tc-fq-qd-stats">
-<span id="tc-definition-tc-fq-qd-stats"></span><h3><a class="toc-backref" href="#id218" role="doc-backlink">tc-fq-qd-stats</a><a class="headerlink" href="#tc-fq-qd-stats" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-fq-qd-stats"></span><h3><a class="toc-backref" href="#id229" role="doc-backlink">tc-fq-qd-stats</a><a class="headerlink" href="#tc-fq-qd-stats" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1635,7 +1749,7 @@
 </dl>
 </section>
 <section id="tc-hhf-xstats">
-<span id="tc-definition-tc-hhf-xstats"></span><h3><a class="toc-backref" href="#id219" role="doc-backlink">tc-hhf-xstats</a><a class="headerlink" href="#tc-hhf-xstats" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-hhf-xstats"></span><h3><a class="toc-backref" href="#id230" role="doc-backlink">tc-hhf-xstats</a><a class="headerlink" href="#tc-hhf-xstats" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1659,7 +1773,7 @@
 </dl>
 </section>
 <section id="tc-pie-xstats">
-<span id="tc-definition-tc-pie-xstats"></span><h3><a class="toc-backref" href="#id220" role="doc-backlink">tc-pie-xstats</a><a class="headerlink" href="#tc-pie-xstats" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-pie-xstats"></span><h3><a class="toc-backref" href="#id231" role="doc-backlink">tc-pie-xstats</a><a class="headerlink" href="#tc-pie-xstats" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1691,14 +1805,14 @@
 <dd class="field-even"><p>Maximum queue size</p>
 </dd>
 <dt class="field-odd">ecn-mark (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Packets marked with ecn</p>
+<dd class="field-odd"><p>Packets marked with ECN</p>
 </dd>
 </dl>
 </dd>
 </dl>
 </section>
 <section id="tc-red-xstats">
-<span id="tc-definition-tc-red-xstats"></span><h3><a class="toc-backref" href="#id221" role="doc-backlink">tc-red-xstats</a><a class="headerlink" href="#tc-red-xstats" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-red-xstats"></span><h3><a class="toc-backref" href="#id232" role="doc-backlink">tc-red-xstats</a><a class="headerlink" href="#tc-red-xstats" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1712,7 +1826,7 @@
 <dd class="field-even"><p>Drops due to queue limits</p>
 </dd>
 <dt class="field-odd">other (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Drops due to drop() calls</p>
+<dd class="field-odd"><p>Drops due to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drop()</span></code> calls</p>
 </dd>
 <dt class="field-even">marked (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<span class="colon">:</span></dt>
 <dd class="field-even"><p>Marked packets</p>
@@ -1722,7 +1836,7 @@
 </dl>
 </section>
 <section id="tc-sfb-xstats">
-<span id="tc-definition-tc-sfb-xstats"></span><h3><a class="toc-backref" href="#id222" role="doc-backlink">tc-sfb-xstats</a><a class="headerlink" href="#tc-sfb-xstats" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-sfb-xstats"></span><h3><a class="toc-backref" href="#id233" role="doc-backlink">tc-sfb-xstats</a><a class="headerlink" href="#tc-sfb-xstats" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1753,7 +1867,7 @@
 </dl>
 </section>
 <section id="tc-sfq-xstats">
-<span id="tc-definition-tc-sfq-xstats"></span><h3><a class="toc-backref" href="#id223" role="doc-backlink">tc-sfq-xstats</a><a class="headerlink" href="#tc-sfq-xstats" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-sfq-xstats"></span><h3><a class="toc-backref" href="#id234" role="doc-backlink">tc-sfq-xstats</a><a class="headerlink" href="#tc-sfq-xstats" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1767,7 +1881,7 @@
 </dl>
 </section>
 <section id="gnet-stats-basic">
-<span id="tc-definition-gnet-stats-basic"></span><h3><a class="toc-backref" href="#id224" role="doc-backlink">gnet-stats-basic</a><a class="headerlink" href="#gnet-stats-basic" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-gnet-stats-basic"></span><h3><a class="toc-backref" href="#id235" role="doc-backlink">gnet-stats-basic</a><a class="headerlink" href="#gnet-stats-basic" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1783,7 +1897,7 @@
 </dl>
 </section>
 <section id="gnet-stats-rate-est">
-<span id="tc-definition-gnet-stats-rate-est"></span><h3><a class="toc-backref" href="#id225" role="doc-backlink">gnet-stats-rate-est</a><a class="headerlink" href="#gnet-stats-rate-est" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-gnet-stats-rate-est"></span><h3><a class="toc-backref" href="#id236" role="doc-backlink">gnet-stats-rate-est</a><a class="headerlink" href="#gnet-stats-rate-est" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1799,7 +1913,7 @@
 </dl>
 </section>
 <section id="gnet-stats-rate-est64">
-<span id="tc-definition-gnet-stats-rate-est64"></span><h3><a class="toc-backref" href="#id226" role="doc-backlink">gnet-stats-rate-est64</a><a class="headerlink" href="#gnet-stats-rate-est64" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-gnet-stats-rate-est64"></span><h3><a class="toc-backref" href="#id237" role="doc-backlink">gnet-stats-rate-est64</a><a class="headerlink" href="#gnet-stats-rate-est64" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1815,7 +1929,7 @@
 </dl>
 </section>
 <section id="gnet-stats-queue">
-<span id="tc-definition-gnet-stats-queue"></span><h3><a class="toc-backref" href="#id227" role="doc-backlink">gnet-stats-queue</a><a class="headerlink" href="#gnet-stats-queue" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-gnet-stats-queue"></span><h3><a class="toc-backref" href="#id238" role="doc-backlink">gnet-stats-queue</a><a class="headerlink" href="#gnet-stats-queue" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1837,7 +1951,7 @@
 </dl>
 </section>
 <section id="tc-u32-key">
-<span id="tc-definition-tc-u32-key"></span><h3><a class="toc-backref" href="#id228" role="doc-backlink">tc-u32-key</a><a class="headerlink" href="#tc-u32-key" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-u32-key"></span><h3><a class="toc-backref" href="#id239" role="doc-backlink">tc-u32-key</a><a class="headerlink" href="#tc-u32-key" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1857,7 +1971,7 @@
 </dl>
 </section>
 <section id="tc-u32-mark">
-<span id="tc-definition-tc-u32-mark"></span><h3><a class="toc-backref" href="#id229" role="doc-backlink">tc-u32-mark</a><a class="headerlink" href="#tc-u32-mark" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-u32-mark"></span><h3><a class="toc-backref" href="#id240" role="doc-backlink">tc-u32-mark</a><a class="headerlink" href="#tc-u32-mark" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1875,7 +1989,7 @@
 </dl>
 </section>
 <section id="tc-u32-sel">
-<span id="tc-definition-tc-u32-sel"></span><h3><a class="toc-backref" href="#id230" role="doc-backlink">tc-u32-sel</a><a class="headerlink" href="#tc-u32-sel" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-u32-sel"></span><h3><a class="toc-backref" href="#id241" role="doc-backlink">tc-u32-sel</a><a class="headerlink" href="#tc-u32-sel" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1905,7 +2019,7 @@
 </dl>
 </section>
 <section id="tc-u32-pcnt">
-<span id="tc-definition-tc-u32-pcnt"></span><h3><a class="toc-backref" href="#id231" role="doc-backlink">tc-u32-pcnt</a><a class="headerlink" href="#tc-u32-pcnt" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-u32-pcnt"></span><h3><a class="toc-backref" href="#id242" role="doc-backlink">tc-u32-pcnt</a><a class="headerlink" href="#tc-u32-pcnt" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1923,7 +2037,7 @@
 </dl>
 </section>
 <section id="tcf-t">
-<span id="tc-definition-tcf-t"></span><h3><a class="toc-backref" href="#id232" role="doc-backlink">tcf-t</a><a class="headerlink" href="#tcf-t" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tcf-t"></span><h3><a class="toc-backref" href="#id243" role="doc-backlink">tcf-t</a><a class="headerlink" href="#tcf-t" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1943,7 +2057,7 @@
 </dl>
 </section>
 <section id="tc-gact">
-<span id="tc-definition-tc-gact"></span><h3><a class="toc-backref" href="#id233" role="doc-backlink">tc-gact</a><a class="headerlink" href="#tc-gact" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-gact"></span><h3><a class="toc-backref" href="#id244" role="doc-backlink">tc-gact</a><a class="headerlink" href="#tc-gact" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1965,7 +2079,7 @@
 </dl>
 </section>
 <section id="tc-gact-p">
-<span id="tc-definition-tc-gact-p"></span><h3><a class="toc-backref" href="#id234" role="doc-backlink">tc-gact-p</a><a class="headerlink" href="#tc-gact-p" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-gact-p"></span><h3><a class="toc-backref" href="#id245" role="doc-backlink">tc-gact-p</a><a class="headerlink" href="#tc-gact-p" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1983,7 +2097,7 @@
 </dl>
 </section>
 <section id="tcf-ematch-tree-hdr">
-<span id="tc-definition-tcf-ematch-tree-hdr"></span><h3><a class="toc-backref" href="#id235" role="doc-backlink">tcf-ematch-tree-hdr</a><a class="headerlink" href="#tcf-ematch-tree-hdr" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tcf-ematch-tree-hdr"></span><h3><a class="toc-backref" href="#id246" role="doc-backlink">tcf-ematch-tree-hdr</a><a class="headerlink" href="#tcf-ematch-tree-hdr" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -1999,7 +2113,7 @@
 </dl>
 </section>
 <section id="tc-basic-pcnt">
-<span id="tc-definition-tc-basic-pcnt"></span><h3><a class="toc-backref" href="#id236" role="doc-backlink">tc-basic-pcnt</a><a class="headerlink" href="#tc-basic-pcnt" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-basic-pcnt"></span><h3><a class="toc-backref" href="#id247" role="doc-backlink">tc-basic-pcnt</a><a class="headerlink" href="#tc-basic-pcnt" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -2015,7 +2129,7 @@
 </dl>
 </section>
 <section id="tc-matchall-pcnt">
-<span id="tc-definition-tc-matchall-pcnt"></span><h3><a class="toc-backref" href="#id237" role="doc-backlink">tc-matchall-pcnt</a><a class="headerlink" href="#tc-matchall-pcnt" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-matchall-pcnt"></span><h3><a class="toc-backref" href="#id248" role="doc-backlink">tc-matchall-pcnt</a><a class="headerlink" href="#tc-matchall-pcnt" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -2029,7 +2143,7 @@
 </dl>
 </section>
 <section id="tc-mpls">
-<span id="tc-definition-tc-mpls"></span><h3><a class="toc-backref" href="#id238" role="doc-backlink">tc-mpls</a><a class="headerlink" href="#tc-mpls" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-mpls"></span><h3><a class="toc-backref" href="#id249" role="doc-backlink">tc-mpls</a><a class="headerlink" href="#tc-mpls" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -2053,7 +2167,7 @@
 </dl>
 </section>
 <section id="tc-police">
-<span id="tc-definition-tc-police"></span><h3><a class="toc-backref" href="#id239" role="doc-backlink">tc-police</a><a class="headerlink" href="#tc-police" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-police"></span><h3><a class="toc-backref" href="#id250" role="doc-backlink">tc-police</a><a class="headerlink" href="#tc-police" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -2085,7 +2199,7 @@
 </dl>
 </section>
 <section id="tc-pedit-sel">
-<span id="tc-definition-tc-pedit-sel"></span><h3><a class="toc-backref" href="#id240" role="doc-backlink">tc-pedit-sel</a><a class="headerlink" href="#tc-pedit-sel" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-pedit-sel"></span><h3><a class="toc-backref" href="#id251" role="doc-backlink">tc-pedit-sel</a><a class="headerlink" href="#tc-pedit-sel" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -2113,7 +2227,7 @@
 </dl>
 </section>
 <section id="tc-pedit-key">
-<span id="tc-definition-tc-pedit-key"></span><h3><a class="toc-backref" href="#id241" role="doc-backlink">tc-pedit-key</a><a class="headerlink" href="#tc-pedit-key" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-pedit-key"></span><h3><a class="toc-backref" href="#id252" role="doc-backlink">tc-pedit-key</a><a class="headerlink" href="#tc-pedit-key" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -2137,7 +2251,7 @@
 </dl>
 </section>
 <section id="tc-vlan">
-<span id="tc-definition-tc-vlan"></span><h3><a class="toc-backref" href="#id242" role="doc-backlink">tc-vlan</a><a class="headerlink" href="#tc-vlan" title="Link to this heading">¶</a></h3>
+<span id="tc-definition-tc-vlan"></span><h3><a class="toc-backref" href="#id253" role="doc-backlink">tc-vlan</a><a class="headerlink" href="#tc-vlan" title="Link to this heading">¶</a></h3>
 <dl class="field-list simple">
 <dt class="field-odd">type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>struct</p>
@@ -2162,9 +2276,9 @@
 </section>
 </section>
 <section id="attribute-sets">
-<h2><a class="toc-backref" href="#id243" role="doc-backlink">Attribute sets</a><a class="headerlink" href="#attribute-sets" title="Link to this heading">¶</a></h2>
+<h2><a class="toc-backref" href="#id254" role="doc-backlink">Attribute sets</a><a class="headerlink" href="#attribute-sets" title="Link to this heading">¶</a></h2>
 <section id="attrs">
-<span id="tc-attribute-set-attrs"></span><h3><a class="toc-backref" href="#id244" role="doc-backlink">attrs</a><a class="headerlink" href="#attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-attrs"></span><h3><a class="toc-backref" href="#id255" role="doc-backlink">attrs</a><a class="headerlink" href="#attrs" title="Link to this heading">¶</a></h3>
 <section id="kind-string">
 <h4>kind (<code class="docutils literal notranslate"><span class="pre">string</span></code>)<a class="headerlink" href="#kind-string" title="Link to this heading">¶</a></h4>
 </section>
@@ -2251,7 +2365,7 @@
 </section>
 </section>
 <section id="act-attrs">
-<span id="tc-attribute-set-act-attrs"></span><h3><a class="toc-backref" href="#id245" role="doc-backlink">act-attrs</a><a class="headerlink" href="#act-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-act-attrs"></span><h3><a class="toc-backref" href="#id256" role="doc-backlink">act-attrs</a><a class="headerlink" href="#act-attrs" title="Link to this heading">¶</a></h3>
 <section id="id1">
 <h4>kind (<code class="docutils literal notranslate"><span class="pre">string</span></code>)<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h4>
 </section>
@@ -2297,7 +2411,7 @@
 </section>
 </section>
 <section id="act-bpf-attrs">
-<span id="tc-attribute-set-act-bpf-attrs"></span><h3><a class="toc-backref" href="#id246" role="doc-backlink">act-bpf-attrs</a><a class="headerlink" href="#act-bpf-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-act-bpf-attrs"></span><h3><a class="toc-backref" href="#id257" role="doc-backlink">act-bpf-attrs</a><a class="headerlink" href="#act-bpf-attrs" title="Link to this heading">¶</a></h3>
 <section id="tm-binary">
 <h4>tm (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#tm-binary" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -2332,7 +2446,7 @@
 </section>
 </section>
 <section id="act-connmark-attrs">
-<span id="tc-attribute-set-act-connmark-attrs"></span><h3><a class="toc-backref" href="#id247" role="doc-backlink">act-connmark-attrs</a><a class="headerlink" href="#act-connmark-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-act-connmark-attrs"></span><h3><a class="toc-backref" href="#id258" role="doc-backlink">act-connmark-attrs</a><a class="headerlink" href="#act-connmark-attrs" title="Link to this heading">¶</a></h3>
 <section id="id5">
 <h4>parms (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h4>
 </section>
@@ -2349,7 +2463,7 @@
 </section>
 </section>
 <section id="act-csum-attrs">
-<span id="tc-attribute-set-act-csum-attrs"></span><h3><a class="toc-backref" href="#id248" role="doc-backlink">act-csum-attrs</a><a class="headerlink" href="#act-csum-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-act-csum-attrs"></span><h3><a class="toc-backref" href="#id259" role="doc-backlink">act-csum-attrs</a><a class="headerlink" href="#act-csum-attrs" title="Link to this heading">¶</a></h3>
 <section id="id8">
 <h4>parms (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h4>
 </section>
@@ -2366,7 +2480,7 @@
 </section>
 </section>
 <section id="act-ct-attrs">
-<span id="tc-attribute-set-act-ct-attrs"></span><h3><a class="toc-backref" href="#id249" role="doc-backlink">act-ct-attrs</a><a class="headerlink" href="#act-ct-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-act-ct-attrs"></span><h3><a class="toc-backref" href="#id260" role="doc-backlink">act-ct-attrs</a><a class="headerlink" href="#act-ct-attrs" title="Link to this heading">¶</a></h3>
 <section id="id11">
 <h4>parms (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h4>
 </section>
@@ -2448,7 +2562,7 @@
 </section>
 </section>
 <section id="act-ctinfo-attrs">
-<span id="tc-attribute-set-act-ctinfo-attrs"></span><h3><a class="toc-backref" href="#id250" role="doc-backlink">act-ctinfo-attrs</a><a class="headerlink" href="#act-ctinfo-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-act-ctinfo-attrs"></span><h3><a class="toc-backref" href="#id261" role="doc-backlink">act-ctinfo-attrs</a><a class="headerlink" href="#act-ctinfo-attrs" title="Link to this heading">¶</a></h3>
 <section id="id14">
 <h4>pad (<code class="docutils literal notranslate"><span class="pre">pad</span></code>)<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h4>
 </section>
@@ -2486,7 +2600,7 @@
 </section>
 </section>
 <section id="act-gate-attrs">
-<span id="tc-attribute-set-act-gate-attrs"></span><h3><a class="toc-backref" href="#id251" role="doc-backlink">act-gate-attrs</a><a class="headerlink" href="#act-gate-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-act-gate-attrs"></span><h3><a class="toc-backref" href="#id262" role="doc-backlink">act-gate-attrs</a><a class="headerlink" href="#act-gate-attrs" title="Link to this heading">¶</a></h3>
 <section id="id17">
 <h4>tm (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -2524,7 +2638,7 @@
 </section>
 </section>
 <section id="act-ife-attrs">
-<span id="tc-attribute-set-act-ife-attrs"></span><h3><a class="toc-backref" href="#id252" role="doc-backlink">act-ife-attrs</a><a class="headerlink" href="#act-ife-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-act-ife-attrs"></span><h3><a class="toc-backref" href="#id263" role="doc-backlink">act-ife-attrs</a><a class="headerlink" href="#act-ife-attrs" title="Link to this heading">¶</a></h3>
 <section id="id20">
 <h4>parms (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id20" title="Link to this heading">¶</a></h4>
 </section>
@@ -2553,7 +2667,7 @@
 </section>
 </section>
 <section id="act-mirred-attrs">
-<span id="tc-attribute-set-act-mirred-attrs"></span><h3><a class="toc-backref" href="#id253" role="doc-backlink">act-mirred-attrs</a><a class="headerlink" href="#act-mirred-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-act-mirred-attrs"></span><h3><a class="toc-backref" href="#id264" role="doc-backlink">act-mirred-attrs</a><a class="headerlink" href="#act-mirred-attrs" title="Link to this heading">¶</a></h3>
 <section id="id23">
 <h4>tm (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id23" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -2573,7 +2687,7 @@
 </section>
 </section>
 <section id="act-mpls-attrs">
-<span id="tc-attribute-set-act-mpls-attrs"></span><h3><a class="toc-backref" href="#id254" role="doc-backlink">act-mpls-attrs</a><a class="headerlink" href="#act-mpls-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-act-mpls-attrs"></span><h3><a class="toc-backref" href="#id265" role="doc-backlink">act-mpls-attrs</a><a class="headerlink" href="#act-mpls-attrs" title="Link to this heading">¶</a></h3>
 <section id="id26">
 <h4>tm (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id26" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -2615,7 +2729,7 @@
 </section>
 </section>
 <section id="act-nat-attrs">
-<span id="tc-attribute-set-act-nat-attrs"></span><h3><a class="toc-backref" href="#id255" role="doc-backlink">act-nat-attrs</a><a class="headerlink" href="#act-nat-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-act-nat-attrs"></span><h3><a class="toc-backref" href="#id266" role="doc-backlink">act-nat-attrs</a><a class="headerlink" href="#act-nat-attrs" title="Link to this heading">¶</a></h3>
 <section id="id29">
 <h4>parms (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id29" title="Link to this heading">¶</a></h4>
 </section>
@@ -2632,7 +2746,7 @@
 </section>
 </section>
 <section id="act-pedit-attrs">
-<span id="tc-attribute-set-act-pedit-attrs"></span><h3><a class="toc-backref" href="#id256" role="doc-backlink">act-pedit-attrs</a><a class="headerlink" href="#act-pedit-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-act-pedit-attrs"></span><h3><a class="toc-backref" href="#id267" role="doc-backlink">act-pedit-attrs</a><a class="headerlink" href="#act-pedit-attrs" title="Link to this heading">¶</a></h3>
 <section id="id32">
 <h4>tm (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id32" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -2663,7 +2777,7 @@
 </section>
 </section>
 <section id="act-simple-attrs">
-<span id="tc-attribute-set-act-simple-attrs"></span><h3><a class="toc-backref" href="#id257" role="doc-backlink">act-simple-attrs</a><a class="headerlink" href="#act-simple-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-act-simple-attrs"></span><h3><a class="toc-backref" href="#id268" role="doc-backlink">act-simple-attrs</a><a class="headerlink" href="#act-simple-attrs" title="Link to this heading">¶</a></h3>
 <section id="id35">
 <h4>tm (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id35" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -2683,7 +2797,7 @@
 </section>
 </section>
 <section id="act-skbedit-attrs">
-<span id="tc-attribute-set-act-skbedit-attrs"></span><h3><a class="toc-backref" href="#id258" role="doc-backlink">act-skbedit-attrs</a><a class="headerlink" href="#act-skbedit-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-act-skbedit-attrs"></span><h3><a class="toc-backref" href="#id269" role="doc-backlink">act-skbedit-attrs</a><a class="headerlink" href="#act-skbedit-attrs" title="Link to this heading">¶</a></h3>
 <section id="id38">
 <h4>tm (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id38" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -2721,7 +2835,7 @@
 </section>
 </section>
 <section id="act-skbmod-attrs">
-<span id="tc-attribute-set-act-skbmod-attrs"></span><h3><a class="toc-backref" href="#id259" role="doc-backlink">act-skbmod-attrs</a><a class="headerlink" href="#act-skbmod-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-act-skbmod-attrs"></span><h3><a class="toc-backref" href="#id270" role="doc-backlink">act-skbmod-attrs</a><a class="headerlink" href="#act-skbmod-attrs" title="Link to this heading">¶</a></h3>
 <section id="id42">
 <h4>tm (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id42" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -2747,7 +2861,7 @@
 </section>
 </section>
 <section id="act-tunnel-key-attrs">
-<span id="tc-attribute-set-act-tunnel-key-attrs"></span><h3><a class="toc-backref" href="#id260" role="doc-backlink">act-tunnel-key-attrs</a><a class="headerlink" href="#act-tunnel-key-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-act-tunnel-key-attrs"></span><h3><a class="toc-backref" href="#id271" role="doc-backlink">act-tunnel-key-attrs</a><a class="headerlink" href="#act-tunnel-key-attrs" title="Link to this heading">¶</a></h3>
 <section id="id47">
 <h4>tm (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id47" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -2817,7 +2931,7 @@
 </section>
 </section>
 <section id="act-vlan-attrs">
-<span id="tc-attribute-set-act-vlan-attrs"></span><h3><a class="toc-backref" href="#id261" role="doc-backlink">act-vlan-attrs</a><a class="headerlink" href="#act-vlan-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-act-vlan-attrs"></span><h3><a class="toc-backref" href="#id272" role="doc-backlink">act-vlan-attrs</a><a class="headerlink" href="#act-vlan-attrs" title="Link to this heading">¶</a></h3>
 <section id="id50">
 <h4>tm (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id50" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -2854,7 +2968,7 @@
 </section>
 </section>
 <section id="basic-attrs">
-<span id="tc-attribute-set-basic-attrs"></span><h3><a class="toc-backref" href="#id262" role="doc-backlink">basic-attrs</a><a class="headerlink" href="#basic-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-basic-attrs"></span><h3><a class="toc-backref" href="#id273" role="doc-backlink">basic-attrs</a><a class="headerlink" href="#basic-attrs" title="Link to this heading">¶</a></h3>
 <section id="classid-u32">
 <h4>classid (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#classid-u32" title="Link to this heading">¶</a></h4>
 </section>
@@ -2898,7 +3012,7 @@
 </section>
 </section>
 <section id="bpf-attrs">
-<span id="tc-attribute-set-bpf-attrs"></span><h3><a class="toc-backref" href="#id263" role="doc-backlink">bpf-attrs</a><a class="headerlink" href="#bpf-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-bpf-attrs"></span><h3><a class="toc-backref" href="#id274" role="doc-backlink">bpf-attrs</a><a class="headerlink" href="#bpf-attrs" title="Link to this heading">¶</a></h3>
 <section id="id54">
 <h4>act (<code class="docutils literal notranslate"><span class="pre">indexed-array</span></code>)<a class="headerlink" href="#id54" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -2947,7 +3061,7 @@
 </section>
 </section>
 <section id="cake-attrs">
-<span id="tc-attribute-set-cake-attrs"></span><h3><a class="toc-backref" href="#id264" role="doc-backlink">cake-attrs</a><a class="headerlink" href="#cake-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-cake-attrs"></span><h3><a class="toc-backref" href="#id275" role="doc-backlink">cake-attrs</a><a class="headerlink" href="#cake-attrs" title="Link to this heading">¶</a></h3>
 <section id="id63">
 <h4>pad (<code class="docutils literal notranslate"><span class="pre">pad</span></code>)<a class="headerlink" href="#id63" title="Link to this heading">¶</a></h4>
 </section>
@@ -3004,7 +3118,7 @@
 </section>
 </section>
 <section id="cake-stats-attrs">
-<span id="tc-attribute-set-cake-stats-attrs"></span><h3><a class="toc-backref" href="#id265" role="doc-backlink">cake-stats-attrs</a><a class="headerlink" href="#cake-stats-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-cake-stats-attrs"></span><h3><a class="toc-backref" href="#id276" role="doc-backlink">cake-stats-attrs</a><a class="headerlink" href="#cake-stats-attrs" title="Link to this heading">¶</a></h3>
 <section id="id64">
 <h4>pad (<code class="docutils literal notranslate"><span class="pre">pad</span></code>)<a class="headerlink" href="#id64" title="Link to this heading">¶</a></h4>
 </section>
@@ -3063,7 +3177,7 @@
 </section>
 </section>
 <section id="cake-tin-stats-attrs">
-<span id="tc-attribute-set-cake-tin-stats-attrs"></span><h3><a class="toc-backref" href="#id266" role="doc-backlink">cake-tin-stats-attrs</a><a class="headerlink" href="#cake-tin-stats-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-cake-tin-stats-attrs"></span><h3><a class="toc-backref" href="#id277" role="doc-backlink">cake-tin-stats-attrs</a><a class="headerlink" href="#cake-tin-stats-attrs" title="Link to this heading">¶</a></h3>
 <section id="id65">
 <h4>pad (<code class="docutils literal notranslate"><span class="pre">pad</span></code>)<a class="headerlink" href="#id65" title="Link to this heading">¶</a></h4>
 </section>
@@ -3141,7 +3255,7 @@
 </section>
 </section>
 <section id="cbs-attrs">
-<span id="tc-attribute-set-cbs-attrs"></span><h3><a class="toc-backref" href="#id267" role="doc-backlink">cbs-attrs</a><a class="headerlink" href="#cbs-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-cbs-attrs"></span><h3><a class="toc-backref" href="#id278" role="doc-backlink">cbs-attrs</a><a class="headerlink" href="#cbs-attrs" title="Link to this heading">¶</a></h3>
 <section id="id66">
 <h4>parms (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id66" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -3152,7 +3266,7 @@
 </section>
 </section>
 <section id="cgroup-attrs">
-<span id="tc-attribute-set-cgroup-attrs"></span><h3><a class="toc-backref" href="#id268" role="doc-backlink">cgroup-attrs</a><a class="headerlink" href="#cgroup-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-cgroup-attrs"></span><h3><a class="toc-backref" href="#id279" role="doc-backlink">cgroup-attrs</a><a class="headerlink" href="#cgroup-attrs" title="Link to this heading">¶</a></h3>
 <section id="id67">
 <h4>act (<code class="docutils literal notranslate"><span class="pre">indexed-array</span></code>)<a class="headerlink" href="#id67" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -3177,7 +3291,7 @@
 </section>
 </section>
 <section id="choke-attrs">
-<span id="tc-attribute-set-choke-attrs"></span><h3><a class="toc-backref" href="#id269" role="doc-backlink">choke-attrs</a><a class="headerlink" href="#choke-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-choke-attrs"></span><h3><a class="toc-backref" href="#id280" role="doc-backlink">choke-attrs</a><a class="headerlink" href="#choke-attrs" title="Link to this heading">¶</a></h3>
 <section id="id69">
 <h4>parms (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id69" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -3194,7 +3308,7 @@
 </section>
 </section>
 <section id="codel-attrs">
-<span id="tc-attribute-set-codel-attrs"></span><h3><a class="toc-backref" href="#id270" role="doc-backlink">codel-attrs</a><a class="headerlink" href="#codel-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-codel-attrs"></span><h3><a class="toc-backref" href="#id281" role="doc-backlink">codel-attrs</a><a class="headerlink" href="#codel-attrs" title="Link to this heading">¶</a></h3>
 <section id="id70">
 <h4>target (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id70" title="Link to this heading">¶</a></h4>
 </section>
@@ -3212,13 +3326,148 @@
 </section>
 </section>
 <section id="drr-attrs">
-<span id="tc-attribute-set-drr-attrs"></span><h3><a class="toc-backref" href="#id271" role="doc-backlink">drr-attrs</a><a class="headerlink" href="#drr-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-drr-attrs"></span><h3><a class="toc-backref" href="#id282" role="doc-backlink">drr-attrs</a><a class="headerlink" href="#drr-attrs" title="Link to this heading">¶</a></h3>
 <section id="quantum-u32">
 <h4>quantum (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#quantum-u32" title="Link to this heading">¶</a></h4>
 </section>
 </section>
+<section id="dualpi2-attrs">
+<span id="tc-attribute-set-dualpi2-attrs"></span><h3><a class="toc-backref" href="#id283" role="doc-backlink">dualpi2-attrs</a><a class="headerlink" href="#dualpi2-attrs" title="Link to this heading">¶</a></h3>
+<section id="id71">
+<h4>limit (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id71" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">doc<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Limit of total number of packets in queue</p>
+</dd>
+</dl>
+</section>
+<section id="id72">
+<h4>memory-limit (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id72" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">doc<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Memory limit of total number of packets in queue</p>
+</dd>
+</dl>
+</section>
+<section id="id73">
+<h4>target (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id73" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">doc<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Classic target delay in microseconds</p>
+</dd>
+</dl>
+</section>
+<section id="tupdate-u32">
+<h4>tupdate (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#tupdate-u32" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">doc<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Drop probability update interval time in microseconds</p>
+</dd>
+</dl>
+</section>
+<section id="alpha-u32">
+<h4>alpha (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#alpha-u32" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">doc<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Integral gain factor in Hz for PI controller</p>
+</dd>
+</dl>
+</section>
+<section id="beta-u32">
+<h4>beta (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#beta-u32" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">doc<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Proportional gain factor in Hz for PI controller</p>
+</dd>
+</dl>
+</section>
+<section id="step-thresh-pkts-u32">
+<h4>step-thresh-pkts (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#step-thresh-pkts-u32" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">doc<span class="colon">:</span></dt>
+<dd class="field-odd"><p>L4S step marking threshold in packets</p>
+</dd>
+</dl>
+</section>
+<section id="step-thresh-us-u32">
+<h4>step-thresh-us (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#step-thresh-us-u32" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">doc<span class="colon">:</span></dt>
+<dd class="field-odd"><p>L4S Step marking threshold in microseconds</p>
+</dd>
+</dl>
+</section>
+<section id="min-qlen-step-u32">
+<h4>min-qlen-step (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#min-qlen-step-u32" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">doc<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Packets enqueued to the L-queue can apply the step threshold when the queue length of L-queue is larger than this value. (0 is recommended)</p>
+</dd>
+</dl>
+</section>
+<section id="coupling-u8">
+<h4>coupling (<code class="docutils literal notranslate"><span class="pre">u8</span></code>)<a class="headerlink" href="#coupling-u8" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">doc<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Probability coupling factor between Classic and L4S (2 is recommended)</p>
+</dd>
+</dl>
+</section>
+<section id="drop-overload-u8">
+<h4>drop-overload (<code class="docutils literal notranslate"><span class="pre">u8</span></code>)<a class="headerlink" href="#drop-overload-u8" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">doc<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Control the overload strategy (drop to preserve latency or let the queue overflow)</p>
+</dd>
+<dt class="field-even">enum<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#tc-definition-dualpi2-drop-overload"><span class="std std-ref">dualpi2-drop-overload</span></a></p>
+</dd>
+</dl>
+</section>
+<section id="drop-early-u8">
+<h4>drop-early (<code class="docutils literal notranslate"><span class="pre">u8</span></code>)<a class="headerlink" href="#drop-early-u8" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">doc<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Decide where the Classic packets are PI-based dropped or marked</p>
+</dd>
+<dt class="field-even">enum<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#tc-definition-dualpi2-drop-early"><span class="std std-ref">dualpi2-drop-early</span></a></p>
+</dd>
+</dl>
+</section>
+<section id="c-protection-u8">
+<h4>c-protection (<code class="docutils literal notranslate"><span class="pre">u8</span></code>)<a class="headerlink" href="#c-protection-u8" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">doc<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Classic WRR weight in percentage (from 0 to 100)</p>
+</dd>
+</dl>
+</section>
+<section id="ecn-mask-u8">
+<h4>ecn-mask (<code class="docutils literal notranslate"><span class="pre">u8</span></code>)<a class="headerlink" href="#ecn-mask-u8" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">doc<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Configure the L-queue ECN classifier</p>
+</dd>
+<dt class="field-even">enum<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#tc-definition-dualpi2-ecn-mask"><span class="std std-ref">dualpi2-ecn-mask</span></a></p>
+</dd>
+</dl>
+</section>
+<section id="split-gso-u8">
+<h4>split-gso (<code class="docutils literal notranslate"><span class="pre">u8</span></code>)<a class="headerlink" href="#split-gso-u8" title="Link to this heading">¶</a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">doc<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Split aggregated skb or not</p>
+</dd>
+<dt class="field-even">enum<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#tc-definition-dualpi2-split-gso"><span class="std std-ref">dualpi2-split-gso</span></a></p>
+</dd>
+</dl>
+</section>
+</section>
 <section id="ematch-attrs">
-<span id="tc-attribute-set-ematch-attrs"></span><h3><a class="toc-backref" href="#id272" role="doc-backlink">ematch-attrs</a><a class="headerlink" href="#ematch-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-ematch-attrs"></span><h3><a class="toc-backref" href="#id284" role="doc-backlink">ematch-attrs</a><a class="headerlink" href="#ematch-attrs" title="Link to this heading">¶</a></h3>
 <section id="tree-hdr-binary">
 <h4>tree-hdr (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#tree-hdr-binary" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -3232,7 +3481,7 @@
 </section>
 </section>
 <section id="flow-attrs">
-<span id="tc-attribute-set-flow-attrs"></span><h3><a class="toc-backref" href="#id273" role="doc-backlink">flow-attrs</a><a class="headerlink" href="#flow-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-flow-attrs"></span><h3><a class="toc-backref" href="#id285" role="doc-backlink">flow-attrs</a><a class="headerlink" href="#flow-attrs" title="Link to this heading">¶</a></h3>
 <section id="keys-u32">
 <h4>keys (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#keys-u32" title="Link to this heading">¶</a></h4>
 </section>
@@ -3248,8 +3497,8 @@
 <section id="addend-u32">
 <h4>addend (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#addend-u32" title="Link to this heading">¶</a></h4>
 </section>
-<section id="id71">
-<h4>mask (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id71" title="Link to this heading">¶</a></h4>
+<section id="id74">
+<h4>mask (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id74" title="Link to this heading">¶</a></h4>
 </section>
 <section id="xor-u32">
 <h4>xor (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#xor-u32" title="Link to this heading">¶</a></h4>
@@ -3257,34 +3506,34 @@
 <section id="divisor-u32">
 <h4>divisor (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#divisor-u32" title="Link to this heading">¶</a></h4>
 </section>
-<section id="id72">
-<h4>act (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id72" title="Link to this heading">¶</a></h4>
+<section id="id75">
+<h4>act (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id75" title="Link to this heading">¶</a></h4>
 </section>
-<section id="id73">
-<h4>police (<code class="docutils literal notranslate"><span class="pre">nest</span></code>)<a class="headerlink" href="#id73" title="Link to this heading">¶</a></h4>
+<section id="id76">
+<h4>police (<code class="docutils literal notranslate"><span class="pre">nest</span></code>)<a class="headerlink" href="#id76" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
 <dt class="field-odd">nested-attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#tc-attribute-set-police-attrs"><span class="std std-ref">police-attrs</span></a></p>
 </dd>
 </dl>
 </section>
-<section id="id74">
-<h4>ematches (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id74" title="Link to this heading">¶</a></h4>
+<section id="id77">
+<h4>ematches (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id77" title="Link to this heading">¶</a></h4>
 </section>
 <section id="perturb-u32">
 <h4>perturb (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#perturb-u32" title="Link to this heading">¶</a></h4>
 </section>
 </section>
 <section id="flower-attrs">
-<span id="tc-attribute-set-flower-attrs"></span><h3><a class="toc-backref" href="#id274" role="doc-backlink">flower-attrs</a><a class="headerlink" href="#flower-attrs" title="Link to this heading">¶</a></h3>
-<section id="id75">
-<h4>classid (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id75" title="Link to this heading">¶</a></h4>
+<span id="tc-attribute-set-flower-attrs"></span><h3><a class="toc-backref" href="#id286" role="doc-backlink">flower-attrs</a><a class="headerlink" href="#flower-attrs" title="Link to this heading">¶</a></h3>
+<section id="id78">
+<h4>classid (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id78" title="Link to this heading">¶</a></h4>
 </section>
 <section id="indev-string">
 <h4>indev (<code class="docutils literal notranslate"><span class="pre">string</span></code>)<a class="headerlink" href="#indev-string" title="Link to this heading">¶</a></h4>
 </section>
-<section id="id76">
-<h4>act (<code class="docutils literal notranslate"><span class="pre">indexed-array</span></code>)<a class="headerlink" href="#id76" title="Link to this heading">¶</a></h4>
+<section id="id79">
+<h4>act (<code class="docutils literal notranslate"><span class="pre">indexed-array</span></code>)<a class="headerlink" href="#id79" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
 <dt class="field-odd">sub-type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>nest</p>
@@ -3445,8 +3694,8 @@
 </dd>
 </dl>
 </section>
-<section id="id77">
-<h4>flags (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id77" title="Link to this heading">¶</a></h4>
+<section id="id80">
+<h4>flags (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id80" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
 <dt class="field-odd">enum<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#tc-definition-cls-flags"><span class="std std-ref">cls-flags</span></a></p>
@@ -3869,8 +4118,8 @@
 </dd>
 </dl>
 </section>
-<section id="id78">
-<h4>in-hw-count (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id78" title="Link to this heading">¶</a></h4>
+<section id="id81">
+<h4>in-hw-count (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id81" title="Link to this heading">¶</a></h4>
 </section>
 <section id="key-port-src-min-u16">
 <h4>key-port-src-min (<code class="docutils literal notranslate"><span class="pre">u16</span></code>)<a class="headerlink" href="#key-port-src-min-u16" title="Link to this heading">¶</a></h4>
@@ -4026,7 +4275,7 @@
 </section>
 </section>
 <section id="flower-key-enc-opts-attrs">
-<span id="tc-attribute-set-flower-key-enc-opts-attrs"></span><h3><a class="toc-backref" href="#id275" role="doc-backlink">flower-key-enc-opts-attrs</a><a class="headerlink" href="#flower-key-enc-opts-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-flower-key-enc-opts-attrs"></span><h3><a class="toc-backref" href="#id287" role="doc-backlink">flower-key-enc-opts-attrs</a><a class="headerlink" href="#flower-key-enc-opts-attrs" title="Link to this heading">¶</a></h3>
 <section id="geneve-nest">
 <h4>geneve (<code class="docutils literal notranslate"><span class="pre">nest</span></code>)<a class="headerlink" href="#geneve-nest" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -4061,30 +4310,30 @@
 </section>
 </section>
 <section id="flower-key-enc-opt-geneve-attrs">
-<span id="tc-attribute-set-flower-key-enc-opt-geneve-attrs"></span><h3><a class="toc-backref" href="#id276" role="doc-backlink">flower-key-enc-opt-geneve-attrs</a><a class="headerlink" href="#flower-key-enc-opt-geneve-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-flower-key-enc-opt-geneve-attrs"></span><h3><a class="toc-backref" href="#id288" role="doc-backlink">flower-key-enc-opt-geneve-attrs</a><a class="headerlink" href="#flower-key-enc-opt-geneve-attrs" title="Link to this heading">¶</a></h3>
 <section id="class-u16">
 <h4>class (<code class="docutils literal notranslate"><span class="pre">u16</span></code>)<a class="headerlink" href="#class-u16" title="Link to this heading">¶</a></h4>
 </section>
 <section id="type-u8">
 <h4>type (<code class="docutils literal notranslate"><span class="pre">u8</span></code>)<a class="headerlink" href="#type-u8" title="Link to this heading">¶</a></h4>
 </section>
-<section id="id79">
-<h4>data (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id79" title="Link to this heading">¶</a></h4>
+<section id="id82">
+<h4>data (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id82" title="Link to this heading">¶</a></h4>
 </section>
 </section>
 <section id="flower-key-enc-opt-vxlan-attrs">
-<span id="tc-attribute-set-flower-key-enc-opt-vxlan-attrs"></span><h3><a class="toc-backref" href="#id277" role="doc-backlink">flower-key-enc-opt-vxlan-attrs</a><a class="headerlink" href="#flower-key-enc-opt-vxlan-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-flower-key-enc-opt-vxlan-attrs"></span><h3><a class="toc-backref" href="#id289" role="doc-backlink">flower-key-enc-opt-vxlan-attrs</a><a class="headerlink" href="#flower-key-enc-opt-vxlan-attrs" title="Link to this heading">¶</a></h3>
 <section id="gbp-u32">
 <h4>gbp (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#gbp-u32" title="Link to this heading">¶</a></h4>
 </section>
 </section>
 <section id="flower-key-enc-opt-erspan-attrs">
-<span id="tc-attribute-set-flower-key-enc-opt-erspan-attrs"></span><h3><a class="toc-backref" href="#id278" role="doc-backlink">flower-key-enc-opt-erspan-attrs</a><a class="headerlink" href="#flower-key-enc-opt-erspan-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-flower-key-enc-opt-erspan-attrs"></span><h3><a class="toc-backref" href="#id290" role="doc-backlink">flower-key-enc-opt-erspan-attrs</a><a class="headerlink" href="#flower-key-enc-opt-erspan-attrs" title="Link to this heading">¶</a></h3>
 <section id="ver-u8">
 <h4>ver (<code class="docutils literal notranslate"><span class="pre">u8</span></code>)<a class="headerlink" href="#ver-u8" title="Link to this heading">¶</a></h4>
 </section>
-<section id="id80">
-<h4>index (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id80" title="Link to this heading">¶</a></h4>
+<section id="id83">
+<h4>index (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id83" title="Link to this heading">¶</a></h4>
 </section>
 <section id="dir-u8">
 <h4>dir (<code class="docutils literal notranslate"><span class="pre">u8</span></code>)<a class="headerlink" href="#dir-u8" title="Link to this heading">¶</a></h4>
@@ -4094,7 +4343,7 @@
 </section>
 </section>
 <section id="flower-key-enc-opt-gtp-attrs">
-<span id="tc-attribute-set-flower-key-enc-opt-gtp-attrs"></span><h3><a class="toc-backref" href="#id279" role="doc-backlink">flower-key-enc-opt-gtp-attrs</a><a class="headerlink" href="#flower-key-enc-opt-gtp-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-flower-key-enc-opt-gtp-attrs"></span><h3><a class="toc-backref" href="#id291" role="doc-backlink">flower-key-enc-opt-gtp-attrs</a><a class="headerlink" href="#flower-key-enc-opt-gtp-attrs" title="Link to this heading">¶</a></h3>
 <section id="pdu-type-u8">
 <h4>pdu-type (<code class="docutils literal notranslate"><span class="pre">u8</span></code>)<a class="headerlink" href="#pdu-type-u8" title="Link to this heading">¶</a></h4>
 </section>
@@ -4103,7 +4352,7 @@
 </section>
 </section>
 <section id="flower-key-mpls-opt-attrs">
-<span id="tc-attribute-set-flower-key-mpls-opt-attrs"></span><h3><a class="toc-backref" href="#id280" role="doc-backlink">flower-key-mpls-opt-attrs</a><a class="headerlink" href="#flower-key-mpls-opt-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-flower-key-mpls-opt-attrs"></span><h3><a class="toc-backref" href="#id292" role="doc-backlink">flower-key-mpls-opt-attrs</a><a class="headerlink" href="#flower-key-mpls-opt-attrs" title="Link to this heading">¶</a></h3>
 <section id="lse-depth-u8">
 <h4>lse-depth (<code class="docutils literal notranslate"><span class="pre">u8</span></code>)<a class="headerlink" href="#lse-depth-u8" title="Link to this heading">¶</a></h4>
 </section>
@@ -4121,7 +4370,7 @@
 </section>
 </section>
 <section id="flower-key-cfm-attrs">
-<span id="tc-attribute-set-flower-key-cfm-attrs"></span><h3><a class="toc-backref" href="#id281" role="doc-backlink">flower-key-cfm-attrs</a><a class="headerlink" href="#flower-key-cfm-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-flower-key-cfm-attrs"></span><h3><a class="toc-backref" href="#id293" role="doc-backlink">flower-key-cfm-attrs</a><a class="headerlink" href="#flower-key-cfm-attrs" title="Link to this heading">¶</a></h3>
 <section id="md-level-u8">
 <h4>md-level (<code class="docutils literal notranslate"><span class="pre">u8</span></code>)<a class="headerlink" href="#md-level-u8" title="Link to this heading">¶</a></h4>
 </section>
@@ -4130,23 +4379,23 @@
 </section>
 </section>
 <section id="fw-attrs">
-<span id="tc-attribute-set-fw-attrs"></span><h3><a class="toc-backref" href="#id282" role="doc-backlink">fw-attrs</a><a class="headerlink" href="#fw-attrs" title="Link to this heading">¶</a></h3>
-<section id="id81">
-<h4>classid (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id81" title="Link to this heading">¶</a></h4>
+<span id="tc-attribute-set-fw-attrs"></span><h3><a class="toc-backref" href="#id294" role="doc-backlink">fw-attrs</a><a class="headerlink" href="#fw-attrs" title="Link to this heading">¶</a></h3>
+<section id="id84">
+<h4>classid (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id84" title="Link to this heading">¶</a></h4>
 </section>
-<section id="id82">
-<h4>police (<code class="docutils literal notranslate"><span class="pre">nest</span></code>)<a class="headerlink" href="#id82" title="Link to this heading">¶</a></h4>
+<section id="id85">
+<h4>police (<code class="docutils literal notranslate"><span class="pre">nest</span></code>)<a class="headerlink" href="#id85" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
 <dt class="field-odd">nested-attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#tc-attribute-set-police-attrs"><span class="std std-ref">police-attrs</span></a></p>
 </dd>
 </dl>
 </section>
-<section id="id83">
-<h4>indev (<code class="docutils literal notranslate"><span class="pre">string</span></code>)<a class="headerlink" href="#id83" title="Link to this heading">¶</a></h4>
+<section id="id86">
+<h4>indev (<code class="docutils literal notranslate"><span class="pre">string</span></code>)<a class="headerlink" href="#id86" title="Link to this heading">¶</a></h4>
 </section>
-<section id="id84">
-<h4>act (<code class="docutils literal notranslate"><span class="pre">indexed-array</span></code>)<a class="headerlink" href="#id84" title="Link to this heading">¶</a></h4>
+<section id="id87">
+<h4>act (<code class="docutils literal notranslate"><span class="pre">indexed-array</span></code>)<a class="headerlink" href="#id87" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
 <dt class="field-odd">sub-type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>nest</p>
@@ -4156,17 +4405,17 @@
 </dd>
 </dl>
 </section>
-<section id="id85">
-<h4>mask (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id85" title="Link to this heading">¶</a></h4>
+<section id="id88">
+<h4>mask (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id88" title="Link to this heading">¶</a></h4>
 </section>
 </section>
 <section id="gred-attrs">
-<span id="tc-attribute-set-gred-attrs"></span><h3><a class="toc-backref" href="#id283" role="doc-backlink">gred-attrs</a><a class="headerlink" href="#gred-attrs" title="Link to this heading">¶</a></h3>
-<section id="id86">
-<h4>parms (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id86" title="Link to this heading">¶</a></h4>
+<span id="tc-attribute-set-gred-attrs"></span><h3><a class="toc-backref" href="#id295" role="doc-backlink">gred-attrs</a><a class="headerlink" href="#gred-attrs" title="Link to this heading">¶</a></h3>
+<section id="id89">
+<h4>parms (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id89" title="Link to this heading">¶</a></h4>
 </section>
-<section id="id87">
-<h4>stab (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id87" title="Link to this heading">¶</a></h4>
+<section id="id90">
+<h4>stab (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id90" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
 <dt class="field-odd">sub-type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>u8</p>
@@ -4189,8 +4438,8 @@
 </dd>
 </dl>
 </section>
-<section id="id88">
-<h4>limit (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id88" title="Link to this heading">¶</a></h4>
+<section id="id91">
+<h4>limit (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id91" title="Link to this heading">¶</a></h4>
 </section>
 <section id="vq-list-nest">
 <h4>vq-list (<code class="docutils literal notranslate"><span class="pre">nest</span></code>)<a class="headerlink" href="#vq-list-nest" title="Link to this heading">¶</a></h4>
@@ -4202,7 +4451,7 @@
 </section>
 </section>
 <section id="tca-gred-vq-list-attrs">
-<span id="tc-attribute-set-tca-gred-vq-list-attrs"></span><h3><a class="toc-backref" href="#id284" role="doc-backlink">tca-gred-vq-list-attrs</a><a class="headerlink" href="#tca-gred-vq-list-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-tca-gred-vq-list-attrs"></span><h3><a class="toc-backref" href="#id296" role="doc-backlink">tca-gred-vq-list-attrs</a><a class="headerlink" href="#tca-gred-vq-list-attrs" title="Link to this heading">¶</a></h3>
 <section id="entry-nest">
 <h4>entry (<code class="docutils literal notranslate"><span class="pre">nest</span></code>)<a class="headerlink" href="#entry-nest" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -4216,9 +4465,9 @@
 </section>
 </section>
 <section id="tca-gred-vq-entry-attrs">
-<span id="tc-attribute-set-tca-gred-vq-entry-attrs"></span><h3><a class="toc-backref" href="#id285" role="doc-backlink">tca-gred-vq-entry-attrs</a><a class="headerlink" href="#tca-gred-vq-entry-attrs" title="Link to this heading">¶</a></h3>
-<section id="id89">
-<h4>pad (<code class="docutils literal notranslate"><span class="pre">pad</span></code>)<a class="headerlink" href="#id89" title="Link to this heading">¶</a></h4>
+<span id="tc-attribute-set-tca-gred-vq-entry-attrs"></span><h3><a class="toc-backref" href="#id297" role="doc-backlink">tca-gred-vq-entry-attrs</a><a class="headerlink" href="#tca-gred-vq-entry-attrs" title="Link to this heading">¶</a></h3>
+<section id="id92">
+<h4>pad (<code class="docutils literal notranslate"><span class="pre">pad</span></code>)<a class="headerlink" href="#id92" title="Link to this heading">¶</a></h4>
 </section>
 <section id="dp-u32">
 <h4>dp (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#dp-u32" title="Link to this heading">¶</a></h4>
@@ -4250,12 +4499,12 @@
 <section id="stat-other-u32">
 <h4>stat-other (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#stat-other-u32" title="Link to this heading">¶</a></h4>
 </section>
-<section id="id90">
-<h4>flags (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id90" title="Link to this heading">¶</a></h4>
+<section id="id93">
+<h4>flags (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id93" title="Link to this heading">¶</a></h4>
 </section>
 </section>
 <section id="hfsc-attrs">
-<span id="tc-attribute-set-hfsc-attrs"></span><h3><a class="toc-backref" href="#id286" role="doc-backlink">hfsc-attrs</a><a class="headerlink" href="#hfsc-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-hfsc-attrs"></span><h3><a class="toc-backref" href="#id298" role="doc-backlink">hfsc-attrs</a><a class="headerlink" href="#hfsc-attrs" title="Link to this heading">¶</a></h3>
 <section id="rsc-binary">
 <h4>rsc (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#rsc-binary" title="Link to this heading">¶</a></h4>
 </section>
@@ -4267,12 +4516,12 @@
 </section>
 </section>
 <section id="hhf-attrs">
-<span id="tc-attribute-set-hhf-attrs"></span><h3><a class="toc-backref" href="#id287" role="doc-backlink">hhf-attrs</a><a class="headerlink" href="#hhf-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-hhf-attrs"></span><h3><a class="toc-backref" href="#id299" role="doc-backlink">hhf-attrs</a><a class="headerlink" href="#hhf-attrs" title="Link to this heading">¶</a></h3>
 <section id="backlog-limit-u32">
 <h4>backlog-limit (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#backlog-limit-u32" title="Link to this heading">¶</a></h4>
 </section>
-<section id="id91">
-<h4>quantum (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id91" title="Link to this heading">¶</a></h4>
+<section id="id94">
+<h4>quantum (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id94" title="Link to this heading">¶</a></h4>
 </section>
 <section id="hh-flows-limit-u32">
 <h4>hh-flows-limit (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#hh-flows-limit-u32" title="Link to this heading">¶</a></h4>
@@ -4291,9 +4540,9 @@
 </section>
 </section>
 <section id="htb-attrs">
-<span id="tc-attribute-set-htb-attrs"></span><h3><a class="toc-backref" href="#id288" role="doc-backlink">htb-attrs</a><a class="headerlink" href="#htb-attrs" title="Link to this heading">¶</a></h3>
-<section id="id92">
-<h4>parms (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id92" title="Link to this heading">¶</a></h4>
+<span id="tc-attribute-set-htb-attrs"></span><h3><a class="toc-backref" href="#id300" role="doc-backlink">htb-attrs</a><a class="headerlink" href="#htb-attrs" title="Link to this heading">¶</a></h3>
+<section id="id95">
+<h4>parms (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id95" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
 <dt class="field-odd">struct<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#tc-definition-tc-htb-opt"><span class="std std-ref">tc-htb-opt</span></a></p>
@@ -4323,20 +4572,20 @@
 <section id="ceil64-u64">
 <h4>ceil64 (<code class="docutils literal notranslate"><span class="pre">u64</span></code>)<a class="headerlink" href="#ceil64-u64" title="Link to this heading">¶</a></h4>
 </section>
-<section id="id93">
-<h4>pad (<code class="docutils literal notranslate"><span class="pre">pad</span></code>)<a class="headerlink" href="#id93" title="Link to this heading">¶</a></h4>
+<section id="id96">
+<h4>pad (<code class="docutils literal notranslate"><span class="pre">pad</span></code>)<a class="headerlink" href="#id96" title="Link to this heading">¶</a></h4>
 </section>
 <section id="offload-flag">
 <h4>offload (<code class="docutils literal notranslate"><span class="pre">flag</span></code>)<a class="headerlink" href="#offload-flag" title="Link to this heading">¶</a></h4>
 </section>
 </section>
 <section id="matchall-attrs">
-<span id="tc-attribute-set-matchall-attrs"></span><h3><a class="toc-backref" href="#id289" role="doc-backlink">matchall-attrs</a><a class="headerlink" href="#matchall-attrs" title="Link to this heading">¶</a></h3>
-<section id="id94">
-<h4>classid (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id94" title="Link to this heading">¶</a></h4>
+<span id="tc-attribute-set-matchall-attrs"></span><h3><a class="toc-backref" href="#id301" role="doc-backlink">matchall-attrs</a><a class="headerlink" href="#matchall-attrs" title="Link to this heading">¶</a></h3>
+<section id="id97">
+<h4>classid (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id97" title="Link to this heading">¶</a></h4>
 </section>
-<section id="id95">
-<h4>act (<code class="docutils literal notranslate"><span class="pre">indexed-array</span></code>)<a class="headerlink" href="#id95" title="Link to this heading">¶</a></h4>
+<section id="id98">
+<h4>act (<code class="docutils literal notranslate"><span class="pre">indexed-array</span></code>)<a class="headerlink" href="#id98" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
 <dt class="field-odd">sub-type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>nest</p>
@@ -4346,25 +4595,25 @@
 </dd>
 </dl>
 </section>
-<section id="id96">
-<h4>flags (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id96" title="Link to this heading">¶</a></h4>
+<section id="id99">
+<h4>flags (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id99" title="Link to this heading">¶</a></h4>
 </section>
-<section id="id97">
-<h4>pcnt (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id97" title="Link to this heading">¶</a></h4>
+<section id="id100">
+<h4>pcnt (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id100" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
 <dt class="field-odd">struct<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#tc-definition-tc-matchall-pcnt"><span class="std std-ref">tc-matchall-pcnt</span></a></p>
 </dd>
 </dl>
 </section>
-<section id="id98">
-<h4>pad (<code class="docutils literal notranslate"><span class="pre">pad</span></code>)<a class="headerlink" href="#id98" title="Link to this heading">¶</a></h4>
+<section id="id101">
+<h4>pad (<code class="docutils literal notranslate"><span class="pre">pad</span></code>)<a class="headerlink" href="#id101" title="Link to this heading">¶</a></h4>
 </section>
 </section>
 <section id="etf-attrs">
-<span id="tc-attribute-set-etf-attrs"></span><h3><a class="toc-backref" href="#id290" role="doc-backlink">etf-attrs</a><a class="headerlink" href="#etf-attrs" title="Link to this heading">¶</a></h3>
-<section id="id99">
-<h4>parms (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id99" title="Link to this heading">¶</a></h4>
+<span id="tc-attribute-set-etf-attrs"></span><h3><a class="toc-backref" href="#id302" role="doc-backlink">etf-attrs</a><a class="headerlink" href="#etf-attrs" title="Link to this heading">¶</a></h3>
+<section id="id102">
+<h4>parms (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id102" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
 <dt class="field-odd">struct<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#tc-definition-tc-etf-qopt"><span class="std std-ref">tc-etf-qopt</span></a></p>
@@ -4373,7 +4622,7 @@
 </section>
 </section>
 <section id="ets-attrs">
-<span id="tc-attribute-set-ets-attrs"></span><h3><a class="toc-backref" href="#id291" role="doc-backlink">ets-attrs</a><a class="headerlink" href="#ets-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-ets-attrs"></span><h3><a class="toc-backref" href="#id303" role="doc-backlink">ets-attrs</a><a class="headerlink" href="#ets-attrs" title="Link to this heading">¶</a></h3>
 <section id="nbands-u8">
 <h4>nbands (<code class="docutils literal notranslate"><span class="pre">u8</span></code>)<a class="headerlink" href="#nbands-u8" title="Link to this heading">¶</a></h4>
 </section>
@@ -4414,7 +4663,7 @@
 </section>
 </section>
 <section id="fq-attrs">
-<span id="tc-attribute-set-fq-attrs"></span><h3><a class="toc-backref" href="#id292" role="doc-backlink">fq-attrs</a><a class="headerlink" href="#fq-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-fq-attrs"></span><h3><a class="toc-backref" href="#id304" role="doc-backlink">fq-attrs</a><a class="headerlink" href="#fq-attrs" title="Link to this heading">¶</a></h3>
 <section id="plimit-u32">
 <h4>plimit (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#plimit-u32" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -4431,8 +4680,8 @@
 </dd>
 </dl>
 </section>
-<section id="id100">
-<h4>quantum (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id100" title="Link to this heading">¶</a></h4>
+<section id="id103">
+<h4>quantum (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id103" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
 <dt class="field-odd">doc<span class="colon">:</span></dt>
 <dd class="field-odd"><p>RR quantum</p>
@@ -4503,8 +4752,8 @@
 </dd>
 </dl>
 </section>
-<section id="id101">
-<h4>ce-threshold (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id101" title="Link to this heading">¶</a></h4>
+<section id="id104">
+<h4>ce-threshold (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id104" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
 <dt class="field-odd">doc<span class="colon">:</span></dt>
 <dd class="field-odd"><p>DCTCP-like CE marking threshold</p>
@@ -4551,33 +4800,33 @@
 </section>
 </section>
 <section id="fq-codel-attrs">
-<span id="tc-attribute-set-fq-codel-attrs"></span><h3><a class="toc-backref" href="#id293" role="doc-backlink">fq-codel-attrs</a><a class="headerlink" href="#fq-codel-attrs" title="Link to this heading">¶</a></h3>
-<section id="id102">
-<h4>target (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id102" title="Link to this heading">¶</a></h4>
-</section>
-<section id="id103">
-<h4>limit (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id103" title="Link to this heading">¶</a></h4>
-</section>
-<section id="id104">
-<h4>interval (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id104" title="Link to this heading">¶</a></h4>
-</section>
+<span id="tc-attribute-set-fq-codel-attrs"></span><h3><a class="toc-backref" href="#id305" role="doc-backlink">fq-codel-attrs</a><a class="headerlink" href="#fq-codel-attrs" title="Link to this heading">¶</a></h3>
 <section id="id105">
-<h4>ecn (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id105" title="Link to this heading">¶</a></h4>
+<h4>target (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id105" title="Link to this heading">¶</a></h4>
+</section>
+<section id="id106">
+<h4>limit (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id106" title="Link to this heading">¶</a></h4>
+</section>
+<section id="id107">
+<h4>interval (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id107" title="Link to this heading">¶</a></h4>
+</section>
+<section id="id108">
+<h4>ecn (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id108" title="Link to this heading">¶</a></h4>
 </section>
 <section id="flows-u32">
 <h4>flows (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#flows-u32" title="Link to this heading">¶</a></h4>
 </section>
-<section id="id106">
-<h4>quantum (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id106" title="Link to this heading">¶</a></h4>
+<section id="id109">
+<h4>quantum (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id109" title="Link to this heading">¶</a></h4>
 </section>
-<section id="id107">
-<h4>ce-threshold (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id107" title="Link to this heading">¶</a></h4>
+<section id="id110">
+<h4>ce-threshold (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id110" title="Link to this heading">¶</a></h4>
 </section>
 <section id="drop-batch-size-u32">
 <h4>drop-batch-size (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#drop-batch-size-u32" title="Link to this heading">¶</a></h4>
 </section>
-<section id="id108">
-<h4>memory-limit (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id108" title="Link to this heading">¶</a></h4>
+<section id="id111">
+<h4>memory-limit (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id111" title="Link to this heading">¶</a></h4>
 </section>
 <section id="ce-threshold-selector-u8">
 <h4>ce-threshold-selector (<code class="docutils literal notranslate"><span class="pre">u8</span></code>)<a class="headerlink" href="#ce-threshold-selector-u8" title="Link to this heading">¶</a></h4>
@@ -4587,36 +4836,36 @@
 </section>
 </section>
 <section id="fq-pie-attrs">
-<span id="tc-attribute-set-fq-pie-attrs"></span><h3><a class="toc-backref" href="#id294" role="doc-backlink">fq-pie-attrs</a><a class="headerlink" href="#fq-pie-attrs" title="Link to this heading">¶</a></h3>
-<section id="id109">
-<h4>limit (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id109" title="Link to this heading">¶</a></h4>
-</section>
-<section id="id110">
-<h4>flows (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id110" title="Link to this heading">¶</a></h4>
-</section>
-<section id="id111">
-<h4>target (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id111" title="Link to this heading">¶</a></h4>
-</section>
-<section id="tupdate-u32">
-<h4>tupdate (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#tupdate-u32" title="Link to this heading">¶</a></h4>
-</section>
-<section id="alpha-u32">
-<h4>alpha (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#alpha-u32" title="Link to this heading">¶</a></h4>
-</section>
-<section id="beta-u32">
-<h4>beta (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#beta-u32" title="Link to this heading">¶</a></h4>
-</section>
+<span id="tc-attribute-set-fq-pie-attrs"></span><h3><a class="toc-backref" href="#id306" role="doc-backlink">fq-pie-attrs</a><a class="headerlink" href="#fq-pie-attrs" title="Link to this heading">¶</a></h3>
 <section id="id112">
-<h4>quantum (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id112" title="Link to this heading">¶</a></h4>
+<h4>limit (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id112" title="Link to this heading">¶</a></h4>
 </section>
 <section id="id113">
-<h4>memory-limit (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id113" title="Link to this heading">¶</a></h4>
+<h4>flows (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id113" title="Link to this heading">¶</a></h4>
+</section>
+<section id="id114">
+<h4>target (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id114" title="Link to this heading">¶</a></h4>
+</section>
+<section id="id115">
+<h4>tupdate (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id115" title="Link to this heading">¶</a></h4>
+</section>
+<section id="id116">
+<h4>alpha (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id116" title="Link to this heading">¶</a></h4>
+</section>
+<section id="id117">
+<h4>beta (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id117" title="Link to this heading">¶</a></h4>
+</section>
+<section id="id118">
+<h4>quantum (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id118" title="Link to this heading">¶</a></h4>
+</section>
+<section id="id119">
+<h4>memory-limit (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id119" title="Link to this heading">¶</a></h4>
 </section>
 <section id="ecn-prob-u32">
 <h4>ecn-prob (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#ecn-prob-u32" title="Link to this heading">¶</a></h4>
 </section>
-<section id="id114">
-<h4>ecn (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id114" title="Link to this heading">¶</a></h4>
+<section id="id120">
+<h4>ecn (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id120" title="Link to this heading">¶</a></h4>
 </section>
 <section id="bytemode-u32">
 <h4>bytemode (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#bytemode-u32" title="Link to this heading">¶</a></h4>
@@ -4626,7 +4875,7 @@
 </section>
 </section>
 <section id="netem-attrs">
-<span id="tc-attribute-set-netem-attrs"></span><h3><a class="toc-backref" href="#id295" role="doc-backlink">netem-attrs</a><a class="headerlink" href="#netem-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-netem-attrs"></span><h3><a class="toc-backref" href="#id307" role="doc-backlink">netem-attrs</a><a class="headerlink" href="#netem-attrs" title="Link to this heading">¶</a></h3>
 <section id="corr-binary">
 <h4>corr (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#corr-binary" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -4667,19 +4916,19 @@
 </dd>
 </dl>
 </section>
-<section id="id115">
-<h4>rate (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id115" title="Link to this heading">¶</a></h4>
+<section id="id121">
+<h4>rate (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id121" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
 <dt class="field-odd">struct<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#tc-definition-tc-netem-rate"><span class="std std-ref">tc-netem-rate</span></a></p>
 </dd>
 </dl>
 </section>
-<section id="id116">
-<h4>ecn (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id116" title="Link to this heading">¶</a></h4>
+<section id="id122">
+<h4>ecn (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id122" title="Link to this heading">¶</a></h4>
 </section>
-<section id="id117">
-<h4>rate64 (<code class="docutils literal notranslate"><span class="pre">u64</span></code>)<a class="headerlink" href="#id117" title="Link to this heading">¶</a></h4>
+<section id="id123">
+<h4>rate64 (<code class="docutils literal notranslate"><span class="pre">u64</span></code>)<a class="headerlink" href="#id123" title="Link to this heading">¶</a></h4>
 </section>
 <section id="pad-u32">
 <h4>pad (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#pad-u32" title="Link to this heading">¶</a></h4>
@@ -4711,7 +4960,7 @@
 </section>
 </section>
 <section id="netem-loss-attrs">
-<span id="tc-attribute-set-netem-loss-attrs"></span><h3><a class="toc-backref" href="#id296" role="doc-backlink">netem-loss-attrs</a><a class="headerlink" href="#netem-loss-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-netem-loss-attrs"></span><h3><a class="toc-backref" href="#id308" role="doc-backlink">netem-loss-attrs</a><a class="headerlink" href="#netem-loss-attrs" title="Link to this heading">¶</a></h3>
 <section id="gi-binary">
 <h4>gi (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#gi-binary" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -4736,34 +4985,34 @@
 </section>
 </section>
 <section id="pie-attrs">
-<span id="tc-attribute-set-pie-attrs"></span><h3><a class="toc-backref" href="#id297" role="doc-backlink">pie-attrs</a><a class="headerlink" href="#pie-attrs" title="Link to this heading">¶</a></h3>
-<section id="id118">
-<h4>target (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id118" title="Link to this heading">¶</a></h4>
-</section>
-<section id="id119">
-<h4>limit (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id119" title="Link to this heading">¶</a></h4>
-</section>
-<section id="id120">
-<h4>tupdate (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id120" title="Link to this heading">¶</a></h4>
-</section>
-<section id="id121">
-<h4>alpha (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id121" title="Link to this heading">¶</a></h4>
-</section>
-<section id="id122">
-<h4>beta (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id122" title="Link to this heading">¶</a></h4>
-</section>
-<section id="id123">
-<h4>ecn (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id123" title="Link to this heading">¶</a></h4>
-</section>
+<span id="tc-attribute-set-pie-attrs"></span><h3><a class="toc-backref" href="#id309" role="doc-backlink">pie-attrs</a><a class="headerlink" href="#pie-attrs" title="Link to this heading">¶</a></h3>
 <section id="id124">
-<h4>bytemode (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id124" title="Link to this heading">¶</a></h4>
+<h4>target (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id124" title="Link to this heading">¶</a></h4>
 </section>
 <section id="id125">
-<h4>dq-rate-estimator (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id125" title="Link to this heading">¶</a></h4>
+<h4>limit (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id125" title="Link to this heading">¶</a></h4>
+</section>
+<section id="id126">
+<h4>tupdate (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id126" title="Link to this heading">¶</a></h4>
+</section>
+<section id="id127">
+<h4>alpha (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id127" title="Link to this heading">¶</a></h4>
+</section>
+<section id="id128">
+<h4>beta (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id128" title="Link to this heading">¶</a></h4>
+</section>
+<section id="id129">
+<h4>ecn (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id129" title="Link to this heading">¶</a></h4>
+</section>
+<section id="id130">
+<h4>bytemode (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id130" title="Link to this heading">¶</a></h4>
+</section>
+<section id="id131">
+<h4>dq-rate-estimator (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id131" title="Link to this heading">¶</a></h4>
 </section>
 </section>
 <section id="police-attrs">
-<span id="tc-attribute-set-police-attrs"></span><h3><a class="toc-backref" href="#id298" role="doc-backlink">police-attrs</a><a class="headerlink" href="#police-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-police-attrs"></span><h3><a class="toc-backref" href="#id310" role="doc-backlink">police-attrs</a><a class="headerlink" href="#police-attrs" title="Link to this heading">¶</a></h3>
 <section id="tbf-binary">
 <h4>tbf (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#tbf-binary" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -4772,8 +5021,8 @@
 </dd>
 </dl>
 </section>
-<section id="id126">
-<h4>rate (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id126" title="Link to this heading">¶</a></h4>
+<section id="id132">
+<h4>rate (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id132" title="Link to this heading">¶</a></h4>
 </section>
 <section id="peakrate-binary">
 <h4>peakrate (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#peakrate-binary" title="Link to this heading">¶</a></h4>
@@ -4784,19 +5033,19 @@
 <section id="result-u32">
 <h4>result (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#result-u32" title="Link to this heading">¶</a></h4>
 </section>
-<section id="id127">
-<h4>tm (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id127" title="Link to this heading">¶</a></h4>
+<section id="id133">
+<h4>tm (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id133" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
 <dt class="field-odd">struct<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#tc-definition-tcf-t"><span class="std std-ref">tcf-t</span></a></p>
 </dd>
 </dl>
 </section>
-<section id="id128">
-<h4>pad (<code class="docutils literal notranslate"><span class="pre">pad</span></code>)<a class="headerlink" href="#id128" title="Link to this heading">¶</a></h4>
+<section id="id134">
+<h4>pad (<code class="docutils literal notranslate"><span class="pre">pad</span></code>)<a class="headerlink" href="#id134" title="Link to this heading">¶</a></h4>
 </section>
-<section id="id129">
-<h4>rate64 (<code class="docutils literal notranslate"><span class="pre">u64</span></code>)<a class="headerlink" href="#id129" title="Link to this heading">¶</a></h4>
+<section id="id135">
+<h4>rate64 (<code class="docutils literal notranslate"><span class="pre">u64</span></code>)<a class="headerlink" href="#id135" title="Link to this heading">¶</a></h4>
 </section>
 <section id="peakrate64-u64">
 <h4>peakrate64 (<code class="docutils literal notranslate"><span class="pre">u64</span></code>)<a class="headerlink" href="#peakrate64-u64" title="Link to this heading">¶</a></h4>
@@ -4809,7 +5058,7 @@
 </section>
 </section>
 <section id="qfq-attrs">
-<span id="tc-attribute-set-qfq-attrs"></span><h3><a class="toc-backref" href="#id299" role="doc-backlink">qfq-attrs</a><a class="headerlink" href="#qfq-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-qfq-attrs"></span><h3><a class="toc-backref" href="#id311" role="doc-backlink">qfq-attrs</a><a class="headerlink" href="#qfq-attrs" title="Link to this heading">¶</a></h3>
 <section id="weight-u32">
 <h4>weight (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#weight-u32" title="Link to this heading">¶</a></h4>
 </section>
@@ -4818,23 +5067,23 @@
 </section>
 </section>
 <section id="red-attrs">
-<span id="tc-attribute-set-red-attrs"></span><h3><a class="toc-backref" href="#id300" role="doc-backlink">red-attrs</a><a class="headerlink" href="#red-attrs" title="Link to this heading">¶</a></h3>
-<section id="id130">
-<h4>parms (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id130" title="Link to this heading">¶</a></h4>
+<span id="tc-attribute-set-red-attrs"></span><h3><a class="toc-backref" href="#id312" role="doc-backlink">red-attrs</a><a class="headerlink" href="#red-attrs" title="Link to this heading">¶</a></h3>
+<section id="id136">
+<h4>parms (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id136" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
 <dt class="field-odd">struct<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#tc-definition-tc-red-qopt"><span class="std std-ref">tc-red-qopt</span></a></p>
 </dd>
 </dl>
 </section>
-<section id="id131">
-<h4>stab (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id131" title="Link to this heading">¶</a></h4>
+<section id="id137">
+<h4>stab (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id137" title="Link to this heading">¶</a></h4>
 </section>
-<section id="id132">
-<h4>max-p (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id132" title="Link to this heading">¶</a></h4>
+<section id="id138">
+<h4>max-p (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id138" title="Link to this heading">¶</a></h4>
 </section>
-<section id="id133">
-<h4>flags (<code class="docutils literal notranslate"><span class="pre">bitfield32</span></code>)<a class="headerlink" href="#id133" title="Link to this heading">¶</a></h4>
+<section id="id139">
+<h4>flags (<code class="docutils literal notranslate"><span class="pre">bitfield32</span></code>)<a class="headerlink" href="#id139" title="Link to this heading">¶</a></h4>
 </section>
 <section id="early-drop-block-u32">
 <h4>early-drop-block (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#early-drop-block-u32" title="Link to this heading">¶</a></h4>
@@ -4844,9 +5093,9 @@
 </section>
 </section>
 <section id="route-attrs">
-<span id="tc-attribute-set-route-attrs"></span><h3><a class="toc-backref" href="#id301" role="doc-backlink">route-attrs</a><a class="headerlink" href="#route-attrs" title="Link to this heading">¶</a></h3>
-<section id="id134">
-<h4>classid (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id134" title="Link to this heading">¶</a></h4>
+<span id="tc-attribute-set-route-attrs"></span><h3><a class="toc-backref" href="#id313" role="doc-backlink">route-attrs</a><a class="headerlink" href="#route-attrs" title="Link to this heading">¶</a></h3>
+<section id="id140">
+<h4>classid (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id140" title="Link to this heading">¶</a></h4>
 </section>
 <section id="to-u32">
 <h4>to (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#to-u32" title="Link to this heading">¶</a></h4>
@@ -4857,16 +5106,16 @@
 <section id="iif-u32">
 <h4>iif (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#iif-u32" title="Link to this heading">¶</a></h4>
 </section>
-<section id="id135">
-<h4>police (<code class="docutils literal notranslate"><span class="pre">nest</span></code>)<a class="headerlink" href="#id135" title="Link to this heading">¶</a></h4>
+<section id="id141">
+<h4>police (<code class="docutils literal notranslate"><span class="pre">nest</span></code>)<a class="headerlink" href="#id141" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
 <dt class="field-odd">nested-attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#tc-attribute-set-police-attrs"><span class="std std-ref">police-attrs</span></a></p>
 </dd>
 </dl>
 </section>
-<section id="id136">
-<h4>act (<code class="docutils literal notranslate"><span class="pre">indexed-array</span></code>)<a class="headerlink" href="#id136" title="Link to this heading">¶</a></h4>
+<section id="id142">
+<h4>act (<code class="docutils literal notranslate"><span class="pre">indexed-array</span></code>)<a class="headerlink" href="#id142" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
 <dt class="field-odd">sub-type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>nest</p>
@@ -4878,9 +5127,9 @@
 </section>
 </section>
 <section id="taprio-attrs">
-<span id="tc-attribute-set-taprio-attrs"></span><h3><a class="toc-backref" href="#id302" role="doc-backlink">taprio-attrs</a><a class="headerlink" href="#taprio-attrs" title="Link to this heading">¶</a></h3>
-<section id="id137">
-<h4>priomap (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id137" title="Link to this heading">¶</a></h4>
+<span id="tc-attribute-set-taprio-attrs"></span><h3><a class="toc-backref" href="#id314" role="doc-backlink">taprio-attrs</a><a class="headerlink" href="#taprio-attrs" title="Link to this heading">¶</a></h3>
+<section id="id143">
+<h4>priomap (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id143" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
 <dt class="field-odd">struct<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#tc-definition-tc-mqprio-qopt"><span class="std std-ref">tc-mqprio-qopt</span></a></p>
@@ -4909,8 +5158,8 @@
 <section id="sched-clockid-s32">
 <h4>sched-clockid (<code class="docutils literal notranslate"><span class="pre">s32</span></code>)<a class="headerlink" href="#sched-clockid-s32" title="Link to this heading">¶</a></h4>
 </section>
-<section id="id138">
-<h4>pad (<code class="docutils literal notranslate"><span class="pre">pad</span></code>)<a class="headerlink" href="#id138" title="Link to this heading">¶</a></h4>
+<section id="id144">
+<h4>pad (<code class="docutils literal notranslate"><span class="pre">pad</span></code>)<a class="headerlink" href="#id144" title="Link to this heading">¶</a></h4>
 </section>
 <section id="admin-sched-binary">
 <h4>admin-sched (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#admin-sched-binary" title="Link to this heading">¶</a></h4>
@@ -4921,8 +5170,8 @@
 <section id="sched-cycle-time-extension-s64">
 <h4>sched-cycle-time-extension (<code class="docutils literal notranslate"><span class="pre">s64</span></code>)<a class="headerlink" href="#sched-cycle-time-extension-s64" title="Link to this heading">¶</a></h4>
 </section>
-<section id="id139">
-<h4>flags (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id139" title="Link to this heading">¶</a></h4>
+<section id="id145">
+<h4>flags (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id145" title="Link to this heading">¶</a></h4>
 </section>
 <section id="txtime-delay-u32">
 <h4>txtime-delay (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#txtime-delay-u32" title="Link to this heading">¶</a></h4>
@@ -4937,9 +5186,9 @@
 </section>
 </section>
 <section id="taprio-sched-entry-list">
-<span id="tc-attribute-set-taprio-sched-entry-list"></span><h3><a class="toc-backref" href="#id303" role="doc-backlink">taprio-sched-entry-list</a><a class="headerlink" href="#taprio-sched-entry-list" title="Link to this heading">¶</a></h3>
-<section id="id140">
-<h4>entry (<code class="docutils literal notranslate"><span class="pre">nest</span></code>)<a class="headerlink" href="#id140" title="Link to this heading">¶</a></h4>
+<span id="tc-attribute-set-taprio-sched-entry-list"></span><h3><a class="toc-backref" href="#id315" role="doc-backlink">taprio-sched-entry-list</a><a class="headerlink" href="#taprio-sched-entry-list" title="Link to this heading">¶</a></h3>
+<section id="id146">
+<h4>entry (<code class="docutils literal notranslate"><span class="pre">nest</span></code>)<a class="headerlink" href="#id146" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
 <dt class="field-odd">nested-attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#tc-attribute-set-taprio-sched-entry"><span class="std std-ref">taprio-sched-entry</span></a></p>
@@ -4951,9 +5200,9 @@
 </section>
 </section>
 <section id="taprio-sched-entry">
-<span id="tc-attribute-set-taprio-sched-entry"></span><h3><a class="toc-backref" href="#id304" role="doc-backlink">taprio-sched-entry</a><a class="headerlink" href="#taprio-sched-entry" title="Link to this heading">¶</a></h3>
-<section id="id141">
-<h4>index (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id141" title="Link to this heading">¶</a></h4>
+<span id="tc-attribute-set-taprio-sched-entry"></span><h3><a class="toc-backref" href="#id316" role="doc-backlink">taprio-sched-entry</a><a class="headerlink" href="#taprio-sched-entry" title="Link to this heading">¶</a></h3>
+<section id="id147">
+<h4>index (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id147" title="Link to this heading">¶</a></h4>
 </section>
 <section id="cmd-u8">
 <h4>cmd (<code class="docutils literal notranslate"><span class="pre">u8</span></code>)<a class="headerlink" href="#cmd-u8" title="Link to this heading">¶</a></h4>
@@ -4961,14 +5210,14 @@
 <section id="gate-mask-u32">
 <h4>gate-mask (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#gate-mask-u32" title="Link to this heading">¶</a></h4>
 </section>
-<section id="id142">
-<h4>interval (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id142" title="Link to this heading">¶</a></h4>
+<section id="id148">
+<h4>interval (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id148" title="Link to this heading">¶</a></h4>
 </section>
 </section>
 <section id="taprio-tc-entry-attrs">
-<span id="tc-attribute-set-taprio-tc-entry-attrs"></span><h3><a class="toc-backref" href="#id305" role="doc-backlink">taprio-tc-entry-attrs</a><a class="headerlink" href="#taprio-tc-entry-attrs" title="Link to this heading">¶</a></h3>
-<section id="id143">
-<h4>index (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id143" title="Link to this heading">¶</a></h4>
+<span id="tc-attribute-set-taprio-tc-entry-attrs"></span><h3><a class="toc-backref" href="#id317" role="doc-backlink">taprio-tc-entry-attrs</a><a class="headerlink" href="#taprio-tc-entry-attrs" title="Link to this heading">¶</a></h3>
+<section id="id149">
+<h4>index (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id149" title="Link to this heading">¶</a></h4>
 </section>
 <section id="max-sdu-u32">
 <h4>max-sdu (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#max-sdu-u32" title="Link to this heading">¶</a></h4>
@@ -4978,23 +5227,23 @@
 </section>
 </section>
 <section id="tbf-attrs">
-<span id="tc-attribute-set-tbf-attrs"></span><h3><a class="toc-backref" href="#id306" role="doc-backlink">tbf-attrs</a><a class="headerlink" href="#tbf-attrs" title="Link to this heading">¶</a></h3>
-<section id="id144">
-<h4>parms (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id144" title="Link to this heading">¶</a></h4>
+<span id="tc-attribute-set-tbf-attrs"></span><h3><a class="toc-backref" href="#id318" role="doc-backlink">tbf-attrs</a><a class="headerlink" href="#tbf-attrs" title="Link to this heading">¶</a></h3>
+<section id="id150">
+<h4>parms (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id150" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
 <dt class="field-odd">struct<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#tc-definition-tc-tbf-qopt"><span class="std std-ref">tc-tbf-qopt</span></a></p>
 </dd>
 </dl>
 </section>
-<section id="id145">
-<h4>rtab (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id145" title="Link to this heading">¶</a></h4>
+<section id="id151">
+<h4>rtab (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id151" title="Link to this heading">¶</a></h4>
 </section>
 <section id="ptab-binary">
 <h4>ptab (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#ptab-binary" title="Link to this heading">¶</a></h4>
 </section>
-<section id="id146">
-<h4>rate64 (<code class="docutils literal notranslate"><span class="pre">u64</span></code>)<a class="headerlink" href="#id146" title="Link to this heading">¶</a></h4>
+<section id="id152">
+<h4>rate64 (<code class="docutils literal notranslate"><span class="pre">u64</span></code>)<a class="headerlink" href="#id152" title="Link to this heading">¶</a></h4>
 </section>
 <section id="prate64-u64">
 <h4>prate64 (<code class="docutils literal notranslate"><span class="pre">u64</span></code>)<a class="headerlink" href="#prate64-u64" title="Link to this heading">¶</a></h4>
@@ -5005,22 +5254,22 @@
 <section id="pburst-u32">
 <h4>pburst (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#pburst-u32" title="Link to this heading">¶</a></h4>
 </section>
-<section id="id147">
-<h4>pad (<code class="docutils literal notranslate"><span class="pre">pad</span></code>)<a class="headerlink" href="#id147" title="Link to this heading">¶</a></h4>
+<section id="id153">
+<h4>pad (<code class="docutils literal notranslate"><span class="pre">pad</span></code>)<a class="headerlink" href="#id153" title="Link to this heading">¶</a></h4>
 </section>
 </section>
 <section id="act-sample-attrs">
-<span id="tc-attribute-set-act-sample-attrs"></span><h3><a class="toc-backref" href="#id307" role="doc-backlink">act-sample-attrs</a><a class="headerlink" href="#act-sample-attrs" title="Link to this heading">¶</a></h3>
-<section id="id148">
-<h4>tm (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id148" title="Link to this heading">¶</a></h4>
+<span id="tc-attribute-set-act-sample-attrs"></span><h3><a class="toc-backref" href="#id319" role="doc-backlink">act-sample-attrs</a><a class="headerlink" href="#act-sample-attrs" title="Link to this heading">¶</a></h3>
+<section id="id154">
+<h4>tm (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id154" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
 <dt class="field-odd">struct<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#tc-definition-tcf-t"><span class="std std-ref">tcf-t</span></a></p>
 </dd>
 </dl>
 </section>
-<section id="id149">
-<h4>parms (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id149" title="Link to this heading">¶</a></h4>
+<section id="id155">
+<h4>parms (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id155" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
 <dt class="field-odd">struct<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#tc-definition-tc-gact"><span class="std std-ref">tc-gact</span></a></p>
@@ -5036,22 +5285,22 @@
 <section id="psample-group-u32">
 <h4>psample-group (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#psample-group-u32" title="Link to this heading">¶</a></h4>
 </section>
-<section id="id150">
-<h4>pad (<code class="docutils literal notranslate"><span class="pre">pad</span></code>)<a class="headerlink" href="#id150" title="Link to this heading">¶</a></h4>
+<section id="id156">
+<h4>pad (<code class="docutils literal notranslate"><span class="pre">pad</span></code>)<a class="headerlink" href="#id156" title="Link to this heading">¶</a></h4>
 </section>
 </section>
 <section id="act-gact-attrs">
-<span id="tc-attribute-set-act-gact-attrs"></span><h3><a class="toc-backref" href="#id308" role="doc-backlink">act-gact-attrs</a><a class="headerlink" href="#act-gact-attrs" title="Link to this heading">¶</a></h3>
-<section id="id151">
-<h4>tm (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id151" title="Link to this heading">¶</a></h4>
+<span id="tc-attribute-set-act-gact-attrs"></span><h3><a class="toc-backref" href="#id320" role="doc-backlink">act-gact-attrs</a><a class="headerlink" href="#act-gact-attrs" title="Link to this heading">¶</a></h3>
+<section id="id157">
+<h4>tm (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id157" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
 <dt class="field-odd">struct<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#tc-definition-tcf-t"><span class="std std-ref">tcf-t</span></a></p>
 </dd>
 </dl>
 </section>
-<section id="id152">
-<h4>parms (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id152" title="Link to this heading">¶</a></h4>
+<section id="id158">
+<h4>parms (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id158" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
 <dt class="field-odd">struct<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#tc-definition-tc-gact"><span class="std std-ref">tc-gact</span></a></p>
@@ -5066,12 +5315,12 @@
 </dd>
 </dl>
 </section>
-<section id="id153">
-<h4>pad (<code class="docutils literal notranslate"><span class="pre">pad</span></code>)<a class="headerlink" href="#id153" title="Link to this heading">¶</a></h4>
+<section id="id159">
+<h4>pad (<code class="docutils literal notranslate"><span class="pre">pad</span></code>)<a class="headerlink" href="#id159" title="Link to this heading">¶</a></h4>
 </section>
 </section>
 <section id="tca-stab-attrs">
-<span id="tc-attribute-set-tca-stab-attrs"></span><h3><a class="toc-backref" href="#id309" role="doc-backlink">tca-stab-attrs</a><a class="headerlink" href="#tca-stab-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-tca-stab-attrs"></span><h3><a class="toc-backref" href="#id321" role="doc-backlink">tca-stab-attrs</a><a class="headerlink" href="#tca-stab-attrs" title="Link to this heading">¶</a></h3>
 <section id="base-binary">
 <h4>base (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#base-binary" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -5080,12 +5329,12 @@
 </dd>
 </dl>
 </section>
-<section id="id154">
-<h4>data (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id154" title="Link to this heading">¶</a></h4>
+<section id="id160">
+<h4>data (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id160" title="Link to this heading">¶</a></h4>
 </section>
 </section>
 <section id="tca-stats-attrs">
-<span id="tc-attribute-set-tca-stats-attrs"></span><h3><a class="toc-backref" href="#id310" role="doc-backlink">tca-stats-attrs</a><a class="headerlink" href="#tca-stats-attrs" title="Link to this heading">¶</a></h3>
+<span id="tc-attribute-set-tca-stats-attrs"></span><h3><a class="toc-backref" href="#id322" role="doc-backlink">tca-stats-attrs</a><a class="headerlink" href="#tca-stats-attrs" title="Link to this heading">¶</a></h3>
 <section id="basic-binary">
 <h4>basic (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#basic-binary" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
@@ -5129,8 +5378,8 @@
 </dd>
 </dl>
 </section>
-<section id="id155">
-<h4>pad (<code class="docutils literal notranslate"><span class="pre">pad</span></code>)<a class="headerlink" href="#id155" title="Link to this heading">¶</a></h4>
+<section id="id161">
+<h4>pad (<code class="docutils literal notranslate"><span class="pre">pad</span></code>)<a class="headerlink" href="#id161" title="Link to this heading">¶</a></h4>
 </section>
 <section id="basic-hw-binary">
 <h4>basic-hw (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#basic-hw-binary" title="Link to this heading">¶</a></h4>
@@ -5145,9 +5394,9 @@
 </section>
 </section>
 <section id="u32-attrs">
-<span id="tc-attribute-set-u32-attrs"></span><h3><a class="toc-backref" href="#id311" role="doc-backlink">u32-attrs</a><a class="headerlink" href="#u32-attrs" title="Link to this heading">¶</a></h3>
-<section id="id156">
-<h4>classid (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id156" title="Link to this heading">¶</a></h4>
+<span id="tc-attribute-set-u32-attrs"></span><h3><a class="toc-backref" href="#id323" role="doc-backlink">u32-attrs</a><a class="headerlink" href="#u32-attrs" title="Link to this heading">¶</a></h3>
+<section id="id162">
+<h4>classid (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id162" title="Link to this heading">¶</a></h4>
 </section>
 <section id="hash-u32">
 <h4>hash (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#hash-u32" title="Link to this heading">¶</a></h4>
@@ -5155,8 +5404,8 @@
 <section id="link-u32">
 <h4>link (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#link-u32" title="Link to this heading">¶</a></h4>
 </section>
-<section id="id157">
-<h4>divisor (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id157" title="Link to this heading">¶</a></h4>
+<section id="id163">
+<h4>divisor (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id163" title="Link to this heading">¶</a></h4>
 </section>
 <section id="sel-binary">
 <h4>sel (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#sel-binary" title="Link to this heading">¶</a></h4>
@@ -5166,16 +5415,16 @@
 </dd>
 </dl>
 </section>
-<section id="id158">
-<h4>police (<code class="docutils literal notranslate"><span class="pre">nest</span></code>)<a class="headerlink" href="#id158" title="Link to this heading">¶</a></h4>
+<section id="id164">
+<h4>police (<code class="docutils literal notranslate"><span class="pre">nest</span></code>)<a class="headerlink" href="#id164" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
 <dt class="field-odd">nested-attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#tc-attribute-set-police-attrs"><span class="std std-ref">police-attrs</span></a></p>
 </dd>
 </dl>
 </section>
-<section id="id159">
-<h4>act (<code class="docutils literal notranslate"><span class="pre">indexed-array</span></code>)<a class="headerlink" href="#id159" title="Link to this heading">¶</a></h4>
+<section id="id165">
+<h4>act (<code class="docutils literal notranslate"><span class="pre">indexed-array</span></code>)<a class="headerlink" href="#id165" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
 <dt class="field-odd">sub-type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>nest</p>
@@ -5185,11 +5434,11 @@
 </dd>
 </dl>
 </section>
-<section id="id160">
-<h4>indev (<code class="docutils literal notranslate"><span class="pre">string</span></code>)<a class="headerlink" href="#id160" title="Link to this heading">¶</a></h4>
+<section id="id166">
+<h4>indev (<code class="docutils literal notranslate"><span class="pre">string</span></code>)<a class="headerlink" href="#id166" title="Link to this heading">¶</a></h4>
 </section>
-<section id="id161">
-<h4>pcnt (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id161" title="Link to this heading">¶</a></h4>
+<section id="id167">
+<h4>pcnt (<code class="docutils literal notranslate"><span class="pre">binary</span></code>)<a class="headerlink" href="#id167" title="Link to this heading">¶</a></h4>
 <dl class="field-list simple">
 <dt class="field-odd">struct<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#tc-definition-tc-u32-pcnt"><span class="std std-ref">tc-u32-pcnt</span></a></p>
@@ -5204,18 +5453,18 @@
 </dd>
 </dl>
 </section>
-<section id="id162">
-<h4>flags (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id162" title="Link to this heading">¶</a></h4>
+<section id="id168">
+<h4>flags (<code class="docutils literal notranslate"><span class="pre">u32</span></code>)<a class="headerlink" href="#id168" title="Link to this heading">¶</a></h4>
 </section>
-<section id="id163">
-<h4>pad (<code class="docutils literal notranslate"><span class="pre">pad</span></code>)<a class="headerlink" href="#id163" title="Link to this heading">¶</a></h4>
+<section id="id169">
+<h4>pad (<code class="docutils literal notranslate"><span class="pre">pad</span></code>)<a class="headerlink" href="#id169" title="Link to this heading">¶</a></h4>
 </section>
 </section>
 </section>
 <section id="sub-messages">
-<h2><a class="toc-backref" href="#id312" role="doc-backlink">Sub-messages</a><a class="headerlink" href="#sub-messages" title="Link to this heading">¶</a></h2>
+<h2><a class="toc-backref" href="#id324" role="doc-backlink">Sub-messages</a><a class="headerlink" href="#sub-messages" title="Link to this heading">¶</a></h2>
 <section id="options-msg">
-<span id="tc-sub-message-options-msg"></span><h3><a class="toc-backref" href="#id313" role="doc-backlink">options-msg</a><a class="headerlink" href="#options-msg" title="Link to this heading">¶</a></h3>
+<span id="tc-sub-message-options-msg"></span><h3><a class="toc-backref" href="#id325" role="doc-backlink">options-msg</a><a class="headerlink" href="#options-msg" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><dl class="simple">
 <dt><strong>basic</strong></dt><dd><dl class="field-list simple">
@@ -5294,6 +5543,15 @@
 <dt><strong>drr</strong></dt><dd><dl class="field-list simple">
 <dt class="field-odd">attribute-set<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#tc-attribute-set-drr-attrs"><span class="std std-ref">drr-attrs</span></a></p>
+</dd>
+</dl>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>dualpi2</strong></dt><dd><dl class="field-list simple">
+<dt class="field-odd">attribute-set<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#tc-attribute-set-dualpi2-attrs"><span class="std std-ref">dualpi2-attrs</span></a></p>
 </dd>
 </dl>
 </dd>
@@ -5577,7 +5835,7 @@
 </ul>
 </section>
 <section id="act-options-msg">
-<span id="tc-sub-message-act-options-msg"></span><h3><a class="toc-backref" href="#id314" role="doc-backlink">act-options-msg</a><a class="headerlink" href="#act-options-msg" title="Link to this heading">¶</a></h3>
+<span id="tc-sub-message-act-options-msg"></span><h3><a class="toc-backref" href="#id326" role="doc-backlink">act-options-msg</a><a class="headerlink" href="#act-options-msg" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><dl class="simple">
 <dt><strong>bpf</strong></dt><dd><dl class="field-list simple">
@@ -5753,7 +6011,7 @@
 </ul>
 </section>
 <section id="tca-stats-app-msg">
-<span id="tc-sub-message-tca-stats-app-msg"></span><h3><a class="toc-backref" href="#id315" role="doc-backlink">tca-stats-app-msg</a><a class="headerlink" href="#tca-stats-app-msg" title="Link to this heading">¶</a></h3>
+<span id="tc-sub-message-tca-stats-app-msg"></span><h3><a class="toc-backref" href="#id327" role="doc-backlink">tca-stats-app-msg</a><a class="headerlink" href="#tca-stats-app-msg" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><dl class="simple">
 <dt><strong>cake</strong></dt><dd><dl class="field-list simple">
@@ -5777,6 +6035,15 @@
 <dt><strong>codel</strong></dt><dd><dl class="field-list simple">
 <dt class="field-odd">fixed-header<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#tc-definition-tc-codel-xstats"><span class="std std-ref">tc-codel-xstats</span></a></p>
+</dd>
+</dl>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>dualpi2</strong></dt><dd><dl class="field-list simple">
+<dt class="field-odd">fixed-header<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#tc-definition-tc-dualpi2-xstats"><span class="std std-ref">tc-dualpi2-xstats</span></a></p>
 </dd>
 </dl>
 </dd>

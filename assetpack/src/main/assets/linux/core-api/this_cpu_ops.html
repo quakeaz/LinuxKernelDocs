@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -90,6 +90,7 @@
 <li class="toctree-l3"><a class="reference internal" href="union_find.html">Union-Find in Linux</a></li>
 <li class="toctree-l3"><a class="reference internal" href="min_heap.html">Min Heap API</a></li>
 <li class="toctree-l3"><a class="reference internal" href="parser.html">Generic parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="list.html">Linked Lists in Linux</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#low-level-entry-and-exit">Low level entry and exit</a></li>
@@ -213,7 +214,7 @@ exceptional situations and may impact performance and/or correctness
 (remote write operations) of local RMW operations via this_cpu_*.</p>
 <p>The main use of the this_cpu operations has been to optimize counter
 operations.</p>
-<p>The following this_cpu() operations with implied preemption protection
+<p>The following <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">this_cpu()</span></code> operations with implied preemption protection
 are defined. These operations can be used without worrying about
 preemption and interrupts:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>this_cpu_read(pcp)
@@ -276,7 +277,7 @@ put_cpu();
 </div>
 <p>Note that these operations can only be used on per cpu data that is
 reserved for a specific processor. Without disabling preemption in the
-surrounding code this_cpu_inc() will only guarantee that one of the
+surrounding code <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">this_cpu_inc()</span></code> will only guarantee that one of the
 per cpu counters is correctly incremented. However, there is no
 guarantee that the OS will not move the process directly before or
 after the this_cpu instruction is executed. In general this means that
@@ -302,20 +303,20 @@ get_cpu/put_cpu sequence requires. No processor number is
 available. Instead, the offset of the local per cpu area is simply
 added to the per cpu offset.</p>
 <p>Note that this operation can only be used in code segments where
-smp_processor_id() may be used, for example, where preemption has been
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smp_processor_id()</span></code> may be used, for example, where preemption has been
 disabled. The pointer is then used to access local per cpu data in a
 critical section. When preemption is re-enabled this pointer is usually
 no longer useful since it may no longer point to per cpu data of the
 current processor.</p>
 <p>The special cases where it makes sense to obtain a per-CPU pointer in
-preemptible code are addressed by raw_cpu_ptr(), but such use cases need
+preemptible code are addressed by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">raw_cpu_ptr()</span></code>, but such use cases need
 to handle cases where two different CPUs are accessing the same per cpu
 variable, which might well be that of a third CPU.  These use cases are
 typically performance optimizations.  For example, SRCU implements a pair
-of counters as a pair of per-CPU variables, and rcu_read_lock_nmisafe()
-uses raw_cpu_ptr() to get a pointer to some CPU’s counter, and uses
-atomic_inc_long() to handle migration between the raw_cpu_ptr() and
-the atomic_inc_long().</p>
+of counters as a pair of per-CPU variables, and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_read_lock_nmisafe()</span></code>
+uses <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">raw_cpu_ptr()</span></code> to get a pointer to some CPU’s counter, and uses
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">atomic_inc_long()</span></code> to handle migration between the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">raw_cpu_ptr()</span></code> and
+the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">atomic_inc_long()</span></code>.</p>
 </section>
 <section id="per-cpu-variables-and-offsets">
 <h2>Per cpu variables and offsets<a class="headerlink" href="#per-cpu-variables-and-offsets" title="Link to this heading">¶</a></h2>
@@ -335,7 +336,7 @@ cpu variable. Most this_cpu operations take a cpu variable.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int __percpu *p = &amp;x;
 </pre></div>
 </div>
-<p>&amp;x and hence p is the <em>offset</em> of a per cpu variable. this_cpu_ptr()
+<p>&amp;x and hence p is the <em>offset</em> of a per cpu variable. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">this_cpu_ptr()</span></code>
 takes the offset of a per cpu variable which makes this look a bit
 strange.</p>
 </section>
@@ -363,7 +364,7 @@ this_cpu_dec(ps-&gt;m);
 z = this_cpu_inc_return(ps-&gt;n);
 </pre></div>
 </div>
-<p>The calculation of the pointer may require the use of this_cpu_ptr()
+<p>The calculation of the pointer may require the use of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">this_cpu_ptr()</span></code>
 if we do not make use of this_cpu ops later to manipulate fields:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct s *pp;
 
@@ -420,12 +421,12 @@ instructions emitted by the compiler.</p>
 <p>The second one first adds the two offsets and then does the
 relocation.  IMHO the second form looks cleaner and has an easier time
 with (). The second form also is consistent with the way
-this_cpu_read() and friends are used.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">this_cpu_read()</span></code> and friends are used.</p>
 </section>
 <section id="remote-access-to-per-cpu-data">
 <h2>Remote access to per cpu data<a class="headerlink" href="#remote-access-to-per-cpu-data" title="Link to this heading">¶</a></h2>
 <p>Per cpu data structures are designed to be used by one cpu exclusively.
-If you use the variables as intended, this_cpu_ops() are guaranteed to
+If you use the variables as intended, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">this_cpu_ops()</span></code> are guaranteed to
 be “atomic” as no other CPU has access to these data structures.</p>
 <p>There are special cases where you might need to access per cpu data
 structures remotely. It is usually safe to do a remote read access
@@ -436,7 +437,7 @@ RMW operation.</p>
 <p>Remote write accesses to percpu data structures are highly discouraged
 unless absolutely necessary. Please consider using an IPI to wake up
 the remote CPU and perform the update to its per cpu area.</p>
-<p>To access per-cpu data structure remotely, typically the per_cpu_ptr()
+<p>To access per-cpu data structure remotely, typically the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">per_cpu_ptr()</span></code>
 function is used:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>DEFINE_PER_CPU(struct data, datap);
 

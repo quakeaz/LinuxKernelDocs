@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -207,7 +207,7 @@ actuarial risk of your kernel.</p>
 <p>As a rough rule of thumb, any dereference of an RCU-protected
 pointer must be covered by <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_read_lock" title="rcu_read_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_lock()</span></code></a>, <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_read_lock_bh" title="rcu_read_lock_bh"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_lock_bh()</span></code></a>,
 <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_read_lock_sched" title="rcu_read_lock_sched"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_lock_sched()</span></code></a>, or by the appropriate update-side lock.
-Explicit disabling of preemption (preempt_disable(), for example)
+Explicit disabling of preemption (<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">preempt_disable()</span></code>, for example)
 can serve as <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_read_lock_sched" title="rcu_read_lock_sched"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_lock_sched()</span></code></a>, but is less readable and
 prevents lockdep from detecting locking issues.  Acquiring a
 spinlock also enters an RCU read-side critical section.</p>
@@ -258,8 +258,8 @@ CPUs’ tendency to reorder memory references.  One must
 usually liberally sprinkle memory-ordering operations
 through the code, making it difficult to understand and
 to test.  Where it works, it is better to use things
-like smp_store_release() and smp_load_acquire(), but in
-some cases the smp_mb() full memory barrier is required.</p>
+like <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smp_store_release()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smp_load_acquire()</span></code>, but in
+some cases the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smp_mb()</span></code> full memory barrier is required.</p>
 <p>As noted earlier, it is usually better to group the
 changing data into a separate structure, so that the
 change may be made to appear atomic by updating a pointer
@@ -288,16 +288,16 @@ with a bit of devious creativity, it is possible to
 mishandle the return value from <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_dereference" title="rcu_dereference"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_dereference()</span></code></a>.
 Please see <a class="reference internal" href="rcu_dereference.html"><span class="doc">PROPER CARE AND FEEDING OF RETURN VALUES FROM rcu_dereference()</span></a> for more information.</p>
 <p>The <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_dereference" title="rcu_dereference"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_dereference()</span></code></a> primitive is used by the
-various “_rcu()” list-traversal primitives, such
+various “<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_rcu()</span></code>” list-traversal primitives, such
 as the <a class="reference internal" href="../core-api/kernel-api.html#c.list_for_each_entry_rcu" title="list_for_each_entry_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_for_each_entry_rcu()</span></code></a>.  Note that it is
 perfectly legal (if redundant) for update-side code to
-use <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_dereference" title="rcu_dereference"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_dereference()</span></code></a> and the “_rcu()” list-traversal
+use <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_dereference" title="rcu_dereference"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_dereference()</span></code></a> and the “<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_rcu()</span></code>” list-traversal
 primitives.  This is particularly useful in code that
 is common to readers and updaters.  However, lockdep
 will complain if you access <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_dereference" title="rcu_dereference"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_dereference()</span></code></a> outside
 of an RCU read-side critical section.  See <a class="reference internal" href="lockdep.html"><span class="doc">RCU and lockdep checking</span></a>
 to learn what to do about this.</p>
-<p>Of course, neither <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_dereference" title="rcu_dereference"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_dereference()</span></code></a> nor the “_rcu()”
+<p>Of course, neither <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_dereference" title="rcu_dereference"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_dereference()</span></code></a> nor the “<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_rcu()</span></code>”
 list-traversal primitives can substitute for a good
 concurrency design coordinating among multiple updaters.</p>
 </li>
@@ -308,7 +308,7 @@ structure initialization and pointer planting.
 Similarly, if the hlist macros are being used, the
 <a class="reference internal" href="../core-api/kernel-api.html#c.hlist_add_head_rcu" title="hlist_add_head_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">hlist_add_head_rcu()</span></code></a> primitive is required.</p></li>
 <li><p>If the list macros are being used, the <a class="reference internal" href="../core-api/kernel-api.html#c.list_del_rcu" title="list_del_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_del_rcu()</span></code></a>
-primitive must be used to keep <a class="reference internal" href="../core-api/kernel-api.html#c.list_del" title="list_del"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_del()</span></code></a>’s pointer
+primitive must be used to keep <a class="reference internal" href="../core-api/list.html#c.list_del" title="list_del"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_del()</span></code></a>’s pointer
 poisoning from inflicting toxic effects on concurrent
 readers.  Similarly, if the hlist macros are being used,
 the <a class="reference internal" href="../core-api/kernel-api.html#c.hlist_del_rcu" title="hlist_del_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">hlist_del_rcu()</span></code></a> primitive is required.</p>
@@ -380,8 +380,8 @@ corresponding readers must use <a class="reference internal" href="../core-api/k
 and <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_read_unlock_trace" title="rcu_read_unlock_trace"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_unlock_trace()</span></code></a>.</p></li>
 <li><p>If an updater uses <a class="reference internal" href="../core-api/kernel-api.html#c.synchronize_rcu_tasks_rude" title="synchronize_rcu_tasks_rude"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu_tasks_rude()</span></code></a>,
 then the corresponding readers must use anything that
-disables preemption, for example, preempt_disable()
-and preempt_enable().</p></li>
+disables preemption, for example, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">preempt_disable()</span></code>
+and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">preempt_enable()</span></code>.</p></li>
 </ol>
 <p>Mixing things up will result in confusion and broken kernels, and
 has even resulted in an exploitable security issue.  Therefore,
@@ -390,7 +390,7 @@ of course a must.  One example of non-obvious pairing is
 the XDP feature in networking, which calls BPF programs from
 network-driver NAPI (softirq) context.  BPF relies heavily on RCU
 protection for its data structures, but because the BPF program
-invocation happens entirely within a single local_bh_disable()
+invocation happens entirely within a single <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">local_bh_disable()</span></code>
 section in a NAPI poll cycle, this usage is safe.  The reason
 that this usage is safe is that readers can use anything that
 disables BH when updaters use <a class="reference internal" href="../core-api/kernel-api.html#c.call_rcu" title="call_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">call_rcu()</span></code></a> or <a class="reference internal" href="../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a>.</p>
@@ -400,10 +400,10 @@ it usually results in simpler code.  So, unless update
 performance is critically important, the updaters cannot block,
 or the latency of <a class="reference internal" href="../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a> is visible from userspace,
 <a class="reference internal" href="../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a> should be used in preference to <a class="reference internal" href="../core-api/kernel-api.html#c.call_rcu" title="call_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">call_rcu()</span></code></a>.
-Furthermore, <a class="reference internal" href="../core-api/kernel-api.html#c.kfree_rcu" title="kfree_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree_rcu()</span></code></a> and kvfree_rcu() usually result
+Furthermore, <a class="reference internal" href="../core-api/kernel-api.html#c.kfree_rcu" title="kfree_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree_rcu()</span></code></a> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kvfree_rcu()</span></code> usually result
 in even simpler code than does <a class="reference internal" href="../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a> without
 <a class="reference internal" href="../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a>’s multi-millisecond latency.  So please take
-advantage of <a class="reference internal" href="../core-api/kernel-api.html#c.kfree_rcu" title="kfree_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree_rcu()</span></code></a>’s and kvfree_rcu()’s “fire and forget”
+advantage of <a class="reference internal" href="../core-api/kernel-api.html#c.kfree_rcu" title="kfree_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree_rcu()</span></code></a>’s and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kvfree_rcu()</span></code>’s “fire and forget”
 memory-freeing capabilities where it applies.</p>
 <p>An especially important property of the <a class="reference internal" href="../core-api/kernel-api.html#c.synchronize_rcu" title="synchronize_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu()</span></code></a>
 primitive is that it automatically self-limits: if grace periods
@@ -413,7 +413,7 @@ code using <a class="reference internal" href="../core-api/kernel-api.html#c.cal
 cases where grace periods are delayed, as failing to do so can
 result in excessive realtime latencies or even OOM conditions.</p>
 <p>Ways of gaining this self-limiting property when using <a class="reference internal" href="../core-api/kernel-api.html#c.call_rcu" title="call_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">call_rcu()</span></code></a>,
-<a class="reference internal" href="../core-api/kernel-api.html#c.kfree_rcu" title="kfree_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree_rcu()</span></code></a>, or kvfree_rcu() include:</p>
+<a class="reference internal" href="../core-api/kernel-api.html#c.kfree_rcu" title="kfree_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree_rcu()</span></code></a>, or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kvfree_rcu()</span></code> include:</p>
 <ol class="loweralpha">
 <li><p>Keeping a count of the number of data-structure elements
 used by the RCU-protected data structure, including
@@ -457,7 +457,7 @@ a single CPU, or if the system has relatively little free memory.</p>
 </li>
 <li><p>All RCU list-traversal primitives, which include
 <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_dereference" title="rcu_dereference"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_dereference()</span></code></a>, <a class="reference internal" href="../core-api/kernel-api.html#c.list_for_each_entry_rcu" title="list_for_each_entry_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_for_each_entry_rcu()</span></code></a>, and
-list_for_each_safe_rcu(), must be either within an RCU read-side
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">list_for_each_safe_rcu()</span></code>, must be either within an RCU read-side
 critical section or must be protected by appropriate update-side
 locks.  RCU read-side critical sections are delimited by
 <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_read_lock" title="rcu_read_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_lock()</span></code></a> and <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_read_unlock" title="rcu_read_unlock"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_unlock()</span></code></a>, or by similar primitives
@@ -472,17 +472,17 @@ are provided for this case, as discussed in <a class="reference internal" href="
 <p>One exception to this rule is when data is only ever added to
 the linked data structure, and is never removed during any
 time that readers might be accessing that structure.  In such
-cases, READ_ONCE() may be used in place of <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_dereference" title="rcu_dereference"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_dereference()</span></code></a>
+cases, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">READ_ONCE()</span></code> may be used in place of <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_dereference" title="rcu_dereference"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_dereference()</span></code></a>
 and the read-side markers (<a class="reference internal" href="../core-api/kernel-api.html#c.rcu_read_lock" title="rcu_read_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_lock()</span></code></a> and <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_read_unlock" title="rcu_read_unlock"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_unlock()</span></code></a>,
 for example) may be omitted.</p>
 </li>
 <li><p>Conversely, if you are in an RCU read-side critical section,
 and you don’t hold the appropriate update-side lock, you <em>must</em>
-use the “_rcu()” variants of the list macros.  Failing to do so
+use the “<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_rcu()</span></code>” variants of the list macros.  Failing to do so
 will break Alpha, cause aggressive compilers to generate bad code,
 and confuse people trying to understand your code.</p></li>
 <li><p>Any lock acquired by an RCU callback must be acquired elsewhere
-with softirq disabled, e.g., via spin_lock_bh().  Failing to
+with softirq disabled, e.g., via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock_bh()</span></code>.  Failing to
 disable softirq on a given acquisition of that lock will result
 in deadlock as soon as the RCU softirq handler happens to run
 your RCU callback while interrupting that acquisition’s critical
@@ -522,10 +522,10 @@ Please note that if you don’t need to sleep in read-side critical
 sections, you should be using RCU rather than SRCU, because RCU
 is almost always faster and easier to use than is SRCU.</p>
 <p>Also unlike other forms of RCU, explicit initialization and
-cleanup is required either at build time via DEFINE_SRCU()
-or DEFINE_STATIC_SRCU() or at runtime via <a class="reference internal" href="../core-api/kernel-api.html#c.init_srcu_struct" title="init_srcu_struct"><code class="xref c c-func docutils literal notranslate"><span class="pre">init_srcu_struct()</span></code></a>
+cleanup is required either at build time via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">DEFINE_SRCU()</span></code>
+or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">DEFINE_STATIC_SRCU()</span></code> or at runtime via <a class="reference internal" href="../core-api/kernel-api.html#c.init_srcu_struct" title="init_srcu_struct"><code class="xref c c-func docutils literal notranslate"><span class="pre">init_srcu_struct()</span></code></a>
 and <a class="reference internal" href="../core-api/kernel-api.html#c.cleanup_srcu_struct" title="cleanup_srcu_struct"><code class="xref c c-func docutils literal notranslate"><span class="pre">cleanup_srcu_struct()</span></code></a>.  These last two are passed a
-“struct srcu_struct” that defines the scope of a given
+“<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">srcu_struct</span></code>” that defines the scope of a given
 SRCU domain.  Once initialized, the srcu_struct is passed
 to <a class="reference internal" href="../core-api/kernel-api.html#c.srcu_read_lock" title="srcu_read_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">srcu_read_lock()</span></code></a>, <a class="reference internal" href="../core-api/kernel-api.html#c.srcu_read_unlock" title="srcu_read_unlock"><code class="xref c c-func docutils literal notranslate"><span class="pre">srcu_read_unlock()</span></code></a> <a class="reference internal" href="../core-api/kernel-api.html#c.synchronize_srcu" title="synchronize_srcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_srcu()</span></code></a>,
 <a class="reference internal" href="../core-api/kernel-api.html#c.synchronize_srcu_expedited" title="synchronize_srcu_expedited"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_srcu_expedited()</span></code></a>, and <a class="reference internal" href="../core-api/kernel-api.html#c.call_srcu" title="call_srcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">call_srcu()</span></code></a>.  A given
@@ -636,7 +636,7 @@ together with <a class="reference internal" href="../core-api/kernel-api.html#c.
 <li><p>Either <a class="reference internal" href="../core-api/kernel-api.html#c.synchronize_srcu" title="synchronize_srcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_srcu()</span></code></a> or <a class="reference internal" href="../core-api/kernel-api.html#c.synchronize_srcu_expedited" title="synchronize_srcu_expedited"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_srcu_expedited()</span></code></a>,
 together with and <a class="reference internal" href="../core-api/kernel-api.html#c.srcu_barrier" title="srcu_barrier"><code class="xref c c-func docutils literal notranslate"><span class="pre">srcu_barrier()</span></code></a></p></li>
 <li><p><a class="reference internal" href="../core-api/kernel-api.html#c.synchronize_rcu_tasks" title="synchronize_rcu_tasks"><code class="xref c c-func docutils literal notranslate"><span class="pre">synchronize_rcu_tasks()</span></code></a> and <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_barrier_tasks" title="rcu_barrier_tasks"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_barrier_tasks()</span></code></a></p></li>
-<li><p>synchronize_tasks_trace() and <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_barrier_tasks_trace" title="rcu_barrier_tasks_trace"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_barrier_tasks_trace()</span></code></a></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">synchronize_tasks_trace()</span></code> and <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_barrier_tasks_trace" title="rcu_barrier_tasks_trace"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_barrier_tasks_trace()</span></code></a></p></li>
 </ul>
 <p>If necessary, you can use something like workqueues to execute
 the requisite pair of functions concurrently.</p>

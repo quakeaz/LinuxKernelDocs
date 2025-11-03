@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -167,10 +167,10 @@ to take advantage of segmentation offload capabilities of various NICs.</p>
 <section id="tcp-segmentation-offload">
 <h2>TCP Segmentation Offload<a class="headerlink" href="#tcp-segmentation-offload" title="Link to this heading">¶</a></h2>
 <p>TCP segmentation allows a device to segment a single frame into multiple
-frames with a data payload size specified in skb_shinfo()-&gt;gso_size.
+frames with a data payload size specified in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">skb_shinfo()</span></code>-&gt;gso_size.
 When TCP segmentation requested the bit for either SKB_GSO_TCPV4 or
-SKB_GSO_TCPV6 should be set in skb_shinfo()-&gt;gso_type and
-skb_shinfo()-&gt;gso_size should be set to a non-zero value.</p>
+SKB_GSO_TCPV6 should be set in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">skb_shinfo()</span></code>-&gt;gso_type and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">skb_shinfo()</span></code>-&gt;gso_size should be set to a non-zero value.</p>
 <p>TCP segmentation is dependent on support for the use of partial checksum
 offload.  For this reason TSO is normally disabled if the Tx checksum
 offload for a given device is disabled.</p>
@@ -240,7 +240,7 @@ checksum will be computed.</p>
 deal with cases where device drivers cannot perform the offloads described
 above.  What occurs in GSO is that a given skbuff will have its data broken
 out over multiple skbuffs that have been resized to match the MSS provided
-via skb_shinfo()-&gt;gso_size.</p>
+via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">skb_shinfo()</span></code>-&gt;gso_size.</p>
 <p>Before enabling any hardware segmentation offload a corresponding software
 offload is required in GSO.  Otherwise it becomes possible for a frame to
 be re-routed between devices and end up being unable to be transmitted.</p>

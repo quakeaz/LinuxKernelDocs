@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -398,7 +398,7 @@ disk. Whole sequence goes like</p>
 with state snapshot</p>
 <p>state snapshot: copy of whole used memory is taken with interrupts
 disabled</p>
-<p>resume(): devices are woken up so that we can write image to swap</p>
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">resume()</span></code>: devices are woken up so that we can write image to swap</p>
 <p>write image to swap</p>
 <p>suspend(PMSG_SUSPEND): suspend devices so that we can power off</p>
 <p>turn the power off</p>
@@ -411,7 +411,7 @@ but with resume-from-initrd, no one knows)</p>
 <p>suspend(PMSG_FREEZE): devices are frozen so that they don’t interfere
 with image restoration</p>
 <p>image restoration: rewrite memory with image</p>
-<p>resume(): devices are woken up so that system can continue</p>
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">resume()</span></code>: devices are woken up so that system can continue</p>
 <p>thaw all user processes</p>
 </div></blockquote>
 </dd>
@@ -466,7 +466,7 @@ multiple swap partitions (aggregate them into one logical space)?</p>
 (over half of the total system RAM), is it correct that it is likely
 to be useless to try to suspend to disk while that app is running?</p>
 </dd>
-<dt>A:</dt><dd><p>No, it should work okay, as long as your app does not mlock()
+<dt>A:</dt><dd><p>No, it should work okay, as long as your app does not <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock()</span></code>
 it. Just prepare big enough swap partition.</p>
 </dd>
 <dt>Q:</dt><dd><p>What information is useful for debugging suspend-to-disk problems?</p>

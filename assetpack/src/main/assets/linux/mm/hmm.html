@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -161,7 +161,7 @@ English
 <h1>Heterogeneous Memory Management (HMM)<a class="headerlink" href="#heterogeneous-memory-management-hmm" title="Link to this heading">¶</a></h1>
 <p>Provide infrastructure and helpers to integrate non-conventional memory (device
 memory like GPU on board memory) into regular kernel path, with the cornerstone
-of this being specialized struct page for such memory (see sections 5 to 7 of
+of this being specialized <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code> for such memory (see sections 5 to 7 of
 this document).</p>
 <p>HMM also provides optional helpers for SVM (Share Virtual Memory), i.e.,
 allowing a device to transparently access program addresses coherently with
@@ -267,11 +267,11 @@ flush, ...). This cannot be done through common code for all devices. Hence
 why HMM provides helpers to factor out everything that can be while leaving the
 hardware specific details to the device driver.</p>
 <p>The second mechanism HMM provides is a new kind of ZONE_DEVICE memory that
-allows allocating a struct page for each page of device memory. Those pages
+allows allocating a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code> for each page of device memory. Those pages
 are special because the CPU cannot map them. However, they allow migrating
 main memory to device memory using existing migration mechanisms and everything
 looks like a page that is swapped out to disk from the CPU point of view. Using a
-struct page gives the easiest and cleanest integration with existing mm
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code> gives the easiest and cleanest integration with existing mm
 mechanisms. Here again, HMM only provides helpers, first to hotplug new ZONE_DEVICE
 memory for the device memory and second to perform migration. Policy decisions
 of what and when to migrate is left to the device driver.</p>
@@ -296,7 +296,7 @@ registration of a mmu_interval_notifier:</p>
                                  const struct mmu_interval_notifier_ops *ops);
 </pre></div>
 </div>
-<p>During the ops-&gt;invalidate() callback the device driver must perform the
+<p>During the ops-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">invalidate()</span></code> callback the device driver must perform the
 update action to the range (mark range read only, or fully unmap, etc.). The
 device must complete the update before the driver callback returns.</p>
 <p>When the device driver wants to populate a range of virtual addresses, it can
@@ -347,13 +347,13 @@ again:
 </pre></div>
 </div>
 <p>The driver-&gt;update lock is the same lock that the driver takes inside its
-invalidate() callback. That lock must be held before calling
-mmu_interval_read_retry() to avoid any race with a concurrent CPU page table
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">invalidate()</span></code> callback. That lock must be held before calling
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mmu_interval_read_retry()</span></code> to avoid any race with a concurrent CPU page table
 update.</p>
 </section>
 <section id="leverage-default-flags-and-pfn-flags-mask">
 <h2><a class="toc-backref" href="#id5" role="doc-backlink">Leverage default_flags and pfn_flags_mask</a><a class="headerlink" href="#leverage-default-flags-and-pfn-flags-mask" title="Link to this heading">¶</a></h2>
-<p>The hmm_range struct has 2 fields, default_flags and pfn_flags_mask, that specify
+<p>The hmm_range <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">has</span></code> 2 fields, default_flags and pfn_flags_mask, that specify
 fault or snapshot policy for the whole range instead of having to set them
 for each entry in the pfns array.</p>
 <p>For instance if the device driver wants pages for a range with at least read
@@ -362,7 +362,7 @@ permission, it sets:</p>
 range-&gt;pfn_flags_mask = 0;
 </pre></div>
 </div>
-<p>and calls hmm_range_fault() as described above. This will fill fault all pages
+<p>and calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hmm_range_fault()</span></code> as described above. This will fill fault all pages
 in the range with at least read permission.</p>
 <p>Now let’s say the driver wants to do the same except for one page in the range for
 which it wants to have write permission. Now driver set:</p>
@@ -374,7 +374,7 @@ range-&gt;pfns[index_of_write] = HMM_PFN_REQ_WRITE;
 <p>With this, HMM will fault in all pages with at least read (i.e., valid) and for the
 address == range-&gt;start + (index_of_write &lt;&lt; PAGE_SHIFT) it will fault with
 write permission i.e., if the CPU pte does not have write permission set then HMM
-will call handle_mm_fault().</p>
+will call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">handle_mm_fault()</span></code>.</p>
 <p>After hmm_range_fault completes the flag bits are set to the current state of
 the page tables, ie HMM_PFN_VALID | HMM_PFN_WRITE will be set if the page is
 writable.</p>
@@ -385,11 +385,11 @@ writable.</p>
 used a device specific data structure to keep information about migrated memory
 and HMM hooked itself in various places of mm code to handle any access to
 addresses that were backed by device memory. It turns out that this ended up
-replicating most of the fields of struct page and also needed many kernel code
+replicating most of the fields of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code> and also needed many kernel code
 paths to be updated to understand this new kind of memory.</p>
 <p>Most kernel code paths never try to access the memory behind a page
-but only care about struct page contents. Because of this, HMM switched to
-directly using struct page for device memory which left most kernel code paths
+but only care about <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code> contents. Because of this, HMM switched to
+directly using <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code> for device memory which left most kernel code paths
 unaware of the difference. We only need to make sure that no one ever tries to
 map those pages from the CPU side.</p>
 </section>
@@ -422,7 +422,7 @@ release_mem_region(pagemap.range.start, range_len(&amp;pagemap.range));
 </pre></div>
 </div>
 <p>There are also <a class="reference internal" href="../core-api/kernel-api.html#c.devm_request_free_mem_region" title="devm_request_free_mem_region"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_request_free_mem_region()</span></code></a>, <a class="reference internal" href="../core-api/mm-api.html#c.devm_memremap_pages" title="devm_memremap_pages"><code class="xref c c-func docutils literal notranslate"><span class="pre">devm_memremap_pages()</span></code></a>,
-devm_memunmap_pages(), and devm_release_mem_region() when the resources can
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_memunmap_pages()</span></code>, and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_release_mem_region()</span></code> when the resources can
 be tied to a <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span></code>.</p>
 <p>The overall migration steps are similar to migrating NUMA pages within system
 memory (see <a class="reference internal" href="page_migration.html"><span class="doc">Page migration</span></a>) but the steps are split
@@ -430,7 +430,7 @@ between device driver specific code and shared common code:</p>
 <ol class="arabic">
 <li><p><code class="docutils literal notranslate"><span class="pre">mmap_read_lock()</span></code></p>
 <p>The device driver has to pass a <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">vm_area_struct</span></code> to
-<a class="reference internal" href="../core-api/mm-api.html#c.migrate_vma_setup" title="migrate_vma_setup"><code class="xref c c-func docutils literal notranslate"><span class="pre">migrate_vma_setup()</span></code></a> so the mmap_read_lock() or mmap_write_lock() needs to
+<a class="reference internal" href="../core-api/mm-api.html#c.migrate_vma_setup" title="migrate_vma_setup"><code class="xref c c-func docutils literal notranslate"><span class="pre">migrate_vma_setup()</span></code></a> so the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mmap_read_lock()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mmap_write_lock()</span></code> needs to
 be held for the duration of the migration.</p>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">migrate_vma_setup(struct</span> <span class="pre">migrate_vma</span> <span class="pre">*args)</span></code></p>
@@ -459,7 +459,7 @@ This is explained more in the next section.</p>
 entry results in a valid “zero” PFN stored in the <code class="docutils literal notranslate"><span class="pre">args-&gt;src</span></code> array.
 This lets the driver allocate device private memory and clear it instead
 of copying a page of zeros. Valid PTE entries to system memory or
-device private struct pages will be locked with <code class="docutils literal notranslate"><span class="pre">lock_page()</span></code>, isolated
+device private <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pages</span></code> will be locked with <code class="docutils literal notranslate"><span class="pre">lock_page()</span></code>, isolated
 from the LRU (if system memory since device private pages are not on
 the LRU), unmapped from the process, and a special migration PTE is
 inserted in place of the original PTE.
@@ -471,7 +471,7 @@ destination pages.</p>
 bit is set and skips entries that are not migrating. The device driver
 can also choose to skip migrating a page by not filling in the <code class="docutils literal notranslate"><span class="pre">dst</span></code>
 array for that page.</p>
-<p>The driver then allocates either a device private struct page or a
+<p>The driver then allocates either a device private <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code> or a
 system memory page, locks the page with <code class="docutils literal notranslate"><span class="pre">lock_page()</span></code>, and fills in the
 <code class="docutils literal notranslate"><span class="pre">dst</span></code> array entry with:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dst[i] = migrate_pfn(page_to_pfn(dpage));

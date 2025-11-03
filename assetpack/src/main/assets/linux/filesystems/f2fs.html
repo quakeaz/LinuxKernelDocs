@@ -14,7 +14,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Global File System 2" href="gfs2.html" />
-    <link rel="prev" title="4. Dynamic Structures" href="ext4/dynamic.html" />
+    <link rel="prev" title="4.4. Extended Attributes" href="ext4/attributes.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -476,7 +476,7 @@ These are developer options for experiments to simulate filesystem
 fragmentation/after-GC situation itself. The developers use these
 modes to understand filesystem fragmentation/after-GC condition well,
 and eventually get some insights to handle them better.
-In “fragment:segment”, f2fs allocates a new segment in ramdom
+In “fragment:segment”, f2fs allocates a new segment in random
 position. With this, we can simulate the after-GC condition.
 In “fragment:block”, we can scatter block allocation with
 “max_fragment_chunk” and “max_fragment_hole” sysfs nodes.
@@ -511,13 +511,13 @@ recommend to re-format the filesystem after using these options.</p></td>
 <tr class="row-even"><td><p>jqfmt=&lt;quota type&gt;</p></td>
 <td><p>&lt;quota type&gt;: [vfsold,vfsv0,vfsv1].</p></td>
 </tr>
-<tr class="row-odd"><td><p>offusrjquota</p></td>
+<tr class="row-odd"><td><p>usrjquota=</p></td>
 <td><p>Turn off user journalled quota.</p></td>
 </tr>
-<tr class="row-even"><td><p>offgrpjquota</p></td>
+<tr class="row-even"><td><p>grpjquota=</p></td>
 <td><p>Turn off group journalled quota.</p></td>
 </tr>
-<tr class="row-odd"><td><p>offprjjquota</p></td>
+<tr class="row-odd"><td><p>prjjquota=</p></td>
 <td><p>Turn off project journalled quota.</p></td>
 </tr>
 <tr class="row-even"><td><p>quota</p></td>
@@ -552,7 +552,7 @@ select the corresponding fscrypt policy version.</p></td>
 </tr>
 <tr class="row-even"><td><p>checkpoint=%s[:%u[%]]</p></td>
 <td><p>Set to “disable” to turn off checkpointing. Set to “enable”
-to reenable checkpointing. Is enabled by default. While
+to re-enable checkpointing. Is enabled by default. While
 disabled, any unmounting or unexpected shutdowns will cause
 the filesystem contents to appear as they did when the
 filesystem was mounted with that option.
@@ -1198,7 +1198,7 @@ bitmap is composed of a bit stream covering whole blocks in main area.</p>
 <h3>Fallocate(2) Policy<a class="headerlink" href="#fallocate-2-policy" title="Link to this heading">¶</a></h3>
 <p>The default policy follows the below POSIX rule.</p>
 <dl class="simple">
-<dt>Allocating disk space</dt><dd><p>The default operation (i.e., mode is zero) of fallocate() allocates
+<dt>Allocating disk space</dt><dd><p>The default operation (i.e., mode is zero) of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fallocate()</span></code> allocates
 the disk space within the range specified by offset and len.  The
 file size (as reported by stat(2)) will be changed if offset+len is
 greater than the file size.  Any subregion within the range specified

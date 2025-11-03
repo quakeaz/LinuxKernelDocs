@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -222,9 +222,13 @@
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">miscdevice</span> <span class="pre">*misc</span></code></dt><dd><p>device structure</p>
-<p>Register a miscellaneous device with the kernel. If the minor
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Register a miscellaneous device with the kernel. If the minor
 number is set to <code class="docutils literal notranslate"><span class="pre">MISC_DYNAMIC_MINOR</span></code> a minor number is assigned
 and placed in the minor field of the structure. For other cases
 the minor number requested is used.</p>
@@ -234,8 +238,7 @@ syscall to the device sets file-&gt;private_data to point to the
 structure. Drivers don’t need open in fops for this.</p>
 <p>A zero is returned on success and a negative errno code for
 failure.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.misc_deregister">
@@ -245,12 +248,15 @@ failure.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">miscdevice</span> <span class="pre">*misc</span></code></dt><dd><p>device to unregister</p>
-<p>Unregister a miscellaneous device that was previously
-successfully registered with <a class="reference internal" href="#c.misc_register" title="misc_register"><code class="xref c c-func docutils literal notranslate"><span class="pre">misc_register()</span></code></a>.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Unregister a miscellaneous device that was previously
+successfully registered with <a class="reference internal" href="#c.misc_register" title="misc_register"><code class="xref c c-func docutils literal notranslate"><span class="pre">misc_register()</span></code></a>.</p>
+</div></blockquote>
 </div>
 </section>
 

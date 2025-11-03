@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -390,8 +390,8 @@ conversion can be made when linux/file.h includes asm/file.h.
 However this is not always the case (See signal.h).
 This message type is emitted only for includes from arch/.</p>
 </dd>
-<dt><strong>AVOID_BUG</strong></dt><dd><p>BUG() or BUG_ON() should be avoided totally.
-Use WARN() and WARN_ON() instead, and handle the “impossible”
+<dt><strong>AVOID_BUG</strong></dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">BUG()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">BUG_ON()</span></code> should be avoided totally.
+Use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">WARN()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">WARN_ON()</span></code> instead, and handle the “impossible”
 error condition as gracefully as possible.</p>
 <p>See: <a class="reference external" href="https://www.kernel.org/doc/html/latest/process/deprecated.html#bug-and-bug-on">https://www.kernel.org/doc/html/latest/process/deprecated.html#bug-and-bug-on</a></p>
 </dd>
@@ -499,11 +499,11 @@ EOPNOTSUPP should be used instead.</p>
 </dd>
 <dt><strong>EXPORT_SYMBOL</strong></dt><dd><p>EXPORT_SYMBOL should immediately follow the symbol to be exported.</p>
 </dd>
-<dt><strong>IN_ATOMIC</strong></dt><dd><p>in_atomic() is not for driver use so any such use is reported as an ERROR.
-Also in_atomic() is often used to determine if sleeping is permitted,
+<dt><strong>IN_ATOMIC</strong></dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">in_atomic()</span></code> is not for driver use so any such use is reported as an ERROR.
+Also <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">in_atomic()</span></code> is often used to determine if sleeping is permitted,
 but it is not reliable in this use model.  Therefore its use is
 strongly discouraged.</p>
-<p>However, in_atomic() is ok for core kernel use.</p>
+<p>However, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">in_atomic()</span></code> is ok for core kernel use.</p>
 <p>See: <a class="reference external" href="https://lore.kernel.org/lkml/20080320201723.b87b3732.akpm&#64;linux-foundation.org/">https://lore.kernel.org/lkml/20080320201723.b87b3732.akpm&#64;linux-foundation.org/</a></p>
 </dd>
 <dt><strong>LOCKDEP</strong></dt><dd><p>The lockdep_no_validate class was added as a temporary measure to
@@ -515,8 +515,8 @@ It should not be used for any other purpose.</p>
 because the author has included a double slash “//” in the pathname
 accidentally.</p>
 </dd>
-<dt><strong>USE_LOCKDEP</strong></dt><dd><p>lockdep_assert_held() annotations should be preferred over
-assertions based on spin_is_locked()</p>
+<dt><strong>USE_LOCKDEP</strong></dt><dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lockdep_assert_held()</span></code> annotations should be preferred over
+assertions based on <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_is_locked()</span></code></p>
 <p>See: <a class="reference external" href="https://www.kernel.org/doc/html/latest/locking/lockdep-design.html#annotations">https://www.kernel.org/doc/html/latest/locking/lockdep-design.html#annotations</a></p>
 </dd>
 <dt><strong>UAPI_INCLUDE</strong></dt><dd><p>No #include statements in include/uapi should use a uapi/ path.</p>
@@ -552,7 +552,7 @@ not empty like the former:</p>
 Prefer the block comment style instead.</p>
 <p>See: <a class="reference external" href="https://www.kernel.org/doc/html/latest/process/coding-style.html#commenting">https://www.kernel.org/doc/html/latest/process/coding-style.html#commenting</a></p>
 </dd>
-<dt><strong>DATA_RACE</strong></dt><dd><p>Applications of data_race() should have a comment so as to document the
+<dt><strong>DATA_RACE</strong></dt><dd><p>Applications of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">data_race()</span></code> should have a comment so as to document the
 reasoning behind why it was deemed safe.</p>
 <p>See: <a class="reference external" href="https://lore.kernel.org/lkml/20200401101714.44781-1-elver&#64;google.com/">https://lore.kernel.org/lkml/20200401101714.44781-1-elver&#64;google.com/</a></p>
 </dd>
@@ -562,6 +562,14 @@ FSF has moved in the past and may do so again.
 So do not write paragraphs about writing to the Free Software Foundation’s
 mailing address.</p>
 <p>See: <a class="reference external" href="https://lore.kernel.org/lkml/20131006222342.GT19510&#64;leaf/">https://lore.kernel.org/lkml/20131006222342.GT19510&#64;leaf/</a></p>
+</dd>
+<dt><strong>UNCOMMENTED_RGMII_MODE</strong></dt><dd><p>Historically, the RGMII PHY modes specified in Device Trees have been
+used inconsistently, often referring to the usage of delays on the PHY
+side rather than describing the board.</p>
+<p>PHY modes “rgmii”, “rgmii-rxid” and “rgmii-txid” modes require the clock
+signal to be delayed on the PCB; this unusual configuration should be
+described in a comment. If they are not (meaning that the delay is realized
+internally in the MAC or PHY), “rgmii-id” is the correct PHY mode.</p>
 </dd>
 </dl>
 </div></blockquote>
@@ -807,7 +815,7 @@ the beginning or end of code regions via
 <cite>SYM_CODE_START_LOCAL</cite>/<cite>SYM_CODE_END</cite></p>
 </dd>
 <dt><strong>BIT_MACRO</strong></dt><dd><p>Defines like: 1 &lt;&lt; &lt;digit&gt; could be BIT(digit).
-The BIT() macro is defined via include/linux/bits.h:</p>
+The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">BIT()</span></code> macro is defined via include/linux/bits.h:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>#define BIT(nr)         (1UL &lt;&lt; (nr))
 </pre></div>
 </div>

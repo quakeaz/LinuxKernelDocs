@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -215,6 +215,22 @@ a more declarative approach rather than procedural.</p>
 <section id="internal-api">
 <h2>Internal API<a class="headerlink" href="#internal-api" title="Link to this heading">¶</a></h2>
 <dl class="c function">
+<dt class="sig sig-object c" id="c.xe_wa_process_device_oob">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">xe_wa_process_device_oob</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">xe_device</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">xe</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.xe_wa_process_device_oob" title="Link to this definition">¶</a><br /></dt>
+<dd><p>process OOB workaround table</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">xe_device</span> <span class="pre">*xe</span></code></dt><dd><p>device instance to process workarounds for</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>process OOB workaround table for this device, marking in <strong>xe</strong> the
+workarounds that are active.</p>
+</div>
+<dl class="c function">
 <dt class="sig sig-object c" id="c.xe_wa_process_oob">
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">xe_wa_process_oob</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">xe_gt</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">gt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.xe_wa_process_oob" title="Link to this definition">¶</a><br /></dt>
 <dd><p>process OOB workaround table</p>
@@ -279,6 +295,21 @@ engine.</p>
 <p>Process context workaround table for this platform, saving in <strong>hwe</strong> all the
 workarounds that need to be applied on context restore. These are workarounds
 touching registers that are part of the HW context image.</p>
+</div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.xe_wa_device_init">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">xe_wa_device_init</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">xe_device</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">xe</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.xe_wa_device_init" title="Link to this definition">¶</a><br /></dt>
+<dd><p>initialize device with workaround oob bookkeeping</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">xe_device</span> <span class="pre">*xe</span></code></dt><dd><p>Xe device instance to initialize</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>Returns 0 for success, negative with error code otherwise</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.xe_wa_init">

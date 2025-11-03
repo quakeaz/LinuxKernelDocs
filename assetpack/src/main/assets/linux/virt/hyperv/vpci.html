@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -211,7 +211,7 @@ may be added to a VM or removed from a VM at any time during
 the life of the VM, and not just during initial boot.</p>
 <p>With this approach, the vPCI device is a VMBus device and a
 PCI device at the same time.  In response to the VMBus offer
-message, the hv_pci_probe() function runs and establishes a
+message, the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hv_pci_probe()</span></code> function runs and establishes a
 VMBus connection to the vPCI VSP on the Hyper-V host.  That
 connection has a single VMBus channel.  The channel is used to
 exchange messages with the vPCI VSP for the purpose of setting
@@ -238,24 +238,24 @@ device “just work”.</p>
 domain with a host bridge.  The PCI domainID is derived from
 bytes 4 and 5 of the instance GUID assigned to the VMBus vPCI
 device.  The Hyper-V host does not guarantee that these bytes
-are unique, so hv_pci_probe() has an algorithm to resolve
+are unique, so <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hv_pci_probe()</span></code> has an algorithm to resolve
 collisions.  The collision resolution is intended to be stable
 across reboots of the same VM so that the PCI domainIDs don’t
 change, as the domainID appears in the user space
 configuration of some devices.</p>
-<p>hv_pci_probe() allocates a guest MMIO range to be used as PCI
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hv_pci_probe()</span></code> allocates a guest MMIO range to be used as PCI
 config space for the device.  This MMIO range is communicated
 to the Hyper-V host over the VMBus channel as part of telling
 the host that the device is ready to enter d0.  See
-hv_pci_enter_d0().  When the guest subsequently accesses this
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hv_pci_enter_d0()</span></code>.  When the guest subsequently accesses this
 MMIO range, the Hyper-V host intercepts the accesses and maps
 them to the physical device PCI config space.</p>
-<p>hv_pci_probe() also gets BAR information for the device from
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hv_pci_probe()</span></code> also gets BAR information for the device from
 the Hyper-V host, and uses this information to allocate MMIO
 space for the BARs.  That MMIO space is then setup to be
 associated with the host bridge so that it works when generic
 PCI subsystem code in Linux processes the BARs.</p>
-<p>Finally, hv_pci_probe() creates the root PCI bus.  At this
+<p>Finally, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hv_pci_probe()</span></code> creates the root PCI bus.  At this
 point the Hyper-V virtual PCI driver hackery is done, and the
 normal Linux PCI machinery for scanning the root bus works to
 detect the device, to perform driver matching, and to
@@ -312,9 +312,9 @@ MSI, multi-MSI, or MSI-X.  Assigning the guest vCPU that will
 receive the interrupt for a particular MSI or MSI-X message is
 complex because of the way the Linux setup of IRQs maps onto
 the Hyper-V interfaces.  For the single-MSI and MSI-X cases,
-Linux calls hv_compse_msi_msg() twice, with the first call
+Linux calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hv_compse_msi_msg()</span></code> twice, with the first call
 containing a dummy vCPU and the second call containing the
-real vCPU.  Furthermore, hv_irq_unmask() is finally called
+real vCPU.  Furthermore, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hv_irq_unmask()</span></code> is finally called
 (on x86) or the GICD registers are set (on arm64) to specify
 the real vCPU again.  Each of these three calls interact
 with Hyper-V, which must decide which physical CPU should
@@ -323,15 +323,15 @@ Unfortunately, the Hyper-V decision-making process is a bit
 limited, and can result in concentrating the physical
 interrupts on a single CPU, causing a performance bottleneck.
 See details about how this is resolved in the extensive
-comment above the function hv_compose_msi_req_get_cpu().</p>
+comment above the function <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hv_compose_msi_req_get_cpu()</span></code>.</p>
 <p>The Hyper-V virtual PCI driver implements the
-irq_chip.irq_compose_msi_msg function as hv_compose_msi_msg().
+irq_chip.irq_compose_msi_msg function as <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hv_compose_msi_msg()</span></code>.
 Unfortunately, on Hyper-V the implementation requires sending
 a VMBus message to the Hyper-V host and awaiting an interrupt
 indicating receipt of a reply message.  Since
 irq_chip.irq_compose_msi_msg can be called with IRQ locks
 held, it doesn’t work to do the normal sleep until awakened by
-the interrupt. Instead hv_compose_msi_msg() must send the
+the interrupt. Instead <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hv_compose_msi_msg()</span></code> must send the
 VMBus message, and then poll for the completion message. As
 further complexity, the vPCI device could be ejected/rescinded
 while the polling is in progress, so this scenario must be
@@ -345,7 +345,7 @@ virtual PCI driver in the guest must make a hypercall to tell
 Hyper-V which guest vCPU should be interrupted by each
 MSI/MSI-X interrupt, and the x86 interrupt vector number that
 the x86_vector IRQ domain has picked for the interrupt.  This
-hypercall is made by hv_arch_irq_unmask().  On arm64, the
+hypercall is made by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hv_arch_irq_unmask()</span></code>.  On arm64, the
 Hyper-V virtual PCI driver manages the allocation of an SPI
 for each MSI/MSI-X interrupt.  The Hyper-V virtual PCI driver
 stores the allocated SPI in the architectural GICD registers,
@@ -388,7 +388,7 @@ to a guest VM, that device does not appear in the DSDT, so the
 Hyper-V VMBus driver propagates cache-coherency information
 from the VMBus node in the ACPI DSDT to all VMBus devices,
 including vPCI devices (since they have a dual identity as a VMBus
-device and as a PCI device).  See vmbus_dma_configure().
+device and as a PCI device).  See <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vmbus_dma_configure()</span></code>.
 Current Hyper-V versions always indicate that the VMBus is
 cache coherent, so vPCI devices on arm64 always get marked as
 cache coherent and the CPU does not perform any sync
@@ -403,7 +403,7 @@ messages have been revised in newer versions of Hyper-V, so
 the guest and host must agree on the vPCI protocol version to
 be used.  The version is negotiated when communication over
 the VMBus channel is first established.  See
-hv_pci_protocol_negotiation(). Newer versions of the protocol
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hv_pci_protocol_negotiation()</span></code>. Newer versions of the protocol
 extend support to VMs with more than 64 vCPUs, and provide
 additional information about the vPCI device, such as the
 guest virtual NUMA node to which it is most closely affined in
@@ -414,7 +414,7 @@ the underlying hardware.</p>
 <p>When the vPCI protocol version provides it, the guest NUMA
 node affinity of the vPCI device is stored as part of the Linux
 device information for subsequent use by the Linux driver. See
-hv_pci_assign_numa_node().  If the negotiated protocol version
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hv_pci_assign_numa_node()</span></code>.  If the negotiated protocol version
 does not support the host providing NUMA affinity information,
 the Linux guest defaults the device NUMA node to 0.  But even
 when the negotiated protocol version includes NUMA affinity
@@ -430,7 +430,7 @@ from the guest side.</p>
 <p>Linux PCI device drivers access PCI config space using a
 standard set of functions provided by the Linux PCI subsystem.
 In Hyper-V guests these standard functions map to functions
-hv_pcifront_read_config() and hv_pcifront_write_config()
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hv_pcifront_read_config()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hv_pcifront_write_config()</span></code>
 in the Hyper-V virtual PCI driver.  In normal VMs,
 these hv_pcifront_*() functions directly access the PCI config
 space, and the accesses trap to Hyper-V to be handled.
@@ -446,13 +446,13 @@ made.</p>
 together implement a non-standard back-channel communication
 path between the host and guest.  The back-channel path uses
 messages sent over the VMBus channel associated with the vPCI
-device.  The functions hyperv_read_cfg_blk() and
-hyperv_write_cfg_blk() are the primary interfaces provided to
+device.  The functions <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hyperv_read_cfg_blk()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hyperv_write_cfg_blk()</span></code> are the primary interfaces provided to
 other parts of the Linux kernel.  As of this writing, these
 interfaces are used only by the Mellanox mlx5 driver to pass
 diagnostic data to a Hyper-V host running in the Azure public
-cloud.  The functions hyperv_read_cfg_blk() and
-hyperv_write_cfg_blk() are implemented in a separate module
+cloud.  The functions <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hyperv_read_cfg_blk()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hyperv_write_cfg_blk()</span></code> are implemented in a separate module
 (pci-hyperv-intf.c, under CONFIG_PCI_HYPERV_INTERFACE) that
 effectively stubs them out when running in non-Hyper-V
 environments.</p>

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -195,7 +195,7 @@ and PCMCIA subsystems.</p>
 </section>
 <section id="b-exclusion">
 <h2>B) Exclusion<a class="headerlink" href="#b-exclusion" title="Link to this heading">¶</a></h2>
-<p>The following functions and callbacks to struct pcmcia_socket must
+<p>The following functions and callbacks to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pcmcia_socket</span></code> must
 be called with “skt_mutex” held:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>socket_detect_change()
 send_event()
@@ -212,7 +212,7 @@ socket_suspend()
 struct pcmcia_callback  *callback
 </pre></div>
 </div>
-<p>The following functions and callbacks to struct pcmcia_socket must
+<p>The following functions and callbacks to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pcmcia_socket</span></code> must
 be called with “ops_mutex” held:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>socket_reset()
 socket_setup()
@@ -221,20 +221,20 @@ struct pccard_operations        *ops
 struct pccard_resource_ops      *resource_ops;
 </pre></div>
 </div>
-<p>Note that send_event() and <cite>struct pcmcia_callback *callback</cite> must not be
+<p>Note that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">send_event()</span></code> and <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pcmcia_callback</span></code> *callback</cite> must not be
 called with “ops_mutex” held.</p>
 </section>
 <section id="c-protection">
 <h2>C) Protection<a class="headerlink" href="#c-protection" title="Link to this heading">¶</a></h2>
 <section id="global-data">
 <h3>1. Global Data:<a class="headerlink" href="#global-data" title="Link to this heading">¶</a></h3>
-<p>struct list_head        pcmcia_socket_list;</p>
+<p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">list_head</span></code>        pcmcia_socket_list;</p>
 <p>protected by pcmcia_socket_list_rwsem;</p>
 </section>
 <section id="per-socket-data">
 <h3>2. Per-Socket Data:<a class="headerlink" href="#per-socket-data" title="Link to this heading">¶</a></h3>
 <p>The resource_ops and their data are protected by ops_mutex.</p>
-<p>The “main” struct pcmcia_socket is protected as follows (read-only fields
+<p>The “main” <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pcmcia_socket</span></code> is protected as follows (read-only fields
 or single-use fields not mentioned):</p>
 <ul>
 <li><p>by pcmcia_socket_list_rwsem:</p>
@@ -281,7 +281,7 @@ struct                  pcmcia_state;
 </section>
 <section id="per-pcmcia-device-data">
 <h3>3. Per PCMCIA-device Data:<a class="headerlink" href="#per-pcmcia-device-data" title="Link to this heading">¶</a></h3>
-<p>The “main” struct pcmcia_device is protected as follows (read-only fields
+<p>The “main” <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pcmcia_device</span></code> is protected as follows (read-only fields
 or single-use fields not mentioned):</p>
 <ul>
 <li><p>by pcmcia_socket-&gt;ops_mutex:</p>

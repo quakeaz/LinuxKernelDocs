@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -226,7 +226,7 @@ the API users don’t need to worry about such details.</p></li>
 <h2>The Design<a class="headerlink" href="#the-design" title="Link to this heading">¶</a></h2>
 <p>In order to ease the asynchronous execution of functions a new
 abstraction, the work item, is introduced.</p>
-<p>A work item is a simple struct that holds a pointer to the function
+<p>A work item is a simple <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">that</span></code> holds a pointer to the function
 that is to be executed asynchronously.  Whenever a driver or subsystem
 wants a function to be executed asynchronously it has to set up a work
 item pointing to that function and queue that work item on a
@@ -317,6 +317,10 @@ queueing CPU’s softirq context in the queueing order.</p>
 only allowed additional flag.</p>
 <p>BH work items cannot sleep. All other features such as delayed queueing,
 flushing and canceling are supported.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">WQ_PERCPU</span></code></dt><dd><p>Work items queued to a per-cpu wq are bound to a specific CPU.
+This flag is the right choice when cpu locality is important.</p>
+<p>This flag is the complement of <code class="docutils literal notranslate"><span class="pre">WQ_UNBOUND</span></code>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">WQ_UNBOUND</span></code></dt><dd><p>Work items queued to an unbound wq are served by the special
 worker-pools which host workers which are not bound to any
@@ -1536,7 +1540,7 @@ WORK_STRUCT_LINKED set in its predecessor. See <a class="reference internal" hre
 executed by another worker in the same pool, it’ll be punted there.</p>
 <p>If <strong>nextp</strong> is not NULL, it’s updated to point to the next work of the last
 scheduled work. This allows <a class="reference internal" href="#c.assign_work" title="assign_work"><code class="xref c c-func docutils literal notranslate"><span class="pre">assign_work()</span></code></a> to be nested inside
-<a class="reference internal" href="kernel-api.html#c.list_for_each_entry_safe" title="list_for_each_entry_safe"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_for_each_entry_safe()</span></code></a>.</p>
+<a class="reference internal" href="list.html#c.list_for_each_entry_safe" title="list_for_each_entry_safe"><code class="xref c c-func docutils literal notranslate"><span class="pre">list_for_each_entry_safe()</span></code></a>.</p>
 <p>Returns <code class="docutils literal notranslate"><span class="pre">true</span></code> if <strong>work</strong> was successfully assigned to <strong>worker</strong>. <code class="docutils literal notranslate"><span class="pre">false</span></code> if <strong>work</strong>
 was punted to another worker already executing it.</p>
 </div>
@@ -1569,7 +1573,7 @@ whether a worker was woken up.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This function is called when a worker returns from schedule()</p>
+<p>This function is called when a worker returns from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">schedule()</span></code></p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.wq_worker_sleeping">
@@ -1584,7 +1588,7 @@ whether a worker was woken up.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This function is called from schedule() when a busy worker is
+<p>This function is called from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">schedule()</span></code> when a busy worker is
 going to sleep.</p>
 </div>
 <dl class="c function">
@@ -1600,7 +1604,7 @@ going to sleep.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Called from sched_tick(). We’re in the IRQ context and the current
+<p>Called from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sched_tick()</span></code>. We’re in the IRQ context and the current
 worker’s fields which follow the ‘K’ locking rule can be accessed safely.</p>
 </div>
 <dl class="c function">
@@ -1618,7 +1622,7 @@ worker’s fields which follow the ‘K’ locking rule can be accessed safely.<
 <p><strong>Description</strong></p>
 <p>Determine the last function a worker executed. This is called from
 the scheduler to get a worker’s last known identity.</p>
-<p>This function is called during schedule() when a kworker is going
+<p>This function is called during <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">schedule()</span></code> when a kworker is going
 to sleep. It’s used by psi to identify aggregation workers during
 dequeuing, to allow periodic aggregation to shut-off when that
 worker is the last task in the system or cgroup to go to sleep.</p>
@@ -1866,10 +1870,6 @@ work item is complete.</p>
 <p><strong>Description</strong></p>
 <p>Try to grab PENDING bit of <strong>work</strong>.  This function can handle <strong>work</strong> in any
 stable state - idle, on timer or on worklist.</p>
-<p>On successful return, &gt;= 0, irq is disabled and the caller is
-responsible for releasing it using local_irq_restore(<strong>*irq_flags</strong>).</p>
-<p>This function is safe to call from any context including IRQ handler.</p>
-<p><strong>Return</strong></p>
 <blockquote>
 <div><table class="docutils align-default">
 <tbody>
@@ -1890,6 +1890,9 @@ responsible for releasing it using local_irq_restore(<strong>*irq_flags</strong>
 interrupted while holding PENDING and <strong>work</strong> off queue, irq must be
 disabled on entry.  This, combined with delayed_work-&gt;timer being
 irqsafe, ensures that we return -EAGAIN for finite short period of time.</p>
+<p>On successful return, &gt;= 0, irq is disabled and the caller is
+responsible for releasing it using local_irq_restore(<strong>*irq_flags</strong>).</p>
+<p>This function is safe to call from any context including IRQ handler.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.work_grab_pending">
@@ -1912,7 +1915,7 @@ irqsafe, ensures that we return -EAGAIN for finite short period of time.</p>
 or on worklist.</p>
 <p>Can be called from any context. IRQ is disabled on return with IRQ state
 stored in <strong>*irq_flags</strong>. The caller is responsible for re-enabling it using
-local_irq_restore().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">local_irq_restore()</span></code>.</p>
 <p>Returns <code class="docutils literal notranslate"><span class="pre">true</span></code> if <strong>work</strong> was pending. <code class="docutils literal notranslate"><span class="pre">false</span></code> if idle.</p>
 </div>
 <dl class="c function">
@@ -2179,7 +2182,7 @@ should be idle.</p>
 <p><strong>Description</strong></p>
 <p>The timer is armed in <a class="reference internal" href="#c.worker_enter_idle" title="worker_enter_idle"><code class="xref c c-func docutils literal notranslate"><span class="pre">worker_enter_idle()</span></code></a>. Note that it isn’t disarmed in
 <a class="reference internal" href="#c.worker_leave_idle" title="worker_leave_idle"><code class="xref c c-func docutils literal notranslate"><span class="pre">worker_leave_idle()</span></code></a>, as a worker flicking between idle and active while its
-pool is at the too_many_workers() tipping point would cause too much timer
+pool is at the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">too_many_workers()</span></code> tipping point would cause too much timer
 housekeeping overhead. Since IDLE_WORKER_TIMEOUT is long enough, we just let
 it expire and re-evaluate things from there.</p>
 </div>
@@ -2220,8 +2223,8 @@ have at least one idle worker on return from this function.  If
 creating a new worker takes longer than MAYDAY_INTERVAL, mayday is
 sent to all rescuers with works scheduled on <strong>pool</strong> to resolve
 possible allocation deadlock.</p>
-<p>On return, need_to_create_worker() is guaranteed to be <code class="docutils literal notranslate"><span class="pre">false</span></code> and
-may_start_working() <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p>
+<p>On return, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">need_to_create_worker()</span></code> is guaranteed to be <code class="docutils literal notranslate"><span class="pre">false</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">may_start_working()</span></code> <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p>
 <p>LOCKING:
 raw_spin_lock_irq(pool-&gt;lock) which may be released and regrabbed
 multiple times.  Does GFP_KERNEL allocations.  Called only from
@@ -2244,8 +2247,8 @@ manager.</p>
 to.  At any given time, there can be only zero or one manager per
 pool.  The exclusion is handled automatically by this function.</p>
 <p>The caller can safely start processing works on false return.  On
-true return, it’s guaranteed that need_to_create_worker() is false
-and may_start_working() is true.</p>
+true return, it’s guaranteed that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">need_to_create_worker()</span></code> is false
+and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">may_start_working()</span></code> is true.</p>
 <p><strong>Context</strong></p>
 <p>raw_spin_lock_irq(pool-&gt;lock) which may be released and regrabbed
 multiple times.  Does GFP_KERNEL allocations.</p>
@@ -2569,7 +2572,6 @@ if <strong>work</strong> was last queued on a BH workqueue.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Kill off a pending delayed_work.</p>
-<p>This function is safe to call from any context including IRQ handler.</p>
 <p><strong>Return</strong></p>
 <p><code class="docutils literal notranslate"><span class="pre">true</span></code> if <strong>dwork</strong> was pending and canceled; <code class="docutils literal notranslate"><span class="pre">false</span></code> if it wasn’t
 pending.</p>
@@ -2577,6 +2579,7 @@ pending.</p>
 <p>The work callback function may still be running on return, unless
 it returns <code class="docutils literal notranslate"><span class="pre">true</span></code> and the work doesn’t re-arm itself.  Explicitly flush or
 use <a class="reference internal" href="#c.cancel_delayed_work_sync" title="cancel_delayed_work_sync"><code class="xref c c-func docutils literal notranslate"><span class="pre">cancel_delayed_work_sync()</span></code></a> to wait on it.</p>
+<p>This function is safe to call from any context including IRQ handler.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.cancel_delayed_work_sync">
@@ -2736,10 +2739,8 @@ be available when the work executes)</p>
 <p>Executes the function immediately if process context is available,
 otherwise schedules the function for delayed execution.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>0 - function was executed</dt><dd><p>1 - function was scheduled for execution</p>
-</dd>
-</dl>
+<p>0 - function was executed
+1 - function was scheduled for execution</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.free_workqueue_attrs">
@@ -3167,7 +3168,7 @@ synchronized and may print out mixups or garbages of limited length.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Called from try_to_freeze_tasks() and prints out all freezable workqueues
+<p>Called from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">try_to_freeze_tasks()</span></code> and prints out all freezable workqueues
 still busy.</p>
 </div>
 <dl class="c function">
@@ -3226,30 +3227,6 @@ online CPU before, cpus_allowed of all its workers should be restored.</p>
 <p><strong>Description</strong></p>
 <p>It is up to the caller to ensure that the cpu doesn’t go offline.
 The caller must not hold any locks which would prevent <strong>fn</strong> from completing.</p>
-<p><strong>Return</strong></p>
-<p>The value <strong>fn</strong> returns.</p>
-</div>
-<dl class="c function">
-<dt class="sig sig-object c" id="c.work_on_cpu_safe_key">
-<span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">work_on_cpu_safe_key</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">cpu</span></span>, <span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">fn</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">)</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">arg</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">lock_class_key</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">key</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.work_on_cpu_safe_key" title="Link to this definition">¶</a><br /></dt>
-<dd><p>run a function in thread context on a particular cpu</p>
-</dd></dl>
-
-<div class="kernelindent docutils container">
-<p><strong>Parameters</strong></p>
-<dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">cpu</span></code></dt><dd><p>the cpu to run on</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">long</span> <span class="pre">(*fn)(void</span> <span class="pre">*)</span></code></dt><dd><p>the function to run</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">*arg</span></code></dt><dd><p>the function argument</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">lock_class_key</span> <span class="pre">*key</span></code></dt><dd><p>The lock class key for lock debugging purposes</p>
-</dd>
-</dl>
-<p><strong>Description</strong></p>
-<p>Disables CPU hotplug and calls work_on_cpu(). The caller must not hold
-any locks which would prevent <strong>fn</strong> from completing.</p>
 <p><strong>Return</strong></p>
 <p>The value <strong>fn</strong> returns.</p>
 </div>
@@ -3335,19 +3312,20 @@ CPUs that should be excluded from wq_unbound_cpumask.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">cpumask_var_t</span> <span class="pre">cpumask</span></code></dt><dd><p>the cpumask to set</p>
-<p>The low-level workqueues cpumask is a global cpumask that limits
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>The low-level workqueues cpumask is a global cpumask that limits
 the affinity of all unbound workqueues.  This function check the <strong>cpumask</strong>
 and apply it to all unbound workqueues and updates all pwqs of them.</p>
-</dd>
-</dl>
+</div></blockquote>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>0       - Success</dt><dd><p>-EINVAL - Invalid <strong>cpumask</strong>
+<p>0       - Success
+-EINVAL - Invalid <strong>cpumask</strong>
 -ENOMEM - Failed to allocate memory for attrs or pwqs.</p>
-</dd>
-</dl>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.workqueue_sysfs_register">

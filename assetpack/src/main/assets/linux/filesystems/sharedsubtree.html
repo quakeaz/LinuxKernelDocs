@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -159,7 +159,7 @@ and versioned filesystem.</p>
 </section>
 <section id="features">
 <h2>2) Features<a class="headerlink" href="#features" title="Link to this heading">¶</a></h2>
-<p>Shared subtree provides four different flavors of mounts; struct vfsmount to be
+<p>Shared subtree provides four different flavors of mounts; <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">vfsmount</span></code> to be
 precise</p>
 <blockquote>
 <div><ol class="loweralpha simple">
@@ -970,7 +970,7 @@ tmp  usr tmp usr tmp usr
 <h2>8) Implementation<a class="headerlink" href="#implementation" title="Link to this heading">¶</a></h2>
 <p>8A) Datastructure</p>
 <blockquote>
-<div><p>4 new fields are introduced to struct vfsmount:</p>
+<div><p>4 new fields are introduced to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">vfsmount</span></code>:</p>
 <ul class="simple">
 <li><p>-&gt;mnt_share</p></li>
 <li><p>-&gt;mnt_slave_list</p></li>
@@ -1030,13 +1030,13 @@ mounts ‘J’ and ‘K’  and  ‘D’ has got two slave mounts ‘H’ and �
 <p>A’s -&gt;mnt_share links with the -&gt;mnt_share of ‘B’ ‘C’ and ‘D’</p>
 <p>A’s -&gt;mnt_slave_list links with -&gt;mnt_slave of ‘E’, ‘K’, ‘F’ and ‘G’</p>
 <p>E’s -&gt;mnt_share links with -&gt;mnt_share of K</p>
-<p>‘E’, ‘K’, ‘F’, ‘G’ have their -&gt;mnt_master point to struct vfsmount of ‘A’</p>
-<p>‘M’, ‘L’, ‘N’ have their -&gt;mnt_master point to struct vfsmount of ‘K’</p>
+<p>‘E’, ‘K’, ‘F’, ‘G’ have their -&gt;mnt_master point to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">vfsmount</span></code> of ‘A’</p>
+<p>‘M’, ‘L’, ‘N’ have their -&gt;mnt_master point to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">vfsmount</span></code> of ‘K’</p>
 <p>K’s -&gt;mnt_slave_list links with -&gt;mnt_slave of ‘M’, ‘L’ and ‘N’</p>
 <p>C’s -&gt;mnt_slave_list links with -&gt;mnt_slave of ‘J’ and ‘K’</p>
-<p>J and K’s -&gt;mnt_master points to struct vfsmount of C</p>
+<p>J and K’s -&gt;mnt_master points to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">vfsmount</span></code> of C</p>
 <p>and finally D’s -&gt;mnt_slave_list links with -&gt;mnt_slave of ‘H’ and ‘I’</p>
-<p>‘H’ and ‘I’ have their -&gt;mnt_master pointing to struct vfsmount of ‘D’.</p>
+<p>‘H’ and ‘I’ have their -&gt;mnt_master pointing to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">vfsmount</span></code> of ‘D’.</p>
 <p>NOTE: The propagation tree is orthogonal to the mount tree.</p>
 </div></blockquote>
 <p>8B Locking:</p>
@@ -1044,7 +1044,7 @@ mounts ‘J’ and ‘K’  and  ‘D’ has got two slave mounts ‘H’ and �
 <div><p>-&gt;mnt_share, -&gt;mnt_slave, -&gt;mnt_slave_list, -&gt;mnt_master are protected
 by namespace_sem (exclusive for modifications, shared for reading).</p>
 <p>Normally we have -&gt;mnt_flags modifications serialized by vfsmount_lock.
-There are two exceptions: do_add_mount() and clone_mnt().
+There are two exceptions: <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_add_mount()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">clone_mnt()</span></code>.
 The former modifies a vfsmount that has not been visible in any shared
 data structures yet.
 The latter holds namespace_sem and the only references to vfsmount
@@ -1054,7 +1054,7 @@ are in lists that can’t be traversed without namespace_sem.</p>
 <blockquote>
 <div><p>The crux of the implementation resides in rbind/move operation.</p>
 <p>The overall algorithm breaks the operation into 3 phases: (look at
-attach_recursive_mnt() and propagate_mnt())</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">attach_recursive_mnt()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">propagate_mnt()</span></code>)</p>
 <ol class="arabic simple">
 <li><p>prepare phase.</p></li>
 <li><p>commit phases.</p></li>

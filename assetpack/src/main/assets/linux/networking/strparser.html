@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -181,7 +181,7 @@ that is called when a full message has been completed.</p>
         const struct strp_callbacks *cb)
 </pre></div>
 </div>
-<p>Called to initialize a stream parser. strp is a struct of type
+<p>Called to initialize a stream parser. strp is a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">of</span></code> type
 strparser that is allocated by the upper layer. sk is the TCP
 socket associated with the stream parser for use with receive
 callback mode; in general mode this is set to NULL. Callbacks
@@ -246,7 +246,7 @@ instance or after strp_unpause.</p>
 in the stream. The upper layer must implement this function. It
 should parse the sk_buff as containing the headers for the
 next application layer message in the stream.</p>
-<p>The skb-&gt;cb in the input skb is a struct strp_msg. Only
+<p>The skb-&gt;cb in the input skb is a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">strp_msg</span></code>. Only
 the offset field is relevant in parse_msg and gives the offset
 where the message starts in the skb.</p>
 <p>The return values of this function are:</p>
@@ -299,8 +299,8 @@ is queued. The callee must consume the sk_buff; it can
 call strp_pause to prevent any further messages from being
 received in rcv_msg (see strp_pause above). This callback
 must be set.</p>
-<p>The skb-&gt;cb in the input skb is a struct strp_msg. This
-struct contains two fields: offset and full_len. Offset is
+<p>The skb-&gt;cb in the input skb is a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">strp_msg</span></code>. This
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">contains</span></code> two fields: offset and full_len. Offset is
 where the message starts in the skb, and full_len is the
 the length of the message. skb-&gt;len - offset may be greater
 than full_len since strparser does not trim the skb.</p>

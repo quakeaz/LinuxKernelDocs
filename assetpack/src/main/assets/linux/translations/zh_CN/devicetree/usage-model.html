@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -255,10 +255,10 @@ Powerpc平台上要求DT支持，无论它们是否使用Open Firmware。为了�
 但是，硬件并不完美，所以内核必须在早期启动时识别机器，以便有机会运行特定于机
 器的修复程序。</p>
 <p>在大多数情况下，机器的身份是不相关的，而内核将根据机器的核心CPU或SoC来选择
-设置代码。例如，在ARM上，arch/arm/kernel/setup.c中的setup_arch()将调
-用arch/arm/kernel/devtree.c中的setup_machine_fdt()，它通过
+设置代码。例如，在ARM上，arch/arm/kernel/setup.c中的<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setup_arch()</span></code>将调
+用arch/arm/kernel/devtree.c中的<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setup_machine_fdt()</span></code>，它通过
 machine_desc表搜索并选择与设备树数据最匹配的machine_desc。它通过查看根
-设备树节点中的’compatible’属性，并将其与struct machine_desc中的
+设备树节点中的’compatible’属性，并将其与<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">machine_desc</span></code>中的
 dt_compat列表（如果你好奇，该列表定义在arch/arm/include/asm/mach/arch.h
 中）进行比较，从而确定最佳匹配。</p>
 <p>“compatible” 属性包含一个排序的字符串列表，以机器的确切名称开始，后面是
@@ -280,7 +280,7 @@ compatible = &quot;ti,omap3-beagleboard-xm&quot;, &quot;ti,omap3450&quot;, &quot
 表示什么。在Documentation/devicetree/bindings中添加兼容字符串的文档。</p>
 <p>同样在ARM上，对于每个machine_desc，内核会查看是否有任何dt_compat列表条
 目出现在兼容属性中。如果有，那么该machine_desc就是驱动该机器的候选者。在搜索
-了整个machine_descs表之后，setup_machine_fdt()根据每个machine_desc
+了整个machine_descs表之后，<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setup_machine_fdt()</span></code>根据每个machine_desc
 在兼容属性中匹配的条目，返回 “最兼容” 的machine_desc。如果没有找到匹配
 的machine_desc，那么它将返回NULL。</p>
 <p>这个方案背后的原因是观察到，在大多数情况下，如果它们都使用相同的SoC或相同
@@ -293,7 +293,7 @@ compatible = &quot;ti,omap3-beagleboard-xm&quot;, &quot;ti,omap3450&quot;, &quot
 或“ti,ompa3450”兼容。如果在最初的beagleboard上发现了一个bug，需要在
 早期启动时使用特殊的变通代码，那么可以添加一个新的machine_desc，实现变通，
 并且只在“ti,omap3-beagleboard”上匹配。</p>
-<p>PowerPC使用了一个稍微不同的方案，它从每个machine_desc中调用.probe()钩子，
+<p>PowerPC使用了一个稍微不同的方案，它从每个machine_desc中调用.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code>钩子，
 并使用第一个返回TRUE的钩子。然而，这种方法没有考虑到兼容列表的优先级，对于
 新的架构支持可能应该避免。</p>
 </section>
@@ -313,31 +313,31 @@ compatible = &quot;ti,omap3-beagleboard-xm&quot;, &quot;ti,omap3450&quot;, &quot
 意initrd-end是initrd映像后的第一个地址，所以这与结构体资源的通常语义不一
 致。选择的节点也可以选择包含任意数量的额外属性，用于平台特定的配置数据。</p>
 <p>在早期启动过程中，架构设置代码通过不同的辅助回调函数多次调用
-of_scan_flat_dt()来解析设备树数据，然后进行分页设置。of_scan_flat_dt()
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">of_scan_flat_dt()</span></code>来解析设备树数据，然后进行分页设置。<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">of_scan_flat_dt()</span></code>
 代码扫描设备树，并使用辅助函数来提取早期启动期间所需的信息。通常情况下，
-early_init_dt_scan_chosen()辅助函数用于解析所选节点，包括内核参数，
-early_init_dt_scan_root()用于初始化DT地址空间模型，early_init_dt_scan_memory()
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">early_init_dt_scan_chosen()</span></code>辅助函数用于解析所选节点，包括内核参数，
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">early_init_dt_scan_root()</span></code>用于初始化DT地址空间模型，<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">early_init_dt_scan_memory()</span></code>
 用于确定可用RAM的大小和位置。</p>
-<p>在ARM上，函数setup_machine_fdt()负责在选择支持板子的正确machine_desc
+<p>在ARM上，函数<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setup_machine_fdt()</span></code>负责在选择支持板子的正确machine_desc
 后，对设备树进行早期扫描。</p>
 </section>
 <section id="id8">
 <h2>2.4 设备数量<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h2>
 <p>在电路板被识别后，在早期配置数据被解析后，内核初始化可以以正常方式进行。在
-这个过程中的某个时刻，unflatten_device_tree()被调用以将数据转换成更有
+这个过程中的某个时刻，<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unflatten_device_tree()</span></code>被调用以将数据转换成更有
 效的运行时表示。这也是调用机器特定设置钩子的时候，比如ARM上的machine_desc
-.init_early()、.init_irq()和.init_machine()钩子。本节的其余部分使用
+.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init_early()</span></code>、.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init_irq()</span></code>和.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init_machine()</span></code>钩子。本节的其余部分使用
 了ARM实现的例子，但所有架构在使用DT时都会做几乎相同的事情。</p>
-<p>从名称上可以猜到，.init_early()用于在启动过程早期需要执行的任何机器特定设
-置，而.init_irq()则用于设置中断处理。使用DT并不会实质性地改变这两个函数的
-行为。如果提供了DT，那么.init_early()和.init_irq()都能调用任何一个DT查
+<p>从名称上可以猜到，.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init_early()</span></code>用于在启动过程早期需要执行的任何机器特定设
+置，而.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init_irq()</span></code>则用于设置中断处理。使用DT并不会实质性地改变这两个函数的
+行为。如果提供了DT，那么.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init_early()</span></code>和.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init_irq()</span></code>都能调用任何一个DT查
 询函数（of_* in include/linux/of*.h），以获得关于平台的额外数据。</p>
-<p>DT上下文中最有趣的钩子是.init_machine()，它主要负责将平台的数据填充到
+<p>DT上下文中最有趣的钩子是.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init_machine()</span></code>，它主要负责将平台的数据填充到
 Linux设备模型中。历史上，这在嵌入式平台上是通过在板卡support .c文件中定
-义一组静态时钟结构、platform_devices和其他数据，并在.init_machine()中
+义一组静态时钟结构、platform_devices和其他数据，并在.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init_machine()</span></code>中
 大量注册来实现的。当使用DT时，就不用为每个平台的静态设备进行硬编码，可以通过
 解析DT获得设备列表，并动态分配设备结构体。</p>
-<p>最简单的情况是，.init_machine()只负责注册一个platform_devices。
+<p>最简单的情况是，.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init_machine()</span></code>只负责注册一个platform_devices。
 platform_device是Linux使用的一个概念，用于不能被硬件检测到的内存或I/O映
 射的设备，以及“复合”或 “虚拟”设备（后面会详细介绍）。虽然DT没有“平台设备”的
 术语，但平台设备大致对应于树根的设备节点和简单内存映射总线节点的子节点。</p>
@@ -405,7 +405,7 @@ platform_device是Linux使用的一个概念，用于不能被硬件检测到的
 };
 </pre></div>
 </div>
-<p>在.init_machine()时，Tegra板支持代码将需要查看这个DT，并决定为哪些节点
+<p>在.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init_machine()</span></code>时，Tegra板支持代码将需要查看这个DT，并决定为哪些节点
 创建platform_devices。然而，看一下这个树，并不能立即看出每个节点代表什么
 类型的设备，甚至不能看出一个节点是否代表一个设备。/chosen、/aliases和
 /memory节点是信息节点，并不描述设备（尽管可以说内存可以被认为是一个设备）。
@@ -429,14 +429,14 @@ DT节点位于树的根部，那么它真的可能最好注册为platform_device
 启动树根的设备发现。参数都是NULL，因为当从树的根部开始时，不需要提供一个起
 始节点（第一个NULL），一个父结构设备（最后一个NULL），而且我们没有使用匹配
 表（尚未）。对于只需要注册设备的板子，除了<a class="reference internal" href="../../../devicetree/kernel-api.html#c.of_platform_populate" title="of_platform_populate"><code class="xref c c-func docutils literal notranslate"><span class="pre">of_platform_populate()</span></code></a>的调用，
-.init_machine()可以完全为空。</p>
+.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">init_machine()</span></code>可以完全为空。</p>
 <p>在Tegra的例子中，这说明了/soc和/sound节点，但是SoC节点的子节点呢？它们
 不应该也被注册为平台设备吗？对于Linux DT支持，一般的行为是子设备在驱动
-.probe()时被父设备驱动注册。因此，一个i2c总线设备驱动程序将为每个子节点
+.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code>时被父设备驱动注册。因此，一个i2c总线设备驱动程序将为每个子节点
 注册一个i2c_client，一个SPI总线驱动程序将注册其spi_device子节点，其他
 总线类型也是如此。根据该模型，可以编写一个与SoC节点绑定的驱动程序，并简单
 地为其每个子节点注册platform_device。板卡支持代码将分配和注册一个SoC设
-备，一个（理论上的）SoC设备驱动程序可以绑定到SoC设备，并在其.probe()钩
+备，一个（理论上的）SoC设备驱动程序可以绑定到SoC设备，并在其.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code>钩
 中为/soc/interruptcontroller、/soc/serial、/soc/i2s和/soc/i2c注
 册platform_devices。很简单，对吗？</p>
 <p>实际上，事实证明，将一些platform_device的子设备注册为更多的platform_device

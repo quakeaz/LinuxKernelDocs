@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -233,7 +233,7 @@ Common    |               before taking down the CPU             |
 <p>Resuming back is likewise, with the counterparts being (in the order of
 execution during resume):</p>
 <ul>
-<li><p>thaw_secondary_cpus() which involves:</p>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">thaw_secondary_cpus()</span></code> which involves:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>|  Acquire cpu_add_remove_lock
 |  Decrease cpu_hotplug_disabled, thereby enabling regular cpu hotplug
 |  Call _cpu_up() [for all those cpus in the frozen_cpus mask, in a loop]
@@ -285,8 +285,8 @@ Common    |               before taking down the CPU
 </pre></div>
 </div>
 <p>So, as can be seen from the two diagrams (the parts marked as “Common code”),
-regular CPU hotplug and the suspend code path converge at the _cpu_down() and
-_cpu_up() functions. They differ in the arguments passed to these functions,
+regular CPU hotplug and the suspend code path converge at the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_cpu_down()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_cpu_up()</span></code> functions. They differ in the arguments passed to these functions,
 in that during regular CPU hotplug, 0 is passed for the ‘tasks_frozen’
 argument. But during suspend, since the tasks are already frozen by the time
 the non-boot CPUs are offlined or onlined, the _cpu_*() functions are called
@@ -295,10 +295,10 @@ with the ‘tasks_frozen’ argument set to 1.
 <section id="important-files-and-functions-entry-points">
 <h3>Important files and functions/entry points:<a class="headerlink" href="#important-files-and-functions-entry-points" title="Link to this heading">¶</a></h3>
 <ul class="simple">
-<li><p>kernel/power/process.c : freeze_processes(), thaw_processes()</p></li>
-<li><p>kernel/power/suspend.c : suspend_prepare(), suspend_enter(), suspend_finish()</p></li>
+<li><p>kernel/power/process.c : <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">freeze_processes()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">thaw_processes()</span></code></p></li>
+<li><p>kernel/power/suspend.c : <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">suspend_prepare()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">suspend_enter()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">suspend_finish()</span></code></p></li>
 <li><p>kernel/cpu.c: cpu_[up|down](), _cpu_[up|down](),
-[disable|enable]_nonboot_cpus()</p></li>
+[disable|enable]<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_nonboot_cpus()</span></code></p></li>
 </ul>
 </section>
 <section id="ii-what-are-the-issues-involved-in-cpu-hotplug">
@@ -312,7 +312,7 @@ drivers/base/firmware_loader/main.c]</p>
 <li><p>When all the CPUs are identical:</p>
 <p>This is the most common situation and it is quite straightforward: we want
 to apply the same microcode revision to each of the CPUs.
-To give an example of x86, the collect_cpu_info() function defined in
+To give an example of x86, the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">collect_cpu_info()</span></code> function defined in
 arch/x86/kernel/microcode_core.c helps in discovering the type of the CPU
 and thereby in applying the correct microcode revision to it.
 But note that the kernel does not maintain a common microcode image for the
@@ -322,7 +322,7 @@ all CPUs, in order to handle case ‘b’ described below.</p>
 <p>In this case since we probably need to apply different microcode revisions
 to different CPUs, the kernel maintains a copy of the correct microcode
 image for each CPU (after appropriate CPU type/model discovery using
-functions such as collect_cpu_info()).</p>
+functions such as <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">collect_cpu_info()</span></code>).</p>
 </li>
 <li><p>When a CPU is physically hot-unplugged and a new (and possibly different
 type of) CPU is hot-plugged into the system:</p>
@@ -335,10 +335,10 @@ microcode image for that CPU.</p>
 doesn’t have the microcode image, it does the CPU type/model discovery
 afresh and then requests the userspace for the appropriate microcode image
 for that CPU, which is subsequently applied.</p>
-<p>For example, in x86, the mc_cpu_callback() function (which is the microcode
+<p>For example, in x86, the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mc_cpu_callback()</span></code> function (which is the microcode
 update driver’s callback registered for CPU hotplug events) calls
-microcode_update_cpu() which would call microcode_init_cpu() in this case,
-instead of microcode_resume_cpu() when it finds that the kernel doesn’t
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">microcode_update_cpu()</span></code> which would call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">microcode_init_cpu()</span></code> in this case,
+instead of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">microcode_resume_cpu()</span></code> when it finds that the kernel doesn’t
 have a valid microcode image. This ensures that the CPU type/model
 discovery is performed and the right microcode is applied to the CPU after
 getting it from userspace.</p>
@@ -378,7 +378,7 @@ with each other?</p>
 <p>Yes, they are listed below:</p>
 <ol class="arabic">
 <li><p>When invoking regular CPU hotplug, the ‘tasks_frozen’ argument passed to
-the _cpu_down() and _cpu_up() functions is <em>always</em> 0.
+the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_cpu_down()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_cpu_up()</span></code> functions is <em>always</em> 0.
 This might not reflect the true current state of the system, since the
 tasks could have been frozen by an out-of-band event such as a suspend
 operation in progress. Hence, the cpuhp_tasks_frozen variable will not

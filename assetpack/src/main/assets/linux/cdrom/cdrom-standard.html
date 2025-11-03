@@ -13,7 +13,7 @@
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Packet writing" href="packet-writing.html" />
+    <link rel="next" title="SCSI Subsystem" href="../scsi/index.html" />
     <link rel="prev" title="CD-ROM" href="index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -287,7 +287,7 @@ operations, <em>&lt;block-device&gt;_fops</em>.</p>
 <p>The routines for the Uniform CD-ROM Driver interface level are implemented
 in the file <cite>cdrom.c</cite>. In this file, the Uniform CD-ROM Driver interfaces
 with the kernel as a block device by registering the following general
-<em>struct file_operations</em>:</p>
+<em><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file_operations</span></code></em>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct file_operations cdrom_fops = {
         NULL,                   /* lseek */
         block _read ,           /* read--general block-dev read */
@@ -411,14 +411,13 @@ through <em>dev</em> in <em>cdrom_device_info</em> described below.</p>
       __u8 media_written;                     /*  dirty flag, DVD+RW bookkeeping */
       unsigned short mmc3_profile;            /*  current MMC3 profile */
       int for_data;                           /*  unknown:TBD */
-      int (*exit)(struct cdrom_device_info *);/*  unknown:TBD */
       int mrw_mode_page;                      /*  which MRW mode page is in use */
 };
 </pre></div>
 </div>
 <p>Using this <em>struct</em>, a linked list of the registered minor devices is
 built, using the <em>next</em> field. The device number, the device operations
-struct and specifications of properties of the drive are stored in this
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">and</span></code> specifications of properties of the drive are stored in this
 structure.</p>
 <p>The <em>mask</em> flags can be used to mask out some of the capabilities listed
 in <em>ops-&gt;capability</em>, if a specific drive doesn’t support a feature
@@ -433,7 +432,7 @@ should behave. These various flags registers should provide enough
 flexibility to adapt to the different users’ wishes (and <strong>not</strong> the
 <cite>arbitrary</cite> wishes of the author of the low-level device driver, as is
 the case in the old scheme). The register <em>mc_flags</em> is used to buffer
-the information from <em>media_changed()</em> to two separate queues. Other
+the information from <em><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">media_changed()</span></code></em> to two separate queues. Other
 data that is specific to a minor drive, can be accessed through <em>handle</em>,
 which can point to a data structure specific to the low-level driver.
 The fields <em>use_count</em>, <em>next</em>, <em>options</em> and <em>mc_flags</em> need not be
@@ -441,7 +440,7 @@ initialized.</p>
 <p>The intermediate software layer that <cite>cdrom.c</cite> forms will perform some
 additional bookkeeping. The use count of the device (the number of
 processes that have the device opened) is registered in <em>use_count</em>. The
-function <em>cdrom_ioctl()</em> will verify the appropriate user-memory regions
+function <em><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cdrom_ioctl()</span></code></em> will verify the appropriate user-memory regions
 for read and write, and in case a location on the CD is transferred,
 it will <cite>sanitize</cite> the format by making requests to the low-level
 drivers in a standard format, and translating all formats between the
@@ -450,7 +449,7 @@ memory checking and format checking and translation. Also, the necessary
 structures will be declared on the program stack.</p>
 <p>The implementation of the functions should be as defined in the
 following sections. Two functions <strong>must</strong> be implemented, namely
-<em>open()</em> and <em>release()</em>. Other functions may be omitted, their
+<em>open()</em> and <em><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">release()</span></code></em>. Other functions may be omitted, their
 corresponding capability flags will be cleared upon registration.
 Generally, a function returns zero on success and negative on error. A
 function call should return only after the command has completed, but of
@@ -458,10 +457,10 @@ course waiting for the device should not use processor time.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int open(struct cdrom_device_info *cdi, int purpose)
 </pre></div>
 </div>
-<p><em>Open()</em> should try to open the device for a specific <em>purpose</em>, which
+<p><em><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">Open()</span></code></em> should try to open the device for a specific <em>purpose</em>, which
 can be either:</p>
 <ul class="simple">
-<li><p>Open for reading data, as done by <cite>mount()</cite> (2), or the
+<li><p>Open for reading data, as done by <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mount()</span></code></cite> (2), or the
 user commands <cite>dd</cite> or <cite>cat</cite>.</p></li>
 <li><p>Open for <em>ioctl</em> commands, as done by audio-CD playing programs.</p></li>
 </ul>
@@ -474,7 +473,7 @@ up the disc, etc.</p>
 </div>
 <p>Device-specific actions should be taken such as spinning down the device.
 However, strategic actions such as ejection of the tray, or unlocking
-the door, should be left over to the general routine <em>cdrom_release()</em>.
+the door, should be left over to the general routine <em><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cdrom_release()</span></code></em>.
 This is the only function returning type <em>void</em>.</p>
 <div class="highlight-none notranslate" id="cdrom-drive-status"><div class="highlight"><pre><span></span>int drive_status(struct cdrom_device_info *cdi, int slot_nr)
 </pre></div>
@@ -561,7 +560,7 @@ necessary. The return value is 0 upon success.</p>
 that is generally found in the bar-code on the product. Unfortunately,
 the few discs that carry such a number on the disc don’t even use the
 same format. The return argument to this function is a pointer to a
-pre-declared memory region of type <em>struct cdrom_mcn</em>. The MCN is
+pre-declared memory region of type <em><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cdrom_mcn</span></code></em>. The MCN is
 expected as a 13-character string, terminated by a null-character.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int reset(struct cdrom_device_info *cdi)
 </pre></div>
@@ -582,20 +581,20 @@ implemented by the routines described above, and hence the function
 audio-control. We have decided to leave these to be accessed through a
 single function, repeating the arguments <em>cmd</em> and <em>arg</em>. Note that
 the latter is of type <em>void</em>, rather than <em>unsigned long int</em>.
-The routine <em>cdrom_ioctl()</em> does do some useful things,
+The routine <em><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cdrom_ioctl()</span></code></em> does do some useful things,
 though. It sanitizes the address format type to <em>CDROM_MSF</em> (Minutes,
 Seconds, Frames) for all audio calls. It also verifies the memory
 location of <em>arg</em>, and reserves stack-memory for the argument. This
-makes implementation of the <em>audio_ioctl()</em> much simpler than in the
+makes implementation of the <em><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">audio_ioctl()</span></code></em> much simpler than in the
 old driver scheme. For example, you may look up the function
-<em>cm206_audio_ioctl()</em> <cite>cm206.c</cite> that should be updated with
+<em><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cm206_audio_ioctl()</span></code></em> <cite>cm206.c</cite> that should be updated with
 this documentation.</p>
 <p>An unimplemented ioctl should return <em>-ENOSYS</em>, but a harmless request
 (e. g., <em>CDROMSTART</em>) may be ignored by returning 0 (success). Other
 errors should be according to the standards, whatever they are. When
 an error is returned by the low-level driver, the Uniform CD-ROM Driver
 tries whenever possible to return the error code to the calling program.
-(We may decide to sanitize the return value in <em>cdrom_ioctl()</em> though, in
+(We may decide to sanitize the return value in <em><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cdrom_ioctl()</span></code></em> though, in
 order to guarantee a uniform interface to the audio-player software.)</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int dev_ioctl(struct cdrom_device_info *cdi,
               unsigned int cmd, unsigned long arg)
@@ -618,7 +617,7 @@ in audio frames. Once these issues are resolved, this code should be
 standardized in <cite>cdrom.c</cite>.</p>
 <p>Because there are so many <em>ioctl()’s</em> that seem to be introduced to
 satisfy certain drivers <a class="footnote-reference brackets" href="#f2" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>, any non-standard <em>ioctl()</em>s
-are routed through the call <em>dev_ioctl()</em>. In principle, <cite>private</cite>
+are routed through the call <em><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_ioctl()</span></code></em>. In principle, <cite>private</cite>
 <em>ioctl()</em>‘s should be numbered after the device’s major number, and not
 the general CD-ROM <em>ioctl</em> number, <cite>0x53</cite>. Currently the
 non-supported <em>ioctl()’s</em> are:</p>
@@ -661,7 +660,7 @@ the <em>cdrom_device_info</em> variable <em>mask</em>. For instance, the SCSI CD
 driver has implemented the code for loading and ejecting CD-ROM’s, and
 hence its corresponding flags in <em>capability</em> will be set. But a SCSI
 CD-ROM drive might be a caddy system, which can’t load the tray, and
-hence for this drive the <em>cdrom_device_info</em> struct will have set
+hence for this drive the <em>cdrom_device_info</em> <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">will</span></code> have set
 the <em>CDC_CLOSE_TRAY</em> bit in <em>mask</em>.</p>
 <p>In the file <cite>cdrom.c</cite> you will encounter many constructions of the type:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>if (cdo-&gt;capability &amp; ~cdi-&gt;mask &amp; CDC _&lt;capability&gt;) ...
@@ -832,7 +831,7 @@ merged back into <cite>cdrom.h</cite>.</p>
 </div>
 <p>The contents of this structure were described in <a class="reference internal" href="#cdrom-api">cdrom_api</a>.
 A pointer to this structure is assigned to the <em>fops</em> field
-of the <em>struct gendisk</em>.</p>
+of the <em><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">gendisk</span></code></em>.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int register_cdrom(struct cdrom_device_info *cdi)
 </pre></div>
 </div>
@@ -854,7 +853,7 @@ driver’s <em>&lt;device&gt;_dops</em>, as in:</p>
 </div>
 <p>Note that a driver must have one static structure, <em>&lt;device&gt;_dops</em>, while
 it may have as many structures <em>&lt;device&gt;_info</em> as there are minor devices
-active. <em>Register_cdrom()</em> builds a linked list from these.</p>
+active. <em><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">Register_cdrom()</span></code></em> builds a linked list from these.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>void unregister_cdrom(struct cdrom_device_info *cdi)
 </pre></div>
 </div>
@@ -875,8 +874,8 @@ transferred to the device_dependent <em>open()</em> call.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>void cdrom_release(struct inode *ip, struct file *fp)
 </pre></div>
 </div>
-<p>This function implements the reverse-logic of <em>cdrom_open()</em>, and then
-calls the device-dependent <em>release()</em> routine. When the use-count has
+<p>This function implements the reverse-logic of <em><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cdrom_open()</span></code></em>, and then
+calls the device-dependent <em><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">release()</span></code></em> routine. When the use-count has
 reached 0, the allocated buffers are flushed by calls to <em>sync_dev(dev)</em>
 and <em>invalidate_buffers(dev)</em>.</p>
 <div class="highlight-none notranslate" id="cdrom-ioctl"><div class="highlight"><pre><span></span>int cdrom_ioctl(struct inode *ip, struct file *fp,
@@ -886,7 +885,7 @@ and <em>invalidate_buffers(dev)</em>.</p>
 <p>This function handles all the standard <em>ioctl</em> requests for CD-ROM
 devices in a uniform way. The different calls fall into three
 categories: <em>ioctl()’s</em> that can be directly implemented by device
-operations, ones that are routed through the call <em>audio_ioctl()</em>, and
+operations, ones that are routed through the call <em><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">audio_ioctl()</span></code></em>, and
 the remaining ones, that are presumable device-dependent. Generally, a
 negative return value indicates an error.</p>
 <section id="directly-implemented-ioctl-s">
@@ -903,7 +902,7 @@ not masked:</p>
 </dd>
 <dt><cite>CDROMEJECT_SW</cite></dt><dd><p>If <em>argnot=0</em>, set behavior to auto-close (close
 tray on first open) and auto-eject (eject on last release), otherwise
-set behavior to non-moving on <em>open()</em> and <em>release()</em> calls.</p>
+set behavior to non-moving on <em>open()</em> and <em><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">release()</span></code></em> calls.</p>
 </dd>
 <dt><cite>CDROM_GET_MCN</cite></dt><dd><p>Get the Media Catalog Number from a CD.</p>
 </dd>
@@ -912,28 +911,28 @@ set behavior to non-moving on <em>open()</em> and <em>release()</em> calls.</p>
 <section id="ioctl-s-routed-through-audio-ioctl">
 <h3><em>Ioctl*s routed through *audio_ioctl()</em><a class="headerlink" href="#ioctl-s-routed-through-audio-ioctl" title="Link to this heading">¶</a></h3>
 <p>The following set of <em>ioctl()’s</em> are all implemented through a call to
-the <em>cdrom_fops</em> function <em>audio_ioctl()</em>. Memory checks and
-allocation are performed in <em>cdrom_ioctl()</em>, and also sanitization of
+the <em>cdrom_fops</em> function <em><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">audio_ioctl()</span></code></em>. Memory checks and
+allocation are performed in <em><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cdrom_ioctl()</span></code></em>, and also sanitization of
 address format (<em>CDROM_LBA</em>/<em>CDROM_MSF</em>) is done.</p>
 <dl class="simple">
 <dt><cite>CDROMSUBCHNL</cite></dt><dd><p>Get sub-channel data in argument <em>arg</em> of type
-<cite>struct cdrom_subchnl *</cite>.</p>
+<cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cdrom_subchnl</span></code> *</cite>.</p>
 </dd>
 <dt><cite>CDROMREADTOCHDR</cite></dt><dd><p>Read Table of Contents header, in <em>arg</em> of type
-<cite>struct cdrom_tochdr *</cite>.</p>
+<cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cdrom_tochdr</span></code> *</cite>.</p>
 </dd>
 <dt><cite>CDROMREADTOCENTRY</cite></dt><dd><p>Read a Table of Contents entry in <em>arg</em> and specified by <em>arg</em>
-of type <cite>struct cdrom_tocentry *</cite>.</p>
+of type <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cdrom_tocentry</span></code> *</cite>.</p>
 </dd>
 <dt><cite>CDROMPLAYMSF</cite></dt><dd><p>Play audio fragment specified in Minute, Second, Frame format,
-delimited by <em>arg</em> of type <cite>struct cdrom_msf *</cite>.</p>
+delimited by <em>arg</em> of type <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cdrom_msf</span></code> *</cite>.</p>
 </dd>
 <dt><cite>CDROMPLAYTRKIND</cite></dt><dd><p>Play audio fragment in track-index format delimited by <em>arg</em>
-of type <cite>struct cdrom_ti *</cite>.</p>
+of type <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cdrom_ti</span></code> *</cite>.</p>
 </dd>
-<dt><cite>CDROMVOLCTRL</cite></dt><dd><p>Set volume specified by <em>arg</em> of type <cite>struct cdrom_volctrl *</cite>.</p>
+<dt><cite>CDROMVOLCTRL</cite></dt><dd><p>Set volume specified by <em>arg</em> of type <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cdrom_volctrl</span></code> *</cite>.</p>
 </dd>
-<dt><cite>CDROMVOLREAD</cite></dt><dd><p>Read volume into by <em>arg</em> of type <cite>struct cdrom_volctrl *</cite>.</p>
+<dt><cite>CDROMVOLREAD</cite></dt><dd><p>Read volume into by <em>arg</em> of type <cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cdrom_volctrl</span></code> *</cite>.</p>
 </dd>
 <dt><cite>CDROMSTART</cite></dt><dd><p>Spin up disc.</p>
 </dd>
@@ -985,7 +984,7 @@ known by the kernel/driver and set <em>arg-&gt;has_changed</em> to 1 if
 that timestamp is more recent than the timestamp set by the caller.</p>
 </dd>
 <dt><cite>CDROM_DRIVE_STATUS</cite></dt><dd><p>Returns the status of the drive by a call to
-<em>drive_status()</em>. Return values are defined in <a class="reference internal" href="#cdrom-drive-status">cdrom_drive_status</a>.
+<em><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">drive_status()</span></code></em>. Return values are defined in <a class="reference internal" href="#cdrom-drive-status">cdrom_drive_status</a>.
 Note that this call doesn’t return information on the
 current playing activity of the drive; this can be polled through
 an <em>ioctl</em> call to <em>CDROMSUBCHNL</em>. For juke-boxes, an extra argument
@@ -1047,7 +1046,7 @@ Same semantics as CDROM_LOCKDOOR.</p>
 </section>
 <section id="device-dependent-ioctl-s">
 <h3>Device dependent <em>ioctl()’s</em><a class="headerlink" href="#device-dependent-ioctl-s" title="Link to this heading">¶</a></h3>
-<p>Finally, all other <em>ioctl()’s</em> are passed to the function <em>dev_ioctl()</em>,
+<p>Finally, all other <em>ioctl()’s</em> are passed to the function <em><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_ioctl()</span></code></em>,
 if implemented. No memory allocation or verification is carried out.</p>
 </section>
 </section>
@@ -1065,7 +1064,7 @@ CD-ROM Driver:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>register_cdrom(&amp;&lt;your-drive&gt;_info);*
 </pre></div>
 </div>
-<p>Similarly, add a call to <em>unregister_cdrom()</em> at the appropriate place.</p>
+<p>Similarly, add a call to <em><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unregister_cdrom()</span></code></em> at the appropriate place.</p>
 </li>
 <li><p>Copy an example of the device-operations <em>struct</em> to your
 source, e. g., from <cite>cm206.c</cite> <em>cm206_dops</em>, and change all
@@ -1083,12 +1082,12 @@ according to prototypes listed in  <cite>cdrom.h</cite>, and specifications give
 in <a class="reference internal" href="#cdrom-api">cdrom_api</a>. Most likely you have already implemented
 the code in a large part, and you will almost certainly need to adapt the
 prototype and return values.</p></li>
-<li><p>Rename your <cite>&lt;device&gt;_ioctl()</cite> function to <em>audio_ioctl</em> and
+<li><p>Rename your <cite>&lt;device&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_ioctl()</span></code></cite> function to <em>audio_ioctl</em> and
 change the prototype a little. Remove entries listed in the first
 part in <a class="reference internal" href="#cdrom-ioctl">cdrom_ioctl</a>, if your code was OK, these are
 just calls to the routines you adapted in the previous step.</p></li>
 <li><p>You may remove all remaining memory checking code in the
-<em>audio_ioctl()</em> function that deals with audio commands (these are
+<em><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">audio_ioctl()</span></code></em> function that deals with audio commands (these are
 listed in the second part of <a class="reference internal" href="#cdrom-ioctl">cdrom_ioctl</a>. There is no
 need for memory allocation either, so most <em>case*s in the *switch</em>
 statement look similar to:</p>
@@ -1100,8 +1099,8 @@ statement look similar to:</p>
 <li><p>All remaining <em>ioctl</em> cases must be moved to a separate
 function, <em>&lt;device&gt;_ioctl</em>, the device-dependent <em>ioctl()’s</em>. Note that
 memory checking and allocation must be kept in this code!</p></li>
-<li><p>Change the prototypes of <em>&lt;device&gt;_open()</em> and
-<em>&lt;device&gt;_release()</em>, and remove any strategic code (i. e., tray
+<li><p>Change the prototypes of <em>&lt;device&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_open()</span></code></em> and
+<em>&lt;device&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_release()</span></code></em>, and remove any strategic code (i. e., tray
 movement, door locking, etc.).</p></li>
 <li><p>Try to recompile the drivers. We advise you to use modules, both
 for <cite>cdrom.o</cite> and your driver, as debugging is much easier this

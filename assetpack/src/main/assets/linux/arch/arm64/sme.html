@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -276,8 +276,8 @@ exceptions for execve() described in section 6.</p></li>
 <h2>5.  Signal handling<a class="headerlink" href="#signal-handling" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>Signal handlers are invoked with PSTATE.SM=0, PSTATE.ZA=0, and TPIDR2_EL0=0.</p></li>
-<li><p>A new signal frame record TPIDR2_MAGIC is added formatted as a struct
-tpidr2_context to allow access to TPIDR2_EL0 from signal handlers.</p></li>
+<li><p>A new signal frame record TPIDR2_MAGIC is added formatted as a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">tpidr2_context</span></code> to allow access to TPIDR2_EL0 from signal handlers.</p></li>
 <li><p>A new signal frame record za_context encodes the ZA register contents on
 signal delivery. [1]</p></li>
 <li><p>The signal frame record for ZA always contains basic metadata, in particular
@@ -298,7 +298,7 @@ extra space.  Refer to [1] for further details about this mechanism.</p></li>
 <li><p>If ZTn is supported and PSTATE.ZA==1 then a signal frame record for ZTn will
 be generated.</p></li>
 <li><p>The signal record for ZTn has magic ZT_MAGIC (0x5a544e01) and consists of a
-standard signal frame header followed by a struct zt_context specifying
+standard signal frame header followed by a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">zt_context</span></code> specifying
 the number of ZTn registers supported by the system, then zt_context.nregs
 blocks of 64 bytes of data per register.</p></li>
 </ul>
@@ -321,7 +321,7 @@ signal frame record for ZTn, resulting in a forced SIGSEGV.</p></li>
 </section>
 <section id="prctl-extensions">
 <h2>6.  prctl extensions<a class="headerlink" href="#prctl-extensions" title="Link to this heading">¶</a></h2>
-<p>Some new prctl() calls are added to allow programs to manage the SME vector
+<p>Some new <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prctl()</span></code> calls are added to allow programs to manage the SME vector
 length:</p>
 <p>prctl(PR_SME_SET_VL, unsigned long arg)</p>
 <blockquote>
@@ -398,7 +398,7 @@ does not constitute a change to the vector length for this purpose.</p></li>
 </div></blockquote>
 <p>There is no way to determine whether there is an outstanding deferred
 vector length change (which would only normally be the case between a
-fork() or vfork() and the corresponding execve() in typical use).</p>
+fork() or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vfork()</span></code> and the corresponding execve() in typical use).</p>
 <p>To extract the vector length from the result, bitwise and it with
 PR_SME_VL_LEN_MASK.</p>
 <dl class="simple">
@@ -418,7 +418,7 @@ PTRACE_GETREGSET and PTRACE_SETREGSET.</p>
 <p>Refer to [2] for definitions.</p>
 </li>
 </ul>
-<p>The regset data starts with struct user_za_header, containing:</p>
+<p>The regset data starts with <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">user_za_header</span></code>, containing:</p>
 <blockquote>
 <div><p>size</p>
 <blockquote>

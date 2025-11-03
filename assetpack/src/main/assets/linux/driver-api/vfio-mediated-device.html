@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -374,7 +374,7 @@ optional attribute.</p>
 <li><p>remove (write only)</p></li>
 </ul>
 <p>Writing ‘1’ to the ‘remove’ file destroys the mdev device. The vendor driver can
-fail the remove() callback if that device is active and the vendor driver
+fail the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove()</span></code> callback if that device is active and the vendor driver
 doesn’t support hot unplug.</p>
 <p>Example:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span># echo 1 &gt; /sys/bus/mdev/devices/$mdev_UUID/remove
@@ -399,7 +399,7 @@ void vfio_unpin_pages(struct vfio_device *device, dma_addr_t iova,
 </pre></div>
 </div>
 <p>These functions call back into the back-end IOMMU module by using the pin_pages
-and unpin_pages callbacks of the struct vfio_iommu_driver_ops[4]. Currently
+and unpin_pages callbacks of the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">vfio_iommu_driver_ops</span></code>[4]. Currently
 these callbacks are supported in the TYPE1 IOMMU module. To enable them for
 other IOMMU backend modules, such as PPC64 sPAPR module, they need to provide
 these two callback functions.</p>
@@ -408,9 +408,9 @@ these two callback functions.</p>
 <h2>References<a class="headerlink" href="#references" title="Link to this heading">¶</a></h2>
 <ol class="arabic simple">
 <li><p>See <a class="reference internal" href="vfio.html"><span class="doc">VFIO - “Virtual Function I/O” </span></a> for more information on VFIO.</p></li>
-<li><p>struct mdev_driver in include/linux/mdev.h</p></li>
-<li><p>struct mdev_parent_ops in include/linux/mdev.h</p></li>
-<li><p>struct vfio_iommu_driver_ops in include/linux/vfio.h</p></li>
+<li><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">mdev_driver</span></code> in include/linux/mdev.h</p></li>
+<li><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">mdev_parent_ops</span></code> in include/linux/mdev.h</p></li>
+<li><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">vfio_iommu_driver_ops</span></code> in include/linux/vfio.h</p></li>
 </ol>
 </section>
 </section>

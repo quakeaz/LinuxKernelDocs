@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -286,7 +286,7 @@ dependent on how many entries are in the table.</p>
 programmable in the hardware.  In this case it is best to program the
 Linux IRQ number into the hardware itself so that no mapping is
 required.  Calling <a class="reference internal" href="#c.irq_create_direct_mapping" title="irq_create_direct_mapping"><code class="xref c c-func docutils literal notranslate"><span class="pre">irq_create_direct_mapping()</span></code></a> will allocate a Linux
-IRQ number and call the .map() callback so that driver can program the
+IRQ number and call the .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">map()</span></code> callback so that driver can program the
 Linux IRQ number into the hardware.</p>
 <p>Most drivers cannot use this mapping, and it is now gated on the
 CONFIG_IRQ_DOMAIN_NOMAP option. Please refrain from introducing new
@@ -305,9 +305,9 @@ example, many embedded system board support files use a set of #defines
 for IRQ numbers that are passed to <a class="reference internal" href="../../driver-api/infrastructure.html#c.device" title="device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span></code></a> registrations.  In that
 case the Linux IRQ numbers cannot be dynamically assigned and the legacy
 mapping should be used.</p>
-<p>As the name implies, the *_legacy() functions are deprecated and only
+<p>As the name implies, the *<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_legacy()</span></code> functions are deprecated and only
 exist to ease the support of ancient platforms. No new users should be
-added. Same goes for the *_simple() functions when their use results
+added. Same goes for the *<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_simple()</span></code> functions when their use results
 in the legacy behaviour.</p>
 <p>The legacy map assumes a contiguous range of IRQ numbers has already
 been allocated for the controller and that the IRQ number can be
@@ -392,13 +392,13 @@ IRQ.</p>
 <p>For an interrupt controller driver to support hierarchy irq_domain, it
 needs to:</p>
 <ol class="arabic simple">
-<li><p>Implement irq_domain_ops.alloc() and irq_domain_ops.free()</p></li>
-<li><p>Optionally, implement irq_domain_ops.activate() and
-irq_domain_ops.deactivate().</p></li>
+<li><p>Implement irq_domain_ops.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">alloc()</span></code> and irq_domain_ops.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">free()</span></code></p></li>
+<li><p>Optionally, implement irq_domain_ops.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">activate()</span></code> and
+irq_domain_ops.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">deactivate()</span></code>.</p></li>
 <li><p>Optionally, implement an irq_chip to manage the interrupt controller
 hardware.</p></li>
-<li><p>There is no need to implement irq_domain_ops.map() and
-irq_domain_ops.unmap(). They are unused with hierarchy irq_domain.</p></li>
+<li><p>There is no need to implement irq_domain_ops.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">map()</span></code> and
+irq_domain_ops.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unmap()</span></code>. They are unused with hierarchy irq_domain.</p></li>
 </ol>
 <p>Note the hierarchy irq_domain is in no way x86-specific, and is
 heavily used to support other architectures, such as ARM, ARM64 etc.</p>
@@ -465,7 +465,7 @@ pass a device-specific description of an interrupt.</p>
     int (*select)(struct irq_domain *d, struct irq_fwspec *fwspec, enum irq_domain_bus_token bus_token);
     int (*map)(struct irq_domain *d, unsigned int virq, irq_hw_number_t hw);
     void (*unmap)(struct irq_domain *d, unsigned int virq);
-    int (*xlate)(struct irq_domain *d, struct device_node *node,const u32 *intspec, unsigned int intsize, unsigned long *out_hwirq, unsigned int *out_type);
+    int (*xlate)(struct irq_domain *d, struct device_node *node, const u32 *intspec, unsigned int intsize, unsigned long *out_hwirq, unsigned int *out_type);
 #ifdef CONFIG_IRQ_DOMAIN_HIERARCHY;
     int (*alloc)(struct irq_domain *d, unsigned int virq, unsigned int nr_irqs, void *arg);
     void (*free)(struct irq_domain *d, unsigned int virq, unsigned int nr_irqs);
@@ -518,7 +518,7 @@ linux irq type value (<strong>out_type</strong>). This is a generalised <strong>
 <p>Functions below are provided by the driver and called whenever a new mapping
 is created or an old mapping is disposed. The driver can then proceed to
 whatever internal data structures management is required. It also needs
-to setup the irq_desc when returning from map().</p>
+to setup the irq_desc when returning from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">map()</span></code>.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.irq_domain">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">irq_domain</span></span></span><a class="headerlink" href="#c.irq_domain" title="Link to this definition">¶</a><br /></dt>
@@ -610,8 +610,8 @@ conflicts/failures with reserved HW irqs. Can be ~0.</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>Optional elements:
-Revmap data, used internally by the irq domain code:</p>
+<p>Optional elements:</p>
+<p>Revmap data, used internally by the irq domain code:</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.irq_domain_info">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">irq_domain_info</span></span></span><a class="headerlink" href="#c.irq_domain_info" title="Link to this definition">¶</a><br /></dt>
@@ -632,6 +632,7 @@ Revmap data, used internally by the irq domain code:</p>
     const char                              *name_suffix;
     const struct irq_domain_ops             *ops;
     void *host_data;
+    struct device                           *dev;
 #ifdef CONFIG_IRQ_DOMAIN_HIERARCHY;
     struct irq_domain                       *parent;
 #endif;
@@ -667,6 +668,8 @@ domains are added using same fwnode</p>
 <dt><code class="docutils literal notranslate"><span class="pre">ops</span></code></dt><dd><p>Domain operation callbacks</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">host_data</span></code></dt><dd><p>Controller private data pointer</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">dev</span></code></dt><dd><p>Device which creates the domain</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">parent</span></code></dt><dd><p>Pointer to the parent irq domain used in a hierarchy domain</p>
 </dd>
@@ -718,7 +721,7 @@ Allow to do some additional cleanup operation.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Only one mapping per hardware interrupt is permitted.</p>
-<p>If the sense/trigger is to be specified, set_irq_type() should be called
+<p>If the sense/trigger is to be specified, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_irq_type()</span></code> should be called
 on the number returned from that call.</p>
 <p><strong>Return</strong></p>
 <p>Linux irq number or 0 on error</p>
@@ -826,7 +829,7 @@ domain flags are set.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Allocate a struct irqchip_fwid, and return a pointer to the embedded
+<p>Allocate a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">irqchip_fwid</span></code>, and return a pointer to the embedded
 fwnode_handle (or NULL on failure).</p>
 <p><strong>Note</strong></p>
 <p>The types IRQCHIP_FWNODE_NAMED and IRQCHIP_FWNODE_NAMED_ID are
@@ -1001,7 +1004,7 @@ the revmap path by using the hwirq directly.</p>
 <p><strong>Description</strong></p>
 <p>Only one mapping per hardware interrupt is permitted. Returns a linux
 irq number.
-If the sense/trigger is to be specified, set_irq_type() should be called
+If the sense/trigger is to be specified, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_irq_type()</span></code> should be called
 on the number returned from that call.</p>
 </div>
 <dl class="c function">
@@ -1145,7 +1148,7 @@ and linux irq flags.</p>
 <p><strong>Note</strong></p>
 <p>don’t use this function unless your interrupt controller explicitly
 supports both one and two cell bindings.  For the majority of controllers
-the _onecell() or _twocell() variants above should be used.</p>
+the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_onecell()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_twocell()</span></code> variants above should be used.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.irq_domain_translate_onecell">
@@ -1245,7 +1248,7 @@ Returns -EINVAL if <strong>virq</strong> doesn’t have a valid irq_data pointin
 to <strong>domain</strong>.</p>
 <p>Its only use is to be able to trim levels of hierarchy that do not
 have any real meaning for this interrupt, and that the driver marks
-as such from its .alloc() callback.</p>
+as such from its .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">alloc()</span></code> callback.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.irq_domain_get_irq_data">
@@ -1328,6 +1331,23 @@ as such from its .alloc() callback.</p>
 </dl>
 </div>
 <dl class="c function">
+<dt class="sig sig-object c" id="c.irq_domain_free_irqs_top">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">irq_domain_free_irqs_top</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.irq_domain" title="irq_domain"><span class="n"><span class="pre">irq_domain</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">domain</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">virq</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">nr_irqs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.irq_domain_free_irqs_top" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Clear handler and handler data, clear irqdata and free parent</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">irq_domain</span> <span class="pre">*domain</span></code></dt><dd><p>Interrupt domain to match</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">virq</span></code></dt><dd><p>IRQ number to start with</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">nr_irqs</span></code></dt><dd><p>The number of irqs to free</p>
+</dd>
+</dl>
+</div>
+<dl class="c function">
 <dt class="sig sig-object c" id="c.__irq_domain_alloc_irqs">
 <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">__irq_domain_alloc_irqs</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.irq_domain" title="irq_domain"><span class="n"><span class="pre">irq_domain</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">domain</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">irq_base</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">nr_irqs</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">node</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">arg</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n"><span class="pre">realloc</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../genericirq.html#c.irq_affinity_desc" title="irq_affinity_desc"><span class="n"><span class="pre">irq_affinity_desc</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">affinity</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.__irq_domain_alloc_irqs" title="Link to this definition">¶</a><br /></dt>
 <dd><p>Allocate IRQs from domain</p>
@@ -1376,12 +1396,12 @@ allocate resources.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">virq</span></code></dt><dd><p>Irq to push the domain in to.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">*arg</span></code></dt><dd><p>Passed to the irq_domain_ops alloc() function.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">*arg</span></code></dt><dd><p>Passed to the irq_domain_ops <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">alloc()</span></code> function.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
 <p>For an already existing irqdomain hierarchy, as might be obtained
-via a call to pci_enable_msix(), add an additional domain to the
+via a call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_enable_msix()</span></code>, add an additional domain to the
 head of the processing chain.  Must be called before <a class="reference internal" href="../genericirq.html#c.request_irq" title="request_irq"><code class="xref c c-func docutils literal notranslate"><span class="pre">request_irq()</span></code></a>
 has been called.</p>
 </div>
@@ -1444,23 +1464,6 @@ called either before <a class="reference internal" href="../genericirq.html#c.re
 <h2>Internal Functions Provided<a class="headerlink" href="#internal-functions-provided" title="Link to this heading">¶</a></h2>
 <p>This chapter contains the autogenerated documentation of the internal
 functions.</p>
-<dl class="c function">
-<dt class="sig sig-object c" id="c.irq_domain_free_irqs_top">
-<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">irq_domain_free_irqs_top</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.irq_domain" title="irq_domain"><span class="n"><span class="pre">irq_domain</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">domain</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">virq</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">nr_irqs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.irq_domain_free_irqs_top" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Clear handler and handler data, clear irqdata and free parent</p>
-</dd></dl>
-
-<div class="kernelindent docutils container">
-<p><strong>Parameters</strong></p>
-<dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">irq_domain</span> <span class="pre">*domain</span></code></dt><dd><p>Interrupt domain to match</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">virq</span></code></dt><dd><p>IRQ number to start with</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">nr_irqs</span></code></dt><dd><p>The number of irqs to free</p>
-</dd>
-</dl>
-</div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.irq_domain_free_irqs">
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">irq_domain_free_irqs</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">virq</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">nr_irqs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.irq_domain_free_irqs" title="Link to this definition">¶</a><br /></dt>

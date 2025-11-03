@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -190,7 +190,7 @@ the mnt to the list using <a class="reference internal" href="api-summary.html#c
 </pre></div>
 </div>
 </li>
-<li><p>When you want mountpoints to be expired, call mark_mounts_for_expiry()
+<li><p>When you want mountpoints to be expired, call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mark_mounts_for_expiry()</span></code>
 with a pointer to this list. This will process the list, marking every
 vfsmount thereon for potential expiry on the next call.</p>
 <p>If a vfsmount was already flagged for expiry, and if its usage count is 1
@@ -216,15 +216,15 @@ same expiration list.</p>
 <p>As an alternative, it is possible for userspace to request expiry of any
 mountpoint (though some will be rejected - the current process’s idea of the
 rootfs for example). It does this by passing the MNT_EXPIRE flag to
-umount(). This flag is considered incompatible with MNT_FORCE and MNT_DETACH.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">umount()</span></code>. This flag is considered incompatible with MNT_FORCE and MNT_DETACH.</p>
 <p>If the mountpoint in question is in referenced by something other than
-umount() or its parent mountpoint, an EBUSY error will be returned and the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">umount()</span></code> or its parent mountpoint, an EBUSY error will be returned and the
 mountpoint will not be marked for expiration or unmounted.</p>
 <p>If the mountpoint was not already marked for expiry at that time, an EAGAIN
 error will be given and it won’t be unmounted.</p>
 <p>Otherwise if it was already marked and it wasn’t referenced, unmounting will
 take place as usual.</p>
-<p>Again, the expiration flag is cleared every time anything other than umount()
+<p>Again, the expiration flag is cleared every time anything other than <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">umount()</span></code>
 looks at a mountpoint.</p>
 </section>
 </section>

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -196,14 +196,6 @@ the procfs interface is deprecated.</p>
 </tr>
 <tr class="row-odd"><td><p><strong>/sys/.../iio:deviceX/scan_elements/in_voltageY_supply_type</strong></p></td>
 </tr>
-<tr class="row-even"><td><p><strong>/sys/.../iio:deviceX/scan_elements/in_voltageY_i_type</strong></p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>/sys/.../iio:deviceX/scan_elements/in_voltageY_q_type</strong></p></td>
-</tr>
-<tr class="row-even"><td><p><strong>/sys/.../iio:deviceX/scan_elements/in_voltage_i_type</strong></p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>/sys/.../iio:deviceX/scan_elements/in_voltage_q_type</strong></p></td>
-</tr>
 <tr class="row-even"><td><p><strong>/sys/.../iio:deviceX/scan_elements/in_timestamp_type</strong></p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>/sys/.../iio:deviceX/scan_elements/in_pressureY_type</strong></p></td>
@@ -275,14 +267,6 @@ the bufferY directory, to be configurable per buffer.</p>
 </tr>
 <tr class="row-odd"><td><p><strong>/sys/.../iio:deviceX/scan_elements/in_voltageY-voltageZ_en</strong></p></td>
 </tr>
-<tr class="row-even"><td><p><strong>/sys/.../iio:deviceX/scan_elements/in_voltageY_i_en</strong></p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>/sys/.../iio:deviceX/scan_elements/in_voltageY_q_en</strong></p></td>
-</tr>
-<tr class="row-even"><td><p><strong>/sys/.../iio:deviceX/scan_elements/in_voltage_i_en</strong></p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>/sys/.../iio:deviceX/scan_elements/in_voltage_q_en</strong></p></td>
-</tr>
 <tr class="row-even"><td><p><strong>/sys/.../iio:deviceX/scan_elements/in_incli_x_en</strong></p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>/sys/.../iio:deviceX/scan_elements/in_incli_y_en</strong></p></td>
@@ -306,14 +290,6 @@ the bufferY directory, to be configurable per buffer.</p>
 <tr class="row-odd"><td><p><strong>/sys/.../iio:deviceX/scan_elements/in_voltageY_index</strong></p></td>
 </tr>
 <tr class="row-even"><td><p><strong>/sys/.../iio:deviceX/scan_elements/in_voltageY_supply_index</strong></p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>/sys/.../iio:deviceX/scan_elements/in_voltageY_i_index</strong></p></td>
-</tr>
-<tr class="row-even"><td><p><strong>/sys/.../iio:deviceX/scan_elements/in_voltageY_q_index</strong></p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>/sys/.../iio:deviceX/scan_elements/in_voltage_i_index</strong></p></td>
-</tr>
-<tr class="row-even"><td><p><strong>/sys/.../iio:deviceX/scan_elements/in_voltage_q_index</strong></p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>/sys/.../iio:deviceX/scan_elements/in_accel_x_index</strong></p></td>
 </tr>
@@ -468,6 +444,16 @@ Northpeak through the PMC/SCU.</p>
 IPC command to the PMC/SCU.</p>
 <p>Format: %d %d where first number is command and
 second number is subcommand.</p>
+<table class="docutils align-default" id="abi-sys-bus-platform-devices-vpc2004-conservation-mode">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/bus/platform/devices/VPC2004:*/conservation_mode</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-obsolete-files.html#abi-file-obsolete-sysfs-platform-ideapad-laptop"><span class="std std-ref">sysfs-platform-ideapad-laptop</span></a></p>
+<p>Controls whether the conservation mode is enabled or not.
+This feature limits the maximum battery charge percentage to
+around 50-60% in order to prolong the lifetime of the battery.</p>
 <table class="docutils align-default" id="abi-sys-bus-usb-devices-power-level">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/bus/usb/devices/.../power/level</strong></p></td>
@@ -2035,14 +2021,22 @@ the range 0..INT_MAX.  See Documentation/admin-guide/gpio for more information.<
     /export ... asks the kernel to export a GPIO to userspace
     /unexport ... to return a GPIO to the kernel
     /gpioN ... for each exported GPIO #N OR
-    /&lt;LINE-NAME&gt; ... for a properly named GPIO line
         /value ... always readable, writes fail for input GPIOs
         /direction ... r/w as: in, out (default low); write: high, low
         /edge ... r/w as: none, falling, rising, both
+        /active_low ... r/w as: 0, 1
     /gpiochipN ... for each gpiochip; #N is its first GPIO
         /base ... (r/o) same as N
-        /label ... (r/o) descriptive, not necessarily unique
+        /label ... (r/o) descriptive chip name
         /ngpio ... (r/o) number of GPIOs; numbered N to N + (ngpio - 1)
+        /gpio&lt;OFFSET&gt;
+            /value ... always readable, writes fail for input GPIOs
+            /direction ... r/w as: in, out (default low); write: high, low
+    /chipX ... for each gpiochip; #X is the gpio device ID
+        /export ... asks the kernel to export a GPIO at HW offset X to userspace
+        /unexport ... to return a GPIO at HW offset X to the kernel
+        /label ... (r/o) descriptive chip name
+        /ngpio ... (r/o) number of GPIOs exposed by the chip
 </pre></div>
 </div>
 <p>This ABI is obsoleted by <a class="reference internal" href="abi-testing-files.html#abi-file-testing-gpio-cdev"><span class="std std-ref">testing/gpio-cdev</span></a> and will be
@@ -2105,6 +2099,21 @@ for this mode.</p>
 alternate mode.</p>
 <section id="symbols-under-sys-devices">
 <h2>Symbols under /sys/devices<a class="headerlink" href="#symbols-under-sys-devices" title="Link to this heading">¶</a></h2>
+<table class="docutils align-default" id="abi-sys-devices-platform-samsung-battery-life-extender">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/devices/platform/samsung/battery_life_extender</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-obsolete-files.html#abi-file-obsolete-sysfs-driver-samsung-laptop"><span class="std std-ref">sysfs-driver-samsung-laptop</span></a></p>
+<p>Max battery charge level can be modified, battery cycle
+life can be extended by reducing the max battery charge
+level.</p>
+<ul class="simple">
+<li><p>0 means normal battery mode (100% charge)</p></li>
+<li><p>1 means battery life extender mode (80% charge)</p></li>
+</ul>
+</section>
 <table class="docutils align-default" id="abi-sys-devices-system-cpu-cpuidle-current-governor-ro">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/devices/system/cpu/cpuidle/current_governor_ro</strong></p></td>
@@ -2117,7 +2126,6 @@ with the update that cpuidle governor can be changed at runtime in default,
 both current_governor and current_governor_ro co-exist under
 /sys/devices/system/cpu/cpuidle/ file, it’s duplicate so make
 current_governor_ro obsolete.</p>
-</section>
 <section id="symbols-under-sys-firmware">
 <h2>Symbols under /sys/firmware<a class="headerlink" href="#symbols-under-sys-firmware" title="Link to this heading">¶</a></h2>
 <table class="docutils align-default" id="abi-sys-firmware-acpi-hotplug-force-remove">
@@ -2150,6 +2158,26 @@ Kernel support will be removed no sooner than Dec 2025.</p>
 </section>
 <section id="symbols-under-sys-kernel">
 <h2>Symbols under /sys/kernel<a class="headerlink" href="#symbols-under-sys-kernel" title="Link to this heading">¶</a></h2>
+<table class="docutils align-default" id="abi-sys-kernel-debug-tracing">
+<tbody>
+<tr class="row-odd"><td><p><strong>/sys/kernel/debug/tracing</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined on file <a class="reference internal" href="abi-obsolete-files.html#abi-file-obsolete-automount-tracefs-debugfs"><span class="std std-ref">automount-tracefs-debugfs</span></a></p>
+<p>The ftrace was first added to the kernel, its interface was placed
+into the debugfs file system under the “tracing” directory. Access
+to the files were in /sys/kernel/debug/tracing. As systems wanted
+access to the tracing interface without having to enable debugfs, a
+new interface was created called “tracefs”. This was a stand alone
+file system and was usually mounted in /sys/kernel/tracing.</p>
+<p>To allow older tooling to continue to operate, when mounting
+debugfs, the tracefs file system would automatically get mounted in
+the “tracing” directory of debugfs. The tracefs interface was added
+in January 2015 in the v4.1 kernel.</p>
+<p>All tooling should now be using tracefs directly and the “tracing”
+directory in debugfs should be removed by January 2030.</p>
+</section>
 <table class="docutils align-default" id="abi-sys-kernel-fadump-enabledo">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/kernel/fadump_enabled</strong></p></td>
@@ -2161,7 +2189,6 @@ Kernel support will be removed no sooner than Dec 2025.</p>
 Primarily used to identify whether the FADump is enabled in
 the kernel or not.
 User:           Kdump service</p>
-</section>
 <table class="docutils align-default" id="abi-sys-kernel-fadump-registeredo">
 <tbody>
 <tr class="row-odd"><td><p><strong>/sys/kernel/fadump_registered</strong></p></td>

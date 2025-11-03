@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -202,11 +202,11 @@ Linux APIs。</p>
 &lt;<a class="reference external" href="mailto:linux-pci&#37;&#52;&#48;atrey&#46;karlin&#46;mff&#46;cuni&#46;cz">linux-pci<span>&#64;</span>atrey<span>&#46;</span>karlin<span>&#46;</span>mff<span>&#46;</span>cuni<span>&#46;</span>cz</a>&gt; 邮件列表。</p>
 <section id="pci">
 <h2><span class="section-number">1.1. </span>PCI驱动的结构体<a class="headerlink" href="#pci" title="Link to this heading">¶</a></h2>
-<p>PCI驱动通过pci_register_driver()在系统中“发现”PCI设备。实际上，它是反过来的。
+<p>PCI驱动通过<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_register_driver()</span></code>在系统中“发现”PCI设备。实际上，它是反过来的。
 当PCI通用代码发现一个新设备时，具有匹配“描述”的驱动程序将被通知。下面是这方面的细
 节。</p>
-<p>pci_register_driver()将大部分探测设备的工作留给了PCI层，并支持设备的在线插入/移
-除[从而在一个驱动中支持可热插拔的PCI、CardBus和Express-Card]。 pci_register_driver()
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_register_driver()</span></code>将大部分探测设备的工作留给了PCI层，并支持设备的在线插入/移
+除[从而在一个驱动中支持可热插拔的PCI、CardBus和Express-Card]。 <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_register_driver()</span></code>
 调用需要传入一个函数指针表，从而决定了驱动的高层结构体。</p>
 <p>一旦驱动探测到一个PCI设备并取得了所有权，驱动通常需要执行以下初始化：</p>
 <blockquote>
@@ -214,7 +214,7 @@ Linux APIs。</p>
 <li><p>启用设备</p></li>
 <li><p>请求MMIO/IOP资源</p></li>
 <li><p>设置DMA掩码大小（对于流式和一致的DMA）</p></li>
-<li><p>分配和初始化共享控制数据（pci_allocate_coherent()）</p></li>
+<li><p>分配和初始化共享控制数据（<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_allocate_coherent()</span></code>）</p></li>
 <li><p>访问设备配置空间(如果需要)</p></li>
 <li><p>注册IRQ处理程序(<a class="reference internal" href="../../../core-api/genericirq.html#c.request_irq" title="request_irq"><code class="xref c c-func docutils literal notranslate"><span class="pre">request_irq()</span></code></a>)</p></li>
 <li><p>初始化非PCI（即芯片的LAN/SCSI/等部分）</p></li>
@@ -333,7 +333,7 @@ while (dev = pci_get_device(VENDOR_ID, DEVICE_ID, dev))
 <li><p>启用设备</p></li>
 <li><p>请求MMIO/IOP资源</p></li>
 <li><p>设置DMA掩码大小（对于流式和一致的DMA）</p></li>
-<li><p>分配和初始化共享控制数据（pci_allocate_coherent()）</p></li>
+<li><p>分配和初始化共享控制数据（<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_allocate_coherent()</span></code>）</p></li>
 <li><p>访问设备配置空间(如果需要)</p></li>
 <li><p>注册IRQ处理程序（<a class="reference internal" href="../../../core-api/genericirq.html#c.request_irq" title="request_irq"><code class="xref c c-func docutils literal notranslate"><span class="pre">request_irq()</span></code></a>）</p></li>
 <li><p>初始化non-PCI（即芯片的LAN/SCSI/等部分）</p></li>
@@ -360,7 +360,7 @@ PCI设备。这将:</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>OS BUG：在启用这些资源之前，我们没有检查资源分配情况。如果我们在调用
-之前调用pci_request_resources()，这个顺序会更合理。目前，当两个设备被分配
+之前调用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_request_resources()</span></code>，这个顺序会更合理。目前，当两个设备被分配
 了相同的范围时，设备驱动无法检测到这个错误。这不是一个常见的问题，不太可能很快
 得到修复。</p>
 <p>这个问题之前已经讨论过了，但从2.6.19开始没有改变：
@@ -513,7 +513,7 @@ Infiniband等。请确保你的驱动程序没有从其他子系统中丢失资�
 </section>
 <section id="mmio-io">
 <h3><span class="section-number">1.5.6. </span>禁止设备对MMIO/IO端口地址做出响应<a class="headerlink" href="#mmio-io" title="Link to this heading">¶</a></h3>
-<p>io_unmap() MMIO或IO端口资源，然后调用<a class="reference internal" href="../../../driver-api/pci/pci.html#c.pci_disable_device" title="pci_disable_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_disable_device()</span></code></a>。
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">io_unmap()</span></code> MMIO或IO端口资源，然后调用<a class="reference internal" href="../../../driver-api/pci/pci.html#c.pci_disable_device" title="pci_disable_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_disable_device()</span></code></a>。
 这与<a class="reference internal" href="../../../driver-api/pci/pci.html#c.pci_enable_device" title="pci_enable_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_enable_device()</span></code></a>对称相反。
 在调用<a class="reference internal" href="../../../driver-api/pci/pci.html#c.pci_disable_device" title="pci_disable_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_disable_device()</span></code></a>后不要访问设备寄存器。</p>
 </section>
@@ -526,7 +526,7 @@ Infiniband等。请确保你的驱动程序没有从其他子系统中丢失资�
 <section id="id14">
 <h2><span class="section-number">1.6. </span>如何访问PCI配置空间<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h2>
 <p>你可以使用 <cite>pci_(read|write)_config_(byte|word|dword)</cite> 来访问由
-<cite>struct pci_dev *</cite> 表示的设备的配置空间。所有这些函数在成功时返回0，或者返回一个
+<cite><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pci_dev</span></code> *</cite> 表示的设备的配置空间。所有这些函数在成功时返回0，或者返回一个
 错误代码（ <cite>PCIBIOS_...</cite> ），这个错误代码可以通过pcibios_strerror翻译成文本字
 符串。大多数驱动程序希望对有效的PCI设备的访问不会失败。</p>
 <p>如果你没有可用的pci_dev结构体，你可以调用
@@ -550,19 +550,19 @@ Infiniband等。请确保你的驱动程序没有从其他子系统中丢失资�
 <tr class="row-odd"><td><p><a class="reference internal" href="../../../driver-api/pci/pci.html#c.pci_find_capability" title="pci_find_capability"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_find_capability()</span></code></a></p></td>
 <td><p>在设备的功能列表中找到指定的功能</p></td>
 </tr>
-<tr class="row-even"><td><p>pci_resource_start()</p></td>
+<tr class="row-even"><td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_resource_start()</span></code></p></td>
 <td><p>返回一个给定的PCI区域的总线起始地址</p></td>
 </tr>
-<tr class="row-odd"><td><p>pci_resource_end()</p></td>
+<tr class="row-odd"><td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_resource_end()</span></code></p></td>
 <td><p>返回给定PCI区域的总线末端地址</p></td>
 </tr>
-<tr class="row-even"><td><p>pci_resource_len()</p></td>
+<tr class="row-even"><td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_resource_len()</span></code></p></td>
 <td><p>返回一个PCI区域的字节长度</p></td>
 </tr>
-<tr class="row-odd"><td><p>pci_set_drvdata()</p></td>
+<tr class="row-odd"><td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_set_drvdata()</span></code></p></td>
 <td><p>为一个pci_dev设置私有驱动数据指针</p></td>
 </tr>
-<tr class="row-even"><td><p>pci_get_drvdata()</p></td>
+<tr class="row-even"><td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_get_drvdata()</span></code></p></td>
 <td><p>返回一个pci_dev的私有驱动数据指针</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="../../../driver-api/pci/pci.html#c.pci_set_mwi" title="pci_set_mwi"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_set_mwi()</span></code></a></p></td>
@@ -600,13 +600,13 @@ Infiniband等。请确保你的驱动程序没有从其他子系统中丢失资�
 在于内核中，因为它们与热插拔或PCI域或具有健全的锁不兼容。</p>
 <table class="docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p>pci_find_device()</p></td>
+<tr class="row-odd"><td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_find_device()</span></code></p></td>
 <td><p>被<a class="reference internal" href="../../../driver-api/pci/pci.html#c.pci_get_device" title="pci_get_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_get_device()</span></code></a>取代</p></td>
 </tr>
-<tr class="row-even"><td><p>pci_find_subsys()</p></td>
+<tr class="row-even"><td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_find_subsys()</span></code></p></td>
 <td><p>被<a class="reference internal" href="../../../driver-api/pci/pci.html#c.pci_get_subsys" title="pci_get_subsys"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_get_subsys()</span></code></a>取代</p></td>
 </tr>
-<tr class="row-odd"><td><p>pci_find_slot()</p></td>
+<tr class="row-odd"><td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_find_slot()</span></code></p></td>
 <td><p>被<a class="reference internal" href="../../../driver-api/pci/pci.html#c.pci_get_domain_bus_and_slot" title="pci_get_domain_bus_and_slot"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_get_domain_bus_and_slot()</span></code></a>取代</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="../../../driver-api/pci/pci.html#c.pci_get_slot" title="pci_get_slot"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_get_slot()</span></code></a></p></td>
@@ -623,7 +623,7 @@ Infiniband等。请确保你的驱动程序没有从其他子系统中丢失资�
 端口空间保证写事务在CPU继续之前到达PCI设备。对MMIO空间的写入允许CPU在事务到达PCI
 设备之前继续。HW weenies称这为“写通知”，因为在事务到达目的地之前，写的完成被“通知”
 给CPU。</p>
-<p>因此，对时间敏感的代码应该添加readl()，CPU在做其他工作之前应该等待。经典的“位脉冲”
+<p>因此，对时间敏感的代码应该添加<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">readl()</span></code>，CPU在做其他工作之前应该等待。经典的“位脉冲”
 序列对I/O端口空间很有效:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>for (i = 8; --i; val &gt;&gt;= 1) {
         outb(val &amp; 1, ioport_reg);      /* 置位 */
@@ -640,8 +640,8 @@ Infiniband等。请确保你的驱动程序没有从其他子系统中丢失资�
 </pre></div>
 </div>
 <p>重要的是， <code class="docutils literal notranslate"><span class="pre">safe_mmio_reg</span></code> 不能有任何干扰设备正确操作的副作用。</p>
-<p>另一种需要注意的情况是在重置PCI设备时。使用PCI配置空间读数来刷新writeel()。如果预期
-PCI设备不响应readl()，这将在所有平台上优雅地处理PCI主控器的中止。大多数x86平台将允许
+<p>另一种需要注意的情况是在重置PCI设备时。使用PCI配置空间读数来刷新<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">writeel()</span></code>。如果预期
+PCI设备不响应<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">readl()</span></code>，这将在所有平台上优雅地处理PCI主控器的中止。大多数x86平台将允许
 MMIO读取主控中止（又称“软失败”），并返回垃圾（例如~0）。但许多RISC平台会崩溃（又称“硬失败”）。</p>
 </section>
 </section>

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -234,7 +234,7 @@ removal.</p>
 </section>
 <section id="using-devm-hwmon-device-register-with-info">
 <h2>Using devm_hwmon_device_register_with_info()<a class="headerlink" href="#using-devm-hwmon-device-register-with-info" title="Link to this heading">¶</a></h2>
-<p>hwmon_device_register_with_info() registers a hardware monitoring device.
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hwmon_device_register_with_info()</span></code> registers a hardware monitoring device.
 The parameters to this function are</p>
 <table class="docutils align-default">
 <tbody>
@@ -247,10 +247,10 @@ The parameters to this function are</p>
 <tr class="row-odd"><td><p><cite>void *drvdata</cite></p></td>
 <td><p>Driver private data</p></td>
 </tr>
-<tr class="row-even"><td><p><cite>const struct hwmon_chip_info *info</cite></p></td>
+<tr class="row-even"><td><p><cite>const <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hwmon_chip_info</span></code> *info</cite></p></td>
 <td><p>Pointer to chip description.</p></td>
 </tr>
-<tr class="row-odd"><td><p><cite>const struct attribute_group **extra_groups</cite></p></td>
+<tr class="row-odd"><td><p><cite>const <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">attribute_group</span></code> **extra_groups</cite></p></td>
 <td><p>Null-terminated list of additional non-standard
 sysfs attribute groups.</p></td>
 </tr>
@@ -310,7 +310,7 @@ optional, but must be provided if any writeable attributes exist.</p>
 </dl>
 </li>
 </ul>
-<p>Each sensor channel is described with struct hwmon_channel_info, which is
+<p>Each sensor channel is described with <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hwmon_channel_info</span></code>, which is
 defined as follows:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct hwmon_channel_info {
         enum hwmon_sensor_types type;
@@ -558,7 +558,7 @@ feasible. Standard permissions are 0644 for SENSOR_DEVICE_ATTR[_2]_RW,
 0444 for SENSOR_DEVICE_ATTR[_2]_RO, and 0200 for SENSOR_DEVICE_ATTR[_2]_WO.
 Standard functions, similar to DEVICE_ATTR_{RW,RO,WO}, have _show and _store
 appended to the provided function name.</p>
-<p>SENSOR_DEVICE_ATTR and its variants define a struct sensor_device_attribute
+<p>SENSOR_DEVICE_ATTR and its variants define a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">sensor_device_attribute</span></code>
 variable. This structure has the following fields:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct sensor_device_attribute {
         struct device_attribute dev_attr;
@@ -569,7 +569,7 @@ variable. This structure has the following fields:</p>
 <p>You can use to_sensor_dev_attr to get the pointer to this structure from the
 attribute read or write function. Its parameter is the device to which the
 attribute is attached.</p>
-<p>SENSOR_DEVICE_ATTR_2 and its variants define a struct sensor_device_attribute_2
+<p>SENSOR_DEVICE_ATTR_2 and its variants define a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">sensor_device_attribute_2</span></code>
 variable, which is defined as follows:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct sensor_device_attribute_2 {
         struct device_attribute dev_attr;

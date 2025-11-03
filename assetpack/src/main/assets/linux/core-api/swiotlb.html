@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -208,17 +208,17 @@ contain any unrelated kernel data.</p>
 </section>
 <section id="core-functionality">
 <h2>Core Functionality<a class="headerlink" href="#core-functionality" title="Link to this heading">¶</a></h2>
-<p>The primary swiotlb APIs are swiotlb_tbl_map_single() and
-swiotlb_tbl_unmap_single(). The “map” API allocates a bounce buffer of a
+<p>The primary swiotlb APIs are <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">swiotlb_tbl_map_single()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">swiotlb_tbl_unmap_single()</span></code>. The “map” API allocates a bounce buffer of a
 specified size in bytes and returns the physical address of the buffer. The
 buffer memory is physically contiguous. The expectation is that the DMA layer
 maps the physical memory address to a DMA address, and returns the DMA address
 to the driver for programming into the device. If a DMA operation specifies
 multiple memory buffer segments, a separate bounce buffer must be allocated for
-each segment. swiotlb_tbl_map_single() always does a “sync” operation (i.e., a
+each segment. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">swiotlb_tbl_map_single()</span></code> always does a “sync” operation (i.e., a
 CPU copy) to initialize the bounce buffer to match the contents of the original
 buffer.</p>
-<p>swiotlb_tbl_unmap_single() does the reverse. If the DMA operation might have
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">swiotlb_tbl_unmap_single()</span></code> does the reverse. If the DMA operation might have
 updated the bounce buffer memory and DMA_ATTR_SKIP_CPU_SYNC is not set, the
 unmap does a “sync” operation to cause a CPU copy of the data from the bounce
 buffer back to the original buffer. Then the bounce buffer memory is freed.</p>
@@ -253,7 +253,7 @@ default memory pool size remains an open issue.</p>
 bytes, which is 256 KiB with current definitions. When a device’s DMA settings
 are such that the device might use swiotlb, the maximum size of a DMA segment
 must be limited to that 256 KiB. This value is communicated to higher-level
-kernel code via dma_map_mapping_size() and swiotlb_max_mapping_size(). If the
+kernel code via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_map_mapping_size()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">swiotlb_max_mapping_size()</span></code>. If the
 higher-level code fails to account for this limit, it may make requests that
 are too large for swiotlb, and get a “swiotlb full” error.</p>
 <p>A key device DMA setting is “min_align_mask”, which is a power of 2 minus 1
@@ -263,12 +263,12 @@ bounce buffer match the same bits in the address of the original buffer. When
 min_align_mask is non-zero, it may produce an “alignment offset” in the address
 of the bounce buffer that slightly reduces the maximum size of an allocation.
 This potential alignment offset is reflected in the value returned by
-swiotlb_max_mapping_size(), which can show up in places like
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">swiotlb_max_mapping_size()</span></code>, which can show up in places like
 /sys/block/&lt;device&gt;/queue/max_sectors_kb. For example, if a device does not use
 swiotlb, max_sectors_kb might be 512 KiB or larger. If a device might use
 swiotlb, max_sectors_kb will be 256 KiB. When min_align_mask is non-zero,
 max_sectors_kb might be even smaller, such as 252 KiB.</p>
-<p>swiotlb_tbl_map_single() also takes an “alloc_align_mask” parameter. This
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">swiotlb_tbl_map_single()</span></code> also takes an “alloc_align_mask” parameter. This
 parameter specifies the allocation of bounce buffer space must start at a
 physical address with the alloc_align_mask bits set to zero. But the actual
 bounce buffer might start at a larger address if min_align_mask is non-zero.
@@ -320,7 +320,7 @@ the code uses shifting and bit masking to do many of the calculations. The
 number of areas is rounded up to a power of 2 if necessary to meet this
 requirement.</p>
 <p>The default pool is allocated with PAGE_SIZE alignment. If an alloc_align_mask
-argument to swiotlb_tbl_map_single() specifies a larger alignment, one or more
+argument to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">swiotlb_tbl_map_single()</span></code> specifies a larger alignment, one or more
 initial slots in each slot set might not meet the alloc_align_mask criterium.
 Because a bounce buffer allocation can’t cross a slot set boundary, eliminating
 those initial slots effectively reduces the max size of a bounce buffer.
@@ -387,15 +387,15 @@ from multiple CPUs.</p>
 <p>io_tlb_slot describes an individual memory slot in the pool, with size
 IO_TLB_SIZE (2 KiB currently). The io_tlb_slot array is indexed by the slot
 index computed from the bounce buffer address relative to the starting memory
-address of the pool. The size of struct io_tlb_slot is 24 bytes, so the
+address of the pool. The size of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">io_tlb_slot</span></code> is 24 bytes, so the
 overhead is about 1% of the slot size.</p>
 <p>The io_tlb_slot array is designed to meet several requirements. First, the DMA
 APIs and the corresponding swiotlb APIs use the bounce buffer address as the
 identifier for a bounce buffer. This address is returned by
-swiotlb_tbl_map_single(), and then passed as an argument to
-swiotlb_tbl_unmap_single() and the swiotlb_sync_*() functions.  The original
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">swiotlb_tbl_map_single()</span></code>, and then passed as an argument to
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">swiotlb_tbl_unmap_single()</span></code> and the swiotlb_sync_*() functions.  The original
 memory buffer address obviously must be passed as an argument to
-swiotlb_tbl_map_single(), but it is not passed to the other APIs. Consequently,
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">swiotlb_tbl_map_single()</span></code>, but it is not passed to the other APIs. Consequently,
 swiotlb data structures must save the original memory buffer address so that it
 can be used when doing sync operations. This original address is saved in the
 io_tlb_slot array.</p>
@@ -405,13 +405,13 @@ buffer but an address somewhere in the middle of the bounce buffer, and the
 address of the start of the bounce buffer isn’t known to swiotlb code. But
 swiotlb code must be able to calculate the corresponding original memory buffer
 address to do the CPU copy dictated by the “sync”. So an adjusted original
-memory buffer address is populated into the struct io_tlb_slot for each slot
+memory buffer address is populated into the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">io_tlb_slot</span></code> for each slot
 occupied by the bounce buffer. An adjusted “alloc_size” of the bounce buffer is
-also recorded in each struct io_tlb_slot so a sanity check can be performed on
+also recorded in each <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">io_tlb_slot</span></code> so a sanity check can be performed on
 the size of the “sync” operation. The “alloc_size” field is not used except for
 the sanity check.</p>
 <p>Third, the io_tlb_slot array is used to track available slots. The “list” field
-in struct io_tlb_slot records how many contiguous available slots exist starting
+in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">io_tlb_slot</span></code> records how many contiguous available slots exist starting
 at that slot. A “0” indicates that the slot is occupied. A value of “1”
 indicates only the current slot is available. A value of “2” indicates the
 current slot and the next slot are available, etc. The maximum value is
@@ -423,12 +423,12 @@ a new bounce buffer and when freeing a bounce buffer. At pool creation time, the
 slot set.</p>
 <p>Fourth, the io_tlb_slot array keeps track of any “padding slots” allocated to
 meet alloc_align_mask requirements described above. When
-swiotlb_tbl_map_single() allocates bounce buffer space to meet alloc_align_mask
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">swiotlb_tbl_map_single()</span></code> allocates bounce buffer space to meet alloc_align_mask
 requirements, it may allocate pre-padding space across zero or more slots. But
-when swiotlb_tbl_unmap_single() is called with the bounce buffer address, the
+when <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">swiotlb_tbl_unmap_single()</span></code> is called with the bounce buffer address, the
 alloc_align_mask value that governed the allocation, and therefore the
 allocation of any padding slots, is not known. The “pad_slots” field records
-the number of padding slots so that swiotlb_tbl_unmap_single() can free them.
+the number of padding slots so that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">swiotlb_tbl_unmap_single()</span></code> can free them.
 The “pad_slots” value is recorded only in the first non-padding slot allocated
 to the bounce buffer.</p>
 </section>
@@ -442,10 +442,10 @@ those lacking an IOMMU. Such usage is specified by DeviceTree entries and
 requires that CONFIG_DMA_RESTRICTED_POOL is set. Each restricted pool is based
 on its own io_tlb_mem data structure that is independent of the main swiotlb
 io_tlb_mem.</p>
-<p>Restricted pools add swiotlb_alloc() and swiotlb_free() APIs, which are called
-from the dma_alloc_*() and dma_free_*() APIs. The swiotlb_alloc/free() APIs
+<p>Restricted pools add <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">swiotlb_alloc()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">swiotlb_free()</span></code> APIs, which are called
+from the dma_alloc_*() and dma_free_*() APIs. The swiotlb_alloc/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">free()</span></code> APIs
 allocate/free slots from/to the restricted pool directly and do not go through
-swiotlb_tbl_map/unmap_single().</p>
+swiotlb_tbl_map/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unmap_single()</span></code>.</p>
 </section>
 </section>
 

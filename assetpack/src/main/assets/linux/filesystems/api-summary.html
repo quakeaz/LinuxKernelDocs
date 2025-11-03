@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -170,7 +170,7 @@ to return the page to the active list -- it won’t
 be a candidate for writeback again in the near
 future.  Other callers must be careful to unlock
 the page if they get this return.  Returned by
-writepage();</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">writepage()</span></code>;</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">AOP_TRUNCATED_PAGE</span></code></dt><dd><p>The AOP method that was handed a locked page has
 unlocked it and the page might have been truncated.
@@ -178,7 +178,7 @@ The caller should back up to acquiring a new page and
 trying again.  The aop will be taking reasonable
 precautions not to livelock.  If the caller held a page
 reference, it should drop it before retrying.  Returned
-by read_folio().</p>
+by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">read_folio()</span></code>.</p>
 </dd>
 </dl>
 </div>
@@ -269,7 +269,8 @@ memory mappings.</p>
     unsigned int size;
     unsigned int async_size;
     unsigned int ra_pages;
-    unsigned int mmap_miss;
+    unsigned short order;
+    unsigned short mmap_miss;
     loff_t prev_pos;
 };
 </pre></div>
@@ -286,6 +287,8 @@ the first of these pages is accessed.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">ra_pages</span></code></dt><dd><p>Maximum size of a readahead request, copied from the bdi.</p>
 </dd>
+<dt><code class="docutils literal notranslate"><span class="pre">order</span></code></dt><dd><p>Preferred folio order used for most recent readahead.</p>
+</dd>
 <dt><code class="docutils literal notranslate"><span class="pre">mmap_miss</span></code></dt><dd><p>How many mmap accesses missed in the page cache.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">prev_pos</span></code></dt><dd><p>The last byte in the most recent read request.</p>
@@ -293,7 +296,7 @@ the first of these pages is accessed.</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>When this structure is passed to -&gt;readahead(), the “most recent”
+<p>When this structure is passed to -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">readahead()</span></code>, the “most recent”
 readahead means the current readahead.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.file">
@@ -744,7 +747,7 @@ thawed.</p>
 ordering of freeze protection and other filesystem locks. Generally,
 freeze protection should be the outermost lock. In particular, we have:</p>
 <dl class="simple">
-<dt>sb_start_write</dt><dd><p>-&gt; i_mutex                 (write path, truncate, directory ops, ...)
+<dt>sb_start_write</dt><dd><p>-&gt; i_rwsem                 (write path, truncate, directory ops, ...)
 -&gt; s_umount                (freeze_super, thaw_super)</p>
 </dd>
 </dl>
@@ -808,10 +811,10 @@ close, etc.).</p>
 <p><strong>Definition</strong>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct renamedata {
     struct mnt_idmap *old_mnt_idmap;
-    struct inode *old_dir;
+    struct dentry *old_parent;
     struct dentry *old_dentry;
     struct mnt_idmap *new_mnt_idmap;
-    struct inode *new_dir;
+    struct dentry *new_parent;
     struct dentry *new_dentry;
     struct inode **delegated_inode;
     unsigned int flags;
@@ -822,13 +825,13 @@ close, etc.).</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">old_mnt_idmap</span></code></dt><dd><p>idmap of the old mount the inode was found from</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">old_dir</span></code></dt><dd><p>parent of source</p>
+<dt><code class="docutils literal notranslate"><span class="pre">old_parent</span></code></dt><dd><p>parent of source</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">old_dentry</span></code></dt><dd><p>source</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">new_mnt_idmap</span></code></dt><dd><p>idmap of the new mount the inode was found from</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">new_dir</span></code></dt><dd><p>parent of destination</p>
+<dt><code class="docutils literal notranslate"><span class="pre">new_parent</span></code></dt><dd><p>parent of destination</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">new_dentry</span></code></dt><dd><p>destination</p>
 </dd>
@@ -973,6 +976,21 @@ Should be matched with a call to <a class="reference internal" href="#c.kiocb_en
 <dt><code class="docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">len</span></code></dt><dd><p>length of file name, in bytes</p>
 </dd>
 </dl>
+</div>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.name_contains_dotdot">
+<span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name_contains_dotdot</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.name_contains_dotdot" title="Link to this definition">¶</a><br /></dt>
+<dd><p>check if a file name contains “..” path components</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*name</span></code></dt><dd><p><em>undescribed</em></p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>Search for “..” surrounded by either ‘/’ or start/end of string.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.inode_dio_begin">
@@ -1454,8 +1472,8 @@ used to clone an existing reference; using it on something with
 zero refcount is a bug.</p>
 <p><strong>NOTE</strong></p>
 <p>it will spin if <strong>dentry-&gt;d_lock</strong> is held.  From the deadlock
-avoidance point of view it is equivalent to spin_lock()/increment
-refcount/spin_unlock(), so calling it under <strong>dentry-&gt;d_lock</strong> is
+avoidance point of view it is equivalent to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_lock()</span></code>/increment
+refcount/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">spin_unlock()</span></code>, so calling it under <strong>dentry-&gt;d_lock</strong> is
 always a bug; so’s calling it under -&gt;d_lock on any of its descendents.</p>
 </div>
 <dl class="c function">
@@ -1536,7 +1554,7 @@ in their own dentries and ignore the layering superimposed upon them.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.d_inode_rcu">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">inode</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">d_inode_rcu</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.d_inode_rcu" title="dentry"><span class="n"><span class="pre">dentry</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dentry</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.d_inode_rcu" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Get the actual inode of this dentry with READ_ONCE()</p>
+<dd><p>Get the actual inode of this dentry with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">READ_ONCE()</span></code></p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -1696,7 +1714,7 @@ direct filesystem manipulation of i_nlink.</p>
 <p><strong>Description</strong></p>
 <p>This is a low-level filesystem helper to replace any
 direct filesystem manipulation of i_nlink.  Currently,
-it is only here for parity with dec_nlink().</p>
+it is only here for parity with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dec_nlink()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.inode_sb_list_add">
@@ -1719,14 +1737,17 @@ it is only here for parity with dec_nlink().</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">inode</span> <span class="pre">*inode</span></code></dt><dd><p>unhashed inode</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">hashval</span></code></dt><dd><p>unsigned long value used to locate this object in the
 inode_hashtable.</p>
-<p>Add an inode to the inode hash for this superblock.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Add an inode to the inode hash for this superblock.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.__remove_inode_hash">
@@ -1736,11 +1757,14 @@ inode_hashtable.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">inode</span> <span class="pre">*inode</span></code></dt><dd><p>inode to unhash</p>
-<p>Remove an inode from the superblock.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Remove an inode from the superblock.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.evict_inodes">
@@ -1768,16 +1792,19 @@ be immediately evicted.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">super_block</span> <span class="pre">*sb</span></code></dt><dd><p>superblock</p>
-<p>Allocates a new inode for given superblock. The default gfp_mask
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Allocates a new inode for given superblock. The default gfp_mask
 for allocations related to inode-&gt;i_mapping is GFP_HIGHUSER_MOVABLE.
 If HIGHMEM pages are unsuitable or it is known that pages allocated
 for the page cache are not reclaimable or migratable,
-mapping_set_gfp_mask() must be called with suitable flags on the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mapping_set_gfp_mask()</span></code> must be called with suitable flags on the
 newly created inode’s mapping</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.unlock_new_inode">
@@ -1843,7 +1870,7 @@ Zero, one or two objects may be locked by this function.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">(*test)(struct</span> <span class="pre">inode</span> <span class="pre">*,</span> <span class="pre">void</span> <span class="pre">*)</span></code></dt><dd><p>callback used for comparisons between inodes</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">(*set)(struct</span> <span class="pre">inode</span> <span class="pre">*,</span> <span class="pre">void</span> <span class="pre">*)</span></code></dt><dd><p>callback used to initialize a new struct inode</p>
+<dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">(*set)(struct</span> <span class="pre">inode</span> <span class="pre">*,</span> <span class="pre">void</span> <span class="pre">*)</span></code></dt><dd><p>callback used to initialize a new <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">inode</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">*data</span></code></dt><dd><p>opaque data pointer to pass to <strong>test</strong> and <strong>set</strong></p>
 </dd>
@@ -1873,7 +1900,7 @@ they can’t sleep.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">(*test)(struct</span> <span class="pre">inode</span> <span class="pre">*,</span> <span class="pre">void</span> <span class="pre">*)</span></code></dt><dd><p>callback used for comparisons between inodes</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">(*set)(struct</span> <span class="pre">inode</span> <span class="pre">*,</span> <span class="pre">void</span> <span class="pre">*)</span></code></dt><dd><p>callback used to initialize a new struct inode</p>
+<dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">(*set)(struct</span> <span class="pre">inode</span> <span class="pre">*,</span> <span class="pre">void</span> <span class="pre">*)</span></code></dt><dd><p>callback used to initialize a new <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">inode</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">*data</span></code></dt><dd><p>opaque data pointer to pass to <strong>test</strong> and <strong>set</strong></p>
 </dd>
@@ -1904,7 +1931,7 @@ they can’t sleep.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">(*test)(struct</span> <span class="pre">inode</span> <span class="pre">*,</span> <span class="pre">void</span> <span class="pre">*)</span></code></dt><dd><p>callback used for comparisons between inodes</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">(*set)(struct</span> <span class="pre">inode</span> <span class="pre">*,</span> <span class="pre">void</span> <span class="pre">*)</span></code></dt><dd><p>callback used to initialize a new struct inode</p>
+<dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">(*set)(struct</span> <span class="pre">inode</span> <span class="pre">*,</span> <span class="pre">void</span> <span class="pre">*)</span></code></dt><dd><p>callback used to initialize a new <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">inode</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">*data</span></code></dt><dd><p>opaque data pointer to pass to <strong>test</strong> and <strong>set</strong></p>
 </dd>
@@ -1943,19 +1970,22 @@ before unlocking it via <a class="reference internal" href="#c.unlock_new_inode"
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">super_block</span> <span class="pre">*sb</span></code></dt><dd><p>superblock</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">ino_t</span> <span class="pre">max_reserved</span></code></dt><dd><p>highest reserved inode number</p>
-<p>Obtain an inode number that is unique on the system for a given
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Obtain an inode number that is unique on the system for a given
 superblock. This is used by file systems that have no natural
 permanent inode numbering system. An inode number is returned that
 is higher than the reserved limit but unique.</p>
 <p>BUGS:
 With a large number of inodes live on the file system this function
 currently becomes quite slow.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ilookup5_nowait">
@@ -1979,10 +2009,10 @@ currently becomes quite slow.</p>
 <p>Search for the inode specified by <strong>hashval</strong> and <strong>data</strong> in the inode cache.
 If the inode is in the cache, the inode is returned with an incremented
 reference count.</p>
-<p>Note2: <strong>test</strong> is called with the inode_hash_lock held, so can’t sleep.</p>
 <p><strong>Note</strong></p>
 <p>I_NEW is not waited upon so you have to be very careful what you do
 with the returned inode.  You probably should be using <a class="reference internal" href="#c.ilookup5" title="ilookup5"><code class="xref c c-func docutils literal notranslate"><span class="pre">ilookup5()</span></code></a> instead.</p>
+<p>Note2: <strong>test</strong> is called with the inode_hash_lock held, so can’t sleep.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ilookup5">
@@ -2058,8 +2088,8 @@ freed or being initialized, and incrementing the reference count
 before returning 1.  It also must not sleep, since it is called with
 the inode_hash_lock spinlock held.</p>
 <p>This is a even more generalized version of <a class="reference internal" href="#c.ilookup5" title="ilookup5"><code class="xref c c-func docutils literal notranslate"><span class="pre">ilookup5()</span></code></a> when the
-function must never block --- find_inode() can block in
-__wait_on_freeing_inode() --- or when the caller can not increment
+function must never block --- <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">find_inode()</span></code> can block in
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__wait_on_freeing_inode()</span></code> --- or when the caller can not increment
 the reference count because the resulting <a class="reference internal" href="#c.iput" title="iput"><code class="xref c c-func docutils literal notranslate"><span class="pre">iput()</span></code></a> might cause an
 inode eviction.  The tradeoff is that the <strong>match</strong> funtion must be
 very carefully implemented.</p>
@@ -2128,13 +2158,16 @@ It is also not permitted to sleep.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">inode</span> <span class="pre">*inode</span></code></dt><dd><p>inode to put</p>
-<p>Puts an inode, dropping its usage count. If the inode use count hits
-zero, the inode is then freed and may also be destroyed.</p>
-<p>Consequently, <a class="reference internal" href="#c.iput" title="iput"><code class="xref c c-func docutils literal notranslate"><span class="pre">iput()</span></code></a> can sleep.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Puts an inode, dropping its usage count. If the inode use count hits
+zero, the inode is then freed and may also be destroyed.</p>
+<p>Consequently, <a class="reference internal" href="#c.iput" title="iput"><code class="xref c c-func docutils literal notranslate"><span class="pre">iput()</span></code></a> can sleep.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.bmap">
@@ -2144,19 +2177,22 @@ zero, the inode is then freed and may also be destroyed.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">inode</span> <span class="pre">*inode</span></code></dt><dd><p>inode owning the block number being requested</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">sector_t</span> <span class="pre">*block</span></code></dt><dd><p>pointer containing the block to find</p>
-<p>Replaces the value in <code class="docutils literal notranslate"><span class="pre">*block</span></code> with the block number on the device holding
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Replaces the value in <code class="docutils literal notranslate"><span class="pre">*block</span></code> with the block number on the device holding
 corresponding to the requested block number in the file.
 That is, asked for block 4 of inode 1 the function will replace the
 4 in <code class="docutils literal notranslate"><span class="pre">*block</span></code>, with disk block relative to the disk start that holds that
 block of the file.</p>
 <p>Returns -EINVAL in case of error, 0 otherwise. If mapping falls into a
 hole, returns 0 and <code class="docutils literal notranslate"><span class="pre">*block</span></code> is also set to 0.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.inode_update_timestamps">
@@ -2369,7 +2405,7 @@ raw inode simply pass <strong>nop_mnt_idmap</strong>.</p>
 <p>Waits for all pending direct I/O requests to finish so that we can
 proceed with a truncate or equivalent operation.</p>
 <p>Must be called under a lock that serializes taking new references
-to i_dio_count, usually by inode-&gt;i_mutex.</p>
+to i_dio_count, usually by inode-&gt;i_rwsem.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.timestamp_truncate">
@@ -2494,13 +2530,16 @@ In all other cases, strip the S_ISGID bit from <strong>mode</strong>.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">inode</span> <span class="pre">*inode</span></code></dt><dd><p>Inode to mark bad</p>
-<p>When an inode cannot be read due to a media or remote network
-failure this function makes the inode “bad” and causes I/O operations
-on it to fail from this point on.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>When an inode cannot be read due to a media or remote network
+failure this function makes the inode “bad” and causes I/O operations
+on it to fail from this point on.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.is_bad_inode">
@@ -2510,11 +2549,14 @@ on it to fail from this point on.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">inode</span> <span class="pre">*inode</span></code></dt><dd><p>inode to test</p>
-<p>Returns true if the inode in question has been marked as bad.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Returns true if the inode in question has been marked as bad.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.iget_failed">
@@ -2542,15 +2584,18 @@ on it to fail from this point on.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">super_block</span> <span class="pre">*s</span></code></dt><dd><p>superblock to deactivate</p>
-<p>Drops an active reference to superblock, converting it into a temporary
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Drops an active reference to superblock, converting it into a temporary
 one if there is no other active references left.  In that case we
 tell fs driver to shut it down and drop the temporary reference we
 had just acquired.</p>
 <p>Caller holds exclusive lock on superblock; that lock is released.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.deactivate_super">
@@ -2560,13 +2605,16 @@ had just acquired.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">super_block</span> <span class="pre">*s</span></code></dt><dd><p>superblock to deactivate</p>
-<p>Variant of <a class="reference internal" href="#c.deactivate_locked_super" title="deactivate_locked_super"><code class="xref c c-func docutils literal notranslate"><span class="pre">deactivate_locked_super()</span></code></a>, except that superblock is <em>not</em>
-locked by caller.  If we are going to drop the final active reference,
-lock will be acquired prior to that.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Variant of <a class="reference internal" href="#c.deactivate_locked_super" title="deactivate_locked_super"><code class="xref c c-func docutils literal notranslate"><span class="pre">deactivate_locked_super()</span></code></a>, except that superblock is <em>not</em>
+locked by caller.  If we are going to drop the final active reference,
+lock will be acquired prior to that.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.retire_super">
@@ -2576,9 +2624,13 @@ lock will be acquired prior to that.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">super_block</span> <span class="pre">*sb</span></code></dt><dd><p>superblock to retire</p>
-<p>The function marks superblock to be ignored in superblock test, which
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>The function marks superblock to be ignored in superblock test, which
 prevents it from being reused for any new mounts.  If the superblock has
 a private bdi, it also unregisters it, but doesn’t reduce the refcount
 of the superblock to prevent potential races.  The refcount is reduced
@@ -2588,29 +2640,31 @@ function multiple times, subsequent calls have no effect.</p>
 <p>The marker will affect the re-use only for block-device-based
 superblocks.  Other superblocks will still get marked if this function
 is used, but that will not affect their reusability.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.generic_shutdown_super">
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">generic_shutdown_super</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">super_block</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sb</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.generic_shutdown_super" title="Link to this definition">¶</a><br /></dt>
-<dd><p>common helper for -&gt;kill_sb()</p>
+<dd><p>common helper for -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kill_sb()</span></code></p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">super_block</span> <span class="pre">*sb</span></code></dt><dd><p>superblock to kill</p>
-<p><a class="reference internal" href="#c.generic_shutdown_super" title="generic_shutdown_super"><code class="xref c c-func docutils literal notranslate"><span class="pre">generic_shutdown_super()</span></code></a> does all fs-independent work on superblock
-shutdown.  Typical -&gt;kill_sb() should pick all fs-specific objects
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p><a class="reference internal" href="#c.generic_shutdown_super" title="generic_shutdown_super"><code class="xref c c-func docutils literal notranslate"><span class="pre">generic_shutdown_super()</span></code></a> does all fs-independent work on superblock
+shutdown.  Typical -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kill_sb()</span></code> should pick all fs-specific objects
 that need destruction out of superblock, call <a class="reference internal" href="#c.generic_shutdown_super" title="generic_shutdown_super"><code class="xref c c-func docutils literal notranslate"><span class="pre">generic_shutdown_super()</span></code></a>
 and release aforementioned objects.  Note: dentries and inodes _are_
 taken care of and do not need specific handling.</p>
 <p>Upon calling this function, the filesystem may no longer alter or
 rearrange the set of dentries belonging to this super_block, nor may it
 change the attachments of dentries to inodes.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.sget_fc">
@@ -2648,10 +2702,8 @@ set and the <strong>set</strong> callback will be invoked), the superblock will 
 published and it will be returned in a partially constructed state
 with SB_BORN and SB_ACTIVE as yet unset.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>On success, an extant or newly created superblock is</dt><dd><p>returned. On failure an error pointer is returned.</p>
-</dd>
-</dl>
+<p>On success, an extant or newly created superblock is
+returned. On failure an error pointer is returned.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.sget">
@@ -2682,16 +2734,19 @@ with SB_BORN and SB_ACTIVE as yet unset.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file_system_type</span> <span class="pre">*type</span></code></dt><dd><p>fs type</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">(*f)(struct</span> <span class="pre">super_block</span> <span class="pre">*,</span> <span class="pre">void</span> <span class="pre">*)</span></code></dt><dd><p>function to call</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">*arg</span></code></dt><dd><p>argument to pass to it</p>
-<p>Scans the superblock list and calls given function, passing it
-locked superblock and given argument.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Scans the superblock list and calls given function, passing it
+locked superblock and given argument.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.get_anon_bdev">
@@ -2739,10 +2794,8 @@ be set). The superblock will be published and it will be returned in
 a partially constructed state with SB_BORN and SB_ACTIVE as yet
 unset.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>an existing or newly created superblock on success, an error</dt><dd><p>pointer on failure.</p>
-</dd>
-</dl>
+<p>an existing or newly created superblock on success, an error
+pointer on failure.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.get_tree_bdev_flags">
@@ -2843,15 +2896,13 @@ sync is running).</p>
 modification are blocked (e.g. XFS preallocation truncation on inode
 reclaim). This is usually implemented by blocking new transactions for
 filesystems that have them and need this additional guard. After all
-internal writers are finished we call -&gt;freeze_fs() to finish filesystem
+internal writers are finished we call -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">freeze_fs()</span></code> to finish filesystem
 freezing. Then we transition to SB_FREEZE_COMPLETE state. This state is
 mostly auxiliary for filesystems to verify they do not modify frozen fs.</p>
 <p>sb-&gt;s_writers.frozen is protected by sb-&gt;s_umount.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>If the freeze was successful zero is returned. If the freeze</dt><dd><p>failed a negative error code is returned.</p>
-</dd>
-</dl>
+<p>If the freeze was successful zero is returned. If the freeze
+failed a negative error code is returned.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.thaw_super">
@@ -2914,11 +2965,14 @@ The filesystem remains frozen until all block devices are unfrozen.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file_lock</span> <span class="pre">*waiter</span></code></dt><dd><p>the lock which was waiting</p>
-<p>lockd/nfsd need to disconnect the lock while working on it.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>lockd/nfsd need to disconnect the lock while working on it.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.posix_lock_file">
@@ -2952,7 +3006,7 @@ value for -ENOENT.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">inode</span> <span class="pre">*inode</span></code></dt><dd><p>the inode of the file to return</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">mode</span></code></dt><dd><p>O_RDONLY: break only write leases; O_WRONLY or O_RDWR:
@@ -2960,12 +3014,15 @@ break all leases</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">type</span></code></dt><dd><p>FL_LEASE: break leases and delegations; FL_DELEG: break
 only delegations</p>
-<p>break_lease (inlined for speed) has checked there already is at least
-some kind of lock (maybe a lease) on this file.  Leases are broken on
-a call to open() or truncate().  This function can sleep unless you
-specified <code class="docutils literal notranslate"><span class="pre">O_NONBLOCK</span></code> to your open().</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>break_lease (inlined for speed) has checked there already is at least
+some kind of lock (maybe a lease) on this file.  Leases are broken on
+a call to open() or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">truncate()</span></code>.  This function can sleep unless you
+specified <code class="docutils literal notranslate"><span class="pre">O_NONBLOCK</span></code> to your open().</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.lease_get_mtime">
@@ -2994,7 +3051,7 @@ exclusive lease, then they could be modifying it.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file</span> <span class="pre">*filp</span></code></dt><dd><p>file pointer</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">arg</span></code></dt><dd><p>type of lease to obtain</p>
@@ -3003,10 +3060,13 @@ exclusive lease, then they could be modifying it.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">**priv</span></code></dt><dd><p>private data for lm_setup (may be NULL if lm_setup
 doesn’t require it)</p>
-<p>The (input) flp-&gt;fl_lmops-&gt;lm_break function is required
-by break_lease().</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>The (input) flp-&gt;fl_lmops-&gt;lm_break function is required
+by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">break_lease()</span></code>.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.vfs_setlease">
@@ -3092,18 +3152,18 @@ setting conf-&gt;fl_type to something other than F_UNLCK.</p>
 <p><strong>Description</strong></p>
 <p>A caller that doesn’t care about the conflicting lock may pass NULL
 as the final argument.</p>
-<p>If the filesystem defines a private -&gt;lock() method, then <strong>conf</strong> will
+<p>If the filesystem defines a private -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lock()</span></code> method, then <strong>conf</strong> will
 be left unchanged; so a caller that cares should initialize it to
 some acceptable default.</p>
 <p>To avoid blocking kernel daemons, such as lockd, that need to acquire POSIX
-locks, the -&gt;lock() interface may return asynchronously, before the lock has
+locks, the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lock()</span></code> interface may return asynchronously, before the lock has
 been granted or denied by the underlying filesystem, if (and only if)
 lm_grant is set. Additionally EXPORT_OP_ASYNC_LOCK in export_operations
 flags need to be set.</p>
-<p>Callers expecting -&gt;lock() to return asynchronously will only use F_SETLK,
+<p>Callers expecting -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lock()</span></code> to return asynchronously will only use F_SETLK,
 not F_SETLKW; they will set FL_SLEEP if (and only if) the request is for a
-blocking lock. When -&gt;lock() does return asynchronously, it must return
-FILE_LOCK_DEFERRED, and call -&gt;lm_grant() when the lock request completes.
+blocking lock. When -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lock()</span></code> does return asynchronously, it must return
+FILE_LOCK_DEFERRED, and call -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lm_grant()</span></code> when the lock request completes.
 If the request is for non-blocking lock the file system should return
 FILE_LOCK_DEFERRED then try to get the lock and call the callback routine
 with the result. If the request timed out the callback routine will return a
@@ -3112,7 +3172,7 @@ system is also responsible to keep a corresponding posix lock when it
 grants a lock so the VFS can find out which locks are locally held and do
 the correct lock cleanup when required.
 The underlying filesystem must not drop the kernel lock or call
--&gt;lm_grant() before returning to the caller with a FILE_LOCK_DEFERRED
+-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lm_grant()</span></code> before returning to the caller with a FILE_LOCK_DEFERRED
 return code.</p>
 </div>
 <dl class="c function">
@@ -3173,9 +3233,13 @@ set on <strong>inode</strong>.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file</span> <span class="pre">*filp</span></code></dt><dd><p>the file</p>
-<p>The value returned by this function will be one of
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>The value returned by this function will be one of
 (if no lease break is pending):</p>
 <p><code class="docutils literal notranslate"><span class="pre">F_RDLCK</span></code> to indicate a shared lease is held.</p>
 <p><code class="docutils literal notranslate"><span class="pre">F_WRLCK</span></code> to indicate an exclusive lease is held.</p>
@@ -3188,8 +3252,7 @@ set on <strong>inode</strong>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">F_UNLCK</span></code> to indicate the lease needs to be removed.</p>
 <p>XXX: sfr &amp; willy disagree over whether F_INPROGRESS
 should be returned to userspace.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.check_conflicting_open">
@@ -3219,17 +3282,20 @@ conflict with the lease we’re trying to set.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">fd</span></code></dt><dd><p>open file descriptor</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file</span> <span class="pre">*filp</span></code></dt><dd><p>file pointer</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">arg</span></code></dt><dd><p>type of lease to obtain</p>
-<p>Call this fcntl to establish a lease on the file.
-Note that you also need to call <code class="docutils literal notranslate"><span class="pre">F_SETSIG</span></code> to
-receive a signal when the lease is broken.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Call this fcntl to establish a lease on the file.
+Note that you also need to call <code class="docutils literal notranslate"><span class="pre">F_SETSIG</span></code> to
+receive a signal when the lease is broken.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.flock_lock_inode_wait">
@@ -3252,17 +3318,21 @@ receive a signal when the lease is broken.</p>
 <dt class="sig sig-object c" id="c.sys_flock">
 <span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sys_flock</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">fd</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">cmd</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sys_flock" title="Link to this definition">¶</a><br /></dt>
 <dd><ul class="simple">
-<li><p>flock() system call.</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">flock()</span></code> system call.</p></li>
 </ul>
 </dd></dl>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">fd</span></code></dt><dd><p>the file descriptor to lock.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">cmd</span></code></dt><dd><p>the type of lock to apply.</p>
-<p>Apply a <code class="docutils literal notranslate"><span class="pre">FL_FLOCK</span></code> style lock to an open file descriptor.
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Apply a <code class="docutils literal notranslate"><span class="pre">FL_FLOCK</span></code> style lock to an open file descriptor.
 The <strong>cmd</strong> can be one of:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">LOCK_SH</span></code> -- a shared lock.</p></li>
@@ -3271,8 +3341,7 @@ The <strong>cmd</strong> can be one of:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">LOCK_MAND</span></code> -- a ‘mandatory’ flock. (DEPRECATED)</p></li>
 </ul>
 <p><code class="docutils literal notranslate"><span class="pre">LOCK_MAND</span></code> support has been removed from the kernel.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.locks_translate_pid">
@@ -3331,7 +3400,7 @@ submitted in the following order:</p>
 </div></blockquote>
 <p>because the indirect block has to be read to get the mappings of blocks
 13,14,15,16.  Obviously, this impacts performance.</p>
-<p>So what we do it to allow the filesystem’s get_block() function to set
+<p>So what we do it to allow the filesystem’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_block()</span></code> function to set
 BH_Boundary when it maps block 11.  BH_Boundary says: mapping of the block
 after this one will require I/O against a block which is probably close to
 this one.  So you should push what I/O you have currently accumulated.</p>
@@ -3340,7 +3409,7 @@ this one.  So you should push what I/O you have currently accumulated.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mpage_writepages">
 <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mpage_writepages</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.address_space" title="address_space"><span class="n"><span class="pre">address_space</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">mapping</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">writeback_control</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">wbc</span></span>, <span class="n"><span class="pre">get_block_t</span></span><span class="w"> </span><span class="n"><span class="pre">get_block</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.mpage_writepages" title="Link to this definition">¶</a><br /></dt>
-<dd><p>walk the list of dirty pages of the given address space &amp; writepage() all of them</p>
+<dd><p>walk the list of dirty pages of the given address space &amp; <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">writepage()</span></code> all of them</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -3354,7 +3423,7 @@ this one.  So you should push what I/O you have currently accumulated.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This is a library function, which implements the writepages()
+<p>This is a library function, which implements the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">writepages()</span></code>
 address_space_operation.</p>
 </div>
 <dl class="c function">
@@ -3453,13 +3522,13 @@ changing the “normal” UIDs which are used for other things.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">flags</span></code></dt><dd><p>lookup flags</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">path</span> <span class="pre">*parent</span></code></dt><dd><p>pointer to struct path to fill</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">path</span> <span class="pre">*parent</span></code></dt><dd><p>pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">path</span></code> to fill</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">qstr</span> <span class="pre">*last</span></code></dt><dd><p>last component</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">*type</span></code></dt><dd><p>type of the last component</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">path</span> <span class="pre">*root</span></code></dt><dd><p>pointer to struct path of the base directory</p>
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">path</span> <span class="pre">*root</span></code></dt><dd><p>pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">path</span></code> of the base directory</p>
 </dd>
 </dl>
 </div>
@@ -3480,7 +3549,7 @@ changing the “normal” UIDs which are used for other things.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">flags</span></code></dt><dd><p>lookup flags</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">path</span> <span class="pre">*path</span></code></dt><dd><p>pointer to struct path to fill</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">path</span> <span class="pre">*path</span></code></dt><dd><p>pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">path</span></code> to fill</p>
 </dd>
 </dl>
 </div>
@@ -3523,7 +3592,7 @@ not be called by generic code.  It does no permission checking.</p>
 <p><strong>Description</strong></p>
 <p>Note that this routine is purely a helper for filesystem usage and should
 not be called by generic code.  It does no permission checking.</p>
-<p>The caller must hold base-&gt;i_mutex.</p>
+<p>The caller must hold base-&gt;i_rwsem.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.lookup_one">
@@ -3543,7 +3612,7 @@ not be called by generic code.  It does no permission checking.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>This can be used for in-kernel filesystem clients such as file servers.</p>
-<p>The caller must hold base-&gt;i_mutex.</p>
+<p>The caller must hold base-&gt;i_rwsem.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.lookup_one_unlocked">
@@ -3721,8 +3790,8 @@ On non-idmapped mounts or if permission checking is to be performed on the
 raw inode simply pass <strong>nop_mnt_idmap</strong>.</p>
 <p>In the event that the filesystem does not use the <strong>*dentry</strong> but leaves it
 negative or unhashes it and possibly splices a different one returning it,
-the original dentry is dput() and the alternate is returned.</p>
-<p>In case of an error the dentry is dput() and an <a class="reference internal" href="../core-api/kernel-api.html#c.ERR_PTR" title="ERR_PTR"><code class="xref c c-func docutils literal notranslate"><span class="pre">ERR_PTR()</span></code></a> is returned.</p>
+the original dentry is <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dput()</span></code> and the alternate is returned.</p>
+<p>In case of an error the dentry is <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dput()</span></code> and an <a class="reference internal" href="../core-api/kernel-api.html#c.ERR_PTR" title="ERR_PTR"><code class="xref c c-func docutils literal notranslate"><span class="pre">ERR_PTR()</span></code></a> is returned.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.vfs_rmdir">
@@ -3767,12 +3836,12 @@ raw inode simply pass <strong>nop_mnt_idmap</strong>.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>The caller must hold dir-&gt;i_mutex.</p>
+<p>The caller must hold dir-&gt;i_rwsem exclusively.</p>
 <p>If vfs_unlink discovers a delegation, it will return -EWOULDBLOCK and
 return a reference to the inode in delegated_inode.  The caller
 should then break the delegation on that inode and retry.  Because
 breaking a delegation may take a long time, the caller should drop
-dir-&gt;i_mutex before doing so.</p>
+dir-&gt;i_rwsem before doing so.</p>
 <p>Alternatively, a caller may pass NULL for delegated_inode.  This may
 be appropriate for callers that expect the underlying filesystem not
 to be NFS exported.</p>
@@ -3829,12 +3898,12 @@ raw inode simply pass <strong>nop_mnt_idmap</strong>.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>The caller must hold dir-&gt;i_mutex</p>
+<p>The caller must hold dir-&gt;i_rwsem exclusively.</p>
 <p>If vfs_link discovers a delegation on the to-be-linked file in need
 of breaking, it will return -EWOULDBLOCK and return a reference to the
 inode in delegated_inode.  The caller should then break the delegation
 and retry.  Because breaking a delegation may take a long time, the
-caller should drop the i_mutex before doing so.</p>
+caller should drop the i_rwsem before doing so.</p>
 <p>Alternatively, a caller may pass NULL for delegated_inode.  This may
 be appropriate for callers that expect the underlying filesystem not
 to be NFS exported.</p>
@@ -3857,7 +3926,7 @@ raw inode simply pass <strong>nop_mnt_idmap</strong>.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>The caller must hold multiple mutexes--see lock_rename()).</p>
+<p>The caller must hold multiple mutexes--see <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lock_rename()</span></code>).</p>
 <p>If vfs_rename discovers a delegation in need of breaking at either
 the source or destination, it will return -EWOULDBLOCK and return a
 reference to the inode in delegated_inode.  The caller should then
@@ -3880,7 +3949,7 @@ story.</p></li>
 <li><p>we may have to lock up to _four_ objects - parents and victim (if it exists),
 and source (if it’s a non-directory or a subdirectory that moves to
 different parent).
-And that - after we got -&gt;i_mutex on parents (until then we don’t know
+And that - after we got -&gt;i_rwsem on parents (until then we don’t know
 whether the target exists).  Solution: try to be smart with locking
 order for inodes.  We rely on the fact that tree topology may change
 only under -&gt;s_vfs_rename_mutex _and_ that parent of the object we
@@ -3888,13 +3957,13 @@ move will be locked.  Thus we can rank directories by the tree
 (ancestors first) and rank all non-directories after them.
 That works since everybody except rename does “lock parent, lookup,
 lock child” and rename is under -&gt;s_vfs_rename_mutex.
-HOWEVER, it relies on the assumption that any object with -&gt;lookup()
+HOWEVER, it relies on the assumption that any object with -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lookup()</span></code>
 has no more than 1 dentry.  If “hybrid” objects will ever appear,
 we’d better make sure that there’s no link(2) for them.</p></li>
 <li><p>conversion from fhandle to dentry may come in the wrong moment - when
-we are removing the target. Solution: we will have to grab -&gt;i_mutex
+we are removing the target. Solution: we will have to grab -&gt;i_rwsem
 in the fhandle_to_dentry code. [FIXME - current nfsfh.c relies on
--&gt;i_mutex on parents, which works but leads to some truly excessive
+-&gt;i_rwsem on parents, which works but leads to some truly excessive
 locking].</p></li>
 </ol>
 </div></blockquote>
@@ -3934,7 +4003,7 @@ locking].</p></li>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Calls security hook and i_op-&gt;get_link() on the supplied inode.</p>
+<p>Calls security hook and i_op-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_link()</span></code> on the supplied inode.</p>
 <p>It does not touch atime.  That’s up to the caller if necessary.</p>
 <p>Does not work on “special” symlinks like /proc/$$/fd/N</p>
 </div>
@@ -3956,7 +4025,7 @@ locking].</p></li>
 </dl>
 <p><strong>Description</strong></p>
 <p>Filesystems which store their symlinks in the page cache should use
-this to implement the get_link() member of their inode_operations.</p>
+this to implement the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_link()</span></code> member of their inode_operations.</p>
 <p><strong>Return</strong></p>
 <p>A pointer to the NUL-terminated symlink.</p>
 </div>
@@ -4003,7 +4072,7 @@ is done with the symlink.</p>
 <div><p>After calling <a class="reference internal" href="#c.bio_reset" title="bio_reset"><code class="xref c c-func docutils literal notranslate"><span class="pre">bio_reset()</span></code></a>, <strong>bio</strong> will be in the same state as a freshly
 allocated bio returned bio <a class="reference internal" href="#c.bio_alloc_bioset" title="bio_alloc_bioset"><code class="xref c c-func docutils literal notranslate"><span class="pre">bio_alloc_bioset()</span></code></a> - the only fields that are
 preserved are the ones that are initialized by <a class="reference internal" href="#c.bio_alloc_bioset" title="bio_alloc_bioset"><code class="xref c c-func docutils literal notranslate"><span class="pre">bio_alloc_bioset()</span></code></a>. See
-comment in struct bio.</p>
+comment in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">bio</span></code>.</p>
 </div></blockquote>
 </div>
 <dl class="c function">
@@ -4085,10 +4154,10 @@ for per bio allocations.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Use kmalloc to allocate a bio (including bvecs).  The bio must be initialized
-using bio_init() before use.  To free a bio returned from this function use
-<a class="reference internal" href="../core-api/mm-api.html#c.kfree" title="kfree"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree()</span></code></a> after calling bio_uninit().  A bio returned from this function can
-be reused by calling bio_uninit() before calling bio_init() again.</p>
-<p>Note that unlike bio_alloc() or <a class="reference internal" href="#c.bio_alloc_bioset" title="bio_alloc_bioset"><code class="xref c c-func docutils literal notranslate"><span class="pre">bio_alloc_bioset()</span></code></a> allocations from this
+using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bio_init()</span></code> before use.  To free a bio returned from this function use
+<a class="reference internal" href="../core-api/mm-api.html#c.kfree" title="kfree"><code class="xref c c-func docutils literal notranslate"><span class="pre">kfree()</span></code></a> after calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bio_uninit()</span></code>.  A bio returned from this function can
+be reused by calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bio_uninit()</span></code> before calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bio_init()</span></code> again.</p>
+<p>Note that unlike <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bio_alloc()</span></code> or <a class="reference internal" href="#c.bio_alloc_bioset" title="bio_alloc_bioset"><code class="xref c c-func docutils literal notranslate"><span class="pre">bio_alloc_bioset()</span></code></a> allocations from this
 function are not backed by a mempool can fail.  Do not use this function
 for allocations in the file system I/O path.</p>
 <p><strong>Return</strong></p>
@@ -4209,7 +4278,7 @@ will be performed.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">bio</span> <span class="pre">*bio</span></code></dt><dd><p>destination bio</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span> <span class="pre">*page</span></code></dt><dd><p>start page to add</p>
@@ -4217,10 +4286,13 @@ will be performed.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">len</span></code></dt><dd><p>vec entry length, may cross pages</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">offset</span></code></dt><dd><p>vec entry offset relative to <strong>page</strong>, may cross pages</p>
-<p>Attempt to add page(s) to the bio_vec maplist. This will only fail
-if either bio-&gt;bi_vcnt == bio-&gt;bi_max_vecs or it’s a cloned bio.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Attempt to add page(s) to the bio_vec maplist. This will only fail
+if either bio-&gt;bi_vcnt == bio-&gt;bi_max_vecs or it’s a cloned bio.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.bio_add_folio">
@@ -4268,8 +4340,8 @@ after the bv_page.  BIOs do not support folios that are 4GiB or larger.</p>
 <p>Add data starting at <strong>vaddr</strong> to <strong>bio</strong> and return how many bytes were added.
 This may be less than the amount originally asked.  Returns 0 if no data
 could be added to <strong>bio</strong>.</p>
-<p>This helper calls flush_kernel_vmap_range() for the range added.  For reads
-the caller still needs to manually call invalidate_kernel_vmap_range() in
+<p>This helper calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">flush_kernel_vmap_range()</span></code> for the range added.  For reads
+the caller still needs to manually call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">invalidate_kernel_vmap_range()</span></code> in
 the completion handler.</p>
 </div>
 <dl class="c function">
@@ -4291,8 +4363,8 @@ the completion handler.</p>
 <p><strong>Description</strong></p>
 <p>Add data starting at <strong>vaddr</strong> to <strong>bio</strong>.  Return <code class="docutils literal notranslate"><span class="pre">true</span></code> on success or <code class="docutils literal notranslate"><span class="pre">false</span></code> if
 <strong>bio</strong> does not have enough space for the payload.</p>
-<p>This helper calls flush_kernel_vmap_range() for the range added.  For reads
-the caller still needs to manually call invalidate_kernel_vmap_range() in
+<p>This helper calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">flush_kernel_vmap_range()</span></code> for the range added.  For reads
+the caller still needs to manually call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">invalidate_kernel_vmap_range()</span></code> in
 the completion handler.</p>
 </div>
 <dl class="c function">
@@ -4316,7 +4388,7 @@ map them into the kernel. On IO completion, the caller should put those
 pages. For bvec based iterators <a class="reference internal" href="#c.bio_iov_iter_get_pages" title="bio_iov_iter_get_pages"><code class="xref c c-func docutils literal notranslate"><span class="pre">bio_iov_iter_get_pages()</span></code></a> uses the provided
 bvecs rather than copying them. Hence anyone issuing kiocb based IO needs
 to ensure the bvecs and pages stay referenced until the submitted I/O is
-completed by a call to -&gt;ki_complete() or returns with an error other than
+completed by a call to -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ki_complete()</span></code> or returns with an error other than
 -EIOCBQUEUED. The caller needs to check if the bio is flagged BIO_NO_PAGE_REF
 on IO completion. If it isn’t, then pages should be released.</p>
 <p>The function tries, but does not guarantee, to pin as many pages as
@@ -4400,10 +4472,10 @@ min(src-&gt;bi_size, dst-&gt;bi_size) bytes (or the equivalent for lists of bios
 <p><strong>Description</strong></p>
 <blockquote>
 <div><p><a class="reference internal" href="#c.bio_endio" title="bio_endio"><code class="xref c c-func docutils literal notranslate"><span class="pre">bio_endio()</span></code></a> will end I/O on the whole bio. <a class="reference internal" href="#c.bio_endio" title="bio_endio"><code class="xref c c-func docutils literal notranslate"><span class="pre">bio_endio()</span></code></a> is the preferred
-way to end I/O on a bio. No one should call bi_end_io() directly on a
+way to end I/O on a bio. No one should call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bi_end_io()</span></code> directly on a
 bio unless they own it and thus know that it has an end_io function.</p>
 <p><a class="reference internal" href="#c.bio_endio" title="bio_endio"><code class="xref c c-func docutils literal notranslate"><span class="pre">bio_endio()</span></code></a> can be called several times on a bio that has been chained
-using <a class="reference internal" href="#c.bio_chain" title="bio_chain"><code class="xref c c-func docutils literal notranslate"><span class="pre">bio_chain()</span></code></a>.  The -&gt;bi_end_io() function will only be called the
+using <a class="reference internal" href="#c.bio_chain" title="bio_chain"><code class="xref c c-func docutils literal notranslate"><span class="pre">bio_chain()</span></code></a>.  The -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bi_end_io()</span></code> function will only be called the
 last time.</p>
 </div></blockquote>
 </div>
@@ -4493,20 +4565,23 @@ to dispatch queued requests when the mempool runs out of space.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file</span> <span class="pre">*file</span></code></dt><dd><p>file we initialize</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">seq_operations</span> <span class="pre">*op</span></code></dt><dd><p>method table describing the sequence</p>
-<p><a class="reference internal" href="#c.seq_open" title="seq_open"><code class="xref c c-func docutils literal notranslate"><span class="pre">seq_open()</span></code></a> sets <strong>file</strong>, associating it with a sequence described
-by <strong>op</strong>.  <strong>op-&gt;<a class="reference internal" href="../networking/ieee802154.html#c.start" title="start"><code class="xref c c-func docutils literal notranslate"><span class="pre">start()</span></code></a></strong> sets the iterator up and returns the first
-element of sequence. <strong>op-&gt;<a class="reference internal" href="../networking/ieee802154.html#c.stop" title="stop"><code class="xref c c-func docutils literal notranslate"><span class="pre">stop()</span></code></a></strong> shuts it down.  <strong>op-&gt;next()</strong>
-returns the next element of sequence.  <strong>op-&gt;show()</strong> prints element
-into the buffer.  In case of error -&gt;<a class="reference internal" href="../networking/ieee802154.html#c.start" title="start"><code class="xref c c-func docutils literal notranslate"><span class="pre">start()</span></code></a> and -&gt;next() return
-ERR_PTR(error).  In the end of sequence they return <code class="docutils literal notranslate"><span class="pre">NULL</span></code>. -&gt;show()
-returns 0 in case of success and negative number in case of error.
-Returning SEQ_SKIP means “discard this element and move on”.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p><a class="reference internal" href="#c.seq_open" title="seq_open"><code class="xref c c-func docutils literal notranslate"><span class="pre">seq_open()</span></code></a> sets <strong>file</strong>, associating it with a sequence described
+by <strong>op</strong>.  <strong>op-&gt;<a class="reference internal" href="../networking/ieee802154.html#c.start" title="start"><code class="xref c c-func docutils literal notranslate"><span class="pre">start()</span></code></a></strong> sets the iterator up and returns the first
+element of sequence. <strong>op-&gt;<a class="reference internal" href="../networking/ieee802154.html#c.stop" title="stop"><code class="xref c c-func docutils literal notranslate"><span class="pre">stop()</span></code></a></strong> shuts it down.  <strong>op-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">next()</span></code></strong>
+returns the next element of sequence.  <strong>op-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">show()</span></code></strong> prints element
+into the buffer.  In case of error -&gt;<a class="reference internal" href="../networking/ieee802154.html#c.start" title="start"><code class="xref c c-func docutils literal notranslate"><span class="pre">start()</span></code></a> and -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">next()</span></code> return
+ERR_PTR(error).  In the end of sequence they return <code class="docutils literal notranslate"><span class="pre">NULL</span></code>. -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">show()</span></code>
+returns 0 in case of success and negative number in case of error.
+Returning SEQ_SKIP means “discard this element and move on”.</p>
+</div></blockquote>
 <p><strong>Note</strong></p>
 <dl class="simple">
 <dt>seq_open() will allocate a struct seq_file and store its</dt><dd><p>pointer in <strong>file-&gt;private_data</strong>. This pointer should not be modified.</p>
@@ -4521,7 +4596,7 @@ Returning SEQ_SKIP means “discard this element and move on”.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file</span> <span class="pre">*file</span></code></dt><dd><p>the file to read from</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">char</span> <span class="pre">__user</span> <span class="pre">*buf</span></code></dt><dd><p>the buffer to read to</p>
@@ -4529,27 +4604,33 @@ Returning SEQ_SKIP means “discard this element and move on”.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">size_t</span> <span class="pre">size</span></code></dt><dd><p>the maximum number of bytes to read</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">loff_t</span> <span class="pre">*ppos</span></code></dt><dd><p>the current position in the file</p>
-<p>Ready-made -&gt;f_op-&gt;read()</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Ready-made -&gt;f_op-&gt;read()</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.seq_lseek">
 <span class="n"><span class="pre">loff_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">seq_lseek</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.seq_lseek" title="file"><span class="n"><span class="pre">file</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">file</span></span>, <span class="n"><span class="pre">loff_t</span></span><span class="w"> </span><span class="n"><span class="pre">offset</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">whence</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.seq_lseek" title="Link to this definition">¶</a><br /></dt>
-<dd><p>-&gt;llseek() method for sequential files.</p>
+<dd><p>-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">llseek()</span></code> method for sequential files.</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file</span> <span class="pre">*file</span></code></dt><dd><p>the file in question</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">loff_t</span> <span class="pre">offset</span></code></dt><dd><p>new position</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">whence</span></code></dt><dd><p>0 for absolute, 1 for relative position</p>
-<p>Ready-made -&gt;f_op-&gt;llseek()</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Ready-made -&gt;f_op-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">llseek()</span></code></p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.seq_release">
@@ -4559,14 +4640,17 @@ Returning SEQ_SKIP means “discard this element and move on”.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">inode</span> <span class="pre">*inode</span></code></dt><dd><p>its inode</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file</span> <span class="pre">*file</span></code></dt><dd><p>file in question</p>
-<p>Frees the structures associated with sequential file; can be used
-as -&gt;f_op-&gt;release() if you don’t have private data to destroy.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Frees the structures associated with sequential file; can be used
+as -&gt;f_op-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">release()</span></code> if you don’t have private data to destroy.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.seq_escape_mem">
@@ -4591,7 +4675,7 @@ as -&gt;f_op-&gt;release() if you don’t have private data to destroy.</p>
 <p><strong>Description</strong></p>
 <p>Puts data into buffer, replacing each occurrence of character from
 given class (defined by <strong>flags</strong> and <strong>esc</strong>) with printable escaped sequence.</p>
-<p>Use seq_has_overflowed() to check for errors.</p>
+<p>Use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">seq_has_overflowed()</span></code> to check for errors.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mangle_path">
@@ -4601,18 +4685,21 @@ given class (defined by <strong>flags</strong> and <strong>esc</strong>) with pr
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">char</span> <span class="pre">*s</span></code></dt><dd><p>buffer start</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*p</span></code></dt><dd><p>beginning of path in above buffer</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*esc</span></code></dt><dd><p>set of characters that need escaping</p>
-<p>Copy the path from <strong>p</strong> to <strong>s</strong>, replacing each occurrence of character from
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Copy the path from <strong>p</strong> to <strong>s</strong>, replacing each occurrence of character from
 <strong>esc</strong> with usual octal escape.
 Returns pointer past last written character in <strong>s</strong>, or NULL in case of
 failure.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.seq_path">
@@ -4625,7 +4712,7 @@ failure.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">seq_file</span> <span class="pre">*m</span></code></dt><dd><p>the seq_file handle</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">path</span> <span class="pre">*path</span></code></dt><dd><p>the struct path to print</p>
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">path</span> <span class="pre">*path</span></code></dt><dd><p>the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">path</span></code> to print</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*esc</span></code></dt><dd><p>set of characters to escape in the output</p>
 </dd>
@@ -4739,7 +4826,7 @@ print a header at the top of the output.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Called at seq_file-&gt;op-&gt;next().</p>
+<p>Called at seq_file-&gt;op-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">next()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.seq_hlist_start_rcu">
@@ -4799,7 +4886,7 @@ as long as the traversal is guarded by <a class="reference internal" href="../co
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Called at seq_file-&gt;op-&gt;next().</p>
+<p>Called at seq_file-&gt;op-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">next()</span></code>.</p>
 <p>This list-traversal primitive may safely run concurrently with
 the _rcu list-mutation primitives such as <a class="reference internal" href="../core-api/kernel-api.html#c.hlist_add_head_rcu" title="hlist_add_head_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">hlist_add_head_rcu()</span></code></a>
 as long as the traversal is guarded by <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_read_lock" title="rcu_read_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_lock()</span></code></a>.</p>
@@ -4813,7 +4900,7 @@ as long as the traversal is guarded by <a class="reference internal" href="../co
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hlist_head</span> <span class="pre">__percpu</span> <span class="pre">*head</span></code></dt><dd><p>pointer to percpu array of struct hlist_heads</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hlist_head</span> <span class="pre">__percpu</span> <span class="pre">*head</span></code></dt><dd><p>pointer to percpu array of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hlist_heads</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">*cpu</span></code></dt><dd><p>pointer to cpu “cursor”</p>
 </dd>
@@ -4834,7 +4921,7 @@ as long as the traversal is guarded by <a class="reference internal" href="../co
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">*v</span></code></dt><dd><p>pointer to current hlist_node</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hlist_head</span> <span class="pre">__percpu</span> <span class="pre">*head</span></code></dt><dd><p>pointer to percpu array of struct hlist_heads</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hlist_head</span> <span class="pre">__percpu</span> <span class="pre">*head</span></code></dt><dd><p>pointer to percpu array of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hlist_heads</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">*cpu</span></code></dt><dd><p>pointer to cpu “cursor”</p>
 </dd>
@@ -4842,7 +4929,7 @@ as long as the traversal is guarded by <a class="reference internal" href="../co
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Called at seq_file-&gt;op-&gt;next().</p>
+<p>Called at seq_file-&gt;op-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">next()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.register_filesystem">
@@ -4852,16 +4939,19 @@ as long as the traversal is guarded by <a class="reference internal" href="../co
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file_system_type</span> <span class="pre">*</span> <span class="pre">fs</span></code></dt><dd><p>the file system structure</p>
-<p>Adds the file system passed to the list of file systems the kernel
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Adds the file system passed to the list of file systems the kernel
 is aware of for mount and other syscalls. Returns 0 on success,
 or a negative errno code on an error.</p>
 <p>The <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file_system_type</span></code> that is passed is linked into the kernel
 structures and must not be freed until the file system has been
 unregistered.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.unregister_filesystem">
@@ -4871,15 +4961,18 @@ unregistered.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file_system_type</span> <span class="pre">*</span> <span class="pre">fs</span></code></dt><dd><p>filesystem to unregister</p>
-<p>Remove a file system that was previously successfully registered
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Remove a file system that was previously successfully registered
 with the kernel. An error is returned if the file system is not found.
 Zero is returned on a success.</p>
 <p>Once this function has returned the <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file_system_type</span></code> structure
 may be freed or reused.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.wbc_attach_fdatawrite_inode">
@@ -4896,7 +4989,7 @@ may be freed or reused.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This function is to be used by __filemap_fdatawrite_range(), which is an
+<p>This function is to be used by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__filemap_fdatawrite_range()</span></code>, which is an
 alternative entry point into writeback code, and first ensures <strong>inode</strong> is
 associated with a bdi_writeback and attaches it to <strong>wbc</strong>.</p>
 </div>
@@ -4914,7 +5007,7 @@ associated with a bdi_writeback and attaches it to <strong>wbc</strong>.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>To be called after a writeback attempt of an inode finishes and undoes
-wbc_attach_and_unlock_inode().  Can be called under any context.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wbc_attach_and_unlock_inode()</span></code>.  Can be called under any context.</p>
 <p>As concurrent write sharing of an inode is expected to be very rare and
 memcg only tracks page ownership on first-use basis severely confining
 the usefulness of such sharing, cgroup writeback tracks ownership
@@ -4982,7 +5075,7 @@ with I_DIRTY_PAGES.</p>
 <p><strong>Description</strong></p>
 <p>Mark an inode as dirty.  We notify the filesystem, then update the inode’s
 dirty flags.  Then, if needed we add the inode to the appropriate dirty list.</p>
-<p>Most callers should use mark_inode_dirty() or mark_inode_dirty_sync()
+<p>Most callers should use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mark_inode_dirty()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mark_inode_dirty_sync()</span></code>
 instead of calling this directly.</p>
 <p>CAREFUL!  We only add the inode to the dirty list if it is hashed or if it
 refers to a blockdev.  Unhashed inodes will never be added to the dirty list
@@ -5162,7 +5255,7 @@ pointer.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.anon_inode_create_getfile">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.file" title="file"><span class="n"><span class="pre">file</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">anon_inode_create_getfile</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">name</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">file_operations</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">fops</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">priv</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">flags</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">inode</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">context_inode</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.anon_inode_create_getfile" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Like <a class="reference internal" href="#c.anon_inode_getfile" title="anon_inode_getfile"><code class="xref c c-func docutils literal notranslate"><span class="pre">anon_inode_getfile()</span></code></a>, but creates a new !S_PRIVATE anon inode rather than reuse the singleton anon inode and calls the inode_init_security_anon() LSM hook.</p>
+<dd><p>Like <a class="reference internal" href="#c.anon_inode_getfile" title="anon_inode_getfile"><code class="xref c c-func docutils literal notranslate"><span class="pre">anon_inode_getfile()</span></code></a>, but creates a new !S_PRIVATE anon inode rather than reuse the singleton anon inode and calls the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">inode_init_security_anon()</span></code> LSM hook.</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -5186,9 +5279,9 @@ reasons:</p>
 <li><p>for the inode to have its own security context, so that LSMs can enforce
 policy on the inode’s creation;</p></li>
 <li><p>if the caller needs a unique inode, for example in order to customize
-the size returned by fstat()</p></li>
+the size returned by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fstat()</span></code></p></li>
 </ul>
-<p>The LSM may use <strong>context_inode</strong> in inode_init_security_anon(), but a
+<p>The LSM may use <strong>context_inode</strong> in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">inode_init_security_anon()</span></code>, but a
 reference to it is not held.</p>
 <p>Returns the newly created file* or an error pointer.</p>
 </div>
@@ -5309,7 +5402,7 @@ possibly after taking additional locks.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>inode_newsize_ok must be called with i_mutex held.</p>
+<p>inode_newsize_ok must be called with i_rwsem held exclusively.</p>
 <p>inode_newsize_ok will check filesystem limits and ulimits to check that the
 new inode size is within limits. inode_newsize_ok will also send SIGXFSZ
 when necessary. Caller must not proceed with inode size change if failure is
@@ -5336,7 +5429,7 @@ conditions).</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>setattr_copy must be called with i_mutex held.</p>
+<p>setattr_copy must be called with i_rwsem held exclusively.</p>
 <p>setattr_copy updates the inode’s metadata with that specified
 in attr on idmapped mounts. Necessary permission checks to determine
 whether or not the S_ISGID property needs to be removed are performed with
@@ -5349,7 +5442,7 @@ take care to map the inode according to <strong>idmap</strong> before checking
 permissions. On non-idmapped mounts or if permission checking is to be
 performed on the raw inode simply pass <strong>nop_mnt_idmap</strong>.</p>
 <p>The inode is not marked as dirty after this operation. The rationale is
-that for “simple” filesystems, the struct inode is the inode storage.
+that for “simple” filesystems, the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">inode</span></code> is the inode storage.
 The caller is free to mark the inode dirty afterwards if needed.</p>
 </div>
 <dl class="c function">
@@ -5371,12 +5464,12 @@ The caller is free to mark the inode dirty afterwards if needed.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>The caller must hold the i_mutex on the affected object.</p>
+<p>The caller must hold the i_rwsem exclusively on the affected object.</p>
 <p>If notify_change discovers a delegation in need of breaking,
 it will return -EWOULDBLOCK and return a reference to the inode in
 delegated_inode.  The caller should then break the delegation and
 retry.  Because breaking a delegation may take a long time, the
-caller should drop the i_mutex before doing so.</p>
+caller should drop the i_rwsem before doing so.</p>
 <p>Alternatively, a caller may pass NULL for delegated_inode.  This may
 be appropriate for callers that expect the underlying filesystem not
 to be NFS exported.  Also, passing NULL is fine for callers holding
@@ -5435,11 +5528,11 @@ pages from ‘start’ till the end of file are included.</p>
 ‘onlined’ to the page allocator so they are considered idle when
 page-&gt;count == 1. A filesystem uses this interface to determine if
 any page in the mapping is busy, i.e. for DMA, or other
-get_user_pages() usages.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_user_pages()</span></code> usages.</p>
 <p>It is expected that the filesystem is holding locks to block the
 establishment of new mappings in this address_space. I.e. it expects
 to be able to run <a class="reference internal" href="../core-api/mm-api.html#c.unmap_mapping_range" title="unmap_mapping_range"><code class="xref c c-func docutils literal notranslate"><span class="pre">unmap_mapping_range()</span></code></a> and subsequently not race
-mapping_mapped() becoming true.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mapping_mapped()</span></code> becoming true.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.dax_iomap_rw">
@@ -5464,7 +5557,7 @@ and evicting any page cache pages in the region under I/O.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.dax_iomap_fault">
-<a class="reference internal" href="../core-api/mm-api.html#c.vm_fault_t" title="vm_fault_t"><span class="n"><span class="pre">vm_fault_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dax_iomap_fault</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">vm_fault</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">vmf</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">order</span></span>, <span class="n"><span class="pre">pfn_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pfnp</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">iomap_errp</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">iomap_ops</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ops</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.dax_iomap_fault" title="Link to this definition">¶</a><br /></dt>
+<a class="reference internal" href="../core-api/mm-api.html#c.vm_fault_t" title="vm_fault_t"><span class="n"><span class="pre">vm_fault_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dax_iomap_fault</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">vm_fault</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">vmf</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">order</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pfnp</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">iomap_errp</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">iomap_ops</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ops</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.dax_iomap_fault" title="Link to this definition">¶</a><br /></dt>
 <dd><p>handle a page fault on a DAX file</p>
 </dd></dl>
 
@@ -5475,7 +5568,7 @@ and evicting any page cache pages in the region under I/O.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">order</span></code></dt><dd><p>Order of the page to fault in</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">pfn_t</span> <span class="pre">*pfnp</span></code></dt><dd><p>PFN to insert for synchronous faults if fsync is required</p>
+<dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">*pfnp</span></code></dt><dd><p>PFN to insert for synchronous faults if fsync is required</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">*iomap_errp</span></code></dt><dd><p>Storage for detailed error code in case of error</p>
 </dd>
@@ -5490,7 +5583,7 @@ successfully.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.dax_finish_sync_fault">
-<a class="reference internal" href="../core-api/mm-api.html#c.vm_fault_t" title="vm_fault_t"><span class="n"><span class="pre">vm_fault_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dax_finish_sync_fault</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">vm_fault</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">vmf</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">order</span></span>, <span class="n"><span class="pre">pfn_t</span></span><span class="w"> </span><span class="n"><span class="pre">pfn</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.dax_finish_sync_fault" title="Link to this definition">¶</a><br /></dt>
+<a class="reference internal" href="../core-api/mm-api.html#c.vm_fault_t" title="vm_fault_t"><span class="n"><span class="pre">vm_fault_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dax_finish_sync_fault</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">vm_fault</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">vmf</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">order</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="n"><span class="pre">pfn</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.dax_finish_sync_fault" title="Link to this definition">¶</a><br /></dt>
 <dd><p>finish synchronous page fault</p>
 </dd></dl>
 
@@ -5501,7 +5594,7 @@ successfully.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">order</span></code></dt><dd><p>Order of entry to be inserted</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">pfn_t</span> <span class="pre">pfn</span></code></dt><dd><p>PFN to insert</p>
+<dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">pfn</span></code></dt><dd><p>PFN to insert</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -5812,7 +5905,7 @@ All arguments are ignored and it just returns -EINVAL.</p>
 <p>Generic helper for filesystems to use for symlink inodes where a pointer to
 the symlink target is stored in -&gt;i_link.  NOTE: this isn’t normally called,
 since as an optimization the path lookup code uses any non-NULL -&gt;i_link
-directly, without calling -&gt;get_link().  But -&gt;get_link() still must be set,
+directly, without calling -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_link()</span></code>.  But -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_link()</span></code> still must be set,
 to mark the inode_operations as being for a symlink.</p>
 <p><strong>Return</strong></p>
 <p>the symlink target</p>
@@ -5897,10 +5990,10 @@ recalculating the casefold of <strong>name</strong>.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Filesystems supporting casefolding and/or fscrypt can call this
-helper at mount-time to configure sb-&gt;s_d_op to best set of dentry
-operations required for the enabled features. The helper must be
-called after these have been configured, but before the root dentry
-is created.</p>
+helper at mount-time to configure default dentry_operations to the
+best set of dentry operations required for the enabled features.
+The helper must be called after these have been configured, but
+before the root dentry is created.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.inode_maybe_inc_iversion">
@@ -6036,7 +6129,7 @@ performed on the raw inode simply pass <strong>nop_mnt_idmap</strong>.</p>
 <p><strong>Description</strong></p>
 <p>Filesystems that store POSIX ACLs in the unaltered uapi format should use
 <a class="reference internal" href="#c.posix_acl_from_xattr" title="posix_acl_from_xattr"><code class="xref c c-func docutils literal notranslate"><span class="pre">posix_acl_from_xattr()</span></code></a> when reading them from the backing store and
-converting them into the struct posix_acl VFS format. The helper is
+converting them into the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">posix_acl</span></code> VFS format. The helper is
 specifically intended to be called from the acl inode operation.</p>
 <p>The <a class="reference internal" href="#c.posix_acl_from_xattr" title="posix_acl_from_xattr"><code class="xref c c-func docutils literal notranslate"><span class="pre">posix_acl_from_xattr()</span></code></a> function will map the raw {g,u}id values stored
 in ACL_{GROUP,USER} entries into idmapping in <strong>userns</strong>.</p>
@@ -6047,10 +6140,8 @@ couldn’t be cached for the filesystem. Idmapped mounts are taken into
 account on the fly during permission checking or right at the VFS -
 userspace boundary before reporting them to the user.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>Allocated struct posix_acl on success, NULL for a valid header but</dt><dd><p>without actual POSIX ACL entries, or <a class="reference internal" href="../core-api/kernel-api.html#c.ERR_PTR" title="ERR_PTR"><code class="xref c c-func docutils literal notranslate"><span class="pre">ERR_PTR()</span></code></a> encoded error code.</p>
-</dd>
-</dl>
+<p>Allocated <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">posix_acl</span></code> on success, NULL for a valid header but
+without actual POSIX ACL entries, or <a class="reference internal" href="../core-api/kernel-api.html#c.ERR_PTR" title="ERR_PTR"><code class="xref c c-func docutils literal notranslate"><span class="pre">ERR_PTR()</span></code></a> encoded error code.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.vfs_set_acl">
@@ -6071,7 +6162,7 @@ userspace boundary before reporting them to the user.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This function sets <strong>kacl</strong>. The caller must all posix_acl_release() on <strong>kacl</strong>
+<p>This function sets <strong>kacl</strong>. The caller must all <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">posix_acl_release()</span></code> on <strong>kacl</strong>
 afterwards.</p>
 <p><strong>Return</strong></p>
 <p>On success 0, on error negative errno.</p>
@@ -6094,7 +6185,7 @@ afterwards.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>This function retrieves <strong>kacl</strong> from the filesystem. The caller must all
-posix_acl_release() on <strong>kacl</strong>.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">posix_acl_release()</span></code> on <strong>kacl</strong>.</p>
 <p><strong>Return</strong></p>
 <p>On success POSIX ACLs in VFS format, on error negative errno.</p>
 </div>
@@ -6328,12 +6419,10 @@ filesystem could implement POSIX ACLs without implementing any other
 xattrs.</p>
 <p>However, since all codepaths that remove IOP_XATTR also assign of
 inode operations that either don’t implement or implement a stub
--&gt;listxattr() operation.</p>
+-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">listxattr()</span></code> operation.</p>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>On success, the size of the buffer that was used. On error a</dt><dd><p>negative error code.</p>
-</dd>
-</dl>
+<p>On success, the size of the buffer that was used. On error a
+negative error code.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.__vfs_removexattr_locked">
@@ -6358,7 +6447,7 @@ a delegation was broken on, NULL if none.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.generic_listxattr">
 <span class="n"><span class="pre">ssize_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">generic_listxattr</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.generic_listxattr" title="dentry"><span class="n"><span class="pre">dentry</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dentry</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buffer</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">buffer_size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.generic_listxattr" title="Link to this definition">¶</a><br /></dt>
-<dd><p>run through a dentry’s xattr list() operations</p>
+<dd><p>run through a dentry’s xattr <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">list()</span></code> operations</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -6372,7 +6461,7 @@ a delegation was broken on, NULL if none.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Combine the results of the list() operation from every xattr_handler in the
+<p>Combine the results of the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">list()</span></code> operation from every xattr_handler in the
 xattr_handler stack.</p>
 <p>Note that this will not include the entries for POSIX ACLs.</p>
 </div>
@@ -6514,16 +6603,19 @@ caller should invoke <a class="reference internal" href="#c.vfs_get_tree" title=
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">path</span> <span class="pre">*path</span></code></dt><dd><p>path to check</p>
-<p>d_mountpoint() can only be used reliably to establish if a dentry is
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">d_mountpoint()</span></code> can only be used reliably to establish if a dentry is
 not mounted in any namespace and that common case is handled inline.
-d_mountpoint() isn’t aware of the possibility there may be multiple
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">d_mountpoint()</span></code> isn’t aware of the possibility there may be multiple
 mounts using a given dentry in a different namespace. This function
 checks if the passed in path is a mountpoint rather than the dentry
 alone.</p>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.may_umount_tree">
@@ -6579,8 +6671,8 @@ a non-destructive way to look for easily umountable filesystems.</p>
 <p>This creates a new vfsmount, which will be the clone of <strong>path</strong>.  The new mount
 will not be attached anywhere in the namespace and will be private (i.e.
 changes to the originating mount won’t be propagated into this).</p>
-<p>This assumes caller has called or done the equivalent of may_mount().</p>
-<p>Release with mntput().</p>
+<p>This assumes caller has called or done the equivalent of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">may_mount()</span></code>.</p>
+<p>Release with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mntput()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.mnt_set_expiry">
@@ -7133,10 +7225,8 @@ pointer:</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>a value different than <code class="docutils literal notranslate"><span class="pre">zero</span></code> if ready events are available,</dt><dd><p>or <code class="docutils literal notranslate"><span class="pre">zero</span></code> otherwise.</p>
-</dd>
-</dl>
+<p>a value different than <code class="docutils literal notranslate"><span class="pre">zero</span></code> if ready events are available,
+or <code class="docutils literal notranslate"><span class="pre">zero</span></code> otherwise.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.busy_loop_ep_timeout">
@@ -7168,10 +7258,8 @@ pointer:</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">zero</span></code> if the proposed links don’t create too many paths,</dt><dd><p><code class="docutils literal notranslate"><span class="pre">-1</span></code> otherwise.</p>
-</dd>
-</dl>
+<p><code class="docutils literal notranslate"><span class="pre">zero</span></code> if the proposed links don’t create too many paths,
+<code class="docutils literal notranslate"><span class="pre">-1</span></code> otherwise.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ep_poll">
@@ -7197,15 +7285,13 @@ occurred).</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>the number of ready events which have been fetched, or an</dt><dd><p>error code, in case of error.</p>
-</dd>
-</dl>
+<p>the number of ready events which have been fetched, or an
+error code, in case of error.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ep_loop_check_proc">
 <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ep_loop_check_proc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">eventpoll</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ep</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">depth</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ep_loop_check_proc" title="Link to this definition">¶</a><br /></dt>
-<dd><p>verify that adding an epoll file inside another epoll structure does not violate the constraints, in terms of closed loops, or too deep chains (which can result in excessive stack usage).</p>
+<dd><p>verify that adding an epoll file <strong>ep</strong> inside another epoll file does not create closed loops, and determine the depth of the subtree starting at <strong>ep</strong></p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -7217,10 +7303,7 @@ occurred).</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">zero</span></code> if adding the epoll <strong>file</strong> inside current epoll</dt><dd><p>structure <strong>ep</strong> does not violate the constraints, or <code class="docutils literal notranslate"><span class="pre">-1</span></code> otherwise.</p>
-</dd>
-</dl>
+<p>depth of the subtree, or INT_MAX if we found a loop or went too deep.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ep_loop_check">
@@ -7310,7 +7393,7 @@ does not violate the constraints, or <code class="docutils literal notranslate">
 </dl>
 <p><strong>Description</strong></p>
 <p>With sysfs, just like kernfs, deletion of an attribute is postponed until
-all active .show() and .store() callbacks have finished unless this function
+all active .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">show()</span></code> and .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">store()</span></code> callbacks have finished unless this function
 is called. Hence this function is useful in methods that implement self
 deletion.</p>
 </div>
@@ -7328,7 +7411,7 @@ deletion.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Undo the effects of <a class="reference internal" href="#c.sysfs_break_active_protection" title="sysfs_break_active_protection"><code class="xref c c-func docutils literal notranslate"><span class="pre">sysfs_break_active_protection()</span></code></a>. Since this function
-calls kernfs_put() on the kernfs node that corresponds to the ‘attr’
+calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kernfs_put()</span></code> on the kernfs node that corresponds to the ‘attr’
 argument passed to <a class="reference internal" href="#c.sysfs_break_active_protection" title="sysfs_break_active_protection"><code class="xref c c-func docutils literal notranslate"><span class="pre">sysfs_break_active_protection()</span></code></a> that attribute may have
 been removed between the <a class="reference internal" href="#c.sysfs_break_active_protection" title="sysfs_break_active_protection"><code class="xref c c-func docutils literal notranslate"><span class="pre">sysfs_break_active_protection()</span></code></a> and
 <a class="reference internal" href="#c.sysfs_unbreak_active_protection" title="sysfs_unbreak_active_protection"><code class="xref c c-func docutils literal notranslate"><span class="pre">sysfs_unbreak_active_protection()</span></code></a> calls, it is not safe to access <strong>kn</strong> after
@@ -7368,7 +7451,7 @@ this function has returned.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>See kernfs_remove_self() for details.</p>
+<p>See <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kernfs_remove_self()</span></code> for details.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.sysfs_remove_file_from_group">
@@ -7533,10 +7616,10 @@ driver/subsystem specific entries are removed.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Simple -&gt;read() callback for bin_attributes backed by a buffer in memory.
-The <strong>private</strong> and <strong>size</strong> members in struct bin_attribute must be set to the
+The <strong>private</strong> and <strong>size</strong> members in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">bin_attribute</span></code> must be set to the
 buffer’s location and size before the bin_attribute is created in sysfs.</p>
-<p>Bounds check for <strong>off</strong> and <strong>count</strong> is done in sysfs_kf_bin_read().
-Negative value check for <strong>off</strong> is done in vfs_setpos() and default_llseek().</p>
+<p>Bounds check for <strong>off</strong> and <strong>count</strong> is done in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sysfs_kf_bin_read()</span></code>.
+Negative value check for <strong>off</strong> is done in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vfs_setpos()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">default_llseek()</span></code>.</p>
 <p>Returns number of bytes written to <strong>buf</strong>.</p>
 </div>
 <dl class="c function">
@@ -7564,16 +7647,19 @@ Negative value check for <strong>off</strong> is done in vfs_setpos() and defaul
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kobject</span> <span class="pre">*kobj</span></code></dt><dd><p>object whose directory we’re creating the link in.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kobject</span> <span class="pre">*target</span></code></dt><dd><p>object we’re pointing to.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*name</span></code></dt><dd><p>name of the symlink.</p>
-<p>This function does the same as <a class="reference internal" href="#c.sysfs_create_link" title="sysfs_create_link"><code class="xref c c-func docutils literal notranslate"><span class="pre">sysfs_create_link()</span></code></a>, but it
-doesn’t warn if the link already exists.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>This function does the same as <a class="reference internal" href="#c.sysfs_create_link" title="sysfs_create_link"><code class="xref c c-func docutils literal notranslate"><span class="pre">sysfs_create_link()</span></code></a>, but it
+doesn’t warn if the link already exists.</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.sysfs_remove_link">
@@ -7598,7 +7684,7 @@ doesn’t warn if the link already exists.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kobject</span> <span class="pre">*kobj</span></code></dt><dd><p>object we’re acting for.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kobject</span> <span class="pre">*targ</span></code></dt><dd><p>object we’re pointing to.</p>
@@ -7608,9 +7694,12 @@ doesn’t warn if the link already exists.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char</span> <span class="pre">*new</span></code></dt><dd><p>new name of the symlink.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">void</span> <span class="pre">*new_ns</span></code></dt><dd><p>new namespace of the symlink.</p>
-<p>A helper function for the common rename symlink idiom.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>A helper function for the common rename symlink idiom.</p>
+</div></blockquote>
 </div>
 </section>
 <section id="the-debugfs-filesystem">
@@ -7634,7 +7723,7 @@ doesn’t warn if the link already exists.</p>
 <p><strong>Description</strong></p>
 <p>This function will return a pointer to a dentry if it succeeds.  If the file
 doesn’t exist or an error occurs, <code class="docutils literal notranslate"><span class="pre">NULL</span></code> will be returned.  The returned
-dentry must be passed to dput() when it is no longer needed.</p>
+dentry must be passed to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dput()</span></code> when it is no longer needed.</p>
 <p>If debugfs is not enabled in the kernel, the value -<code class="docutils literal notranslate"><span class="pre">ENODEV</span></code> will be
 returned.</p>
 </div>
@@ -7659,21 +7748,21 @@ file will be created in the root of the debugfs filesystem.</p>
 on.  The inode.i_private pointer will point to this value on
 the open() call.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">file_operations</span> <span class="pre">*fops</span></code></dt><dd><p>a pointer to a struct file_operations that should be used for
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">file_operations</span> <span class="pre">*fops</span></code></dt><dd><p>a pointer to a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file_operations</span></code> that should be used for
 this file.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
 <p><a class="reference internal" href="#c.debugfs_create_file_unsafe" title="debugfs_create_file_unsafe"><code class="xref c c-func docutils literal notranslate"><span class="pre">debugfs_create_file_unsafe()</span></code></a> is completely analogous to
-debugfs_create_file(), the only difference being that the fops
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">debugfs_create_file()</span></code>, the only difference being that the fops
 handed it will not get protected against file removals by the
 debugfs core.</p>
-<p>It is your responsibility to protect your struct file_operation
+<p>It is your responsibility to protect your <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file_operation</span></code>
 methods against file removals by means of <a class="reference internal" href="#c.debugfs_file_get" title="debugfs_file_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">debugfs_file_get()</span></code></a>
 and <a class="reference internal" href="#c.debugfs_file_put" title="debugfs_file_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">debugfs_file_put()</span></code></a>. -&gt;open() is still protected by
 debugfs though.</p>
-<p>Any struct file_operations defined by means of
-DEFINE_DEBUGFS_ATTRIBUTE() is protected against file removals and
+<p>Any <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file_operations</span></code> defined by means of
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">DEFINE_DEBUGFS_ATTRIBUTE()</span></code> is protected against file removals and
 thus, may be used here.</p>
 </div>
 <dl class="c function">
@@ -7697,7 +7786,7 @@ file will be created in the root of the debugfs filesystem.</p>
 on.  The inode.i_private pointer will point to this value on
 the open() call.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">file_operations</span> <span class="pre">*fops</span></code></dt><dd><p>a pointer to a struct file_operations that should be used for
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">file_operations</span> <span class="pre">*fops</span></code></dt><dd><p>a pointer to a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file_operations</span></code> that should be used for
 this file.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">loff_t</span> <span class="pre">file_size</span></code></dt><dd><p>initial file size</p>
@@ -7762,7 +7851,7 @@ file will be created in the root of the debugfs filesystem.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p><strong>f</strong> should return what -&gt;d_automount() would.</p>
+<p><strong>f</strong> should return what -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">d_automount()</span></code> would.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.debugfs_create_symlink">
@@ -7812,7 +7901,7 @@ parameter is NULL or an error value, nothing will be done.</p>
 <p><strong>Description</strong></p>
 <p>This function recursively removes a directory tree in debugfs that
 was previously created with a call to another debugfs function
-(like debugfs_create_file() or variants thereof.)</p>
+(like <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">debugfs_create_file()</span></code> or variants thereof.)</p>
 <p>This function is required to be called in order for the file to be
 removed, no automatic cleanup of files will happen when a module is
 removed, you are responsible here.</p>
@@ -7887,7 +7976,7 @@ returned.</p>
 <p><strong>Description</strong></p>
 <p>Up to a matching call to <a class="reference internal" href="#c.debugfs_file_put" title="debugfs_file_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">debugfs_file_put()</span></code></a>, any successive call
 into the file removing functions <a class="reference internal" href="#c.debugfs_remove" title="debugfs_remove"><code class="xref c c-func docutils literal notranslate"><span class="pre">debugfs_remove()</span></code></a> and
-debugfs_remove_recursive() will block. Since associated private
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">debugfs_remove_recursive()</span></code> will block. Since associated private
 file data may only get freed after a successful return of any of
 the removal functions, you may safely access it after a successful
 call to <a class="reference internal" href="#c.debugfs_file_get" title="debugfs_file_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">debugfs_file_get()</span></code></a> without worrying about lifetime issues.</p>
@@ -7910,7 +7999,7 @@ it is allowed to access the file data, zero is returned.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Allow any ongoing concurrent call into <a class="reference internal" href="#c.debugfs_remove" title="debugfs_remove"><code class="xref c c-func docutils literal notranslate"><span class="pre">debugfs_remove()</span></code></a> or
-debugfs_remove_recursive() blocked by a former call to
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">debugfs_remove_recursive()</span></code> blocked by a former call to
 <a class="reference internal" href="#c.debugfs_file_get" title="debugfs_file_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">debugfs_file_get()</span></code></a> to proceed and return to its caller.</p>
 </div>
 <dl class="c function">
@@ -8292,7 +8381,7 @@ set, it can be read from, and written to.</p>
 directory dentry if set.  If this parameter is <code class="docutils literal notranslate"><span class="pre">NULL</span></code>, then the
 file will be created in the root of the debugfs filesystem.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">debugfs_blob_wrapper</span> <span class="pre">*blob</span></code></dt><dd><p>a pointer to a struct debugfs_blob_wrapper which contains a pointer
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">debugfs_blob_wrapper</span> <span class="pre">*blob</span></code></dt><dd><p>a pointer to a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">debugfs_blob_wrapper</span></code> which contains a pointer
 to the blob data and the size of the data.</p>
 </dd>
 </dl>
@@ -8325,7 +8414,7 @@ be returned.</p>
 directory dentry if set.  If this parameter is <code class="docutils literal notranslate"><span class="pre">NULL</span></code>, then the
 file will be created in the root of the debugfs filesystem.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">debugfs_u32_array</span> <span class="pre">*array</span></code></dt><dd><p>wrapper struct containing data pointer and size of the array.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">debugfs_u32_array</span> <span class="pre">*array</span></code></dt><dd><p>wrapper <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">containing</span></code> data pointer and size of the array.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -8345,7 +8434,7 @@ Once array is created its size can not be changed.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">seq_file</span> <span class="pre">*s</span></code></dt><dd><p>the seq_file structure being used to generate output</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">debugfs_reg32</span> <span class="pre">*regs</span></code></dt><dd><p>an array if struct debugfs_reg32 structures</p>
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">debugfs_reg32</span> <span class="pre">*regs</span></code></dt><dd><p>an array if <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">debugfs_reg32</span></code> structures</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">nregs</span></code></dt><dd><p>the length of the above array</p>
 </dd>
@@ -8379,7 +8468,7 @@ for example configuration of dma channels</p>
 directory dentry if set.  If this parameter is <code class="docutils literal notranslate"><span class="pre">NULL</span></code>, then the
 file will be created in the root of the debugfs filesystem.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">debugfs_regset32</span> <span class="pre">*regset</span></code></dt><dd><p>a pointer to a struct debugfs_regset32, which contains a pointer
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">debugfs_regset32</span> <span class="pre">*regset</span></code></dt><dd><p>a pointer to a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">debugfs_regset32</span></code>, which contains a pointer
 to an array of register definitions, the array size and the base
 address where the register bank is to be found.</p>
 </dd>

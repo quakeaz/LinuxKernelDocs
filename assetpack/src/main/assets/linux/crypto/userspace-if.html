@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -209,15 +209,15 @@ calls. This includes the generic vs. unique naming schema for ciphers as
 well as the enforcement of priorities for generic names.</p>
 <p>To interact with the kernel crypto API, a socket must be created by the
 user space application. User space invokes the cipher operation with the
-send()/write() system call family. The result of the cipher operation is
-obtained with the read()/recv() system call family.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">send()</span></code>/write() system call family. The result of the cipher operation is
+obtained with the read()/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recv()</span></code> system call family.</p>
 <p>The following API calls assume that the socket descriptor is already
 opened by the user space application and discusses only the kernel
 crypto API specific invocations.</p>
 <p>To initialize the socket interface, the following sequence has to be
 performed by the consumer:</p>
 <ol class="arabic simple">
-<li><p>Create a socket of type AF_ALG with the struct sockaddr_alg
+<li><p>Create a socket of type AF_ALG with the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">sockaddr_alg</span></code>
 parameter specified below for the different cipher types.</p></li>
 <li><p>Invoke bind with the socket descriptor</p></li>
 <li><p>Invoke accept with the socket descriptor. The accept system call
@@ -244,7 +244,7 @@ operation.</p>
 <h2>Message Digest API<a class="headerlink" href="#message-digest-api" title="Link to this heading">¶</a></h2>
 <p>The message digest type to be used for the cipher operation is selected
 when invoking the bind syscall. bind requires the caller to provide a
-filled struct sockaddr data structure. This data structure must be
+filled <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">sockaddr</span></code> data structure. This data structure must be
 filled as follows:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct sockaddr_alg sa = {
     .salg_family = AF_ALG,
@@ -257,7 +257,7 @@ filled as follows:</p>
 digests. Though, a keyed message digest is referenced by the appropriate
 salg_name. Please see below for the setsockopt interface that explains
 how the key can be set for a keyed message digest.</p>
-<p>Using the send() system call, the application provides the data that
+<p>Using the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">send()</span></code> system call, the application provides the data that
 should be processed with the message digest. The send system call allows
 the following flags to be specified:</p>
 <ul class="simple">
@@ -266,18 +266,18 @@ message digest update function where the final hash is not yet
 calculated. If the flag is not set, the send system call calculates
 the final message digest immediately.</p></li>
 </ul>
-<p>With the recv() system call, the application can read the message digest
+<p>With the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recv()</span></code> system call, the application can read the message digest
 from the kernel crypto API. If the buffer is too small for the message
 digest, the flag MSG_TRUNC is set by the kernel.</p>
 <p>In order to set a message digest key, the calling application must use
-the setsockopt() option of ALG_SET_KEY or ALG_SET_KEY_BY_KEY_SERIAL. If the
+the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">setsockopt()</span></code> option of ALG_SET_KEY or ALG_SET_KEY_BY_KEY_SERIAL. If the
 key is not set the HMAC operation is performed without the initial HMAC state
 change caused by the key.</p>
 </section>
 <section id="symmetric-cipher-api">
 <h2>Symmetric Cipher API<a class="headerlink" href="#symmetric-cipher-api" title="Link to this heading">¶</a></h2>
 <p>The operation is very similar to the message digest discussion. During
-initialization, the struct sockaddr data structure must be filled as
+initialization, the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">sockaddr</span></code> data structure must be filled as
 follows:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct sockaddr_alg sa = {
     .salg_family = AF_ALG,
@@ -289,11 +289,11 @@ follows:</p>
 <p>Before data can be sent to the kernel using the write/send system call
 family, the consumer must set the key. The key setting is described with
 the setsockopt invocation below.</p>
-<p>Using the sendmsg() system call, the application provides the data that
+<p>Using the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sendmsg()</span></code> system call, the application provides the data that
 should be processed for encryption or decryption. In addition, the IV is
-specified with the data structure provided by the sendmsg() system call.</p>
-<p>The sendmsg system call parameter of struct msghdr is embedded into the
-struct cmsghdr data structure. See recv(2) and cmsg(3) for more
+specified with the data structure provided by the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sendmsg()</span></code> system call.</p>
+<p>The sendmsg system call parameter of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">msghdr</span></code> is embedded into the
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cmsghdr</span></code> data structure. See recv(2) and cmsg(3) for more
 information on how the cmsghdr data structure is used together with the
 send/recv system call family. That cmsghdr data structure holds the
 following information specified with a separate header instances:</p>
@@ -315,7 +315,7 @@ subsequent invocation of the send system call.</p></li>
 <p>Note: The kernel reports -EINVAL for any unexpected data. The caller
 must make sure that all data matches the constraints given in
 /proc/crypto for the selected cipher.</p>
-<p>With the recv() system call, the application can read the result of the
+<p>With the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recv()</span></code> system call, the application can read the result of the
 cipher operation from the kernel crypto API. The output buffer must be
 at least as large as to hold all blocks of the encrypted or decrypted
 data. If the output data size is smaller, only as many blocks are
@@ -324,7 +324,7 @@ returned that fit into that output buffer size.</p>
 <section id="aead-cipher-api">
 <h2>AEAD Cipher API<a class="headerlink" href="#aead-cipher-api" title="Link to this heading">¶</a></h2>
 <p>The operation is very similar to the symmetric cipher discussion. During
-initialization, the struct sockaddr data structure must be filled as
+initialization, the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">sockaddr</span></code> data structure must be filled as
 follows:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct sockaddr_alg sa = {
     .salg_family = AF_ALG,
@@ -340,11 +340,11 @@ the setsockopt invocation below.</p>
 system call family, the consumer must set the authentication tag size.
 To set the authentication tag size, the caller must use the setsockopt
 invocation described below.</p>
-<p>Using the sendmsg() system call, the application provides the data that
+<p>Using the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sendmsg()</span></code> system call, the application provides the data that
 should be processed for encryption or decryption. In addition, the IV is
-specified with the data structure provided by the sendmsg() system call.</p>
-<p>The sendmsg system call parameter of struct msghdr is embedded into the
-struct cmsghdr data structure. See recv(2) and cmsg(3) for more
+specified with the data structure provided by the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sendmsg()</span></code> system call.</p>
+<p>The sendmsg system call parameter of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">msghdr</span></code> is embedded into the
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cmsghdr</span></code> data structure. See recv(2) and cmsg(3) for more
 information on how the cmsghdr data structure is used together with the
 send/recv system call family. That cmsghdr data structure holds the
 following information specified with a separate header instances:</p>
@@ -369,7 +369,7 @@ subsequent invocation of the send system call.</p></li>
 <p>Note: The kernel reports -EINVAL for any unexpected data. The caller
 must make sure that all data matches the constraints given in
 /proc/crypto for the selected cipher.</p>
-<p>With the recv() system call, the application can read the result of the
+<p>With the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recv()</span></code> system call, the application can read the result of the
 cipher operation from the kernel crypto API. The output buffer must be
 at least as large as defined with the memory structure below. If the
 output data size is smaller, the cipher operation is not performed.</p>
@@ -405,7 +405,7 @@ large to hold the following data:</p>
 <section id="random-number-generator-api">
 <h2>Random Number Generator API<a class="headerlink" href="#random-number-generator-api" title="Link to this heading">¶</a></h2>
 <p>Again, the operation is very similar to the other APIs. During
-initialization, the struct sockaddr data structure must be filled as
+initialization, the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">sockaddr</span></code> data structure must be filled as
 follows:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct sockaddr_alg sa = {
     .salg_family = AF_ALG,
@@ -419,9 +419,9 @@ using the setsockopt interface to set the key. For example, the
 ansi_cprng requires a seed. The DRBGs do not require a seed, but may be
 seeded. The seed is also known as a <em>Personalization String</em> in NIST SP 800-90A
 standard.</p>
-<p>Using the read()/recvmsg() system calls, random numbers can be obtained.
+<p>Using the read()/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recvmsg()</span></code> system calls, random numbers can be obtained.
 The kernel generates at most 128 bytes in one call. If user space
-requires more data, multiple calls to read()/recvmsg() must be made.</p>
+requires more data, multiple calls to read()/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">recvmsg()</span></code> must be made.</p>
 <p>WARNING: The user space caller may invoke the initially mentioned accept
 system call multiple times. In this case, the returned file descriptors
 have the same state.</p>
@@ -431,7 +431,7 @@ CRYPTO_USER_API_RNG_CAVP option:</p>
 <li><p>the concatenation of <em>Entropy</em> and <em>Nonce</em> can be provided to the RNG via
 ALG_SET_DRBG_ENTROPY setsockopt interface. Setting the entropy requires
 CAP_SYS_ADMIN permission.</p></li>
-<li><p><em>Additional Data</em> can be provided using the send()/sendmsg() system calls,
+<li><p><em>Additional Data</em> can be provided using the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">send()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sendmsg()</span></code> system calls,
 but only after the entropy has been set.</p></li>
 </ul>
 </section>

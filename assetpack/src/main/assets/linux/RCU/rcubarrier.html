@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -154,7 +154,7 @@
 <p>[Originally published in LWN Jan. 14, 2007: <a class="reference external" href="http://lwn.net/Articles/217484/">http://lwn.net/Articles/217484/</a>]</p>
 <p>RCU updaters sometimes use <a class="reference internal" href="../core-api/kernel-api.html#c.call_rcu" title="call_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">call_rcu()</span></code></a> to initiate an asynchronous wait for
 a grace period to elapse.  This primitive takes a pointer to an rcu_head
-struct placed within the RCU-protected data structure and another pointer
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">placed</span></code> within the RCU-protected data structure and another pointer
 to a function that may be invoked later to free that structure. Code to
 delete an element p from the linked list from IRQ context might then be
 as follows:</p>
@@ -163,7 +163,7 @@ call_rcu(&amp;p-&gt;rcu, p_callback);
 </pre></div>
 </div>
 <p>Since <a class="reference internal" href="../core-api/kernel-api.html#c.call_rcu" title="call_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">call_rcu()</span></code></a> never blocks, this code can safely be used from within
-IRQ context. The function p_callback() might be defined as follows:</p>
+IRQ context. The function <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">p_callback()</span></code> might be defined as follows:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>static void p_callback(struct rcu_head *rp)
 {
         struct pstruct *p = container_of(rp, struct pstruct, rcu);
@@ -174,7 +174,7 @@ IRQ context. The function p_callback() might be defined as follows:</p>
 </div>
 <section id="unloading-modules-that-use-call-rcu">
 <h2>Unloading Modules That Use call_rcu()<a class="headerlink" href="#unloading-modules-that-use-call-rcu" title="Link to this heading">¶</a></h2>
-<p>But what if the p_callback() function is defined in an unloadable module?</p>
+<p>But what if the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">p_callback()</span></code> function is defined in an unloadable module?</p>
 <p>If we unload the module while some RCU callbacks are pending,
 the CPUs executing these callbacks are going to be severely
 disappointed when they are later invoked, as fancifully depicted at
@@ -341,10 +341,10 @@ which point, all earlier RCU callbacks are guaranteed to have completed.</p>
 <p>Line 3 verifies that the caller is in process context, and lines 5 and 12
 use rcu_barrier_mutex to ensure that only one <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_barrier" title="rcu_barrier"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_barrier()</span></code></a> is using the
 global completion and counters at a time, which are initialized on lines
-6 and 7. Line 8 causes each CPU to invoke rcu_barrier_func(), which is
-shown below. Note that the final “1” in on_each_cpu()’s argument list
-ensures that all the calls to rcu_barrier_func() will have completed
-before on_each_cpu() returns. Line 9 removes the initial count from
+6 and 7. Line 8 causes each CPU to invoke <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_barrier_func()</span></code>, which is
+shown below. Note that the final “1” in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">on_each_cpu()</span></code>’s argument list
+ensures that all the calls to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_barrier_func()</span></code> will have completed
+before <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">on_each_cpu()</span></code> returns. Line 9 removes the initial count from
 rcu_barrier_cpu_count, and if this count is now zero, line 10 finalizes
 the completion, which prevents line 11 from blocking.  Either way,
 line 11 then waits (if needed) for the completion.</p>
@@ -356,7 +356,7 @@ thereby avoiding the need for lines 9 and 10?</p>
 <p><a class="reference internal" href="#answer-rcubarrier-quiz-2"><span class="std std-ref">Answer to Quick Quiz #2</span></a></p>
 <p>This code was rewritten in 2008 and several times thereafter, but this
 still gives the general idea.</p>
-<p>The rcu_barrier_func() runs on each CPU, where it invokes <a class="reference internal" href="../core-api/kernel-api.html#c.call_rcu" title="call_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">call_rcu()</span></code></a>
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_barrier_func()</span></code> runs on each CPU, where it invokes <a class="reference internal" href="../core-api/kernel-api.html#c.call_rcu" title="call_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">call_rcu()</span></code></a>
 to post an RCU callback, as follows:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span> 1  static void rcu_barrier_func(void *notused)
  2  {
@@ -371,12 +371,12 @@ to post an RCU callback, as follows:</p>
 </pre></div>
 </div>
 <p>Lines 3 and 4 locate RCU’s internal per-CPU rcu_data structure,
-which contains the struct rcu_head that needed for the later call to
-<a class="reference internal" href="../core-api/kernel-api.html#c.call_rcu" title="call_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">call_rcu()</span></code></a>. Line 7 picks up a pointer to this struct rcu_head, and line
+which contains the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rcu_head</span></code> that needed for the later call to
+<a class="reference internal" href="../core-api/kernel-api.html#c.call_rcu" title="call_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">call_rcu()</span></code></a>. Line 7 picks up a pointer to this <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rcu_head</span></code>, and line
 8 increments the global counter. This counter will later be decremented
-by the callback. Line 9 then registers the rcu_barrier_callback() on
+by the callback. Line 9 then registers the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_barrier_callback()</span></code> on
 the current CPU’s queue.</p>
-<p>The rcu_barrier_callback() function simply atomically decrements the
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_barrier_callback()</span></code> function simply atomically decrements the
 rcu_barrier_cpu_count variable and finalizes the completion when it
 reaches zero, as follows:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>1  static void rcu_barrier_callback(struct rcu_head *notused)
@@ -387,9 +387,9 @@ reaches zero, as follows:</p>
 </pre></div>
 </div>
 <dl class="simple" id="rcubarrier-quiz-3">
-<dt>Quick Quiz #3:</dt><dd><p>What happens if CPU 0’s rcu_barrier_func() executes
+<dt>Quick Quiz #3:</dt><dd><p>What happens if CPU 0’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_barrier_func()</span></code> executes
 immediately (thus incrementing rcu_barrier_cpu_count to the
-value one), but the other CPU’s rcu_barrier_func() invocations
+value one), but the other CPU’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_barrier_func()</span></code> invocations
 are delayed for a full grace period? Couldn’t this result in
 <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_barrier" title="rcu_barrier"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_barrier()</span></code></a> returning prematurely?</p>
 </dd>
@@ -430,18 +430,18 @@ this problem as well.</p>
 <dt>Quick Quiz #2:</dt><dd><p>Why doesn’t line 8 initialize rcu_barrier_cpu_count to zero,
 thereby avoiding the need for lines 9 and 10?</p>
 </dd>
-<dt>Answer:</dt><dd><p>Suppose that the on_each_cpu() function shown on line 8 was
-delayed, so that CPU 0’s rcu_barrier_func() executed and
+<dt>Answer:</dt><dd><p>Suppose that the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">on_each_cpu()</span></code> function shown on line 8 was
+delayed, so that CPU 0’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_barrier_func()</span></code> executed and
 the corresponding grace period elapsed, all before CPU 1’s
-rcu_barrier_func() started executing.  This would result in
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_barrier_func()</span></code> started executing.  This would result in
 rcu_barrier_cpu_count being decremented to zero, so that line
-11’s wait_for_completion() would return immediately, failing to
+11’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wait_for_completion()</span></code> would return immediately, failing to
 wait for CPU 1’s callbacks to be invoked.</p>
 <p>Note that this was not a problem when the <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_barrier" title="rcu_barrier"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_barrier()</span></code></a> code
-was first added back in 2005.  This is because on_each_cpu()
+was first added back in 2005.  This is because <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">on_each_cpu()</span></code>
 disables preemption, which acted as an RCU read-side critical
 section, thus preventing CPU 0’s grace period from completing
-until on_each_cpu() had dealt with all of the CPUs.</p>
+until <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">on_each_cpu()</span></code> had dealt with all of the CPUs.</p>
 <p>However, with the RCU flavor consolidation around v4.20, this
 possibility was once again ruled out, because the consolidated
 RCU once again waits on nonpreemptible regions of code.</p>
@@ -452,30 +452,30 @@ in later surprise bugs when the implementation changes.</p>
 </dl>
 <p><a class="reference internal" href="#rcubarrier-quiz-2"><span class="std std-ref">Back to Quick Quiz #2</span></a></p>
 <dl id="answer-rcubarrier-quiz-3">
-<dt>Quick Quiz #3:</dt><dd><p>What happens if CPU 0’s rcu_barrier_func() executes
+<dt>Quick Quiz #3:</dt><dd><p>What happens if CPU 0’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_barrier_func()</span></code> executes
 immediately (thus incrementing rcu_barrier_cpu_count to the
-value one), but the other CPU’s rcu_barrier_func() invocations
+value one), but the other CPU’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_barrier_func()</span></code> invocations
 are delayed for a full grace period? Couldn’t this result in
 <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_barrier" title="rcu_barrier"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_barrier()</span></code></a> returning prematurely?</p>
 </dd>
-<dt>Answer:</dt><dd><p>This cannot happen. The reason is that on_each_cpu() has its last
+<dt>Answer:</dt><dd><p>This cannot happen. The reason is that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">on_each_cpu()</span></code> has its last
 argument, the wait flag, set to “1”. This flag is passed through
-to smp_call_function() and further to smp_call_function_on_cpu(),
+to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smp_call_function()</span></code> and further to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smp_call_function_on_cpu()</span></code>,
 causing this latter to spin until the cross-CPU invocation of
-rcu_barrier_func() has completed. This by itself would prevent
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_barrier_func()</span></code> has completed. This by itself would prevent
 a grace period from completing on non-CONFIG_PREEMPTION kernels,
 since each CPU must undergo a context switch (or other quiescent
 state) before the grace period can complete. However, this is
 of no use in CONFIG_PREEMPTION kernels.</p>
-<p>Therefore, on_each_cpu() disables preemption across its call
-to smp_call_function() and also across the local call to
-rcu_barrier_func(). Because recent RCU implementations treat
+<p>Therefore, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">on_each_cpu()</span></code> disables preemption across its call
+to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">smp_call_function()</span></code> and also across the local call to
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_barrier_func()</span></code>. Because recent RCU implementations treat
 preemption-disabled regions of code as RCU read-side critical
 sections, this prevents grace periods from completing. This
-means that all CPUs have executed rcu_barrier_func() before
-the first rcu_barrier_callback() can possibly execute, in turn
+means that all CPUs have executed <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_barrier_func()</span></code> before
+the first <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_barrier_callback()</span></code> can possibly execute, in turn
 preventing rcu_barrier_cpu_count from prematurely reaching zero.</p>
-<p>But if on_each_cpu() ever decides to forgo disabling preemption,
+<p>But if <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">on_each_cpu()</span></code> ever decides to forgo disabling preemption,
 as might well happen due to real-time latency considerations,
 initializing rcu_barrier_cpu_count to one will save the day.</p>
 </dd>

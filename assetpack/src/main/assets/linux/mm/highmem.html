@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -211,7 +211,7 @@ list shows them in order of preference of use.</p>
 short term mappings. They can be invoked from any context (including
 interrupts) but the mappings can only be used in the context which acquired
 them. The only differences between them consist in the first taking a pointer
-to a struct page and the second taking a pointer to <a class="reference internal" href="../core-api/mm-api.html#c.folio" title="folio"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">folio</span></code></a> and the byte
+to a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code> and the second taking a pointer to <a class="reference internal" href="../core-api/mm-api.html#c.folio" title="folio"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">folio</span></code></a> and the byte
 offset within the folio which identifies the page.</p>
 <p>These functions should always be used, whereas <a class="reference internal" href="#c.kmap_atomic" title="kmap_atomic"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmap_atomic()</span></code></a> and <a class="reference internal" href="#c.kmap" title="kmap"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmap()</span></code></a> have
 been deprecated.</p>
@@ -254,7 +254,7 @@ mappings.</p>
 restrictions imposed on <a class="reference internal" href="#c.kmap_local_page" title="kmap_local_page"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmap_local_page()</span></code></a>. Furthermore, the code between
 calls to <a class="reference internal" href="#c.kmap_atomic" title="kmap_atomic"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmap_atomic()</span></code></a> and <a class="reference internal" href="#c.kunmap_atomic" title="kunmap_atomic"><code class="xref c c-func docutils literal notranslate"><span class="pre">kunmap_atomic()</span></code></a> may implicitly depend on the side
 effects of atomic mappings, i.e. disabling page faults or preemption, or both.
-In that case, explicit calls to pagefault_disable() or preempt_disable() or
+In that case, explicit calls to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pagefault_disable()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">preempt_disable()</span></code> or
 both must be made in conjunction with the use of <a class="reference internal" href="#c.kmap_local_page" title="kmap_local_page"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmap_local_page()</span></code></a>.</p>
 <p>[Legacy documentation]</p>
 <p>This permits a very short duration mapping of a single page.  Since the
@@ -267,7 +267,7 @@ called.</p>
 <p>Each call of <a class="reference internal" href="#c.kmap_atomic" title="kmap_atomic"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmap_atomic()</span></code></a> in the kernel creates a non-preemptible section
 and disable pagefaults. This could be a source of unwanted latency. Therefore
 users should prefer <a class="reference internal" href="#c.kmap_local_page" title="kmap_local_page"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmap_local_page()</span></code></a> instead of <a class="reference internal" href="#c.kmap_atomic" title="kmap_atomic"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmap_atomic()</span></code></a>.</p>
-<p>It is assumed that k[un]map_atomic() won’t fail.</p>
+<p>It is assumed that k[un]<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">map_atomic()</span></code> won’t fail.</p>
 </li>
 <li><p><a class="reference internal" href="#c.kmap" title="kmap"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmap()</span></code></a>. This function has been deprecated; use <a class="reference internal" href="#c.kmap_local_page" title="kmap_local_page"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmap_local_page()</span></code></a>.</p>
 <p>NOTE: Conversions to <a class="reference internal" href="#c.kmap_local_page" title="kmap_local_page"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmap_local_page()</span></code></a> must take care to follow the mapping
@@ -305,7 +305,7 @@ synchronization to unmap.</p></li>
 <p>The cost of creating temporary mappings can be quite high.  The arch has to
 manipulate the kernel’s page tables, the data TLB and/or the MMU’s registers.</p>
 <p>If CONFIG_HIGHMEM is not set, then the kernel will try and create a mapping
-simply with a bit of arithmetic that will convert the page struct address into
+simply with a bit of arithmetic that will convert the page <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">address</span></code> into
 a pointer to the page contents rather than juggling mappings about.  In such a
 case, the unmap operation may be a null operation.</p>
 <p>If CONFIG_MMU is not set, then there can be no temporary mappings and no
@@ -318,8 +318,8 @@ of RAM into your 32-bit machine.  This has a number of consequences:</p>
 <ul class="simple">
 <li><p>Linux needs a page-frame structure for each page in the system and the
 pageframes need to live in the permanent mapping, which means:</p></li>
-<li><p>you can have 896M/sizeof(struct page) page-frames at most; with struct
-page being 32-bytes that would end up being something in the order of 112G
+<li><p>you can have 896M/sizeof(<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code>) page-frames at most; with <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">page</span></code> being 32-bytes that would end up being something in the order of 112G
 worth of pages; the kernel, however, needs to store more than just
 page-frames in that memory...</p></li>
 <li><p>PAE makes your page tables larger - which slows the system down as more

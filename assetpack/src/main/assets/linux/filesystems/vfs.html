@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -185,7 +185,7 @@ in the memory (for pseudo filesystems).  Inodes that live on the disc
 are copied into the memory when required and changes to the inode are
 written back to disc.  A single inode can be pointed to by multiple
 dentries (hard links, for example, do this).</p>
-<p>To look up an inode requires that the VFS calls the lookup() method of
+<p>To look up an inode requires that the VFS calls the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">lookup()</span></code> method of
 the parent directory inode.  This method is installed by the specific
 filesystem implementation that the inode lives in.  Once the VFS has the
 required dentry (and hence the inode), we can do all those boring things
@@ -220,11 +220,11 @@ functions:</p>
 <span class="k">extern</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">unregister_filesystem</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">file_system_type</span><span class="w"> </span><span class="o">*</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>The passed struct file_system_type describes your filesystem.  When a
+<p>The passed <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file_system_type</span></code> describes your filesystem.  When a
 request is made to mount a filesystem onto a directory in your
-namespace, the VFS will call the appropriate mount() method for the
+namespace, the VFS will call the appropriate <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mount()</span></code> method for the
 specific filesystem.  New vfsmount referring to the tree returned by
--&gt;mount() will be attached to the mountpoint, so that when pathname
+-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mount()</span></code> will be attached to the mountpoint, so that when pathname
 resolution reaches the mountpoint it will jump into the root of that
 vfsmount.</p>
 <p>You can see all filesystems that are registered to the kernel in the
@@ -263,11 +263,11 @@ members are defined:</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">fs_flags</span></code></dt><dd><p>various flags (i.e. FS_REQUIRES_DEV, FS_NO_DCACHE, etc.)</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">init_fs_context</span></code></dt><dd><p>Initializes ‘struct fs_context’ -&gt;ops and -&gt;fs_private fields with
+<dt><code class="docutils literal notranslate"><span class="pre">init_fs_context</span></code></dt><dd><p>Initializes ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fs_context</span></code>’ -&gt;ops and -&gt;fs_private fields with
 filesystem-specific data.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">parameters</span></code></dt><dd><p>Pointer to the array of filesystem parameters descriptors
-‘struct fs_parameter_spec’.
+‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">fs_parameter_spec</span></code>’.
 More info in <a class="reference internal" href="mount_api.html"><span class="doc">Filesystem Mount API</span></a>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">mount</span></code></dt><dd><p>the method to call when a new instance of this filesystem should
@@ -288,7 +288,7 @@ in most cases.</p>
 i_lock_key, i_mutex_key, invalidate_lock_key, i_mutex_dir_key: lockdep-specific</p>
 </dd>
 </dl>
-<p>The mount() method has the following arguments:</p>
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mount()</span></code> method has the following arguments:</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file_system_type</span> <span class="pre">*fs_type</span></code></dt><dd><p>describes the filesystem, partly initialized by the specific
 filesystem code</p>
@@ -301,24 +301,24 @@ filesystem code</p>
 “Mount Options” section)</p>
 </dd>
 </dl>
-<p>The mount() method must return the root dentry of the tree requested by
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mount()</span></code> method must return the root dentry of the tree requested by
 caller.  An active reference to its superblock must be grabbed and the
 superblock must be locked.  On failure it should return ERR_PTR(error).</p>
 <p>The arguments match those of mount(2) and their interpretation depends
 on filesystem type.  E.g. for block filesystems, dev_name is interpreted
 as block device name, that device is opened and if it contains a
-suitable filesystem image the method creates and initializes struct
-super_block accordingly, returning its root dentry to caller.</p>
-<p>-&gt;mount() may choose to return a subtree of existing filesystem - it
+suitable filesystem image the method creates and initializes <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">super_block</span></code> accordingly, returning its root dentry to caller.</p>
+<p>-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mount()</span></code> may choose to return a subtree of existing filesystem - it
 doesn’t have to create a new one.  The main result from the caller’s
 point of view is a reference to dentry at the root of (sub)tree to be
 attached; creation of new superblock is a common side effect.</p>
-<p>The most interesting member of the superblock structure that the mount()
-method fills in is the “s_op” field.  This is a pointer to a “struct
-super_operations” which describes the next level of the filesystem
+<p>The most interesting member of the superblock structure that the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mount()</span></code>
+method fills in is the “s_op” field.  This is a pointer to a “<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">super_operations</span></code>” which describes the next level of the filesystem
 implementation.</p>
-<p>Usually, a filesystem uses one of the generic mount() implementations
-and provides a fill_super() callback instead.  The generic variants are:</p>
+<p>Usually, a filesystem uses one of the generic <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mount()</span></code> implementations
+and provides a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fill_super()</span></code> callback instead.  The generic variants are:</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">mount_bdev</span></code></dt><dd><p>mount a filesystem residing on a block device</p>
 </dd>
@@ -327,7 +327,7 @@ and provides a fill_super() callback instead.  The generic variants are:</p>
 <dt><code class="docutils literal notranslate"><span class="pre">mount_single</span></code></dt><dd><p>mount a filesystem which shares the instance between all mounts</p>
 </dd>
 </dl>
-<p>A fill_super() callback implementation has the following arguments:</p>
+<p>A <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fill_super()</span></code> callback implementation has the following arguments:</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">super_block</span> <span class="pre">*sb</span></code></dt><dd><p>the superblock structure.  The callback must initialize this
 properly.</p>
@@ -389,27 +389,27 @@ noted.  This means that most methods can block safely.  All methods are
 only called from a process context (i.e. not from an interrupt handler
 or bottom half).</p>
 <dl>
-<dt><code class="docutils literal notranslate"><span class="pre">alloc_inode</span></code></dt><dd><p>this method is called by alloc_inode() to allocate memory for
-struct inode and initialize it.  If this function is not
-defined, a simple ‘struct inode’ is allocated.  Normally
+<dt><code class="docutils literal notranslate"><span class="pre">alloc_inode</span></code></dt><dd><p>this method is called by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">alloc_inode()</span></code> to allocate memory for
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">inode</span></code> and initialize it.  If this function is not
+defined, a simple ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">inode</span></code>’ is allocated.  Normally
 alloc_inode will be used to allocate a larger structure which
-contains a ‘struct inode’ embedded within it.</p>
+contains a ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">inode</span></code>’ embedded within it.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">destroy_inode</span></code></dt><dd><p>this method is called by destroy_inode() to release resources
-allocated for struct inode.  It is only required if
+<dt><code class="docutils literal notranslate"><span class="pre">destroy_inode</span></code></dt><dd><p>this method is called by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">destroy_inode()</span></code> to release resources
+allocated for <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">inode</span></code>.  It is only required if
 -&gt;alloc_inode was defined and simply undoes anything done by
 -&gt;alloc_inode.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">free_inode</span></code></dt><dd><p>this method is called from RCU callback. If you use <a class="reference internal" href="../core-api/kernel-api.html#c.call_rcu" title="call_rcu"><code class="xref c c-func docutils literal notranslate"><span class="pre">call_rcu()</span></code></a>
-in -&gt;destroy_inode to free ‘struct inode’ memory, then it’s
+in -&gt;destroy_inode to free ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">inode</span></code>’ memory, then it’s
 better to release memory in this method.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">dirty_inode</span></code></dt><dd><p>this method is called by the VFS when an inode is marked dirty.
 This is specifically for the inode itself being marked dirty,
-not its data.  If the update needs to be persisted by fdatasync(),
+not its data.  If the update needs to be persisted by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fdatasync()</span></code>,
 then I_DIRTY_DATASYNC will be set in the flags argument.
 I_DIRTY_TIME will be set in the flags in case lazytime is enabled
-and struct inode has times updated since the last -&gt;dirty_inode
+and <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">inode</span></code> has times updated since the last -&gt;dirty_inode
 call.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">write_inode</span></code></dt><dd><p>this method is called when the VFS needs to write an inode to
@@ -422,15 +422,15 @@ inode-&gt;i_lock spinlock held.</p>
 semantics) or “generic_delete_inode” (for filesystems that do
 not want to cache inodes - causing “delete_inode” to always be
 called regardless of the value of i_nlink)</p>
-<p>The “generic_delete_inode()” behavior is equivalent to the old
-practice of using “force_delete” in the put_inode() case, but
-does not have the races that the “force_delete()” approach had.</p>
+<p>The “<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">generic_delete_inode()</span></code>” behavior is equivalent to the old
+practice of using “force_delete” in the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">put_inode()</span></code> case, but
+does not have the races that the “<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">force_delete()</span></code>” approach had.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">evict_inode</span></code></dt><dd><p>called when the VFS wants to evict an inode. Caller does
 <em>not</em> evict the pagecache or inode-associated metadata buffers;
 the method has to use <a class="reference internal" href="../core-api/mm-api.html#c.truncate_inode_pages_final" title="truncate_inode_pages_final"><code class="xref c c-func docutils literal notranslate"><span class="pre">truncate_inode_pages_final()</span></code></a> to get rid
 of those. Caller makes sure async writeback cannot be running for
-the inode while (or after) -&gt;evict_inode() is called. Optional.</p>
+the inode while (or after) -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">evict_inode()</span></code> is called. Optional.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">put_super</span></code></dt><dd><p>called when the VFS wishes to free the superblock
 (i.e. unmount).  This is called with the superblock lock held</p>
@@ -468,7 +468,7 @@ and /proc/&lt;pid&gt;/mountinfo.
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">show_devname</span></code></dt><dd><p>Optional. Called by the VFS to show device name for
 /proc/&lt;pid&gt;/{mounts,mountinfo,mountstats}. If not provided then
-‘(struct mount).mnt_devname’ will be used.</p>
+‘(<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">mount</span></code>).mnt_devname’ will be used.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">show_path</span></code></dt><dd><p>Optional. Called by the VFS (for /proc/&lt;pid&gt;/mountinfo) to show
 the mount root dentry path relative to the filesystem root.</p>
@@ -480,7 +480,7 @@ filesystem-specific mount statistics.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">quota_write</span></code></dt><dd><p>called by the VFS to write to filesystem quota file.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">get_dquots</span></code></dt><dd><p>called by quota to get ‘struct dquot’ array for a particular inode.
+<dt><code class="docutils literal notranslate"><span class="pre">get_dquots</span></code></dt><dd><p>called by quota to get ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dquot</span></code>’ array for a particular inode.
 Optional.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">nr_cached_objects</span></code></dt><dd><p>called by the sb cache shrinking function for the filesystem to
@@ -504,7 +504,7 @@ large scan batch sizes.</p>
 </dd>
 </dl>
 <p>Whoever sets up the inode is responsible for filling in the “i_op”
-field.  This is a pointer to a “struct inode_operations” which describes
+field.  This is a pointer to a “<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">inode_operations</span></code>” which describes
 the methods that can be performed on individual inodes.</p>
 </section>
 <section id="struct-xattr-handler">
@@ -573,8 +573,8 @@ As of kernel 2.6.22, the following members are defined:</p>
 <span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">posix_acl</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">get_acl</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">mnt_idmap</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">dentry</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="p">);</span>
 <span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">set_acl</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">mnt_idmap</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">dentry</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">posix_acl</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="p">);</span>
 <span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">fileattr_set</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">mnt_idmap</span><span class="w"> </span><span class="o">*</span><span class="n">idmap</span><span class="p">,</span>
-<span class="w">                            </span><span class="k">struct</span><span class="w"> </span><span class="nc">dentry</span><span class="w"> </span><span class="o">*</span><span class="n">dentry</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">fileattr</span><span class="w"> </span><span class="o">*</span><span class="n">fa</span><span class="p">);</span>
-<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">fileattr_get</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">dentry</span><span class="w"> </span><span class="o">*</span><span class="n">dentry</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">fileattr</span><span class="w"> </span><span class="o">*</span><span class="n">fa</span><span class="p">);</span>
+<span class="w">                            </span><span class="k">struct</span><span class="w"> </span><span class="nc">dentry</span><span class="w"> </span><span class="o">*</span><span class="n">dentry</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">file_kattr</span><span class="w"> </span><span class="o">*</span><span class="n">fa</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">fileattr_get</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">dentry</span><span class="w"> </span><span class="o">*</span><span class="n">dentry</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">file_kattr</span><span class="w"> </span><span class="o">*</span><span class="n">fa</span><span class="p">);</span>
 <span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">offset_ctx</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="n">get_offset_ctx</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">inode</span><span class="w"> </span><span class="o">*</span><span class="n">inode</span><span class="p">);</span>
 <span class="p">};</span>
 </pre></div>
@@ -604,34 +604,34 @@ directory inode semaphore held</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">link</span></code></dt><dd><p>called by the link(2) system call.  Only required if you want to
 support hard links.  You will probably need to call
-<a class="reference internal" href="api-summary.html#c.d_instantiate" title="d_instantiate"><code class="xref c c-func docutils literal notranslate"><span class="pre">d_instantiate()</span></code></a> just as you would in the create() method</p>
+<a class="reference internal" href="api-summary.html#c.d_instantiate" title="d_instantiate"><code class="xref c c-func docutils literal notranslate"><span class="pre">d_instantiate()</span></code></a> just as you would in the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">create()</span></code> method</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">unlink</span></code></dt><dd><p>called by the unlink(2) system call.  Only required if you want
 to support deleting inodes</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">symlink</span></code></dt><dd><p>called by the symlink(2) system call.  Only required if you want
 to support symlinks.  You will probably need to call
-<a class="reference internal" href="api-summary.html#c.d_instantiate" title="d_instantiate"><code class="xref c c-func docutils literal notranslate"><span class="pre">d_instantiate()</span></code></a> just as you would in the create() method</p>
+<a class="reference internal" href="api-summary.html#c.d_instantiate" title="d_instantiate"><code class="xref c c-func docutils literal notranslate"><span class="pre">d_instantiate()</span></code></a> just as you would in the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">create()</span></code> method</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">mkdir</span></code></dt><dd><p>called by the mkdir(2) system call.  Only required if you want
 to support creating subdirectories.  You will probably need to
-call d_instantiate_new() just as you would in the create() method.</p>
-<p>If d_instantiate_new() is not used and if the fh_to_dentry()
+call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">d_instantiate_new()</span></code> just as you would in the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">create()</span></code> method.</p>
+<p>If <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">d_instantiate_new()</span></code> is not used and if the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fh_to_dentry()</span></code>
 export operation is provided, or if the storage might be
 accessible by another path (e.g. with a network filesystem)
-then more care may be needed.  Importantly d_instantate()
+then more care may be needed.  Importantly <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">d_instantate()</span></code>
 should not be used with an inode that is no longer I_NEW if there
 any chance that the inode could already be attached to a dentry.
 This is because of a hard rule in the VFS that a directory must
 only ever have one dentry.</p>
 <p>For example, if an NFS filesystem is mounted twice the new directory
 could be visible on the other mount before it is on the original
-mount, and a pair of name_to_handle_at(), open_by_handle_at()
-calls could instantiate the directory inode with an IS_ROOT()
+mount, and a pair of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">name_to_handle_at()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">open_by_handle_at()</span></code>
+calls could instantiate the directory inode with an <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">IS_ROOT()</span></code>
 dentry before the first mkdir returns.</p>
 <p>If there is any chance this could happen, then the new inode
 should be <a class="reference internal" href="api-summary.html#c.d_drop" title="d_drop"><code class="xref c c-func docutils literal notranslate"><span class="pre">d_drop()</span></code></a>ed and attached with <a class="reference internal" href="api-summary.html#c.d_splice_alias" title="d_splice_alias"><code class="xref c c-func docutils literal notranslate"><span class="pre">d_splice_alias()</span></code></a>.  The
-returned dentry (if any) should be returned by -&gt;mkdir().</p>
+returned dentry (if any) should be returned by -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mkdir()</span></code>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">rmdir</span></code></dt><dd><p>called by the rmdir(2) system call.  Only required if you want
 to support deleting subdirectories</p>
@@ -640,7 +640,7 @@ to support deleting subdirectories</p>
 block) inode or a named pipe (FIFO) or socket.  Only required if
 you want to support creating these types of inodes.  You will
 probably need to call <a class="reference internal" href="api-summary.html#c.d_instantiate" title="d_instantiate"><code class="xref c c-func docutils literal notranslate"><span class="pre">d_instantiate()</span></code></a> just as you would in the
-create() method</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">create()</span></code> method</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">rename</span></code></dt><dd><p>called by the rename(2) system call to rename the object to have
 the parent and name given by the second inode and dentry.</p>
@@ -658,7 +658,7 @@ and target may be of different type.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">get_link</span></code></dt><dd><p>called by the VFS to follow a symbolic link to the inode it
 points to.  Only required if you want to support symbolic links.
 This method returns the symlink body to traverse (and possibly
-resets the current position with nd_jump_link()).  If the body
+resets the current position with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nd_jump_link()</span></code>).  If the body
 won’t go away until the inode is gone, nothing else is needed;
 if it needs to be otherwise pinned, arrange for its release by
 having get_link(..., ..., done) do set_delayed_call(done,
@@ -668,13 +668,13 @@ be called in RCU mode; that is indicated by NULL dentry
 argument.  If request can’t be handled without leaving RCU mode,
 have it return ERR_PTR(-ECHILD).</p>
 <p>If the filesystem stores the symlink target in -&gt;i_link, the
-VFS may use it directly without calling -&gt;get_link(); however,
--&gt;get_link() must still be provided.  -&gt;i_link must not be
+VFS may use it directly without calling -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_link()</span></code>; however,
+-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_link()</span></code> must still be provided.  -&gt;i_link must not be
 freed until after an RCU grace period.  Writing to -&gt;i_link
-post-iget() time requires a ‘release’ memory barrier.</p>
+post-<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">iget()</span></code> time requires a ‘release’ memory barrier.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">readlink</span></code></dt><dd><p>this is now just an override for use by readlink(2) for the
-cases when -&gt;get_link uses nd_jump_link() or object is not in
+cases when -&gt;get_link uses <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">nd_jump_link()</span></code> or object is not in
 fact a symlink.  Normally filesystems should only implement
 -&gt;get_link for symlinks and readlink(2) will automatically use
 that.</p>
@@ -717,7 +717,7 @@ FMODE_CREATED shall always be set on success.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">tmpfile</span></code></dt><dd><p>called in the end of O_TMPFILE open().  Optional, equivalent to
 atomically creating, opening and unlinking a file in given
 directory.  On success needs to return with the file already
-open; this can be done by calling finish_open_simple() right at
+open; this can be done by calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">finish_open_simple()</span></code> right at
 the end.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">fileattr_get</span></code></dt><dd><p>called on ioctl(FS_IOC_GETFLAGS) and ioctl(FS_IOC_FSGETXATTR) to
@@ -768,7 +768,7 @@ writing out the whole address_space.</p>
 <p>The Writeback tag is used by filemap*wait* and sync_page* functions, via
 filemap_fdatawait_range, to wait for all writeback to complete.</p>
 <p>An address_space handler may attach extra information to a page,
-typically using the ‘private’ field in the ‘struct page’.  If such
+typically using the ‘private’ field in the ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code>’.  If such
 information is attached, the PG_Private flag should be set.  This will
 cause various VM routines to make extra calls into the address_space
 handler to deal with that data.</p>
@@ -782,8 +782,9 @@ pages, however the address_space has finer control of write sizes.</p>
 process is more complicated and uses write_begin/write_end or
 dirty_folio to write data into the address_space, and
 writepages to writeback data to storage.</p>
-<p>Adding and removing pages to/from an address_space is protected by the
-inode’s i_mutex.</p>
+<p>Removing pages from an address_space requires holding the inode’s i_rwsem
+exclusively, while adding pages to the address_space requires holding the
+inode’s i_mapping-&gt;invalidate_lock exclusively.</p>
 <p>When data is written to a page, the PG_Dirty flag should be set.  It
 typically remains set until writepages asks for it to be written.  This
 should clear PG_Dirty and set PG_Writeback.  It can be actually written
@@ -833,10 +834,10 @@ cache in your filesystem.  The following members are defined:</p>
 <span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">writepages</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">address_space</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">writeback_control</span><span class="w"> </span><span class="o">*</span><span class="p">);</span>
 <span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">dirty_folio</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">address_space</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">folio</span><span class="w"> </span><span class="o">*</span><span class="p">);</span>
 <span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">readahead</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">readahead_control</span><span class="w"> </span><span class="o">*</span><span class="p">);</span>
-<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">write_begin</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">file</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">address_space</span><span class="w"> </span><span class="o">*</span><span class="n">mapping</span><span class="p">,</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">write_begin</span><span class="p">)(</span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">kiocb</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">address_space</span><span class="w"> </span><span class="o">*</span><span class="n">mapping</span><span class="p">,</span>
 <span class="w">                           </span><span class="n">loff_t</span><span class="w"> </span><span class="n">pos</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">len</span><span class="p">,</span>
-<span class="w">                        </span><span class="k">struct</span><span class="w"> </span><span class="nc">page</span><span class="w"> </span><span class="o">**</span><span class="n">pagep</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">**</span><span class="n">fsdata</span><span class="p">);</span>
-<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">write_end</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">file</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">address_space</span><span class="w"> </span><span class="o">*</span><span class="n">mapping</span><span class="p">,</span>
+<span class="w">                           </span><span class="k">struct</span><span class="w"> </span><span class="nc">page</span><span class="w"> </span><span class="o">**</span><span class="n">pagep</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">**</span><span class="n">fsdata</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">write_end</span><span class="p">)(</span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">kiocb</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">address_space</span><span class="w"> </span><span class="o">*</span><span class="n">mapping</span><span class="p">,</span>
 <span class="w">                         </span><span class="n">loff_t</span><span class="w"> </span><span class="n">pos</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">len</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">copied</span><span class="p">,</span>
 <span class="w">                         </span><span class="k">struct</span><span class="w"> </span><span class="nc">folio</span><span class="w"> </span><span class="o">*</span><span class="n">folio</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">fsdata</span><span class="p">);</span>
 <span class="w">        </span><span class="n">sector_t</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">bmap</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">address_space</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">sector_t</span><span class="p">);</span>
@@ -873,19 +874,19 @@ once the read has completed, whether it was successful or not.
 The filesystem does not need to modify the refcount on the folio;
 the page cache holds a reference count and that will not be
 released until the folio is unlocked.</p>
-<p>Filesystems may implement -&gt;read_folio() synchronously.
-In normal operation, folios are read through the -&gt;readahead()
+<p>Filesystems may implement -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">read_folio()</span></code> synchronously.
+In normal operation, folios are read through the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">readahead()</span></code>
 method.  Only if this fails, or if the caller needs to wait for
-the read to complete will the page cache call -&gt;read_folio().
+the read to complete will the page cache call -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">read_folio()</span></code>.
 Filesystems should not attempt to perform their own readahead
-in the -&gt;read_folio() operation.</p>
+in the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">read_folio()</span></code> operation.</p>
 <p>If the filesystem cannot perform the read at this time, it can
 unlock the folio, do whatever action it needs to ensure that the
 read will succeed in the future and return AOP_TRUNCATED_PAGE.
 In this case, the caller should look up the folio, lock it,
 and call -&gt;read_folio again.</p>
-<p>Callers may invoke the -&gt;read_folio() method directly, but using
-read_mapping_folio() will take care of locking, waiting for the
+<p>Callers may invoke the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">read_folio()</span></code> method directly, but using
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">read_mapping_folio()</span></code> will take care of locking, waiting for the
 read to complete and handle cases such as AOP_TRUNCATED_PAGE.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">writepages</span></code></dt><dd><p>called by the VM to write out pages associated with the
@@ -967,8 +968,8 @@ function, but in this case the release MUST succeed.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">release_folio</span></code></dt><dd><p>release_folio is called on folios with private data to tell the
 filesystem that the folio is about to be freed.  -&gt;release_folio
 should remove any private data from the folio and clear the
-private flag.  If release_folio() fails, it should return false.
-release_folio() is used in two distinct though related cases.
+private flag.  If <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">release_folio()</span></code> fails, it should return false.
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">release_folio()</span></code> is used in two distinct though related cases.
 The first is when the VM wants to free a clean folio with no
 active users.  If -&gt;release_folio succeeds, the folio will be
 removed from the address_space and be freed.</p>
@@ -1029,9 +1030,9 @@ unless you have them locked or reference counts increased.</p>
 <div><p>Called to prepare the given file for swap.  It should perform
 any validation and preparation necessary to ensure that writes
 can be performed with minimal memory allocation.  It should call
-add_swap_extent(), or the helper iomap_swapfile_activate(), and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">add_swap_extent()</span></code>, or the helper <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">iomap_swapfile_activate()</span></code>, and
 return the number of extents added.  If IO should be submitted
-through -&gt;swap_rw(), it should set SWP_FS_OPS, otherwise IO will
+through -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">swap_rw()</span></code>, it should set SWP_FS_OPS, otherwise IO will
 be submitted directly to the block device <code class="docutils literal notranslate"><span class="pre">sis-&gt;bdev</span></code>.</p>
 </div></blockquote>
 <dl class="simple">
@@ -1053,12 +1054,14 @@ as an “open file description” in POSIX parlance.</p>
 4.18, the following members are defined:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">file_operations</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">module</span><span class="w"> </span><span class="o">*</span><span class="n">owner</span><span class="p">;</span>
+<span class="w">        </span><span class="n">fop_flags_t</span><span class="w"> </span><span class="n">fop_flags</span><span class="p">;</span>
 <span class="w">        </span><span class="n">loff_t</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">llseek</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">file</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">loff_t</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="p">);</span>
 <span class="w">        </span><span class="kt">ssize_t</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">read</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">file</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">__user</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="p">,</span><span class="w"> </span><span class="n">loff_t</span><span class="w"> </span><span class="o">*</span><span class="p">);</span>
 <span class="w">        </span><span class="kt">ssize_t</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">write</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">file</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">__user</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="p">,</span><span class="w"> </span><span class="n">loff_t</span><span class="w"> </span><span class="o">*</span><span class="p">);</span>
 <span class="w">        </span><span class="kt">ssize_t</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">read_iter</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">kiocb</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">iov_iter</span><span class="w"> </span><span class="o">*</span><span class="p">);</span>
 <span class="w">        </span><span class="kt">ssize_t</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">write_iter</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">kiocb</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">iov_iter</span><span class="w"> </span><span class="o">*</span><span class="p">);</span>
-<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">iopoll</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">kiocb</span><span class="w"> </span><span class="o">*</span><span class="n">kiocb</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">spin</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">iopoll</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">kiocb</span><span class="w"> </span><span class="o">*</span><span class="n">kiocb</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">io_comp_batch</span><span class="w"> </span><span class="o">*</span><span class="p">,</span>
+<span class="w">                        </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">flags</span><span class="p">);</span>
 <span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">iterate_shared</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">file</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">dir_context</span><span class="w"> </span><span class="o">*</span><span class="p">);</span>
 <span class="w">        </span><span class="n">__poll_t</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">poll</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">file</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">poll_table_struct</span><span class="w"> </span><span class="o">*</span><span class="p">);</span>
 <span class="w">        </span><span class="kt">long</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">unlocked_ioctl</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">file</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="p">);</span>
@@ -1075,18 +1078,24 @@ as an “open file description” in POSIX parlance.</p>
 <span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">flock</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">file</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">file_lock</span><span class="w"> </span><span class="o">*</span><span class="p">);</span>
 <span class="w">        </span><span class="kt">ssize_t</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">splice_write</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">pipe_inode_info</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">file</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">loff_t</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="p">);</span>
 <span class="w">        </span><span class="kt">ssize_t</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">splice_read</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">file</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">loff_t</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">pipe_inode_info</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="p">);</span>
-<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">setlease</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">file</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="kt">long</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">file_lock</span><span class="w"> </span><span class="o">**</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">**</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">splice_eof</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">file</span><span class="w"> </span><span class="o">*</span><span class="n">file</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">setlease</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">file</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">file_lease</span><span class="w"> </span><span class="o">**</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">**</span><span class="p">);</span>
 <span class="w">        </span><span class="kt">long</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">fallocate</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">file</span><span class="w"> </span><span class="o">*</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">mode</span><span class="p">,</span><span class="w"> </span><span class="n">loff_t</span><span class="w"> </span><span class="n">offset</span><span class="p">,</span>
 <span class="w">                          </span><span class="n">loff_t</span><span class="w"> </span><span class="n">len</span><span class="p">);</span>
 <span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">show_fdinfo</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">seq_file</span><span class="w"> </span><span class="o">*</span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">file</span><span class="w"> </span><span class="o">*</span><span class="n">f</span><span class="p">);</span>
 <span class="cp">#ifndef CONFIG_MMU</span>
 <span class="w">        </span><span class="kt">unsigned</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">mmap_capabilities</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">file</span><span class="w"> </span><span class="o">*</span><span class="p">);</span>
 <span class="cp">#endif</span>
-<span class="w">        </span><span class="kt">ssize_t</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">copy_file_range</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">file</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">loff_t</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">file</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">loff_t</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">ssize_t</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">copy_file_range</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">file</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">loff_t</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">file</span><span class="w"> </span><span class="o">*</span><span class="p">,</span>
+<span class="w">                        </span><span class="n">loff_t</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="p">);</span>
 <span class="w">        </span><span class="n">loff_t</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">remap_file_range</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">file</span><span class="w"> </span><span class="o">*</span><span class="n">file_in</span><span class="p">,</span><span class="w"> </span><span class="n">loff_t</span><span class="w"> </span><span class="n">pos_in</span><span class="p">,</span>
 <span class="w">                                   </span><span class="k">struct</span><span class="w"> </span><span class="nc">file</span><span class="w"> </span><span class="o">*</span><span class="n">file_out</span><span class="p">,</span><span class="w"> </span><span class="n">loff_t</span><span class="w"> </span><span class="n">pos_out</span><span class="p">,</span>
 <span class="w">                                   </span><span class="n">loff_t</span><span class="w"> </span><span class="n">len</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">remap_flags</span><span class="p">);</span>
 <span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">fadvise</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">file</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">loff_t</span><span class="p">,</span><span class="w"> </span><span class="n">loff_t</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">uring_cmd</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">io_uring_cmd</span><span class="w"> </span><span class="o">*</span><span class="n">ioucmd</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">issue_flags</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">uring_cmd_iopoll</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">io_uring_cmd</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">io_comp_batch</span><span class="w"> </span><span class="o">*</span><span class="p">,</span>
+<span class="w">                                </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">poll_flags</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">mmap_prepare</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">vm_area_desc</span><span class="w"> </span><span class="o">*</span><span class="p">);</span>
 <span class="p">};</span>
 </pre></div>
 </div>
@@ -1118,13 +1127,14 @@ is activity.  Called by the select(2) and poll(2) system calls</p>
 </dd>
 </dl>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">mmap</span></code></dt><dd><p>called by the mmap(2) system call</p>
+<dt><code class="docutils literal notranslate"><span class="pre">mmap</span></code></dt><dd><p>called by the mmap(2) system call. Deprecated in favour of
+<code class="docutils literal notranslate"><span class="pre">mmap_prepare</span></code>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">open</span></code></dt><dd><p>called by the VFS when an inode should be opened.  When the VFS
 opens a file, it creates a new “<a class="reference internal" href="api-summary.html#c.file" title="file"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">file</span></code></a>”.  It then calls the
 open method for the newly allocated file structure.  You might
-think that the open method really belongs in “struct
-inode_operations”, and you may be right.  I think it’s done the
+think that the open method really belongs in “<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">inode_operations</span></code>”, and you may be right.  I think it’s done the
 way it is because it makes filesystems simpler to implement.
 The open() method is a good place to initialize the
 “private_data” member in the file structure if you want to point
@@ -1177,7 +1187,11 @@ identical contents.  If REMAP_FILE_CAN_SHORTEN is set, the caller is
 ok with the implementation shortening the request length to
 satisfy alignment or EOF requirements (or any other reason).</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">fadvise</span></code></dt><dd><p>possibly called by the fadvise64() system call.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">fadvise</span></code></dt><dd><p>possibly called by the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fadvise64()</span></code> system call.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">mmap_prepare</span></code></dt><dd><p>Called by the mmap(2) system call. Allows a VFS to set up a
+file-backed memory mapping, most notably establishing relevant
+private state and VMA callbacks.</p>
 </dd>
 </dl>
 <p>Note that the file operations are implemented by the specific
@@ -1294,12 +1308,12 @@ delay pathname generation.  (Instead of doing it when dentry is
 created, it’s done only when the path is needed.).  Real
 filesystems probably dont want to use it, because their dentries
 are present in global dcache hash, so their hash should be an
-invariant.  As no lock is held, d_dname() should not try to
+invariant.  As no lock is held, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">d_dname()</span></code> should not try to
 modify the dentry itself, unless appropriate SMP safety is used.
 CAUTION : <a class="reference internal" href="api-summary.html#c.d_path" title="d_path"><code class="xref c c-func docutils literal notranslate"><span class="pre">d_path()</span></code></a> logic is quite tricky.  The correct way to
 return for example “Hello” is to put it at the end of the
 buffer, and returns a pointer to the first char.
-dynamic_dname() helper function is provided to take care of
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dynamic_dname()</span></code> helper function is provided to take care of
 this.</p>
 <p>Example :</p>
 </dd>
@@ -1326,7 +1340,7 @@ returned to pathwalk to continue walking.</p>
 on the mountpoint and will remove the vfsmount from its
 expiration list in the case of failure.</p>
 <p>This function is only used if DCACHE_NEED_AUTOMOUNT is set on
-the dentry.  This is set by __d_instantiate() if S_AUTOMOUNT is
+the dentry.  This is set by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__d_instantiate()</span></code> if S_AUTOMOUNT is
 set on the inode being added.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">d_manage</span></code></dt><dd><p>called to allow the filesystem to manage the transition from a
@@ -1346,7 +1360,7 @@ pathwalk to ignore d_automount or any mounts.</p>
 <p>This function is only used if DCACHE_MANAGE_TRANSIT is set on
 the dentry being transited from.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">d_real</span></code></dt><dd><p>overlay/union type filesystems implement this method to return one
+<dt><code class="docutils literal notranslate"><span class="pre">d_real</span></code></dt><dd><p>overlay/<code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">type</span></code> filesystems implement this method to return one
 of the underlying dentries of a regular file hidden by the overlay.</p>
 <p>The ‘type’ argument takes the values D_REAL_DATA or D_REAL_METADATA
 for returning the real underlying dentry that refers to the inode
@@ -1354,10 +1368,10 @@ hosting the file’s data or metadata respectively.</p>
 <p>For non-regular files, the ‘dentry’ argument is returned.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">d_unalias_trylock</span></code></dt><dd><p>if present, will be called by <a class="reference internal" href="api-summary.html#c.d_splice_alias" title="d_splice_alias"><code class="xref c c-func docutils literal notranslate"><span class="pre">d_splice_alias()</span></code></a> before moving a
-preexisting attached alias.  Returning false prevents __d_move(),
+preexisting attached alias.  Returning false prevents <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__d_move()</span></code>,
 making <a class="reference internal" href="api-summary.html#c.d_splice_alias" title="d_splice_alias"><code class="xref c c-func docutils literal notranslate"><span class="pre">d_splice_alias()</span></code></a> fail with -ESTALE.</p>
-<p>Rationale: setting FS_RENAME_DOES_D_MOVE will prevent d_move()
-and d_exchange() calls from the outside of filesystem methods;
+<p>Rationale: setting FS_RENAME_DOES_D_MOVE will prevent <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">d_move()</span></code>
+and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">d_exchange()</span></code> calls from the outside of filesystem methods;
 however, it does not guarantee that attached dentries won’t
 be renamed or moved by <a class="reference internal" href="api-summary.html#c.d_splice_alias" title="d_splice_alias"><code class="xref c c-func docutils literal notranslate"><span class="pre">d_splice_alias()</span></code></a> finding a preexisting
 alias for a directory inode.  Normally we would not care;
@@ -1366,7 +1380,7 @@ root over a blocking operation might need that.  See 9p for one
 (and hopefully only) example.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">d_unalias_unlock</span></code></dt><dd><p>should be paired with <code class="docutils literal notranslate"><span class="pre">d_unalias_trylock</span></code>; that one is called after
-__d_move() call in __d_unalias().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__d_move()</span></code> call in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__d_unalias()</span></code>.</p>
 </dd>
 </dl>
 <p>Each dentry has a pointer to its parent dentry, as well as a hash list
@@ -1389,12 +1403,12 @@ dentry is not hashed, it is deleted.  Otherwise cached dentries
 are put into an LRU list to be reclaimed on memory shortage.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">d_drop</span></code></dt><dd><p>this unhashes a dentry from its parents hash list.  A subsequent
-call to dput() will deallocate the dentry if its usage count
+call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dput()</span></code> will deallocate the dentry if its usage count
 drops to 0</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">d_delete</span></code></dt><dd><p>delete a dentry.  If there are no other open references to the
 dentry then the dentry is turned into a negative dentry (the
-d_iput() method is called).  If there are other references, then
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">d_iput()</span></code> method is called).  If there are other references, then
 <a class="reference internal" href="api-summary.html#c.d_drop" title="d_drop"><code class="xref c c-func docutils literal notranslate"><span class="pre">d_drop()</span></code></a> is called instead</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">d_add</span></code></dt><dd><p>add a dentry to its parents hash list and then calls
@@ -1410,7 +1424,7 @@ negative dentry</p>
 <dt><code class="docutils literal notranslate"><span class="pre">d_lookup</span></code></dt><dd><p>look up a dentry given its parent and path name component It
 looks up the child of that given name from the dcache hash
 table.  If it is found, the reference count is incremented and
-the dentry is returned.  The caller must use dput() to free the
+the dentry is returned.  The caller must use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dput()</span></code> to free the
 dentry when it finishes using it.</p>
 </dd>
 </dl>
@@ -1433,7 +1447,7 @@ filesystems.</p>
 </section>
 <section id="showing-options">
 <h3>Showing options<a class="headerlink" href="#showing-options" title="Link to this heading">¶</a></h3>
-<p>If a filesystem accepts mount options, it must define show_options() to
+<p>If a filesystem accepts mount options, it must define <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">show_options()</span></code> to
 show all the currently active options.  The rules are:</p>
 <blockquote>
 <div><ul class="simple">

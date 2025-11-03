@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -468,7 +468,7 @@ In contrast, if it says</p>
 useful only for:</p>
 <blockquote>
 <div><ol class="loweralpha">
-<li><p>totally opaque objects (where the typedef is actively used to <strong>hide</strong>
+<li><p>totally opaque objects (where the <code class="xref c c-type broken_xref docutils literal notranslate"><span class="pre">typedef</span> <span class="pre">is</span></code> actively used to <strong>hide</strong>
 what the object is).</p>
 <p>Example: <code class="docutils literal notranslate"><span class="pre">pte_t</span></code> etc. opaque objects that you can only access using
 the proper accessor functions.</p>
@@ -518,8 +518,8 @@ with userspace.</p>
 </ol>
 </div></blockquote>
 <p>Maybe there are other cases too, but the rule should basically be to NEVER
-EVER use a typedef unless you can clearly match one of those rules.</p>
-<p>In general, a pointer, or a struct that has elements that can reasonably
+EVER use a <code class="xref c c-type broken_xref docutils literal notranslate"><span class="pre">typedef</span> <span class="pre">unless</span></code> you can clearly match one of those rules.</p>
+<p>In general, a pointer, or a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">that</span></code> has elements that can reasonably
 be directly accessed should <strong>never</strong> be a typedef.</p>
 </section>
 <section id="functions">
@@ -674,7 +674,10 @@ of the function, telling people what it does, and possibly WHY it does
 it.</p>
 <p>When commenting the kernel API functions, please use the kernel-doc format.
 See the files at <a class="reference internal" href="../doc-guide/index.html#doc-guide"><span class="std std-ref">Documentation/doc-guide/</span></a> and
-<code class="docutils literal notranslate"><span class="pre">scripts/kernel-doc</span></code> for details.</p>
+<code class="docutils literal notranslate"><span class="pre">scripts/kernel-doc</span></code> for details. Note that the danger of over-commenting
+applies to kernel-doc comments all the same. Do not add boilerplate
+kernel-doc which simply reiterates what’s obvious from the signature
+of the function.</p>
 <p>The preferred style for long (multi-line) comments is:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
 <span class="cm"> * This is the preferred style for multi-line</span>
@@ -919,18 +922,18 @@ messages concise, clear, and unambiguous.</p>
 <p>Printing numbers in parentheses (%d) adds no value and should be avoided.</p>
 <p>There are a number of driver model diagnostic macros in &lt;linux/dev_printk.h&gt;
 which you should use to make sure messages are matched to the right device
-and driver, and are tagged with the right level:  dev_err(), dev_warn(),
-dev_info(), and so forth.  For messages that aren’t associated with a
+and driver, and are tagged with the right level:  <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_err()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_warn()</span></code>,
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_info()</span></code>, and so forth.  For messages that aren’t associated with a
 particular device, &lt;linux/printk.h&gt; defines <a class="reference internal" href="../core-api/printk-basics.html#c.pr_notice" title="pr_notice"><code class="xref c c-func docutils literal notranslate"><span class="pre">pr_notice()</span></code></a>, <a class="reference internal" href="../core-api/printk-basics.html#c.pr_info" title="pr_info"><code class="xref c c-func docutils literal notranslate"><span class="pre">pr_info()</span></code></a>,
 <a class="reference internal" href="../core-api/printk-basics.html#c.pr_warn" title="pr_warn"><code class="xref c c-func docutils literal notranslate"><span class="pre">pr_warn()</span></code></a>, <a class="reference internal" href="../core-api/printk-basics.html#c.pr_err" title="pr_err"><code class="xref c c-func docutils literal notranslate"><span class="pre">pr_err()</span></code></a>, etc. When drivers are working properly they are quiet,
 so prefer to use dev_dbg/pr_debug unless something is wrong.</p>
 <p>Coming up with good debugging messages can be quite a challenge; and once
 you have them, they can be a huge help for remote troubleshooting.  However
 debug message printing is handled differently than printing other non-debug
-messages.  While the other pr_XXX() functions print unconditionally,
+messages.  While the other <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pr_XXX()</span></code> functions print unconditionally,
 <a class="reference internal" href="../core-api/printk-basics.html#c.pr_debug" title="pr_debug"><code class="xref c c-func docutils literal notranslate"><span class="pre">pr_debug()</span></code></a> does not; it is compiled out by default, unless either DEBUG is
-defined or CONFIG_DYNAMIC_DEBUG is set.  That is true for dev_dbg() also,
-and a related convention uses VERBOSE_DEBUG to add dev_vdbg() messages to
+defined or CONFIG_DYNAMIC_DEBUG is set.  That is true for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_dbg()</span></code> also,
+and a related convention uses VERBOSE_DEBUG to add <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_vdbg()</span></code> messages to
 the ones already enabled by DEBUG.</p>
 <p>Many subsystems have Kconfig debug options to turn on -DDEBUG in the
 corresponding Makefile; in other cases specific files #define DEBUG.  And
@@ -941,14 +944,14 @@ used.</p>
 <section id="allocating-memory">
 <h2>14) Allocating memory<a class="headerlink" href="#allocating-memory" title="Link to this heading">¶</a></h2>
 <p>The kernel provides the following general purpose memory allocators:
-<a class="reference internal" href="../core-api/mm-api.html#c.kmalloc" title="kmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmalloc()</span></code></a>, <a class="reference internal" href="../core-api/mm-api.html#c.kzalloc" title="kzalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kzalloc()</span></code></a>, <a class="reference internal" href="../core-api/mm-api.html#c.kmalloc_array" title="kmalloc_array"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmalloc_array()</span></code></a>, <a class="reference internal" href="../core-api/mm-api.html#c.kcalloc" title="kcalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kcalloc()</span></code></a>, vmalloc(), and
-vzalloc().  Please refer to the API documentation for further information
+<a class="reference internal" href="../core-api/mm-api.html#c.kmalloc" title="kmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmalloc()</span></code></a>, <a class="reference internal" href="../core-api/mm-api.html#c.kzalloc" title="kzalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kzalloc()</span></code></a>, <a class="reference internal" href="../core-api/mm-api.html#c.kmalloc_array" title="kmalloc_array"><code class="xref c c-func docutils literal notranslate"><span class="pre">kmalloc_array()</span></code></a>, <a class="reference internal" href="../core-api/mm-api.html#c.kcalloc" title="kcalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">kcalloc()</span></code></a>, <a class="reference internal" href="../core-api/mm-api.html#c.vmalloc" title="vmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">vmalloc()</span></code></a>, and
+<a class="reference internal" href="../core-api/mm-api.html#c.vzalloc" title="vzalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">vzalloc()</span></code></a>.  Please refer to the API documentation for further information
 about them.  <a class="reference internal" href="../core-api/memory-allocation.html#memory-allocation"><span class="std std-ref">Documentation/core-api/memory-allocation.rst</span></a></p>
-<p>The preferred form for passing a size of a struct is the following:</p>
+<p>The preferred form for passing a size of a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">is</span></code> the following:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">kmalloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">p</span><span class="p">),</span><span class="w"> </span><span class="p">...);</span>
 </pre></div>
 </div>
-<p>The alternative form where struct name is spelled out hurts readability and
+<p>The alternative form where <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">name</span></code> is spelled out hurts readability and
 introduces an opportunity for a bug when the pointer variable type is changed
 but the corresponding sizeof that is passed to a memory allocator is not.</p>
 <p>Casting the return value which is a void pointer is redundant. The conversion
@@ -1009,7 +1012,7 @@ the function should return an error-code integer.  If the name
 is a predicate, the function should return a &quot;succeeded&quot; boolean.
 </pre></div>
 </div>
-<p>For example, <code class="docutils literal notranslate"><span class="pre">add</span> <span class="pre">work</span></code> is a command, and the add_work() function returns 0
+<p>For example, <code class="docutils literal notranslate"><span class="pre">add</span> <span class="pre">work</span></code> is a command, and the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">add_work()</span></code> function returns 0
 for success or -EBUSY for failure.  In the same way, <code class="docutils literal notranslate"><span class="pre">PCI</span> <span class="pre">device</span> <span class="pre">present</span></code> is
 a predicate, and the <a class="reference internal" href="../driver-api/pci/pci.html#c.pci_dev_present" title="pci_dev_present"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_dev_present()</span></code></a> function returns 1 if it succeeds in
 finding a matching device or 0 if it doesn’t.</p>
@@ -1058,7 +1061,7 @@ of the macro</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define sizeof_field(t, f) (sizeof(((t*)0)-&gt;f))</span>
 </pre></div>
 </div>
-<p>There are also min() and max() macros that do strict type checking if you
+<p>There are also <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">min()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">max()</span></code> macros that do strict type checking if you
 need them.  Feel free to peruse that header file to see what else is already
 defined that you shouldn’t reproduce in your code.</p>
 </section>
@@ -1159,23 +1162,23 @@ expression used.  For instance:</p>
 than to the kernel developer.</p>
 <section id="avoid-panic">
 <h3>Avoid panic()<a class="headerlink" href="#avoid-panic" title="Link to this heading">¶</a></h3>
-<p><a class="reference internal" href="../driver-api/basics.html#c.panic" title="panic"><code class="xref c c-func docutils literal notranslate"><span class="pre">panic()</span></code></a> should be used with care and primarily only during system boot.
-<a class="reference internal" href="../driver-api/basics.html#c.panic" title="panic"><code class="xref c c-func docutils literal notranslate"><span class="pre">panic()</span></code></a> is, for example, acceptable when running out of memory during boot and
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">panic()</span></code> should be used with care and primarily only during system boot.
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">panic()</span></code> is, for example, acceptable when running out of memory during boot and
 not being able to continue.</p>
 </section>
 <section id="use-warn-rather-than-bug">
 <h3>Use WARN() rather than BUG()<a class="headerlink" href="#use-warn-rather-than-bug" title="Link to this heading">¶</a></h3>
-<p>Do not add new code that uses any of the BUG() variants, such as BUG(),
-BUG_ON(), or VM_BUG_ON(). Instead, use a WARN*() variant, preferably
-WARN_ON_ONCE(), and possibly with recovery code. Recovery code is not
+<p>Do not add new code that uses any of the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">BUG()</span></code> variants, such as <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">BUG()</span></code>,
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">BUG_ON()</span></code>, or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">VM_BUG_ON()</span></code>. Instead, use a WARN*() variant, preferably
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">WARN_ON_ONCE()</span></code>, and possibly with recovery code. Recovery code is not
 required if there is no reasonable way to at least partially recover.</p>
-<p>“I’m too lazy to do error handling” is not an excuse for using BUG(). Major
-internal corruptions with no way of continuing may still use BUG(), but need
+<p>“I’m too lazy to do error handling” is not an excuse for using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">BUG()</span></code>. Major
+internal corruptions with no way of continuing may still use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">BUG()</span></code>, but need
 good justification.</p>
 </section>
 <section id="use-warn-on-once-rather-than-warn-or-warn-on">
 <h3>Use WARN_ON_ONCE() rather than WARN() or WARN_ON()<a class="headerlink" href="#use-warn-on-once-rather-than-warn-or-warn-on" title="Link to this heading">¶</a></h3>
-<p>WARN_ON_ONCE() is generally preferred over WARN() or WARN_ON(), because it
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">WARN_ON_ONCE()</span></code> is generally preferred over <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">WARN()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">WARN_ON()</span></code>, because it
 is common for a given warning condition, if it occurs at all, to occur
 multiple times. This can fill up and wrap the kernel log, and can even slow
 the system enough that the excessive logging turns into its own, additional
@@ -1187,7 +1190,7 @@ problem.</p>
 WARN*() macros are not to be used for anything that is expected to happen
 during normal operation. These are not pre- or post-condition asserts, for
 example. Again: WARN*() must not be used for a condition that is expected
-to trigger easily, for example, by user space actions. pr_warn_once() is a
+to trigger easily, for example, by user space actions. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pr_warn_once()</span></code> is a
 possible alternative, if you need to notify the user of a problem.</p>
 </section>
 <section id="do-not-worry-about-panic-on-warn-users">
@@ -1203,7 +1206,7 @@ likely to crash.</p>
 </section>
 <section id="use-build-bug-on-for-compile-time-assertions">
 <h3>Use BUILD_BUG_ON() for compile-time assertions<a class="headerlink" href="#use-build-bug-on-for-compile-time-assertions" title="Link to this heading">¶</a></h3>
-<p>The use of BUILD_BUG_ON() is acceptable and encouraged, because it is a
+<p>The use of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">BUILD_BUG_ON()</span></code> is acceptable and encouraged, because it is a
 compile-time assertion that has no effect at runtime.</p>
 </section>
 </section>

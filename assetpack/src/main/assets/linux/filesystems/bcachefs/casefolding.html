@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -195,7 +195,7 @@ decided to simply encode the two string lengths in the key to avoid random
 performance issues if this edgecase was ever hit.</p>
 <p>The option settled on was to use a free-bit in d_type to mark a dirent as having
 a casefold cache, and then treat the first 4 bytes the name block as lengths.
-You can see this in the <cite>d_cf_name_block</cite> member of union in <cite>bch_dirent</cite>.</p>
+You can see this in the <cite>d_cf_name_block</cite> member of <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">in</span></code> <cite>bch_dirent</cite>.</p>
 <p>The feature bit was used to allow casefolding support to be enabled for the majority
 of users, but some allow users who have no need for the feature to still use bcachefs as
 <cite>CONFIG_UNICODE</cite> can increase the kernel side a significant amount due to the tables used,

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -476,6 +476,14 @@ both cgroups.</p>
 </section>
 <section id="controlling-controllers">
 <h3>Controlling Controllers<a class="headerlink" href="#controlling-controllers" title="Link to this heading">¶</a></h3>
+<section id="availability">
+<h4>Availability<a class="headerlink" href="#availability" title="Link to this heading">¶</a></h4>
+<p>A controller is available in a cgroup when it is supported by the kernel (i.e.,
+compiled in, not disabled and not attached to a v1 hierarchy) and listed in the
+“cgroup.controllers” file. Availability means the controller’s interface files
+are exposed in the cgroup’s directory, allowing the distribution of the target
+resource to be observed or controlled within that cgroup.</p>
+</section>
 <section id="enabling-and-disabling">
 <h4>Enabling and Disabling<a class="headerlink" href="#enabling-and-disabling" title="Link to this heading">¶</a></h4>
 <p>Each cgroup has a “cgroup.controllers” file which lists all
@@ -1370,7 +1378,7 @@ to indicate that it will not show in the memory.numa_stat.</p>
 <blockquote>
 <div><dl>
 <dt>anon</dt><dd><p>Amount of memory used in anonymous mappings such as
-brk(), sbrk(), and mmap(MAP_ANONYMOUS). Note that
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">brk()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sbrk()</span></code>, and mmap(MAP_ANONYMOUS). Note that
 some kernel configurations might account complete larger
 allocations (e.g., THP) if only some, but not all the
 memory of such an allocation is mapped anymore.</p>
@@ -2574,10 +2582,10 @@ use hugetlb pages are included.  The per-node values are in bytes.</p>
 mechanism for the scalar resources which cannot be abstracted like the other
 cgroup resources. Controller is enabled by the CONFIG_CGROUP_MISC config
 option.</p>
-<p>A resource can be added to the controller via enum misc_res_type{} in the
+<p>A resource can be added to the controller via <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">misc_res_type</span></code>{} in the
 include/linux/misc_cgroup.h file and the corresponding name via misc_res_name[]
 in the kernel/cgroup/misc.c file. Provider of the resource must set its
-capacity prior to using the resource by calling misc_cg_set_capacity().</p>
+capacity prior to using the resource by calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">misc_cg_set_capacity()</span></code>.</p>
 <p>Once a capacity is set then the resource usage can be updated using charge and
 uncharge APIs. All of the APIs to interact with misc controller are in
 include/linux/misc_cgroup.h.</p>
@@ -2831,7 +2839,7 @@ controllers are not covered.</p>
 <section id="filesystem-support-for-writeback">
 <h3>Filesystem Support for Writeback<a class="headerlink" href="#filesystem-support-for-writeback" title="Link to this heading">¶</a></h3>
 <p>A filesystem can support cgroup writeback by updating
-address_space_operations-&gt;writepages() to annotate bio’s using the
+address_space_operations-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">writepages()</span></code> to annotate bio’s using the
 following two functions.</p>
 <blockquote>
 <div><dl class="simple">
@@ -2853,12 +2861,12 @@ super_block by setting SB_I_CGROUPWB in -&gt;s_iflags.  This allows for
 selective disabling of cgroup writeback support which is helpful when
 certain filesystem features, e.g. journaled data mode, are
 incompatible.</p>
-<p>wbc_init_bio() binds the specified bio to its cgroup.  Depending on
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wbc_init_bio()</span></code> binds the specified bio to its cgroup.  Depending on
 the configuration, the bio may be executed at a lower priority and if
 the writeback session is holding shared resources, e.g. a journal
 entry, may lead to priority inversion.  There is no one easy solution
 for the problem.  Filesystems can try to work around specific problem
-cases by skipping wbc_init_bio() and using bio_associate_blkg()
+cases by skipping <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">wbc_init_bio()</span></code> and using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bio_associate_blkg()</span></code>
 directly.</p>
 </section>
 </section>

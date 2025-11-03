@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -285,8 +285,8 @@ byte of padding at the end of the structure. This padding is added in order
 to satisfy alignment constraints for arrays of these structures.</p>
 <p>Another point worth mentioning is the use of __attribute__((packed)) on a
 structure type. This GCC-specific attribute tells the compiler never to
-insert any padding within structures, useful when you want to use a C struct
-to represent some data that comes in a fixed arrangement ‘off the wire’.</p>
+insert any padding within structures, useful when you want to use a C <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">to</span></code> represent some data that comes in a fixed arrangement ‘off the wire’.</p>
 <p>You might be inclined to believe that usage of this attribute can easily
 lead to unaligned accesses when accessing fields that do not satisfy
 architectural alignment requirements. However, again, the compiler is aware
@@ -351,8 +351,8 @@ problems involve:</p>
 </section>
 <section id="avoiding-unaligned-accesses">
 <h2>Avoiding unaligned accesses<a class="headerlink" href="#avoiding-unaligned-accesses" title="Link to this heading">¶</a></h2>
-<p>The easiest way to avoid unaligned access is to use the get_unaligned() and
-put_unaligned() macros provided by the &lt;linux/unaligned.h&gt; header file.</p>
+<p>The easiest way to avoid unaligned access is to use the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_unaligned()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">put_unaligned()</span></code> macros provided by the &lt;linux/unaligned.h&gt; header file.</p>
 <p>Going back to an earlier example of code that potentially causes unaligned
 access:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>void myfunc(u8 *data, u32 value)
@@ -373,7 +373,7 @@ access:</p>
 }
 </pre></div>
 </div>
-<p>The get_unaligned() macro works similarly. Assuming ‘data’ is a pointer to
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_unaligned()</span></code> macro works similarly. Assuming ‘data’ is a pointer to
 memory and you wish to avoid unaligned access, its usage is as follows:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>u32 value = get_unaligned((u32 *) data);
 </pre></div>

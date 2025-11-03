@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -194,10 +194,10 @@ the packet scheduler.</p>
 address announcements. Typically, it is the client side that initiates subflows,
 and the server side that announces additional addresses via the <code class="docutils literal notranslate"><span class="pre">ADD_ADDR</span></code> and
 <code class="docutils literal notranslate"><span class="pre">REMOVE_ADDR</span></code> options.</p>
-<p>Path managers are controlled by the <code class="docutils literal notranslate"><span class="pre">net.mptcp.pm_type</span></code> sysctl knob -- see
-<a class="reference internal" href="mptcp-sysctl.html"><span class="doc">MPTCP Sysfs variables</span></a>. There are two types: the in-kernel one (type <code class="docutils literal notranslate"><span class="pre">0</span></code>) where the
-same rules are applied for all the connections (see: <code class="docutils literal notranslate"><span class="pre">ip</span> <span class="pre">mptcp</span></code>) ; and the
-userspace one (type <code class="docutils literal notranslate"><span class="pre">1</span></code>), controlled by a userspace daemon (i.e. <a class="reference external" href="https://mptcpd.mptcp.dev/">mptcpd</a>) where different rules can be applied for each
+<p>Path managers are controlled by the <code class="docutils literal notranslate"><span class="pre">net.mptcp.path_manager</span></code> sysctl knob --
+see <a class="reference internal" href="mptcp-sysctl.html"><span class="doc">MPTCP Sysfs variables</span></a>. There are two types: the in-kernel one (<code class="docutils literal notranslate"><span class="pre">kernel</span></code>) where
+the same rules are applied for all the connections (see: <code class="docutils literal notranslate"><span class="pre">ip</span> <span class="pre">mptcp</span></code>) ; and the
+userspace one (<code class="docutils literal notranslate"><span class="pre">userspace</span></code>), controlled by a userspace daemon (i.e. <a class="reference external" href="https://mptcpd.mptcp.dev/">mptcpd</a>) where different rules can be applied for each
 connection. The path managers can be controlled via a Netlink API; see
 <a class="reference internal" href="netlink_spec/mptcp_pm.html"><span class="doc">Family mptcp_pm netlink specification</span></a>.</p>
 <p>To be able to use multiple IP addresses on a host to create multiple <em>subflows</em>

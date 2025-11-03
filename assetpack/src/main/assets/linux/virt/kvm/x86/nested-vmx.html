@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -219,15 +219,15 @@ this structure is <em>opaque</em> to its user, who is not supposed to know or ca
 about its internal structure. Rather, the structure is accessed through the
 VMREAD and VMWRITE instructions.
 Still, for debugging purposes, KVM developers might be interested to know the
-internals of this structure; This is struct vmcs12 from arch/x86/kvm/vmx.c.</p>
+internals of this structure; This is <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">vmcs12</span></code> from arch/x86/kvm/vmx.c.</p>
 <p>The name “vmcs12” refers to the VMCS that L1 builds for L2. In the code we
 also have “vmcs01”, the VMCS that L0 built for L1, and “vmcs02” is the VMCS
 which L0 builds to actually run L2 - how this is done is explained in the
 aforementioned paper.</p>
-<p>For convenience, we repeat the content of struct vmcs12 here. If the internals
+<p>For convenience, we repeat the content of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">vmcs12</span></code> here. If the internals
 of this structure changes, this can break live migration across KVM versions.
-VMCS12_REVISION (from vmx.c) should be changed if struct vmcs12 or its inner
-struct shadow_vmcs is ever changed.</p>
+VMCS12_REVISION (from vmx.c) should be changed if <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">vmcs12</span></code> or its inner
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">shadow_vmcs</span></code> is ever changed.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>typedef u64 natural_width;
 struct __packed vmcs12 {
         /* According to the Intel spec, a VMCS region must start with

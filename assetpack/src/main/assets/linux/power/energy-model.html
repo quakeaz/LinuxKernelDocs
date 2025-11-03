@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -291,17 +291,17 @@ experiments and measurements.</p>
 <h4>Registration of ‘artificial’ EM<a class="headerlink" href="#registration-of-artificial-em" title="Link to this heading">¶</a></h4>
 <p>There is an option to provide a custom callback for drivers missing detailed
 knowledge about power value for each performance state. The callback
-.get_cost() is optional and provides the ‘cost’ values used by the EAS.
+.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_cost()</span></code> is optional and provides the ‘cost’ values used by the EAS.
 This is useful for platforms that only provide information on relative
 efficiency between CPU types, where one could use the information to
 create an abstract power model. But even an abstract power model can
 sometimes be hard to fit in, given the input power value size restrictions.
-The .get_cost() allows to provide the ‘cost’ values which reflect the
+The .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_cost()</span></code> allows to provide the ‘cost’ values which reflect the
 efficiency of the CPUs. This would allow to provide EAS information which
 has different relation than what would be forced by the EM internal
 formulas calculating ‘cost’ values. To register an EM for such platform, the
-driver must set the flag ‘microwatts’ to 0, provide .get_power() callback
-and provide .get_cost() callback. The EM framework would handle such platform
+driver must set the flag ‘microwatts’ to 0, provide .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_power()</span></code> callback
+and provide .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_cost()</span></code> callback. The EM framework would handle such platform
 properly during registration. A flag EM_PERF_DOMAIN_ARTIFICIAL is set for such
 platform. Special care should be taken by other frameworks which are using EM
 to test and treat this flag properly.</p>
@@ -309,7 +309,7 @@ to test and treat this flag properly.</p>
 <section id="registration-of-simple-em">
 <h4>Registration of ‘simple’ EM<a class="headerlink" href="#registration-of-simple-em" title="Link to this heading">¶</a></h4>
 <p>The ‘simple’ EM is registered using the framework helper function
-cpufreq_register_em_with_opp(). It implements a power model which is tight to
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cpufreq_register_em_with_opp()</span></code>. It implements a power model which is tight to
 math formula:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Power = C * V^2 * f
 </pre></div>
@@ -379,7 +379,7 @@ table data:</p>
 states in ascending order.
 This function must be called in the RCU read lock section (after the
 <a class="reference internal" href="../core-api/kernel-api.html#c.rcu_read_lock" title="rcu_read_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">rcu_read_lock()</span></code></a>). When the EM table is not needed anymore there is a need to
-call rcu_real_unlock(). In this way the EM safely uses the RCU read section
+call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcu_real_unlock()</span></code>. In this way the EM safely uses the RCU read section
 and protects the users. It also allows the EM framework to manage the memory
 and free it. More details how to use it can be found in Section 3.2 in the
 example driver.</p>
@@ -673,6 +673,30 @@ registration will be ignored.</p>
 <p>Return 0 on success</p>
 </div>
 <dl class="c function">
+<dt class="sig sig-object c" id="c.em_dev_register_pd_no_update">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">em_dev_register_pd_no_update</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../driver-api/infrastructure.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">nr_states</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">em_data_callback</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">cb</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">cpumask_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">cpus</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n"><span class="pre">microwatts</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.em_dev_register_pd_no_update" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Register a perf domain for a device</p>
+</dd></dl>
+
+<div class="kernelindent docutils container">
+<p><strong>Parameters</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span> <span class="pre">*dev</span></code></dt><dd><p>Device to register the PD for</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">nr_states</span></code></dt><dd><p>Number of performance states in the new PD</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">em_data_callback</span> <span class="pre">*cb</span></code></dt><dd><p>Callback functions for populating the energy model</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">cpumask_t</span> <span class="pre">*cpus</span></code></dt><dd><p>CPUs to include in the new PD (mandatory if <strong>dev</strong> is a CPU device)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">microwatts</span></code></dt><dd><p>Whether or not the power values in the EM will be in uW</p>
+</dd>
+</dl>
+<p><strong>Description</strong></p>
+<p>Like <a class="reference internal" href="#c.em_dev_register_perf_domain" title="em_dev_register_perf_domain"><code class="xref c c-func docutils literal notranslate"><span class="pre">em_dev_register_perf_domain()</span></code></a>, but does not trigger a CPU capacity
+update after registering the PD, even if <strong>dev</strong> is a CPU device.</p>
+</div>
+<dl class="c function">
 <dt class="sig sig-object c" id="c.em_dev_unregister_perf_domain">
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">em_dev_unregister_perf_domain</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../driver-api/infrastructure.html#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.em_dev_unregister_perf_domain" title="Link to this definition">¶</a><br /></dt>
 <dd><p>Unregister Energy Model (EM) for a device</p>
@@ -733,12 +757,12 @@ Returns 0 on success or -EINVAL when failed.</p>
 <section id="example-driver-with-em-registration">
 <h3>3.1 Example driver with EM registration<a class="headerlink" href="#example-driver-with-em-registration" title="Link to this heading">¶</a></h3>
 <p>The CPUFreq framework supports dedicated callback for registering
-the EM for a given CPU(s) ‘policy’ object: cpufreq_driver::register_em().
+the EM for a given CPU(s) ‘policy’ object: cpufreq_driver::<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">register_em()</span></code>.
 That callback has to be implemented properly for a given driver,
 because the framework would call it at the right time during setup.
 This section provides a simple example of a CPUFreq driver registering a
 performance domain in the Energy Model framework using the (fake) ‘foo’
-protocol. The driver implements an est_power() function to be provided to the
+protocol. The driver implements an <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">est_power()</span></code> function to be provided to the
 EM framework:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-&gt; drivers/cpufreq/foo_cpufreq.c
 
@@ -789,7 +813,7 @@ EM framework:</p>
 <section id="example-driver-with-em-modification">
 <h3>3.2 Example driver with EM modification<a class="headerlink" href="#example-driver-with-em-modification" title="Link to this heading">¶</a></h3>
 <p>This section provides a simple example of a thermal driver modifying the EM.
-The driver implements a foo_thermal_em_update() function. The driver is woken
+The driver implements a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">foo_thermal_em_update()</span></code> function. The driver is woken
 up periodically to check the temperature and modify the EM data:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-&gt; drivers/soc/example/example_em_mod.c
 

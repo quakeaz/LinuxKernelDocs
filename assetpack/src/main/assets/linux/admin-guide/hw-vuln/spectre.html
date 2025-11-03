@@ -14,7 +14,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="L1TF - L1 Terminal Fault" href="l1tf.html" />
-    <link rel="prev" title="Hardware vulnerabilities" href="index.html" />
+    <link rel="prev" title="Attack Vector Controls" href="attack_vector_controls.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -378,7 +378,7 @@ influence the indirect branch targets for a victim process that either
 runs later on the same hardware thread, or running concurrently on
 a sibling hardware thread sharing the same physical core.</p>
 <p>A user process can protect itself against Spectre variant 2 attacks
-by using the prctl() syscall to disable indirect branch speculation
+by using the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prctl()</span></code> syscall to disable indirect branch speculation
 for itself.  An administrator can also cordon off an unsafe process
 from polluting the branch target buffer by disabling the process’s
 indirect branch speculation. This comes with a performance cost
@@ -416,7 +416,7 @@ for indirect branches to bypass the poisoned branch target buffer,
 and flushing the return stack buffer on VM exit.  This prevents rogue
 guests from affecting indirect branching in the host kernel.</p>
 <p>To protect host processes from rogue guests, host processes can have
-indirect branch speculation disabled via prctl().  The branch target
+indirect branch speculation disabled via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prctl()</span></code>.  The branch target
 buffer is cleared before context switching to such processes.</p>
 </div></blockquote>
 </section>
@@ -440,7 +440,7 @@ and clearing the branch target buffer before switching to a new guest.</p>
 <p>If SMT is used, Spectre variant 2 attacks from an untrusted guest
 in the sibling hyperthread can be mitigated by the administrator,
 by turning off the unsafe guest’s indirect branch speculation via
-prctl().  A guest can also protect itself by turning on microcode
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prctl()</span></code>.  A guest can also protect itself by turning on microcode
 based mitigations (such as IBPB or STIBP on x86) within the guest.</p>
 </div></blockquote>
 </section>
@@ -538,7 +538,7 @@ used to protect against Spectre variant 2 attacks when calling firmware (x86 onl
 <ul class="simple">
 <li><p>Indirect branch prediction barrier (IBPB) status for protection between
 processes of different users. This feature can be controlled through
-prctl() per process, or through kernel command line options. This is
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prctl()</span></code> per process, or through kernel command line options. This is
 an x86 only feature. For more details see below.</p></li>
 </ul>
 <table class="docutils align-default">
@@ -640,9 +640,9 @@ report vulnerability.</p>
 by code audit or scanning tools) is annotated on a case by case
 basis to use nospec accessor macros for bounds clipping <a class="reference internal" href="#spec-ref2"><span class="std std-ref">[2]</span></a> to avoid any usable disclosure gadgets. However, it may
 not cover all attack vectors for Spectre variant 1.</p>
-<p>Copy-from-user code has an LFENCE barrier to prevent the access_ok()
+<p>Copy-from-user code has an LFENCE barrier to prevent the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">access_ok()</span></code>
 check from being mis-speculated.  The barrier is done by the
-barrier_nospec() macro.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">barrier_nospec()</span></code> macro.</p>
 <p>For the swapgs variant of Spectre variant 1, LFENCE barriers are
 added to interrupt, exception and NMI entry where needed.  These
 barriers are done by the FENCE_SWAPGS_KERNEL_ENTRY and
@@ -705,7 +705,7 @@ This protects them from consuming poisoned entries in the branch
 target buffer left by malicious software.</p>
 <p>On legacy IBRS systems, at return to userspace, implicit STIBP is disabled
 because the kernel clears the IBRS bit. In this case, the userspace programs
-can disable indirect branch speculation via prctl() (See
+can disable indirect branch speculation via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prctl()</span></code> (See
 <a class="reference internal" href="../../userspace-api/spec_ctrl.html#set-spec-ctrl"><span class="std std-ref">Documentation/userspace-api/spec_ctrl.rst</span></a>).
 On x86, this will turn on STIBP to guard against attacks from the
 sibling thread when the user program is running, and use IBPB to
@@ -742,7 +742,7 @@ to a new guest on a CPU.</p>
 <p>The above mitigations are turned on by default on vulnerable CPUs.</p>
 <p>To mitigate guest-to-guest attacks from sibling thread when SMT is
 in use, an untrusted guest running in the sibling thread can have
-its indirect branch speculation disabled by administrator via prctl().</p>
+its indirect branch speculation disabled by administrator via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prctl()</span></code>.</p>
 <p>The kernel also allows guests to use any microcode based mitigation
 they choose to use (such as IBPB or STIBP on x86) to protect themselves.</p>
 </div></blockquote>

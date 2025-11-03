@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -229,8 +229,8 @@ a new transfer.</p>
 <p>b) All transfers having asked for confirmation should be signaled
 Any issued transfer with DMA_PREP_INTERRUPT should trigger a callback call.
 This implies that even if an irq/tasklet is triggered by end of tx1, but
-at the time of irq/dma tx2 is already finished, tx1-&gt;complete() and
-tx2-&gt;complete() should be called.</p>
+at the time of irq/dma tx2 is already finished, tx1-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">complete()</span></code> and
+tx2-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">complete()</span></code> should be called.</p>
 <p>c) Channel running state
 A driver should be able to query if a channel is running or not. For the
 multimedia case, such as video capture, if a transfer is submitted and then
@@ -295,14 +295,14 @@ Suppose the running chain is:</p>
 </div>
 <p>If while new_link was created the DMA channel stopped, it is _not_
 restarted. Hot-chaining doesn’t break the assumption that
-dma_async_issue_pending() is to be used to ensure the transfer is actually started.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_async_issue_pending()</span></code> is to be used to ensure the transfer is actually started.</p>
 <p>One exception to this rule :</p>
 <ul class="simple">
 <li><p>if Buffer1 and Buffer2 had all their addresses 8 bytes aligned</p></li>
 <li><p>and if Buffer3 has at least one address not 4 bytes aligned</p></li>
 <li><p>then hot-chaining cannot happen, as the channel must be stopped, the
 “align bit” must be set, and the channel restarted As a consequence,
-such a transfer tx_submit() will be queued on the submitted queue, and
+such a transfer <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">tx_submit()</span></code> will be queued on the submitted queue, and
 this specific case if the DMA is already running in aligned mode.</p></li>
 </ul>
 <p>d) Transfers completion updater

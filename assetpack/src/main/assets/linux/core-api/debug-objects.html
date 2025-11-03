@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -291,7 +291,7 @@ deactivate an active object in order to prevent damage to the subsystem.</p>
 fixup_activate function is called if available. This is necessary to
 allow the legitimate activation of statically allocated and initialized
 objects. The fixup function checks whether the object is valid and calls
-the debug_objects_init() function to initialize the tracking of this
+the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">debug_objects_init()</span></code> function to initialize the tracking of this
 object.</p>
 <p>When the activation is legitimate, then the state of the associated
 tracker object is set to ODEBUG_STATE_ACTIVE.</p>
@@ -514,7 +514,7 @@ function again after the damage has been repaired in order to keep the
 state consistent.</p>
 <p>The activation of statically initialized objects is a special case. When
 <a class="reference internal" href="#c.debug_object_activate" title="debug_object_activate"><code class="xref c c-func docutils literal notranslate"><span class="pre">debug_object_activate()</span></code></a> has no tracked object for this object address
-then fixup_activate() is called with object state
+then <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">fixup_activate()</span></code> is called with object state
 ODEBUG_STATE_NOTAVAILABLE. The fixup function needs to check whether
 this is a legitimate case of a statically initialized object or not. In
 case it is it calls <a class="reference internal" href="#c.debug_object_init" title="debug_object_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">debug_object_init()</span></code></a> and <a class="reference internal" href="#c.debug_object_activate" title="debug_object_activate"><code class="xref c c-func docutils literal notranslate"><span class="pre">debug_object_activate()</span></code></a>
@@ -537,8 +537,8 @@ false. The return value is used to update the statistics.</p>
 <p>This function is called from the debug code whenever a problem in
 debug_object_free is detected. Further it can be called from the debug
 checks in kfree/vfree, when an active object is detected from the
-debug_check_no_obj_freed() sanity checks.</p>
-<p>Called from <a class="reference internal" href="#c.debug_object_free" title="debug_object_free"><code class="xref c c-func docutils literal notranslate"><span class="pre">debug_object_free()</span></code></a> or debug_check_no_obj_freed() when
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">debug_check_no_obj_freed()</span></code> sanity checks.</p>
+<p>Called from <a class="reference internal" href="#c.debug_object_free" title="debug_object_free"><code class="xref c c-func docutils literal notranslate"><span class="pre">debug_object_free()</span></code></a> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">debug_check_no_obj_freed()</span></code> when
 the object state is:</p>
 <ul class="simple">
 <li><p>ODEBUG_STATE_ACTIVE</p></li>

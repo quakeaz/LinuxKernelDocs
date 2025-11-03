@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -211,7 +211,7 @@ completely unresponsive.</p>
 <li><p>Those owned by ramfs.</p></li>
 <li><p>Those owned by tmpfs with the noswap mount option.</p></li>
 <li><p>Those mapped into SHM_LOCK’d shared memory regions.</p></li>
-<li><p>Those mapped into VM_LOCKED [mlock()ed] VMAs.</p></li>
+<li><p>Those mapped into VM_LOCKED [<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock()</span></code>ed] VMAs.</p></li>
 </ul>
 </div></blockquote>
 <p>The infrastructure may also be able to handle other conditions that make pages
@@ -258,7 +258,7 @@ memory controller; see <a class="reference internal" href="../admin-guide/cgroup
 extending the lru_list enum.</p>
 <p>The memory controller data structure automatically gets a per-node unevictable
 list as a result of the “arrayification” of the per-node LRU lists (one per
-lru_list enum element).  The memory controller tracks the movement of pages to
+lru_list <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">element</span></code>).  The memory controller tracks the movement of pages to
 and from the unevictable list.</p>
 <p>When a memory control group comes under memory pressure, the controller will
 not attempt to reclaim pages on the unevictable list.  This has a couple of
@@ -318,39 +318,39 @@ object size in debugfs/dri/0/i915_gem_objects.</p></li>
 </section>
 <section id="detecting-unevictable-pages">
 <h3><a class="toc-backref" href="#id6" role="doc-backlink">Detecting Unevictable Pages</a><a class="headerlink" href="#detecting-unevictable-pages" title="Link to this heading">¶</a></h3>
-<p>The function folio_evictable() in mm/internal.h determines whether a folio is
+<p>The function <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">folio_evictable()</span></code> in mm/internal.h determines whether a folio is
 evictable or not using the query function outlined above [see section
 <a class="reference internal" href="#mark-addr-space-unevict"><span class="std std-ref">Marking address spaces unevictable</span></a>]
 to check the AS_UNEVICTABLE flag.</p>
 <p>For address spaces that are so marked after being populated (as SHM regions
 might be), the lock action (e.g. SHM_LOCK) can be lazy, and need not populate
-the page tables for the region as does, for example, mlock(), nor need it make
+the page tables for the region as does, for example, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock()</span></code>, nor need it make
 any special effort to push any pages in the SHM_LOCK’d area to the unevictable
 list.  Instead, vmscan will do this if and when it encounters the folios during
 a reclamation scan.</p>
-<p>On an unlock action (such as SHM_UNLOCK), the unlocker (e.g. shmctl()) must scan
+<p>On an unlock action (such as SHM_UNLOCK), the unlocker (e.g. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shmctl()</span></code>) must scan
 the pages in the region and “rescue” them from the unevictable list if no other
 condition is keeping them unevictable.  If an unevictable region is destroyed,
 the pages are also “rescued” from the unevictable list in the process of
 freeing them.</p>
-<p>folio_evictable() also checks for mlocked folios by calling
-folio_test_mlocked(), which is set when a folio is faulted into a
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">folio_evictable()</span></code> also checks for mlocked folios by calling
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">folio_test_mlocked()</span></code>, which is set when a folio is faulted into a
 VM_LOCKED VMA, or found in a VMA being VM_LOCKED.</p>
 </section>
 <section id="vmscan-s-handling-of-unevictable-folios">
 <h3><a class="toc-backref" href="#id7" role="doc-backlink">Vmscan’s Handling of Unevictable Folios</a><a class="headerlink" href="#vmscan-s-handling-of-unevictable-folios" title="Link to this heading">¶</a></h3>
 <p>If unevictable folios are culled in the fault path, or moved to the unevictable
-list at mlock() or mmap() time, vmscan will not encounter the folios until they
-have become evictable again (via munlock() for example) and have been “rescued”
+list at <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock()</span></code> or mmap() time, vmscan will not encounter the folios until they
+have become evictable again (via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">munlock()</span></code> for example) and have been “rescued”
 from the unevictable list.  However, there may be situations where we decide,
 for the sake of expediency, to leave an unevictable folio on one of the regular
 active/inactive LRU lists for vmscan to deal with.  vmscan checks for such
-folios in all of the shrink_{active|inactive|folio}_list() functions and will
+folios in all of the shrink_{active|inactive|folio}<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_list()</span></code> functions and will
 “cull” such folios that it encounters: that is, it diverts those folios to the
 unevictable list for the memory cgroup and node being scanned.</p>
 <p>There may be situations where a folio is mapped into a VM_LOCKED VMA,
 but the folio does not have the mlocked flag set.  Such folios will make
-it all the way to shrink_active_list() or shrink_folio_list() where they
+it all the way to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shrink_active_list()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shrink_folio_list()</span></code> where they
 will be detected when vmscan walks the reverse map in <a class="reference internal" href="../core-api/mm-api.html#c.folio_referenced" title="folio_referenced"><code class="xref c c-func docutils literal notranslate"><span class="pre">folio_referenced()</span></code></a>
 or <a class="reference internal" href="../core-api/mm-api.html#c.try_to_unmap" title="try_to_unmap"><code class="xref c c-func docutils literal notranslate"><span class="pre">try_to_unmap()</span></code></a>.  The folio is culled to the unevictable list when it
 is released by the shrinker.</p>
@@ -358,14 +358,14 @@ is released by the shrinker.</p>
 the LRU list using <a class="reference internal" href="../core-api/mm-api.html#c.folio_putback_lru" title="folio_putback_lru"><code class="xref c c-func docutils literal notranslate"><span class="pre">folio_putback_lru()</span></code></a> - the inverse operation to
 <a class="reference internal" href="../core-api/mm-api.html#c.folio_isolate_lru" title="folio_isolate_lru"><code class="xref c c-func docutils literal notranslate"><span class="pre">folio_isolate_lru()</span></code></a> - after dropping the folio lock.  Because the
 condition which makes the folio unevictable may change once the folio
-is unlocked, __pagevec_lru_add_fn() will recheck the unevictable state
+is unlocked, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__pagevec_lru_add_fn()</span></code> will recheck the unevictable state
 of a folio before placing it on the unevictable list.</p>
 </section>
 </section>
 <section id="mlocked-pages">
 <h2><a class="toc-backref" href="#id8" role="doc-backlink">MLOCKED Pages</a><a class="headerlink" href="#mlocked-pages" title="Link to this heading">¶</a></h2>
-<p>The unevictable folio list is also useful for mlock(), in addition to ramfs and
-SYSV SHM.  Note that mlock() is only available in CONFIG_MMU=y situations; in
+<p>The unevictable folio list is also useful for <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock()</span></code>, in addition to ramfs and
+SYSV SHM.  Note that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock()</span></code> is only available in CONFIG_MMU=y situations; in
 NOMMU situations, all mappings are effectively mlocked.</p>
 <section id="history">
 <h3><a class="toc-backref" href="#id9" role="doc-backlink">History</a><a class="headerlink" href="#history" title="Link to this heading">¶</a></h3>
@@ -373,7 +373,7 @@ NOMMU situations, all mappings are effectively mlocked.</p>
 posted by Nick Piggin in an RFC patch entitled “mm: mlocked pages off LRU”.
 Nick posted his patch as an alternative to a patch posted by Christoph Lameter
 to achieve the same objective: hiding mlocked pages from vmscan.</p>
-<p>In Nick’s patch, he used one of the struct page LRU list link fields as a count
+<p>In Nick’s patch, he used one of the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code> LRU list link fields as a count
 of VM_LOCKED VMAs that map the page (Rik van Riel had the same idea three years
 earlier).  But this use of the link field for a count prevented the management
 of the pages on an LRU list, and thus mlocked pages were not migratable as
@@ -397,26 +397,26 @@ no use for that linked list anyway - though its size is maintained for meminfo.<
 <p>mlocked pages - pages mapped into a VM_LOCKED VMA - are a class of unevictable
 pages.  When such a page has been “noticed” by the memory management subsystem,
 the folio is marked with the PG_mlocked flag.  This can be manipulated using
-folio_set_mlocked() and folio_clear_mlocked() functions.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">folio_set_mlocked()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">folio_clear_mlocked()</span></code> functions.</p>
 <p>A PG_mlocked page will be placed on the unevictable list when it is added to
 the LRU.  Such pages can be “noticed” by memory management in several places:</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li><p>in the mlock()/mlock2()/mlockall() system call handlers;</p></li>
+<li><p>in the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock2()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlockall()</span></code> system call handlers;</p></li>
 <li><p>in the mmap() system call handler when mmapping a region with the
 MAP_LOCKED flag;</p></li>
-<li><p>mmapping a region in a task that has called mlockall() with the MCL_FUTURE
+<li><p>mmapping a region in a task that has called <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlockall()</span></code> with the MCL_FUTURE
 flag;</p></li>
 <li><p>in the fault path and when a VM_LOCKED stack segment is expanded; or</p></li>
-<li><p>as mentioned above, in vmscan:shrink_folio_list() when attempting to
+<li><p>as mentioned above, in vmscan:<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shrink_folio_list()</span></code> when attempting to
 reclaim a page in a VM_LOCKED VMA by <a class="reference internal" href="../core-api/mm-api.html#c.folio_referenced" title="folio_referenced"><code class="xref c c-func docutils literal notranslate"><span class="pre">folio_referenced()</span></code></a> or <a class="reference internal" href="../core-api/mm-api.html#c.try_to_unmap" title="try_to_unmap"><code class="xref c c-func docutils literal notranslate"><span class="pre">try_to_unmap()</span></code></a>.</p></li>
 </ol>
 </div></blockquote>
 <p>mlocked pages become unlocked and rescued from the unevictable list when:</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li><p>mapped in a range unlocked via the munlock()/munlockall() system calls;</p></li>
-<li><p>munmap()’d out of the last VM_LOCKED VMA that maps the page, including
+<li><p>mapped in a range unlocked via the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">munlock()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">munlockall()</span></code> system calls;</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">munmap()</span></code>’d out of the last VM_LOCKED VMA that maps the page, including
 unmapping at task exit;</p></li>
 <li><p>when the page is truncated from the last VM_LOCKED VMA of an mmapped file;
 or</p></li>
@@ -426,39 +426,39 @@ or</p></li>
 </section>
 <section id="mlock-mlock2-mlockall-system-call-handling">
 <h3><a class="toc-backref" href="#id11" role="doc-backlink">mlock()/mlock2()/mlockall() System Call Handling</a><a class="headerlink" href="#mlock-mlock2-mlockall-system-call-handling" title="Link to this heading">¶</a></h3>
-<p>mlock(), mlock2() and mlockall() system call handlers proceed to mlock_fixup()
-for each VMA in the range specified by the call.  In the case of mlockall(),
-this is the entire active address space of the task.  Note that mlock_fixup()
-is used for both mlocking and munlocking a range of memory.  A call to mlock()
-an already VM_LOCKED VMA, or to munlock() a VMA that is not VM_LOCKED, is
-treated as a no-op and mlock_fixup() simply returns.</p>
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock2()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlockall()</span></code> system call handlers proceed to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock_fixup()</span></code>
+for each VMA in the range specified by the call.  In the case of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlockall()</span></code>,
+this is the entire active address space of the task.  Note that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock_fixup()</span></code>
+is used for both mlocking and munlocking a range of memory.  A call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock()</span></code>
+an already VM_LOCKED VMA, or to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">munlock()</span></code> a VMA that is not VM_LOCKED, is
+treated as a no-op and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock_fixup()</span></code> simply returns.</p>
 <p>If the VMA passes some filtering as described in “Filtering Special VMAs”
-below, mlock_fixup() will attempt to merge the VMA with its neighbors or split
+below, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock_fixup()</span></code> will attempt to merge the VMA with its neighbors or split
 off a subset of the VMA if the range does not cover the entire VMA.  Any pages
-already present in the VMA are then marked as mlocked by mlock_folio() via
-mlock_pte_range() via walk_page_range() via mlock_vma_pages_range().</p>
-<p>Before returning from the system call, do_mlock() or mlockall() will call
-__mm_populate() to fault in the remaining pages via get_user_pages() and to
+already present in the VMA are then marked as mlocked by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock_folio()</span></code> via
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock_pte_range()</span></code> via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">walk_page_range()</span></code> via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock_vma_pages_range()</span></code>.</p>
+<p>Before returning from the system call, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">do_mlock()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlockall()</span></code> will call
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__mm_populate()</span></code> to fault in the remaining pages via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_user_pages()</span></code> and to
 mark those pages as mlocked as they are faulted.</p>
 <p>Note that the VMA being mlocked might be mapped with PROT_NONE.  In this case,
-get_user_pages() will be unable to fault in the pages.  That’s okay.  If pages
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_user_pages()</span></code> will be unable to fault in the pages.  That’s okay.  If pages
 do end up getting faulted into this VM_LOCKED VMA, they will be handled in the
-fault path - which is also how mlock2()’s MLOCK_ONFAULT areas are handled.</p>
+fault path - which is also how <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock2()</span></code>’s MLOCK_ONFAULT areas are handled.</p>
 <p>For each PTE (or PMD) being faulted into a VMA, the page add rmap function
-calls mlock_vma_folio(), which calls mlock_folio() when the VMA is VM_LOCKED
+calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock_vma_folio()</span></code>, which calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock_folio()</span></code> when the VMA is VM_LOCKED
 (unless it is a PTE mapping of a part of a transparent huge page).  Or when
 it is a newly allocated anonymous page, <a class="reference internal" href="../core-api/mm-api.html#c.folio_add_lru_vma" title="folio_add_lru_vma"><code class="xref c c-func docutils literal notranslate"><span class="pre">folio_add_lru_vma()</span></code></a> calls
-mlock_new_folio() instead: similar to mlock_folio(), but can make better
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock_new_folio()</span></code> instead: similar to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock_folio()</span></code>, but can make better
 judgments, since this page is held exclusively and known not to be on LRU yet.</p>
-<p>mlock_folio() sets PG_mlocked immediately, then places the page on the CPU’s
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock_folio()</span></code> sets PG_mlocked immediately, then places the page on the CPU’s
 mlock folio batch, to batch up the rest of the work to be done under lru_lock by
-__mlock_folio().  __mlock_folio() sets PG_unevictable, initializes mlock_count
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__mlock_folio()</span></code>.  <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__mlock_folio()</span></code> sets PG_unevictable, initializes mlock_count
 and moves the page to unevictable state (“the unevictable LRU”, but with
 mlock_count in place of LRU threading).  Or if the page was already PG_lru
 and PG_unevictable and PG_mlocked, it simply increments the mlock_count.</p>
 <p>But in practice that may not work ideally: the page may not yet be on an LRU, or
 it may have been temporarily isolated from LRU.  In such cases the mlock_count
-field cannot be touched, but will be set to 0 later when __munlock_folio()
+field cannot be touched, but will be set to 0 later when <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__munlock_folio()</span></code>
 returns the page to “LRU”.  Races prohibit mlock_count from being set to 1 then:
 rather than risk stranding a page indefinitely as unevictable, always err with
 mlock_count on the low side, so that when munlocked the page will be rescued to
@@ -467,42 +467,42 @@ VM_LOCKED VMA.</p>
 </section>
 <section id="filtering-special-vmas">
 <h3><a class="toc-backref" href="#id12" role="doc-backlink">Filtering Special VMAs</a><a class="headerlink" href="#filtering-special-vmas" title="Link to this heading">¶</a></h3>
-<p>mlock_fixup() filters several classes of “special” VMAs:</p>
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock_fixup()</span></code> filters several classes of “special” VMAs:</p>
 <ol class="arabic simple">
 <li><p>VMAs with VM_IO or VM_PFNMAP set are skipped entirely.  The pages behind
 these mappings are inherently pinned, so we don’t need to mark them as
-mlocked.  In any case, most of the pages have no struct page in which to so
-mark the page.  Because of this, get_user_pages() will fail for these VMAs,
+mlocked.  In any case, most of the pages have no <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code> in which to so
+mark the page.  Because of this, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_user_pages()</span></code> will fail for these VMAs,
 so there is no sense in attempting to visit them.</p></li>
 <li><p>VMAs mapping hugetlbfs page are already effectively pinned into memory.  We
-neither need nor want to mlock() these pages.  But __mm_populate() includes
+neither need nor want to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock()</span></code> these pages.  But <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__mm_populate()</span></code> includes
 hugetlbfs ranges, allocating the huge pages and populating the PTEs.</p></li>
 <li><p>VMAs with VM_DONTEXPAND are generally userspace mappings of kernel pages,
 such as the VDSO page, relay channel pages, etc.  These pages are inherently
-unevictable and are not managed on the LRU lists.  __mm_populate() includes
+unevictable and are not managed on the LRU lists.  <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__mm_populate()</span></code> includes
 these ranges, populating the PTEs if not already populated.</p></li>
-<li><p>VMAs with VM_MIXEDMAP set are not marked VM_LOCKED, but __mm_populate()
+<li><p>VMAs with VM_MIXEDMAP set are not marked VM_LOCKED, but <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__mm_populate()</span></code>
 includes these ranges, populating the PTEs if not already populated.</p></li>
 </ol>
-<p>Note that for all of these special VMAs, mlock_fixup() does not set the
+<p>Note that for all of these special VMAs, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock_fixup()</span></code> does not set the
 VM_LOCKED flag.  Therefore, we won’t have to deal with them later during
-munlock(), munmap() or task exit.  Neither does mlock_fixup() account these
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">munlock()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">munmap()</span></code> or task exit.  Neither does <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock_fixup()</span></code> account these
 VMAs against the task’s “locked_vm”.</p>
 </section>
 <section id="munlock-munlockall-system-call-handling">
 <h3><a class="toc-backref" href="#id13" role="doc-backlink">munlock()/munlockall() System Call Handling</a><a class="headerlink" href="#munlock-munlockall-system-call-handling" title="Link to this heading">¶</a></h3>
-<p>The munlock() and munlockall() system calls are handled by the same
-mlock_fixup() function as mlock(), mlock2() and mlockall() system calls are.
-If called to munlock an already munlocked VMA, mlock_fixup() simply returns.
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">munlock()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">munlockall()</span></code> system calls are handled by the same
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock_fixup()</span></code> function as <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock2()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlockall()</span></code> system calls are.
+If called to munlock an already munlocked VMA, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock_fixup()</span></code> simply returns.
 Because of the VMA filtering discussed above, VM_LOCKED will not be set in
 any “special” VMAs.  So, those VMAs will be ignored for munlock.</p>
-<p>If the VMA is VM_LOCKED, mlock_fixup() again attempts to merge or split off the
-specified range.  All pages in the VMA are then munlocked by munlock_folio() via
-mlock_pte_range() via walk_page_range() via mlock_vma_pages_range() - the same
+<p>If the VMA is VM_LOCKED, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock_fixup()</span></code> again attempts to merge or split off the
+specified range.  All pages in the VMA are then munlocked by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">munlock_folio()</span></code> via
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock_pte_range()</span></code> via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">walk_page_range()</span></code> via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock_vma_pages_range()</span></code> - the same
 function used when mlocking a VMA range, with new flags for the VMA indicating
-that it is munlock() being performed.</p>
-<p>munlock_folio() uses the mlock pagevec to batch up work to be done
-under lru_lock by  __munlock_folio().  __munlock_folio() decrements the
+that it is <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">munlock()</span></code> being performed.</p>
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">munlock_folio()</span></code> uses the mlock pagevec to batch up work to be done
+under lru_lock by  <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__munlock_folio()</span></code>.  <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__munlock_folio()</span></code> decrements the
 folio’s mlock_count, and when that reaches 0 it clears the mlocked flag
 and clears the unevictable flag, moving the folio from unevictable state
 to the inactive LRU.</p>
@@ -528,11 +528,11 @@ There is mostly no problem since page migration requires unmapping all PTEs of
 the old page (including munlock where VM_LOCKED), then mapping in the new page
 (including mlock where VM_LOCKED).  The page table locks provide sufficient
 synchronization.</p>
-<p>However, since mlock_vma_pages_range() starts by setting VM_LOCKED on a VMA,
+<p>However, since <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock_vma_pages_range()</span></code> starts by setting VM_LOCKED on a VMA,
 before mlocking any pages already present, if one of those pages were migrated
-before mlock_pte_range() reached it, it would get counted twice in mlock_count.
-To prevent that, mlock_vma_pages_range() temporarily marks the VMA as VM_IO,
-so that mlock_vma_folio() will skip it.</p>
+before <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock_pte_range()</span></code> reached it, it would get counted twice in mlock_count.
+To prevent that, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock_vma_pages_range()</span></code> temporarily marks the VMA as VM_IO,
+so that <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock_vma_folio()</span></code> will skip it.</p>
 <p>To complete page migration, we place the old and new pages back onto the LRU
 afterwards.  The “unneeded” page - old page on success, new page on failure -
 is freed when the reference count held by the migration process is released.</p>
@@ -550,9 +550,9 @@ flow as described in Migrating MLOCKED Pages will apply.</p>
 <p>A transparent huge page is represented by a single entry on an LRU list.
 Therefore, we can only make unevictable an entire compound page, not
 individual subpages.</p>
-<p>If a user tries to mlock() part of a huge page, and no user mlock()s the
+<p>If a user tries to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock()</span></code> part of a huge page, and no user <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock()</span></code>s the
 whole of the huge page, we want the rest of the page to be reclaimable.</p>
-<p>We cannot just split the page on partial mlock() as split_huge_page() can
+<p>We cannot just split the page on partial <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock()</span></code> as <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">split_huge_page()</span></code> can
 fail and a new intermittent failure mode for the syscall is undesirable.</p>
 <p>We handle this by keeping PTE-mlocked huge pages on evictable LRU lists:
 the PMD on the border of a VM_LOCKED VMA will be split into a PTE table.</p>
@@ -564,34 +564,34 @@ of a transparent huge page which are mapped only by PTEs in VM_LOCKED VMAs.</p>
 </section>
 <section id="mmap-map-locked-system-call-handling">
 <h3><a class="toc-backref" href="#id17" role="doc-backlink">mmap(MAP_LOCKED) System Call Handling</a><a class="headerlink" href="#mmap-map-locked-system-call-handling" title="Link to this heading">¶</a></h3>
-<p>In addition to the mlock(), mlock2() and mlockall() system calls, an application
+<p>In addition to the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock2()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlockall()</span></code> system calls, an application
 can request that a region of memory be mlocked by supplying the MAP_LOCKED flag
 to the mmap() call.  There is one important and subtle difference here, though.
-mmap() + mlock() will fail if the range cannot be faulted in (e.g. because
+mmap() + <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock()</span></code> will fail if the range cannot be faulted in (e.g. because
 mm_populate fails) and returns with ENOMEM while mmap(MAP_LOCKED) will not fail.
 The mmapped area will still have properties of the locked area - pages will not
 get swapped out - but major page faults to fault memory in might still happen.</p>
-<p>Furthermore, any mmap() call or brk() call that expands the heap by a task
-that has previously called mlockall() with the MCL_FUTURE flag will result
+<p>Furthermore, any mmap() call or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">brk()</span></code> call that expands the heap by a task
+that has previously called <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlockall()</span></code> with the MCL_FUTURE flag will result
 in the newly mapped memory being mlocked.  Before the unevictable/mlock
-changes, the kernel simply called make_pages_present() to allocate pages
+changes, the kernel simply called <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">make_pages_present()</span></code> to allocate pages
 and populate the page table.</p>
 <p>To mlock a range of memory under the unevictable/mlock infrastructure,
 the mmap() handler and task address space expansion functions call
-populate_vma_page_range() specifying the vma and the address range to mlock.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">populate_vma_page_range()</span></code> specifying the vma and the address range to mlock.</p>
 </section>
 <section id="munmap-exit-exec-system-call-handling">
 <h3><a class="toc-backref" href="#id18" role="doc-backlink">munmap()/exit()/exec() System Call Handling</a><a class="headerlink" href="#munmap-exit-exec-system-call-handling" title="Link to this heading">¶</a></h3>
 <p>When unmapping an mlocked region of memory, whether by an explicit call to
-munmap() or via an internal unmap from exit() or exec() processing, we must
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">munmap()</span></code> or via an internal unmap from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">exit()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">exec()</span></code> processing, we must
 munlock the pages if we’re removing the last VM_LOCKED VMA that maps the pages.
 Before the unevictable/mlock changes, mlocking did not mark the pages in any
 way, so unmapping them required no processing.</p>
 <p>For each PTE (or PMD) being unmapped from a VMA, folio_remove_rmap_*() calls
-munlock_vma_folio(), which calls munlock_folio() when the VMA is VM_LOCKED
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">munlock_vma_folio()</span></code>, which calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">munlock_folio()</span></code> when the VMA is VM_LOCKED
 (unless it was a PTE mapping of a part of a transparent huge page).</p>
-<p>munlock_folio() uses the mlock pagevec to batch up work to be done
-under lru_lock by  __munlock_folio().  __munlock_folio() decrements the
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">munlock_folio()</span></code> uses the mlock pagevec to batch up work to be done
+under lru_lock by  <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__munlock_folio()</span></code>.  <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__munlock_folio()</span></code> decrements the
 folio’s mlock_count, and when that reaches 0 it clears the mlocked flag
 and clears the unevictable flag, moving the folio from unevictable state
 to the inactive LRU.</p>
@@ -606,27 +606,27 @@ again later if vmscan finds it in a VM_LOCKED VMA.</p>
 <p>File truncation or hole punching forcibly unmaps the deleted pages from
 userspace; truncation even unmaps and deletes any private anonymous pages
 which had been Copied-On-Write from the file pages now being truncated.</p>
-<p>Mlocked pages can be munlocked and deleted in this way: like with munmap(),
+<p>Mlocked pages can be munlocked and deleted in this way: like with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">munmap()</span></code>,
 for each PTE (or PMD) being unmapped from a VMA, folio_remove_rmap_*() calls
-munlock_vma_folio(), which calls munlock_folio() when the VMA is VM_LOCKED
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">munlock_vma_folio()</span></code>, which calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">munlock_folio()</span></code> when the VMA is VM_LOCKED
 (unless it was a PTE mapping of a part of a transparent huge page).</p>
-<p>However, if there is a racing munlock(), since mlock_vma_pages_range() starts
+<p>However, if there is a racing <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">munlock()</span></code>, since <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock_vma_pages_range()</span></code> starts
 munlocking by clearing VM_LOCKED from a VMA, before munlocking all the pages
 present, if one of those pages were unmapped by truncation or hole punch before
-mlock_pte_range() reached it, it would not be recognized as mlocked by this VMA,
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock_pte_range()</span></code> reached it, it would not be recognized as mlocked by this VMA,
 and would not be counted out of mlock_count.  In this rare case, a page may
 still appear as PG_mlocked after it has been fully unmapped: and it is left to
-<a class="reference internal" href="../core-api/mm-api.html#c.release_pages" title="release_pages"><code class="xref c c-func docutils literal notranslate"><span class="pre">release_pages()</span></code></a> (or __page_cache_release()) to clear it and update statistics
+<a class="reference internal" href="../core-api/mm-api.html#c.release_pages" title="release_pages"><code class="xref c c-func docutils literal notranslate"><span class="pre">release_pages()</span></code></a> (or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__page_cache_release()</span></code>) to clear it and update statistics
 before freeing (this event is counted in /proc/vmstat unevictable_pgs_cleared,
 which is usually 0).</p>
 </section>
 <section id="page-reclaim-in-shrink-list">
 <h3><a class="toc-backref" href="#id20" role="doc-backlink">Page Reclaim in shrink_*_list()</a><a class="headerlink" href="#page-reclaim-in-shrink-list" title="Link to this heading">¶</a></h3>
-<p>vmscan’s shrink_active_list() culls any obviously unevictable pages -
+<p>vmscan’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shrink_active_list()</span></code> culls any obviously unevictable pages -
 i.e. !page_evictable(page) pages - diverting those to the unevictable list.
-However, shrink_active_list() only sees unevictable pages that made it onto the
+However, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shrink_active_list()</span></code> only sees unevictable pages that made it onto the
 active/inactive LRU lists.  Note that these pages do not have PG_unevictable
-set - otherwise they would be on the unevictable list and shrink_active_list()
+set - otherwise they would be on the unevictable list and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shrink_active_list()</span></code>
 would never see them.</p>
 <p>Some examples of these unevictable pages on the LRU lists are:</p>
 <blockquote>
@@ -640,12 +640,12 @@ the segment.</p></li>
 but events left mlock_count too low, so they were munlocked too early.</p></li>
 </ol>
 </div></blockquote>
-<p>vmscan’s shrink_inactive_list() and shrink_folio_list() also divert obviously
+<p>vmscan’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shrink_inactive_list()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shrink_folio_list()</span></code> also divert obviously
 unevictable pages found on the inactive lists to the appropriate memory cgroup
 and node unevictable list.</p>
-<p>rmap’s folio_referenced_one(), called via vmscan’s shrink_active_list() or
-shrink_folio_list(), and rmap’s try_to_unmap_one() called via shrink_folio_list(),
-check for (3) pages still mapped into VM_LOCKED VMAs, and call mlock_vma_folio()
+<p>rmap’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">folio_referenced_one()</span></code>, called via vmscan’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shrink_active_list()</span></code> or
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shrink_folio_list()</span></code>, and rmap’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">try_to_unmap_one()</span></code> called via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shrink_folio_list()</span></code>,
+check for (3) pages still mapped into VM_LOCKED VMAs, and call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlock_vma_folio()</span></code>
 to correct them.  Such pages are culled to the unevictable list when released
 by the shrinker.</p>
 </section>

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -327,6 +327,37 @@ is currently not supported.</p>
 <p>It is possible to query which kfunc the particular netdev implements via
 netlink. See <code class="docutils literal notranslate"><span class="pre">xdp-rx-metadata-features</span></code> attribute set in
 <code class="docutils literal notranslate"><span class="pre">Documentation/netlink/specs/netdev.yaml</span></code>.</p>
+</section>
+<section id="driver-implementation">
+<h2>Driver Implementation<a class="headerlink" href="#driver-implementation" title="Link to this heading">¶</a></h2>
+<p>Certain devices may prepend metadata to received packets. However, as of now,
+<code class="docutils literal notranslate"><span class="pre">AF_XDP</span></code> lacks the ability to communicate the size of the <code class="docutils literal notranslate"><span class="pre">data_meta</span></code> area
+to the consumer. Therefore, it is the responsibility of the driver to copy any
+device-reserved metadata out from the metadata area and ensure that
+<code class="docutils literal notranslate"><span class="pre">xdp_buff-&gt;data_meta</span></code> is pointing to <code class="docutils literal notranslate"><span class="pre">xdp_buff-&gt;data</span></code> before presenting the
+frame to the XDP program. This is necessary so that, after the XDP program
+adjusts the metadata area, the consumer can reliably retrieve the metadata
+address using <code class="docutils literal notranslate"><span class="pre">METADATA_SIZE</span></code> offset.</p>
+<p>The following diagram shows how custom metadata is positioned relative to the
+packet data and how pointers are adjusted for metadata access:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>            |&lt;-- bpf_xdp_adjust_meta(xdp_buff, -METADATA_SIZE) --|
+new xdp_buff-&gt;data_meta                              old xdp_buff-&gt;data_meta
+            |                                                    |
+            |                                            xdp_buff-&gt;data
+            |                                                    |
+ +----------+----------------------------------------------------+------+
+ | headroom |                  custom metadata                   | data |
+ +----------+----------------------------------------------------+------+
+            |                                                    |
+            |                                            xdp_desc-&gt;addr
+            |&lt;------ xsk_umem__get_data() - METADATA_SIZE -------|
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">bpf_xdp_adjust_meta</span></code> ensures that <code class="docutils literal notranslate"><span class="pre">METADATA_SIZE</span></code> is aligned to 4 bytes,
+does not exceed 252 bytes, and leaves sufficient space for building the
+xdp_frame. If these conditions are not met, it returns a negative error. In this
+case, the BPF program should not proceed to populate data into the <code class="docutils literal notranslate"><span class="pre">data_meta</span></code>
+area.</p>
 </section>
 <section id="example">
 <h2>Example<a class="headerlink" href="#example" title="Link to this heading">¶</a></h2>

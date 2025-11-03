@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -223,14 +223,14 @@ static struct wmi_driver foo_driver = {
 module_wmi_driver(foo_driver);
 </pre></div>
 </div>
-<p>The probe() callback is called when the WMI driver is bound to a matching WMI device. Allocating
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> callback is called when the WMI driver is bound to a matching WMI device. Allocating
 driver-specific data structures and initialising interfaces to other kernel subsystems should
 normally be done in this function.</p>
-<p>The remove() callback is then called when the WMI driver is unbound from a WMI device. In order
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove()</span></code> callback is then called when the WMI driver is unbound from a WMI device. In order
 to unregister interfaces to other kernel subsystems and release resources, devres should be used.
 This simplifies error handling during probe and often allows to omit this callback entirely, see
 <a class="reference internal" href="../driver-api/driver-model/devres.html"><span class="doc">Devres - Managed Device Resource</span></a> for details.</p>
-<p>The shutdown() callback is called during shutdown, reboot or kexec. Its sole purpose is to disable
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shutdown()</span></code> callback is called during shutdown, reboot or kexec. Its sole purpose is to disable
 the WMI device and put it in a well-known state for the WMI driver to pick up later after reboot
 or kexec. Most WMI drivers need no special shutdown handling and can thus omit this callback.</p>
 <p>Please note that new WMI drivers are required to be able to be instantiated multiple times,
@@ -268,13 +268,13 @@ WMI data block driver.</p>
 </section>
 <section id="wmi-event-drivers">
 <h2>WMI event drivers<a class="headerlink" href="#wmi-event-drivers" title="Link to this heading">¶</a></h2>
-<p>WMI drivers can receive WMI events via the notify() callback inside the <a class="reference internal" href="../driver-api/wmi.html#c.wmi_driver" title="wmi_driver"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">wmi_driver</span></code></a>.
+<p>WMI drivers can receive WMI events via the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">notify()</span></code> callback inside the <a class="reference internal" href="../driver-api/wmi.html#c.wmi_driver" title="wmi_driver"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">wmi_driver</span></code></a>.
 The WMI subsystem will then take care of setting up the WMI event accordingly. Please note that
 the structure of the ACPI object passed to this callback is device-specific, and freeing the
 ACPI object is being done by the WMI subsystem, not the driver.</p>
-<p>The WMI driver core will take care that the notify() callback will only be called after
-the probe() callback has been called, and that no events are being received by the driver
-right before and after calling its remove() or shutdown() callback.</p>
+<p>The WMI driver core will take care that the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">notify()</span></code> callback will only be called after
+the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> callback has been called, and that no events are being received by the driver
+right before and after calling its <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shutdown()</span></code> callback.</p>
 <p>However WMI driver developers should be aware that multiple WMI events can be received concurrently,
 so any locking (if necessary) needs to be provided by the WMI driver itself.</p>
 <p>In order to be able to receive WMI events containing no additional event data,

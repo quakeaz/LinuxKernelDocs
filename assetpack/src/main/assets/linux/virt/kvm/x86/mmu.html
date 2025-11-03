@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -323,7 +323,7 @@ through hva-&gt;hpa changes)</p></li>
 </section>
 <section id="shadow-pages">
 <h2>Shadow pages<a class="headerlink" href="#shadow-pages" title="Link to this heading">¶</a></h2>
-<p>The principal data structure is the shadow page, ‘struct kvm_mmu_page’.  A
+<p>The principal data structure is the shadow page, ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_mmu_page</span></code>’.  A
 shadow page contains 512 sptes, which can be either leaf or nonleaf sptes.  A
 shadow page may contain a mix of leaf and nonleaf sptes.</p>
 <p>A nonleaf spte allows the hardware mmu to reach the leaf pages and
@@ -398,7 +398,7 @@ treatment of cr0.wp=0 below).</p>
 </dd>
 <dt>role.smm:</dt><dd><p>Is 1 if the page is valid in system management mode.  This field
 determines which of the kvm_memslots array was used to build this
-shadow page; it is also used to go back from a struct kvm_mmu_page
+shadow page; it is also used to go back from a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">kvm_mmu_page</span></code>
 to a memslot, through the kvm_memslots_for_spte_role macro and
 __gfn_to_memslot.</p>
 </dd>
@@ -457,7 +457,7 @@ sptes pointing at this page and (parent_ptes &amp; ~0x1) points at a data
 structure with a list of parent sptes.</p>
 </dd>
 <dt>ptep:</dt><dd><p>The kernel virtual address of the SPTE that points at this shadow page.
-Used exclusively by the TDP MMU, this field is a union with parent_ptes.</p>
+Used exclusively by the TDP MMU, this field is a <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">with</span></code> parent_ptes.</p>
 </dd>
 <dt>unsync:</dt><dd><p>If true, then the translations in this page may not match the guest’s
 translation.  This is equivalent to the state of the tlb when a pte is

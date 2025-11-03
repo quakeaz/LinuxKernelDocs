@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -245,7 +245,7 @@ CPU1 work ^
 <section id="id6">
 <h4>1.3.2 最大操作性能值不同<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h4>
 <p>具有不同算力值的CPU，通常来说最大操作性能值也不同。考虑上一小节提到的CPU（也就是说，
-work_per_hz()相同）:</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">work_per_hz()</span></code>相同）:</p>
 <ul class="simple">
 <li><p>max_freq(CPU0) = F</p></li>
 <li><p>max_freq(CPU1) = 2/3 * F</p></li>
@@ -375,7 +375,7 @@ CFS调度类基于实体负载跟踪机制（Per-Entity Load Tracking, PELT）�
 <section id="id15">
 <h3>3.1 CPU算力<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h3>
 <p>当前，Linux无法凭自身算出CPU算力，因此必须要有把这个信息传递给Linux的方式。每个架构必须为此
-定义arch_scale_cpu_capacity()函数。</p>
+定义<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">arch_scale_cpu_capacity()</span></code>函数。</p>
 <p>arm、arm64和RISC-V架构直接把这个信息映射到arch_topology驱动的CPU scaling数据中（译注：参考
 arch_topology.h的percpu变量cpu_scale），它是从capacity-dmips-mhz CPU binding中衍生计算
 出来的。参见Documentation/devicetree/bindings/cpu/cpu-capacity.txt。</p>
@@ -441,9 +441,9 @@ mkdir<span class="w"> </span>/sys/fs/cgroup/cpuset/cs1
 </div>
 <p>它通常被称为算力适应性准则。也就是说，CFS必须保证任务“适合”在某个CPU上运行。如果准则被违反，
 任务将要更长地消耗该CPU，任务是CPU受限的（CPU-bound）。</p>
-<p>此外，uclamp允许用户空间指定任务的最小和最大利用率，要么以sched_setattr()的方式，要么以
+<p>此外，uclamp允许用户空间指定任务的最小和最大利用率，要么以<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sched_setattr()</span></code>的方式，要么以
 cgroup接口的方式（参阅Documentation/admin-guide/cgroup-v2.rst）。如其名字所暗示，uclamp
-可以被用在前一条准则中限制task_util()。</p>
+可以被用在前一条准则中限制<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">task_util()</span></code>。</p>
 </section>
 <section id="id19">
 <h4>5.1.2 被唤醒任务的CPU选择<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h4>

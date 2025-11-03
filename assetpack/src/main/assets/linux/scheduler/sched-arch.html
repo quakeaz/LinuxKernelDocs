@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -180,13 +180,13 @@ penalty to the core scheduler implementation in the CONFIG_SMP case.</p>
 <p>Your cpu_idle routines need to obey the following rules:</p>
 <ol class="arabic">
 <li><p>Preempt should now disabled over idle routines. Should only
-be enabled to call schedule() then disabled again.</p></li>
+be enabled to call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">schedule()</span></code> then disabled again.</p></li>
 <li><p>need_resched/TIF_NEED_RESCHED is only ever set, and will never
-be cleared until the running task has called schedule(). Idle
+be cleared until the running task has called <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">schedule()</span></code>. Idle
 threads need only ever query need_resched, and may never set or
 clear it.</p></li>
-<li><p>When cpu_idle finds (need_resched() == ‘true’), it should call
-schedule(). It should not call schedule() otherwise.</p></li>
+<li><p>When cpu_idle finds (<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">need_resched()</span></code> == ‘true’), it should call
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">schedule()</span></code>. It should not call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">schedule()</span></code> otherwise.</p></li>
 <li><p>The only time interrupts need to be disabled when checking
 need_resched is if we are about to sleep the processor until
 the next interrupt (this doesn’t provide any protection of

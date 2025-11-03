@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -246,7 +246,7 @@ CPU GPIO-Pin as physical link to the signal, I encountered a deeper
 problem:</p>
 <blockquote>
 <div><p>At startup it needs a file descriptor as argument for the function
-time_pps_create().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">time_pps_create()</span></code>.</p>
 </div></blockquote>
 <p>This implies that the source has a /dev/... entry. This assumption is
 OK for the serial and parallel port, where you can do something
@@ -279,8 +279,8 @@ ch341 and pl2303 examples).</p>
 </section>
 <section id="coding-example">
 <h2>Coding example<a class="headerlink" href="#coding-example" title="Link to this heading">¶</a></h2>
-<p>To register a PPS source into the kernel you should define a struct
-pps_source_info as follows:</p>
+<p>To register a PPS source into the kernel you should define a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">pps_source_info</span></code> as follows:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>static struct pps_source_info pps_ktimer_info = {
         .name         = &quot;ktimer&quot;,
         .path         = &quot;&quot;,
@@ -292,21 +292,21 @@ pps_source_info as follows:</p>
 };
 </pre></div>
 </div>
-<p>and then calling the function pps_register_source() in your
+<p>and then calling the function <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pps_register_source()</span></code> in your
 initialization routine as follows:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>source = pps_register_source(&amp;pps_ktimer_info,
                     PPS_CAPTUREASSERT | PPS_OFFSETASSERT);
 </pre></div>
 </div>
-<p>The pps_register_source() prototype is:</p>
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pps_register_source()</span></code> prototype is:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int pps_register_source(struct pps_source_info *info, int default_params)
 </pre></div>
 </div>
 <p>where “info” is a pointer to a structure that describes a particular
 PPS source, “default_params” tells the system what the initial default
 parameters for the device should be (it is obvious that these parameters
-must be a subset of ones defined in the struct
-pps_source_info which describe the capabilities of the driver).</p>
+must be a subset of ones defined in the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">pps_source_info</span></code> which describe the capabilities of the driver).</p>
 <p>Once you have registered a new PPS source into the system you can
 signal an assert event (for example in the interrupt handler routine)
 just using:</p>
@@ -315,7 +315,7 @@ just using:</p>
 </div>
 <p>where “ts” is the event’s timestamp.</p>
 <p>The same function may also run the defined echo function
-(pps_ktimer_echo(), passing to it the “ptr” pointer) if the user
+(<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pps_ktimer_echo()</span></code>, passing to it the “ptr” pointer) if the user
 asked for that... etc..</p>
 <p>Please see the file drivers/pps/clients/pps-ktimer.c for example code.</p>
 </section>
@@ -381,7 +381,7 @@ This is available in the pps-tools repository mentioned above.</p>
 them also. For example, running a distributed simulation, which requires
 computers’ clock to be synchronized very tightly.</p>
 <p>To do so the class pps-gen has been added. PPS generators can be
-registered in the kernel by defining a struct pps_gen_source_info as
+registered in the kernel by defining a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pps_gen_source_info</span></code> as
 follows:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>static const struct pps_gen_source_info pps_gen_dummy_info = {
         .use_system_clock       = true,
@@ -392,10 +392,10 @@ follows:</p>
 </div>
 <p>Where the use_system_clock states if the generator uses the system
 clock to generate its pulses, or they are from a peripheral device
-clock. Method get_time() is used to query the time stored into the
-generator clock, while the method enable() is used to enable or
+clock. Method <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_time()</span></code> is used to query the time stored into the
+generator clock, while the method <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">enable()</span></code> is used to enable or
 disable the PPS pulse generation.</p>
-<p>Then calling the function pps_gen_register_source() in your
+<p>Then calling the function <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pps_gen_register_source()</span></code> in your
 initialization routine as follows creates a new generator in the
 system:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>pps_gen = pps_gen_register_source(&amp;pps_gen_dummy_info);

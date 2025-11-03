@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -249,12 +249,12 @@ is significant.</p>
 <section id="struct-passing-pitfalls">
 <h2>Struct-passing Pitfalls<a class="headerlink" href="#struct-passing-pitfalls" title="Link to this heading">¶</a></h2>
 <p>Often times the XuY functions will not be large enough, and instead you’ll
-want to pass a pre-filled struct to siphash. When doing this, it’s important
-to always ensure the struct has no padding holes. The easiest way to do this
-is to simply arrange the members of the struct in descending order of size,
-and to use offsetofend() instead of sizeof() for getting the size. For
+want to pass a pre-filled <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">to</span></code> siphash. When doing this, it’s important
+to always ensure the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">has</span></code> no padding holes. The easiest way to do this
+is to simply arrange the members of the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">in</span></code> descending order of size,
+and to use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">offsetofend()</span></code> instead of sizeof() for getting the size. For
 performance reasons, if possible, it’s probably a good thing to align the
-struct to the right boundary. Here’s an example:</p>
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">to</span></code> the right boundary. Here’s an example:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>const struct {
         struct in6_addr saddr;
         u32 counter;
@@ -354,10 +354,10 @@ static inline hlist_head *some_hashtable_bucket(struct some_hashtable *table, st
 </section>
 <section id="performance">
 <h2>Performance<a class="headerlink" href="#performance" title="Link to this heading">¶</a></h2>
-<p>hsiphash() is roughly 3 times slower than jhash(). For many replacements, this
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hsiphash()</span></code> is roughly 3 times slower than <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">jhash()</span></code>. For many replacements, this
 will not be a problem, as the hashtable lookup isn’t the bottleneck. And in
 general, this is probably a good sacrifice to make for the security and DoS
-resistance of hsiphash().</p>
+resistance of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hsiphash()</span></code>.</p>
 </section>
 </section>
 

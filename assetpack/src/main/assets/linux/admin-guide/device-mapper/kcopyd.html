@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -163,7 +163,7 @@ to one or more other block-devices, with an asynchronous completion
 notification. It is used by dm-snapshot and dm-mirror.</p>
 <p>Users of kcopyd must first create a client and indicate how many memory pages
 to set aside for their copy jobs. This is done with a call to
-kcopyd_client_create():</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kcopyd_client_create()</span></code>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int kcopyd_client_create(unsigned int num_pages,
                          struct kcopyd_client **result);
 </pre></div>
@@ -180,7 +180,7 @@ copy are given as an array of io_region structures:</p>
 };
 </pre></div>
 </div>
-<p>To start the copy, the user calls kcopyd_copy(), passing in the client
+<p>To start the copy, the user calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kcopyd_copy()</span></code>, passing in the client
 pointer, pointers to the source and destination io_regions, the name of a
 completion callback routine, and a pointer to some context data for the copy:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int kcopyd_copy(struct kcopyd_client *kc, struct io_region *from,
@@ -195,7 +195,7 @@ typedef void (*kcopyd_notify_fn)(int read_err, unsigned int write_err,
 passing back the user’s context pointer. It will also indicate if a read or
 write error occurred during the copy.</p>
 <p>When a user is done with all their copy jobs, they should call
-kcopyd_client_destroy() to delete the kcopyd client, which will release the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kcopyd_client_destroy()</span></code> to delete the kcopyd client, which will release the
 associated memory pages:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>void kcopyd_client_destroy(struct kcopyd_client *kc);
 </pre></div>

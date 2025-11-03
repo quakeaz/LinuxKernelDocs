@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -159,7 +159,7 @@ must be allocated with <a class="reference internal" href="kapi.html#c.alloc_net
 If device has registered successfully, it will be freed on last use
 by <a class="reference internal" href="kapi.html#c.free_netdev" title="free_netdev"><code class="xref c c-func docutils literal notranslate"><span class="pre">free_netdev()</span></code></a>. This is required to handle the pathological case cleanly
 (example: <code class="docutils literal notranslate"><span class="pre">rmmod</span> <span class="pre">mydriver</span> <span class="pre">&lt;/sys/class/net/myeth/mtu</span></code>)</p>
-<p><a class="reference internal" href="kapi.html#c.alloc_netdev_mqs" title="alloc_netdev_mqs"><code class="xref c c-func docutils literal notranslate"><span class="pre">alloc_netdev_mqs()</span></code></a> / alloc_netdev() reserve extra space for driver
+<p><a class="reference internal" href="kapi.html#c.alloc_netdev_mqs" title="alloc_netdev_mqs"><code class="xref c c-func docutils literal notranslate"><span class="pre">alloc_netdev_mqs()</span></code></a> / <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">alloc_netdev()</span></code> reserve extra space for driver
 private data which gets freed when the network device is freed. If
 separately allocated data is attached to the network device
 (<a class="reference internal" href="kapi.html#c.netdev_priv" title="netdev_priv"><code class="xref c c-func docutils literal notranslate"><span class="pre">netdev_priv()</span></code></a>) then it is up to the module exit handler to free that.</p>
@@ -167,7 +167,7 @@ separately allocated data is attached to the network device
 First group can be used in normal contexts where <code class="docutils literal notranslate"><span class="pre">rtnl_lock</span></code> is not already
 held: <a class="reference internal" href="kapi.html#c.register_netdev" title="register_netdev"><code class="xref c c-func docutils literal notranslate"><span class="pre">register_netdev()</span></code></a>, <a class="reference internal" href="kapi.html#c.unregister_netdev" title="unregister_netdev"><code class="xref c c-func docutils literal notranslate"><span class="pre">unregister_netdev()</span></code></a>.
 Second group can be used when <code class="docutils literal notranslate"><span class="pre">rtnl_lock</span></code> is already held:
-<a class="reference internal" href="kapi.html#c.register_netdevice" title="register_netdevice"><code class="xref c c-func docutils literal notranslate"><span class="pre">register_netdevice()</span></code></a>, unregister_netdevice(), free_netdevice().</p>
+<a class="reference internal" href="kapi.html#c.register_netdevice" title="register_netdevice"><code class="xref c c-func docutils literal notranslate"><span class="pre">register_netdevice()</span></code></a>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unregister_netdevice()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">free_netdevice()</span></code>.</p>
 <section id="simple-drivers">
 <h3>Simple drivers<a class="headerlink" href="#simple-drivers" title="Link to this heading">¶</a></h3>
 <p>Most drivers (especially device drivers) handle lifetime of <a class="reference internal" href="kapi.html#c.net_device" title="net_device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">net_device</span></code></a>
@@ -279,21 +279,21 @@ and <code class="docutils literal notranslate"><span class="pre">priv_destructor
 </pre></div>
 </div>
 <p>If <a class="reference internal" href="kapi.html#c.net_device" title="net_device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">net_device</span></code></a>.priv_destructor is set it will be called by the core
-some time after unregister_netdevice(), it will also be called if
+some time after <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unregister_netdevice()</span></code>, it will also be called if
 <a class="reference internal" href="kapi.html#c.register_netdevice" title="register_netdevice"><code class="xref c c-func docutils literal notranslate"><span class="pre">register_netdevice()</span></code></a> fails. The callback may be invoked with or without
 <code class="docutils literal notranslate"><span class="pre">rtnl_lock</span></code> held.</p>
 <p>There is no explicit constructor callback, driver “constructs” the private
 netdev state after allocating it and before registration.</p>
-<p>Setting <a class="reference internal" href="kapi.html#c.net_device" title="net_device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">net_device</span></code></a>.needs_free_netdev makes core call free_netdevice()
-automatically after unregister_netdevice() when all references to the device
+<p>Setting <a class="reference internal" href="kapi.html#c.net_device" title="net_device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">net_device</span></code></a>.needs_free_netdev makes core call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">free_netdevice()</span></code>
+automatically after <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unregister_netdevice()</span></code> when all references to the device
 are gone. It only takes effect after a successful call to <a class="reference internal" href="kapi.html#c.register_netdevice" title="register_netdevice"><code class="xref c c-func docutils literal notranslate"><span class="pre">register_netdevice()</span></code></a>
 so if <a class="reference internal" href="kapi.html#c.register_netdevice" title="register_netdevice"><code class="xref c c-func docutils literal notranslate"><span class="pre">register_netdevice()</span></code></a> fails driver is responsible for calling
 <a class="reference internal" href="kapi.html#c.free_netdev" title="free_netdev"><code class="xref c c-func docutils literal notranslate"><span class="pre">free_netdev()</span></code></a>.</p>
-<p><a class="reference internal" href="kapi.html#c.free_netdev" title="free_netdev"><code class="xref c c-func docutils literal notranslate"><span class="pre">free_netdev()</span></code></a> is safe to call on error paths right after unregister_netdevice()
+<p><a class="reference internal" href="kapi.html#c.free_netdev" title="free_netdev"><code class="xref c c-func docutils literal notranslate"><span class="pre">free_netdev()</span></code></a> is safe to call on error paths right after <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unregister_netdevice()</span></code>
 or when <a class="reference internal" href="kapi.html#c.register_netdevice" title="register_netdevice"><code class="xref c c-func docutils literal notranslate"><span class="pre">register_netdevice()</span></code></a> fails. Parts of netdev (de)registration process
 happen after <code class="docutils literal notranslate"><span class="pre">rtnl_lock</span></code> is released, therefore in those cases <a class="reference internal" href="kapi.html#c.free_netdev" title="free_netdev"><code class="xref c c-func docutils literal notranslate"><span class="pre">free_netdev()</span></code></a>
 will defer some of the processing until <code class="docutils literal notranslate"><span class="pre">rtnl_lock</span></code> is released.</p>
-<p>Devices spawned from struct rtnl_link_ops should never free the
+<p>Devices spawned from <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rtnl_link_ops</span></code> should never free the
 <a class="reference internal" href="kapi.html#c.net_device" title="net_device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">net_device</span></code></a> directly.</p>
 <section id="ndo-init-and-ndo-uninit">
 <h4>.ndo_init and .ndo_uninit<a class="headerlink" href="#ndo-init-and-ndo-uninit" title="Link to this heading">¶</a></h4>
@@ -331,39 +331,39 @@ packets is preferred.</p>
 <section id="struct-net-device-synchronization-rules">
 <h2>struct net_device synchronization rules<a class="headerlink" href="#struct-net-device-synchronization-rules" title="Link to this heading">¶</a></h2>
 <dl>
-<dt>ndo_open:</dt><dd><p>Synchronization: rtnl_lock() semaphore. In addition, netdev instance
+<dt>ndo_open:</dt><dd><p>Synchronization: <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rtnl_lock()</span></code> semaphore. In addition, netdev instance
 lock if the driver implements queue management or shaper API.
 Context: process</p>
 </dd>
-<dt>ndo_stop:</dt><dd><p>Synchronization: rtnl_lock() semaphore. In addition, netdev instance
+<dt>ndo_stop:</dt><dd><p>Synchronization: <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rtnl_lock()</span></code> semaphore. In addition, netdev instance
 lock if the driver implements queue management or shaper API.
 Context: process
 Note: <a class="reference internal" href="kapi.html#c.netif_running" title="netif_running"><code class="xref c c-func docutils literal notranslate"><span class="pre">netif_running()</span></code></a> is guaranteed false</p>
 </dd>
-<dt>ndo_do_ioctl:</dt><dd><p>Synchronization: rtnl_lock() semaphore.</p>
+<dt>ndo_do_ioctl:</dt><dd><p>Synchronization: <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rtnl_lock()</span></code> semaphore.</p>
 <p>This is only called by network subsystems internally,
 not by user space calling ioctl as it was in before
 linux-5.14.</p>
 </dd>
-<dt>ndo_siocbond:</dt><dd><p>Synchronization: rtnl_lock() semaphore. In addition, netdev instance
+<dt>ndo_siocbond:</dt><dd><p>Synchronization: <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rtnl_lock()</span></code> semaphore. In addition, netdev instance
 lock if the driver implements queue management or shaper API.
 Context: process</p>
 <p>Used by the bonding driver for the SIOCBOND family of
 ioctl commands.</p>
 </dd>
-<dt>ndo_siocwandev:</dt><dd><p>Synchronization: rtnl_lock() semaphore. In addition, netdev instance
+<dt>ndo_siocwandev:</dt><dd><p>Synchronization: <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rtnl_lock()</span></code> semaphore. In addition, netdev instance
 lock if the driver implements queue management or shaper API.
 Context: process</p>
 <p>Used by the drivers/net/wan framework to handle
 the SIOCWANDEV ioctl with the if_settings structure.</p>
 </dd>
-<dt>ndo_siocdevprivate:</dt><dd><p>Synchronization: rtnl_lock() semaphore. In addition, netdev instance
+<dt>ndo_siocdevprivate:</dt><dd><p>Synchronization: <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rtnl_lock()</span></code> semaphore. In addition, netdev instance
 lock if the driver implements queue management or shaper API.
 Context: process</p>
 <p>This is used to implement SIOCDEVPRIVATE ioctl helpers.
 These should not be added to new drivers, so don’t use.</p>
 </dd>
-<dt>ndo_eth_ioctl:</dt><dd><p>Synchronization: rtnl_lock() semaphore. In addition, netdev instance
+<dt>ndo_eth_ioctl:</dt><dd><p>Synchronization: <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rtnl_lock()</span></code> semaphore. In addition, netdev instance
 lock if the driver implements queue management or shaper API.
 Context: process</p>
 </dd>
@@ -473,7 +473,7 @@ lock. <code class="docutils literal notranslate"><span class="pre">rtnl_lock</sp
 <h3>struct netdev_queue_mgmt_ops<a class="headerlink" href="#struct-netdev-queue-mgmt-ops" title="Link to this heading">¶</a></h3>
 <p>All queue management callbacks are invoked while holding the netdev instance
 lock. <code class="docutils literal notranslate"><span class="pre">rtnl_lock</span></code> may or may not be held.</p>
-<p>Note that supporting struct netdev_queue_mgmt_ops automatically enables
+<p>Note that supporting <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">netdev_queue_mgmt_ops</span></code> automatically enables
 “ops locking”.</p>
 </section>
 <section id="notifiers-and-netdev-instance-lock">

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -233,7 +233,7 @@ adapter-&gt;netdev-&gt;hw_enc_features |= NETIF_F_HW_ESP;
 </pre></div>
 </div>
 <p>When new SAs are set up with a request for “offload” feature, the
-driver’s xdo_dev_state_add() will be given the new SA to be offloaded
+driver’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xdo_dev_state_add()</span></code> will be given the new SA to be offloaded
 and an indication of whether it is for Rx or Tx.  The driver should</p>
 <blockquote>
 <div><ul>
@@ -266,7 +266,7 @@ that can be used to convey context into the fast-path offload requests:</p>
 </pre></div>
 </div>
 <p>When the network stack is preparing an IPsec packet for an SA that has
-been setup for offload, it first calls into xdo_dev_offload_ok() with
+been setup for offload, it first calls into <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xdo_dev_offload_ok()</span></code> with
 the skb and the intended offload state to ask the driver if the offload
 will serviceable.  This can check the packet information to be sure the
 offload can be supported (e.g. IPv4 or IPv6, no IPv4 options, etc) and
@@ -288,7 +288,7 @@ header values.</p>
 decryption, the driver needs to add a reference to the decoded SA into
 the packet’s skb.  At this point the data should be decrypted but the
 IPsec headers are still in the packet data; they are removed later up
-the stack in xfrm_input().</p>
+the stack in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xfrm_input()</span></code>.</p>
 <blockquote>
 <div><p>find and hold the SA that was used to the Rx skb:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>get spi, protocol, and destination IP from packet headers
@@ -309,29 +309,29 @@ xo-&gt;flags = CRYPTO_DONE;
 xo-&gt;status = crypto_status;
 </pre></div>
 </div>
-<p>hand the packet to napi_gro_receive() as usual</p>
+<p>hand the packet to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">napi_gro_receive()</span></code> as usual</p>
 </div></blockquote>
-<p>In ESN mode, xdo_dev_state_advance_esn() is called from
-xfrm_replay_advance_esn() for RX, and xfrm_replay_overflow_offload_esn for TX.
+<p>In ESN mode, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xdo_dev_state_advance_esn()</span></code> is called from
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xfrm_replay_advance_esn()</span></code> for RX, and xfrm_replay_overflow_offload_esn for TX.
 Driver will check packet seq number and update HW ESN state machine if needed.</p>
 <p>Packet offload mode:
 HW adds and deletes XFRM headers. So in RX path, XFRM stack is bypassed if HW
 reported success. In TX path, the packet lefts kernel without extra header
 and not encrypted, the HW is responsible to perform it.</p>
-<p>When the SA is removed by the user, the driver’s xdo_dev_state_delete()
-and xdo_dev_policy_delete() are asked to disable the offload.  Later,
-xdo_dev_state_free() and xdo_dev_policy_free() are called from a garbage
+<p>When the SA is removed by the user, the driver’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xdo_dev_state_delete()</span></code>
+and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xdo_dev_policy_delete()</span></code> are asked to disable the offload.  Later,
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xdo_dev_state_free()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xdo_dev_policy_free()</span></code> are called from a garbage
 collection routine after all reference counts to the state and policy
 have been removed and any remaining resources can be cleared for the
 offload state.  How these are used by the driver will depend on specific
 hardware needs.</p>
 <p>As a netdev is set to DOWN the XFRM stack’s netdev listener will call
-xdo_dev_state_delete(), xdo_dev_policy_delete(), xdo_dev_state_free() and
-xdo_dev_policy_free() on any remaining offloaded states.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xdo_dev_state_delete()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xdo_dev_policy_delete()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xdo_dev_state_free()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xdo_dev_policy_free()</span></code> on any remaining offloaded states.</p>
 <p>Outcome of HW handling packets, the XFRM core can’t count hard, soft limits.
 The HW/driver are responsible to perform it and provide accurate data when
-xdo_dev_state_update_stats() is called. In case of one of these limits
-occuried, the driver needs to call to xfrm_state_check_expire() to make sure
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xdo_dev_state_update_stats()</span></code> is called. In case of one of these limits
+occuried, the driver needs to call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xfrm_state_check_expire()</span></code> to make sure
 that XFRM performs rekeying sequence.</p>
 </section>
 </section>

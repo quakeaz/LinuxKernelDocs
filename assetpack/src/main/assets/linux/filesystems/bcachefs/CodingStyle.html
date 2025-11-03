@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -163,10 +163,10 @@ for bugs to hide.</p>
 the course of writing a patchset you encounter a condition that shouldn’t
 happen (and will have unpredictable or undefined behaviour if it does), or
 you’re not sure if it can happen and not sure how to handle it yet - make it a
-BUG_ON(). Don’t leave undefined or unspecified behavior lurking in the codebase.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">BUG_ON()</span></code>. Don’t leave undefined or unspecified behavior lurking in the codebase.</p>
 <p>By the time you finish the patchset, you should understand better which
 assertions need to be handled and turned into checks with error paths, and
-which should be logically impossible. Leave the BUG_ON()s in for the ones which
+which should be logically impossible. Leave the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">BUG_ON()</span></code>s in for the ones which
 are logically impossible. (Or, make them debug mode assertions if they’re
 expensive - but don’t turn everything into a debug mode assertion, so that
 we’re not stuck debugging undefined behaviour should it turn out that you were
@@ -199,7 +199,7 @@ going on - fix that first.</p>
 <p>We have the tools to make anything visible at runtime, efficiently - RCU and
 percpu data structures among them. Don’t let things stay hidden.</p>
 <p>The most important tool for introspection is the humble pretty printer - in
-bcachefs, this means <cite>*_to_text()</cite> functions, which output to printbufs.</p>
+bcachefs, this means <cite>*<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_to_text()</span></code></cite> functions, which output to printbufs.</p>
 <p>Pretty printers are wonderful, because they compose and you can use them
 everywhere. Having functions to print whatever object you’re working with will
 make your error messages much easier to write (therefore they will actually

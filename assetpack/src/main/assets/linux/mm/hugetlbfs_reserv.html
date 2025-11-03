@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -254,19 +254,19 @@ when the inode is created.</p></li>
 <h2>Creating Reservations<a class="headerlink" href="#creating-reservations" title="Link to this heading">¶</a></h2>
 <p>Reservations are created when a huge page backed shared memory segment is
 created (shmget(SHM_HUGETLB)) or a mapping is created via mmap(MAP_HUGETLB).
-These operations result in a call to the routine hugetlb_reserve_pages():</p>
+These operations result in a call to the routine <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hugetlb_reserve_pages()</span></code>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int hugetlb_reserve_pages(struct inode *inode,
                           long from, long to,
                           struct vm_area_struct *vma,
                           vm_flags_t vm_flags)
 </pre></div>
 </div>
-<p>The first thing hugetlb_reserve_pages() does is check if the NORESERVE
-flag was specified in either the shmget() or mmap() call.  If NORESERVE
+<p>The first thing <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hugetlb_reserve_pages()</span></code> does is check if the NORESERVE
+flag was specified in either the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shmget()</span></code> or mmap() call.  If NORESERVE
 was specified, then this routine returns immediately as no reservations
 are desired.</p>
 <p>The arguments ‘from’ and ‘to’ are huge page indices into the mapping or
-underlying file.  For shmget(), ‘from’ is always 0 and ‘to’ corresponds to
+underlying file.  For <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">shmget()</span></code>, ‘from’ is always 0 and ‘to’ corresponds to
 the length of the segment/mapping.  For mmap(), the offset argument could
 be used to specify the offset into the underlying file.  In such a case,
 the ‘from’ and ‘to’ arguments have been adjusted by this offset.</p>
@@ -282,7 +282,7 @@ consumed, entries are added to the reservation map.  Therefore, the
 reservation map can also be used to determine which reservations have
 been consumed.</p></li>
 </ul>
-<p>For private mappings, hugetlb_reserve_pages() creates the reservation map and
+<p>For private mappings, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hugetlb_reserve_pages()</span></code> creates the reservation map and
 hangs it off the VMA structure.  In addition, the HPAGE_RESV_OWNER flag is set
 to indicate this VMA owns the reservations.</p>
 <p>The reservation map is consulted to determine how many huge page reservations
@@ -296,8 +296,8 @@ to ensure there is sufficient space for the mapping.  It is possible that the
 subpool has set aside reservations that can be used for the mapping.  See the
 section <a class="reference internal" href="#sub-pool-resv"><span class="std std-ref">Subpool Reservations</span></a> for more details.</p>
 <p>After consulting the reservation map and subpool, the number of needed new
-reservations is known.  The routine hugetlb_acct_memory() is called to check
-for and take the requested number of reservations.  hugetlb_acct_memory()
+reservations is known.  The routine <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hugetlb_acct_memory()</span></code> is called to check
+for and take the requested number of reservations.  <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hugetlb_acct_memory()</span></code>
 calls into routines that potentially allocate and adjust surplus page counts.
 However, within those routines the code is simply checking to ensure there
 are enough free huge pages to accommodate the reservation.  If there are,
@@ -315,7 +315,7 @@ modified to reflect the reservations.  In the case of a shared mapping, a
 file_region will exist that includes the range ‘from’ - ‘to’.  For private
 mappings, no modifications are made to the reservation map as lack of an
 entry indicates a reservation exists.</p>
-<p>If hugetlb_reserve_pages() was successful, the global reservation count and
+<p>If <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hugetlb_reserve_pages()</span></code> was successful, the global reservation count and
 reservation map associated with the mapping will be modified as required to
 ensure reservations exist for the range ‘from’ - ‘to’.</p>
 </section>
@@ -323,7 +323,7 @@ ensure reservations exist for the range ‘from’ - ‘to’.</p>
 <span id="consume-resv"></span><h2>Consuming Reservations/Allocating a Huge Page<a class="headerlink" href="#consuming-reservations-allocating-a-huge-page" title="Link to this heading">¶</a></h2>
 <p>Reservations are consumed when huge pages associated with the reservations
 are allocated and instantiated in the corresponding mapping.  The allocation
-is performed within the routine alloc_hugetlb_folio():</p>
+is performed within the routine <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">alloc_hugetlb_folio()</span></code>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
                              unsigned long addr, int avoid_reserve)
 </pre></div>
@@ -335,22 +335,22 @@ should not be used even if it appears they have been set aside for the
 specified address.  The avoid_reserve argument is most often used in the case
 of Copy on Write and Page Migration where additional copies of an existing
 page are being allocated.</p>
-<p>The helper routine vma_needs_reservation() is called to determine if a
+<p>The helper routine <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vma_needs_reservation()</span></code> is called to determine if a
 reservation exists for the address within the mapping(vma).  See the section
 <a class="reference internal" href="#resv-map-helpers"><span class="std std-ref">Reservation Map Helper Routines</span></a> for detailed
 information on what this routine does.
-The value returned from vma_needs_reservation() is generally
+The value returned from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vma_needs_reservation()</span></code> is generally
 0 or 1.  0 if a reservation exists for the address, 1 if no reservation exists.
 If a reservation does not exist, and there is a subpool associated with the
 mapping the subpool is consulted to determine if it contains reservations.
 If the subpool contains reservations, one can be used for this allocation.
 However, in every case the avoid_reserve argument overrides the use of
 a reservation for the allocation.  After determining whether a reservation
-exists and can be used for the allocation, the routine dequeue_huge_page_vma()
+exists and can be used for the allocation, the routine <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dequeue_huge_page_vma()</span></code>
 is called.  This routine takes two arguments related to reservations:</p>
 <ul class="simple">
 <li><p>avoid_reserve, this is the same value/argument passed to
-alloc_hugetlb_folio().</p></li>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">alloc_hugetlb_folio()</span></code>.</p></li>
 <li><p>chg, even though this argument is of type long only the values 0 or 1 are
 passed to dequeue_huge_page_vma.  If the value is 0, it indicates a
 reservation exists (see the section “Memory Policy and Reservations” for
@@ -377,7 +377,7 @@ resv_huge_pages--.</p>
 <p>After obtaining a new hugetlb folio, (folio)-&gt;_hugetlb_subpool is set to the
 value of the subpool associated with the page if it exists.  This will be used
 for subpool accounting when the folio is freed.</p>
-<p>The routine vma_commit_reservation() is then called to adjust the reserve
+<p>The routine <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vma_commit_reservation()</span></code> is then called to adjust the reserve
 map based on the consumption of the reservation.  In general, this involves
 ensuring the page is represented within a file_region structure of the region
 map.  For shared mappings where the reservation was present, an entry
@@ -385,8 +385,8 @@ in the reserve map already existed so no change is made.  However, if there
 was no reservation in a shared mapping or this was a private mapping a new
 entry must be created.</p>
 <p>It is possible that the reserve map could have been changed between the call
-to vma_needs_reservation() at the beginning of alloc_hugetlb_folio() and the
-call to vma_commit_reservation() after the folio was allocated.  This would
+to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vma_needs_reservation()</span></code> at the beginning of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">alloc_hugetlb_folio()</span></code> and the
+call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">vma_commit_reservation()</span></code> after the folio was allocated.  This would
 be possible if hugetlb_reserve_pages was called for the same page in a shared
 mapping.  In such cases, the reservation count and subpool free page count
 will be off by one.  This rare condition can be identified by comparing the
@@ -407,7 +407,7 @@ to the global reservation count (resv_huge_pages).</p>
 </section>
 <section id="freeing-huge-pages">
 <h2>Freeing Huge Pages<a class="headerlink" href="#freeing-huge-pages" title="Link to this heading">¶</a></h2>
-<p>Huge pages are freed by free_huge_folio().  It is only passed a pointer
+<p>Huge pages are freed by <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">free_huge_folio()</span></code>.  It is only passed a pointer
 to the folio as it is called from the generic MM code.  When a huge page
 is freed, reservation accounting may need to be performed.  This would
 be the case if the page was associated with a subpool that contained
@@ -418,7 +418,7 @@ If the PagePrivate flag is set, it indicates the global reserve count should
 be adjusted (see the section
 <a class="reference internal" href="#consume-resv"><span class="std std-ref">Consuming Reservations/Allocating a Huge Page</span></a>
 for information on how these are set).</p>
-<p>The routine first calls hugepage_subpool_put_pages() for the page.  If this
+<p>The routine first calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hugepage_subpool_put_pages()</span></code> for the page.  If this
 routine returns a value of 0 (which does not equal the value passed 1) it
 indicates reserves are associated with the subpool, and this newly free page
 must be used to keep the number of subpool reserves above the minimum size.
@@ -428,7 +428,7 @@ will always be incremented.</p>
 </section>
 <section id="subpool-reservations">
 <span id="sub-pool-resv"></span><h2>Subpool Reservations<a class="headerlink" href="#subpool-reservations" title="Link to this heading">¶</a></h2>
-<p>There is a struct hstate associated with each huge page size.  The hstate
+<p>There is a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hstate</span></code> associated with each huge page size.  The hstate
 tracks all huge pages of the specified size.  A subpool represents a subset
 of pages within a hstate that is associated with a mounted hugetlbfs
 filesystem.</p>
@@ -436,10 +436,10 @@ filesystem.</p>
 which indicates the minimum number of huge pages required by the filesystem.
 If this option is specified, the number of huge pages corresponding to
 min_size are reserved for use by the filesystem.  This number is tracked in
-the min_hpages field of a struct hugepage_subpool.  At mount time,
+the min_hpages field of a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hugepage_subpool</span></code>.  At mount time,
 hugetlb_acct_memory(min_hpages) is called to reserve the specified number of
 huge pages.  If they can not be reserved, the mount fails.</p>
-<p>The routines hugepage_subpool_get/put_pages() are called when pages are
+<p>The routines hugepage_subpool_get/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">put_pages()</span></code> are called when pages are
 obtained from or released back to a subpool.  They perform all subpool
 accounting, and track any reservations associated with the subpool.
 hugepage_subpool_get/put_pages are passed the number of huge pages by which
@@ -498,37 +498,37 @@ long region_count(struct resv_map *resv, long f, long t);
 </div>
 <p>Operations on the reservation map typically involve two operations:</p>
 <ol class="arabic">
-<li><p>region_chg() is called to examine the reserve map and determine how
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_chg()</span></code> is called to examine the reserve map and determine how
 many pages in the specified range [f, t) are NOT currently represented.</p>
 <p>The calling code performs global checks and allocations to determine if
 there are enough huge pages for the operation to succeed.</p>
 </li>
 <li><ol class="loweralpha simple">
-<li><p>If the operation can succeed, region_add() is called to actually modify
+<li><p>If the operation can succeed, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_add()</span></code> is called to actually modify
 the reservation map for the same range [f, t) previously passed to
-region_chg().</p></li>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_chg()</span></code>.</p></li>
 <li><p>If the operation can not succeed, region_abort is called for the same
 range [f, t) to abort the operation.</p></li>
 </ol>
 </li>
 </ol>
-<p>Note that this is a two step process where region_add() and region_abort()
-are guaranteed to succeed after a prior call to region_chg() for the same
-range.  region_chg() is responsible for pre-allocating any data structures
-necessary to ensure the subsequent operations (specifically region_add()))
+<p>Note that this is a two step process where <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_add()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_abort()</span></code>
+are guaranteed to succeed after a prior call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_chg()</span></code> for the same
+range.  <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_chg()</span></code> is responsible for pre-allocating any data structures
+necessary to ensure the subsequent operations (specifically <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_add()</span></code>))
 will succeed.</p>
-<p>As mentioned above, region_chg() determines the number of pages in the range
+<p>As mentioned above, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_chg()</span></code> determines the number of pages in the range
 which are NOT currently represented in the map.  This number is returned to
-the caller.  region_add() returns the number of pages in the range added to
-the map.  In most cases, the return value of region_add() is the same as the
-return value of region_chg().  However, in the case of shared mappings it is
+the caller.  <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_add()</span></code> returns the number of pages in the range added to
+the map.  In most cases, the return value of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_add()</span></code> is the same as the
+return value of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_chg()</span></code>.  However, in the case of shared mappings it is
 possible for changes to the reservation map to be made between the calls to
-region_chg() and region_add().  In this case, the return value of region_add()
-will not match the return value of region_chg().  It is likely that in such
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_chg()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_add()</span></code>.  In this case, the return value of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_add()</span></code>
+will not match the return value of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_chg()</span></code>.  It is likely that in such
 cases global counts and subpool accounting will be incorrect and in need of
 adjustment.  It is the responsibility of the caller to check for this condition
 and make the appropriate adjustments.</p>
-<p>The routine region_del() is called to remove regions from a reservation map.
+<p>The routine <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_del()</span></code> is called to remove regions from a reservation map.
 It is typically called in the following situations:</p>
 <ul class="simple">
 <li><p>When a file in the hugetlbfs filesystem is being removed, the inode will
@@ -541,21 +541,21 @@ in the reservation map past the new end of file must be deleted.  In this
 case, region_del is passed the range [new_end_of_file, LONG_MAX).</p></li>
 <li><p>When a hole is being punched in a hugetlbfs file.  In this case, huge pages
 are removed from the middle of the file one at a time.  As the pages are
-removed, region_del() is called to remove the corresponding entry from the
+removed, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_del()</span></code> is called to remove the corresponding entry from the
 reservation map.  In this case, region_del is passed the range
 [page_idx, page_idx + 1).</p></li>
 </ul>
-<p>In every case, region_del() will return the number of pages removed from the
-reservation map.  In VERY rare cases, region_del() can fail.  This can only
+<p>In every case, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_del()</span></code> will return the number of pages removed from the
+reservation map.  In VERY rare cases, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_del()</span></code> can fail.  This can only
 happen in the hole punch case where it has to split an existing file_region
-entry and can not allocate a new structure.  In this error case, region_del()
+entry and can not allocate a new structure.  In this error case, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_del()</span></code>
 will return -ENOMEM.  The problem here is that the reservation map will
 indicate that there is a reservation for the page.  However, the subpool and
 global reservation counts will not reflect the reservation.  To handle this
-situation, the routine hugetlb_fix_reserve_counts() is called to adjust the
+situation, the routine <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hugetlb_fix_reserve_counts()</span></code> is called to adjust the
 counters so that they correspond with the reservation map entry that could
 not be deleted.</p>
-<p>region_count() is called when unmapping a private huge page mapping.  In
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_count()</span></code> is called when unmapping a private huge page mapping.  In
 private mappings, the lack of a entry in the reservation map indicates that
 a reservation exists.  Therefore, by counting the number of entries in the
 reservation map we know how many reservations were consumed and how many are
@@ -579,14 +579,14 @@ shared mappings and hide this detail from the caller:</p>
                            unsigned long addr)
 </pre></div>
 </div>
-<p>This routine calls region_chg() for the specified page.  If no reservation
+<p>This routine calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_chg()</span></code> for the specified page.  If no reservation
 exists, 1 is returned.  If a reservation exists, 0 is returned:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>long vma_commit_reservation(struct hstate *h,
                             struct vm_area_struct *vma,
                             unsigned long addr)
 </pre></div>
 </div>
-<p>This calls region_add() for the specified page.  As in the case of region_chg
+<p>This calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_add()</span></code> for the specified page.  As in the case of region_chg
 and region_add, this routine is to be called after a previous call to
 vma_needs_reservation.  It will add a reservation entry for the page.  It
 returns 1 if the reservation was added and 0 if not.  The return value should
@@ -598,7 +598,7 @@ map was modified between calls:</p>
                          unsigned long addr)
 </pre></div>
 </div>
-<p>This calls region_abort() for the specified page.  As in the case of region_chg
+<p>This calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">region_abort()</span></code> for the specified page.  As in the case of region_chg
 and region_abort, this routine is to be called after a previous call to
 vma_needs_reservation.  It will abort/end the in progress reservation add
 operation:</p>
@@ -608,7 +608,7 @@ operation:</p>
 </pre></div>
 </div>
 <p>This is a special wrapper routine to help facilitate reservation cleanup
-on error paths.  It is only called from the routine restore_reserve_on_error().
+on error paths.  It is only called from the routine <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">restore_reserve_on_error()</span></code>.
 This routine is used in conjunction with vma_needs_reservation in an attempt
 to add a reservation to the reservation map.  It takes into account the
 different reservation map semantics for private and shared mappings.  Hence,
@@ -638,7 +638,7 @@ will increment the global reservation count.  However, the reservation map
 indicates the reservation was consumed.  This resulting inconsistent state
 will cause the ‘leak’ of a reserved huge page.  The global reserve count will
 be  higher than it should and prevent allocation of a pre-allocated page.</p>
-<p>The routine restore_reserve_on_error() attempts to handle this situation.  It
+<p>The routine <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">restore_reserve_on_error()</span></code> attempts to handle this situation.  It
 is fairly well documented.  The intention of this routine is to restore
 the reservation map to the way it was before the page allocation.   In this
 way, the state of the reservation map will correspond to the global reservation
@@ -656,7 +656,7 @@ so that a reservation will not be leaked when the huge page is freed.</p>
 </section>
 <section id="reservations-and-memory-policy">
 <h2>Reservations and Memory Policy<a class="headerlink" href="#reservations-and-memory-policy" title="Link to this heading">¶</a></h2>
-<p>Per-node huge page lists existed in struct hstate when git was first used
+<p>Per-node huge page lists existed in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hstate</span></code> when git was first used
 to manage Linux code.  The concept of reservations was added some time later.
 When reservations were added, no attempt was made to take memory policy
 into account.  While cpusets are not exactly the same as memory policy, this

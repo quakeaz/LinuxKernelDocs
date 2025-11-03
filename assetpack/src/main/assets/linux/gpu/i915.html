@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -182,7 +182,7 @@ present for a given platform.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This is the unlocked version of intel_display_power_is_enabled() and should
+<p>This is the unlocked version of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">intel_display_power_is_enabled()</span></code> and should
 only be used from error capture and recovery code where deadlocks are
 possible.
 This function grabs a device-level runtime pm reference (mostly used for
@@ -231,7 +231,7 @@ call to <a class="reference internal" href="#c.intel_runtime_pm_put" title="inte
 <p><strong>Description</strong></p>
 <p>This function grabs a device-level runtime pm reference if the device is
 already active and ensures that it is powered up. It is illegal to try
-and access the HW should intel_runtime_pm_get_if_active() report failure.</p>
+and access the HW should <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">intel_runtime_pm_get_if_active()</span></code> report failure.</p>
 <p>If <strong>ignore_usecount</strong> is true, a reference will be acquired even if there is no
 user requiring the device to be powered up (dev-&gt;power.usage_count == 0).
 If the function returns false in this case then it’s guaranteed that the
@@ -340,7 +340,7 @@ hardware block right away if this is the last reference.</p>
 <p>This function enables runtime pm at the end of the driver load sequence.</p>
 <p>Note that this function does currently not enable runtime pm for the
 subordinate display power domains. That is done by
-intel_power_domains_enable().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">intel_power_domains_enable()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.intel_uncore_forcewake_get">
@@ -362,7 +362,7 @@ Normal register access will handle the forcewake domains automatically.
 However if some sequence requires the GT to not power down a particular
 forcewake domains this function should be called at the beginning of the
 sequence. And subsequently the reference should be dropped by symmetric
-call to intel_unforce_forcewake_put(). Usually caller wants all the domains
+call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">intel_unforce_forcewake_put()</span></code>. Usually caller wants all the domains
 to be kept awake so the <strong>fw_domains</strong> would be then FORCEWAKE_ALL.</p>
 </div>
 <dl class="c function">
@@ -476,7 +476,7 @@ on the caller to explicitly handle the dev_priv-&gt;uncore.lock spinlock.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">intel_uncore</span> <span class="pre">*uncore</span></code></dt><dd><p>the struct intel_uncore</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">intel_uncore</span> <span class="pre">*uncore</span></code></dt><dd><p>the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">intel_uncore</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">i915_reg_t</span> <span class="pre">reg</span></code></dt><dd><p>the register to read</p>
 </dd>
@@ -501,7 +501,7 @@ on the caller to explicitly handle the dev_priv-&gt;uncore.lock spinlock.</p>
 For atomic context <strong>slow_timeout_ms</strong> must be zero and <strong>fast_timeout_us</strong>
 must be not larger than 20,0000 microseconds.</p>
 <p>Note that this routine assumes the caller holds forcewake asserted, it is
-not suitable for very long waits. See intel_wait_for_register() if you
+not suitable for very long waits. See <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">intel_wait_for_register()</span></code> if you
 wish to wait without holding forcewake for the duration (i.e. you expect
 the wait to be slow).</p>
 <p><strong>Return</strong></p>
@@ -516,7 +516,7 @@ the wait to be slow).</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">intel_uncore</span> <span class="pre">*uncore</span></code></dt><dd><p>the struct intel_uncore</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">intel_uncore</span> <span class="pre">*uncore</span></code></dt><dd><p>the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">intel_uncore</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">i915_reg_t</span> <span class="pre">reg</span></code></dt><dd><p>the register to read</p>
 </dd>
@@ -550,7 +550,7 @@ the wait to be slow).</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">intel_uncore</span> <span class="pre">*uncore</span></code></dt><dd><p>pointer to struct intel_uncore</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">intel_uncore</span> <span class="pre">*uncore</span></code></dt><dd><p>pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">intel_uncore</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">i915_reg_t</span> <span class="pre">reg</span></code></dt><dd><p>register in question</p>
 </dd>
@@ -799,7 +799,7 @@ Register Immediate commands) once when initializing the device and saved in
 the default context. That default context is then used on every context
 creation to have a “primed golden context”, i.e. a context image that
 already contains the changes needed to all the registers.</p>
-<p>Context workarounds should be implemented in the *_ctx_workarounds_init()
+<p>Context workarounds should be implemented in the *<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_ctx_workarounds_init()</span></code>
 variants respective to the targeted platforms.</p>
 </li>
 <li><p>Engine workarounds: the list of these WAs is applied whenever the specific
@@ -814,16 +814,16 @@ written once, on engine initialization, and then passed to GuC, that
 saves/restores their values before/after the reset takes place. See
 <code class="docutils literal notranslate"><span class="pre">drivers/gpu/drm/i915/gt/uc/intel_guc_ads.c</span></code> for reference.</p>
 <p>Workarounds for registers specific to RCS and CCS should be implemented in
-rcs_engine_wa_init() and ccs_engine_wa_init(), respectively; those for
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rcs_engine_wa_init()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ccs_engine_wa_init()</span></code>, respectively; those for
 registers belonging to BCS, VCS or VECS should be implemented in
-xcs_engine_wa_init(). Workarounds for registers not belonging to a specific
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">xcs_engine_wa_init()</span></code>. Workarounds for registers not belonging to a specific
 engine’s MMIO range but that are part of of the common RCS/CCS reset domain
-should be implemented in general_render_compute_wa_init(). The settings
-about the CCS load balancing should be added in ccs_engine_wa_mode().</p>
+should be implemented in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">general_render_compute_wa_init()</span></code>. The settings
+about the CCS load balancing should be added in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ccs_engine_wa_mode()</span></code>.</p>
 </li>
 <li><p>GT workarounds: the list of these WAs is applied whenever these registers
 revert to their default values: on GPU reset, suspend/resume <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>, etc.</p>
-<p>GT workarounds should be implemented in the *_gt_workarounds_init()
+<p>GT workarounds should be implemented in the *<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_gt_workarounds_init()</span></code>
 variants respective to the targeted platforms.</p>
 </li>
 <li><p>Register whitelist: some workarounds need to be implemented in userspace,
@@ -831,7 +831,7 @@ but need to touch privileged registers. The whitelist in the kernel
 instructs the hardware to allow the access to happen. From the kernel side,
 this is just a special case of a MMIO workaround (as we write the list of
 these to/be-whitelisted registers to some special HW registers).</p>
-<p>Register whitelisting should be done in the *_whitelist_build() variants
+<p>Register whitelisting should be done in the *<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_whitelist_build()</span></code> variants
 respective to the targeted platforms.</p>
 </li>
 <li><p>Workaround batchbuffers: buffers that get executed automatically by the
@@ -1207,8 +1207,8 @@ panel self refresh.</p>
 <section id="atomic-plane-helpers">
 <h3>Atomic Plane Helpers<a class="headerlink" href="#atomic-plane-helpers" title="Link to this heading">¶</a></h3>
 <p>The functions here are used by the atomic plane helper functions to
-implement legacy plane updates (i.e., drm_plane-&gt;update_plane() and
-drm_plane-&gt;disable_plane()).  This allows plane updates to use the
+implement legacy plane updates (i.e., drm_plane-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">update_plane()</span></code> and
+drm_plane-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">disable_plane()</span></code>).  This allows plane updates to use the
 atomic state infrastructure and perform plane updates as separate
 prepare/check/commit/cleanup steps.</p>
 <dl class="c function">
@@ -1308,9 +1308,9 @@ cursor planes.</p>
 flag. Currently async flip is only supported via the drmModePageFlip IOCTL.
 Correspondingly, support is currently added for primary plane only.</p>
 <p>Async flip can only change the plane surface address, so anything else
-changing is rejected from the intel_async_flip_check_hw() function.
+changing is rejected from the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">intel_async_flip_check_hw()</span></code> function.
 Once this check is cleared, flip done interrupt is enabled using
-the intel_crtc_enable_flip_done() function.</p>
+the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">intel_crtc_enable_flip_done()</span></code> function.</p>
 <p>As soon as the surface address register is written, flip done interrupt is
 generated and the requested events are sent to the userspace in the interrupt
 handler itself. The timestamp and sequence sent during the flip done event
@@ -1338,11 +1338,11 @@ into a platform independent mask of hotplug pins that have fired.</p>
 intel_hotplug.c does hotplug irq storm detection and mitigation, and passes
 further processing to appropriate bottom halves (Display Port specific and
 regular hotplug).</p>
-<p>The Display Port work function i915_digport_work_func() calls into
-intel_dp_hpd_pulse() via hooks, which handles DP short pulses and DP MST long
+<p>The Display Port work function <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">i915_digport_work_func()</span></code> calls into
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">intel_dp_hpd_pulse()</span></code> via hooks, which handles DP short pulses and DP MST long
 pulses, with failures and non-MST long pulses triggering regular hotplug
 processing on the connector.</p>
-<p>The regular hotplug work function i915_hotplug_work_func() calls connector
+<p>The regular hotplug work function <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">i915_hotplug_work_func()</span></code> calls connector
 detect hooks, and, if connector status changes, triggers sending of hotplug
 uevent to userspace via <a class="reference internal" href="drm-kms-helpers.html#c.drm_kms_helper_hotplug_event" title="drm_kms_helper_hotplug_event"><code class="xref c c-func docutils literal notranslate"><span class="pre">drm_kms_helper_hotplug_event()</span></code></a>.</p>
 <p>Finally, the userspace is responsible for triggering a modeset upon receiving
@@ -1468,7 +1468,7 @@ processing to appropriate bottom halves.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>This function enables the hotplug support. It requires that interrupts have
-already been enabled with intel_irq_init_hw(). From this point on hotplug and
+already been enabled with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">intel_irq_init_hw()</span></code>. From this point on hotplug and
 poll request can run concurrently to other code, so locking rules must be
 obeyed.</p>
 <p>This is a separate step from interrupt enabling to simplify the locking rules
@@ -1540,13 +1540,13 @@ appropriately for all connectors.</p>
 <p>On return:</p>
 <ul class="simple">
 <li><p>It’s guaranteed that the blocked encoders’ HPD pulse handler
-(via intel_digital_port::hpd_pulse()) is not running.</p></li>
-<li><p>The hotplug event handling (via intel_encoder::hotplug()) of an
+(via intel_digital_port::<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hpd_pulse()</span></code>) is not running.</p></li>
+<li><p>The hotplug event handling (via intel_encoder::<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hotplug()</span></code>) of an
 HPD IRQ pending at the time this function is called may be still
 running.</p></li>
 <li><p>Detection on the encoder’s connector (via
-drm_connector_helper_funcs::detect_ctx(),
-drm_connector_funcs::detect()) remains allowed, for instance as part of
+drm_connector_helper_funcs::<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">detect_ctx()</span></code>,
+drm_connector_funcs::<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">detect()</span></code>) remains allowed, for instance as part of
 userspace connector probing, or DRM core’s connector polling.</p></li>
 </ul>
 <p>The call must be followed by calling <a class="reference internal" href="#c.intel_hpd_unblock" title="intel_hpd_unblock"><code class="xref c c-func docutils literal notranslate"><span class="pre">intel_hpd_unblock()</span></code></a>, or
@@ -2003,7 +2003,7 @@ information when vblank is enabled/disabled.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This function is expected to be called from pipe_update_start() where it is
+<p>This function is expected to be called from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pipe_update_start()</span></code> where it is
 not expected to race with PSR enable or disable.</p>
 </div>
 <dl class="c function">
@@ -2078,7 +2078,7 @@ And it initializes basic PSR stuff for each DP Encoder.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">intel_dp</span> <span class="pre">*intel_dp</span></code></dt><dd><p>struct intel_dp</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">intel_dp</span> <span class="pre">*intel_dp</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">intel_dp</span></code></p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -2609,6 +2609,18 @@ resources released in <a class="reference internal" href="#c.intel_dmc_suspend" 
 firmware loading status.</p>
 </div>
 </section>
+<section id="dmc-flip-queue">
+<h3>DMC Flip Queue<a class="headerlink" href="#dmc-flip-queue" title="Link to this heading">¶</a></h3>
+<p>A flip queue is a ring buffer implemented by the pipe DMC firmware.
+The driver inserts entries into the queues to be executed by the
+pipe DMC at a specified presentation timestamp (PTS).</p>
+<p>Each pipe DMC provides several queues:</p>
+<ul class="simple">
+<li><p>1 general queue (two DSB buffers executed per entry)</p></li>
+<li><p>3 plane queues (one DSB buffer executed per entry)</p></li>
+<li><p>1 fast queue (deprecated)</p></li>
+</ul>
+</section>
 <section id="dmc-wakelock-support">
 <h3>DMC wakelock support<a class="headerlink" href="#dmc-wakelock-support" title="Link to this heading">¶</a></h3>
 <p>Wake lock is the mechanism to cause display engine to exit DC
@@ -3082,18 +3094,18 @@ per-pipe or per-encoder dedicated PLLs, others allow the use of any PLL
 from a pool. In the latter scenario, it is possible that multiple pipes
 share a PLL if their configurations match.</p>
 <p>This file provides an abstraction over display PLLs. The function
-<a class="reference internal" href="#c.intel_shared_dpll_init" title="intel_shared_dpll_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">intel_shared_dpll_init()</span></code></a> initializes the PLLs for the given platform.  The
+<a class="reference internal" href="#c.intel_dpll_init" title="intel_dpll_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">intel_dpll_init()</span></code></a> initializes the PLLs for the given platform.  The
 users of a PLL are tracked and that tracking is integrated with the atomic
 modset interface. During an atomic operation, required PLLs can be reserved
 for a given CRTC and encoder configuration by calling
-<a class="reference internal" href="#c.intel_reserve_shared_dplls" title="intel_reserve_shared_dplls"><code class="xref c c-func docutils literal notranslate"><span class="pre">intel_reserve_shared_dplls()</span></code></a> and previously reserved PLLs can be released
-with <a class="reference internal" href="#c.intel_release_shared_dplls" title="intel_release_shared_dplls"><code class="xref c c-func docutils literal notranslate"><span class="pre">intel_release_shared_dplls()</span></code></a>.
+<a class="reference internal" href="#c.intel_dpll_reserve" title="intel_dpll_reserve"><code class="xref c c-func docutils literal notranslate"><span class="pre">intel_dpll_reserve()</span></code></a> and previously reserved PLLs can be released
+with <a class="reference internal" href="#c.intel_dpll_release" title="intel_dpll_release"><code class="xref c c-func docutils literal notranslate"><span class="pre">intel_dpll_release()</span></code></a>.
 Changes to the users are first staged in the atomic state, and then made
-effective by calling <a class="reference internal" href="#c.intel_shared_dpll_swap_state" title="intel_shared_dpll_swap_state"><code class="xref c c-func docutils literal notranslate"><span class="pre">intel_shared_dpll_swap_state()</span></code></a> during the atomic
+effective by calling <a class="reference internal" href="#c.intel_dpll_swap_state" title="intel_dpll_swap_state"><code class="xref c c-func docutils literal notranslate"><span class="pre">intel_dpll_swap_state()</span></code></a> during the atomic
 commit phase.</p>
 <dl class="c function">
-<dt class="sig sig-object c" id="c.intel_get_shared_dpll_by_id">
-<span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.intel_shared_dpll" title="intel_shared_dpll"><span class="n"><span class="pre">intel_shared_dpll</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">intel_get_shared_dpll_by_id</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_display</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">display</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.intel_dpll_id" title="intel_dpll_id"><span class="n"><span class="pre">intel_dpll_id</span></span></a><span class="w"> </span><span class="n"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.intel_get_shared_dpll_by_id" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.intel_get_dpll_by_id">
+<span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.intel_dpll" title="intel_dpll"><span class="n"><span class="pre">intel_dpll</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">intel_get_dpll_by_id</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_display</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">display</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.intel_dpll_id" title="intel_dpll_id"><span class="n"><span class="pre">intel_dpll_id</span></span></a><span class="w"> </span><span class="n"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.intel_get_dpll_by_id" title="Link to this definition">¶</a><br /></dt>
 <dd><p>get a DPLL given its id</p>
 </dd></dl>
 
@@ -3109,23 +3121,23 @@ commit phase.</p>
 <p>A pointer to the DPLL with <strong>id</strong></p>
 </div>
 <dl class="c function">
-<dt class="sig sig-object c" id="c.intel_enable_shared_dpll">
-<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">intel_enable_shared_dpll</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_crtc_state</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">crtc_state</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.intel_enable_shared_dpll" title="Link to this definition">¶</a><br /></dt>
-<dd><p>enable a CRTC’s shared DPLL</p>
+<dt class="sig sig-object c" id="c.intel_dpll_enable">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">intel_dpll_enable</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_crtc_state</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">crtc_state</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.intel_dpll_enable" title="Link to this definition">¶</a><br /></dt>
+<dd><p>enable a CRTC’s DPLL</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">intel_crtc_state</span> <span class="pre">*crtc_state</span></code></dt><dd><p>CRTC, and its state, which has a shared DPLL</p>
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">intel_crtc_state</span> <span class="pre">*crtc_state</span></code></dt><dd><p>CRTC, and its state, which has a DPLL</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Enable the shared DPLL used by <strong>crtc</strong>.</p>
+<p>Enable DPLL used by <strong>crtc</strong>.</p>
 </div>
 <dl class="c function">
-<dt class="sig sig-object c" id="c.intel_disable_shared_dpll">
-<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">intel_disable_shared_dpll</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_crtc_state</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">crtc_state</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.intel_disable_shared_dpll" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.intel_dpll_disable">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">intel_dpll_disable</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_crtc_state</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">crtc_state</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.intel_dpll_disable" title="Link to this definition">¶</a><br /></dt>
 <dd><p>disable a CRTC’s shared DPLL</p>
 </dd></dl>
 
@@ -3136,11 +3148,11 @@ commit phase.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Disable the shared DPLL used by <strong>crtc</strong>.</p>
+<p>Disable DPLL used by <strong>crtc</strong>.</p>
 </div>
 <dl class="c function">
-<dt class="sig sig-object c" id="c.intel_reference_shared_dpll_crtc">
-<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">intel_reference_shared_dpll_crtc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_crtc</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">crtc</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.intel_shared_dpll" title="intel_shared_dpll"><span class="n"><span class="pre">intel_shared_dpll</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pll</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.intel_shared_dpll_state" title="intel_shared_dpll_state"><span class="n"><span class="pre">intel_shared_dpll_state</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">shared_dpll_state</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.intel_reference_shared_dpll_crtc" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.intel_dpll_crtc_get">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">intel_dpll_crtc_get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_crtc</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">crtc</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.intel_dpll" title="intel_dpll"><span class="n"><span class="pre">intel_dpll</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pll</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.intel_dpll_state" title="intel_dpll_state"><span class="n"><span class="pre">intel_dpll_state</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dpll_state</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.intel_dpll_crtc_get" title="Link to this definition">¶</a><br /></dt>
 <dd><p>Get a DPLL reference for a CRTC</p>
 </dd></dl>
 
@@ -3149,17 +3161,17 @@ commit phase.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">intel_crtc</span> <span class="pre">*crtc</span></code></dt><dd><p>CRTC on which behalf the reference is taken</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">intel_shared_dpll</span> <span class="pre">*pll</span></code></dt><dd><p>DPLL for which the reference is taken</p>
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">intel_dpll</span> <span class="pre">*pll</span></code></dt><dd><p>DPLL for which the reference is taken</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">intel_shared_dpll_state</span> <span class="pre">*shared_dpll_state</span></code></dt><dd><p>the DPLL atomic state in which the reference is tracked</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">intel_dpll_state</span> <span class="pre">*dpll_state</span></code></dt><dd><p>the DPLL atomic state in which the reference is tracked</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
 <p>Take a reference for <strong>pll</strong> tracking the use of it by <strong>crtc</strong>.</p>
 </div>
 <dl class="c function">
-<dt class="sig sig-object c" id="c.intel_unreference_shared_dpll_crtc">
-<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">intel_unreference_shared_dpll_crtc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_crtc</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">crtc</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.intel_shared_dpll" title="intel_shared_dpll"><span class="n"><span class="pre">intel_shared_dpll</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pll</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.intel_shared_dpll_state" title="intel_shared_dpll_state"><span class="n"><span class="pre">intel_shared_dpll_state</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">shared_dpll_state</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.intel_unreference_shared_dpll_crtc" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.intel_dpll_crtc_put">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">intel_dpll_crtc_put</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_crtc</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">crtc</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.intel_dpll" title="intel_dpll"><span class="n"><span class="pre">intel_dpll</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pll</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.intel_dpll_state" title="intel_dpll_state"><span class="n"><span class="pre">intel_dpll_state</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dpll_state</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.intel_dpll_crtc_put" title="Link to this definition">¶</a><br /></dt>
 <dd><p>Drop a DPLL reference for a CRTC</p>
 </dd></dl>
 
@@ -3168,17 +3180,17 @@ commit phase.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">intel_crtc</span> <span class="pre">*crtc</span></code></dt><dd><p>CRTC on which behalf the reference is dropped</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">intel_shared_dpll</span> <span class="pre">*pll</span></code></dt><dd><p>DPLL for which the reference is dropped</p>
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">intel_dpll</span> <span class="pre">*pll</span></code></dt><dd><p>DPLL for which the reference is dropped</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">intel_shared_dpll_state</span> <span class="pre">*shared_dpll_state</span></code></dt><dd><p>the DPLL atomic state in which the reference is tracked</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">intel_dpll_state</span> <span class="pre">*dpll_state</span></code></dt><dd><p>the DPLL atomic state in which the reference is tracked</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
 <p>Drop a reference for <strong>pll</strong> tracking the end of use of it by <strong>crtc</strong>.</p>
 </div>
 <dl class="c function">
-<dt class="sig sig-object c" id="c.intel_shared_dpll_swap_state">
-<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">intel_shared_dpll_swap_state</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_atomic_state</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">state</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.intel_shared_dpll_swap_state" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.intel_dpll_swap_state">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">intel_dpll_swap_state</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_atomic_state</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">state</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.intel_dpll_swap_state" title="Link to this definition">¶</a><br /></dt>
 <dd><p>make atomic DPLL configuration effective</p>
 </dd></dl>
 
@@ -3214,9 +3226,9 @@ need for that at this moment.</p>
 CRTC.</p>
 </div>
 <dl class="c function">
-<dt class="sig sig-object c" id="c.intel_shared_dpll_init">
-<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">intel_shared_dpll_init</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_display</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">display</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.intel_shared_dpll_init" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Initialize shared DPLLs</p>
+<dt class="sig sig-object c" id="c.intel_dpll_init">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">intel_dpll_init</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_display</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">display</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.intel_dpll_init" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Initialize DPLLs</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -3226,11 +3238,11 @@ CRTC.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Initialize shared DPLLs for <strong>display</strong>.</p>
+<p>Initialize DPLLs for <strong>display</strong>.</p>
 </div>
 <dl class="c function">
-<dt class="sig sig-object c" id="c.intel_compute_shared_dplls">
-<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">intel_compute_shared_dplls</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_atomic_state</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">state</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_crtc</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">crtc</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_encoder</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">encoder</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.intel_compute_shared_dplls" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.intel_dpll_compute">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">intel_dpll_compute</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_atomic_state</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">state</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_crtc</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">crtc</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_encoder</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">encoder</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.intel_dpll_compute" title="Link to this definition">¶</a><br /></dt>
 <dd><p>compute DPLL state CRTC and encoder combination</p>
 </dd></dl>
 
@@ -3247,13 +3259,13 @@ CRTC.</p>
 <p><strong>Description</strong></p>
 <p>This function computes the DPLL state for the given CRTC and encoder.</p>
 <p>The new configuration in the atomic commit <strong>state</strong> is made effective by
-calling <a class="reference internal" href="#c.intel_shared_dpll_swap_state" title="intel_shared_dpll_swap_state"><code class="xref c c-func docutils literal notranslate"><span class="pre">intel_shared_dpll_swap_state()</span></code></a>.</p>
+calling <a class="reference internal" href="#c.intel_dpll_swap_state" title="intel_dpll_swap_state"><code class="xref c c-func docutils literal notranslate"><span class="pre">intel_dpll_swap_state()</span></code></a>.</p>
 <p><strong>Return</strong></p>
 <p>0 on success, negative error code on failure.</p>
 </div>
 <dl class="c function">
-<dt class="sig sig-object c" id="c.intel_reserve_shared_dplls">
-<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">intel_reserve_shared_dplls</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_atomic_state</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">state</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_crtc</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">crtc</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_encoder</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">encoder</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.intel_reserve_shared_dplls" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.intel_dpll_reserve">
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">intel_dpll_reserve</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_atomic_state</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">state</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_crtc</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">crtc</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_encoder</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">encoder</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.intel_dpll_reserve" title="Link to this definition">¶</a><br /></dt>
 <dd><p>reserve DPLLs for CRTC and encoder combination</p>
 </dd></dl>
 
@@ -3272,16 +3284,16 @@ calling <a class="reference internal" href="#c.intel_shared_dpll_swap_state" tit
 combination in the current atomic commit <strong>state</strong> and the new <strong>crtc</strong> atomic
 state.</p>
 <p>The new configuration in the atomic commit <strong>state</strong> is made effective by
-calling <a class="reference internal" href="#c.intel_shared_dpll_swap_state" title="intel_shared_dpll_swap_state"><code class="xref c c-func docutils literal notranslate"><span class="pre">intel_shared_dpll_swap_state()</span></code></a>.</p>
+calling <a class="reference internal" href="#c.intel_dpll_swap_state" title="intel_dpll_swap_state"><code class="xref c c-func docutils literal notranslate"><span class="pre">intel_dpll_swap_state()</span></code></a>.</p>
 <p>The reserved DPLLs should be released by calling
-<a class="reference internal" href="#c.intel_release_shared_dplls" title="intel_release_shared_dplls"><code class="xref c c-func docutils literal notranslate"><span class="pre">intel_release_shared_dplls()</span></code></a>.</p>
+<a class="reference internal" href="#c.intel_dpll_release" title="intel_dpll_release"><code class="xref c c-func docutils literal notranslate"><span class="pre">intel_dpll_release()</span></code></a>.</p>
 <p><strong>Return</strong></p>
 <p>0 if all required DPLLs were successfully reserved,
 negative error code otherwise.</p>
 </div>
 <dl class="c function">
-<dt class="sig sig-object c" id="c.intel_release_shared_dplls">
-<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">intel_release_shared_dplls</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_atomic_state</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">state</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_crtc</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">crtc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.intel_release_shared_dplls" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.intel_dpll_release">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">intel_dpll_release</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_atomic_state</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">state</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_crtc</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">crtc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.intel_dpll_release" title="Link to this definition">¶</a><br /></dt>
 <dd><p>end use of DPLLs by CRTC in atomic state</p>
 </dd></dl>
 
@@ -3294,14 +3306,14 @@ negative error code otherwise.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This function releases all DPLLs reserved by <a class="reference internal" href="#c.intel_reserve_shared_dplls" title="intel_reserve_shared_dplls"><code class="xref c c-func docutils literal notranslate"><span class="pre">intel_reserve_shared_dplls()</span></code></a>
+<p>This function releases all DPLLs reserved by <a class="reference internal" href="#c.intel_dpll_reserve" title="intel_dpll_reserve"><code class="xref c c-func docutils literal notranslate"><span class="pre">intel_dpll_reserve()</span></code></a>
 from the current atomic commit <strong>state</strong> and the old <strong>crtc</strong> atomic state.</p>
 <p>The new configuration in the atomic commit <strong>state</strong> is made effective by
-calling <a class="reference internal" href="#c.intel_shared_dpll_swap_state" title="intel_shared_dpll_swap_state"><code class="xref c c-func docutils literal notranslate"><span class="pre">intel_shared_dpll_swap_state()</span></code></a>.</p>
+calling <a class="reference internal" href="#c.intel_dpll_swap_state" title="intel_dpll_swap_state"><code class="xref c c-func docutils literal notranslate"><span class="pre">intel_dpll_swap_state()</span></code></a>.</p>
 </div>
 <dl class="c function">
-<dt class="sig sig-object c" id="c.intel_update_active_dpll">
-<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">intel_update_active_dpll</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_atomic_state</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">state</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_crtc</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">crtc</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_encoder</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">encoder</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.intel_update_active_dpll" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.intel_dpll_update_active">
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">intel_dpll_update_active</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_atomic_state</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">state</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_crtc</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">crtc</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_encoder</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">encoder</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.intel_dpll_update_active" title="Link to this definition">¶</a><br /></dt>
 <dd><p>update the active DPLL for a CRTC/encoder</p>
 </dd></dl>
 
@@ -3317,12 +3329,12 @@ calling <a class="reference internal" href="#c.intel_shared_dpll_swap_state" tit
 </dl>
 <p><strong>Description</strong></p>
 <p>Update the active DPLL for the given <strong>crtc</strong>/<strong>encoder</strong> in <strong>crtc</strong>’s atomic state,
-from the port DPLLs reserved previously by <a class="reference internal" href="#c.intel_reserve_shared_dplls" title="intel_reserve_shared_dplls"><code class="xref c c-func docutils literal notranslate"><span class="pre">intel_reserve_shared_dplls()</span></code></a>. The
+from the port DPLLs reserved previously by <a class="reference internal" href="#c.intel_dpll_reserve" title="intel_dpll_reserve"><code class="xref c c-func docutils literal notranslate"><span class="pre">intel_dpll_reserve()</span></code></a>. The
 DPLL selected will be based on the current mode of the encoder’s port.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.intel_dpll_get_freq">
-<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">intel_dpll_get_freq</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_display</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">display</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.intel_shared_dpll" title="intel_shared_dpll"><span class="n"><span class="pre">intel_shared_dpll</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pll</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_dpll_hw_state</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dpll_hw_state</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.intel_dpll_get_freq" title="Link to this definition">¶</a><br /></dt>
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">intel_dpll_get_freq</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_display</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">display</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.intel_dpll" title="intel_dpll"><span class="n"><span class="pre">intel_dpll</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pll</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_dpll_hw_state</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dpll_hw_state</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.intel_dpll_get_freq" title="Link to this definition">¶</a><br /></dt>
 <dd><p>calculate the DPLL’s output frequency</p>
 </dd></dl>
 
@@ -3331,7 +3343,7 @@ DPLL selected will be based on the current mode of the encoder’s port.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">intel_display</span> <span class="pre">*display</span></code></dt><dd><p>intel_display device</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">intel_shared_dpll</span> <span class="pre">*pll</span></code></dt><dd><p>DPLL for which to calculate the output frequency</p>
+<dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">intel_dpll</span> <span class="pre">*pll</span></code></dt><dd><p>DPLL for which to calculate the output frequency</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">struct</span> <span class="pre">intel_dpll_hw_state</span> <span class="pre">*dpll_hw_state</span></code></dt><dd><p>DPLL state from which to calculate the output frequency</p>
 </dd>
@@ -3341,7 +3353,7 @@ DPLL selected will be based on the current mode of the encoder’s port.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.intel_dpll_get_hw_state">
-<span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">intel_dpll_get_hw_state</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_display</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">display</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.intel_shared_dpll" title="intel_shared_dpll"><span class="n"><span class="pre">intel_shared_dpll</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pll</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_dpll_hw_state</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dpll_hw_state</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.intel_dpll_get_hw_state" title="Link to this definition">¶</a><br /></dt>
+<span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">intel_dpll_get_hw_state</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_display</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">display</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.intel_dpll" title="intel_dpll"><span class="n"><span class="pre">intel_dpll</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pll</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_dpll_hw_state</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dpll_hw_state</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.intel_dpll_get_hw_state" title="Link to this definition">¶</a><br /></dt>
 <dd><p>readout the DPLL’s hardware state</p>
 </dd></dl>
 
@@ -3350,7 +3362,7 @@ DPLL selected will be based on the current mode of the encoder’s port.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">intel_display</span> <span class="pre">*display</span></code></dt><dd><p>intel_display device instance</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">intel_shared_dpll</span> <span class="pre">*pll</span></code></dt><dd><p>DPLL for which to calculate the output frequency</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">intel_dpll</span> <span class="pre">*pll</span></code></dt><dd><p>DPLL for which to calculate the output frequency</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">intel_dpll_hw_state</span> <span class="pre">*dpll_hw_state</span></code></dt><dd><p>DPLL’s hardware state</p>
 </dd>
@@ -3478,14 +3490,14 @@ DPLL selected will be based on the current mode of the encoder’s port.</p>
 <p><strong>Description</strong></p>
 <p>Enumeration of possible IDs for a DPLL. Real shared dpll ids must be &gt;= 0.</p>
 <dl class="c struct">
-<dt class="sig sig-object c" id="c.intel_shared_dpll_state">
-<span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">intel_shared_dpll_state</span></span></span><a class="headerlink" href="#c.intel_shared_dpll_state" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.intel_dpll_state">
+<span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">intel_dpll_state</span></span></span><a class="headerlink" href="#c.intel_dpll_state" title="Link to this definition">¶</a><br /></dt>
 <dd><p>hold the DPLL atomic state</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
 <p><strong>Definition</strong>:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct intel_shared_dpll_state {
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct intel_dpll_state {
     u8 pipe_mask;
     struct intel_dpll_hw_state hw_state;
 };
@@ -3502,10 +3514,10 @@ struct <code class="xref c c-type docutils literal notranslate"><span class="pre
 </div>
 <p><strong>Description</strong></p>
 <p>This structure holds an atomic state for the DPLL, that can represent
-either its current state (in struct <a class="reference internal" href="#c.intel_shared_dpll" title="intel_shared_dpll"><code class="xref c c-type docutils literal notranslate"><span class="pre">intel_shared_dpll</span></code></a>) or a desired
+either its current state (in struct <code class="xref c c-type docutils literal notranslate"><span class="pre">intel_shared_dpll</span></code>) or a desired
 future state which would be applied by an atomic mode set (stored in
 a struct <code class="xref c c-type docutils literal notranslate"><span class="pre">intel_atomic_state</span></code>).</p>
-<p>See also <a class="reference internal" href="#c.intel_reserve_shared_dplls" title="intel_reserve_shared_dplls"><code class="xref c c-func docutils literal notranslate"><span class="pre">intel_reserve_shared_dplls()</span></code></a> and <a class="reference internal" href="#c.intel_release_shared_dplls" title="intel_release_shared_dplls"><code class="xref c c-func docutils literal notranslate"><span class="pre">intel_release_shared_dplls()</span></code></a>.</p>
+<p>See also <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">intel_reserve_shared_dplls()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">intel_release_shared_dplls()</span></code>.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.dpll_info">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dpll_info</span></span></span><a class="headerlink" href="#c.dpll_info" title="Link to this definition">¶</a><br /></dt>
@@ -3516,7 +3528,7 @@ a struct <code class="xref c c-type docutils literal notranslate"><span class="p
 <p><strong>Definition</strong>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct dpll_info {
     const char *name;
-    const struct intel_shared_dpll_funcs *funcs;
+    const struct intel_dpll_funcs *funcs;
     enum intel_dpll_id id;
     enum intel_display_power_domain power_domain;
     bool always_on;
@@ -3543,15 +3555,15 @@ not in use by any CRTC.</p>
 </dl>
 </div>
 <dl class="c struct">
-<dt class="sig sig-object c" id="c.intel_shared_dpll">
-<span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">intel_shared_dpll</span></span></span><a class="headerlink" href="#c.intel_shared_dpll" title="Link to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.intel_dpll">
+<span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">intel_dpll</span></span></span><a class="headerlink" href="#c.intel_dpll" title="Link to this definition">¶</a><br /></dt>
 <dd><p>display PLL with tracked state and users</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
 <p><strong>Definition</strong>:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct intel_shared_dpll {
-    struct intel_shared_dpll_state state;
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct intel_dpll {
+    struct intel_dpll_state state;
     u8 index;
     u8 active_mask;
     bool on;
@@ -3616,7 +3628,7 @@ register.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.intel_dsb_commit">
-<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">intel_dsb_commit</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_dsb</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dsb</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n"><span class="pre">wait_for_vblank</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.intel_dsb_commit" title="Link to this definition">¶</a><br /></dt>
+<span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">intel_dsb_commit</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">intel_dsb</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dsb</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.intel_dsb_commit" title="Link to this definition">¶</a><br /></dt>
 <dd><p>Trigger workload execution of DSB.</p>
 </dd></dl>
 
@@ -3624,8 +3636,6 @@ register.</p>
 <p><strong>Parameters</strong></p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">intel_dsb</span> <span class="pre">*dsb</span></code></dt><dd><p>DSB context</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">wait_for_vblank</span></code></dt><dd><p>wait for vblank before executing</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
@@ -4123,7 +4133,7 @@ dma_resv ww_mutex to serialize against other operations.</p></li>
 enough to be spinlocks.</p></li>
 <li><p>All features need to come with exhaustive kernel selftests and/or
 IGT tests when appropriate</p></li>
-<li><p>All LMEM uAPI paths need to be fully restartable (_interruptible()
+<li><p>All LMEM uAPI paths need to be fully restartable (<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_interruptible()</span></code>
 for all locks/waits/sleeps)</p>
 <blockquote>
 <div><ul class="simple">
@@ -4164,7 +4174,7 @@ unified memory architecture) available.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i915_address_space</span> <span class="pre">*vm</span></code></dt><dd><p>address space to evict from</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i915_gem_ww_ctx</span> <span class="pre">*ww</span></code></dt><dd><p>An optional struct i915_gem_ww_ctx.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i915_gem_ww_ctx</span> <span class="pre">*ww</span></code></dt><dd><p>An optional <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i915_gem_ww_ctx</span></code>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">u64</span> <span class="pre">min_size</span></code></dt><dd><p>size of the desired free space</p>
 </dd>
@@ -4201,7 +4211,7 @@ memory in e.g. the shrinker.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i915_address_space</span> <span class="pre">*vm</span></code></dt><dd><p>address space to evict from</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i915_gem_ww_ctx</span> <span class="pre">*ww</span></code></dt><dd><p>An optional struct i915_gem_ww_ctx.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i915_gem_ww_ctx</span> <span class="pre">*ww</span></code></dt><dd><p>An optional <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i915_gem_ww_ctx</span></code>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_mm_node</span> <span class="pre">*target</span></code></dt><dd><p>range (and color) to evict for</p>
 </dd>
@@ -4224,10 +4234,10 @@ memory in e.g. the shrinker.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i915_address_space</span> <span class="pre">*vm</span></code></dt><dd><p>Address space to cleanse</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i915_gem_ww_ctx</span> <span class="pre">*ww</span></code></dt><dd><p>An optional struct i915_gem_ww_ctx. If not NULL, i915_gem_evict_vm
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i915_gem_ww_ctx</span> <span class="pre">*ww</span></code></dt><dd><p>An optional <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i915_gem_ww_ctx</span></code>. If not NULL, i915_gem_evict_vm
 will be able to evict vma’s locked by the ww as well.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_i915_gem_object</span> <span class="pre">**busy_bo</span></code></dt><dd><p>Optional pointer to struct drm_i915_gem_object. If not NULL, then
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_i915_gem_object</span> <span class="pre">**busy_bo</span></code></dt><dd><p>Optional pointer to <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_i915_gem_object</span></code>. If not NULL, then
 in the event <a class="reference internal" href="#c.i915_gem_evict_vm" title="i915_gem_evict_vm"><code class="xref c c-func docutils literal notranslate"><span class="pre">i915_gem_evict_vm()</span></code></a> is unable to trylock an object for eviction,
 then <strong>busy_bo</strong> will point to it. -EBUSY is also returned. The caller must drop
 the vm-&gt;mutex, before trying again to acquire the contended lock. The caller
@@ -4446,7 +4456,7 @@ mechanism.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Optionally initializes fields related to batch buffer command parsing in the
-struct intel_engine_cs based on whether the platform requires software
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">intel_engine_cs</span></code> based on whether the platform requires software
 command parsing.</p>
 </div>
 <dl class="c function">
@@ -4629,7 +4639,7 @@ for passing to userspace clients to determine what operations are permitted.</p>
 </dl>
 </div>
 <p><strong>Description</strong></p>
-<p>This struct describes an engine that a context may contain.  Engines
+<p>This <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">describes</span></code> an engine that a context may contain.  Engines
 have four types:</p>
 <blockquote>
 <div><ul class="simple">
@@ -4844,7 +4854,7 @@ explicitly by the client are expected to be isolated.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">link</span></code></dt><dd><p>place with <code class="xref c c-type docutils literal notranslate"><span class="pre">drm_i915_private.context_list</span></code></p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">client</span></code></dt><dd><p>struct i915_drm_client</p>
+<dt><code class="docutils literal notranslate"><span class="pre">client</span></code></dt><dd><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i915_drm_client</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">client_link</span></code></dt><dd><p>for linking onto <code class="xref c c-type docutils literal notranslate"><span class="pre">i915_drm_client.ctx_list</span></code></p>
 </dd>
@@ -4852,14 +4862,14 @@ explicitly by the client are expected to be isolated.</p>
 <p>A reference to a context is held by both the client who created it
 and on each request submitted to the hardware using the request
 (to ensure the hardware has access to the state until it has
-finished all pending writes). See i915_gem_context_get() and
-i915_gem_context_put() for access.</p>
+finished all pending writes). See <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">i915_gem_context_get()</span></code> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">i915_gem_context_put()</span></code> for access.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">release_work</span></code></dt><dd><p>Work item for deferred cleanup, since i915_gem_context_put() tends to
+<dt><code class="docutils literal notranslate"><span class="pre">release_work</span></code></dt><dd><p>Work item for deferred cleanup, since <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">i915_gem_context_put()</span></code> tends to
 be called from hardirq context.</p>
 <p>FIXME: The only real reason for this is <a class="reference internal" href="#c.i915_gem_engines" title="i915_gem_engines"><code class="xref c c-type docutils literal notranslate"><span class="pre">i915_gem_engines.fence</span></code></a>, all
 other callers are from process context and need at most some mild
-shuffling to pull the i915_gem_context_put() call out of a spinlock.</p>
+shuffling to pull the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">i915_gem_context_put()</span></code> call out of a spinlock.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">rcu</span></code></dt><dd><p>rcu_head for deferred freeing.</p>
 </dd>
@@ -5246,11 +5256,11 @@ view which could look something like this:</p>
 <p>In this example both the size and layout of pages in the alternative view is
 different from the normal view.</p>
 <p>Implementation and usage</p>
-<p>GGTT views are implemented using VMAs and are distinguished via enum
-i915_gtt_view_type and struct i915_gtt_view.</p>
+<p>GGTT views are implemented using VMAs and are distinguished via <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span>
+<span class="pre">i915_gtt_view_type</span></code> and <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i915_gtt_view</span></code>.</p>
 <p>A new flavour of core GEM functions which work with GGTT bound objects were
 added with the _ggtt_ infix, and sometimes with _view postfix to avoid
-renaming  in large amounts of code. They take the struct i915_gtt_view
+renaming  in large amounts of code. They take the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i915_gtt_view</span></code>
 parameter encapsulating all metadata required to implement a view.</p>
 <p>As a helper for callers which are only interested in the normal view,
 globally const i915_gtt_view_normal singleton instance exists. All old core
@@ -5258,15 +5268,15 @@ GEM API functions, the ones not taking the view parameter, are operating on,
 or with the normal GGTT view.</p>
 <p>Code wanting to add or use a new GGTT view needs to:</p>
 <ol class="arabic simple">
-<li><p>Add a new enum with a suitable name.</p></li>
+<li><p>Add a new <code class="xref c c-enum broken_xref docutils literal notranslate"><span class="pre">enum</span> <span class="pre">with</span></code> a suitable name.</p></li>
 <li><p>Extend the metadata in the i915_gtt_view structure if required.</p></li>
-<li><p>Add support to i915_get_vma_pages().</p></li>
+<li><p>Add support to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">i915_get_vma_pages()</span></code>.</p></li>
 </ol>
 <p>New views are required to build a scatter-gather table from within the
 i915_get_vma_pages function. This table is stored in the vma.gtt_view and
 exists for the lifetime of an VMA.</p>
 <p>Core API is designed to have copy semantics which means that passed in
-struct i915_gtt_view does not need to be persistent (left around after
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i915_gtt_view</span></code> does not need to be persistent (left around after
 calling the core API functions).</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.i915_gem_gtt_reserve">
@@ -5279,7 +5289,7 @@ calling the core API functions).</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i915_address_space</span> <span class="pre">*vm</span></code></dt><dd><p>the <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i915_address_space</span></code></p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i915_gem_ww_ctx</span> <span class="pre">*ww</span></code></dt><dd><p>An optional struct i915_gem_ww_ctx.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i915_gem_ww_ctx</span> <span class="pre">*ww</span></code></dt><dd><p>An optional <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i915_gem_ww_ctx</span></code>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_mm_node</span> <span class="pre">*node</span></code></dt><dd><p>the <a class="reference internal" href="drm-mm.html#c.drm_mm_node" title="drm_mm_node"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_mm_node</span></code></a> (typically i915_vma.node)</p>
 </dd>
@@ -5320,7 +5330,7 @@ asked to wait for eviction and interrupted.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i915_address_space</span> <span class="pre">*vm</span></code></dt><dd><p>the <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i915_address_space</span></code></p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i915_gem_ww_ctx</span> <span class="pre">*ww</span></code></dt><dd><p>An optional struct i915_gem_ww_ctx.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i915_gem_ww_ctx</span> <span class="pre">*ww</span></code></dt><dd><p>An optional <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i915_gem_ww_ctx</span></code>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_mm_node</span> <span class="pre">*node</span></code></dt><dd><p>the <a class="reference internal" href="drm-mm.html#c.drm_mm_node" title="drm_mm_node"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_mm_node</span></code></a> (typically i915_vma.node)</p>
 </dd>
@@ -5353,7 +5363,7 @@ for eviction, otherwise then the LRU list of objects within the GTT
 is scanned to find the first set of replacement nodes to create the hole.
 Those old overlapping nodes are evicted from the GTT (and so must be
 rebound before any future use). Any node that is currently pinned cannot
-be evicted (see i915_vma_pin()). Similar if the node’s VMA is currently
+be evicted (see <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">i915_vma_pin()</span></code>). Similar if the node’s VMA is currently
 active and #PIN_NONBLOCK is specified, that node is also skipped when
 searching for an eviction candidate. See <a class="reference internal" href="#c.i915_gem_evict_something" title="i915_gem_evict_something"><code class="xref c c-func docutils literal notranslate"><span class="pre">i915_gem_evict_something()</span></code></a> for
 the gory details on the eviction algorithm.</p>
@@ -5526,9 +5536,9 @@ the fancier new tiling formats like W, Ys and Yf.</p>
 <p>Finally note that because fences are such a restricted resource they’re
 dynamically associated with objects. Furthermore fence state is committed to
 the hardware lazily to avoid unnecessary stalls on gen2/3. Therefore code must
-explicitly call i915_gem_object_get_fence() to synchronize fencing status
+explicitly call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">i915_gem_object_get_fence()</span></code> to synchronize fencing status
 for cpu access. Also note that some code wants an unfenced view, for those
-cases the fence can be removed forcefully with i915_gem_object_put_fence().</p>
+cases the fence can be removed forcefully with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">i915_gem_object_put_fence()</span></code>.</p>
 <p>Internally these functions will synchronize with userspace access by removing
 CPU ptes into GTT mmaps (not the GTT ptes themselves) as needed.</p>
 </section>
@@ -5767,7 +5777,7 @@ vs newer platforms where the KCR is inside the media-tile.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">gsccs_res</span></code></dt><dd><p>resources for request submission for platforms that have a GSC engine.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">pxp_component</span></code></dt><dd><p>i915_pxp_component struct of the bound mei_pxp
+<dt><code class="docutils literal notranslate"><span class="pre">pxp_component</span></code></dt><dd><p>i915_pxp_component <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">of</span></code> the bound mei_pxp
 module. Only set and cleared inside component bind/unbind functions,
 which are protected by <code class="xref c c-type docutils literal notranslate"><span class="pre">tee_mutex</span></code>.</p>
 </dd>
@@ -6257,7 +6267,7 @@ range is reserved inside GuC.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Called from intel_uc_init_hw() during driver load, resume from sleep and
+<p>Called from <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">intel_uc_init_hw()</span></code> during driver load, resume from sleep and
 after a GPU reset.</p>
 <p>The firmware image should have already been fetched into memory, so only
 check that fetch succeeded, and then transfer the image to the h/w.</p>
@@ -7087,9 +7097,9 @@ functionality.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Called after HuC and GuC firmware loading during intel_uc_init_hw().</p>
+<p>Called after HuC and GuC firmware loading during <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">intel_uc_init_hw()</span></code>.</p>
 <p>This function invokes the GuC action to authenticate the HuC firmware,
-passing the offset of the RSA signature to intel_guc_auth_huc(). It then
+passing the offset of the RSA signature to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">intel_guc_auth_huc()</span></code>. It then
 waits for up to 50ms for firmware verification ACK.</p>
 </div>
 <section id="huc-memory-management">
@@ -7164,7 +7174,7 @@ selected by the user opening the stream. Perf has support for grouping
 events, but each event in the group is configured, validated and
 authenticated individually with separate system calls.</p>
 <p>i915 perf stream configurations are provided as an array of u64 (key,value)
-pairs, instead of a fixed struct with multiple miscellaneous config members,
+pairs, instead of a fixed <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">with</span></code> multiple miscellaneous config members,
 interleaved with event-type specific members.</p>
 <p>i915 perf doesn’t support exposing metrics via an mmap’d circular buffer.
 The supported metrics are being written to memory by the GPU unsynchronized
@@ -7260,7 +7270,7 @@ it felt like a kludge to being using the raw field for this purpose.</p>
 </li>
 <li><p>It felt like our perf based PMU was making some technical compromises
 just for the sake of using perf:</p>
-<p>perf_event_open() requires events to either relate to a pid or a specific
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">perf_event_open()</span></code> requires events to either relate to a pid or a specific
 cpu core, while our device pmu related to neither.  Events opened with a
 pid will be automatically enabled/disabled according to the scheduling of
 that process - so not appropriate for us. When an event is related to a
@@ -7526,7 +7536,7 @@ type of configured stream.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">oa_config</span></code></dt><dd><p>The OA configuration used by the stream.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">oa_config_bos</span></code></dt><dd><p>A list of struct i915_oa_config_bo allocated lazily
+<dt><code class="docutils literal notranslate"><span class="pre">oa_config_bos</span></code></dt><dd><p>A list of <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">i915_oa_config_bo</span></code> allocated lazily
 each time <strong>oa_config</strong> changes.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">pinned_ctx</span></code></dt><dd><p>The OA context specific information.</p>
@@ -7596,9 +7606,9 @@ buffer should be checked for available data.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct i915_perf_stream_ops {
     void (*enable)(struct i915_perf_stream *stream);
     void (*disable)(struct i915_perf_stream *stream);
-    void (*poll_wait)(struct i915_perf_stream *stream,struct file *file, poll_table *wait);
+    void (*poll_wait)(struct i915_perf_stream *stream, struct file *file, poll_table *wait);
     int (*wait_unlocked)(struct i915_perf_stream *stream);
-    int (*read)(struct i915_perf_stream *stream,char __user *buf,size_t count, size_t *offset);
+    int (*read)(struct i915_perf_stream *stream, char __user *buf, size_t count, size_t *offset);
     void (*destroy)(struct i915_perf_stream *stream);
 };
 </pre></div>
@@ -7618,7 +7628,7 @@ once there is something ready to read() for the stream</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">wait_unlocked</span></code></dt><dd><p>For handling a blocking read, wait until there is
 something to ready to read() for the stream. E.g. wait on the same
-wait queue that would be passed to poll_wait().</p>
+wait queue that would be passed to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">poll_wait()</span></code>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">read</span></code></dt><dd><p>Copy buffered metrics as records to userspace
 <strong>buf</strong>: the userspace, destination buffer
@@ -7684,18 +7694,18 @@ rule out defining new properties with ordering requirements in the future.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>See i915_perf_ioctl_open() for interface details.</p>
+<p>See <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">i915_perf_ioctl_open()</span></code> for interface details.</p>
 <p>Implements further stream config validation and stream initialization on
 behalf of <a class="reference internal" href="#c.i915_perf_open_ioctl" title="i915_perf_open_ioctl"><code class="xref c c-func docutils literal notranslate"><span class="pre">i915_perf_open_ioctl()</span></code></a> with the <code class="xref c c-type docutils literal notranslate"><span class="pre">gt-&gt;perf</span></code>.lock mutex
 taken to serialize with any non-file-operation driver hooks.</p>
-<p>In the case where userspace is interested in OA unit metrics then further
-config validation and stream initialization details will be handled by
-<a class="reference internal" href="#c.i915_oa_stream_init" title="i915_oa_stream_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">i915_oa_stream_init()</span></code></a>. The code here should only validate config state that
-will be relevant to all stream types / backends.</p>
 <p><strong>Note</strong></p>
 <p>at this point the <strong>props</strong> have only been validated in isolation and
 it’s still necessary to validate that the combination of properties makes
 sense.</p>
+<p>In the case where userspace is interested in OA unit metrics then further
+config validation and stream initialization details will be handled by
+<a class="reference internal" href="#c.i915_oa_stream_init" title="i915_oa_stream_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">i915_oa_stream_init()</span></code></a>. The code here should only validate config state that
+will be relevant to all stream types / backends.</p>
 <p><strong>Return</strong></p>
 <p>zero on success or a negative error code.</p>
 </div>
@@ -7738,7 +7748,7 @@ with any non-file-operation driver hooks.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>The entry point for handling a read() on a stream file descriptor from
-userspace. Most of the work is left to the i915_perf_read_locked() and
+userspace. Most of the work is left to the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">i915_perf_read_locked()</span></code> and
 <a class="reference internal" href="#c.i915_perf_stream_ops" title="i915_perf_stream_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">i915_perf_stream_ops-&gt;read</span></code></a> but to save having stream implementations (of
 which we might have multiple later) we handle blocking read here.</p>
 <p>We can also consistently treat trying to read from a disabled stream
@@ -7812,7 +7822,7 @@ to attempt to read from the stream (-EIO).</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.i915_perf_poll">
 <span class="n"><span class="pre">__poll_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i915_perf_poll</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.i915_perf_poll" title="file"><span class="n"><span class="pre">file</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">file</span></span>, <span class="n"><span class="pre">poll_table</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">wait</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i915_perf_poll" title="Link to this definition">¶</a><br /></dt>
-<dd><p>call poll_wait() with a suitable wait queue for stream</p>
+<dd><p>call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">poll_wait()</span></code> with a suitable wait queue for stream</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -7825,7 +7835,7 @@ to attempt to read from the stream (-EIO).</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>For handling userspace polling on an i915 perf stream, this ensures
-poll_wait() gets called with a wait queue that will be woken for new stream
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">poll_wait()</span></code> gets called with a wait queue that will be woken for new stream
 data.</p>
 <p><strong>Note</strong></p>
 <p>Implementation deferred to <a class="reference internal" href="#c.i915_perf_poll_locked" title="i915_perf_poll_locked"><code class="xref c c-func docutils literal notranslate"><span class="pre">i915_perf_poll_locked()</span></code></a></p>
@@ -7835,7 +7845,7 @@ data.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.i915_perf_poll_locked">
 <span class="n"><span class="pre">__poll_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i915_perf_poll_locked</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.i915_perf_stream" title="i915_perf_stream"><span class="n"><span class="pre">i915_perf_stream</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">stream</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.i915_perf_poll_locked" title="file"><span class="n"><span class="pre">file</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">file</span></span>, <span class="n"><span class="pre">poll_table</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">wait</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i915_perf_poll_locked" title="Link to this definition">¶</a><br /></dt>
-<dd><p>poll_wait() with a suitable wait queue for stream</p>
+<dd><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">poll_wait()</span></code> with a suitable wait queue for stream</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -7850,7 +7860,7 @@ data.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>For handling userspace polling on an i915 perf stream, this calls through to
-<a class="reference internal" href="#c.i915_perf_stream_ops" title="i915_perf_stream_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">i915_perf_stream_ops-&gt;poll_wait</span></code></a> to call poll_wait() with a wait queue that
+<a class="reference internal" href="#c.i915_perf_stream_ops" title="i915_perf_stream_ops"><code class="xref c c-type docutils literal notranslate"><span class="pre">i915_perf_stream_ops-&gt;poll_wait</span></code></a> to call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">poll_wait()</span></code> with a wait queue that
 will be woken for new stream data.</p>
 <p><strong>Return</strong></p>
 <p>any poll events that are ready without sleeping</p>
@@ -7874,7 +7884,7 @@ will be woken for new stream data.</p>
     void (*disable_metric_set)(struct i915_perf_stream *stream);
     void (*oa_enable)(struct i915_perf_stream *stream);
     void (*oa_disable)(struct i915_perf_stream *stream);
-    int (*read)(struct i915_perf_stream *stream,char __user *buf,size_t count, size_t *offset);
+    int (*read)(struct i915_perf_stream *stream, char __user *buf, size_t count, size_t *offset);
     u32 (*oa_hw_tail_read)(struct i915_perf_stream *stream);
 };
 </pre></div>
@@ -8024,7 +8034,7 @@ really data ready for userspace yet.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.i915_oa_poll_wait">
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">i915_oa_poll_wait</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.i915_perf_stream" title="i915_perf_stream"><span class="n"><span class="pre">i915_perf_stream</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">stream</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.i915_oa_poll_wait" title="file"><span class="n"><span class="pre">file</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">file</span></span>, <span class="n"><span class="pre">poll_table</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">wait</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.i915_oa_poll_wait" title="Link to this definition">¶</a><br /></dt>
-<dd><p>call poll_wait() for an OA stream poll()</p>
+<dd><p>call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">poll_wait()</span></code> for an OA stream poll()</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -8097,7 +8107,7 @@ context</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">sseu</span></code></dt><dd><p>internal SSEU configuration computed either from the userspace
 specified configuration in the opening parameters or a default value
-(see get_default_sseu_config())</p>
+(see <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_default_sseu_config()</span></code>)</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">poll_oa_period</span></code></dt><dd><p>The period in nanoseconds at which the CPU will check for OA
 data availability</p>
@@ -8398,9 +8408,9 @@ cases, deviating from) the kernel coding style.</p>
 macros. Do <strong>not</strong> mass change existing definitions just to update the style.</p>
 <section id="file-layout">
 <h4>File Layout<a class="headerlink" href="#file-layout" title="Link to this heading">¶</a></h4>
-<p>Keep helper macros near the top. For example, _PIPE() and friends.</p>
+<p>Keep helper macros near the top. For example, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_PIPE()</span></code> and friends.</p>
 <p>Prefix macros that generally should not be used outside of this file with
-underscore ‘_’. For example, _PIPE() and friends, single instances of
+underscore ‘_’. For example, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_PIPE()</span></code> and friends, single instances of
 registers that are defined solely for the use by function-like macros.</p>
 <p>Avoid using the underscore prefixed macros outside of this file. There are
 exceptions, but keep them to a minimum.</p>

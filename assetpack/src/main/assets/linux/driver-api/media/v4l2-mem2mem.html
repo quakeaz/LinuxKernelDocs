@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -280,7 +280,7 @@ until the device enters a state when it can be stopped.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">rdy_queue</span></code></dt><dd><p>List of V4L2 mem-to-mem queues</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">rdy_spinlock</span></code></dt><dd><p>spin lock to protect the struct usage</p>
+<dt><code class="docutils literal notranslate"><span class="pre">rdy_spinlock</span></code></dt><dd><p>spin lock to protect the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">usage</span></code></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">num_rdy</span></code></dt><dd><p>number of buffers ready to be processed</p>
 </dd>
@@ -473,17 +473,17 @@ not be called directly from the <a class="reference internal" href="#c.v4l2_m2m_
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">v4l2_m2m_ctx</span> <span class="pre">*m2m_ctx</span></code></dt><dd><p>m2m context assigned to the instance given by struct <a class="reference internal" href="#c.v4l2_m2m_ctx" title="v4l2_m2m_ctx"><code class="xref c c-type docutils literal notranslate"><span class="pre">v4l2_m2m_ctx</span></code></a></p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">enum</span> <span class="pre">vb2_buffer_state</span> <span class="pre">state</span></code></dt><dd><p>vb2 buffer state passed to v4l2_m2m_buf_done().</p>
+<dt><code class="docutils literal notranslate"><span class="pre">enum</span> <span class="pre">vb2_buffer_state</span> <span class="pre">state</span></code></dt><dd><p>vb2 buffer state passed to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">v4l2_m2m_buf_done()</span></code>.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
 <p>Drivers that set V4L2_BUF_CAP_SUPPORTS_M2M_HOLD_CAPTURE_BUF must use this
-function instead of job_finish() to take held buffers into account. It is
+function instead of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">job_finish()</span></code> to take held buffers into account. It is
 optional for other drivers.</p>
 <p>This function removes the source buffer from the ready list and returns
 it with the given state. The same is done for the destination buffer, unless
 it is marked ‘held’. In that case the buffer is kept on the ready list.</p>
-<p>After that the job is finished (see job_finish()).</p>
+<p>After that the job is finished (see <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">job_finish()</span></code>).</p>
 <p>This allows for multiple output buffers to be used to fill in a single
 capture buffer. This is typically used by stateless decoders where
 multiple e.g. H.264 slices contribute to a single decoded frame.</p>
@@ -940,7 +940,7 @@ to be used for initializing vb2_queues</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Usually called from driver’s release() function.</p>
+<p>Usually called from driver’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">release()</span></code> function.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.v4l2_m2m_buf_queue">

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -163,7 +163,7 @@ kernel.  Such utilities are available, for example, from
 &lt;<a class="reference external" href="http://suspend.sourceforge.net">http://suspend.sourceforge.net</a>&gt;.  You may want to have a look at them if you
 are going to develop your own suspend/resume utilities.</p>
 <p>The interface consists of a character device providing the open(),
-release(), read(), and write() operations as well as several ioctl()
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">release()</span></code>, read(), and write() operations as well as several ioctl()
 commands defined in include/linux/suspend_ioctls.h .  The major and minor
 numbers of the device are, respectively, 10 and 231, and they can
 be read from /sys/class/misc/snapshot/dev.</p>
@@ -222,8 +222,8 @@ SNAPSHOT_ALLOC_SWAP_PAGE</p>
 </dd>
 <dt>SNAPSHOT_SET_SWAP_AREA</dt><dd><p>set the resume partition and the offset (in &lt;PAGE_SIZE&gt;
 units) from the beginning of the partition at which the swap header is
-located (the last ioctl() argument should point to a struct
-resume_swap_area, as defined in kernel/power/suspend_ioctls.h,
+located (the last ioctl() argument should point to a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">resume_swap_area</span></code>, as defined in kernel/power/suspend_ioctls.h,
 containing the resume device specification and the offset); for swap
 partitions the offset is always 0, but it is different from zero for
 swap files (see <a class="reference internal" href="swsusp-and-swap-files.html"><span class="doc">Using swap files with software suspend (swsusp)</span></a> for
@@ -256,7 +256,7 @@ a page in the previous call, you will only be able to read()
 </ul>
 <p>The device’s write() operation is used for uploading the system memory snapshot
 into the kernel.  It has the same limitations as the read() operation.</p>
-<p>The release() operation frees all memory allocated for the snapshot image
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">release()</span></code> operation frees all memory allocated for the snapshot image
 and all swap pages allocated with SNAPSHOT_ALLOC_SWAP_PAGE (if any).
 Thus it is not necessary to use either SNAPSHOT_FREE or
 SNAPSHOT_FREE_SWAP_PAGES before closing the device (in fact it will also
@@ -283,7 +283,7 @@ SNAPSHOT_ATOMIC_RESTORE will not succeed.  Still, this is not a fool-proof
 mechanism and the userland utilities using the interface SHOULD use additional
 means, such as checksums, to ensure the integrity of the snapshot image.</p>
 <p>The suspending and resuming utilities MUST lock themselves in memory,
-preferably using mlockall(), before calling SNAPSHOT_FREEZE.</p>
+preferably using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">mlockall()</span></code>, before calling SNAPSHOT_FREEZE.</p>
 <p>The suspending utility MUST check the value stored by SNAPSHOT_CREATE_IMAGE
 in the memory location pointed to by the last argument of ioctl() and proceed
 in accordance with it:</p>

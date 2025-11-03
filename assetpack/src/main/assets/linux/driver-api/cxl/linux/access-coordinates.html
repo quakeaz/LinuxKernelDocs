@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -211,7 +211,7 @@ B(L1) - Link bandwidth between EP0 and SW0DSP0
 B(SW0) - Bandwidth for the switch from SW0 CDAT SSLBIS.
 B(L0) - Link bandwidth between SW0 and RP0
 B(RP0) - Bandwidth from root port to CPU via SRAT and HMAT (Generic Port).
-The total read and write bandwidth is the min() of all these parts.</p>
+The total read and write bandwidth is the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">min()</span></code> of all these parts.</p>
 <p>To calculate the link bandwidth:
 LinkOperatingFrequency (GT/s) is the current negotiated link speed.
 DataRatePerLink (MB/s) = LinkOperatingFrequency / 8
@@ -278,27 +278,27 @@ Min(SW3SSLBIS for SW3DSP1 (EP7), EP7 DSLBIS, EP7 Upstream link))))</p>
 </dl>
 </dd>
 </dl>
-<p>The calculation starts at cxl_region_shared_upstream_perf_update(). A xarray
+<p>The calculation starts at <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">cxl_region_shared_upstream_perf_update()</span></code>. A xarray
 is created to collect all the endpoint bandwidths via the
-<a class="reference internal" href="../theory-of-operation.html#c.cxl_endpoint_gather_bandwidth" title="cxl_endpoint_gather_bandwidth"><code class="xref c c-func docutils literal notranslate"><span class="pre">cxl_endpoint_gather_bandwidth()</span></code></a> function. The min() of bandwidth from the
+<a class="reference internal" href="../theory-of-operation.html#c.cxl_endpoint_gather_bandwidth" title="cxl_endpoint_gather_bandwidth"><code class="xref c c-func docutils literal notranslate"><span class="pre">cxl_endpoint_gather_bandwidth()</span></code></a> function. The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">min()</span></code> of bandwidth from the
 endpoint CDAT and the upstream link bandwidth is calculated. If the endpoint
-has a CXL switch as a parent, then min() of calculated bandwidth and the
+has a CXL switch as a parent, then <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">min()</span></code> of calculated bandwidth and the
 bandwidth from the SSLBIS for the switch downstream port that is associated
 with the endpoint is calculated. The final bandwidth is stored in a
-‘struct cxl_perf_ctx’ in the xarray indexed by a device pointer. If the
+‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cxl_perf_ctx</span></code>’ in the xarray indexed by a device pointer. If the
 endpoint is direct attached to a root port (RP), the device pointer would be an
 RP device. If the endpoint is behind a switch, the device pointer would be the
 upstream device of the parent switch.</p>
 <p>At the next stage, the code walks through one or more switches if they exist
 in the topology. For endpoints directly attached to RPs, this step is skipped.
-If there is another switch upstream, the code takes the min() of the current
+If there is another switch upstream, the code takes the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">min()</span></code> of the current
 gathered bandwidth and the upstream link bandwidth. If there’s a switch
 upstream, then the SSLBIS of the upstream switch.</p>
 <p>Once the topology walk reaches the RP, whether it’s direct attached endpoints
 or walking through the switch(es), <a class="reference internal" href="../theory-of-operation.html#c.cxl_rp_gather_bandwidth" title="cxl_rp_gather_bandwidth"><code class="xref c c-func docutils literal notranslate"><span class="pre">cxl_rp_gather_bandwidth()</span></code></a> is called. At
 this point all the bandwidths are aggregated per each host bridge, which is
 also the index for the resulting xarray.</p>
-<p>The next step is to take the min() of the per host bridge bandwidth and the
+<p>The next step is to take the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">min()</span></code> of the per host bridge bandwidth and the
 bandwidth from the Generic Port (GP). The bandwidths for the GP are retrieved
 via ACPI tables (<a class="reference internal" href="../platform/acpi/srat.html"><span class="doc">SRAT</span></a> and
 <a class="reference internal" href="../platform/acpi/hmat.html"><span class="doc">HMAT</span></a>). The minimum bandwidth are aggregated

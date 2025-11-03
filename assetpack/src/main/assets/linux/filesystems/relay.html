@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -260,7 +260,7 @@ ended before using read() with overwrite mode.  Sub-buffer
 padding is automatically removed and will not be seen by
 the reader.</p></td>
 </tr>
-<tr class="row-even"><td><p>sendfile()</p></td>
+<tr class="row-even"><td><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sendfile()</span></code></p></td>
 <td><p>transfer data from a channel buffer to an output file
 descriptor. Sub-buffer padding is automatically removed
 and will not be seen by the reader.</p></td>
@@ -343,13 +343,13 @@ filesystem’s directory removal functions should be used for that,
 e.g. <a class="reference internal" href="api-summary.html#c.debugfs_remove" title="debugfs_remove"><code class="xref c c-func docutils literal notranslate"><span class="pre">debugfs_remove()</span></code></a>.</p>
 <p>In order for a channel to be created and the host filesystem’s files
 associated with its channel buffers, the user must provide definitions
-for two callback functions, create_buf_file() and remove_buf_file().
-create_buf_file() is called once for each per-cpu buffer from
+for two callback functions, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">create_buf_file()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove_buf_file()</span></code>.
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">create_buf_file()</span></code> is called once for each per-cpu buffer from
 <a class="reference internal" href="../core-api/kernel-api.html#c.relay_open" title="relay_open"><code class="xref c c-func docutils literal notranslate"><span class="pre">relay_open()</span></code></a> and allows the user to create the file which will be used
 to represent the corresponding channel buffer.  The callback should
 return the dentry of the file created to represent the channel buffer.
-remove_buf_file() must also be defined; it’s responsible for deleting
-the file(s) created in create_buf_file() and is called during
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove_buf_file()</span></code> must also be defined; it’s responsible for deleting
+the file(s) created in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">create_buf_file()</span></code> and is called during
 <a class="reference internal" href="../core-api/kernel-api.html#c.relay_close" title="relay_close"><code class="xref c c-func docutils literal notranslate"><span class="pre">relay_close()</span></code></a>.</p>
 <p>Here are some typical definitions for these callbacks, in this case
 using debugfs:</p>
@@ -390,7 +390,7 @@ static struct rchan_callbacks relay_callbacks =
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>chan = relay_open(&quot;cpu&quot;, NULL, SUBBUF_SIZE, N_SUBBUFS, &amp;relay_callbacks, NULL);
 </pre></div>
 </div>
-<p>If the create_buf_file() callback fails, or isn’t defined, channel
+<p>If the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">create_buf_file()</span></code> callback fails, or isn’t defined, channel
 creation and thus <a class="reference internal" href="../core-api/kernel-api.html#c.relay_open" title="relay_open"><code class="xref c c-func docutils literal notranslate"><span class="pre">relay_open()</span></code></a> will fail.</p>
 <p>The total size of each per-cpu buffer is calculated by multiplying the
 number of sub-buffers by the sub-buffer size passed into <a class="reference internal" href="../core-api/kernel-api.html#c.relay_open" title="relay_open"><code class="xref c c-func docutils literal notranslate"><span class="pre">relay_open()</span></code></a>.
@@ -405,18 +405,18 @@ values to use are best decided after some experimentation; in general,
 though, it’s safe to assume that having only 1 sub-buffer is a bad
 idea - you’re guaranteed to either overwrite data or lose events
 depending on the channel mode being used.</p>
-<p>The create_buf_file() implementation can also be defined in such a way
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">create_buf_file()</span></code> implementation can also be defined in such a way
 as to allow the creation of a single ‘global’ buffer instead of the
 default per-cpu set.  This can be useful for applications interested
 mainly in seeing the relative ordering of system-wide events without
 the need to bother with saving explicit timestamps for the purpose of
 merging/sorting per-cpu files in a postprocessing step.</p>
-<p>To have <a class="reference internal" href="../core-api/kernel-api.html#c.relay_open" title="relay_open"><code class="xref c c-func docutils literal notranslate"><span class="pre">relay_open()</span></code></a> create a global buffer, the create_buf_file()
+<p>To have <a class="reference internal" href="../core-api/kernel-api.html#c.relay_open" title="relay_open"><code class="xref c c-func docutils literal notranslate"><span class="pre">relay_open()</span></code></a> create a global buffer, the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">create_buf_file()</span></code>
 implementation should set the value of the is_global outparam to a
 non-zero value in addition to creating the file that will be used to
 represent the single buffer.  In the case of a global buffer,
-create_buf_file() and remove_buf_file() will be called only once.  The
-normal channel-writing functions, e.g. relay_write(), can still be
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">create_buf_file()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove_buf_file()</span></code> will be called only once.  The
+normal channel-writing functions, e.g. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">relay_write()</span></code>, can still be
 used - writes from any cpu will transparently end up in the global
 buffer - but since it is a global buffer, callers should make sure
 they use the proper locking for such a buffer, either by wrapping
@@ -424,15 +424,15 @@ writes in a spinlock, or by copying a write function from relay.h and
 creating a local version that internally does the proper locking.</p>
 <p>The private_data passed into <a class="reference internal" href="../core-api/kernel-api.html#c.relay_open" title="relay_open"><code class="xref c c-func docutils literal notranslate"><span class="pre">relay_open()</span></code></a> allows clients to associate
 user-defined data with a channel, and is immediately available
-(including in create_buf_file()) via chan-&gt;private_data or
+(including in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">create_buf_file()</span></code>) via chan-&gt;private_data or
 buf-&gt;chan-&gt;private_data.</p>
 </section>
 <section id="channel-modes">
 <h3>Channel ‘modes’<a class="headerlink" href="#channel-modes" title="Link to this heading">¶</a></h3>
 <p>relay channels can be used in either of two modes - ‘overwrite’ or
 ‘no-overwrite’.  The mode is entirely determined by the implementation
-of the subbuf_start() callback, as described below.  The default if no
-subbuf_start() callback is defined is ‘no-overwrite’ mode.  If the
+of the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">subbuf_start()</span></code> callback, as described below.  The default if no
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">subbuf_start()</span></code> callback is defined is ‘no-overwrite’ mode.  If the
 default mode suits your needs, and you plan to use the read()
 interface to retrieve channel data, you can ignore the details of this
 section, as it pertains mainly to mmap() implementations.</p>
@@ -451,13 +451,13 @@ subdivided into one or more sub-buffers.  Messages are written into
 the current sub-buffer of the channel’s current per-cpu buffer via the
 write functions described below.  Whenever a message can’t fit into
 the current sub-buffer, because there’s no room left for it, the
-client is notified via the subbuf_start() callback that a switch to a
+client is notified via the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">subbuf_start()</span></code> callback that a switch to a
 new sub-buffer is about to occur.  The client uses this callback to 1)
 initialize the next sub-buffer if appropriate 2) finalize the previous
 sub-buffer if appropriate and 3) return a boolean value indicating
 whether or not to actually move on to the next sub-buffer.</p>
 <p>To implement ‘no-overwrite’ mode, the userspace client provides
-an implementation of the subbuf_start() callback something like the
+an implementation of the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">subbuf_start()</span></code> callback something like the
 following:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>static int subbuf_start(struct rchan_buf *buf,
                         void *subbuf,
@@ -483,11 +483,11 @@ current set of ready sub-buffers.  For the <a class="reference internal" href=".
 to make sense, the consumer is responsible for notifying the relay
 interface when sub-buffers have been consumed via
 <a class="reference internal" href="../core-api/kernel-api.html#c.relay_subbufs_consumed" title="relay_subbufs_consumed"><code class="xref c c-func docutils literal notranslate"><span class="pre">relay_subbufs_consumed()</span></code></a>.  Any subsequent attempts to write into the
-buffer will again invoke the subbuf_start() callback with the same
+buffer will again invoke the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">subbuf_start()</span></code> callback with the same
 parameters; only when the consumer has consumed one or more of the
 ready sub-buffers will <a class="reference internal" href="../core-api/kernel-api.html#c.relay_buf_full" title="relay_buf_full"><code class="xref c c-func docutils literal notranslate"><span class="pre">relay_buf_full()</span></code></a> return 0, in which case the
 buffer switch can continue.</p>
-<p>The implementation of the subbuf_start() callback for ‘overwrite’ mode
+<p>The implementation of the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">subbuf_start()</span></code> callback for ‘overwrite’ mode
 would be very similar:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>static int subbuf_start(struct rchan_buf *buf,
                         void *subbuf,
@@ -508,20 +508,20 @@ callback always returns 1, causing the buffer switch to occur
 unconditionally.  It’s also meaningless for the client to use the
 <a class="reference internal" href="../core-api/kernel-api.html#c.relay_subbufs_consumed" title="relay_subbufs_consumed"><code class="xref c c-func docutils literal notranslate"><span class="pre">relay_subbufs_consumed()</span></code></a> function in this mode, as it’s never
 consulted.</p>
-<p>The default subbuf_start() implementation, used if the client doesn’t
-define any callbacks, or doesn’t define the subbuf_start() callback,
+<p>The default <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">subbuf_start()</span></code> implementation, used if the client doesn’t
+define any callbacks, or doesn’t define the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">subbuf_start()</span></code> callback,
 implements the simplest possible ‘no-overwrite’ mode, i.e., it does
 nothing but return 0.</p>
 <p>Header information can be reserved at the beginning of each sub-buffer
-by calling the subbuf_start_reserve() helper function from within the
-subbuf_start() callback.  This reserved area can be used to store
+by calling the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">subbuf_start_reserve()</span></code> helper function from within the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">subbuf_start()</span></code> callback.  This reserved area can be used to store
 whatever information the client wants.  In the example above, room is
 reserved in each sub-buffer to store the padding count for that
 sub-buffer.  This is filled in for the previous sub-buffer in the
-subbuf_start() implementation; the padding value for the previous
-sub-buffer is passed into the subbuf_start() callback along with a
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">subbuf_start()</span></code> implementation; the padding value for the previous
+sub-buffer is passed into the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">subbuf_start()</span></code> callback along with a
 pointer to the previous sub-buffer, since the padding value isn’t
-known until a sub-buffer is filled.  The subbuf_start() callback is
+known until a sub-buffer is filled.  The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">subbuf_start()</span></code> callback is
 also called for the first sub-buffer when the channel is opened, to
 give the client a chance to reserve space in it.  In this case the
 previous sub-buffer pointer passed into the callback will be NULL, so
@@ -531,30 +531,30 @@ writing into the previous sub-buffer.</p>
 <section id="writing-to-a-channel">
 <h3>Writing to a channel<a class="headerlink" href="#writing-to-a-channel" title="Link to this heading">¶</a></h3>
 <p>Kernel clients write data into the current cpu’s channel buffer using
-relay_write() or __relay_write().  relay_write() is the main logging
-function - it uses local_irqsave() to protect the buffer and should be
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">relay_write()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__relay_write()</span></code>.  <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">relay_write()</span></code> is the main logging
+function - it uses <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">local_irqsave()</span></code> to protect the buffer and should be
 used if you might be logging from interrupt context.  If you know
 you’ll never be logging from interrupt context, you can use
-__relay_write(), which only disables preemption.  These functions
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__relay_write()</span></code>, which only disables preemption.  These functions
 don’t return a value, so you can’t determine whether or not they
 failed - the assumption is that you wouldn’t want to check a return
 value in the fast logging path anyway, and that they’ll always succeed
 unless the buffer is full and no-overwrite mode is being used, in
-which case you can detect a failed write in the subbuf_start()
+which case you can detect a failed write in the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">subbuf_start()</span></code>
 callback by calling the <a class="reference internal" href="../core-api/kernel-api.html#c.relay_buf_full" title="relay_buf_full"><code class="xref c c-func docutils literal notranslate"><span class="pre">relay_buf_full()</span></code></a> helper function.</p>
-<p>relay_reserve() is used to reserve a slot in a channel buffer which
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">relay_reserve()</span></code> is used to reserve a slot in a channel buffer which
 can be written to later.  This would typically be used in applications
 that need to write directly into a channel buffer without having to
 stage data in a temporary buffer beforehand.  Because the actual write
 may not happen immediately after the slot is reserved, applications
-using relay_reserve() can keep a count of the number of bytes actually
+using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">relay_reserve()</span></code> can keep a count of the number of bytes actually
 written, either in space reserved in the sub-buffers themselves or as
 a separate array.  See the ‘reserve’ example in the relay-apps tarball
 at <a class="reference external" href="http://relayfs.sourceforge.net">http://relayfs.sourceforge.net</a> for an example of how this can be
 done.  Because the write is under control of the client and is
-separated from the reserve, relay_reserve() doesn’t protect the buffer
+separated from the reserve, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">relay_reserve()</span></code> doesn’t protect the buffer
 at all - it’s up to the client to provide the appropriate
-synchronization when using relay_reserve().</p>
+synchronization when using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">relay_reserve()</span></code>.</p>
 </section>
 <section id="closing-a-channel">
 <h3>Closing a channel<a class="headerlink" href="#closing-a-channel" title="Link to this heading">¶</a></h3>
@@ -574,8 +574,8 @@ state without reallocating channel buffer memory or destroying
 existing mappings.  It should however only be called when it’s safe to
 do so, i.e., when the channel isn’t currently being written to.</p>
 <p>Finally, there are a couple of utility callbacks that can be used for
-different purposes.  buf_mapped() is called whenever a channel buffer
-is mmapped from user space and buf_unmapped() is called when it’s
+different purposes.  <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">buf_mapped()</span></code> is called whenever a channel buffer
+is mmapped from user space and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">buf_unmapped()</span></code> is called when it’s
 unmapped.  The client can use this notification to trigger actions
 within the kernel application, such as enabling/disabling logging to
 the channel.</p>

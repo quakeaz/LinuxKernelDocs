@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -202,7 +202,7 @@ ids for predefined purposes.</p>
 <p>Retrieve the global lock id for an OF phandle-based specific lock.
 This function provides a means for DT users of a hwspinlock module
 to get the global lock id of a specific hwspinlock, so that it can
-be requested using the normal hwspin_lock_request_specific() API.</p>
+be requested using the normal <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hwspin_lock_request_specific()</span></code> API.</p>
 <p>The function returns a lock id number on success, -EPROBE_DEFER if
 the hwspinlock device is not yet registered with the core, or other
 error values.</p>
@@ -447,9 +447,9 @@ if the hwspinlock is still in use).</p>
 </section>
 <section id="important-structs">
 <h2>Important structs<a class="headerlink" href="#important-structs" title="Link to this heading">¶</a></h2>
-<p>struct hwspinlock_device is a device which usually contains a bank
+<p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hwspinlock_device</span></code> is a device which usually contains a bank
 of hardware locks. It is registered by the underlying hwspinlock
-implementation using the hwspin_lock_register() API.</p>
+implementation using the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">hwspin_lock_register()</span></code> API.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>/**
 * struct hwspinlock_device - a device which usually spans numerous hwspinlocks
 * @dev: underlying device, will be used to invoke runtime PM api
@@ -467,7 +467,7 @@ struct hwspinlock_device {
 };
 </pre></div>
 </div>
-<p>struct hwspinlock_device contains an array of hwspinlock structs, each
+<p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hwspinlock_device</span></code> contains an array of hwspinlock structs, each
 of which represents a single hardware lock:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>/**
 * struct hwspinlock - this struct represents a single hwspinlock instance
@@ -488,7 +488,7 @@ initialized by the hwspinlock core itself.</p>
 </section>
 <section id="implementation-callbacks">
 <h2>Implementation callbacks<a class="headerlink" href="#implementation-callbacks" title="Link to this heading">¶</a></h2>
-<p>There are three possible callbacks defined in ‘struct hwspinlock_ops’:</p>
+<p>There are three possible callbacks defined in ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">hwspinlock_ops</span></code>’:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct hwspinlock_ops {
         int (*trylock)(struct hwspinlock *lock);
         void (*unlock)(struct hwspinlock *lock);
@@ -497,13 +497,13 @@ initialized by the hwspinlock core itself.</p>
 </pre></div>
 </div>
 <p>The first two callbacks are mandatory:</p>
-<p>The -&gt;trylock() callback should make a single attempt to take the lock, and
+<p>The -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">trylock()</span></code> callback should make a single attempt to take the lock, and
 return 0 on failure and 1 on success. This callback may <strong>not</strong> sleep.</p>
-<p>The -&gt;unlock() callback releases the lock. It always succeed, and it, too,
+<p>The -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">unlock()</span></code> callback releases the lock. It always succeed, and it, too,
 may <strong>not</strong> sleep.</p>
-<p>The -&gt;relax() callback is optional. It is called by hwspinlock core while
+<p>The -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">relax()</span></code> callback is optional. It is called by hwspinlock core while
 spinning on a lock, and can be used by the underlying implementation to force
-a delay between two successive invocations of -&gt;trylock(). It may <strong>not</strong> sleep.</p>
+a delay between two successive invocations of -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">trylock()</span></code>. It may <strong>not</strong> sleep.</p>
 </section>
 </section>
 

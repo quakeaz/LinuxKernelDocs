@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -601,15 +601,15 @@ detail in <a class="reference internal" href="vlocks.html"><span class="doc">vlo
 <div><p>The current ARM-based implementation is split between
 arch/arm/common/mcpm_head.S (low-level inbound CPU operations) and
 arch/arm/common/mcpm_entry.c (everything else):</p>
-<p>__mcpm_cpu_going_down() signals the transition of a CPU to the
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__mcpm_cpu_going_down()</span></code> signals the transition of a CPU to the
 CPU_GOING_DOWN state.</p>
-<p>__mcpm_cpu_down() signals the transition of a CPU to the CPU_DOWN
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__mcpm_cpu_down()</span></code> signals the transition of a CPU to the CPU_DOWN
 state.</p>
 <p>A CPU transitions to CPU_COMING_UP and then to CPU_UP via the
 low-level power-up code in mcpm_head.S.  This could
 involve CPU-specific setup code, but in the current
 implementation it does not.</p>
-<p>__mcpm_outbound_enter_critical() and __mcpm_outbound_leave_critical()
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__mcpm_outbound_enter_critical()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__mcpm_outbound_leave_critical()</span></code>
 handle transitions from CLUSTER_UP to CLUSTER_GOING_DOWN
 and from there to CLUSTER_DOWN or back to CLUSTER_UP (in
 the case of an aborted cluster power-down).</p>

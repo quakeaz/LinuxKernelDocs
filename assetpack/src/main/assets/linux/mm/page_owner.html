@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -197,7 +197,7 @@ most of this code is outside page allocator and its hot path. Building
 the kernel with page owner and turning it on if needed would be great
 option to debug kernel memory problem.</p>
 <p>There is one notice that is caused by implementation detail. page owner
-stores information into the memory from struct page extension. This memory
+stores information into the memory from <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code> extension. This memory
 is initialized some time later than that page allocator starts in sparse
 memory system, so, until initialization, many pages can be allocated and
 they would have no owner information. To fix it up, these early allocated
@@ -205,8 +205,8 @@ pages are investigated and marked as allocated in initialization phase.
 Although it doesn’t mean that they have the right owner information,
 at least, we can tell whether the page is allocated or not,
 more accurately. On 2GB memory x86-64 VM box, 13343 early allocated pages
-are caught and marked, although they are mostly allocated from struct
-page extension feature. Anyway, after that, no page is left in
+are caught and marked, although they are mostly allocated from <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">page</span></code> extension feature. Anyway, after that, no page is left in
 un-tracking state.</p>
 </section>
 <section id="usage">

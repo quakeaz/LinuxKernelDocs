@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -236,7 +236,7 @@ structures.  The function pointers are initialized by the <cite>board-*.c</cite>
 files to point to the corresponding OMAP PM functions:</p>
 <ul>
 <li><p>set_max_dev_wakeup_lat will point to
-omap_pm_set_max_dev_wakeup_lat(), etc.  Other architectures which do
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">omap_pm_set_max_dev_wakeup_lat()</span></code>, etc.  Other architectures which do
 not support these functions should leave these function pointers set
 to NULL.  Drivers should use the following idiom:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>if (pdata-&gt;set_max_dev_wakeup_lat)
@@ -248,8 +248,8 @@ to NULL.  Drivers should use the following idiom:</p>
 <p>The most common usage of these functions will probably be to specify
 the maximum time from when an interrupt occurs, to when the device
 becomes accessible.  To accomplish this, driver writers should use the
-set_max_mpu_wakeup_lat() function to constrain the MPU wakeup
-latency, and the set_max_dev_wakeup_lat() function to constrain the
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_max_mpu_wakeup_lat()</span></code> function to constrain the MPU wakeup
+latency, and the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_max_dev_wakeup_lat()</span></code> function to constrain the
 device wakeup latency (from <a class="reference internal" href="../../../core-api/kernel-api.html#c.clk_enable" title="clk_enable"><code class="xref c c-func docutils literal notranslate"><span class="pre">clk_enable()</span></code></a> to accessibility).  For
 example:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>/* Limit MPU wakeup latency */
@@ -266,8 +266,8 @@ if (pdata-&gt;set_max_dev_wakeup_lat)
 <p>The PM parameters can be overwritten by calling the function again
 with the new value.  The settings can be removed by calling the
 function with a t argument of -1 (except in the case of
-set_max_bus_tput(), which should be called with an r argument of 0).</p>
-<p>The fifth function above, omap_pm_get_dev_context_loss_count(),
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_max_bus_tput()</span></code>, which should be called with an r argument of 0).</p>
+<p>The fifth function above, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">omap_pm_get_dev_context_loss_count()</span></code>,
 is intended as an optimization to allow drivers to determine whether the
 device has lost its internal context.  If context has been lost, the
 driver must restore its internal context before proceeding.</p>

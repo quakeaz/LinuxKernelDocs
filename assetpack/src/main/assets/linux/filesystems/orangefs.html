@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -371,7 +371,7 @@ the partitions.</p>
 <p>A pointer to the IO buffer’s PVFS_dev_map_desc structure is sent to a
 mapping routine in the kernel module with an ioctl. The structure is
 copied from user space to kernel space with copy_from_user and is used
-to initialize the kernel module’s “bufmap” (struct orangefs_bufmap), which
+to initialize the kernel module’s “bufmap” (<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">orangefs_bufmap</span></code>), which
 then contains:</p>
 <blockquote>
 <div><ul>
@@ -425,7 +425,7 @@ update.</p></li>
 </section>
 <section id="operations">
 <h3>Operations<a class="headerlink" href="#operations" title="Link to this heading">¶</a></h3>
-<p>The kernel module builds an “op” (struct orangefs_kernel_op_s) when it
+<p>The kernel module builds an “op” (<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">orangefs_kernel_op_s</span></code>) when it
 needs to communicate with userspace. Part of the op contains the “upcall”
 which expresses the request to userspace. Part of the op eventually
 contains the “downcall” which expresses the results of the request.</p>
@@ -493,7 +493,7 @@ and thus becomes aware of the upcall request that needs to be read.</p>
 <p>When the Orangefs file_operations.read function is triggered, the
 request list is searched for an op that seems ready-to-process.
 The op is removed from the request list. The tag from the op and
-the filled-out upcall struct are copy_to_user’ed back to userspace.</p>
+the filled-out upcall <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">are</span></code> copy_to_user’ed back to userspace.</p>
 <p>If any of these (and some additional protocol) copy_to_users fail,
 the op’s state is set to “waiting” and the op is added back to
 the request list. Otherwise, the op’s state is changed to “in progress”,
@@ -544,9 +544,9 @@ by the kernel module.</p></li>
 </div></blockquote>
 <p>Responses to kernel requests are all packaged in pvfs2_downcall_t
 structs. Besides a few other members, pvfs2_downcall_t contains a
-union of structs, each of which is associated with a particular
+<code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">of</span></code> structs, each of which is associated with a particular
 response type.</p>
-<p>The several members outside of the union are:</p>
+<p>The several members outside of the <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">are</span></code>:</p>
 <blockquote>
 <div><dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">int32_t</span> <span class="pre">type</span></code></dt><dd><ul class="simple">
@@ -567,7 +567,7 @@ response type.</p>
 </dd>
 </dl>
 </div></blockquote>
-<p>The appropriate member inside the union is filled out for any
+<p>The appropriate member inside the <code class="xref c c-union broken_xref docutils literal notranslate"><span class="pre">union</span> <span class="pre">is</span></code> filled out for any
 particular response.</p>
 <blockquote>
 <div><dl class="simple">
@@ -607,13 +607,13 @@ the readdir buffer descriptor specified in the upcall.</p>
 </dd>
 </dl>
 </div></blockquote>
-<p>Userspace uses writev() on /dev/pvfs2-req to pass responses to the requests
+<p>Userspace uses <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">writev()</span></code> on /dev/pvfs2-req to pass responses to the requests
 made by the kernel side.</p>
 <p>A buffer_list containing:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>a pointer to the prepared response to the request from the
-kernel (struct pvfs2_downcall_t).</p></li>
+kernel (<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pvfs2_downcall_t</span></code>).</p></li>
 <li><p>and also, in the case of a readdir request, a pointer to a
 buffer containing descriptors for the objects in the target
 directory.</p></li>
@@ -621,7 +621,7 @@ directory.</p></li>
 </div></blockquote>
 <p>... is sent to the function (PINT_dev_write_list) which performs
 the writev.</p>
-<p>PINT_dev_write_list has a local iovec array: struct iovec io_array[10];</p>
+<p>PINT_dev_write_list has a local iovec array: <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">iovec</span></code> io_array[10];</p>
 <p>The first four elements of io_array are initialized like this for all
 responses:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>io_array[0].iov_base = address of local variable &quot;proto_ver&quot; (int32_t)

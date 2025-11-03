@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -319,7 +319,6 @@ implement direct_access.  Equally, if your device can occasionally
 stall the CPU for an extended period, you should also not attempt to
 implement direct_access.</p>
 <p>These block devices may be used for inspiration:
-- brd: RAM backed block device driver
 - pmem: NVDIMM persistent memory driver</p>
 </section>
 <section id="implementation-tips-for-filesystem-writers">
@@ -392,17 +391,17 @@ the driver).</p>
 <p>The DAX code does not work correctly on architectures which have virtually
 mapped caches such as ARM, MIPS and SPARC.</p>
 <p>Calling <code class="xref c c-func docutils literal notranslate"><span class="pre">get_user_pages()</span></code> on a range of user memory that has been
-mmapped from a <cite>DAX</cite> file will fail when there are no ‘struct page’ to describe
+mmapped from a <cite>DAX</cite> file will fail when there are no ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code>’ to describe
 those pages.  This problem has been addressed in some device drivers
-by adding optional struct page support for pages under the control of
+by adding optional <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code> support for pages under the control of
 the driver (see <cite>CONFIG_NVDIMM_PFN</cite> in <code class="docutils literal notranslate"><span class="pre">drivers/nvdimm</span></code> for an example of
-how to do this). In the non struct page cases <cite>O_DIRECT</cite> reads/writes to
+how to do this). In the non <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code> cases <cite>O_DIRECT</cite> reads/writes to
 those memory ranges from a non-<cite>DAX</cite> file will fail</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><cite>O_DIRECT</cite> reads/writes _of a <cite>DAX</cite> file do work, it is the memory that
 is being accessed that is key here).  Other things that will not work in
-the non struct page case include RDMA, <code class="xref c c-func docutils literal notranslate"><span class="pre">sendfile()</span></code> and
+the non <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">page</span></code> case include RDMA, <code class="xref c c-func docutils literal notranslate"><span class="pre">sendfile()</span></code> and
 <code class="xref c c-func docutils literal notranslate"><span class="pre">splice()</span></code>.</p>
 </div>
 </section>

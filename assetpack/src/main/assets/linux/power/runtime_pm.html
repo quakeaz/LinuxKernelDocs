@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -170,7 +170,7 @@ them to be synchronized with system-wide power transitions (suspend to RAM,
 hibernation and resume from system sleep states).  pm_wq is declared in
 include/linux/pm_runtime.h and defined in kernel/power/main.c.</p></li>
 <li><p>A number of runtime PM fields in the ‘power’ member of ‘<a class="reference internal" href="../driver-api/infrastructure.html#c.device" title="device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span></code></a>’ (which
-is of the type ‘struct dev_pm_info’, defined in include/linux/pm.h) that can
+is of the type ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dev_pm_info</span></code>’, defined in include/linux/pm.h) that can
 be used for synchronizing runtime PM operations with one another.</p></li>
 <li><p>Three device runtime PM callbacks in ‘<a class="reference internal" href="../driver-api/pm/types.html#c.dev_pm_ops" title="dev_pm_ops"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dev_pm_ops</span></code></a>’ (defined in
 include/linux/pm.h).</p></li>
@@ -180,7 +180,7 @@ synchronization between them is taken care of by the PM core.  Bus types and
 device drivers are encouraged to use these functions.</p></li>
 </ul>
 <p>The runtime PM callbacks present in ‘<a class="reference internal" href="../driver-api/pm/types.html#c.dev_pm_ops" title="dev_pm_ops"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dev_pm_ops</span></code></a>’, the device runtime PM
-fields of ‘struct dev_pm_info’ and the core helper functions provided for
+fields of ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dev_pm_info</span></code>’ and the core helper functions provided for
 runtime PM are described below.</p>
 </section>
 <section id="device-runtime-pm-callbacks">
@@ -195,7 +195,7 @@ runtime PM are described below.</p>
 };
 </pre></div>
 </div>
-<p>The -&gt;runtime_suspend(), -&gt;runtime_resume() and -&gt;runtime_idle() callbacks
+<p>The -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_suspend()</span></code>, -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_resume()</span></code> and -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_idle()</span></code> callbacks
 are executed by the PM core for the device’s subsystem that may be either of
 the following:</p>
 <blockquote>
@@ -217,17 +217,17 @@ and bus type.  Moreover, the high-priority one will always take precedence over
 a low-priority one.  The PM domain, bus type, device type and class callbacks
 are referred to as subsystem-level callbacks in what follows.</p>
 <p>By default, the callbacks are always invoked in process context with interrupts
-enabled.  However, the pm_runtime_irq_safe() helper function can be used to tell
-the PM core that it is safe to run the -&gt;runtime_suspend(), -&gt;runtime_resume()
-and -&gt;runtime_idle() callbacks for the given device in atomic context with
+enabled.  However, the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_irq_safe()</span></code> helper function can be used to tell
+the PM core that it is safe to run the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_suspend()</span></code>, -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_resume()</span></code>
+and -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_idle()</span></code> callbacks for the given device in atomic context with
 interrupts disabled.  This implies that the callback routines in question must
 not block or sleep, but it also means that the synchronous helper functions
 listed at the end of Section 4 may be used for that device within an interrupt
 handler or generally in an atomic context.</p>
 <p>The subsystem-level suspend callback, if present, is _entirely_ _responsible_
 for handling the suspend of the device as appropriate, which may, but need not
-include executing the device driver’s own -&gt;runtime_suspend() callback (from the
-PM core’s point of view it is not necessary to implement a -&gt;runtime_suspend()
+include executing the device driver’s own -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_suspend()</span></code> callback (from the
+PM core’s point of view it is not necessary to implement a -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_suspend()</span></code>
 callback in a device driver as long as the subsystem-level suspend callback
 knows what to do to handle the device).</p>
 <blockquote>
@@ -252,16 +252,16 @@ special helper functions for this purpose).</p></li>
 </div></blockquote>
 <p>In particular, if the driver requires remote wakeup capability (i.e. hardware
 mechanism allowing the device to request a change of its power state, such as
-PCI PME) for proper functioning and device_can_wakeup() returns ‘false’ for the
-device, then -&gt;runtime_suspend() should return -EBUSY.  On the other hand, if
-device_can_wakeup() returns ‘true’ for the device and the device is put into a
+PCI PME) for proper functioning and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">device_can_wakeup()</span></code> returns ‘false’ for the
+device, then -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_suspend()</span></code> should return -EBUSY.  On the other hand, if
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">device_can_wakeup()</span></code> returns ‘true’ for the device and the device is put into a
 low-power state during the execution of the suspend callback, it is expected
 that remote wakeup will be enabled for the device.  Generally, remote wakeup
 should be enabled for all input devices put into low-power states at run time.</p>
 <p>The subsystem-level resume callback, if present, is <strong>entirely responsible</strong> for
 handling the resume of the device as appropriate, which may, but need not
-include executing the device driver’s own -&gt;runtime_resume() callback (from the
-PM core’s point of view it is not necessary to implement a -&gt;runtime_resume()
+include executing the device driver’s own -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_resume()</span></code> callback (from the
+PM core’s point of view it is not necessary to implement a -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_resume()</span></code>
 callback in a device driver as long as the subsystem-level resume callback knows
 what to do to handle the device).</p>
 <blockquote>
@@ -297,45 +297,43 @@ suspending the device are satisfied) and to queue up a suspend request for the
 device in that case.  If there is no idle callback, or if the callback returns
 0, then the PM core will attempt to carry out a runtime suspend of the device,
 also respecting devices configured for autosuspend.  In essence this means a
-call to pm_runtime_autosuspend() (do note that drivers needs to update the
-device last busy mark, pm_runtime_mark_last_busy(), to control the delay under
-this circumstance).  To prevent this (for example, if the callback routine has
-started a delayed suspend), the routine must return a non-zero value.  Negative
-error return codes are ignored by the PM core.</p>
+call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_autosuspend()</span></code>. To prevent this (for example, if the callback
+routine has started a delayed suspend), the routine must return a non-zero
+value.  Negative error return codes are ignored by the PM core.</p>
 <p>The helper functions provided by the PM core, described in Section 4, guarantee
 that the following constraints are met with respect to runtime PM callbacks for
 one device:</p>
 <ol class="arabic simple">
 <li><p>The callbacks are mutually exclusive (e.g. it is forbidden to execute
--&gt;runtime_suspend() in parallel with -&gt;runtime_resume() or with another
-instance of -&gt;runtime_suspend() for the same device) with the exception that
--&gt;runtime_suspend() or -&gt;runtime_resume() can be executed in parallel with
--&gt;runtime_idle() (although -&gt;runtime_idle() will not be started while any
+-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_suspend()</span></code> in parallel with -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_resume()</span></code> or with another
+instance of -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_suspend()</span></code> for the same device) with the exception that
+-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_suspend()</span></code> or -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_resume()</span></code> can be executed in parallel with
+-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_idle()</span></code> (although -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_idle()</span></code> will not be started while any
 of the other callbacks is being executed for the same device).</p></li>
-<li><p>-&gt;runtime_idle() and -&gt;runtime_suspend() can only be executed for ‘active’
-devices (i.e. the PM core will only execute -&gt;runtime_idle() or
--&gt;runtime_suspend() for the devices the runtime PM status of which is
+<li><p>-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_idle()</span></code> and -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_suspend()</span></code> can only be executed for ‘active’
+devices (i.e. the PM core will only execute -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_idle()</span></code> or
+-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_suspend()</span></code> for the devices the runtime PM status of which is
 ‘active’).</p></li>
-<li><p>-&gt;runtime_idle() and -&gt;runtime_suspend() can only be executed for a device
+<li><p>-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_idle()</span></code> and -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_suspend()</span></code> can only be executed for a device
 the usage counter of which is equal to zero _and_ either the counter of
 ‘active’ children of which is equal to zero, or the ‘power.ignore_children’
 flag of which is set.</p></li>
-<li><p>-&gt;runtime_resume() can only be executed for ‘suspended’ devices  (i.e. the
-PM core will only execute -&gt;runtime_resume() for the devices the runtime
+<li><p>-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_resume()</span></code> can only be executed for ‘suspended’ devices  (i.e. the
+PM core will only execute -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_resume()</span></code> for the devices the runtime
 PM status of which is ‘suspended’).</p></li>
 </ol>
 <p>Additionally, the helper functions provided by the PM core obey the following
 rules:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>If -&gt;runtime_suspend() is about to be executed or there’s a pending request
-to execute it, -&gt;runtime_idle() will not be executed for the same device.</p></li>
-<li><p>A request to execute or to schedule the execution of -&gt;runtime_suspend()
-will cancel any pending requests to execute -&gt;runtime_idle() for the same
+<li><p>If -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_suspend()</span></code> is about to be executed or there’s a pending request
+to execute it, -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_idle()</span></code> will not be executed for the same device.</p></li>
+<li><p>A request to execute or to schedule the execution of -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_suspend()</span></code>
+will cancel any pending requests to execute -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_idle()</span></code> for the same
 device.</p></li>
-<li><p>If -&gt;runtime_resume() is about to be executed or there’s a pending request
+<li><p>If -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_resume()</span></code> is about to be executed or there’s a pending request
 to execute it, the other callbacks will not be executed for the same device.</p></li>
-<li><p>A request to execute -&gt;runtime_resume() will cancel any pending or
+<li><p>A request to execute -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_resume()</span></code> will cancel any pending or
 scheduled requests to execute the other callbacks for the same device,
 except for scheduled autosuspends.</p></li>
 </ul>
@@ -343,7 +341,7 @@ except for scheduled autosuspends.</p></li>
 </section>
 <section id="runtime-pm-device-fields">
 <h2>3. Runtime PM Device Fields<a class="headerlink" href="#runtime-pm-device-fields" title="Link to this heading">¶</a></h2>
-<p>The following device runtime PM fields are present in ‘struct dev_pm_info’, as
+<p>The following device runtime PM fields are present in ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dev_pm_info</span></code>’, as
 defined in include/linux/pm.h:</p>
 <blockquote>
 <div><dl class="simple">
@@ -396,7 +394,7 @@ callback</p></li>
 </ul>
 </dd>
 <dt><cite>unsigned int idle_notification;</cite></dt><dd><ul class="simple">
-<li><p>if set, -&gt;runtime_idle() is being executed</p></li>
+<li><p>if set, -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_idle()</span></code> is being executed</p></li>
 </ul>
 </dd>
 <dt><cite>unsigned int request_pending;</cite></dt><dd><ul class="simple">
@@ -408,7 +406,7 @@ callback</p></li>
 </ul>
 </dd>
 <dt><cite>unsigned int deferred_resume;</cite></dt><dd><ul class="simple">
-<li><p>set if -&gt;runtime_resume() is about to be run while -&gt;runtime_suspend() is
+<li><p>set if -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_resume()</span></code> is about to be run while -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_suspend()</span></code> is
 being executed for that device and it is not practical to wait for the
 suspend to complete; means “start a resume as soon as you’ve suspended”</p></li>
 </ul>
@@ -428,24 +426,24 @@ PM for it (invalid initially and when disable_depth is 0)</p></li>
 <li><p>if set, indicates that the user space has allowed the device driver to
 power manage the device at run time via the /sys/devices/.../power/control
 <cite>interface;</cite> it may only be modified with the help of the
-pm_runtime_allow() and pm_runtime_forbid() helper functions</p></li>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_allow()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_forbid()</span></code> helper functions</p></li>
 </ul>
 </dd>
 <dt><cite>unsigned int no_callbacks;</cite></dt><dd><ul class="simple">
 <li><p>indicates that the device does not use the runtime PM callbacks (see
-Section 8); it may be modified only by the pm_runtime_no_callbacks()
+Section 8); it may be modified only by the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_no_callbacks()</span></code>
 helper function</p></li>
 </ul>
 </dd>
 <dt><cite>unsigned int irq_safe;</cite></dt><dd><ul class="simple">
-<li><p>indicates that the -&gt;runtime_suspend() and -&gt;runtime_resume() callbacks
+<li><p>indicates that the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_suspend()</span></code> and -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_resume()</span></code> callbacks
 will be invoked with the spinlock held and interrupts disabled</p></li>
 </ul>
 </dd>
 <dt><cite>unsigned int use_autosuspend;</cite></dt><dd><ul class="simple">
 <li><p>indicates that the device’s driver supports delayed autosuspend (see
 Section 9); it may be modified only by the
-pm_runtime{_dont}_use_autosuspend() helper functions</p></li>
+pm_runtime{_dont}<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_use_autosuspend()</span></code> helper functions</p></li>
 </ul>
 </dd>
 <dt><cite>unsigned int timer_autosuspends;</cite></dt><dd><ul class="simple">
@@ -458,7 +456,7 @@ when the timer expires rather than a normal suspend</p></li>
 </ul>
 </dd>
 <dt><cite>unsigned long last_busy;</cite></dt><dd><ul class="simple">
-<li><p>the time (in jiffies) when the pm_runtime_mark_last_busy() helper
+<li><p>the time (in jiffies) when the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_mark_last_busy()</span></code> helper
 function was last called for this device; used in calculating inactivity
 periods for autosuspend</p></li>
 </ul>
@@ -474,7 +472,7 @@ drivers/base/power/runtime.c and include/linux/pm_runtime.h:</p>
 <blockquote>
 <div><dl class="simple">
 <dt><cite>void pm_runtime_init(struct device *dev);</cite></dt><dd><ul class="simple">
-<li><p>initialize the device runtime PM fields in ‘struct dev_pm_info’</p></li>
+<li><p>initialize the device runtime PM fields in ‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">dev_pm_info</span></code>’</p></li>
 </ul>
 </dd>
 <dt><cite>void pm_runtime_remove(struct device *dev);</cite></dt><dd><ul class="simple">
@@ -484,7 +482,7 @@ removing the device from device hierarchy</p></li>
 </dd>
 <dt><cite>int pm_runtime_idle(struct device *dev);</cite></dt><dd><ul class="simple">
 <li><p>execute the subsystem-level idle callback for the device; returns an
-error code on failure, where -EINPROGRESS means that -&gt;runtime_idle() is
+error code on failure, where -EINPROGRESS means that -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_idle()</span></code> is
 already being executed; if there is no callback or the callback returns 0
 then run pm_runtime_autosuspend(dev) and return its result</p></li>
 </ul>
@@ -498,10 +496,9 @@ to suspend the device again in future and -EACCES means that
 </ul>
 </dd>
 <dt><cite>int pm_runtime_autosuspend(struct device *dev);</cite></dt><dd><ul class="simple">
-<li><p>same as pm_runtime_suspend() except that the autosuspend delay is taken
-<cite>into account;</cite> if pm_runtime_autosuspend_expiration() says the delay has
-not yet expired then an autosuspend is scheduled for the appropriate time
-and 0 is returned</p></li>
+<li><p>same as <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_suspend()</span></code> except that a call to
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_mark_last_busy()</span></code> is made and an autosuspend is scheduled for
+the appropriate time and 0 is returned</p></li>
 </ul>
 </dd>
 <dt><cite>int pm_runtime_resume(struct device *dev);</cite></dt><dd><ul class="simple">
@@ -519,7 +516,7 @@ different from 0</p></li>
 <li><p>run pm_runtime_resume(dev) and if successful, increment the device’s
 usage counter; returns 0 on success (whether or not the device’s
 runtime PM status was already ‘active’) or the error code from
-pm_runtime_resume() on failure.</p></li>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_resume()</span></code> on failure.</p></li>
 </ul>
 </dd>
 <dt><cite>int pm_request_idle(struct device *dev);</cite></dt><dd><ul class="simple">
@@ -529,9 +526,9 @@ success or error code if the request has not been queued up</p></li>
 </ul>
 </dd>
 <dt><cite>int pm_request_autosuspend(struct device *dev);</cite></dt><dd><ul class="simple">
-<li><p>schedule the execution of the subsystem-level suspend callback for the
-device when the autosuspend delay has expired; if the delay has already
-expired then the work item is queued up immediately</p></li>
+<li><p>Call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_mark_last_busy()</span></code> and schedule the execution of the
+subsystem-level suspend callback for the device when the autosuspend delay
+expires</p></li>
 </ul>
 </dd>
 <dt><cite>int pm_schedule_suspend(struct device *dev, unsigned int delay);</cite></dt><dd><ul class="simple">
@@ -541,7 +538,7 @@ suspend work item in pm_wq, in milliseconds (if ‘delay’ is zero, the work
 item is queued up immediately); returns 0 on success, 1 if the device’s PM
 runtime status was already ‘suspended’, or error code if the request
 hasn’t been scheduled (or queued up if ‘delay’ is 0); if the execution of
--&gt;runtime_suspend() is already scheduled and not yet expired, the new
+-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_suspend()</span></code> is already scheduled and not yet expired, the new
 value of ‘delay’ will be used as the time to wait</p></li>
 </ul>
 </dd>
@@ -565,7 +562,7 @@ return its result</p></li>
 <li><p>increment the device’s usage counter, run pm_runtime_resume(dev) and
 return its result;
 note that it does not drop the device’s usage counter on errors, so
-consider using pm_runtime_resume_and_get() instead of it, especially
+consider using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_resume_and_get()</span></code> instead of it, especially
 if its return value is checked by the caller, as this is likely to
 result in cleaner code.</p></li>
 </ul>
@@ -593,8 +590,9 @@ pm_request_idle(dev) and return its result</p></li>
 </ul>
 </dd>
 <dt><cite>int pm_runtime_put_autosuspend(struct device *dev);</cite></dt><dd><ul class="simple">
-<li><p>does the same as __pm_runtime_put_autosuspend() for now, but in the
-future, will also call pm_runtime_mark_last_busy() as well, DO NOT USE!</p></li>
+<li><p>set the power.last_busy field to the current time and decrement the
+device’s usage counter; if the result is 0 then run
+pm_request_autosuspend(dev) and return its result</p></li>
 </ul>
 </dd>
 <dt><cite>int __pm_runtime_put_autosuspend(struct device *dev);</cite></dt><dd><ul class="simple">
@@ -613,7 +611,8 @@ pm_runtime_suspend(dev) and return its result</p></li>
 </ul>
 </dd>
 <dt><cite>int pm_runtime_put_sync_autosuspend(struct device *dev);</cite></dt><dd><ul class="simple">
-<li><p>decrement the device’s usage counter; if the result is 0 then run
+<li><p>set the power.last_busy field to the current time and decrement the
+device’s usage counter; if the result is 0 then run
 pm_runtime_autosuspend(dev) and return its result</p></li>
 </ul>
 </dd>
@@ -744,102 +743,102 @@ in jiffies</p></li>
 </div></blockquote>
 <p>It is safe to execute the following helper functions from interrupt context:</p>
 <ul class="simple">
-<li><p>pm_request_idle()</p></li>
-<li><p>pm_request_autosuspend()</p></li>
-<li><p>pm_schedule_suspend()</p></li>
-<li><p>pm_request_resume()</p></li>
-<li><p>pm_runtime_get_noresume()</p></li>
-<li><p>pm_runtime_get()</p></li>
-<li><p>pm_runtime_put_noidle()</p></li>
-<li><p>pm_runtime_put()</p></li>
-<li><p>pm_runtime_put_autosuspend()</p></li>
-<li><p>__pm_runtime_put_autosuspend()</p></li>
-<li><p>pm_runtime_enable()</p></li>
-<li><p>pm_suspend_ignore_children()</p></li>
-<li><p>pm_runtime_set_active()</p></li>
-<li><p>pm_runtime_set_suspended()</p></li>
-<li><p>pm_runtime_suspended()</p></li>
-<li><p>pm_runtime_mark_last_busy()</p></li>
-<li><p>pm_runtime_autosuspend_expiration()</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_request_idle()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_request_autosuspend()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_schedule_suspend()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_request_resume()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_get_noresume()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_get()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_put_noidle()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_put()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_put_autosuspend()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__pm_runtime_put_autosuspend()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_enable()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_suspend_ignore_children()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_set_active()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_set_suspended()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_suspended()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_mark_last_busy()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_autosuspend_expiration()</span></code></p></li>
 </ul>
-<p>If pm_runtime_irq_safe() has been called for a device then the following helper
+<p>If <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_irq_safe()</span></code> has been called for a device then the following helper
 functions may also be used in interrupt context:</p>
 <ul class="simple">
-<li><p>pm_runtime_idle()</p></li>
-<li><p>pm_runtime_suspend()</p></li>
-<li><p>pm_runtime_autosuspend()</p></li>
-<li><p>pm_runtime_resume()</p></li>
-<li><p>pm_runtime_get_sync()</p></li>
-<li><p>pm_runtime_put_sync()</p></li>
-<li><p>pm_runtime_put_sync_suspend()</p></li>
-<li><p>pm_runtime_put_sync_autosuspend()</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_idle()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_suspend()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_autosuspend()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_resume()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_get_sync()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_put_sync()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_put_sync_suspend()</span></code></p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_put_sync_autosuspend()</span></code></p></li>
 </ul>
 </section>
 <section id="runtime-pm-initialization-device-probing-and-removal">
 <h2>5. Runtime PM Initialization, Device Probing and Removal<a class="headerlink" href="#runtime-pm-initialization-device-probing-and-removal" title="Link to this heading">¶</a></h2>
 <p>Initially, the runtime PM is disabled for all devices, which means that the
 majority of the runtime PM helper functions described in Section 4 will return
--EAGAIN until pm_runtime_enable() is called for the device.</p>
+-EAGAIN until <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_enable()</span></code> is called for the device.</p>
 <p>In addition to that, the initial runtime PM status of all devices is
 ‘suspended’, but it need not reflect the actual physical state of the device.
 Thus, if the device is initially active (i.e. it is able to process I/O), its
 runtime PM status must be changed to ‘active’, with the help of
-pm_runtime_set_active(), before pm_runtime_enable() is called for the device.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_set_active()</span></code>, before <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_enable()</span></code> is called for the device.</p>
 <p>However, if the device has a parent and the parent’s runtime PM is enabled,
-calling pm_runtime_set_active() for the device will affect the parent, unless
+calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_set_active()</span></code> for the device will affect the parent, unless
 the parent’s ‘power.ignore_children’ flag is set.  Namely, in that case the
 parent won’t be able to suspend at run time, using the PM core’s helper
 functions, as long as the child’s status is ‘active’, even if the child’s
-runtime PM is still disabled (i.e. pm_runtime_enable() hasn’t been called for
-the child yet or pm_runtime_disable() has been called for it).  For this reason,
-once pm_runtime_set_active() has been called for the device, pm_runtime_enable()
+runtime PM is still disabled (i.e. <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_enable()</span></code> hasn’t been called for
+the child yet or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_disable()</span></code> has been called for it).  For this reason,
+once <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_set_active()</span></code> has been called for the device, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_enable()</span></code>
 should be called for it too as soon as reasonably possible or its runtime PM
 status should be changed back to ‘suspended’ with the help of
-pm_runtime_set_suspended().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_set_suspended()</span></code>.</p>
 <p>If the default initial runtime PM status of the device (i.e. ‘suspended’)
 reflects the actual state of the device, its bus type’s or its driver’s
--&gt;probe() callback will likely need to wake it up using one of the PM core’s
-helper functions described in Section 4.  In that case, pm_runtime_resume()
+-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> callback will likely need to wake it up using one of the PM core’s
+helper functions described in Section 4.  In that case, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_resume()</span></code>
 should be used.  Of course, for this purpose the device’s runtime PM has to be
-enabled earlier by calling pm_runtime_enable().</p>
+enabled earlier by calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_enable()</span></code>.</p>
 <p>Note, if the device may execute pm_runtime calls during the probe (such as
 if it is registered with a subsystem that may call back in) then the
-pm_runtime_get_sync() call paired with a pm_runtime_put() call will be
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_get_sync()</span></code> call paired with a <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_put()</span></code> call will be
 appropriate to ensure that the device is not put back to sleep during the
 probe. This can happen with systems such as the network device layer.</p>
-<p>It may be desirable to suspend the device once -&gt;probe() has finished.
-Therefore the driver core uses the asynchronous pm_request_idle() to submit a
+<p>It may be desirable to suspend the device once -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> has finished.
+Therefore the driver core uses the asynchronous <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_request_idle()</span></code> to submit a
 request to execute the subsystem-level idle callback for the device at that
 time.  A driver that makes use of the runtime autosuspend feature may want to
-update the last busy mark before returning from -&gt;probe().</p>
+update the last busy mark before returning from -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code>.</p>
 <p>Moreover, the driver core prevents runtime PM callbacks from racing with the bus
-notifier callback in __device_release_driver(), which is necessary because the
+notifier callback in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__device_release_driver()</span></code>, which is necessary because the
 notifier is used by some subsystems to carry out operations affecting the
-runtime PM functionality.  It does so by calling pm_runtime_get_sync() before
-driver_sysfs_remove() and the BUS_NOTIFY_UNBIND_DRIVER notifications.  This
+runtime PM functionality.  It does so by calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_get_sync()</span></code> before
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">driver_sysfs_remove()</span></code> and the BUS_NOTIFY_UNBIND_DRIVER notifications.  This
 resumes the device if it’s in the suspended state and prevents it from
 being suspended again while those routines are being executed.</p>
 <p>To allow bus types and drivers to put devices into the suspended state by
-calling pm_runtime_suspend() from their -&gt;remove() routines, the driver core
-executes pm_runtime_put_sync() after running the BUS_NOTIFY_UNBIND_DRIVER
-notifications in __device_release_driver().  This requires bus types and
-drivers to make their -&gt;remove() callbacks avoid races with runtime PM directly,
+calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_suspend()</span></code> from their -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove()</span></code> routines, the driver core
+executes <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_put_sync()</span></code> after running the BUS_NOTIFY_UNBIND_DRIVER
+notifications in <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__device_release_driver()</span></code>.  This requires bus types and
+drivers to make their -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove()</span></code> callbacks avoid races with runtime PM directly,
 but it also allows more flexibility in the handling of devices during the
 removal of their drivers.</p>
-<p>Drivers in -&gt;remove() callback should undo the runtime PM changes done
-in -&gt;probe(). Usually this means calling pm_runtime_disable(),
-pm_runtime_dont_use_autosuspend() etc.</p>
+<p>Drivers in -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove()</span></code> callback should undo the runtime PM changes done
+in -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code>. Usually this means calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_disable()</span></code>,
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_dont_use_autosuspend()</span></code> etc.</p>
 <p>The user space can effectively disallow the driver of the device to power manage
 it at run time by changing the value of its /sys/devices/.../power/control
-attribute to “on”, which causes pm_runtime_forbid() to be called.  In principle,
+attribute to “on”, which causes <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_forbid()</span></code> to be called.  In principle,
 this mechanism may also be used by the driver to effectively turn off the
 runtime power management of the device until the user space turns it on.
 Namely, during the initialization the driver can make sure that the runtime PM
-status of the device is ‘active’ and call pm_runtime_forbid().  It should be
+status of the device is ‘active’ and call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_forbid()</span></code>.  It should be
 noted, however, that if the user space has already intentionally changed the
 value of /sys/devices/.../power/control to “auto” to allow the driver to power
 manage the device at run time, the driver may confuse it by using
-pm_runtime_forbid() this way.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_forbid()</span></code> this way.</p>
 </section>
 <section id="runtime-pm-and-system-sleep">
 <h2>6. Runtime PM and System Sleep<a class="headerlink" href="#runtime-pm-and-system-sleep" title="Link to this heading">¶</a></h2>
@@ -883,10 +882,10 @@ this is:</p>
 </ul>
 </div></blockquote>
 <p>The PM core always increments the runtime usage counter before calling the
--&gt;suspend() callback and decrements it after calling the -&gt;resume() callback.
+-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">suspend()</span></code> callback and decrements it after calling the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">resume()</span></code> callback.
 Hence disabling runtime PM temporarily like this will not cause any runtime
 suspend attempts to be permanently lost.  If the usage count goes to zero
-following the return of the -&gt;resume() callback, the -&gt;runtime_idle() callback
+following the return of the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">resume()</span></code> callback, the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_idle()</span></code> callback
 will be invoked as usual.</p>
 <p>On some systems, however, system sleep is not entered through a global firmware
 or hardware operation.  Instead, all hardware components are put into low-power
@@ -900,13 +899,13 @@ place (in particular, if the system is not waking up from hibernation), it may
 be more efficient to leave the devices that had been suspended before the system
 suspend began in the suspended state.</p>
 <p>To this end, the PM core provides a mechanism allowing some coordination between
-different levels of device hierarchy.  Namely, if a system suspend .prepare()
+different levels of device hierarchy.  Namely, if a system suspend .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prepare()</span></code>
 callback returns a positive number for a device, that indicates to the PM core
 that the device appears to be runtime-suspended and its state is fine, so it
 may be left in runtime suspend provided that all of its descendants are also
 left in runtime suspend.  If that happens, the PM core will not execute any
 system suspend and resume callbacks for all of those devices, except for the
-.complete() callback, which is then entirely responsible for handling the device
+.<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">complete()</span></code> callback, which is then entirely responsible for handling the device
 as appropriate.  This only applies to system suspend transitions that are not
 related to hibernation (see <a class="reference internal" href="../driver-api/pm/devices.html"><span class="doc">Device Power Management Basics</span></a> for more
 information).</p>
@@ -915,16 +914,16 @@ the runtime PM and system suspend/resume (and hibernation) callbacks by carrying
 out the following operations:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>During system suspend pm_runtime_get_noresume() is called for every device
-right before executing the subsystem-level .prepare() callback for it and
-pm_runtime_barrier() is called for every device right before executing the
-subsystem-level .suspend() callback for it.  In addition to that the PM core
-calls __pm_runtime_disable() with ‘false’ as the second argument for every
-device right before executing the subsystem-level .suspend_late() callback
+<li><p>During system suspend <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_get_noresume()</span></code> is called for every device
+right before executing the subsystem-level .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">prepare()</span></code> callback for it and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_barrier()</span></code> is called for every device right before executing the
+subsystem-level .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">suspend()</span></code> callback for it.  In addition to that the PM core
+calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">__pm_runtime_disable()</span></code> with ‘false’ as the second argument for every
+device right before executing the subsystem-level .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">suspend_late()</span></code> callback
 for it.</p></li>
-<li><p>During system resume pm_runtime_enable() and pm_runtime_put() are called for
-every device right after executing the subsystem-level .resume_early()
-callback and right after executing the subsystem-level .complete() callback
+<li><p>During system resume <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_enable()</span></code> and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_put()</span></code> are called for
+every device right after executing the subsystem-level .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">resume_early()</span></code>
+callback and right after executing the subsystem-level .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">complete()</span></code> callback
 for it, respectively.</p></li>
 </ul>
 </div></blockquote>
@@ -937,93 +936,93 @@ driver/base/power/generic_ops.c:</p>
 <blockquote>
 <div><dl class="simple">
 <dt><cite>int pm_generic_runtime_suspend(struct device *dev);</cite></dt><dd><ul class="simple">
-<li><p>invoke the -&gt;runtime_suspend() callback provided by the driver of this
+<li><p>invoke the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_suspend()</span></code> callback provided by the driver of this
 device and return its result, or return 0 if not defined</p></li>
 </ul>
 </dd>
 <dt><cite>int pm_generic_runtime_resume(struct device *dev);</cite></dt><dd><ul class="simple">
-<li><p>invoke the -&gt;runtime_resume() callback provided by the driver of this
+<li><p>invoke the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_resume()</span></code> callback provided by the driver of this
 device and return its result, or return 0 if not defined</p></li>
 </ul>
 </dd>
 <dt><cite>int pm_generic_suspend(struct device *dev);</cite></dt><dd><ul class="simple">
-<li><p>if the device has not been suspended at run time, invoke the -&gt;suspend()
+<li><p>if the device has not been suspended at run time, invoke the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">suspend()</span></code>
 callback provided by its driver and return its result, or return 0 if not
 defined</p></li>
 </ul>
 </dd>
 <dt><cite>int pm_generic_suspend_noirq(struct device *dev);</cite></dt><dd><ul class="simple">
-<li><p>if pm_runtime_suspended(dev) returns “false”, invoke the -&gt;suspend_noirq()
+<li><p>if pm_runtime_suspended(dev) returns “false”, invoke the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">suspend_noirq()</span></code>
 callback provided by the device’s driver and return its result, or return
 0 if not defined</p></li>
 </ul>
 </dd>
 <dt><cite>int pm_generic_resume(struct device *dev);</cite></dt><dd><ul class="simple">
-<li><p>invoke the -&gt;resume() callback provided by the driver of this device and,
+<li><p>invoke the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">resume()</span></code> callback provided by the driver of this device and,
 if successful, change the device’s runtime PM status to ‘active’</p></li>
 </ul>
 </dd>
 <dt><cite>int pm_generic_resume_noirq(struct device *dev);</cite></dt><dd><ul class="simple">
-<li><p>invoke the -&gt;resume_noirq() callback provided by the driver of this device</p></li>
+<li><p>invoke the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">resume_noirq()</span></code> callback provided by the driver of this device</p></li>
 </ul>
 </dd>
 <dt><cite>int pm_generic_freeze(struct device *dev);</cite></dt><dd><ul class="simple">
-<li><p>if the device has not been suspended at run time, invoke the -&gt;freeze()
+<li><p>if the device has not been suspended at run time, invoke the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">freeze()</span></code>
 callback provided by its driver and return its result, or return 0 if not
 defined</p></li>
 </ul>
 </dd>
 <dt><cite>int pm_generic_freeze_noirq(struct device *dev);</cite></dt><dd><ul class="simple">
-<li><p>if pm_runtime_suspended(dev) returns “false”, invoke the -&gt;freeze_noirq()
+<li><p>if pm_runtime_suspended(dev) returns “false”, invoke the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">freeze_noirq()</span></code>
 callback provided by the device’s driver and return its result, or return
 0 if not defined</p></li>
 </ul>
 </dd>
 <dt><cite>int pm_generic_thaw(struct device *dev);</cite></dt><dd><ul class="simple">
-<li><p>if the device has not been suspended at run time, invoke the -&gt;thaw()
+<li><p>if the device has not been suspended at run time, invoke the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">thaw()</span></code>
 callback provided by its driver and return its result, or return 0 if not
 defined</p></li>
 </ul>
 </dd>
 <dt><cite>int pm_generic_thaw_noirq(struct device *dev);</cite></dt><dd><ul class="simple">
-<li><p>if pm_runtime_suspended(dev) returns “false”, invoke the -&gt;thaw_noirq()
+<li><p>if pm_runtime_suspended(dev) returns “false”, invoke the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">thaw_noirq()</span></code>
 callback provided by the device’s driver and return its result, or return
 0 if not defined</p></li>
 </ul>
 </dd>
 <dt><cite>int pm_generic_poweroff(struct device *dev);</cite></dt><dd><ul class="simple">
-<li><p>if the device has not been suspended at run time, invoke the -&gt;poweroff()
+<li><p>if the device has not been suspended at run time, invoke the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">poweroff()</span></code>
 callback provided by its driver and return its result, or return 0 if not
 defined</p></li>
 </ul>
 </dd>
 <dt><cite>int pm_generic_poweroff_noirq(struct device *dev);</cite></dt><dd><ul class="simple">
-<li><p>if pm_runtime_suspended(dev) returns “false”, run the -&gt;poweroff_noirq()
+<li><p>if pm_runtime_suspended(dev) returns “false”, run the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">poweroff_noirq()</span></code>
 callback provided by the device’s driver and return its result, or return
 0 if not defined</p></li>
 </ul>
 </dd>
 <dt><cite>int pm_generic_restore(struct device *dev);</cite></dt><dd><ul class="simple">
-<li><p>invoke the -&gt;restore() callback provided by the driver of this device and,
+<li><p>invoke the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">restore()</span></code> callback provided by the driver of this device and,
 if successful, change the device’s runtime PM status to ‘active’</p></li>
 </ul>
 </dd>
 <dt><cite>int pm_generic_restore_noirq(struct device *dev);</cite></dt><dd><ul class="simple">
-<li><p>invoke the -&gt;restore_noirq() callback provided by the device’s driver</p></li>
+<li><p>invoke the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">restore_noirq()</span></code> callback provided by the device’s driver</p></li>
 </ul>
 </dd>
 </dl>
 </div></blockquote>
 <p>These functions are the defaults used by the PM core if a subsystem doesn’t
-provide its own callbacks for -&gt;runtime_idle(), -&gt;runtime_suspend(),
--&gt;runtime_resume(), -&gt;suspend(), -&gt;suspend_noirq(), -&gt;resume(),
--&gt;resume_noirq(), -&gt;freeze(), -&gt;freeze_noirq(), -&gt;thaw(), -&gt;thaw_noirq(),
--&gt;poweroff(), -&gt;poweroff_noirq(), -&gt;restore(), -&gt;restore_noirq() in the
+provide its own callbacks for -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_idle()</span></code>, -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_suspend()</span></code>,
+-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_resume()</span></code>, -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">suspend()</span></code>, -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">suspend_noirq()</span></code>, -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">resume()</span></code>,
+-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">resume_noirq()</span></code>, -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">freeze()</span></code>, -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">freeze_noirq()</span></code>, -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">thaw()</span></code>, -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">thaw_noirq()</span></code>,
+-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">poweroff()</span></code>, -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">poweroff_noirq()</span></code>, -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">restore()</span></code>, -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">restore_noirq()</span></code> in the
 subsystem-level dev_pm_ops structure.</p>
 <p>Device drivers that wish to use the same function as a system suspend, freeze,
 poweroff and runtime suspend callback, and similarly for system resume, thaw,
 restore, and runtime resume, can achieve similar behaviour with the help of the
-DEFINE_RUNTIME_DEV_PM_OPS() defined in include/linux/pm_runtime.h (possibly setting its
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">DEFINE_RUNTIME_DEV_PM_OPS()</span></code> defined in include/linux/pm_runtime.h (possibly setting its
 last argument to NULL).</p>
 </section>
 <section id="no-callback-devices">
@@ -1032,16 +1031,16 @@ last argument to NULL).</p>
 power-managed on their own.  (The prototype example is a USB interface.  Entire
 USB devices can go into low-power mode or send wake-up requests, but neither is
 possible for individual interfaces.)  The drivers for these devices have no
-need of runtime PM callbacks; if the callbacks did exist, -&gt;runtime_suspend()
-and -&gt;runtime_resume() would always return 0 without doing anything else and
--&gt;runtime_idle() would always call pm_runtime_suspend().</p>
+need of runtime PM callbacks; if the callbacks did exist, -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_suspend()</span></code>
+and -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_resume()</span></code> would always return 0 without doing anything else and
+-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_idle()</span></code> would always call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_suspend()</span></code>.</p>
 <p>Subsystems can tell the PM core about these devices by calling
-pm_runtime_no_callbacks().  This should be done after the device structure is
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_no_callbacks()</span></code>.  This should be done after the device structure is
 initialized and before it is registered (although after device registration is
 also okay).  The routine will set the device’s power.no_callbacks flag and
 prevent the non-debugging runtime PM sysfs attributes from being created.</p>
 <p>When power.no_callbacks is set, the PM core will not invoke the
--&gt;runtime_idle(), -&gt;runtime_suspend(), or -&gt;runtime_resume() callbacks.
+-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_idle()</span></code>, -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_suspend()</span></code>, or -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_resume()</span></code> callbacks.
 Instead it will assume that suspends and resumes always succeed and that idle
 devices should be suspended.</p>
 <p>As a consequence, the PM core will never directly inform the device’s subsystem
@@ -1049,7 +1048,7 @@ or driver about runtime power changes.  Instead, the driver for the device’s
 parent must take responsibility for telling the device’s driver when the
 parent’s power state changes.</p>
 <p>Note that, in some cases it may not be desirable for subsystems/drivers to call
-pm_runtime_no_callbacks() for their devices. This could be because a subset of
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_no_callbacks()</span></code> for their devices. This could be because a subset of
 the runtime PM callbacks needs to be implemented, a platform dependent PM
 domain could get attached to the device or that the device is power managed
 through a supplier device link. For these reasons and to avoid boilerplate code
@@ -1071,38 +1070,37 @@ the heuristic ends up being non-optimal, it will still prevent devices from
 device is automatically suspended (the subsystem or driver still has to call
 the appropriate PM routines); rather it means that runtime suspends will
 automatically be delayed until the desired period of inactivity has elapsed.</p>
-<p>Inactivity is determined based on the power.last_busy field.  Drivers should
-call pm_runtime_mark_last_busy() to update this field after carrying out I/O,
-typically just before calling __pm_runtime_put_autosuspend().  The desired
-length of the inactivity period is a matter of policy.  Subsystems can set this
-length initially by calling pm_runtime_set_autosuspend_delay(), but after device
+<p>Inactivity is determined based on the power.last_busy field. The desired length
+of the inactivity period is a matter of policy.  Subsystems can set this length
+initially by calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_set_autosuspend_delay()</span></code>, but after device
 registration the length should be controlled by user space, using the
 /sys/devices/.../power/autosuspend_delay_ms attribute.</p>
 <p>In order to use autosuspend, subsystems or drivers must call
-pm_runtime_use_autosuspend() (preferably before registering the device), and
-thereafter they should use the various <cite>*_autosuspend()</cite> helper functions
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_use_autosuspend()</span></code> (preferably before registering the device), and
+thereafter they should use the various <cite>*<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_autosuspend()</span></code></cite> helper functions
 instead of the non-autosuspend counterparts:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Instead of: pm_runtime_suspend    use: pm_runtime_autosuspend;
 Instead of: pm_schedule_suspend   use: pm_request_autosuspend;
-Instead of: pm_runtime_put        use: __pm_runtime_put_autosuspend;
+Instead of: pm_runtime_put        use: pm_runtime_put_autosuspend;
 Instead of: pm_runtime_put_sync   use: pm_runtime_put_sync_autosuspend.
 </pre></div>
 </div>
 <p>Drivers may also continue to use the non-autosuspend helper functions; they
 will behave normally, which means sometimes taking the autosuspend delay into
-account (see pm_runtime_idle).</p>
+account (see pm_runtime_idle). The autosuspend variants of the functions also
+call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_mark_last_busy()</span></code>.</p>
 <p>Under some circumstances a driver or subsystem may want to prevent a device
 from autosuspending immediately, even though the usage counter is zero and the
-autosuspend delay time has expired.  If the -&gt;runtime_suspend() callback
+autosuspend delay time has expired.  If the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_suspend()</span></code> callback
 returns -EAGAIN or -EBUSY, and if the next autosuspend delay expiration time is
 in the future (as it normally would be if the callback invoked
-pm_runtime_mark_last_busy()), the PM core will automatically reschedule the
-autosuspend.  The -&gt;runtime_suspend() callback can’t do this rescheduling
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_mark_last_busy()</span></code>), the PM core will automatically reschedule the
+autosuspend.  The -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_suspend()</span></code> callback can’t do this rescheduling
 itself because no suspend requests of any kind are accepted while the device is
 suspending (i.e., while the callback is running).</p>
 <p>The implementation is well suited for asynchronous use in interrupt contexts.
 However such use inevitably involves races, because the PM core can’t
-synchronize -&gt;runtime_suspend() callbacks with the arrival of I/O requests.
+synchronize -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_suspend()</span></code> callbacks with the arrival of I/O requests.
 This synchronization must be handled by the driver, using its private lock.
 Here is a schematic pseudo-code example:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>foo_read_or_write(struct foo_priv *foo, void *data)
@@ -1119,12 +1117,10 @@ Here is a schematic pseudo-code example:</p>
 foo_io_completion(struct foo_priv *foo, void *req)
 {
         lock(&amp;foo-&gt;private_lock);
-        if (--foo-&gt;num_pending_requests == 0) {
-                pm_runtime_mark_last_busy(&amp;foo-&gt;dev);
-                __pm_runtime_put_autosuspend(&amp;foo-&gt;dev);
-        } else {
+        if (--foo-&gt;num_pending_requests == 0)
+                pm_runtime_put_autosuspend(&amp;foo-&gt;dev);
+        else
                 foo_process_next_request(foo);
-        }
         unlock(&amp;foo-&gt;private_lock);
         /* Send req result back to the user ... */
 }
@@ -1160,14 +1156,14 @@ int foo_runtime_resume(struct device *dev)
 }
 </pre></div>
 </div>
-<p>The important point is that after foo_io_completion() asks for an autosuspend,
-the foo_runtime_suspend() callback may race with foo_read_or_write().
-Therefore foo_runtime_suspend() has to check whether there are any pending I/O
+<p>The important point is that after <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">foo_io_completion()</span></code> asks for an autosuspend,
+the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">foo_runtime_suspend()</span></code> callback may race with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">foo_read_or_write()</span></code>.
+Therefore <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">foo_runtime_suspend()</span></code> has to check whether there are any pending I/O
 requests (while holding the private lock) before allowing the suspend to
 proceed.</p>
 <p>In addition, the power.autosuspend_delay field can be changed by user space at
 any time.  If a driver cares about this, it can call
-pm_runtime_autosuspend_expiration() from within the -&gt;runtime_suspend()
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pm_runtime_autosuspend_expiration()</span></code> from within the -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">runtime_suspend()</span></code>
 callback while holding its private lock.  If the function returns a nonzero
 value then the delay has not yet expired and the callback should return
 -EAGAIN.</p>

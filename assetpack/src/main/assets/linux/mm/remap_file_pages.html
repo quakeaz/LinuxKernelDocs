@@ -13,7 +13,7 @@
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Short users guide for SLUB" href="slub.html" />
+    <link rel="next" title="Split page table lock" href="split_page_table_lock.html" />
     <link rel="prev" title="Page Table Check" href="page_table_check.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -159,9 +159,9 @@ English
 </div>
 <section id="remap-file-pages-system-call">
 <h1>remap_file_pages() system call<a class="headerlink" href="#remap-file-pages-system-call" title="Link to this heading">¶</a></h1>
-<p>The remap_file_pages() system call is used to create a nonlinear mapping,
+<p>The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remap_file_pages()</span></code> system call is used to create a nonlinear mapping,
 that is, a mapping in which the pages of the file are mapped into a
-nonsequential order in memory. The advantage of using remap_file_pages()
+nonsequential order in memory. The advantage of using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remap_file_pages()</span></code>
 over using repeated calls to mmap(2) is that the former approach does not
 require the kernel to create additional VMA (Virtual Memory Area) data
 structures.</p>
@@ -171,14 +171,14 @@ nonlinear mapping work kernel need a way to distinguish normal page table
 entries from entries with file offset (pte_file). Kernel reserves flag in
 PTE for this purpose. PTE flags are scarce resource especially on some CPU
 architectures. It would be nice to free up the flag for other usage.</p>
-<p>Fortunately, there are not many users of remap_file_pages() in the wild.
+<p>Fortunately, there are not many users of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remap_file_pages()</span></code> in the wild.
 It’s only known that one enterprise RDBMS implementation uses the syscall
 on 32-bit systems to map files bigger than can linearly fit into 32-bit
 virtual address space. This use-case is not critical anymore since 64-bit
 systems are widely available.</p>
 <p>The syscall is deprecated and replaced it with an emulation now. The
 emulation creates new VMAs instead of nonlinear mappings. It’s going to
-work slower for rare users of remap_file_pages() but ABI is preserved.</p>
+work slower for rare users of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remap_file_pages()</span></code> but ABI is preserved.</p>
 <p>One side effect of emulation (apart from performance) is that user can hit
 vm.max_map_count limit more easily due to additional VMAs. See comment for
 DEFAULT_MAX_MAP_COUNT for more details on the limit.</p>

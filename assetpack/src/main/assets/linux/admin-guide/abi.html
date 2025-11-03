@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -156,7 +156,7 @@
 <section id="linux-abi-description">
 <h1>Linux ABI description<a class="headerlink" href="#linux-abi-description" title="Link to this heading">¶</a></h1>
 <section id="introduction">
-<span id="abi-file-home-bryanc-linux-linux-6-16-documentation-abi-readme"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h2>
+<span id="abi-file-home-bryanc-linux-linux-6-17-documentation-abi-readme"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h2>
 <p>This part of the documentation inside Documentation/ABI directory
 attempts to document the ABI between the Linux kernel and
 userspace, and the relative stability of these interfaces.  Due to the
@@ -207,7 +207,9 @@ been removed from the kernel.</p>
 <dd class="field-even"><p>Date created</p>
 </dd>
 <dt class="field-odd">KernelVersion<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Kernel version this feature first showed up in.</p>
+<dd class="field-odd"><p>(Optional) Kernel version this feature first showed up in.
+Note: git history often provides more accurate version
+info, so this field may be omitted.</p>
 </dd>
 <dt class="field-even">Contact<span class="colon">:</span></dt>
 <dd class="field-even"><p>Primary contact for this interface (may be a mailing list)</p>
@@ -414,6 +416,7 @@ itself.  See <a class="reference internal" href="../process/stable-api-nonsense.
 <li class="toctree-l2"><a class="reference internal" href="abi-stable-files.html#abi-file-stable-sysfs-fs-orangefs">ABI file stable/sysfs-fs-orangefs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-stable-files.html#abi-file-stable-sysfs-hypervisor-xen">ABI file stable/sysfs-hypervisor-xen</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-stable-files.html#abi-file-stable-sysfs-kernel-notes">ABI file stable/sysfs-kernel-notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="abi-stable-files.html#abi-file-stable-sysfs-kernel-time-aux-clocks">ABI file stable/sysfs-kernel-time-aux-clocks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-stable-files.html#abi-file-stable-sysfs-module">ABI file stable/sysfs-module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-stable-files.html#abi-file-stable-sysfs-platform-wmi-bmof">ABI file stable/sysfs-platform-wmi-bmof</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-stable-files.html#abi-file-stable-sysfs-transport-srp">ABI file stable/sysfs-transport-srp</a></li>
@@ -454,6 +457,7 @@ itself.  See <a class="reference internal" href="../process/stable-api-nonsense.
 <li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-configfs-usb-gadget-uac2">ABI file testing/configfs-usb-gadget-uac2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-configfs-usb-gadget-uvc">ABI file testing/configfs-usb-gadget-uvc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-debugfs-alienware-wmi">ABI file testing/debugfs-alienware-wmi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-debugfs-amd-iommu">ABI file testing/debugfs-amd-iommu</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-debugfs-cec-error-inj">ABI file testing/debugfs-cec-error-inj</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-debugfs-cros-ec">ABI file testing/debugfs-cros-ec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-debugfs-cxl">ABI file testing/debugfs-cxl</a></li>
@@ -479,7 +483,6 @@ itself.  See <a class="reference internal" href="../process/stable-api-nonsense.
 <li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-debugfs-olpc">ABI file testing/debugfs-olpc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-debugfs-pcie-ptm">ABI file testing/debugfs-pcie-ptm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-debugfs-pfo-nx-crypto">ABI file testing/debugfs-pfo-nx-crypto</a></li>
-<li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-debugfs-pktcdvd">ABI file testing/debugfs-pktcdvd</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-debugfs-scmi">ABI file testing/debugfs-scmi</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-debugfs-scmi-raw">ABI file testing/debugfs-scmi-raw</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-debugfs-tpmi">ABI file testing/debugfs-tpmi</a></li>
@@ -692,6 +695,7 @@ itself.  See <a class="reference internal" href="../process/stable-api-nonsense.
 <li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-class-gnss">ABI file testing/sysfs-class-gnss</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-class-hwmon">ABI file testing/sysfs-class-hwmon</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-class-intel-pmt">ABI file testing/sysfs-class-intel_pmt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-class-intel-pmt-features">ABI file testing/sysfs-class-intel_pmt-features</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-class-iommu">ABI file testing/sysfs-class-iommu</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-class-iommu-amd-iommu">ABI file testing/sysfs-class-iommu-amd-iommu</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-class-iommu-intel-iommu">ABI file testing/sysfs-class-iommu-intel-iommu</a></li>
@@ -723,7 +727,6 @@ itself.  See <a class="reference internal" href="../process/stable-api-nonsense.
 <li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-class-net-queues">ABI file testing/sysfs-class-net-queues</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-class-net-statistics">ABI file testing/sysfs-class-net-statistics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-class-ocxl">ABI file testing/sysfs-class-ocxl</a></li>
-<li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-class-pktcdvd">ABI file testing/sysfs-class-pktcdvd</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-class-platform-profile">ABI file testing/sysfs-class-platform-profile</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-class-power">ABI file testing/sysfs-class-power</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-class-power-gaokun">ABI file testing/sysfs-class-power-gaokun</a></li>
@@ -847,6 +850,7 @@ itself.  See <a class="reference internal" href="../process/stable-api-nonsense.
 <li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-driver-panthor-profiling">ABI file testing/sysfs-driver-panthor-profiling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-driver-pciback">ABI file testing/sysfs-driver-pciback</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-driver-ppi">ABI file testing/sysfs-driver-ppi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-driver-qaic">ABI file testing/sysfs-driver-qaic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-driver-qat">ABI file testing/sysfs-driver-qat</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-driver-qat-ras">ABI file testing/sysfs-driver-qat_ras</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-testing-files.html#abi-file-testing-sysfs-driver-qat-rl">ABI file testing/sysfs-driver-qat_rl</a></li>
@@ -989,6 +993,7 @@ itself.  See <a class="reference internal" href="../process/stable-api-nonsense.
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="abi-obsolete-files.html">Obsolete ABI Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="abi-obsolete-files.html#abi-file-obsolete-automount-tracefs-debugfs">ABI file obsolete/automount-tracefs-debugfs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-obsolete-files.html#abi-file-obsolete-o2cb">ABI file obsolete/o2cb</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-obsolete-files.html#abi-file-obsolete-procfs-i8k">ABI file obsolete/procfs-i8k</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-obsolete-files.html#abi-file-obsolete-sysfs-bus-iio">ABI file obsolete/sysfs-bus-iio</a></li>
@@ -1005,11 +1010,13 @@ itself.  See <a class="reference internal" href="../process/stable-api-nonsense.
 <li class="toctree-l2"><a class="reference internal" href="abi-obsolete-files.html#abi-file-obsolete-sysfs-driver-hid-roccat-ryos">ABI file obsolete/sysfs-driver-hid-roccat-ryos</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-obsolete-files.html#abi-file-obsolete-sysfs-driver-hid-roccat-savu">ABI file obsolete/sysfs-driver-hid-roccat-savu</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-obsolete-files.html#abi-file-obsolete-sysfs-driver-intel-pmc-bxt">ABI file obsolete/sysfs-driver-intel_pmc_bxt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="abi-obsolete-files.html#abi-file-obsolete-sysfs-driver-samsung-laptop">ABI file obsolete/sysfs-driver-samsung-laptop</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-obsolete-files.html#abi-file-obsolete-sysfs-firmware-acpi">ABI file obsolete/sysfs-firmware-acpi</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-obsolete-files.html#abi-file-obsolete-sysfs-gpio">ABI file obsolete/sysfs-gpio</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-obsolete-files.html#abi-file-obsolete-sysfs-kernel-fadump-enabled">ABI file obsolete/sysfs-kernel-fadump_enabled</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-obsolete-files.html#abi-file-obsolete-sysfs-kernel-fadump-registered">ABI file obsolete/sysfs-kernel-fadump_registered</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-obsolete-files.html#abi-file-obsolete-sysfs-kernel-fadump-release-mem">ABI file obsolete/sysfs-kernel-fadump_release_mem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="abi-obsolete-files.html#abi-file-obsolete-sysfs-platform-ideapad-laptop">ABI file obsolete/sysfs-platform-ideapad-laptop</a></li>
 <li class="toctree-l2"><a class="reference internal" href="abi-obsolete-files.html#abi-file-obsolete-sysfs-selinux-user">ABI file obsolete/sysfs-selinux-user</a></li>
 </ul>
 </li>

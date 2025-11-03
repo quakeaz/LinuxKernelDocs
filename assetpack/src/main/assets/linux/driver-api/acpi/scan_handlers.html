@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -224,13 +224,13 @@
 </dl>
 <p>During system initialization and ACPI-based device hot-add, the ACPI namespace
 is scanned in search of device objects that generally represent various pieces
-of hardware.  This causes a struct acpi_device object to be created and
+of hardware.  This causes a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">acpi_device</span></code> object to be created and
 registered with the driver core for every device object in the ACPI namespace
-and the hierarchy of those struct acpi_device objects reflects the namespace
+and the hierarchy of those <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">acpi_device</span></code> objects reflects the namespace
 layout (i.e. parent device objects in the namespace are represented by parent
-struct acpi_device objects and analogously for their children).  Those struct
-acpi_device objects are referred to as “device nodes” in what follows, but they
-should not be confused with struct device_node objects used by the Device Trees
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">acpi_device</span></code> objects and analogously for their children).  Those <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">acpi_device</span></code> objects are referred to as “device nodes” in what follows, but they
+should not be confused with <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device_node</span></code> objects used by the Device Trees
 parsing code (although their role is analogous to the role of those objects).</p>
 <p>During ACPI-based device hot-remove device nodes representing pieces of hardware
 being removed are unregistered and deleted.</p>
@@ -257,34 +257,34 @@ called ACPI scan handlers represented by the following structure:</p>
 </div>
 <p>where ids is the list of IDs of device nodes the given handler is supposed to
 take care of, list_node is the hook to the global list of ACPI scan handlers
-maintained by the ACPI core and the .attach() and .detach() callbacks are
+maintained by the ACPI core and the .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">attach()</span></code> and .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">detach()</span></code> callbacks are
 executed, respectively, after registration of new device nodes and before
 unregistration of device nodes the handler attached to previously.</p>
-<p>The namespace scanning function, acpi_bus_scan(), first registers all of the
+<p>The namespace scanning function, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">acpi_bus_scan()</span></code>, first registers all of the
 device nodes in the given namespace scope with the driver core.  Then, it tries
 to match a scan handler against each of them using the ids arrays of the
-available scan handlers.  If a matching scan handler is found, its .attach()
+available scan handlers.  If a matching scan handler is found, its .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">attach()</span></code>
 callback is executed for the given device node.  If that callback returns 1,
 that means that the handler has claimed the device node and is now responsible
 for carrying out any additional configuration tasks related to it.  It also will
 be responsible for preparing the device node for unregistration in that case.
 The device node’s handler field is then populated with the address of the scan
 handler that has claimed it.</p>
-<p>If the .attach() callback returns 0, it means that the device node is not
+<p>If the .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">attach()</span></code> callback returns 0, it means that the device node is not
 interesting to the given scan handler and may be matched against the next scan
 handler in the list.  If it returns a (negative) error code, that means that
 the namespace scan should be terminated due to a serious error.  The error code
 returned should then reflect the type of the error.</p>
-<p>The namespace trimming function, acpi_bus_trim(), first executes .detach()
+<p>The namespace trimming function, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">acpi_bus_trim()</span></code>, first executes .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">detach()</span></code>
 callbacks from the scan handlers of all device nodes in the given namespace
 scope (if they have scan handlers).  Next, it unregisters all of the device
 nodes in that scope.</p>
 <p>ACPI scan handlers can be added to the list maintained by the ACPI core with the
-help of the acpi_scan_add_handler() function taking a pointer to the new scan
+help of the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">acpi_scan_add_handler()</span></code> function taking a pointer to the new scan
 handler as an argument.  The order in which scan handlers are added to the list
 is the order in which they are matched against device nodes during namespace
 scans.</p>
-<p>All scan handles must be added to the list before acpi_bus_scan() is run for the
+<p>All scan handles must be added to the list before <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">acpi_bus_scan()</span></code> is run for the
 first time and they cannot be removed from it.</p>
 </section>
 

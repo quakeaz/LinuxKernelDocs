@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -202,8 +202,8 @@ early as possible and not release it until the driver is unloaded.)</p>
 <section id="address-translation">
 <h2>Address translation<a class="headerlink" href="#address-translation" title="Link to this heading">¶</a></h2>
 <p>To translate the virtual address to a bus address, use the normal DMA
-API. Do _not_ use isa_virt_to_bus() even though it does the same
-thing. The reason for this is that the function isa_virt_to_bus()
+API. Do _not_ use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">isa_virt_to_bus()</span></code> even though it does the same
+thing. The reason for this is that the function <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">isa_virt_to_bus()</span></code>
 will require a Kconfig dependency to ISA, not just ISA_DMA_API which
 is really all you need. Remember that even though the DMA controller
 has its origins in ISA it is used elsewhere.</p>
@@ -229,16 +229,16 @@ specs or test different channels.</p>
 <h2>Transfer data<a class="headerlink" href="#transfer-data" title="Link to this heading">¶</a></h2>
 <p>Now for the good stuff, the actual DMA transfer. :)</p>
 <p>Before you use any ISA DMA routines you need to claim the DMA lock
-using claim_dma_lock(). The reason is that some DMA operations are
+using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">claim_dma_lock()</span></code>. The reason is that some DMA operations are
 not atomic so only one driver may fiddle with the registers at a
 time.</p>
 <p>The first time you use the DMA controller you should call
-clear_dma_ff(). This clears an internal register in the DMA
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">clear_dma_ff()</span></code>. This clears an internal register in the DMA
 controller that is used for the non-atomic operations. As long as you
 (and everyone else) uses the locking functions then you only need to
 reset this once.</p>
 <p>Next, you tell the controller in which direction you intend to do the
-transfer using set_dma_mode(). Currently you have the options
+transfer using <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">set_dma_mode()</span></code>. Currently you have the options
 DMA_MODE_READ and DMA_MODE_WRITE.</p>
 <p>Set the address from where the transfer should start (this needs to
 be 16-bit aligned for 16-bit transfers) and how many bytes to
@@ -247,7 +247,7 @@ required translation to values that the DMA controller understands.</p>
 <p>The final step is enabling the DMA channel and releasing the DMA
 lock.</p>
 <p>Once the DMA transfer is finished (or timed out) you should disable
-the channel again. You should also check get_dma_residue() to make
+the channel again. You should also check <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">get_dma_residue()</span></code> to make
 sure that all data has been transferred.</p>
 <p>Example:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int flags, residue;

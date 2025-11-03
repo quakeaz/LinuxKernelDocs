@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -150,7 +150,7 @@
 <h1><span class="section-number">2. </span>Programming gameport drivers<a class="headerlink" href="#programming-gameport-drivers" title="Link to this heading">¶</a></h1>
 <section id="a-basic-classic-gameport">
 <h2><span class="section-number">2.1. </span>A basic classic gameport<a class="headerlink" href="#a-basic-classic-gameport" title="Link to this heading">¶</a></h2>
-<p>If the gameport doesn’t provide more than the inb()/outb() functionality,
+<p>If the gameport doesn’t provide more than the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">inb()</span></code>/<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">outb()</span></code> functionality,
 the code needed to register it with the joystick drivers is simple:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct gameport gameport;
 
@@ -158,7 +158,7 @@ gameport.io = MY_IO_ADDRESS;
 gameport_register_port(&amp;gameport);
 </pre></div>
 </div>
-<p>Make sure struct gameport is initialized to 0 in all other fields. The
+<p>Make sure <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">gameport</span></code> is initialized to 0 in all other fields. The
 gameport generic code will take care of the rest.</p>
 <p>If your hardware supports more than one io address, and your driver can
 choose which one to program the hardware to, starting from the more exotic
@@ -168,7 +168,7 @@ addresses is preferred, because the likelihood of clashing with the standard
 0x218 would be the address of first choice.</p>
 <p>If your hardware supports a gameport address that is not mapped to ISA io
 space (is above 0x1000), use that one, and don’t map the ISA mirror.</p>
-<p>Also, always request_region() on the whole io space occupied by the
+<p>Also, always <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">request_region()</span></code> on the whole io space occupied by the
 gameport. Although only one ioport is really used, the gameport usually
 occupies from one to sixteen addresses in the io space.</p>
 <p>Please also consider enabling the gameport on the card in the -&gt;open()
@@ -241,7 +241,7 @@ in the data.</p>
 examples 1+2 or 1+3. Gameports can support internal calibration - see below,
 and also lightning.c and analog.c on how that works. If your driver supports
 more than one gameport instance simultaneously, use the -&gt;private member of
-the gameport struct to point to your data.</p>
+the gameport <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">to</span></code> point to your data.</p>
 </section>
 <section id="unregistering-a-gameport">
 <h2><span class="section-number">2.5. </span>Unregistering a gameport<a class="headerlink" href="#unregistering-a-gameport" title="Link to this heading">¶</a></h2>
@@ -262,12 +262,12 @@ driver!)</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>char name[32];
 </pre></div>
 </div>
-<p>Driver’s name as set by driver calling gameport_set_name(). Informational
+<p>Driver’s name as set by driver calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">gameport_set_name()</span></code>. Informational
 purpose only.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>char phys[32];
 </pre></div>
 </div>
-<p>gameport’s physical name/description as set by driver calling gameport_set_phys().
+<p>gameport’s physical name/description as set by driver calling <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">gameport_set_phys()</span></code>.
 Informational purpose only.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int io;
 </pre></div>
@@ -305,14 +305,14 @@ and buttons[0] with four bits representing the buttons.</p>
 </div>
 <p>Function for calibrating the ADC hardware. When called, axes[0..3] should be
 pre-filled by cooked data by the caller, max[0..3] should be pre-filled with
-expected maximums for each axis. The calibrate() function should set the
+expected maximums for each axis. The <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">calibrate()</span></code> function should set the
 sensitivity of the ADC hardware so that the maximums fit in its range and
 recompute the axes[] values to match the new sensitivity or re-read them from
 the hardware so that they give valid values.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int (*open)(struct gameport *, int mode);
 </pre></div>
 </div>
-<p>Open() serves two purposes. First a driver either opens the port in raw or
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">Open()</span></code> serves two purposes. First a driver either opens the port in raw or
 in cooked mode, the open() callback can decide which modes are supported.
 Second, resource allocation can happen here. The port can also be enabled
 here. Prior to this call, other fields of the gameport struct (namely the io
@@ -320,7 +320,7 @@ member) need not to be valid.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>void (*close)(struct gameport *);
 </pre></div>
 </div>
-<p>Close() should free the resources allocated by open, possibly disabling the
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">Close()</span></code> should free the resources allocated by open, possibly disabling the
 gameport.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct timer_list poll_timer;
 unsigned int poll_interval;     /* in msecs */

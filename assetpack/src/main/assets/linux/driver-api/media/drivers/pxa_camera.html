@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -357,7 +357,7 @@ while the DMA jumps from one Videobuffer to another. On the schema, that
 would be a problem if the following sequence is encountered :</p>
 <ul class="simple">
 <li><p>DMA chain is Videobuffer1 + Videobuffer2</p></li>
-<li><p>pxa_videobuf_queue() is called to queue Videobuffer3</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pxa_videobuf_queue()</span></code> is called to queue Videobuffer3</p></li>
 <li><p>DMA controller finishes Videobuffer2, and DMA stops</p></li>
 </ul>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span> =&gt;
@@ -370,9 +370,9 @@ would be a problem if the following sequence is encountered :</p>
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>pxa_dma_add_tail_buf() is called, the Videobuffer2 “finisher” is
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pxa_dma_add_tail_buf()</span></code> is called, the Videobuffer2 “finisher” is
 replaced by a “linker” to Videobuffer3 (creation of new_link)</p></li>
-<li><p>pxa_videobuf_queue() finishes</p></li>
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pxa_videobuf_queue()</span></code> finishes</p></li>
 <li><p>the DMA irq handler is called, which terminates Videobuffer2</p></li>
 <li><p>Videobuffer3 capture is not scheduled on DMA chain (as it stopped !!!)</p></li>
 </ul>
@@ -387,7 +387,7 @@ replaced by a “linker” to Videobuffer3 (creation of new_link)</p></li>
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>pxa_camera_check_link_miss() is called
+<li><p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pxa_camera_check_link_miss()</span></code> is called
 This checks if the DMA is finished and a buffer is still on the
 pcdev-&gt;capture list. If that’s the case, the capture will be restarted,
 and Videobuffer3 is scheduled on DMA chain.</p></li>
@@ -395,9 +395,9 @@ and Videobuffer3 is scheduled on DMA chain.</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If DMA stops just after pxa_camera_check_link_miss() reads DDADR()
+<p>If DMA stops just after <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pxa_camera_check_link_miss()</span></code> reads <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">DDADR()</span></code>
 value, we have the guarantee that the DMA irq handler will be called back
-when the DMA will finish the buffer, and pxa_camera_check_link_miss() will
+when the DMA will finish the buffer, and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pxa_camera_check_link_miss()</span></code> will
 be called again, to reschedule Videobuffer3.</p>
 </div>
 </section>

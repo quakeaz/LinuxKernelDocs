@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -171,8 +171,8 @@ domain, and the spec guarantees that all transactions within the
 hierarchy will be routable, but it does not require routing
 between hierarchies.</p>
 <p>The second issue is that to make use of existing interfaces in Linux,
-memory that is used for P2P transactions needs to be backed by struct
-pages. However, PCI BARs are not typically cache coherent so there are
+memory that is used for P2P transactions needs to be backed by <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">pages</span></code>. However, PCI BARs are not typically cache coherent so there are
 a few corner case gotchas with these pages so developers need to
 be careful about what they do with them.</p>
 <section id="driver-writer-s-guide">
@@ -211,7 +211,7 @@ in cases where the NVMe cards in use do not have CMB support.</p>
 <h3>Provider Drivers<a class="headerlink" href="#provider-drivers" title="Link to this heading">¶</a></h3>
 <p>A provider simply needs to register a BAR (or a portion of a BAR)
 as a P2P DMA resource using <a class="reference internal" href="#c.pci_p2pdma_add_resource" title="pci_p2pdma_add_resource"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_p2pdma_add_resource()</span></code></a>.
-This will register struct pages for all the specified memory.</p>
+This will register <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pages</span></code> for all the specified memory.</p>
 <p>After that it may optionally publish all of its resources as
 P2P memory using <a class="reference internal" href="#c.pci_p2pmem_publish" title="pci_p2pmem_publish"><code class="xref c c-func docutils literal notranslate"><span class="pre">pci_p2pmem_publish()</span></code></a>. This will allow
 any orchestrator drivers to find and use the memory. When marked in
@@ -250,12 +250,12 @@ allocating scatter-gather lists with P2P memory.</p>
 <section id="struct-page-caveats">
 <h3>Struct Page Caveats<a class="headerlink" href="#struct-page-caveats" title="Link to this heading">¶</a></h3>
 <p>Driver writers should be very careful about not passing these special
-struct pages to code that isn’t prepared for it. At this time, the kernel
+<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pages</span></code> to code that isn’t prepared for it. At this time, the kernel
 interfaces do not have any checks for ensuring this. This obviously
 precludes passing these pages to userspace.</p>
 <p>P2P memory is also technically IO memory but should never have any side
 effects behind it. Thus, the order of loads and stores should not be important
-and ioreadX(), iowriteX() and friends should not be necessary.</p>
+and <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ioreadX()</span></code>, <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">iowriteX()</span></code> and friends should not be necessary.</p>
 </section>
 </section>
 <section id="p2p-dma-support-library">
@@ -279,7 +279,7 @@ and ioreadX(), iowriteX() and friends should not be necessary.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>The memory will be given ZONE_DEVICE struct pages so that it may
+<p>The memory will be given ZONE_DEVICE <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pages</span></code> so that it may
 be used with any DMA request.</p>
 </div>
 <dl class="c function">
@@ -432,7 +432,7 @@ found provider will also be assigned to the client list.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.pci_p2pmem_publish">
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pci_p2pmem_publish</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">pci_dev</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pdev</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n"><span class="pre">publish</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.pci_p2pmem_publish" title="Link to this definition">¶</a><br /></dt>
-<dd><p>publish the peer-to-peer DMA memory for use by other devices with pci_p2pmem_find()</p>
+<dd><p>publish the peer-to-peer DMA memory for use by other devices with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pci_p2pmem_find()</span></code></p>
 </dd></dl>
 
 <div class="kernelindent docutils container">

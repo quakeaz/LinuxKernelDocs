@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -298,13 +298,13 @@ a very good reason why not to always use RPMSG_ADDR_ANY here).</p>
 </pre></div>
 </div>
 <p>destroys an existing rpmsg endpoint. user should provide a pointer
-to an rpmsg endpoint that was previously created with rpmsg_create_ept().</p>
+to an rpmsg endpoint that was previously created with <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rpmsg_create_ept()</span></code>.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int register_rpmsg_driver(struct rpmsg_driver *rpdrv);
 </pre></div>
 </div>
 <p>registers an rpmsg driver with the rpmsg bus. user should provide
 a pointer to an rpmsg_driver struct, which contains the driver’s
--&gt;probe() and -&gt;remove() functions, an rx callback, and an id_table
+-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> and -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove()</span></code> functions, an rx callback, and an id_table
 specifying the names of the channels this driver is interested to
 be probed with.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>void unregister_rpmsg_driver(struct rpmsg_driver *rpdrv);
@@ -317,7 +317,7 @@ Returns 0 on success, and an appropriate error value on failure.</p>
 <section id="typical-usage">
 <h2>Typical usage<a class="headerlink" href="#typical-usage" title="Link to this heading">¶</a></h2>
 <p>The following is a simple rpmsg driver, that sends an “hello!” message
-on probe(), and whenever it receives an incoming message, it dumps its
+on <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code>, and whenever it receives an incoming message, it dumps its
 content to the console.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>#include &lt;linux/kernel.h&gt;
 #include &lt;linux/module.h&gt;
@@ -382,7 +382,7 @@ processor supports dynamic name service announcement messages.</p>
 <p>When this feature is enabled, creation of rpmsg devices (i.e. channels)
 is completely dynamic: the remote processor announces the existence of a
 remote rpmsg service by sending a name service message (which contains
-the name and rpmsg addr of the remote service, see struct rpmsg_ns_msg).</p>
+the name and rpmsg addr of the remote service, see <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rpmsg_ns_msg</span></code>).</p>
 <p>This message is then handled by the rpmsg bus, which in turn dynamically
 creates and registers an rpmsg channel (which represents the remote service).
 If/when a relevant rpmsg driver is registered, it will be immediately probed

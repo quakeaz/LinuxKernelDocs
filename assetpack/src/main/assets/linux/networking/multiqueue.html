@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -152,14 +152,14 @@
 <section id="intro-kernel-support-for-multiqueue-devices">
 <h3>Intro: Kernel support for multiqueue devices<a class="headerlink" href="#intro-kernel-support-for-multiqueue-devices" title="Link to this heading">¶</a></h3>
 <p>Kernel support for multiqueue devices is always present.</p>
-<p>Base drivers are required to use the new alloc_etherdev_mq() or
-alloc_netdev_mq() functions to allocate the subqueues for the device.  The
+<p>Base drivers are required to use the new <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">alloc_etherdev_mq()</span></code> or
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">alloc_netdev_mq()</span></code> functions to allocate the subqueues for the device.  The
 underlying kernel API will take care of the allocation and deallocation of
 the subqueue memory, as well as netdev configuration of where the queues
 exist in memory.</p>
 <p>The base driver will also need to manage the queues as it does the global
 netdev-&gt;queue_lock today.  Therefore base drivers should use the
-netif_{start|stop|wake}_subqueue() functions to manage each queue while the
+netif_{start|stop|wake}<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">_subqueue()</span></code> functions to manage each queue while the
 device is still operational.  netdev-&gt;queue_lock is still used when the device
 comes online or when it’s completely shut down (<a class="reference internal" href="kapi.html#c.unregister_netdev" title="unregister_netdev"><code class="xref c c-func docutils literal notranslate"><span class="pre">unregister_netdev()</span></code></a>, etc.).</p>
 </section>
@@ -197,7 +197,7 @@ band 3 =&gt; queue 3
 </pre></div>
 </div>
 <p>Traffic will begin flowing through each queue based on either the simple_tx_hash
-function or based on netdev-&gt;select_queue() if you have it defined.</p>
+function or based on netdev-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">select_queue()</span></code> if you have it defined.</p>
 <p>The behavior of tc filters remains the same.  However a new tc action,
 skbedit, has been added.  Assuming you wanted to route all traffic to a
 specific host, for example 192.168.0.3, through a specific queue you could use

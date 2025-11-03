@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -258,7 +258,7 @@ users and keeps reference counting consistent.</p>
 <p>The consumer API is aimed to be as simple as possible. The driver interested in
 getting a descriptor from the power sequencer should call <a class="reference internal" href="#c.pwrseq_get" title="pwrseq_get"><code class="xref c c-func docutils literal notranslate"><span class="pre">pwrseq_get()</span></code></a> and
 specify the name of the target it wants to reach in the sequence after calling
-pwrseq_power_up(). The descriptor can be released by calling <a class="reference internal" href="#c.pwrseq_put" title="pwrseq_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">pwrseq_put()</span></code></a> and
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">pwrseq_power_up()</span></code>. The descriptor can be released by calling <a class="reference internal" href="#c.pwrseq_put" title="pwrseq_put"><code class="xref c c-func docutils literal notranslate"><span class="pre">pwrseq_put()</span></code></a> and
 the consumer can request the powering down of its target with
 <a class="reference internal" href="#c.pwrseq_power_off" title="pwrseq_power_off"><code class="xref c c-func docutils literal notranslate"><span class="pre">pwrseq_power_off()</span></code></a>. Note that there is no guarantee that <a class="reference internal" href="#c.pwrseq_power_off" title="pwrseq_power_off"><code class="xref c c-func docutils literal notranslate"><span class="pre">pwrseq_power_off()</span></code></a>
 will have any effect as there may be multiple users of the underlying resources
@@ -277,7 +277,7 @@ register with the pwrseq subsystem by calling <a class="reference internal" href
 <h3>Dynamic consumer matching<a class="headerlink" href="#dynamic-consumer-matching" title="Link to this heading">¶</a></h3>
 <p>The main difference between pwrseq and other Linux kernel providers is the
 mechanism for dynamic matching of consumers and providers. Every power sequence
-provider driver must implement the <cite>match()</cite> callback and pass it to the pwrseq
+provider driver must implement the <cite><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">match()</span></code></cite> callback and pass it to the pwrseq
 core when registering with the subsystems.</p>
 <p>When a client requests a sequencer handle, the core will call this callback for
 every registered provider and let it flexibly figure out whether the proposed
@@ -396,7 +396,7 @@ using the same power sequencer.</p>
 <p><strong>Description</strong></p>
 <p>The config structure is only used during the call and can be freed after
 the function returns. The config structure <em>must</em> have the parent device
-as well as the match() callback and at least one target set.</p>
+as well as the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">match()</span></code> callback and at least one target set.</p>
 <p><strong>Return</strong></p>
 <p>Returns the address of the new pwrseq device or <a class="reference internal" href="../core-api/kernel-api.html#c.ERR_PTR" title="ERR_PTR"><code class="xref c c-func docutils literal notranslate"><span class="pre">ERR_PTR()</span></code></a> on failure.</p>
 </div>

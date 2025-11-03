@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -292,7 +292,7 @@ into CAIF Frames with correct length.</p></li>
 <p>In this layered approach the following “rules” apply.</p>
 <blockquote>
 <div><ul>
-<li><p>All layers embed the same structure “struct cflayer”</p></li>
+<li><p>All layers embed the same structure “<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cflayer</span></code>”</p></li>
 <li><p>A layer does not depend on any other layer’s private data.</p></li>
 <li><p>Layers are stacked by setting the pointers:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>layer-&gt;up , layer-&gt;dn
@@ -316,10 +316,10 @@ into CAIF Frames with correct length.</p></li>
 <h2>CAIF Socket and IP interface<a class="headerlink" href="#caif-socket-and-ip-interface" title="Link to this heading">¶</a></h2>
 <p>The IP interface and CAIF socket API are implemented on top of the
 CAIF Core protocol. The IP Interface and CAIF socket have an instance of
-‘struct cflayer’, just like the CAIF Core protocol stack.
-Net device and Socket implement the ‘receive()’ function defined by
-‘struct cflayer’, just like the rest of the CAIF stack. In this way, transmit and
-receive of packets is handled as by the rest of the layers: the ‘dn-&gt;transmit()’
+‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cflayer</span></code>’, just like the CAIF Core protocol stack.
+Net device and Socket implement the ‘<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">receive()</span></code>’ function defined by
+‘<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">cflayer</span></code>’, just like the rest of the CAIF stack. In this way, transmit and
+receive of packets is handled as by the rest of the layers: the ‘dn-&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">transmit()</span></code>’
 function is called in order to transmit data.</p>
 <section id="configuration-of-link-layer">
 <h3>Configuration of Link Layer<a class="headerlink" href="#configuration-of-link-layer" title="Link to this heading">¶</a></h3>

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -232,11 +232,14 @@ handle characters as per POSIX.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">tty_ldisc_ops</span> <span class="pre">*ops</span></code></dt><dd><p><a class="reference internal" href="tty_ldisc.html#c.tty_ldisc_ops" title="tty_ldisc_ops"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">tty_ldisc_ops</span></code></a> where to save N_TTY methods</p>
-<p>Enables a ‘subclass’ line discipline to ‘inherit’ N_TTY methods.</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Enables a ‘subclass’ line discipline to ‘inherit’ N_TTY methods.</p>
+</div></blockquote>
 </div>
 </section>
 <section id="internal-functions">
@@ -923,6 +926,12 @@ to be had.</p>
 <p>Helper function for <a class="reference internal" href="#c.n_tty_read" title="n_tty_read"><code class="xref c c-func docutils literal notranslate"><span class="pre">n_tty_read()</span></code></a>. It is only called when <code class="docutils literal notranslate"><span class="pre">ICANON</span></code> is on; it
 copies one line of input up to and including the line-delimiting character
 into the result buffer.</p>
+<p><strong>Note</strong></p>
+<p>When termios is changed from non-canonical to canonical mode and the
+read buffer contains data, <a class="reference internal" href="#c.n_tty_set_termios" title="n_tty_set_termios"><code class="xref c c-func docutils literal notranslate"><span class="pre">n_tty_set_termios()</span></code></a> simulates an EOF push (as if
+C-d were input) _without_ the <code class="docutils literal notranslate"><span class="pre">DISABLED_CHAR</span></code> in the buffer. This causes data
+already processed as input to be immediately available as input although a
+newline has not been received.</p>
 <dl class="simple">
 <dt>Locking:</dt><dd><ul class="simple">
 <li><p>called under the <code class="docutils literal notranslate"><span class="pre">atomic_read_lock</span></code> mutex</p></li>
@@ -935,12 +944,6 @@ read_tail published</p>
 </ul>
 </dd>
 </dl>
-<p><strong>Note</strong></p>
-<p>When termios is changed from non-canonical to canonical mode and the
-read buffer contains data, <a class="reference internal" href="#c.n_tty_set_termios" title="n_tty_set_termios"><code class="xref c c-func docutils literal notranslate"><span class="pre">n_tty_set_termios()</span></code></a> simulates an EOF push (as if
-C-d were input) _without_ the <code class="docutils literal notranslate"><span class="pre">DISABLED_CHAR</span></code> in the buffer. This causes data
-already processed as input to be immediately available as input although a
-newline has not been received.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.job_control">

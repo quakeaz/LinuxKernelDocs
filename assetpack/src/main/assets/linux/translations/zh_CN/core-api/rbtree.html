@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -229,11 +229,11 @@ Chinese (Simplified)
 };
 </pre></div>
 </div>
-<p>当处理一个指向内嵌rb_node结构体的指针时，包住rb_node的结构体可用标准的container_of()
+<p>当处理一个指向内嵌rb_node结构体的指针时，包住rb_node的结构体可用标准的<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">container_of()</span></code>
 宏访问。此外，个体成员可直接用rb_entry(node, type, member)访问。</p>
 <p>每颗红黑树的根是一个rb_root数据结构，它由以下方式初始化为空:</p>
 <blockquote>
-<div><p>struct rb_root mytree = RB_ROOT;</p>
+<div><p><code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rb_root</span></code> mytree = RB_ROOT;</p>
 </div></blockquote>
 </section>
 <section id="id3">
@@ -330,11 +330,11 @@ struct rb_node *rb_next(struct rb_node *node);
 struct rb_node *rb_prev(struct rb_node *node);
 </pre></div>
 </div>
-<p>要开始迭代，需要使用一个指向树根的指针调用rb_first()或rb_last()，它将返回一个指向
+<p>要开始迭代，需要使用一个指向树根的指针调用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rb_first()</span></code>或<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rb_last()</span></code>，它将返回一个指向
 树中第一个或最后一个元素所包含的节点结构的指针。要继续的话，可以在当前结点上调用
-rb_next()或rb_prev()来获取下一个或上一个结点。当没有剩余的结点时，将返回NULL。</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rb_next()</span></code>或<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rb_prev()</span></code>来获取下一个或上一个结点。当没有剩余的结点时，将返回NULL。</p>
 <p>迭代器函数返回一个指向被嵌入的rb_node结构体的指针，由此，包住rb_node的结构体可用
-标准的container_of()宏访问。此外，个体成员可直接用rb_entry(node, type, member)
+标准的<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">container_of()</span></code>宏访问。此外，个体成员可直接用rb_entry(node, type, member)
 访问。</p>
 <p>示例:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct rb_node *node;
@@ -346,8 +346,8 @@ for (node = rb_first(&amp;mytree); node; node = rb_next(node))
 <section id="id7">
 <h2>带缓存的红黑树<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h2>
 <p>计算最左边（最小的）结点是二叉搜索树的一个相当常见的任务，例如用于遍历，或用户根据
-他们自己的逻辑依赖一个特定的顺序。为此，用户可以使用’struct rb_root_cached’来优化
-时间复杂度为O(logN)的rb_first()的调用，以简单地获取指针，避免了潜在的昂贵的树迭代。
+他们自己的逻辑依赖一个特定的顺序。为此，用户可以使用’<code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rb_root_cached</span></code>’来优化
+时间复杂度为O(logN)的<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rb_first()</span></code>的调用，以简单地获取指针，避免了潜在的昂贵的树迭代。
 维护操作的额外运行时间开销可忽略，不过内存占用较大。</p>
 <p>和rb_root结构体类似，带缓存的红黑树由以下方式初始化为空:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>struct rb_root_cached mytree = RB_ROOT_CACHED;
@@ -378,12 +378,12 @@ void rb_erase_augmented_cached(struct rb_node *, struct rb_root_cached *,
 注意，linux/rbtree_augmented.h暴露了一些红黑树实现的细节而你不应依赖它们，请坚持
 使用文档记录的API，并且不要在头文件中包含&lt;linux/rbtree_augmented.h&gt;，以最小化你的
 用户意外地依赖这些实现细节的可能。</p>
-<p>插入时，用户必须更新通往被插入节点的路径上的增强信息，然后像往常一样调用rb_link_node()，
-然后是rb_augment_inserted()而不是平时的rb_insert_color()调用。如果
-rb_augment_inserted()再平衡了红黑树，它将回调至一个用户提供的函数来更新受影响的
+<p>插入时，用户必须更新通往被插入节点的路径上的增强信息，然后像往常一样调用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rb_link_node()</span></code>，
+然后是<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rb_augment_inserted()</span></code>而不是平时的<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rb_insert_color()</span></code>调用。如果
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rb_augment_inserted()</span></code>再平衡了红黑树，它将回调至一个用户提供的函数来更新受影响的
 子树上的增强信息。</p>
-<p>删除一个结点时，用户必须调用rb_erase_augmented()而不是rb_erase()。
-rb_erase_augmented()回调至一个用户提供的函数来更新受影响的子树上的增强信息。</p>
+<p>删除一个结点时，用户必须调用<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rb_erase_augmented()</span></code>而不是<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rb_erase()</span></code>。
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rb_erase_augmented()</span></code>回调至一个用户提供的函数来更新受影响的子树上的增强信息。</p>
 <p>在两种情况下，回调都是通过rb_augment_callbacks结构体提供的。必须定义3个回调：</p>
 <ul class="simple">
 <li><p>一个传播回调，它更新一个给定结点和它的祖先们的增强数据，直到一个给定的停止点
@@ -392,8 +392,8 @@ rb_erase_augmented()回调至一个用户提供的函数来更新受影响的子
 <li><p>一个树旋转回调，它将一颗给定的子树的增强值复制到新指定的子树树根上，并重新计算
 先前的子树树根的增强值。</p></li>
 </ul>
-<p>rb_erase_augmented()编译后的代码可能会内联传播、复制回调，这将导致函数体积更大，
-因此每个增强型红黑树的用户应该只有一个rb_erase_augmented()的调用点，以限制编译后
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rb_erase_augmented()</span></code>编译后的代码可能会内联传播、复制回调，这将导致函数体积更大，
+因此每个增强型红黑树的用户应该只有一个<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">rb_erase_augmented()</span></code>的调用点，以限制编译后
 的代码大小。</p>
 <section id="id9">
 <h3>使用示例<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h3>

@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -777,7 +777,7 @@ controller. If parent is NULL, the device, is a top-level device,
 which is not usually what you want.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">p</span></code></dt><dd><p>Holds the private data of the driver core portions of the device.
-See the comment of the struct device_private for detail.</p>
+See the comment of the <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device_private</span></code> for detail.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">init_name</span></code></dt><dd><p>Initial name of the device.</p>
 </dd>
@@ -878,14 +878,14 @@ the device.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">offline_disabled</span></code></dt><dd><p>If set, the device is permanently online.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">offline</span></code></dt><dd><p>Set after successful invocation of bus type’s .offline().</p>
+<dt><code class="docutils literal notranslate"><span class="pre">offline</span></code></dt><dd><p>Set after successful invocation of bus type’s .<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">offline()</span></code>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">of_node_reused</span></code></dt><dd><p>Set if the device-tree node is shared with an ancestor
 device.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">state_synced</span></code></dt><dd><p>The hardware state of this device has been synced to match
 the software state of this device by calling the driver/bus
-sync_state() callback.</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">sync_state()</span></code> callback.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">can_match</span></code></dt><dd><p>The device has matched with a driver at least once or it is in
 a bus (like AMBA) which can’t check for matching drivers until
@@ -1074,8 +1074,8 @@ returns a reference to a child device, if any.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This must be called with the device_lock() already held, for example
-from driver -&gt;probe(). Take care to only override the default
+<p>This must be called with the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">device_lock()</span></code> already held, for example
+from driver -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code>. Take care to only override the default
 lockdep_no_validate class.</p>
 </div>
 <dl class="c macro">
@@ -1094,8 +1094,8 @@ lockdep_no_validate class.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This must be called with the device_lock() already held, for example
-from driver -&gt;remove().</p>
+<p>This must be called with the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">device_lock()</span></code> already held, for example
+from driver -&gt;<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">remove()</span></code>.</p>
 </div>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.bus_type">
@@ -1682,7 +1682,7 @@ return to the caller and not iterate over any more devices.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>We pass off most of the work to the bus_add_driver() call,
+<p>We pass off most of the work to the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bus_add_driver()</span></code> call,
 since most of the things we have to do deal with the bus
 structures.</p>
 </div>
@@ -1731,10 +1731,8 @@ structures.</p>
 </dd>
 </dl>
 <p><strong>Return</strong></p>
-<dl class="simple">
-<dt>On success, a device_link struct will be returned.</dt><dd><p>On error or invalid flag settings, NULL will be returned.</p>
-</dd>
-</dl>
+<p>On success, a device_link <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">will</span></code> be returned.
+On error or invalid flag settings, NULL will be returned.</p>
 <p><strong>Description</strong></p>
 <p>The caller is responsible for the proper synchronization of the link creation
 with runtime PM.  First, setting the DL_FLAG_PM_RUNTIME flag will cause the
@@ -1898,7 +1896,7 @@ warn and error if any of the attribute files being created already exist.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>See kernfs_remove_self() for details.</p>
+<p>See <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">kernfs_remove_self()</span></code> for details.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.device_create_bin_file">
@@ -1999,14 +1997,14 @@ with devices that get unregistered and then spring back to life.
 (Among other things, it’s very hard to guarantee that all references
 to the previous incarnation of <strong>dev</strong> have been dropped.)  Allocate
 and register a fresh new <a class="reference internal" href="#c.device" title="device"><code class="xref c c-struct docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span></code></a> instead.</p>
-<p>Rule of thumb is: if <a class="reference internal" href="#c.device_add" title="device_add"><code class="xref c c-func docutils literal notranslate"><span class="pre">device_add()</span></code></a> succeeds, you should call
-<a class="reference internal" href="#c.device_del" title="device_del"><code class="xref c c-func docutils literal notranslate"><span class="pre">device_del()</span></code></a> when you want to get rid of it. If <a class="reference internal" href="#c.device_add" title="device_add"><code class="xref c c-func docutils literal notranslate"><span class="pre">device_add()</span></code></a> has
-<em>not</em> succeeded, use <em>only</em> <a class="reference internal" href="#c.put_device" title="put_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">put_device()</span></code></a> to drop the reference
-count.</p>
 <p><strong>NOTE</strong></p>
 <p>_Never_ directly free <strong>dev</strong> after calling this function, even
 if it returned an error! Always use <a class="reference internal" href="#c.put_device" title="put_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">put_device()</span></code></a> to give up your
 reference instead.</p>
+<p>Rule of thumb is: if <a class="reference internal" href="#c.device_add" title="device_add"><code class="xref c c-func docutils literal notranslate"><span class="pre">device_add()</span></code></a> succeeds, you should call
+<a class="reference internal" href="#c.device_del" title="device_del"><code class="xref c c-func docutils literal notranslate"><span class="pre">device_del()</span></code></a> when you want to get rid of it. If <a class="reference internal" href="#c.device_add" title="device_add"><code class="xref c c-func docutils literal notranslate"><span class="pre">device_add()</span></code></a> has
+<em>not</em> succeeded, use <em>only</em> <a class="reference internal" href="#c.put_device" title="put_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">put_device()</span></code></a> to drop the reference
+count.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.device_register">
@@ -2103,7 +2101,7 @@ also called manually.</p>
 we remove it from all the subsystems with <a class="reference internal" href="#c.device_del" title="device_del"><code class="xref c c-func docutils literal notranslate"><span class="pre">device_del()</span></code></a>, then
 we decrement the reference count via <a class="reference internal" href="#c.put_device" title="put_device"><code class="xref c c-func docutils literal notranslate"><span class="pre">put_device()</span></code></a>. If that
 is the final reference count, the device will be cleaned up
-via device_release() above. Otherwise, the structure will
+via <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">device_release()</span></code> above. Otherwise, the structure will
 stick around until the final reference to the device is dropped.</p>
 </div>
 <dl class="c function">
@@ -2230,7 +2228,7 @@ any device which should appear under /sys/devices/{name}</p>
 in sysfs.</p>
 <p>Returns <a class="reference internal" href="#c.device" title="device"><code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">device</span></code></a> pointer on success, or <a class="reference internal" href="../core-api/kernel-api.html#c.ERR_PTR" title="ERR_PTR"><code class="xref c c-func docutils literal notranslate"><span class="pre">ERR_PTR()</span></code></a> on error.</p>
 <p><strong>Note</strong></p>
-<p>You probably want to use root_device_register().</p>
+<p>You probably want to use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">root_device_register()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.root_device_unregister">
@@ -2246,7 +2244,7 @@ in sysfs.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>This function unregisters and cleans up a device that was created by
-root_device_register().</p>
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">root_device_register()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.device_create">
@@ -2357,6 +2355,10 @@ call to <a class="reference internal" href="#c.device_create" title="device_crea
 exclusion between two different calls of device_rename
 on the same device to ensure that new_name is valid and
 won’t conflict with other devices.</p>
+<p><strong>Note</strong></p>
+<p>given that some subsystems (networking and infiniband) use this
+function, with no immediate plans for this to change, we cannot assume or
+require that this function not be called at all.</p>
 <p>However, if you’re writing new code, do not call this function. The following
 text from Kay Sievers offers some insight:</p>
 <p>Renaming devices is racy at many levels, symlinks and other stuff are not
@@ -2374,10 +2376,6 @@ some other attributes for userspace to find the device, or use udev to add
 symlinks -- but never rename kernel devices later, it’s a complete mess. We
 don’t even want to get into that and try to implement the missing pieces in
 the core. We really have other pieces to fix in the driver core mess. :)</p>
-<p><strong>Note</strong></p>
-<p>given that some subsystems (networking and infiniband) use this
-function, with no immediate plans for this to change, we cannot assume or
-require that this function not be called at all.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.device_move">
@@ -2456,7 +2454,7 @@ return err;
 </div>
 <p>Using this helper in your probe function is totally fine even if <strong>err</strong>
 is known to never be -EPROBE_DEFER.
-The benefit compared to a normal dev_err() is the standardized format
+The benefit compared to a normal <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_err()</span></code> is the standardized format
 of the error code, which is emitted symbolically (i.e. you get “EAGAIN”
 instead of “-35”), and having the error code returned allows more
 compact error paths.</p>
@@ -2500,7 +2498,7 @@ return err;
 </div>
 <p>Using this helper in your probe function is totally fine even if <strong>err</strong>
 is known to never be -EPROBE_DEFER.
-The benefit compared to a normal dev_warn() is the standardized format
+The benefit compared to a normal <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dev_warn()</span></code> is the standardized format
 of the error code, which is emitted symbolically (i.e. you get “EAGAIN”
 instead of “-35”), and having the error code returned allows more
 compact error paths.</p>
@@ -2873,7 +2871,7 @@ code.  There’s no locking restriction.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>This is similar to the class_for_each_dev() function above, but it
+<p>This is similar to the <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">class_for_each_dev()</span></code> function above, but it
 returns a reference to a device that is ‘found’ for later use, as
 determined by the <strong>match</strong> callback.</p>
 <p>The callback should return 0 if the device doesn’t match and non-zero
@@ -2984,7 +2982,7 @@ to determine if the specific class has been registered yet or not).</p>
 <p>A simple faux device that can be created/destroyed.  To be used when a
 driver only needs to have a device to “hang” something off.  This can be
 used for downloading firmware or other basic tasks.  Use this instead of
-a struct platform_device if the device has no resources assigned to
+a <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">platform_device</span></code> if the device has no resources assigned to
 it at all.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.faux_device_ops">
@@ -3042,8 +3040,8 @@ device when it is registered with the driver core.</p>
 If present, callbacks in <strong>faux_ops</strong> will be called with the device that
 for the caller to do something with at the proper time given the
 device’s lifecycle.</p>
-<p>Note, when this function is called, the functions specified in struct
-faux_ops can be called before the function returns, so be prepared for
+<p>Note, when this function is called, the functions specified in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">faux_ops</span></code> can be called before the function returns, so be prepared for
 everything to be properly initialized before that point in time.  If the
 probe callback (if one is present) does NOT succeed, the creation of the
 device will fail and NULL will be returned.</p>
@@ -3078,8 +3076,8 @@ into, can be NULL.</p>
 If present, callbacks in <strong>faux_ops</strong> will be called with the device that
 for the caller to do something with at the proper time given the
 device’s lifecycle.</p>
-<p>Note, when this function is called, the functions specified in struct
-faux_ops can be called before the function returns, so be prepared for
+<p>Note, when this function is called, the functions specified in <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span>
+<span class="pre">faux_ops</span></code> can be called before the function returns, so be prepared for
 everything to be properly initialized before that point in time.</p>
 <p><strong>Return</strong></p>
 <ul class="simple">
@@ -3230,7 +3228,7 @@ class.</p>
 identify it.  The caller should initialise this structure with
 zeros and then generic class must have been initialised with the
 actual transport class unique name.  There’s a macro
-DECLARE_TRANSPORT_CLASS() to do this (declared classes still must
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">DECLARE_TRANSPORT_CLASS()</span></code> to do this (declared classes still must
 be registered).</p>
 <p>Returns 0 on success or error on failure.</p>
 </div>
@@ -3267,7 +3265,7 @@ class.</p>
 container.  The idea of an anonymous class is that it never
 actually has any device attributes associated with it (and thus
 saves on container storage).  So it can only be used for triggering
-events.  Use prezero and then use DECLARE_ANON_TRANSPORT_CLASS() to
+events.  Use prezero and then use <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">DECLARE_ANON_TRANSPORT_CLASS()</span></code> to
 initialise the anon transport class storage.</p>
 </div>
 <dl class="c function">
@@ -3364,7 +3362,7 @@ parameters.  The device need not have been added to be configured.</p>
 sysfs), but does not destroy it.  To eliminate a device entirely
 you must also call transport_destroy_device.  If you don’t need to
 do remove and destroy as separate operations, use
-transport_unregister_device() (see transport_class.h) which will
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">transport_unregister_device()</span></code> (see transport_class.h) which will
 perform both calls for you.</p>
 </div>
 <dl class="c function">
@@ -3444,7 +3442,7 @@ against a driver.</p>
 Caller must have already set <strong>dev-&gt;driver</strong>.</p>
 <p>Note that this does not modify the bus reference count.
 Please verify that is accounted for before calling this.
-(It is ok to call with no other effort from a driver’s probe() method.)</p>
+(It is ok to call with no other effort from a driver’s <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> method.)</p>
 <p>This function must be called with the device lock held.</p>
 <p>Callers should prefer to use <a class="reference internal" href="#c.device_driver_attach" title="device_driver_attach"><code class="xref c c-func docutils literal notranslate"><span class="pre">device_driver_attach()</span></code></a> instead.</p>
 </div>
@@ -3476,7 +3474,7 @@ Please verify that is accounted for before calling this.
 </dl>
 <p><strong>Description</strong></p>
 <p>Walk the list of drivers that the bus has and call
-driver_probe_device() for each pair. If a compatible
+<code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">driver_probe_device()</span></code> for each pair. If a compatible
 pair is found, break out and return.</p>
 <p>Returns 1 if the device was bound to a driver;
 0 if no matching driver was found;
@@ -3515,7 +3513,7 @@ pair is found, break out and return.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Walk the list of devices that the bus has on it and try to
-match the driver with each one.  If driver_probe_device()
+match the driver with each one.  If <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">driver_probe_device()</span></code>
 returns 0 and the <strong>dev-&gt;driver</strong> is set, we’ve found a
 compatible pair.</p>
 </div>
@@ -3647,7 +3645,7 @@ dropped.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.devm_platform_get_and_ioremap_resource">
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="pre">__iomem</span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">devm_platform_get_and_ioremap_resource</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">platform_device</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pdev</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">index</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">resource</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">res</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.devm_platform_get_and_ioremap_resource" title="Link to this definition">¶</a><br /></dt>
-<dd><p>call devm_ioremap_resource() for a platform device and get resource</p>
+<dd><p>call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_ioremap_resource()</span></code> for a platform device and get resource</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -3668,7 +3666,7 @@ on failure.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.devm_platform_ioremap_resource">
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="pre">__iomem</span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">devm_platform_ioremap_resource</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">platform_device</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pdev</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">index</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.devm_platform_ioremap_resource" title="Link to this definition">¶</a><br /></dt>
-<dd><p>call devm_ioremap_resource() for a platform device</p>
+<dd><p>call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">devm_ioremap_resource()</span></code> for a platform device</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -4075,9 +4073,9 @@ calling <a class="reference internal" href="#c.platform_device_put" title="platf
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Use this instead of platform_driver_register() when you know the device
+<p>Use this instead of <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">platform_driver_register()</span></code> when you know the device
 is not hotpluggable and has already been registered, and you want to
-remove its run-once probe() infrastructure from memory after the driver
+remove its run-once <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">probe()</span></code> infrastructure from memory after the driver
 has bound to the device.</p>
 <p>One typical use for this would be with drivers for controllers integrated
 into system-on-chip processors, where the controller devices have been
@@ -4155,7 +4153,7 @@ the reverse order.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Unregisters platform drivers specified by an array. This is typically used
-to complement an earlier call to platform_register_drivers(). Drivers are
+to complement an earlier call to <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">platform_register_drivers()</span></code>. Drivers are
 unregistered in the reverse order in which they were registered.</p>
 </div>
 <dl class="c function">
@@ -4418,7 +4416,7 @@ the devices and drivers that belong to the subsystem.</p>
 </dl>
 <p><strong>Description</strong></p>
 <p>Unregister the child subsystems and the bus itself.
-Finally, we call bus_put() to release the refcount</p>
+Finally, we call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">bus_put()</span></code> to release the refcount</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.subsys_system_register">
@@ -4514,7 +4512,7 @@ will be returned.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.dmam_free_coherent">
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dmam_free_coherent</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">vaddr</span></span>, <span class="n"><span class="pre">dma_addr_t</span></span><span class="w"> </span><span class="n"><span class="pre">dma_handle</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.dmam_free_coherent" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Managed dma_free_coherent()</p>
+<dd><p>Managed <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_free_coherent()</span></code></p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -4530,12 +4528,12 @@ will be returned.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Managed dma_free_coherent().</p>
+<p>Managed <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_free_coherent()</span></code>.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.dmam_alloc_attrs">
 <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">dmam_alloc_attrs</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.device" title="device"><span class="n"><span class="pre">device</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dev</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">size</span></span>, <span class="n"><span class="pre">dma_addr_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">dma_handle</span></span>, <span class="n"><span class="pre">gfp_t</span></span><span class="w"> </span><span class="n"><span class="pre">gfp</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="n"><span class="pre">attrs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.dmam_alloc_attrs" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Managed dma_alloc_attrs()</p>
+<dd><p>Managed <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_alloc_attrs()</span></code></p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -4553,7 +4551,7 @@ will be returned.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Managed dma_alloc_attrs().  Memory allocated using this function will be
+<p>Managed <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_alloc_attrs()</span></code>.  Memory allocated using this function will be
 automatically released on driver detach.</p>
 <p><strong>Return</strong></p>
 <p>Pointer to allocated memory on success, NULL on failure.</p>
@@ -4583,7 +4581,7 @@ automatically released on driver detach.</p>
 nents segments for the <strong>dir</strong> DMA operation by the <strong>dev</strong> device.</p>
 <p>Returns the number of mapped entries (which can be less than nents)
 on success. Zero is returned for any error.</p>
-<p>dma_unmap_sg_attrs() should be used to unmap the buffer with the
+<p><code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_unmap_sg_attrs()</span></code> should be used to unmap the buffer with the
 original sg and original nents (not the value returned by this funciton).</p>
 </div>
 <dl class="c function">
@@ -4608,7 +4606,7 @@ original sg and original nents (not the value returned by this funciton).</p>
 <p>Maps a buffer described by a scatterlist stored in the given sg_table
 object for the <strong>dir</strong> DMA operation by the <strong>dev</strong> device. After success, the
 ownership for the buffer is transferred to the DMA domain.  One has to
-call dma_sync_sgtable_for_cpu() or dma_unmap_sgtable() to move the
+call <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_sync_sgtable_for_cpu()</span></code> or <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_unmap_sgtable()</span></code> to move the
 ownership of the buffer back to the CPU domain before touching the
 buffer by the CPU.</p>
 <p>Returns 0 on success or a negative error code on error. The following
@@ -4665,7 +4663,7 @@ need to be unmapped have been performed.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Returns <code class="docutils literal notranslate"><span class="pre">true</span></code> if <strong>dev</strong> supports dma_mmap_coherent() and <a class="reference internal" href="#c.dma_mmap_attrs" title="dma_mmap_attrs"><code class="xref c c-func docutils literal notranslate"><span class="pre">dma_mmap_attrs()</span></code></a> to
+<p>Returns <code class="docutils literal notranslate"><span class="pre">true</span></code> if <strong>dev</strong> supports <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">dma_mmap_coherent()</span></code> and <a class="reference internal" href="#c.dma_mmap_attrs" title="dma_mmap_attrs"><code class="xref c c-func docutils literal notranslate"><span class="pre">dma_mmap_attrs()</span></code></a> to
 map DMA allocations to userspace.</p>
 </div>
 <dl class="c function">
@@ -4723,11 +4721,14 @@ bounce buffering, but might not be the only one.</p>
 
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">pnp_protocol</span> <span class="pre">*protocol</span></code></dt><dd><p>pointer to the corresponding pnp_protocol structure</p>
-<p>Ex protocols: ISAPNP, PNPBIOS, etc</p>
 </dd>
 </dl>
+<p><strong>Description</strong></p>
+<blockquote>
+<div><p>Ex protocols: ISAPNP, PNPBIOS, etc</p>
+</div></blockquote>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.pnp_request_card_device">
@@ -4983,7 +4984,7 @@ void * returned from the same dma_alloc_coherent call)</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">internal_addr</span></code></dt><dd><p>ioremap-ped version of addr, for driver internal use</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">dma_device</span></code></dt><dd><p>device struct that was passed to dma_alloc_coherent,
+<dt><code class="docutils literal notranslate"><span class="pre">dma_device</span></code></dt><dd><p>device <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">that</span></code> was passed to dma_alloc_coherent,
 used with UIO_MEM_DMA_COHERENT only</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">map</span></code></dt><dd><p>for use by the UIO core only.</p>

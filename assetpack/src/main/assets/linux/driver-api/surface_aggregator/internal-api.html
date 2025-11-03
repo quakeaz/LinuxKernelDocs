@@ -33,7 +33,7 @@
 
 
 
-<p class="blurb">6.16.0</p>
+<p class="blurb">6.17.0</p>
 
 
 
@@ -293,7 +293,7 @@ length to zero.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Allocates <strong>cap</strong> bytes and initializes the provided buffer struct with the
+<p>Allocates <strong>cap</strong> bytes and initializes the provided buffer <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">with</span></code> the
 allocated memory.</p>
 <p><strong>Return</strong></p>
 <p>Returns zero on success and <code class="docutils literal notranslate"><span class="pre">-ENOMEM</span></code> if allocation failed.</p>
@@ -520,7 +520,7 @@ valid command-type frame payload, i.e. is too short.</p>
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.msgbuf">
 <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">msgbuf</span></span></span><a class="headerlink" href="#c.msgbuf" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Buffer struct to construct SSH messages.</p>
+<dd><p>Buffer <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">to</span></code> construct SSH messages.</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -552,7 +552,7 @@ space.</p>
 <div class="kernelindent docutils container">
 <p><strong>Parameters</strong></p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">msgbuf</span> <span class="pre">*msgb</span></code></dt><dd><p>The buffer struct to initialize</p>
+<dt><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">msgbuf</span> <span class="pre">*msgb</span></code></dt><dd><p>The buffer <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">to</span></code> initialize</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">u8</span> <span class="pre">*ptr</span></code></dt><dd><p>Pointer to the underlying memory by which the buffer will be backed.</p>
 </dd>
@@ -560,7 +560,7 @@ space.</p>
 </dd>
 </dl>
 <p><strong>Description</strong></p>
-<p>Initialize the given message buffer struct using the provided memory as
+<p>Initialize the given message buffer <code class="xref c c-struct broken_xref docutils literal notranslate"><span class="pre">struct</span> <span class="pre">using</span></code> the provided memory as
 backing.</p>
 </div>
 <dl class="c function">
@@ -938,7 +938,7 @@ to limited number of times defined in SSH_PTL_MAX_PACKET_TRIES.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ssh_ptl_should_fail_write">
 <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ssh_ptl_should_fail_write</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ssh_ptl_should_fail_write" title="Link to this definition">¶</a><br /></dt>
-<dd><p>Error injection hook to make serdev_device_write() fail.</p>
+<dd><p>Error injection hook to make <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">serdev_device_write()</span></code> fail.</p>
 </dd></dl>
 
 <div class="kernelindent docutils container">
@@ -2561,15 +2561,15 @@ can handle the given event item.</p>
 <p><strong>Description</strong></p>
 <p>Flush the completion system by waiting until all currently submitted work
 items have been completed.</p>
-<p>This operation is only intended to, during normal operation prior to
-shutdown, try to complete most events and requests to get them out of the
-system while the system is still fully operational. It does not aim to
-provide any guarantee that all of them have been handled.</p>
 <p><strong>Note</strong></p>
 <p>This function does not guarantee that all events will have been
 handled once this call terminates. In case of a larger number of
 to-be-completed events, the event queue work function may re-schedule its
 work item, which this flush operation will ignore.</p>
+<p>This operation is only intended to, during normal operation prior to
+shutdown, try to complete most events and requests to get them out of the
+system while the system is still fully operational. It does not aim to
+provide any guarantee that all of them have been handled.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ssam_event_queue_init">
@@ -2633,7 +2633,7 @@ yet-to-be-completed, event items and requests have been handled.</p>
 <p>This lock must be held for any state transitions, including transition to
 suspend/resumed states and during shutdown. See <a class="reference internal" href="client-api.html#c.ssam_controller_statelock" title="ssam_controller_statelock"><code class="xref c c-func docutils literal notranslate"><span class="pre">ssam_controller_statelock()</span></code></a>
 for more details on controller locking.</p>
-<p>See ssam_controller_unlock() for the corresponding unlock function.</p>
+<p>See <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">ssam_controller_unlock()</span></code> for the corresponding unlock function.</p>
 </div>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ssam_controller_caps_load_from_acpi">
@@ -2729,7 +2729,6 @@ before controller can be used for requests.</p>
 <p>When this function is called, the controller should be properly
 hooked up to the serdev core via <code class="xref c c-type docutils literal notranslate"><span class="pre">struct</span> <span class="pre">serdev_device_ops</span></code>. Please refer
 to <a class="reference internal" href="#c.ssam_controller_init" title="ssam_controller_init"><code class="xref c c-func docutils literal notranslate"><span class="pre">ssam_controller_init()</span></code></a> for more details on controller initialization.</p>
-<p><strong>Description</strong></p>
 <p>This function must be called with the main controller lock held (i.e. by
 calling <a class="reference internal" href="#c.ssam_controller_lock" title="ssam_controller_lock"><code class="xref c c-func docutils literal notranslate"><span class="pre">ssam_controller_lock()</span></code></a>).</p>
 </div>
@@ -3257,7 +3256,7 @@ should be freed via <a class="reference internal" href="#c.ssam_irq_free" title=
 <p><strong>Description</strong></p>
 <p>Sets up the IRQ so that it can be used to wake the device. Specifically,
 this function enables the irq and then, if the device is allowed to wake up
-the system, calls enable_irq_wake(). See <a class="reference internal" href="#c.ssam_irq_disarm_wakeup" title="ssam_irq_disarm_wakeup"><code class="xref c c-func docutils literal notranslate"><span class="pre">ssam_irq_disarm_wakeup()</span></code></a> for the
+the system, calls <code class="xref c c-func broken_xref docutils literal notranslate"><span class="pre">enable_irq_wake()</span></code>. See <a class="reference internal" href="#c.ssam_irq_disarm_wakeup" title="ssam_irq_disarm_wakeup"><code class="xref c c-func docutils literal notranslate"><span class="pre">ssam_irq_disarm_wakeup()</span></code></a> for the
 corresponding function to disable the IRQ.</p>
 <p>This function is intended to arm the IRQ before entering S2idle suspend.</p>
 <p><strong>Note</strong></p>
