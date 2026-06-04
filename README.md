@@ -8,4 +8,4 @@ https://www.kernel.org/category/releases.html \
 https://play.google.com/store/apps/details?id=com.bryancandi.linux.kernel.docs
 
 > [!NOTE]
-> **This project is not actively maintained at this time. The application has been removed from the Google Play Store for new installs. It remains available for existing users who previously downloaded it.**
+> **This project is not actively maintained at this time. The open testing track has been paused on the Google Play Store, and the application is currently unavailable for download.**
